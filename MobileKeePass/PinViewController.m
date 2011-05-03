@@ -6,6 +6,7 @@
 //  Copyright 2011 Self. All rights reserved.
 //
 
+#import <AudioToolbox/AudioToolbox.h>
 #import "PinViewController.h"
 #import "PinTextField.h"
 
@@ -112,7 +113,9 @@
     if (correctPin) {
         [self dismissModalViewControllerAnimated:YES];
     } else {
-        //TODO vibrate
+        // Vibrate to signify they are a bad user
+        AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+        
         infoLabel.text = @"Incorrect PIN";
         textField.text = @"";
     }

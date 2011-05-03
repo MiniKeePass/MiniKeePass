@@ -13,6 +13,7 @@
 		52644C971370915400A58D92 /* box.png in Resources */ = {isa = PBXBuildFile; fileRef = 52644C951370915400A58D92 /* box.png */; };
 		52644C981370915400A58D92 /* box@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52644C961370915400A58D92 /* box@2x.png */; };
 		52644C9B1370954700A58D92 /* PinTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 52644C9A1370954700A58D92 /* PinTextField.m */; };
+		52B36F851370A46E00C19BF8 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52B36F841370A46E00C19BF8 /* AudioToolbox.framework */; };
 		6813262E136F7BA7004F4864 /* UrlFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6813262D136F7BA7004F4864 /* UrlFieldCell.m */; };
 		68132639136F8B79004F4864 /* PasswordFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68132638136F8B79004F4864 /* PasswordFieldCell.m */; };
 		688E68F5136F761500004216 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 688E68F4136F761500004216 /* Settings.bundle */; };
@@ -115,6 +116,7 @@
 		52644C961370915400A58D92 /* box@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "box@2x.png"; sourceTree = "<group>"; };
 		52644C991370954700A58D92 /* PinTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PinTextField.h; sourceTree = "<group>"; };
 		52644C9A1370954700A58D92 /* PinTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PinTextField.m; sourceTree = "<group>"; };
+		52B36F841370A46E00C19BF8 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		6813262C136F7BA7004F4864 /* UrlFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UrlFieldCell.h; sourceTree = "<group>"; };
 		6813262D136F7BA7004F4864 /* UrlFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UrlFieldCell.m; sourceTree = "<group>"; };
 		68132637136F8B79004F4864 /* PasswordFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasswordFieldCell.h; sourceTree = "<group>"; };
@@ -229,6 +231,7 @@
 				68D5900A136CB5CB0064CEE5 /* UIKit.framework in Frameworks */,
 				68D5900C136CB5CB0064CEE5 /* Foundation.framework in Frameworks */,
 				68D5900E136CB5CB0064CEE5 /* CoreGraphics.framework in Frameworks */,
+				52B36F851370A46E00C19BF8 /* AudioToolbox.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -331,6 +334,7 @@
 		68D58FFA136CB5CB0064CEE5 = {
 			isa = PBXGroup;
 			children = (
+				52B36F841370A46E00C19BF8 /* AudioToolbox.framework */,
 				68D5900F136CB5CB0064CEE5 /* MobileKeePass */,
 				68D59024136CB5F30064CEE5 /* KeePass */,
 				68D5903C136CB8300064CEE5 /* Resources */,
