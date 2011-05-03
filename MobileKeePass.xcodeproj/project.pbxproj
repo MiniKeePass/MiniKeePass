@@ -225,6 +225,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		525B6515137062F7001883BB /* Cell Classes */ = {
+			isa = PBXGroup;
+			children = (
+				689EB69B136DAE1C00C8DA1E /* TextViewCell.h */,
+				689EB69C136DAE1C00C8DA1E /* TextViewCell.m */,
+				689EB69E136DB4BF00C8DA1E /* TextFieldCell.h */,
+				689EB69F136DB4BF00C8DA1E /* TextFieldCell.m */,
+				68132637136F8B79004F4864 /* PasswordFieldCell.h */,
+				68132638136F8B79004F4864 /* PasswordFieldCell.m */,
+				6813262C136F7BA7004F4864 /* UrlFieldCell.h */,
+				6813262D136F7BA7004F4864 /* UrlFieldCell.m */,
+			);
+			name = "Cell Classes";
+			sourceTree = "<group>";
+		};
 		68985969136CDC91001B4204 /* images */ = {
 			isa = PBXGroup;
 			children = (
@@ -333,10 +348,10 @@
 		68D5900F136CB5CB0064CEE5 /* MobileKeePass */ = {
 			isa = PBXGroup;
 			children = (
-				523232A4136F128300692CEA /* DatabaseDocument.h */,
-				523232A5136F128300692CEA /* DatabaseDocument.m */,
 				68D59018136CB5CB0064CEE5 /* MobileKeePassAppDelegate.h */,
 				68D59019136CB5CB0064CEE5 /* MobileKeePassAppDelegate.m */,
+				523232A4136F128300692CEA /* DatabaseDocument.h */,
+				523232A5136F128300692CEA /* DatabaseDocument.m */,
 				689EB6A4136DC2B700C8DA1E /* FileViewController.h */,
 				689EB6A5136DC2B800C8DA1E /* FileViewController.m */,
 				689EB6A1136DC24C00C8DA1E /* EntryViewController.h */,
@@ -347,14 +362,7 @@
 				523232A7136F128300692CEA /* PasswordEntryController.m */,
 				689EB6AF136DC54700C8DA1E /* RootViewController.h */,
 				689EB6B0136DC54700C8DA1E /* RootViewController.m */,
-				689EB69B136DAE1C00C8DA1E /* TextViewCell.h */,
-				689EB69C136DAE1C00C8DA1E /* TextViewCell.m */,
-				689EB69E136DB4BF00C8DA1E /* TextFieldCell.h */,
-				689EB69F136DB4BF00C8DA1E /* TextFieldCell.m */,
-				68132637136F8B79004F4864 /* PasswordFieldCell.h */,
-				68132638136F8B79004F4864 /* PasswordFieldCell.m */,
-				6813262C136F7BA7004F4864 /* UrlFieldCell.h */,
-				6813262D136F7BA7004F4864 /* UrlFieldCell.m */,
+				525B6515137062F7001883BB /* Cell Classes */,
 				68D59010136CB5CB0064CEE5 /* Supporting Files */,
 			);
 			path = MobileKeePass;
