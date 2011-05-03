@@ -1,0 +1,3 @@
+TBD:
+  Mint style pin, along with timeout, config page, etc.
+  Astrix passwords, add as a config item
