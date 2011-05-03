@@ -334,7 +334,6 @@
 		68D58FFA136CB5CB0064CEE5 = {
 			isa = PBXGroup;
 			children = (
-				52B36F841370A46E00C19BF8 /* AudioToolbox.framework */,
 				68D5900F136CB5CB0064CEE5 /* MobileKeePass */,
 				68D59024136CB5F30064CEE5 /* KeePass */,
 				68D5903C136CB8300064CEE5 /* Resources */,
@@ -354,6 +353,7 @@
 		68D59008136CB5CB0064CEE5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				52B36F841370A46E00C19BF8 /* AudioToolbox.framework */,
 				68D59009136CB5CB0064CEE5 /* UIKit.framework */,
 				68D5900B136CB5CB0064CEE5 /* Foundation.framework */,
 				68D5900D136CB5CB0064CEE5 /* CoreGraphics.framework */,

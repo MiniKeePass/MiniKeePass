@@ -18,6 +18,11 @@
     [super viewDidLoad];
     
     self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
+
+    UIImage *icon = [UIImage imageNamed:@"Icon"];
+    UIView *iconView = [[UIView alloc] initWithFrame:CGRectMake(131, 30, icon.size.width,icon.size.height)];
+    iconView.backgroundColor = [UIColor colorWithPatternImage:icon];
+    [self.view addSubview:iconView];
     
     textField = [[UITextField alloc] initWithFrame:CGRectMake(320, 240, 0, 0)];
     textField.delegate = self;
