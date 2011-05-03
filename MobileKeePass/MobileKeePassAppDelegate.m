@@ -35,9 +35,14 @@
     [rootViewController release];
     
     // Create the window
-	window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-	window.rootViewController = navigationController;
-	[window makeKeyAndVisible];
+    window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    window.rootViewController = navigationController;
+    [window makeKeyAndVisible];
+
+    // Present the pin view
+    PinViewController *pinViewController = [[PinViewController alloc] init];
+    pinViewController.delegate = self;
+    [rootViewController presentModalViewController:pinViewController animated:NO];
     
     [self openLastDatabase];
     
@@ -66,6 +71,10 @@
     }
 
     return images[index];
+}
+
+- (BOOL)pinViewController:(PinViewController *)controller checkPin:(NSString *)pin {
+    return [pin isEqualToString:@"1234"];
 }
 
 - (void)openLastDatabase {

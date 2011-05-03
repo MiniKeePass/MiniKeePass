@@ -11,6 +11,8 @@
 
 @implementation PinViewController
 
+@synthesize delegate;
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -72,6 +74,7 @@
 - (void)dealloc {
     [textField release];
     [pinTextFields release];
+    [infoLabel release];
     [super dealloc];
 }
 
@@ -95,9 +98,23 @@
     }
     
     if ([textField.text length] == 4) {
-        //FIXME CHECK PIN
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"FULL" message:@"No More" delegate:nil cancelButtonTitle:@"Cancel" otherButtonTitles:nil];
-        [alert show];
+        [self performSelector:@selector(checkPin) withObject:nil afterDelay:0.3];
+    }
+}
+
+- (void)checkPin {
+    BOOL correctPin = NO;
+    
+    if ([delegate respondsToSelector:@selector(pinViewController:checkPin:)]) {
+        correctPin = [delegate pinViewController:self checkPin:textField.text];
+    }
+    
+    if (correctPin) {
+        [self dismissModalViewControllerAnimated:YES];
+    } else {
+        //TODO vibrate
+        infoLabel.text = @"Incorrect PIN";
+        textField.text = @"";
     }
 }
 

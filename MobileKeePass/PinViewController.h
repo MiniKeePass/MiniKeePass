@@ -8,10 +8,19 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol PinViewControllerDelegate;
+
 @interface PinViewController : UIViewController <UITextFieldDelegate> {
     UITextField *textField;
     NSArray *pinTextFields;
     UILabel *infoLabel;
+    id<PinViewControllerDelegate> delegate;
 }
 
+@property (nonatomic, retain) id<PinViewControllerDelegate> delegate;
+
+@end
+
+@protocol PinViewControllerDelegate <NSObject>
+- (BOOL)pinViewController:(PinViewController*)controller checkPin:(NSString*)pin;
 @end
