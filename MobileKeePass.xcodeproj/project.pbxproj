@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		523232A8136F128300692CEA /* DatabaseDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 523232A5136F128300692CEA /* DatabaseDocument.m */; };
 		523232A9136F128300692CEA /* PasswordEntryController.m in Sources */ = {isa = PBXBuildFile; fileRef = 523232A7136F128300692CEA /* PasswordEntryController.m */; };
+		52644C93137088E800A58D92 /* PinViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52644C92137088E800A58D92 /* PinViewController.m */; };
+		52644C971370915400A58D92 /* box.png in Resources */ = {isa = PBXBuildFile; fileRef = 52644C951370915400A58D92 /* box.png */; };
+		52644C981370915400A58D92 /* box@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52644C961370915400A58D92 /* box@2x.png */; };
+		52644C9B1370954700A58D92 /* PinTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 52644C9A1370954700A58D92 /* PinTextField.m */; };
 		6813262E136F7BA7004F4864 /* UrlFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6813262D136F7BA7004F4864 /* UrlFieldCell.m */; };
 		68132639136F8B79004F4864 /* PasswordFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68132638136F8B79004F4864 /* PasswordFieldCell.m */; };
 		688E68F5136F761500004216 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 688E68F4136F761500004216 /* Settings.bundle */; };
@@ -105,6 +109,12 @@
 		523232A5136F128300692CEA /* DatabaseDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DatabaseDocument.m; sourceTree = "<group>"; };
 		523232A6136F128300692CEA /* PasswordEntryController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasswordEntryController.h; sourceTree = "<group>"; };
 		523232A7136F128300692CEA /* PasswordEntryController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PasswordEntryController.m; sourceTree = "<group>"; };
+		52644C91137088E800A58D92 /* PinViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PinViewController.h; sourceTree = "<group>"; };
+		52644C92137088E800A58D92 /* PinViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PinViewController.m; sourceTree = "<group>"; };
+		52644C951370915400A58D92 /* box.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = box.png; sourceTree = "<group>"; };
+		52644C961370915400A58D92 /* box@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "box@2x.png"; sourceTree = "<group>"; };
+		52644C991370954700A58D92 /* PinTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PinTextField.h; sourceTree = "<group>"; };
+		52644C9A1370954700A58D92 /* PinTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PinTextField.m; sourceTree = "<group>"; };
 		6813262C136F7BA7004F4864 /* UrlFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UrlFieldCell.h; sourceTree = "<group>"; };
 		6813262D136F7BA7004F4864 /* UrlFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UrlFieldCell.m; sourceTree = "<group>"; };
 		68132637136F8B79004F4864 /* PasswordFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasswordFieldCell.h; sourceTree = "<group>"; };
@@ -225,7 +235,7 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		525B6515137062F7001883BB /* Cell Classes */ = {
+		525B6515137062F7001883BB /* Cells */ = {
 			isa = PBXGroup;
 			children = (
 				689EB69B136DAE1C00C8DA1E /* TextViewCell.h */,
@@ -237,12 +247,14 @@
 				6813262C136F7BA7004F4864 /* UrlFieldCell.h */,
 				6813262D136F7BA7004F4864 /* UrlFieldCell.m */,
 			);
-			name = "Cell Classes";
+			name = Cells;
 			sourceTree = "<group>";
 		};
 		68985969136CDC91001B4204 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				52644C951370915400A58D92 /* box.png */,
+				52644C961370915400A58D92 /* box@2x.png */,
 				6898596A136CDC91001B4204 /* 0.png */,
 				6898596B136CDC91001B4204 /* 1.png */,
 				6898596C136CDC91001B4204 /* 10.png */,
@@ -352,17 +364,21 @@
 				68D59019136CB5CB0064CEE5 /* MobileKeePassAppDelegate.m */,
 				523232A4136F128300692CEA /* DatabaseDocument.h */,
 				523232A5136F128300692CEA /* DatabaseDocument.m */,
-				689EB6A4136DC2B700C8DA1E /* FileViewController.h */,
-				689EB6A5136DC2B800C8DA1E /* FileViewController.m */,
 				689EB6A1136DC24C00C8DA1E /* EntryViewController.h */,
 				689EB6A2136DC24C00C8DA1E /* EntryViewController.m */,
+				689EB6A4136DC2B700C8DA1E /* FileViewController.h */,
+				689EB6A5136DC2B800C8DA1E /* FileViewController.m */,
 				68D59039136CB7820064CEE5 /* GroupViewController.h */,
 				68D5903A136CB7820064CEE5 /* GroupViewController.m */,
 				523232A6136F128300692CEA /* PasswordEntryController.h */,
 				523232A7136F128300692CEA /* PasswordEntryController.m */,
+				52644C991370954700A58D92 /* PinTextField.h */,
+				52644C9A1370954700A58D92 /* PinTextField.m */,
+				52644C91137088E800A58D92 /* PinViewController.h */,
+				52644C92137088E800A58D92 /* PinViewController.m */,
 				689EB6AF136DC54700C8DA1E /* RootViewController.h */,
 				689EB6B0136DC54700C8DA1E /* RootViewController.m */,
-				525B6515137062F7001883BB /* Cell Classes */,
+				525B6515137062F7001883BB /* Cells */,
 				68D59010136CB5CB0064CEE5 /* Supporting Files */,
 			);
 			path = MobileKeePass;
@@ -526,6 +542,8 @@
 				689859F4136CDC91001B4204 /* 8.png in Resources */,
 				689859F5136CDC91001B4204 /* 9.png in Resources */,
 				688E68F5136F761500004216 /* Settings.bundle in Resources */,
+				52644C971370915400A58D92 /* box.png in Resources */,
+				52644C981370915400A58D92 /* box@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -551,6 +569,8 @@
 				523232A9136F128300692CEA /* PasswordEntryController.m in Sources */,
 				6813262E136F7BA7004F4864 /* UrlFieldCell.m in Sources */,
 				68132639136F8B79004F4864 /* PasswordFieldCell.m in Sources */,
+				52644C93137088E800A58D92 /* PinViewController.m in Sources */,
+				52644C9B1370954700A58D92 /* PinTextField.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
