@@ -47,10 +47,10 @@
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {    
-    NSDate *currentTime = [NSDate date]; 
     NSDate *exitTime = [[NSUserDefaults standardUserDefaults] valueForKey:@"exitTime"];
     NSDate *cutoffTime = [exitTime dateByAddingTimeInterval:DELAY];
     
+    NSDate *currentTime = [NSDate date];
     NSDate *earlierDate = [currentTime earlierDate:cutoffTime];
     
     if ([earlierDate isEqualToDate:cutoffTime]) {
