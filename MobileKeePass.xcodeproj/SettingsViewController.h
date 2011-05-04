@@ -10,7 +10,7 @@
 #import "PinViewController.h"
 
 @interface SettingsViewController : UITableViewController <PinViewControllerDelegate> {
-    
+    UISwitch *pinSwitch;
 }
 
 @end

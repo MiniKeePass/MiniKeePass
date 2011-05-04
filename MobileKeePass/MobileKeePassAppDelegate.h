@@ -11,7 +11,7 @@
 #import "PinViewController.h"
 #import "PasswordEntryController.h"
 
-@interface MobileKeePassAppDelegate : NSObject <UIApplicationDelegate, PinViewControllerDelegate, PasswordEntryControllerDelegate> {
+@interface MobileKeePassAppDelegate : NSObject <UIApplicationDelegate, PinViewControllerDelegate, PasswordEntryControllerDelegate, UIActionSheetDelegate> {
     UIWindow *window;
     UINavigationController *navigationController;
     UIImage *images[70];

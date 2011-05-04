@@ -31,10 +31,9 @@
 {
     [super viewDidLoad];
 
-    UIButton *dbButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    
-    
-    [self.view addSubview:dbButton];
+    pinSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(200, 10, 0, 0)];
+    pinSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:@"enablePin"];
+    [pinSwitch addTarget:self action:@selector(togglePin:) forControlEvents:UIControlEventValueChanged];
 }
 
 - (void)viewDidUnload
@@ -71,9 +70,6 @@
             cell.textLabel.text = @"Enable PIN";
             cell.selectionStyle = UITableViewCellEditingStyleNone;
             
-            UISwitch *pinSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(200, 10, 0, 0)];
-            pinSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:@"enablePin"];
-            [pinSwitch addTarget:self action:@selector(togglePin:) forControlEvents:UIControlEventValueChanged];
             [cell addSubview:pinSwitch];
             [pinSwitch release];
 
@@ -88,8 +84,6 @@
 }
 
 - (void)togglePin:(id)sender {
-    UISwitch *pinSwitch = (UISwitch*)sender;
-    
     if (pinSwitch.on) {
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"pin"];
 
@@ -118,6 +112,16 @@
         [standardUserDefaults removeObjectForKey:@"pin"];
         [controller clearEntry];
     }
+}
+
+- (void)pinViewControllerCancelButtonPressed:(PinViewController *)controller {
+    [pinSwitch setOn:NO animated:YES];
+    
+    NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
+    [standardUserDefaults removeObjectForKey:@"pin"];
+    [standardUserDefaults setBool:NO forKey:@"enablePin"];
+
+    [controller dismissModalViewControllerAnimated:YES];
 }
 
 @end

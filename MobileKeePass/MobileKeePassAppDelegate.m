@@ -92,12 +92,6 @@
     return images[index];
 }
 
-/*
-- (BOOL)pinViewController:(PinViewController *)controller checkPin:(NSString *)pin {
-    return [pin isEqualToString:@"1234"];
-}
-*/
-
 - (void)pinViewController:(PinViewController *)controller pinEntered:(NSString *)pin {
     NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
     
@@ -111,6 +105,13 @@
         controller.string = @"Incorrect PIN";
         [controller clearEntry];
     }
+}
+
+- (void)pinViewControllerCancelButtonPressed:(PinViewController *)controller {
+    NSString* title = @"Canceling PIN entry will lock active database";
+    
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:title delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Try Again", nil];
+    [actionSheet showInView:window];
 }
 
 - (void)openLastDatabase {
@@ -151,6 +152,13 @@
     [dd release];
     
     return shouldDismiss;
+}
+
+-(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == actionSheet.cancelButtonIndex) {
+        //TODO close the active DB
+        [window.rootViewController dismissModalViewControllerAnimated:YES];        
+    }
 }
 
 @end

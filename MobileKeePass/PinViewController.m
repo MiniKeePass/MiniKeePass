@@ -34,29 +34,40 @@
     self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
 
     UIImage *icon = [UIImage imageNamed:@"Icon"];
-    UIView *iconView = [[UIView alloc] initWithFrame:CGRectMake(131, 30, icon.size.width,icon.size.height)];
+    UIView *iconView = [[UIView alloc] initWithFrame:CGRectMake(131, 20, icon.size.width,icon.size.height)];
     iconView.backgroundColor = [UIColor colorWithPatternImage:icon];
     [self.view addSubview:iconView];
     
+    UIButton *cancelButton = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarStyleBlack target:self action:@selector(cancelButtonPressed:)];
+
+    UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 0, 44)];
+    toolbar.tintColor = [UIColor colorWithRed:0.435f green:0.463f blue:0.514f alpha:1.0f];
+    
+    [toolbar setItems:[NSArray arrayWithObject:cancelButton]];
+    [cancelButton release];
+
     textField = [[UITextField alloc] initWithFrame:CGRectMake(320, 240, 0, 0)];
     textField.delegate = self;
     textField.hidden = YES;
     textField.secureTextEntry = YES;
     textField.keyboardType = UIKeyboardTypeNumberPad;
+    textField.inputAccessoryView = toolbar;
+    [toolbar release];
+    
     [self.view addSubview:textField];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textDidChange:) name:UITextFieldTextDidChangeNotification object:textField];
     
-    PinTextField *pinTextField1 = [[PinTextField alloc] initWithFrame:CGRectMake(26, 117, 61, 53)];
+    PinTextField *pinTextField1 = [[PinTextField alloc] initWithFrame:CGRectMake(26, 100, 61, 53)];
     [self.view addSubview:pinTextField1];
     
-    PinTextField *pinTextField2 = [[PinTextField alloc] initWithFrame:CGRectMake(95, 117, 61, 52)];
+    PinTextField *pinTextField2 = [[PinTextField alloc] initWithFrame:CGRectMake(95, 100, 61, 52)];
     [self.view addSubview:pinTextField2];
     
-    PinTextField *pinTextField3 = [[PinTextField alloc] initWithFrame:CGRectMake(164, 117, 61, 53)];
+    PinTextField *pinTextField3 = [[PinTextField alloc] initWithFrame:CGRectMake(164, 100, 61, 53)];
     [self.view addSubview:pinTextField3];
     
-    PinTextField *pinTextField4 = [[PinTextField alloc] initWithFrame:CGRectMake(233, 117, 61, 54)];
+    PinTextField *pinTextField4 = [[PinTextField alloc] initWithFrame:CGRectMake(233, 100, 61, 54)];
     [self.view addSubview:pinTextField4];
     
     pinTextFields = [[NSArray arrayWithObjects:pinTextField1, pinTextField2, pinTextField3, pinTextField4, nil] retain];
@@ -66,7 +77,7 @@
     [pinTextField3 release];
     [pinTextField4 release];
     
-    infoLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 190, 320, 20)];
+    infoLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 165, 320, 20)];
     infoLabel.backgroundColor = [UIColor clearColor];
     infoLabel.textAlignment = UITextAlignmentCenter;
     infoLabel.text = string;
@@ -148,6 +159,12 @@
 }
 */
  
+- (void)cancelButtonPressed:(id)sender {
+    if ([delegate respondsToSelector:@selector(pinViewControllerCancelButtonPressed:)]) {
+        [delegate pinViewControllerCancelButtonPressed:self];
+    }
+}
+
 - (void)clearEntry {
     textField.text = @"";
 }
