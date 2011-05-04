@@ -14,6 +14,7 @@
 		52644C981370915400A58D92 /* box@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52644C961370915400A58D92 /* box@2x.png */; };
 		52644C9B1370954700A58D92 /* PinTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 52644C9A1370954700A58D92 /* PinTextField.m */; };
 		52B36F851370A46E00C19BF8 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52B36F841370A46E00C19BF8 /* AudioToolbox.framework */; };
+		52E64B631371AA5E00049499 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52E64B621371AA5E00049499 /* SettingsViewController.m */; };
 		6813262E136F7BA7004F4864 /* UrlFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6813262D136F7BA7004F4864 /* UrlFieldCell.m */; };
 		68132639136F8B79004F4864 /* PasswordFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68132638136F8B79004F4864 /* PasswordFieldCell.m */; };
 		688E68F5136F761500004216 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 688E68F4136F761500004216 /* Settings.bundle */; };
@@ -117,6 +118,8 @@
 		52644C991370954700A58D92 /* PinTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PinTextField.h; sourceTree = "<group>"; };
 		52644C9A1370954700A58D92 /* PinTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PinTextField.m; sourceTree = "<group>"; };
 		52B36F841370A46E00C19BF8 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		52E64B611371AA5E00049499 /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SettingsViewController.h; path = MobileKeePass.xcodeproj/SettingsViewController.h; sourceTree = SOURCE_ROOT; };
+		52E64B621371AA5E00049499 /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SettingsViewController.m; path = MobileKeePass.xcodeproj/SettingsViewController.m; sourceTree = SOURCE_ROOT; };
 		6813262C136F7BA7004F4864 /* UrlFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UrlFieldCell.h; sourceTree = "<group>"; };
 		6813262D136F7BA7004F4864 /* UrlFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UrlFieldCell.m; sourceTree = "<group>"; };
 		68132637136F8B79004F4864 /* PasswordFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasswordFieldCell.h; sourceTree = "<group>"; };
@@ -382,6 +385,8 @@
 				52644C92137088E800A58D92 /* PinViewController.m */,
 				689EB6AF136DC54700C8DA1E /* RootViewController.h */,
 				689EB6B0136DC54700C8DA1E /* RootViewController.m */,
+				52E64B611371AA5E00049499 /* SettingsViewController.h */,
+				52E64B621371AA5E00049499 /* SettingsViewController.m */,
 				525B6515137062F7001883BB /* Cells */,
 				68D59010136CB5CB0064CEE5 /* Supporting Files */,
 			);
@@ -575,6 +580,7 @@
 				68132639136F8B79004F4864 /* PasswordFieldCell.m in Sources */,
 				52644C93137088E800A58D92 /* PinViewController.m in Sources */,
 				52644C9B1370954700A58D92 /* PinTextField.m in Sources */,
+				52E64B631371AA5E00049499 /* SettingsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

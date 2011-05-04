@@ -6,10 +6,11 @@
 //  Copyright 2011 Self. All rights reserved.
 //
 
+#import <AudioToolbox/AudioToolbox.h>
 #import "MobileKeePassAppDelegate.h"
 #import "RootViewController.h"
 
-#define DELAY 20
+#define DELAY 0
 
 @implementation MobileKeePassAppDelegate
 
@@ -47,18 +48,20 @@
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {    
-    NSDate *exitTime = [[NSUserDefaults standardUserDefaults] valueForKey:@"exitTime"];
-    NSDate *cutoffTime = [exitTime dateByAddingTimeInterval:DELAY];
-    
-    NSDate *currentTime = [NSDate date];
-    NSDate *earlierDate = [currentTime earlierDate:cutoffTime];
-    
-    if ([earlierDate isEqualToDate:cutoffTime]) {
-        // Present the pin view
-        PinViewController *pinViewController = [[PinViewController alloc] init];
-        pinViewController.delegate = self;
-        [window.rootViewController presentModalViewController:pinViewController animated:YES];
-        [pinViewController release];
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"enablePin"]) {
+        NSDate *exitTime = [[NSUserDefaults standardUserDefaults] valueForKey:@"exitTime"];
+        NSDate *cutoffTime = [exitTime dateByAddingTimeInterval:DELAY];
+        
+        NSDate *currentTime = [NSDate date];
+        NSDate *earlierDate = [currentTime earlierDate:cutoffTime];
+        
+        if ([earlierDate isEqualToDate:cutoffTime]) {
+            // Present the pin view
+            PinViewController *pinViewController = [[PinViewController alloc] init];
+            pinViewController.delegate = self;
+            [window.rootViewController presentModalViewController:pinViewController animated:YES];
+            [pinViewController release];
+        }
     }
 }
 
@@ -89,8 +92,25 @@
     return images[index];
 }
 
+/*
 - (BOOL)pinViewController:(PinViewController *)controller checkPin:(NSString *)pin {
     return [pin isEqualToString:@"1234"];
+}
+*/
+
+- (void)pinViewController:(PinViewController *)controller pinEntered:(NSString *)pin {
+    NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
+    
+    NSString *currentPin = [standardUserDefaults valueForKey:@"pin"];
+    if ([pin isEqualToString:currentPin]) {
+        [controller dismissModalViewControllerAnimated:YES];
+    } else {
+        // Vibrate to signify they are a bad user
+        AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+        
+        controller.string = @"Incorrect PIN";
+        [controller clearEntry];
+    }
 }
 
 - (void)openLastDatabase {

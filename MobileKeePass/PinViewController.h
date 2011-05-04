@@ -14,13 +14,18 @@
     UITextField *textField;
     NSArray *pinTextFields;
     UILabel *infoLabel;
+    NSString *string;
     id<PinViewControllerDelegate> delegate;
 }
 
+- (id)initWithText:(NSString*)text;
+- (void)clearEntry;
+
 @property (nonatomic, retain) id<PinViewControllerDelegate> delegate;
+@property (nonatomic, copy) NSString *string;
 
 @end
 
 @protocol PinViewControllerDelegate <NSObject>
-- (BOOL)pinViewController:(PinViewController*)controller checkPin:(NSString*)pin;
+- (void)pinViewController:(PinViewController*)controller pinEntered:(NSString*)pin;
 @end

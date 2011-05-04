@@ -13,6 +13,20 @@
 @implementation PinViewController
 
 @synthesize delegate;
+@synthesize string;
+
+- (id)init {
+    return [self initWithText:@"Enter your PIN to unlock"];
+}
+
+- (id)initWithText:(NSString*)text {
+    [super init];
+    if (self) {
+        string = text;
+    }
+    
+    return self;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -55,7 +69,7 @@
     infoLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 190, 320, 20)];
     infoLabel.backgroundColor = [UIColor clearColor];
     infoLabel.textAlignment = UITextAlignmentCenter;
-    infoLabel.text = @"Enter your PIN to unlock";
+    infoLabel.text = string;
     [self.view addSubview:infoLabel];
 }
 
@@ -104,10 +118,17 @@
     }
     
     if ([textField.text length] == 4) {
-        [self performSelector:@selector(checkPin) withObject:nil afterDelay:0.3];
+        [self performSelector:@selector(checkPin:) withObject:nil afterDelay:0.3];
     }
 }
 
+- (void)checkPin:(id)sender {
+    if ([delegate respondsToSelector:@selector(pinViewController:pinEntered:)]) {
+        [delegate pinViewController:self pinEntered:textField.text];
+    }
+}
+    
+/*
 - (void)checkPin {
     BOOL correctPin = NO;
     
@@ -124,6 +145,16 @@
         infoLabel.text = @"Incorrect PIN";
         textField.text = @"";
     }
+}
+*/
+ 
+- (void)clearEntry {
+    textField.text = @"";
+}
+
+- (void)setString:(NSString *)inString {
+    string = inString;
+    infoLabel.text = string;
 }
 
 @end
