@@ -9,6 +9,8 @@
 #import "MobileKeePassAppDelegate.h"
 #import "RootViewController.h"
 
+#define DELAY 20
+
 @implementation MobileKeePassAppDelegate
 
 @synthesize databaseDocument;
@@ -38,19 +40,33 @@
     window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     window.rootViewController = navigationController;
     [window makeKeyAndVisible];
-
-    // Present the pin view
-    PinViewController *pinViewController = [[PinViewController alloc] init];
-    pinViewController.delegate = self;
-    [rootViewController presentModalViewController:pinViewController animated:NO];
     
     [self openLastDatabase];
     
     return YES;
 }
 
-- (void)applicationWillResignActive:(UIApplication *)application {
+- (void)applicationWillEnterForeground:(UIApplication *)application {    
+    NSDate *currentTime = [NSDate date]; 
+    NSDate *exitTime = [[NSUserDefaults standardUserDefaults] valueForKey:@"exitTime"];
+    NSDate *cutoffTime = [exitTime dateByAddingTimeInterval:DELAY];
+    
+    NSDate *earlierDate = [currentTime earlierDate:cutoffTime];
+    
+    if ([earlierDate isEqualToDate:cutoffTime]) {
+        // Present the pin view
+        PinViewController *pinViewController = [[PinViewController alloc] init];
+        pinViewController.delegate = self;
+        [window.rootViewController presentModalViewController:pinViewController animated:YES];
+        [pinViewController release];
+    }
+}
+
+- (void)applicationDidEnterBackground:(UIApplication *)application {
     [databaseDocument save];
+    
+    NSDate *currentTime = [NSDate date];
+    [[NSUserDefaults standardUserDefaults] setValue:currentTime forKey:@"exitTime"];
 }
 
 - (void)dealloc {
