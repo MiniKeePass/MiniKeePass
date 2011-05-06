@@ -52,10 +52,6 @@
     // Save the database document
     [databaseDocument save];
     
-    // Cleanup the database document
-    [databaseDocument release];
-    databaseDocument = nil;
-    
     // Store the current time as when the application exited
     NSDate *currentTime = [NSDate date];
     [[NSUserDefaults standardUserDefaults] setValue:currentTime forKey:@"exitTime"];
