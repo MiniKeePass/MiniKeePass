@@ -10,6 +10,7 @@
 #import "PinViewController.h"
 
 @interface SettingsViewController : UITableViewController <PinViewControllerDelegate> {
+    UISwitch *hidePasswordsSwitch;
     UISwitch *pinSwitch;
     NSString *tempPin;
 }
