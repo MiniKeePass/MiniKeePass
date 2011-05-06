@@ -8,20 +8,13 @@
 
 #import <AudioToolbox/AudioToolbox.h>
 #import "SettingsViewController.h"
+#import "SFHFKeychainUtils.h"
 
 @implementation SettingsViewController
 
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    self = [super initWithStyle:style];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
 - (void)dealloc
 {
+    [pinSwitch release];
     [super dealloc];
 }
 
@@ -32,15 +25,8 @@
     [super viewDidLoad];
 
     pinSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(200, 10, 0, 0)];
-    pinSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:@"enablePin"];
+    pinSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:@"pinEnabled"];
     [pinSwitch addTarget:self action:@selector(togglePin:) forControlEvents:UIControlEventValueChanged];
-}
-
-- (void)viewDidUnload
-{
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
 }
 
 #pragma mark - Table view data source
@@ -85,41 +71,51 @@
 
 - (void)togglePin:(id)sender {
     if (pinSwitch.on) {
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"pin"];
-
         PinViewController* pinViewController = [[PinViewController alloc] initWithText:@"Set PIN"];
         pinViewController.delegate = self;
         [self presentModalViewController:pinViewController animated:YES];
+        [pinViewController release];
+    } else {
+        [SFHFKeychainUtils deleteItemForUsername:@"PIN" andServiceName:@"net.fizzawizza.MobileKeePass" error:nil];
     }
     
-    [[NSUserDefaults standardUserDefaults] setBool:pinSwitch.on forKey:@"enablePin"];
+    [[NSUserDefaults standardUserDefaults] setBool:pinSwitch.on forKey:@"pinEnabled"];
 }
 
-- (void)pinViewController:(PinViewController *)controller pinEntered:(NSString *)pin {
-    NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
-    NSString *currentPin = [standardUserDefaults valueForKey:@"pin"];
-    
-    if (currentPin == nil) {
-        [standardUserDefaults setValue:pin forKey:@"pin"];
+- (void)pinViewController:(PinViewController *)controller pinEntered:(NSString *)pin {        
+    if (tempPin == nil) {
+        tempPin = [pin copy];
         controller.string = @"Confirm PIN";
         [controller clearEntry];
-    } else if ([currentPin isEqualToString:pin]) {
+    } else if ([tempPin isEqualToString:pin]) {
+        NSError *error;
+        [SFHFKeychainUtils storeUsername:@"PIN" andPassword:pin forServiceName:@"net.fizzawizza.MobileKeePass" updateExisting:YES error:&error];
+        
+        [tempPin release];
+        tempPin = nil;
+
         [controller dismissModalViewControllerAnimated:YES];
     } else {
         controller.string = @"PINs did not match. Try again";
         AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
         
-        [standardUserDefaults removeObjectForKey:@"pin"];
+        [tempPin release];
+        tempPin = nil;
+        
         [controller clearEntry];
     }
 }
 
 - (void)pinViewControllerCancelButtonPressed:(PinViewController *)controller {
     [pinSwitch setOn:NO animated:YES];
+
+    [SFHFKeychainUtils deleteItemForUsername:@"PIN" andServiceName:@"net.fizzawizza.MobileKeePass" error:nil];
     
     NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
-    [standardUserDefaults removeObjectForKey:@"pin"];
-    [standardUserDefaults setBool:NO forKey:@"enablePin"];
+    [standardUserDefaults setBool:NO forKey:@"pinEnabled"];
+    
+    [tempPin release];
+    tempPin = nil;
 
     [controller dismissModalViewControllerAnimated:YES];
 }

@@ -11,7 +11,7 @@
 #import "RootViewController.h"
 #import "SFHFKeychainUtils.h"
 
-#define TIME_INTERVAL_BEFORE_PIN 5
+#define TIME_INTERVAL_BEFORE_PIN 0
 
 @implementation MobileKeePassAppDelegate
 
@@ -62,11 +62,17 @@
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    if (![userDefaults boolForKey:@"pinEnabled"]) {
+        return;
+    }
+
     // Get the time when the application last exited
-    NSDate *exitTime = [[NSUserDefaults standardUserDefaults] valueForKey:@"exitTime"];
+    NSDate *exitTime = [userDefaults valueForKey:@"exitTime"];
     if (exitTime == nil) {
         return;
     }
+    
     NSTimeInterval timeInterval = [exitTime timeIntervalSinceNow];
     if (timeInterval < -TIME_INTERVAL_BEFORE_PIN) {
         // Present the pin view
@@ -98,6 +104,7 @@
 }
 
 - (void)pinViewController:(PinViewController *)controller pinEntered:(NSString *)pin {
+    NSError *error;
     NSString *validPin = [SFHFKeychainUtils getPasswordForUsername:@"PIN" andServiceName:@"net.fizzawizza.MobileKeePass" error:&error];
     if (error != nil || validPin == nil) {
         // TODO error/no pin, close database
@@ -121,6 +128,7 @@
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:title delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Try Again", nil];
     actionSheet.actionSheetStyle = UIActivityIndicatorViewStyleGray;
     [actionSheet showInView:window];
+    [actionSheet release];
 }
 
 - (void)openLastDatabase {

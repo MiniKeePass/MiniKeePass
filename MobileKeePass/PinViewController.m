@@ -37,6 +37,7 @@
     UIView *iconView = [[UIView alloc] initWithFrame:CGRectMake(131, 20, icon.size.width,icon.size.height)];
     iconView.backgroundColor = [UIColor colorWithPatternImage:icon];
     [self.view addSubview:iconView];
+    [iconView release];
     
     UIButton *cancelButton = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarStyleBlack target:self action:@selector(cancelButtonPressed:)];
 

@@ -102,7 +102,6 @@
 		68D59014136CB5CB0064CEE5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 68D59012136CB5CB0064CEE5 /* InfoPlist.strings */; };
 		68D59017136CB5CB0064CEE5 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 68D59016136CB5CB0064CEE5 /* main.m */; };
 		68D5901A136CB5CB0064CEE5 /* MobileKeePassAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 68D59019136CB5CB0064CEE5 /* MobileKeePassAppDelegate.m */; };
-		68D5902C136CB5F30064CEE5 /* OldIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 68D59023136CB5F30064CEE5 /* OldIcon.png */; };
 		68D5902D136CB5F30064CEE5 /* ArcFour.m in Sources */ = {isa = PBXBuildFile; fileRef = 68D59026136CB5F30064CEE5 /* ArcFour.m */; };
 		68D5902E136CB5F30064CEE5 /* Database.m in Sources */ = {isa = PBXBuildFile; fileRef = 68D59028136CB5F30064CEE5 /* Database.m */; };
 		68D5902F136CB5F30064CEE5 /* Kdb3.m in Sources */ = {isa = PBXBuildFile; fileRef = 68D5902A136CB5F30064CEE5 /* Kdb3.m */; };
@@ -223,7 +222,6 @@
 		68D59016136CB5CB0064CEE5 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		68D59018136CB5CB0064CEE5 /* MobileKeePassAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MobileKeePassAppDelegate.h; sourceTree = "<group>"; };
 		68D59019136CB5CB0064CEE5 /* MobileKeePassAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MobileKeePassAppDelegate.m; sourceTree = "<group>"; };
-		68D59023136CB5F30064CEE5 /* OldIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = OldIcon.png; sourceTree = "<group>"; };
 		68D59025136CB5F30064CEE5 /* ArcFour.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArcFour.h; sourceTree = "<group>"; };
 		68D59026136CB5F30064CEE5 /* ArcFour.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArcFour.m; sourceTree = "<group>"; };
 		68D59027136CB5F30064CEE5 /* Database.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Database.h; sourceTree = "<group>"; };
@@ -446,7 +444,6 @@
 				523FBD7C1373C05E004575FB /* icon.png */,
 				523FBD6213736834004575FB /* icon@2x.png */,
 				68985969136CDC91001B4204 /* images */,
-				68D59023136CB5F30064CEE5 /* OldIcon.png */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -502,7 +499,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				68D59014136CB5CB0064CEE5 /* InfoPlist.strings in Resources */,
-				68D5902C136CB5F30064CEE5 /* OldIcon.png in Resources */,
 				68D59030136CB5F30064CEE5 /* License.txt in Resources */,
 				689859B1136CDC91001B4204 /* 0.png in Resources */,
 				689859B2136CDC91001B4204 /* 1.png in Resources */,

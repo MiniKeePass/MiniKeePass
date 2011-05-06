@@ -93,7 +93,7 @@
         
         // Store the password in the keychain
         NSError *error;
-        [SFHFKeychainUtils storeUsername:path andPassword:password forServiceName:@"net.fizzawizza.MobileKeePass" updateExisting:NO error:&error];
+        [SFHFKeychainUtils storeUsername:path andPassword:password forServiceName:@"net.fizzawizza.MobileKeePass" updateExisting:YES error:&error];
         
         [self.navigationController popToRootViewControllerAnimated:NO];
     } else if (databaseError == WRONG_PASSWORD) {

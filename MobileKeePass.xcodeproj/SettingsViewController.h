@@ -11,6 +11,7 @@
 
 @interface SettingsViewController : UITableViewController <PinViewControllerDelegate> {
     UISwitch *pinSwitch;
+    NSString *tempPin;
 }
 
 @end
