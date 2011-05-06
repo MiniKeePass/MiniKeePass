@@ -48,7 +48,28 @@
     return YES;
 }
 
+- (UIView*)findFirstResponder:(UIView*)parent {
+    if ([parent isFirstResponder]) {
+        return parent;
+    }
+    
+    for (UIView *child in parent.subviews) {
+        UIView *firstResponder = [self findFirstResponder:child];
+        if (firstResponder != nil) {
+            return firstResponder;
+        }
+    }
+    
+    return nil;
+}
+
 - (void)applicationWillResignActive:(UIApplication *)application {
+    // Resign the first responder to ensure the password entry isn't visible
+    UIView *firstResponder = [self findFirstResponder:window];
+    if (firstResponder != nil) {
+        [firstResponder resignFirstResponder];
+    }
+    
     // Save the database document
     [databaseDocument save];
     
