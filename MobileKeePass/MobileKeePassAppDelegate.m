@@ -111,6 +111,7 @@
     NSString* title = @"Canceling PIN entry will lock active database";
     
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:title delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Try Again", nil];
+    actionSheet.actionSheetStyle = UIActivityIndicatorViewStyleGray;
     [actionSheet showInView:window];
 }
 

@@ -33,7 +33,7 @@
     
     self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
 
-    UIImage *icon = [UIImage imageNamed:@"Icon"];
+    UIImage *icon = [UIImage imageNamed:@"icon"];
     UIView *iconView = [[UIView alloc] initWithFrame:CGRectMake(131, 20, icon.size.width,icon.size.height)];
     iconView.backgroundColor = [UIColor colorWithPatternImage:icon];
     [self.view addSubview:iconView];
@@ -41,9 +41,9 @@
     UIButton *cancelButton = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarStyleBlack target:self action:@selector(cancelButtonPressed:)];
 
     UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 0, 44)];
-    toolbar.tintColor = [UIColor colorWithRed:0.435f green:0.463f blue:0.514f alpha:1.0f];
-    
-    [toolbar setItems:[NSArray arrayWithObject:cancelButton]];
+    toolbar.barStyle = UIBarStyleBlack;
+    toolbar.translucent = YES;    
+    toolbar.items = [NSArray arrayWithObject:cancelButton];
     [cancelButton release];
 
     textField = [[UITextField alloc] initWithFrame:CGRectMake(320, 240, 0, 0)];
@@ -51,6 +51,7 @@
     textField.hidden = YES;
     textField.secureTextEntry = YES;
     textField.keyboardType = UIKeyboardTypeNumberPad;
+    textField.keyboardAppearance = UIKeyboardAppearanceAlert;
     textField.inputAccessoryView = toolbar;
     [toolbar release];
     
