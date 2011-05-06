@@ -15,11 +15,11 @@
 @synthesize label;
 @synthesize textField;
 
-- (id)initWithParent:(EntryViewController*)parent {
+- (id)initWithParent:(UITableView*)parent {
     self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
     if (self) {
         // Initialization code
-        entryViewController = parent;
+        tableView = parent;
         
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         
@@ -84,12 +84,10 @@
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)field {
-    [entryViewController setDirty];
-    
-    CGRect rect = [field convertRect:field.frame toView:entryViewController.tableView];
+    CGRect rect = [field convertRect:field.frame toView:tableView];
     CGFloat y = rect.origin.y - 12;
-    if (y != entryViewController.tableView.contentOffset.y) {
-        [entryViewController.tableView setContentOffset:CGPointMake(0.0, y) animated:YES];
+    if (y != tableView.contentOffset.y) {
+        [tableView setContentOffset:CGPointMake(0.0, y) animated:YES];
     }
 }
 

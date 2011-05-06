@@ -22,12 +22,8 @@
     CGFloat originalHeight;
 
     Entry *entry;
-    BOOL dirty;
 }
 
 @property (nonatomic, retain) Entry *entry;
-
-- (void)setDirty;
-- (void)backPressed:(id)sender;
 
 @end

@@ -18,21 +18,21 @@
 
     self.tableView.delaysContentTouches = YES;
     
-    titleCell = [[TextFieldCell alloc] initWithParent:self];
+    titleCell = [[TextFieldCell alloc] initWithParent:self.tableView];
     titleCell.label.text = @"Title";
     
-    urlCell = [[UrlFieldCell alloc] initWithParent:self];    
+    urlCell = [[UrlFieldCell alloc] initWithParent:self.tableView];    
     urlCell.label.text = @"URL";
     
-    usernameCell = [[TextFieldCell alloc] initWithParent:self];
+    usernameCell = [[TextFieldCell alloc] initWithParent:self.tableView];
     usernameCell.label.text = @"Username";
     usernameCell.textField.autocorrectionType = UITextAutocorrectionTypeNo;
     usernameCell.textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
     
-    passwordCell = [[PasswordFieldCell alloc] initWithParent:self];
+    passwordCell = [[PasswordFieldCell alloc] initWithParent:self.tableView];
     passwordCell.label.text = @"Password";
     
-    commentsCell = [[TextViewCell alloc] initWithParent:self];
+    commentsCell = [[TextViewCell alloc] initWithParent:self.tableView];
     
     // Replace the back button with our own so we can ask if they are sure
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:self action:@selector(backPressed:)];
@@ -54,6 +54,7 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
+    
     originalHeight = self.view.frame.size.height;
 }
 
@@ -66,17 +67,21 @@
     [super dealloc];
 }
 
-- (void)setDirty {
-    if (dirty) {
-        return;
-    }
-    
-    dirty = YES;
+BOOL stringsEqual(NSString *str1, NSString *str2) {
+    str1 = str1 == nil ? @"" : str1;
+    str2 = str2 == nil ? @"" : str2;
+    return [str1 isEqualToString:str2];
+}
+
+- (BOOL)isDirty {
+    return !(stringsEqual(entry._title, titleCell.textField.text) &&
+        stringsEqual(entry._url, urlCell.textField.text) &&
+        stringsEqual(entry._username, usernameCell.textField.text) &&
+        stringsEqual(entry._password, passwordCell.textField.text) &&
+        stringsEqual(entry._comment, commentsCell.textView.text));
 }
 
 - (void)save {
-    dirty = NO;
-    
     entry._title = titleCell.textField.text;
     entry._url = urlCell.textField.text;
     entry._username = usernameCell.textField.text;
@@ -88,7 +93,7 @@
 }
 
 - (void)backPressed:(id)sender {
-    if (dirty) {
+    if ([self isDirty]) {
         UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"Save Changes?" delegate:self cancelButtonTitle:nil destructiveButtonTitle:@"Discard" otherButtonTitles:@"Save", nil];
         [actionSheet showInView:self.view.window];
         [actionSheet release];

@@ -8,15 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
-@class EntryViewController;
-
 @interface TextViewCell : UITableViewCell <UITextViewDelegate> {
-    EntryViewController *entryViewController;
+    UITableView *tableView;
 	UITextView *textView;
 }
 
 @property (nonatomic, retain) UITextView *textView;
 
-- (id)initWithParent:(EntryViewController*)parent;
+- (id)initWithParent:(UITableView*)parent;
 
 @end
