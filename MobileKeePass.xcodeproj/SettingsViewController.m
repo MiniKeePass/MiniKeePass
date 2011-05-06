@@ -57,8 +57,6 @@
             cell.selectionStyle = UITableViewCellEditingStyleNone;
             
             [cell addSubview:pinSwitch];
-            [pinSwitch release];
-
             break;
             
         default:
