@@ -140,26 +140,6 @@
         [delegate pinViewController:self pinEntered:textField.text];
     }
 }
-    
-/*
-- (void)checkPin {
-    BOOL correctPin = NO;
-    
-    if ([delegate respondsToSelector:@selector(pinViewController:checkPin:)]) {
-        correctPin = [delegate pinViewController:self checkPin:textField.text];
-    }
-    
-    if (correctPin) {
-        [self dismissModalViewControllerAnimated:YES];
-    } else {
-        // Vibrate to signify they are a bad user
-        AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
-        
-        infoLabel.text = @"Incorrect PIN";
-        textField.text = @"";
-    }
-}
-*/
  
 - (void)cancelButtonPressed:(id)sender {
     if ([delegate respondsToSelector:@selector(pinViewControllerCancelButtonPressed:)]) {
