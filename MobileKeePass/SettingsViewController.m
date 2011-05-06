@@ -6,61 +6,116 @@
 //  Copyright 2011 Self. All rights reserved.
 //
 
+#import <AudioToolbox/AudioToolbox.h>
 #import "SettingsViewController.h"
-
+#import "SFHFKeychainUtils.h"
 
 @implementation SettingsViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
 - (void)dealloc
 {
+    [pinSwitch release];
     [super dealloc];
-}
-
-- (void)didReceiveMemoryWarning
-{
-    // Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
-    
-    // Release any cached data, images, etc that aren't in use.
 }
 
 #pragma mark - View lifecycle
 
-/*
-// Implement loadView to create a view hierarchy programmatically, without using a nib.
-- (void)loadView
-{
-}
-*/
-
-/*
-// Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-}
-*/
 
-- (void)viewDidUnload
-{
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
+    pinSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(200, 10, 0, 0)];
+    pinSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:@"pinEnabled"];
+    [pinSwitch addTarget:self action:@selector(togglePin:) forControlEvents:UIControlEventValueChanged];
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+#pragma mark - Table view data source
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    // Return YES for supported orientations
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+    // Return the number of sections.
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    // Return the number of rows in the section.
+    return 1;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *CellIdentifier = @"Cell";
+    
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell == nil) {
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+    }
+    switch (indexPath.section) {
+        case 0:
+            cell.textLabel.text = @"Enable PIN";
+            cell.selectionStyle = UITableViewCellEditingStyleNone;
+            
+            [cell addSubview:pinSwitch];
+            break;
+            
+        default:
+            break;
+    }
+    
+    
+    return cell;
+}
+
+- (void)togglePin:(id)sender {
+    if (pinSwitch.on) {
+        PinViewController* pinViewController = [[PinViewController alloc] initWithText:@"Set PIN"];
+        pinViewController.delegate = self;
+        [self presentModalViewController:pinViewController animated:YES];
+        [pinViewController release];
+    } else {
+        [SFHFKeychainUtils deleteItemForUsername:@"PIN" andServiceName:@"net.fizzawizza.MobileKeePass" error:nil];
+    }
+    
+    [[NSUserDefaults standardUserDefaults] setBool:pinSwitch.on forKey:@"pinEnabled"];
+}
+
+- (void)pinViewController:(PinViewController *)controller pinEntered:(NSString *)pin {        
+    if (tempPin == nil) {
+        tempPin = [pin copy];
+        controller.string = @"Confirm PIN";
+        [controller clearEntry];
+    } else if ([tempPin isEqualToString:pin]) {
+        NSError *error;
+        [SFHFKeychainUtils storeUsername:@"PIN" andPassword:pin forServiceName:@"net.fizzawizza.MobileKeePass" updateExisting:YES error:&error];
+        
+        [tempPin release];
+        tempPin = nil;
+
+        [controller dismissModalViewControllerAnimated:YES];
+    } else {
+        controller.string = @"PINs did not match. Try again";
+        AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+        
+        [tempPin release];
+        tempPin = nil;
+        
+        [controller clearEntry];
+    }
+}
+
+- (void)pinViewControllerCancelButtonPressed:(PinViewController *)controller {
+    [pinSwitch setOn:NO animated:YES];
+
+    [SFHFKeychainUtils deleteItemForUsername:@"PIN" andServiceName:@"net.fizzawizza.MobileKeePass" error:nil];
+    
+    NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
+    [standardUserDefaults setBool:NO forKey:@"pinEnabled"];
+    
+    [tempPin release];
+    tempPin = nil;
+
+    [controller dismissModalViewControllerAnimated:YES];
 }
 
 @end

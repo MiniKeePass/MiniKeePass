@@ -7,10 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "PinViewController.h"
 
-
-@interface SettingsViewController : UIViewController {
-    
+@interface SettingsViewController : UITableViewController <PinViewControllerDelegate> {
+    UISwitch *pinSwitch;
+    NSString *tempPin;
 }
 
 @end
