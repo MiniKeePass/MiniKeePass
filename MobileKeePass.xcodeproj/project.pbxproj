@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		523232A8136F128300692CEA /* DatabaseDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 523232A5136F128300692CEA /* DatabaseDocument.m */; };
 		523232A9136F128300692CEA /* PasswordEntryController.m in Sources */ = {isa = PBXBuildFile; fileRef = 523232A7136F128300692CEA /* PasswordEntryController.m */; };
+		523FBD6413736834004575FB /* icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 523FBD6213736834004575FB /* icon@2x.png */; };
+		523FBD7D1373C05E004575FB /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 523FBD7C1373C05E004575FB /* icon.png */; };
 		52644C93137088E800A58D92 /* PinViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52644C92137088E800A58D92 /* PinViewController.m */; };
 		52644C971370915400A58D92 /* box.png in Resources */ = {isa = PBXBuildFile; fileRef = 52644C951370915400A58D92 /* box.png */; };
 		52644C981370915400A58D92 /* box@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52644C961370915400A58D92 /* box@2x.png */; };
@@ -98,7 +100,7 @@
 		68D59014136CB5CB0064CEE5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 68D59012136CB5CB0064CEE5 /* InfoPlist.strings */; };
 		68D59017136CB5CB0064CEE5 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 68D59016136CB5CB0064CEE5 /* main.m */; };
 		68D5901A136CB5CB0064CEE5 /* MobileKeePassAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 68D59019136CB5CB0064CEE5 /* MobileKeePassAppDelegate.m */; };
-		68D5902C136CB5F30064CEE5 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 68D59023136CB5F30064CEE5 /* Icon.png */; };
+		68D5902C136CB5F30064CEE5 /* OldIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 68D59023136CB5F30064CEE5 /* OldIcon.png */; };
 		68D5902D136CB5F30064CEE5 /* ArcFour.m in Sources */ = {isa = PBXBuildFile; fileRef = 68D59026136CB5F30064CEE5 /* ArcFour.m */; };
 		68D5902E136CB5F30064CEE5 /* Database.m in Sources */ = {isa = PBXBuildFile; fileRef = 68D59028136CB5F30064CEE5 /* Database.m */; };
 		68D5902F136CB5F30064CEE5 /* Kdb3.m in Sources */ = {isa = PBXBuildFile; fileRef = 68D5902A136CB5F30064CEE5 /* Kdb3.m */; };
@@ -111,6 +113,8 @@
 		523232A5136F128300692CEA /* DatabaseDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DatabaseDocument.m; sourceTree = "<group>"; };
 		523232A6136F128300692CEA /* PasswordEntryController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasswordEntryController.h; sourceTree = "<group>"; };
 		523232A7136F128300692CEA /* PasswordEntryController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PasswordEntryController.m; sourceTree = "<group>"; };
+		523FBD6213736834004575FB /* icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon@2x.png"; sourceTree = "<group>"; };
+		523FBD7C1373C05E004575FB /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
 		52644C91137088E800A58D92 /* PinViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PinViewController.h; sourceTree = "<group>"; };
 		52644C92137088E800A58D92 /* PinViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PinViewController.m; sourceTree = "<group>"; };
 		52644C951370915400A58D92 /* box.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = box.png; sourceTree = "<group>"; };
@@ -214,7 +218,7 @@
 		68D59016136CB5CB0064CEE5 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		68D59018136CB5CB0064CEE5 /* MobileKeePassAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MobileKeePassAppDelegate.h; sourceTree = "<group>"; };
 		68D59019136CB5CB0064CEE5 /* MobileKeePassAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MobileKeePassAppDelegate.m; sourceTree = "<group>"; };
-		68D59023136CB5F30064CEE5 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
+		68D59023136CB5F30064CEE5 /* OldIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = OldIcon.png; sourceTree = "<group>"; };
 		68D59025136CB5F30064CEE5 /* ArcFour.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArcFour.h; sourceTree = "<group>"; };
 		68D59026136CB5F30064CEE5 /* ArcFour.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArcFour.m; sourceTree = "<group>"; };
 		68D59027136CB5F30064CEE5 /* Database.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Database.h; sourceTree = "<group>"; };
@@ -422,8 +426,10 @@
 		68D5903C136CB8300064CEE5 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				523FBD7C1373C05E004575FB /* icon.png */,
+				523FBD6213736834004575FB /* icon@2x.png */,
 				68985969136CDC91001B4204 /* images */,
-				68D59023136CB5F30064CEE5 /* Icon.png */,
+				68D59023136CB5F30064CEE5 /* OldIcon.png */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -479,7 +485,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				68D59014136CB5CB0064CEE5 /* InfoPlist.strings in Resources */,
-				68D5902C136CB5F30064CEE5 /* Icon.png in Resources */,
+				68D5902C136CB5F30064CEE5 /* OldIcon.png in Resources */,
 				68D59030136CB5F30064CEE5 /* License.txt in Resources */,
 				689859B1136CDC91001B4204 /* 0.png in Resources */,
 				689859B2136CDC91001B4204 /* 1.png in Resources */,
@@ -553,6 +559,8 @@
 				688E68F5136F761500004216 /* Settings.bundle in Resources */,
 				52644C971370915400A58D92 /* box.png in Resources */,
 				52644C981370915400A58D92 /* box@2x.png in Resources */,
+				523FBD6413736834004575FB /* icon@2x.png in Resources */,
+				523FBD7D1373C05E004575FB /* icon.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
