@@ -8,8 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
+@class EntryViewController;
+
 @interface TextFieldCell : UITableViewCell <UITextFieldDelegate, UIActionSheetDelegate> {
-    UITableView *parentTableView;
+    EntryViewController *entryViewController;
     UILabel *label;
     UITextField *textField;
     UIGestureRecognizer *tapGesture;
@@ -18,7 +20,7 @@
 @property (nonatomic, retain) UILabel *label;
 @property (nonatomic, retain) UITextField *textField;
 
-- (id)initWithParent:(UITableView*)parent;
+- (id)initWithParent:(EntryViewController*)parent;
 - (void)tapPressed;
 
 @end

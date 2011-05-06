@@ -13,7 +13,7 @@
 #import "PasswordFieldCell.h"
 #import "Database.h"
 
-@interface EntryViewController : UITableViewController <UITextFieldDelegate, UITextViewDelegate> {
+@interface EntryViewController : UITableViewController <UITextFieldDelegate, UITextViewDelegate, UIActionSheetDelegate> {
     TextFieldCell *titleCell;
     UrlFieldCell *urlCell;
     TextFieldCell *usernameCell;
@@ -22,11 +22,12 @@
     CGFloat originalHeight;
 
     Entry *entry;
+    BOOL dirty;
 }
 
 @property (nonatomic, retain) Entry *entry;
 
-- (void)cancelPressed:(id)sender;
-- (void)savePressed:(id)sender;
+- (void)setDirty;
+- (void)backPressed:(id)sender;
 
 @end

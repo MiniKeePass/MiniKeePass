@@ -18,31 +18,26 @@
 
     self.tableView.delaysContentTouches = YES;
     
-    titleCell = [[TextFieldCell alloc] initWithParent:self.tableView];
+    titleCell = [[TextFieldCell alloc] initWithParent:self];
     titleCell.label.text = @"Title";
     
-    urlCell = [[UrlFieldCell alloc] initWithParent:self.tableView];    urlCell.label.text = @"URL";
+    urlCell = [[UrlFieldCell alloc] initWithParent:self];    
+    urlCell.label.text = @"URL";
     
-    usernameCell = [[TextFieldCell alloc] initWithParent:self.tableView];
+    usernameCell = [[TextFieldCell alloc] initWithParent:self];
     usernameCell.label.text = @"Username";
     usernameCell.textField.autocorrectionType = UITextAutocorrectionTypeNo;
     usernameCell.textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
     
-    passwordCell = [[PasswordFieldCell alloc] initWithParent:self.tableView];
+    passwordCell = [[PasswordFieldCell alloc] initWithParent:self];
     passwordCell.label.text = @"Password";
     
-    commentsCell = [[TextViewCell alloc] initWithParent:self.tableView];
+    commentsCell = [[TextViewCell alloc] initWithParent:self];
     
-    // Hide the back button and replace it with the cancel/save buttons
-    self.navigationItem.hidesBackButton = YES;
-
-    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStyleBordered target:self action:@selector(cancelPressed:)];
-    self.navigationItem.leftBarButtonItem = cancelButton;
-    [cancelButton release];
-
-    UIBarButtonItem *saveButton = [[UIBarButtonItem alloc] initWithTitle:@"Save" style:UIBarButtonItemStyleDone target:self action:@selector(savePressed:)];
-    self.navigationItem.rightBarButtonItem = saveButton;
-    [saveButton release];
+    // Replace the back button with our own so we can ask if they are sure
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:self action:@selector(backPressed:)];
+    self.navigationItem.leftBarButtonItem = backButton;
+    [backButton release];
     
     // Add listeners to the keyboard
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWasShown:) name:UIKeyboardDidShowNotification object:nil];
@@ -71,11 +66,17 @@
     [super dealloc];
 }
 
-- (void)cancelPressed:(id)sender {
-    [self.navigationController popViewControllerAnimated:YES];
+- (void)setDirty {
+    if (dirty) {
+        return;
+    }
+    
+    dirty = YES;
 }
 
-- (void)savePressed:(id)sender {
+- (void)save {
+    dirty = NO;
+    
     entry._title = titleCell.textField.text;
     entry._url = urlCell.textField.text;
     entry._username = usernameCell.textField.text;
@@ -84,6 +85,22 @@
     
     MobileKeePassAppDelegate *appDelegate = (MobileKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
     appDelegate.databaseDocument.dirty = YES;
+}
+
+- (void)backPressed:(id)sender {
+    if (dirty) {
+        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"Save Changes?" delegate:self cancelButtonTitle:nil destructiveButtonTitle:@"Discard" otherButtonTitles:@"Save", nil];
+        [actionSheet showInView:self.view.window];
+        [actionSheet release];
+    } else {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+}
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex != actionSheet.destructiveButtonIndex) {
+        [self save];
+    }
     
     [self.navigationController popViewControllerAnimated:YES];
 }

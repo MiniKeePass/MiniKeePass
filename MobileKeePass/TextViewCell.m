@@ -7,16 +7,17 @@
 //
 
 #import "TextViewCell.h"
+#import "EntryViewController.h"
 
 @implementation TextViewCell
 
 @synthesize textView;
 
-- (id)initWithParent:(UITableView*)parent {
+- (id)initWithParent:(EntryViewController*)parent {
     self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
     if (self) {
         // Initialization code
-        parentTableView = parent;
+        entryViewController = parent;
         
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         
@@ -43,10 +44,12 @@
 }
 
 - (void)textViewDidBeginEditing:(UITextView *)view {
-    CGRect rect = [view convertRect:view.frame toView:parentTableView];
+    [entryViewController setDirty];
+    
+    CGRect rect = [view convertRect:view.frame toView:entryViewController.tableView];
     CGFloat y = rect.origin.y - 12;
-    if (y != parentTableView.contentOffset.y) {
-        [parentTableView setContentOffset:CGPointMake(0.0, y) animated:YES];
+    if (y != entryViewController.tableView.contentOffset.y) {
+        [entryViewController.tableView setContentOffset:CGPointMake(0.0, y) animated:YES];
     }
 }
 

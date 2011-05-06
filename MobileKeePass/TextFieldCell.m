@@ -8,17 +8,18 @@
 
 #import "TextFieldCell.h"
 #import <UIKit/UIPasteboard.h>
+#import "EntryViewController.h"
 
 @implementation TextFieldCell
 
 @synthesize label;
 @synthesize textField;
 
-- (id)initWithParent:(UITableView*)parent {
+- (id)initWithParent:(EntryViewController*)parent {
     self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
     if (self) {
         // Initialization code
-        parentTableView = parent;
+        entryViewController = parent;
         
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         
@@ -83,10 +84,12 @@
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)field {
-    CGRect rect = [field convertRect:field.frame toView:parentTableView];
+    [entryViewController setDirty];
+    
+    CGRect rect = [field convertRect:field.frame toView:entryViewController.tableView];
     CGFloat y = rect.origin.y - 12;
-    if (y != parentTableView.contentOffset.y) {
-        [parentTableView setContentOffset:CGPointMake(0.0, y) animated:YES];
+    if (y != entryViewController.tableView.contentOffset.y) {
+        [entryViewController.tableView setContentOffset:CGPointMake(0.0, y) animated:YES];
     }
 }
 

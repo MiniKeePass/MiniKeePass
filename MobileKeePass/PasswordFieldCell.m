@@ -10,7 +10,7 @@
 
 @implementation PasswordFieldCell
 
-- (id)initWithParent:(UITableView *)parent {
+- (id)initWithParent:(EntryViewController*)parent {
     self = [super initWithParent:parent];
     if (self) {
         // Initialization code
