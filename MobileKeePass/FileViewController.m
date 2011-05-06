@@ -8,7 +8,7 @@
 
 #import "FileViewController.h"
 #import "MobileKeePassAppDelegate.h"
-#import "Database.h"
+#import "SFHFKeychainUtils.h"
 
 @implementation FileViewController
 
@@ -84,15 +84,19 @@
     
     // Load the database
     DatabaseDocument *dd = [[DatabaseDocument alloc] init];
-    enum DatabaseError error = [dd open:path password:password];
-    if (error == NO_ERROR) {
+    enum DatabaseError databaseError = [dd open:path password:password];
+    if (databaseError == NO_ERROR) {
         MobileKeePassAppDelegate *appDelegate = (MobileKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
         appDelegate.databaseDocument = dd;
         
         [[NSUserDefaults standardUserDefaults] setValue:path forKey:@"lastFilename"];
         
+        // Store the password in the keychain
+        NSError *error;
+        [SFHFKeychainUtils storeUsername:path andPassword:password forServiceName:@"net.fizzawizza.MobileKeePass" updateExisting:NO error:&error];
+        
         [self.navigationController popToRootViewControllerAnimated:NO];
-    } else if (error == WRONG_PASSWORD) {
+    } else if (databaseError == WRONG_PASSWORD) {
         shouldDismiss = NO;
         controller.statusLabel.text = @"Wrong Password";
     } else {

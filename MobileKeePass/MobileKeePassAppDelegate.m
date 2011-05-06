@@ -9,8 +9,9 @@
 #import <AudioToolbox/AudioToolbox.h>
 #import "MobileKeePassAppDelegate.h"
 #import "RootViewController.h"
+#import "SFHFKeychainUtils.h"
 
-#define DELAY 0
+#define TIME_INTERVAL_BEFORE_PIN 5
 
 @implementation MobileKeePassAppDelegate
 
@@ -47,29 +48,33 @@
     return YES;
 }
 
-- (void)applicationWillEnterForeground:(UIApplication *)application {    
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"enablePin"]) {
-        NSDate *exitTime = [[NSUserDefaults standardUserDefaults] valueForKey:@"exitTime"];
-        NSDate *cutoffTime = [exitTime dateByAddingTimeInterval:DELAY];
-        
-        NSDate *currentTime = [NSDate date];
-        NSDate *earlierDate = [currentTime earlierDate:cutoffTime];
-        
-        if ([earlierDate isEqualToDate:cutoffTime]) {
-            // Present the pin view
-            PinViewController *pinViewController = [[PinViewController alloc] init];
-            pinViewController.delegate = self;
-            [window.rootViewController presentModalViewController:pinViewController animated:YES];
-            [pinViewController release];
-        }
-    }
-}
-
-- (void)applicationDidEnterBackground:(UIApplication *)application {
+- (void)applicationWillResignActive:(UIApplication *)application {
+    // Save the database document
     [databaseDocument save];
     
+    // Cleanup the database document
+    [databaseDocument release];
+    databaseDocument = nil;
+    
+    // Store the current time as when the application exited
     NSDate *currentTime = [NSDate date];
     [[NSUserDefaults standardUserDefaults] setValue:currentTime forKey:@"exitTime"];
+}
+
+- (void)applicationDidBecomeActive:(UIApplication *)application {
+    // Get the time when the application last exited
+    NSDate *exitTime = [[NSUserDefaults standardUserDefaults] valueForKey:@"exitTime"];
+    if (exitTime == nil) {
+        return;
+    }
+    NSTimeInterval timeInterval = [exitTime timeIntervalSinceNow];
+    if (timeInterval < -TIME_INTERVAL_BEFORE_PIN) {
+        // Present the pin view
+        PinViewController *pinViewController = [[PinViewController alloc] init];
+        pinViewController.delegate = self;
+        [window.rootViewController presentModalViewController:pinViewController animated:YES];
+        [pinViewController release];
+    }
 }
 
 - (void)dealloc {
@@ -93,10 +98,13 @@
 }
 
 - (void)pinViewController:(PinViewController *)controller pinEntered:(NSString *)pin {
-    NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
+    NSString *validPin = [SFHFKeychainUtils getPasswordForUsername:@"PIN" andServiceName:@"net.fizzawizza.MobileKeePass" error:&error];
+    if (error != nil || validPin == nil) {
+        // TODO error/no pin, close database
+        return;
+    }
     
-    NSString *currentPin = [standardUserDefaults valueForKey:@"pin"];
-    if ([pin isEqualToString:currentPin]) {
+    if ([pin isEqualToString:validPin]) {
         [controller dismissModalViewControllerAnimated:YES];
     } else {
         // Vibrate to signify they are a bad user
@@ -119,40 +127,25 @@
     // Get the last filename
     NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
     NSString *lastFilename = [userDefaults stringForKey:@"lastFilename"];
-    
-    if (lastFilename != nil) {
-        PasswordEntryController *passwordEntryController = [[PasswordEntryController alloc] init];
-        passwordEntryController.delegate = self;
-        
-        [window.rootViewController presentModalViewController:passwordEntryController animated:YES];
-        
-        [passwordEntryController release];
+    if (lastFilename == nil) {
+        return;
     }
-}
-
-- (BOOL)passwordEntryController:(PasswordEntryController*)controller passwordEntered:(NSString*)password {
-    BOOL shouldDismiss = YES;
     
-    // Get the last filename
-    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
-    NSString *lastFilename = [userDefaults stringForKey:@"lastFilename"];
+    // Load the password from the keychain
+    NSError *error;
+    NSString *password = [SFHFKeychainUtils getPasswordForUsername:lastFilename andServiceName:@"net.fizzawizza.MobileKeePass" error:&error];
+    if (error != nil || password == nil) {
+        return;
+    }
     
     // Load the database
     DatabaseDocument *dd = [[DatabaseDocument alloc] init];
-    enum DatabaseError error = [dd open:lastFilename password:password];
-    if (error == NO_ERROR) {
+    enum DatabaseError databaseError = [dd open:lastFilename password:password];
+    if (databaseError == NO_ERROR) {
         self.databaseDocument = dd;
-    } else if (error == WRONG_PASSWORD) {
-        shouldDismiss = NO;
-        controller.statusLabel.text = @"Wrong Password";
-    } else {
-        shouldDismiss = NO;
-        controller.statusLabel.text = @"Failed to open database";
     }
     
     [dd release];
-    
-    return shouldDismiss;
 }
 
 -(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {

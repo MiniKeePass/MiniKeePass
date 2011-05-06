@@ -19,6 +19,8 @@
 		52E64B631371AA5E00049499 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52E64B621371AA5E00049499 /* SettingsViewController.m */; };
 		6813262E136F7BA7004F4864 /* UrlFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6813262D136F7BA7004F4864 /* UrlFieldCell.m */; };
 		68132639136F8B79004F4864 /* PasswordFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68132638136F8B79004F4864 /* PasswordFieldCell.m */; };
+		687366EC1373979A0053CCA3 /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 687366EB1373979A0053CCA3 /* SFHFKeychainUtils.m */; };
+		687366EE137399360053CCA3 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 687366ED137399360053CCA3 /* Security.framework */; };
 		688E68F5136F761500004216 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 688E68F4136F761500004216 /* Settings.bundle */; };
 		689859B1136CDC91001B4204 /* 0.png in Resources */ = {isa = PBXBuildFile; fileRef = 6898596A136CDC91001B4204 /* 0.png */; };
 		689859B2136CDC91001B4204 /* 1.png in Resources */ = {isa = PBXBuildFile; fileRef = 6898596B136CDC91001B4204 /* 1.png */; };
@@ -128,6 +130,9 @@
 		6813262D136F7BA7004F4864 /* UrlFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UrlFieldCell.m; sourceTree = "<group>"; };
 		68132637136F8B79004F4864 /* PasswordFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasswordFieldCell.h; sourceTree = "<group>"; };
 		68132638136F8B79004F4864 /* PasswordFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PasswordFieldCell.m; sourceTree = "<group>"; };
+		687366EA1373979A0053CCA3 /* SFHFKeychainUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFHFKeychainUtils.h; sourceTree = "<group>"; };
+		687366EB1373979A0053CCA3 /* SFHFKeychainUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFHFKeychainUtils.m; sourceTree = "<group>"; };
+		687366ED137399360053CCA3 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		688E68F4136F761500004216 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		6898596A136CDC91001B4204 /* 0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 0.png; sourceTree = "<group>"; };
 		6898596B136CDC91001B4204 /* 1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 1.png; sourceTree = "<group>"; };
@@ -238,6 +243,7 @@
 				68D5900A136CB5CB0064CEE5 /* UIKit.framework in Frameworks */,
 				68D5900C136CB5CB0064CEE5 /* Foundation.framework in Frameworks */,
 				68D5900E136CB5CB0064CEE5 /* CoreGraphics.framework in Frameworks */,
+				687366EE137399360053CCA3 /* Security.framework in Frameworks */,
 				52B36F851370A46E00C19BF8 /* AudioToolbox.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -258,6 +264,15 @@
 				6813262D136F7BA7004F4864 /* UrlFieldCell.m */,
 			);
 			name = Cells;
+			sourceTree = "<group>";
+		};
+		687366E91373979A0053CCA3 /* Security */ = {
+			isa = PBXGroup;
+			children = (
+				687366EA1373979A0053CCA3 /* SFHFKeychainUtils.h */,
+				687366EB1373979A0053CCA3 /* SFHFKeychainUtils.m */,
+			);
+			path = Security;
 			sourceTree = "<group>";
 		};
 		68985969136CDC91001B4204 /* images */ = {
@@ -343,6 +358,7 @@
 			children = (
 				68D5900F136CB5CB0064CEE5 /* MobileKeePass */,
 				68D59024136CB5F30064CEE5 /* KeePass */,
+				687366E91373979A0053CCA3 /* Security */,
 				68D5903C136CB8300064CEE5 /* Resources */,
 				68D59008136CB5CB0064CEE5 /* Frameworks */,
 				68D59006136CB5CB0064CEE5 /* Products */,
@@ -360,10 +376,11 @@
 		68D59008136CB5CB0064CEE5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				52B36F841370A46E00C19BF8 /* AudioToolbox.framework */,
-				68D59009136CB5CB0064CEE5 /* UIKit.framework */,
 				68D5900B136CB5CB0064CEE5 /* Foundation.framework */,
 				68D5900D136CB5CB0064CEE5 /* CoreGraphics.framework */,
+				68D59009136CB5CB0064CEE5 /* UIKit.framework */,
+				52B36F841370A46E00C19BF8 /* AudioToolbox.framework */,
+				687366ED137399360053CCA3 /* Security.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -589,6 +606,7 @@
 				52644C93137088E800A58D92 /* PinViewController.m in Sources */,
 				52644C9B1370954700A58D92 /* PinTextField.m in Sources */,
 				52E64B631371AA5E00049499 /* SettingsViewController.m in Sources */,
+				687366EC1373979A0053CCA3 /* SFHFKeychainUtils.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
