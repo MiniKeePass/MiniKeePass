@@ -13,6 +13,6 @@
     Group *group;
 }
 
-@property (nonatomic, retain) Group *group;
+@property (nonatomic, assign) Group *group;
 
 @end

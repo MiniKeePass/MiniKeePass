@@ -95,7 +95,6 @@
 		689EB6A0136DB4BF00C8DA1E /* TextFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 689EB69F136DB4BF00C8DA1E /* TextFieldCell.m */; };
 		689EB6A3136DC24C00C8DA1E /* EntryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 689EB6A2136DC24C00C8DA1E /* EntryViewController.m */; };
 		689EB6A6136DC2B800C8DA1E /* FileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 689EB6A5136DC2B800C8DA1E /* FileViewController.m */; };
-		689EB6B1136DC54700C8DA1E /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 689EB6B0136DC54700C8DA1E /* RootViewController.m */; };
 		68D5900A136CB5CB0064CEE5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68D59009136CB5CB0064CEE5 /* UIKit.framework */; };
 		68D5900C136CB5CB0064CEE5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68D5900B136CB5CB0064CEE5 /* Foundation.framework */; };
 		68D5900E136CB5CB0064CEE5 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68D5900D136CB5CB0064CEE5 /* CoreGraphics.framework */; };
@@ -210,8 +209,6 @@
 		689EB6A2136DC24C00C8DA1E /* EntryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EntryViewController.m; sourceTree = "<group>"; };
 		689EB6A4136DC2B700C8DA1E /* FileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileViewController.h; sourceTree = "<group>"; };
 		689EB6A5136DC2B800C8DA1E /* FileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileViewController.m; sourceTree = "<group>"; };
-		689EB6AF136DC54700C8DA1E /* RootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
-		689EB6B0136DC54700C8DA1E /* RootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
 		68D59005136CB5CB0064CEE5 /* MobileKeePass.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MobileKeePass.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		68D59009136CB5CB0064CEE5 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		68D5900B136CB5CB0064CEE5 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -402,8 +399,6 @@
 				52644C9A1370954700A58D92 /* PinTextField.m */,
 				52644C91137088E800A58D92 /* PinViewController.h */,
 				52644C92137088E800A58D92 /* PinViewController.m */,
-				689EB6AF136DC54700C8DA1E /* RootViewController.h */,
-				689EB6B0136DC54700C8DA1E /* RootViewController.m */,
 				52F42CF213747BE10074E5D5 /* SettingsViewController.h */,
 				52F42CF313747BE10074E5D5 /* SettingsViewController.m */,
 				525B6515137062F7001883BB /* Cells */,
@@ -594,7 +589,6 @@
 				689EB6A0136DB4BF00C8DA1E /* TextFieldCell.m in Sources */,
 				689EB6A3136DC24C00C8DA1E /* EntryViewController.m in Sources */,
 				689EB6A6136DC2B800C8DA1E /* FileViewController.m in Sources */,
-				689EB6B1136DC54700C8DA1E /* RootViewController.m in Sources */,
 				523232A8136F128300692CEA /* DatabaseDocument.m in Sources */,
 				523232A9136F128300692CEA /* PasswordEntryController.m in Sources */,
 				6813262E136F7BA7004F4864 /* UrlFieldCell.m in Sources */,

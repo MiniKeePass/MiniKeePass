@@ -8,7 +8,8 @@
 
 #import <AudioToolbox/AudioToolbox.h>
 #import "MobileKeePassAppDelegate.h"
-#import "RootViewController.h"
+#import "FileViewController.h"
+#import "SettingsViewController.h"
 #import "SFHFKeychainUtils.h"
 
 #define TIME_INTERVAL_BEFORE_PIN 0
@@ -17,7 +18,7 @@
 
 @synthesize databaseDocument;
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {    
     // Initialize the images array
     int i;
     for (i = 0; i < 70; i++) {
@@ -32,12 +33,20 @@
     [userDefaults registerDefaults:defaults];
     
     // Create the root view
-    RootViewController *rootViewController = [[RootViewController alloc] initWithStyle:UITableViewStylePlain];
+    groupViewController = [[GroupViewController alloc] initWithStyle:UITableViewStylePlain];
+    groupViewController.title = @"KeePass";
+    
+    UIBarButtonItem *openButton = [[UIBarButtonItem alloc] initWithTitle:@"Open" style:UIBarButtonItemStyleBordered target:self action:@selector(openPressed:)];
+    groupViewController.navigationItem.rightBarButtonItem = openButton;
+    [openButton release];
+    
+    UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithTitle:@"Settings" style:UIBarButtonItemStyleBordered target:self action:@selector(settingsPressed:)];
+    groupViewController.navigationItem.leftBarButtonItem = settingsButton;
+    [settingsButton release];
     
     // Create the navigation controller
-    navigationController = [[UINavigationController alloc] initWithRootViewController:rootViewController];
-    [rootViewController release];
-    
+    navigationController = [[UINavigationController alloc] initWithRootViewController:groupViewController];
+
     // Create the window
     window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     window.rootViewController = navigationController;
@@ -46,6 +55,18 @@
     [self openLastDatabase];
     
     return YES;
+}
+
+- (void)dealloc {
+    int i;
+    for (i = 0; i < 70; i++) {
+        [images[i] release];
+    }
+    [databaseDocument release];
+    [groupViewController release];
+    [navigationController release];
+    [window release];
+    [super dealloc];
 }
 
 - (UIView*)findFirstResponder:(UIView*)parent {
@@ -100,15 +121,13 @@
     }
 }
 
-- (void)dealloc {
-    int i;
-    for (i = 0; i < 70; i++) {
-        [images[i] release];
-    }
-    [databaseDocument release];
-    [navigationController release];
-    [window release];
-    [super dealloc];
+- (DatabaseDocument*)databaseDocument {
+    return databaseDocument;
+}
+
+- (void)setDatabaseDocument:(DatabaseDocument *)newDatabaseDocument {
+    databaseDocument = [newDatabaseDocument retain];
+    groupViewController.group = [databaseDocument.database rootGroup];
 }
 
 - (UIImage*)loadImage:(int)index {
@@ -142,10 +161,16 @@
 - (void)pinViewControllerCancelButtonPressed:(PinViewController *)controller {
     NSString* title = @"Canceling PIN entry will lock active database";
     
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:title delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Try Again", nil];
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:title delegate:self cancelButtonTitle:@"Close Database" destructiveButtonTitle:nil otherButtonTitles:@"Try Again", nil];
     actionSheet.actionSheetStyle = UIActivityIndicatorViewStyleGray;
     [actionSheet showInView:window];
     [actionSheet release];
+}
+
+- (void)closeDatabase {
+    [navigationController popToRootViewControllerAnimated:NO];
+
+    groupViewController.group = nil;
 }
 
 - (void)openLastDatabase {
@@ -175,9 +200,25 @@
 
 -(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (buttonIndex == actionSheet.cancelButtonIndex) {
-        //TODO close the active DB
+        [self closeDatabase];
+        [[NSUserDefaults standardUserDefaults] setValue:@"" forKey:@"lastFilename"];
         [window.rootViewController dismissModalViewControllerAnimated:YES];        
     }
+}
+
+- (void)openPressed:(id)sender {
+    FileViewController *fileViewController = [[FileViewController alloc] initWithStyle:UITableViewStylePlain];
+    
+    // Push the FileViewController onto the view stack
+    [navigationController pushViewController:fileViewController animated:YES];
+    [fileViewController release];
+}
+
+- (void)settingsPressed:(id)sender {
+    SettingsViewController *settingsViewController = [[SettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
+    
+    [navigationController pushViewController:settingsViewController animated:YES];
+    [settingsViewController release];
 }
 
 @end

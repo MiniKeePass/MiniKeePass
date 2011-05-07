@@ -12,7 +12,19 @@
 
 @implementation GroupViewController
 
-@synthesize group;
+- (void)dealloc {
+    [group release];
+    [super dealloc];
+}
+
+- (Group*)group {
+    return group;
+}
+
+- (void)setGroup:(Group *)newGroup {
+    group = [newGroup retain];
+    [self.tableView reloadData];
+}
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;

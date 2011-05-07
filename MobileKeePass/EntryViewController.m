@@ -59,11 +59,14 @@
 }
 
 - (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
     [titleCell release];
     [urlCell release];
     [usernameCell release];
     [passwordCell release];
     [commentsCell release];
+    [entry release];
     [super dealloc];
 }
 
