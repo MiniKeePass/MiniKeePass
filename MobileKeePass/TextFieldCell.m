@@ -19,7 +19,7 @@
     self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
     if (self) {
         // Initialization code
-        tableView = parent;
+        tableView = [parent retain];
         
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         
@@ -47,6 +47,7 @@
     [label release];
     [textField release];
     [tapGesture release];
+    [tableView release];
     [super dealloc];
 }
 

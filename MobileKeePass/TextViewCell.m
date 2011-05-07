@@ -16,7 +16,7 @@
     self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
     if (self) {
         // Initialization code
-        tableView = parent;
+        tableView = [parent retain];
         
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         
@@ -29,17 +29,18 @@
     return self;
 }
 
+- (void)dealloc {
+    [textView release];
+    [tableView release];
+    [super dealloc];
+}
+
 - (void)layoutSubviews {
     [super layoutSubviews];
     
     CGRect rect = self.contentView.frame;
     
     textView.frame = CGRectMake(rect.origin.x + 3, rect.origin.y + 3, rect.size.width - 6, rect.size.height - 6);
-}
-
-- (void)dealloc {
-    [textView release];
-    [super dealloc];
 }
 
 - (void)textViewDidBeginEditing:(UITextView *)view {    
