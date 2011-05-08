@@ -23,13 +23,15 @@
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
+        self.backgroundColor = [UIColor groupTableViewBackgroundColor];
+        
         UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(8, 0, 304, 400)];
         label.font = [UIFont systemFontOfSize:14];
         label.textColor = [UIColor darkTextColor];
         label.backgroundColor = [UIColor clearColor];
         label.numberOfLines = 0;
         label.lineBreakMode = UILineBreakModeWordWrap;
-        label.text = @"You currently do not have any KeePass files available for MobileKeePass.\n\n"
+        label.text = @"You do not have any KeePass files available for MobileKeePass.\n\n"
             @"Follow these steps to add some files using iTunes:\n"
             @" * Connect your device to your computer and wait for iTunes to launch\n"
             @" * When iTunes appears, select your device and click the Apps tab\n"

@@ -17,8 +17,11 @@
 
 #import <Foundation/Foundation.h>
 #import "PasswordEntryController.h"
+#import "OpenHelpView.h"
 
 @interface OpenViewController : UITableViewController <PasswordEntryControllerDelegate> {
+    OpenHelpView *openHelpView;
+    
     NSMutableArray *files;
     NSString *selectedFile;
 }

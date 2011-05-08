@@ -16,7 +16,6 @@
  */
 
 #import "OpenViewController.h"
-#import "OpenHelpView.h"
 #import "MobileKeePassAppDelegate.h"
 #import "SFHFKeychainUtils.h"
 
@@ -31,17 +30,33 @@
 }
 
 - (void)displayHelpPage {
-    OpenHelpView *openHelpView = [[OpenHelpView alloc] init];
-    [self.view addSubview:openHelpView];
-    [openHelpView release];
+    if (openHelpView == nil) {
+        openHelpView = [[OpenHelpView alloc] initWithFrame:self.view.frame];
+    }
     
-    self.tableView.backgroundColor = [UIColor groupTableViewBackgroundColor];
+    [self.view addSubview:openHelpView];
+    
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.scrollEnabled = NO;
+    
+    self.navigationItem.rightBarButtonItem = nil;
+}
+
+- (void)hideHelpPage {
+    if (openHelpView != nil) {
+        [openHelpView removeFromSuperview];
+    }
+    
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+    self.tableView.scrollEnabled = YES;
+    
+    self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    
+    [files release];
     
     // Get the document's directory
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
@@ -51,15 +66,11 @@
     NSArray *filenames = [dirContents filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"self ENDSWITH '.kdb'"]];
     files = [[NSMutableArray arrayWithArray:filenames] retain];
     
-    // Show the help view if there are no files
-    if ([files count] == 0) {
-        [self displayHelpPage];
-    } else {
-        self.navigationItem.rightBarButtonItem = self.editButtonItem;
-    }
+    [self.tableView reloadData];
 }
 
 - (void)dealloc {
+    [openHelpView release];
     [files release];
     [selectedFile release];
     [super dealloc];
@@ -70,7 +81,16 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [files count];
+    int n = [files count];
+    
+    // Show the help view if there are no files
+    if (n == 0) {
+        [self displayHelpPage];
+    } else {
+        [self hideHelpPage];
+    }
+    
+    return n;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
