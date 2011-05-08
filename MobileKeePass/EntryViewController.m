@@ -53,8 +53,10 @@
     [super viewWillAppear:animated];
     
     // Add listeners to the keyboard
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWasShown:) name:UIKeyboardDidShowNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillBeHidden:) name:UIKeyboardWillHideNotification object:nil];
+    NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+    [notificationCenter addObserver:self selector:@selector(keyboardWasShown:) name:UIKeyboardDidShowNotification object:nil];
+    [notificationCenter addObserver:self selector:@selector(keyboardWillBeHidden:) name:UIKeyboardWillHideNotification object:nil];
+    [notificationCenter addObserver:self selector:@selector(applicationWillResignActive:) name:UIApplicationWillResignActiveNotification object:nil];
     
     // Update the fields
     titleCell.textField.text = entry._title;
@@ -75,6 +77,15 @@
     
     // Remove listeners from the keyboard
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)applicationWillResignActive:(id)sender {
+    //resign first responder to prevent password being in sight and UI glitchs
+    [titleCell.textField resignFirstResponder];
+    [urlCell.textField resignFirstResponder];
+    [usernameCell.textField resignFirstResponder];
+    [passwordCell.textField resignFirstResponder];
+    [commentsCell.textView resignFirstResponder];
 }
 
 - (void)dealloc {
