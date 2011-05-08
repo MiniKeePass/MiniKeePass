@@ -21,6 +21,8 @@
 
 @implementation FileViewController
 
+@synthesize selectedFile;
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     

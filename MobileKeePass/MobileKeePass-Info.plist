@@ -9,6 +9,11 @@
 	<key>CFBundleDocumentTypes</key>
 	<array>
 		<dict>
+            <key>CFBundleTypeIconFiles</key>
+            <array>
+                <string>icon.png</string>
+                <string>icon@2x.png</string>
+            </array>
 			<key>CFBundleTypeName</key>
 			<string>KeePass Database</string>
 			<key>CFBundleTypeRole</key>
@@ -27,7 +32,6 @@
 	<string></string>
 	<key>CFBundleIconFiles</key>
 	<array>
-		<string>Icon.png</string>
 		<string>icon.png</string>
 		<string>icon@2x.png</string>
 	</array>

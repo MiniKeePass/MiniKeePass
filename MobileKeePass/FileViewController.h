@@ -23,4 +23,6 @@
     NSString *selectedFile;
 }
 
+@property (nonatomic, copy) NSString* selectedFile;
+
 @end

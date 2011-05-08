@@ -18,6 +18,7 @@
 #import <AudioToolbox/AudioToolbox.h>
 #import "MobileKeePassAppDelegate.h"
 #import "FileViewController.h"
+#import "PasswordEntryController.h"
 #import "SettingsViewController.h"
 #import "SFHFKeychainUtils.h"
 
@@ -28,9 +29,6 @@
 @synthesize databaseDocument;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    NSURL *url = (NSURL *)[launchOptions valueForKey:UIApplicationLaunchOptionsURLKey];
-    NSLog(@"Launch option: %@", url);
-    
     // Initialize the images array
     int i;
     for (i = 0; i < 70; i++) {
@@ -110,6 +108,42 @@
         [window.rootViewController presentModalViewController:pinViewController animated:YES];
         [pinViewController release];
     }
+}
+
+-(BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+
+    //Prevent PIN view from showing by deleting exitTime
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"exitTime"];
+
+    [self closeDatabase];
+      
+    //Retrieve document directory
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+
+    NSString *filename = [url lastPathComponent];
+    
+    NSURL *newUrl = [NSURL fileURLWithPath:[documentsDirectory stringByAppendingPathComponent:filename]];
+    
+    //Move input file into documents directory
+    NSFileManager *fileManager = [[NSFileManager alloc] init];
+    [fileManager removeItemAtURL:newUrl error:nil];
+    [fileManager moveItemAtURL:url toURL:newUrl error:nil];
+    [fileManager removeItemAtPath:[documentsDirectory stringByAppendingPathComponent:@"Inbox"] error:nil];
+    [fileManager release];
+    
+    //Use FileViewController to handle opening the new file
+    FileViewController *fileViewController = [[FileViewController alloc] init];
+    fileViewController.selectedFile = filename;
+    
+    PasswordEntryController *passwordEntryController = [[PasswordEntryController alloc] init];
+    passwordEntryController.delegate = fileViewController;
+    [fileViewController release];
+    
+    [window.rootViewController presentModalViewController:passwordEntryController animated:YES];
+    [passwordEntryController release];
+
+    return YES;
 }
 
 - (DatabaseDocument*)databaseDocument {
