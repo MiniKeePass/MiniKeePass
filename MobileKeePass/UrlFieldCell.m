@@ -32,9 +32,11 @@
 }
 
 - (void)tapPressed {
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Open", @"Copy", @"Edit", nil];
+    if (actionSheet != nil) {
+        [actionSheet release];
+    }
+    actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Open", @"Copy", @"Edit", nil];
     [actionSheet showInView:self.window];
-    [actionSheet release];
 }
 
 - (void)actionSheet:(UIActionSheet*)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {

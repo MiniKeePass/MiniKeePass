@@ -86,6 +86,11 @@
     [usernameCell.textField resignFirstResponder];
     [passwordCell.textField resignFirstResponder];
     [commentsCell.textView resignFirstResponder];
+    
+    [titleCell dismissActionSheet];
+    [urlCell dismissActionSheet];
+    [usernameCell dismissActionSheet];
+    [passwordCell dismissActionSheet];
 }
 
 - (void)dealloc {

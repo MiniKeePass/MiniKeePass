@@ -56,7 +56,12 @@
     [textField release];
     [tapGesture release];
     [tableView release];
+    [actionSheet release];
     [super dealloc];
+}
+
+- (void)dismissActionSheet {
+    [actionSheet dismissWithClickedButtonIndex:actionSheet.cancelButtonIndex animated:NO];
 }
 
 - (void)layoutSubviews {
@@ -69,9 +74,11 @@
 }
 
 - (void)tapPressed {
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Copy", @"Edit", nil];
+    if (actionSheet != nil) {
+        [actionSheet release];
+    }
+    actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Copy", @"Edit", nil];
     [actionSheet showInView:self.window];
-    [actionSheet release];
 }
 
 - (void)actionSheet:(UIActionSheet*)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
