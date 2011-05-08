@@ -255,7 +255,7 @@
 	if(_algorithm == RIJNDAEL) 
 		flags |= FLAG_RIJNDAEL;
 	else {
-		flags != FLAG_TWOFISH;
+		flags |= FLAG_TWOFISH;
 	}
 	
 	version = KDB3_VER;
@@ -429,8 +429,6 @@
 	if(![self readEntries:(body+bodyOffset) bufferEnding:(body+size) numofEntries:numEntries entrySize:&tmpSize]){
 		PARSE_RETURN(NO);
 	}
-	
-	bodyOffset += tmpSize;
 	
 	/*
 	  we ignore all meta streams in this version.
@@ -1018,8 +1016,9 @@
 	NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
 	
 	NSDateComponents *currentDateComponents = [gregorian components:
-											   ( NSDayCalendarUnit | NSYearCalendarUnit | NSMonthCalendarUnit) fromDate:[[NSDate alloc]init]];	
-	
+											   ( NSDayCalendarUnit | NSYearCalendarUnit | NSMonthCalendarUnit) fromDate:[NSDate date]];	
+	[gregorian release];
+    
 	entry._creation = currentDateComponents;
 	entry._lastMod = currentDateComponents;
 	entry._lastAccess = currentDateComponents;

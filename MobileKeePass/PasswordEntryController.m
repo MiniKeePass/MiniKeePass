@@ -70,7 +70,6 @@
     statusLabel.textColor = [UIColor redColor];
     statusLabel.backgroundColor = [UIColor clearColor];
     [self.view addSubview:statusLabel];
-    y += LABEL_FIELD_HEIGHT + SPACER;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
