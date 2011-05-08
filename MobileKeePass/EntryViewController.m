@@ -15,8 +15,13 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+    
     self.tableView.delaysContentTouches = YES;
+    
+    // Replace the back button with our own so we can ask if they are sure
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:self action:@selector(backPressed:)];
+    self.navigationItem.leftBarButtonItem = backButton;
+    [backButton release];    
     
     titleCell = [[TextFieldCell alloc] initWithParent:self.tableView];
     titleCell.label.text = @"Title";
@@ -33,18 +38,16 @@
     passwordCell.label.text = @"Password";
     
     commentsCell = [[TextViewCell alloc] initWithParent:self.tableView];
-    
-    // Replace the back button with our own so we can ask if they are sure
-    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:self action:@selector(backPressed:)];
-    self.navigationItem.leftBarButtonItem = backButton;
-    [backButton release];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
     
     // Add listeners to the keyboard
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWasShown:) name:UIKeyboardDidShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillBeHidden:) name:UIKeyboardWillHideNotification object:nil];
-}
-
-- (void)viewWillAppear:(BOOL)animated {
+    
+    // Update the fields
     titleCell.textField.text = entry._title;
     urlCell.textField.text = entry._url;
     usernameCell.textField.text = entry._username;
@@ -58,9 +61,14 @@
     originalHeight = self.view.frame.size.height;
 }
 
-- (void)dealloc {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
     
+    // Remove listeners from the keyboard
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)dealloc {
     [titleCell release];
     [urlCell release];
     [usernameCell release];
