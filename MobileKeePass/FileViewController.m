@@ -25,15 +25,10 @@
     [super viewDidLoad];
     
     self.title = @"Files";
-    
-    self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
-    
-    helpView = [[UIView alloc] init];
-    helpView.autoresizingMask = UIViewContentModeScaleAspectFill;
-    helpView.hidden = YES;
-    [self.view addSubview:helpView];
-    
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(8, 8, 304, 400)];
+}
+
+- (void)displayHelpPage {
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(8, 0, 304, 400)];
     label.font = [UIFont systemFontOfSize:14];
     label.textColor = [UIColor darkTextColor];
     label.backgroundColor = [UIColor clearColor];
@@ -45,8 +40,12 @@
         @" * When iTunes appears, select your device and click the Apps tab\n"
         @" * Scroll down to the File Sharing table and select MobileKeePass from the list\n"
         @" * Click the Add button, select the KeePass file, and click Choose";
-    [helpView addSubview:label];
+    [self.view addSubview:label];
     [label release];
+
+    self.tableView.backgroundColor = [UIColor groupTableViewBackgroundColor];
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.tableView.scrollEnabled = NO;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -60,15 +59,12 @@
     files = [[dirContents filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"self ENDSWITH '.kdb'"]] retain];
     
     // Show the help view if there are no files
-    if ([files count] != 0) {
-        helpView.hidden = NO;
-    } else {
-        helpView.hidden = YES;
+    if ([files count] == 0) {
+        [self displayHelpPage];
     }
 }
 
 - (void)dealloc {
-    [helpView release];
     [files release];
     [selectedFile release];
     [super dealloc];

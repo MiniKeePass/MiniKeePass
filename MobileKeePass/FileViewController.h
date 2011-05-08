@@ -19,8 +19,6 @@
 #import "PasswordEntryController.h"
 
 @interface FileViewController : UITableViewController <PasswordEntryControllerDelegate> {
-    UIView *helpView;
-    
     NSArray *files;
     NSString *selectedFile;
 }
