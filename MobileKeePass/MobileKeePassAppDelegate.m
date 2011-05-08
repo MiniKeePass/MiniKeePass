@@ -18,7 +18,10 @@
 
 @synthesize databaseDocument;
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {    
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    NSURL *url = (NSURL *)[launchOptions valueForKey:UIApplicationLaunchOptionsURLKey];
+    NSLog(@"Launch option: %@", url);
+    
     // Initialize the images array
     int i;
     for (i = 0; i < 70; i++) {

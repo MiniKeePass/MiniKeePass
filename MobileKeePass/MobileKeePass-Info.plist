@@ -7,7 +7,20 @@
 	<key>CFBundleDisplayName</key>
 	<string>KeePass</string>
 	<key>CFBundleDocumentTypes</key>
-	<array/>
+	<array>
+		<dict>
+			<key>CFBundleTypeName</key>
+			<string>KeePass Database</string>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>LSHandlerRank</key>
+			<string>Owner</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>net.fizzawizza.MobileKeePass.kdb</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
 	<key>CFBundleIconFile</key>
@@ -45,7 +58,24 @@
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
 	<key>UTExportedTypeDeclarations</key>
-	<array/>
+	<array>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>public.data</string>
+				<string>public.database</string>
+			</array>
+			<key>UTTypeDescription</key>
+			<string>KeePass Database</string>
+			<key>UTTypeIdentifier</key>
+			<string>net.fizzawizza.MobileKeePass.kdb</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<string>kdb</string>
+			</dict>
+		</dict>
+	</array>
 	<key>UTImportedTypeDeclarations</key>
 	<array/>
 </dict>
