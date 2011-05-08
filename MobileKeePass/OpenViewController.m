@@ -27,7 +27,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = @"Files";
+    self.title = @"Open";
 }
 
 - (void)displayHelpPage {
