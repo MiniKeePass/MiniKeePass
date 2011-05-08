@@ -17,6 +17,8 @@
 		52644C9B1370954700A58D92 /* PinTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 52644C9A1370954700A58D92 /* PinTextField.m */; };
 		52B36F851370A46E00C19BF8 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52B36F841370A46E00C19BF8 /* AudioToolbox.framework */; };
 		52F42CF413747BE20074E5D5 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52F42CF313747BE10074E5D5 /* SettingsViewController.m */; };
+		6805EBD2137648B800340C02 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 6805EBD1137648B800340C02 /* README.md */; };
+		6805EBD513764A5F00340C02 /* LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = 6805EBD413764A5F00340C02 /* LICENSE.txt */; };
 		6813262E136F7BA7004F4864 /* UrlFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6813262D136F7BA7004F4864 /* UrlFieldCell.m */; };
 		68132639136F8B79004F4864 /* PasswordFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68132638136F8B79004F4864 /* PasswordFieldCell.m */; };
 		687366EC1373979A0053CCA3 /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 687366EB1373979A0053CCA3 /* SFHFKeychainUtils.m */; };
@@ -124,6 +126,8 @@
 		52B36F841370A46E00C19BF8 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		52F42CF213747BE10074E5D5 /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
 		52F42CF313747BE10074E5D5 /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
+		6805EBD1137648B800340C02 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
+		6805EBD413764A5F00340C02 /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
 		6813262C136F7BA7004F4864 /* UrlFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UrlFieldCell.h; sourceTree = "<group>"; };
 		6813262D136F7BA7004F4864 /* UrlFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UrlFieldCell.m; sourceTree = "<group>"; };
 		68132637136F8B79004F4864 /* PasswordFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasswordFieldCell.h; sourceTree = "<group>"; };
@@ -351,6 +355,8 @@
 		68D58FFA136CB5CB0064CEE5 = {
 			isa = PBXGroup;
 			children = (
+				6805EBD413764A5F00340C02 /* LICENSE.txt */,
+				6805EBD1137648B800340C02 /* README.md */,
 				68D5900F136CB5CB0064CEE5 /* MobileKeePass */,
 				68D59024136CB5F30064CEE5 /* KeePass */,
 				687366E91373979A0053CCA3 /* Security */,
@@ -569,6 +575,8 @@
 				52644C981370915400A58D92 /* box@2x.png in Resources */,
 				523FBD6413736834004575FB /* icon@2x.png in Resources */,
 				523FBD7D1373C05E004575FB /* icon.png in Resources */,
+				6805EBD2137648B800340C02 /* README.md in Resources */,
+				6805EBD513764A5F00340C02 /* LICENSE.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
