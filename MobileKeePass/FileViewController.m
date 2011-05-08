@@ -48,12 +48,16 @@
     NSString *documentsDirectory = [paths objectAtIndex:0];
     
     NSArray *dirContents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:documentsDirectory error:nil];
-    files = [[dirContents filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"self ENDSWITH '.kdb'"]] retain];
+    NSArray *filenames = [dirContents filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"self ENDSWITH '.kdb'"]];
+    files = [[NSMutableArray arrayWithArray:filenames] retain];
     
     // Show the help view if there are no files
     if ([files count] == 0) {
         [self displayHelpPage];
+    } else {
+        self.navigationItem.rightBarButtonItem = self.editButtonItem;
     }
+
 }
 
 - (void)dealloc {
@@ -96,6 +100,25 @@
     [self presentModalViewController:passwordEntryController animated:YES];
     
     [passwordEntryController release];
+}
+
+-(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        NSString *filename = [files objectAtIndex:indexPath.row];
+
+        //Retrieve document directory
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *documentsDirectory = [paths objectAtIndex:0];
+        
+        NSFileManager *fileManager = [[NSFileManager alloc] init];
+        [fileManager removeItemAtPath:[documentsDirectory stringByAppendingPathComponent:filename] error:nil];
+        [fileManager release];
+        
+        [files removeObject:filename];
+        
+        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+    }
 }
 
 - (BOOL)passwordEntryController:(PasswordEntryController*)controller passwordEntered:(NSString*)password {
