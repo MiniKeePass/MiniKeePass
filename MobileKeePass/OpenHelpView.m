@@ -25,18 +25,32 @@
         // Initialization code
         self.backgroundColor = [UIColor groupTableViewBackgroundColor];
         
-        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(8, 0, 304, 400)];
+        UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"connect.png"]];
+        imageView.frame = CGRectMake(94, 16, 131, 98);
+        [self addSubview:imageView];
+        [imageView release];
+        
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 130, 320, 20)];
+        label.text = @"Connect to iTunes";
+        label.backgroundColor = [UIColor clearColor];
+        label.textAlignment = UITextAlignmentCenter;
+        [self addSubview:label];
+        [label release];
+        
+        label = [[UILabel alloc] initWithFrame:CGRectMake(16, 166, 288, 234)];
         label.font = [UIFont systemFontOfSize:14];
         label.textColor = [UIColor darkTextColor];
         label.backgroundColor = [UIColor clearColor];
         label.numberOfLines = 0;
         label.lineBreakMode = UILineBreakModeWordWrap;
-        label.text = @"You do not have any KeePass files available for MobileKeePass.\n\n"
-            @"Follow these steps to add some files using iTunes:\n"
-            @" * Connect your device to your computer and wait for iTunes to launch\n"
-            @" * When iTunes appears, select your device and click the Apps tab\n"
-            @" * Scroll down to the File Sharing table and select MobileKeePass from the list\n"
-            @" * Click the Add button, select the KeePass file, and click Choose";
+        label.text = @"You do not have any KeePass files available for MobileKeePass to open.\n\n"
+            @"Steps for adding files using iTunes:\n"
+            @" * Connect your device to your computer\n"
+            @" * When iTunes appears select your device\n"
+            @" * Click on the Apps tab\n"
+            @" * Sroll down to File Sharing\n"
+            @" * Select MobileKeePass from the list\n"
+            @" * Click on the Add button and select a file\n";
         [self addSubview:label];
         [label release];
     }

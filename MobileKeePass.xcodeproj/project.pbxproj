@@ -23,6 +23,8 @@
 		68132639136F8B79004F4864 /* PasswordFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68132638136F8B79004F4864 /* PasswordFieldCell.m */; };
 		685985F41377412E0004414C /* OpenHelpView.m in Sources */ = {isa = PBXBuildFile; fileRef = 685985F31377412E0004414C /* OpenHelpView.m */; };
 		6872F02A137746D0008E55B9 /* OpenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6872F029137746D0008E55B9 /* OpenViewController.m */; };
+		6872F0C0137752F5008E55B9 /* connect.png in Resources */ = {isa = PBXBuildFile; fileRef = 6872F0BE137752F5008E55B9 /* connect.png */; };
+		6872F0C1137752F5008E55B9 /* connect@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6872F0BF137752F5008E55B9 /* connect@2x.png */; };
 		687366EC1373979A0053CCA3 /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 687366EB1373979A0053CCA3 /* SFHFKeychainUtils.m */; };
 		687366EE137399360053CCA3 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 687366ED137399360053CCA3 /* Security.framework */; };
 		688E68F5136F761500004216 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 688E68F4136F761500004216 /* Settings.bundle */; };
@@ -137,6 +139,8 @@
 		685985F31377412E0004414C /* OpenHelpView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OpenHelpView.m; sourceTree = "<group>"; };
 		6872F028137746D0008E55B9 /* OpenViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenViewController.h; sourceTree = "<group>"; };
 		6872F029137746D0008E55B9 /* OpenViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OpenViewController.m; sourceTree = "<group>"; };
+		6872F0BE137752F5008E55B9 /* connect.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = connect.png; sourceTree = "<group>"; };
+		6872F0BF137752F5008E55B9 /* connect@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "connect@2x.png"; sourceTree = "<group>"; };
 		687366EA1373979A0053CCA3 /* SFHFKeychainUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFHFKeychainUtils.h; sourceTree = "<group>"; };
 		687366EB1373979A0053CCA3 /* SFHFKeychainUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFHFKeychainUtils.m; sourceTree = "<group>"; };
 		687366ED137399360053CCA3 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -282,6 +286,8 @@
 			children = (
 				52644C951370915400A58D92 /* box.png */,
 				52644C961370915400A58D92 /* box@2x.png */,
+				6872F0BE137752F5008E55B9 /* connect.png */,
+				6872F0BF137752F5008E55B9 /* connect@2x.png */,
 				6898596A136CDC91001B4204 /* 0.png */,
 				6898596B136CDC91001B4204 /* 1.png */,
 				6898596C136CDC91001B4204 /* 10.png */,
@@ -582,6 +588,8 @@
 				523FBD7D1373C05E004575FB /* icon.png in Resources */,
 				6805EBD2137648B800340C02 /* README.md in Resources */,
 				6805EBD513764A5F00340C02 /* LICENSE.txt in Resources */,
+				6872F0C0137752F5008E55B9 /* connect.png in Resources */,
+				6872F0C1137752F5008E55B9 /* connect@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
