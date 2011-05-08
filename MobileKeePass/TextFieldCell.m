@@ -8,7 +8,6 @@
 
 #import "TextFieldCell.h"
 #import <UIKit/UIPasteboard.h>
-#import "EntryViewController.h"
 
 @implementation TextFieldCell
 

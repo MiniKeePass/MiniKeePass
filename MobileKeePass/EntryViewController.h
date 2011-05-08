@@ -1,5 +1,5 @@
 //
-//  EntryViewController2.h
+//  EntryViewController.h
 //  MobileKeePass
 //
 //  Created by Jason Rush on 5/1/11.
