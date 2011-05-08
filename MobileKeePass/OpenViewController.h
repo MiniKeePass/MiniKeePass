@@ -18,7 +18,7 @@
 #import <Foundation/Foundation.h>
 #import "PasswordEntryController.h"
 
-@interface FileViewController : UITableViewController <PasswordEntryControllerDelegate> {
+@interface OpenViewController : UITableViewController <PasswordEntryControllerDelegate> {
     NSMutableArray *files;
     NSString *selectedFile;
 }

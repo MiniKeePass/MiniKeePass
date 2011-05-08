@@ -17,7 +17,7 @@
 
 #import <AudioToolbox/AudioToolbox.h>
 #import "MobileKeePassAppDelegate.h"
-#import "FileViewController.h"
+#import "OpenViewController.h"
 #import "PasswordEntryController.h"
 #import "SettingsViewController.h"
 #import "SFHFKeychainUtils.h"
@@ -132,13 +132,13 @@
     [fileManager removeItemAtPath:[documentsDirectory stringByAppendingPathComponent:@"Inbox"] error:nil];
     [fileManager release];
     
-    // Use FileViewController to handle opening the new file
-    FileViewController *fileViewController = [[FileViewController alloc] init];
-    fileViewController.selectedFile = filename;
+    // Use OpenViewController to handle opening the new file
+    OpenViewController *openViewController = [[OpenViewController alloc] init];
+    openViewController.selectedFile = filename;
     
     PasswordEntryController *passwordEntryController = [[PasswordEntryController alloc] init];
-    passwordEntryController.delegate = fileViewController;
-    [fileViewController release];
+    passwordEntryController.delegate = openViewController;
+    [openViewController release];
     
     [window.rootViewController presentModalViewController:passwordEntryController animated:YES];
     [passwordEntryController release];
@@ -232,11 +232,11 @@
 }
 
 - (void)openPressed:(id)sender {
-    FileViewController *fileViewController = [[FileViewController alloc] initWithStyle:UITableViewStylePlain];
+    OpenViewController *openViewController = [[OpenViewController alloc] initWithStyle:UITableViewStylePlain];
     
-    // Push the FileViewController onto the view stack
-    [navigationController pushViewController:fileViewController animated:YES];
-    [fileViewController release];
+    // Push the OpenViewController onto the view stack
+    [navigationController pushViewController:openViewController animated:YES];
+    [openViewController release];
 }
 
 - (void)settingsPressed:(id)sender {

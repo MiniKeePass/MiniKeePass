@@ -15,12 +15,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#import "FileViewController.h"
+#import "OpenViewController.h"
 #import "OpenHelpView.h"
 #import "MobileKeePassAppDelegate.h"
 #import "SFHFKeychainUtils.h"
 
-@implementation FileViewController
+@implementation OpenViewController
 
 @synthesize selectedFile;
 
@@ -57,7 +57,6 @@
     } else {
         self.navigationItem.rightBarButtonItem = self.editButtonItem;
     }
-
 }
 
 - (void)dealloc {
@@ -82,7 +81,7 @@
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
     }
     
-    // Configure the cell.
+    // Configure the cell
     cell.textLabel.text = [files objectAtIndex:indexPath.row];
     
     return cell;
@@ -107,7 +106,7 @@
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         NSString *filename = [files objectAtIndex:indexPath.row];
 
-        //Retrieve document directory
+        // Retrieve document directory
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
         NSString *documentsDirectory = [paths objectAtIndex:0];
         

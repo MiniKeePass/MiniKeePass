@@ -22,6 +22,7 @@
 		6813262E136F7BA7004F4864 /* UrlFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6813262D136F7BA7004F4864 /* UrlFieldCell.m */; };
 		68132639136F8B79004F4864 /* PasswordFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68132638136F8B79004F4864 /* PasswordFieldCell.m */; };
 		685985F41377412E0004414C /* OpenHelpView.m in Sources */ = {isa = PBXBuildFile; fileRef = 685985F31377412E0004414C /* OpenHelpView.m */; };
+		6872F02A137746D0008E55B9 /* OpenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6872F029137746D0008E55B9 /* OpenViewController.m */; };
 		687366EC1373979A0053CCA3 /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 687366EB1373979A0053CCA3 /* SFHFKeychainUtils.m */; };
 		687366EE137399360053CCA3 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 687366ED137399360053CCA3 /* Security.framework */; };
 		688E68F5136F761500004216 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 688E68F4136F761500004216 /* Settings.bundle */; };
@@ -97,7 +98,6 @@
 		689EB69D136DAE1C00C8DA1E /* TextViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 689EB69C136DAE1C00C8DA1E /* TextViewCell.m */; };
 		689EB6A0136DB4BF00C8DA1E /* TextFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 689EB69F136DB4BF00C8DA1E /* TextFieldCell.m */; };
 		689EB6A3136DC24C00C8DA1E /* EntryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 689EB6A2136DC24C00C8DA1E /* EntryViewController.m */; };
-		689EB6A6136DC2B800C8DA1E /* FileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 689EB6A5136DC2B800C8DA1E /* FileViewController.m */; };
 		68D5900A136CB5CB0064CEE5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68D59009136CB5CB0064CEE5 /* UIKit.framework */; };
 		68D5900C136CB5CB0064CEE5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68D5900B136CB5CB0064CEE5 /* Foundation.framework */; };
 		68D5900E136CB5CB0064CEE5 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68D5900D136CB5CB0064CEE5 /* CoreGraphics.framework */; };
@@ -135,6 +135,8 @@
 		68132638136F8B79004F4864 /* PasswordFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PasswordFieldCell.m; sourceTree = "<group>"; };
 		685985F21377412D0004414C /* OpenHelpView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenHelpView.h; sourceTree = "<group>"; };
 		685985F31377412E0004414C /* OpenHelpView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OpenHelpView.m; sourceTree = "<group>"; };
+		6872F028137746D0008E55B9 /* OpenViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenViewController.h; sourceTree = "<group>"; };
+		6872F029137746D0008E55B9 /* OpenViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OpenViewController.m; sourceTree = "<group>"; };
 		687366EA1373979A0053CCA3 /* SFHFKeychainUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFHFKeychainUtils.h; sourceTree = "<group>"; };
 		687366EB1373979A0053CCA3 /* SFHFKeychainUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFHFKeychainUtils.m; sourceTree = "<group>"; };
 		687366ED137399360053CCA3 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -214,8 +216,6 @@
 		689EB69F136DB4BF00C8DA1E /* TextFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextFieldCell.m; sourceTree = "<group>"; };
 		689EB6A1136DC24C00C8DA1E /* EntryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EntryViewController.h; sourceTree = "<group>"; };
 		689EB6A2136DC24C00C8DA1E /* EntryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EntryViewController.m; sourceTree = "<group>"; };
-		689EB6A4136DC2B700C8DA1E /* FileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileViewController.h; sourceTree = "<group>"; };
-		689EB6A5136DC2B800C8DA1E /* FileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileViewController.m; sourceTree = "<group>"; };
 		68D59005136CB5CB0064CEE5 /* MobileKeePass.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MobileKeePass.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		68D59009136CB5CB0064CEE5 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		68D5900B136CB5CB0064CEE5 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -400,8 +400,8 @@
 				689EB6A2136DC24C00C8DA1E /* EntryViewController.m */,
 				685985F21377412D0004414C /* OpenHelpView.h */,
 				685985F31377412E0004414C /* OpenHelpView.m */,
-				689EB6A4136DC2B700C8DA1E /* FileViewController.h */,
-				689EB6A5136DC2B800C8DA1E /* FileViewController.m */,
+				6872F028137746D0008E55B9 /* OpenViewController.h */,
+				6872F029137746D0008E55B9 /* OpenViewController.m */,
 				68D59039136CB7820064CEE5 /* GroupViewController.h */,
 				68D5903A136CB7820064CEE5 /* GroupViewController.m */,
 				523232A6136F128300692CEA /* PasswordEntryController.h */,
@@ -601,7 +601,6 @@
 				689EB69D136DAE1C00C8DA1E /* TextViewCell.m in Sources */,
 				689EB6A0136DB4BF00C8DA1E /* TextFieldCell.m in Sources */,
 				689EB6A3136DC24C00C8DA1E /* EntryViewController.m in Sources */,
-				689EB6A6136DC2B800C8DA1E /* FileViewController.m in Sources */,
 				523232A8136F128300692CEA /* DatabaseDocument.m in Sources */,
 				523232A9136F128300692CEA /* PasswordEntryController.m in Sources */,
 				6813262E136F7BA7004F4864 /* UrlFieldCell.m in Sources */,
@@ -611,6 +610,7 @@
 				687366EC1373979A0053CCA3 /* SFHFKeychainUtils.m in Sources */,
 				52F42CF413747BE20074E5D5 /* SettingsViewController.m in Sources */,
 				685985F41377412E0004414C /* OpenHelpView.m in Sources */,
+				6872F02A137746D0008E55B9 /* OpenViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
