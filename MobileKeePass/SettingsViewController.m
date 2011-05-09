@@ -22,13 +22,6 @@
 
 @implementation SettingsViewController
 
-- (void)dealloc {
-    [hidePasswordsSwitch release];
-    [pinSwitch release];
-    [lockTimeoutLabels release];
-    [super dealloc];
-}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -37,7 +30,11 @@
     hidePasswordsSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(200, 10, 0, 0)];
     hidePasswordsSwitch.on = [userDefaults boolForKey:@"hidePasswords"];
     [hidePasswordsSwitch addTarget:self action:@selector(toggleHidePasswords:) forControlEvents:UIControlEventValueChanged];
-
+    
+    rememberPasswordsSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(200, 10, 0, 0)];
+    rememberPasswordsSwitch.on = [userDefaults boolForKey:@"rememberPasswords"];
+    [rememberPasswordsSwitch addTarget:self action:@selector(toggleRememberPasswords:) forControlEvents:UIControlEventValueChanged];
+    
     pinSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(200, 10, 0, 0)];
     pinSwitch.on = [userDefaults boolForKey:@"pinEnabled"];
     [pinSwitch addTarget:self action:@selector(togglePin:) forControlEvents:UIControlEventValueChanged];
@@ -47,12 +44,20 @@
     self.title = @"Settings";
 }
 
+- (void)dealloc {
+    [rememberPasswordsSwitch release];
+    [hidePasswordsSwitch release];
+    [pinSwitch release];
+    [lockTimeoutLabels release];
+    [super dealloc];
+}
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 3;
+    return 4;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -69,13 +74,18 @@
             cell.textLabel.text = @"Hide Passwords";
             [cell addSubview:hidePasswordsSwitch];
             break;
-            
+        
         case 1:
+            cell.textLabel.text = @"Remember Passwords";
+            [cell addSubview:rememberPasswordsSwitch];
+            break;
+            
+        case 2:
             cell.textLabel.text = @"Enable PIN";
             [cell addSubview:pinSwitch];
             break;
             
-        case 2:
+        case 3:
             cell.textLabel.text = [NSString stringWithFormat:@"Lock Timeout: %@", [lockTimeoutLabels objectAtIndex:[[NSUserDefaults standardUserDefaults] integerForKey:@"lockTimeout"]]];
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             break;
@@ -111,6 +121,10 @@
 
 - (void)toggleHidePasswords:(id)sender {
     [[NSUserDefaults standardUserDefaults] setBool:hidePasswordsSwitch.on forKey:@"hidePasswords"];
+}
+
+- (void)toggleRememberPasswords:(id)sender {
+    [[NSUserDefaults standardUserDefaults] setBool:rememberPasswordsSwitch.on forKey:@"rememberPasswords"];
 }
 
 - (void)togglePin:(id)sender {

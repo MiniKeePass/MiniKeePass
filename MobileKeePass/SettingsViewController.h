@@ -21,6 +21,7 @@
 
 @interface SettingsViewController : UITableViewController <PinViewControllerDelegate, SelectionListViewControllerDelegate> {
     UISwitch *hidePasswordsSwitch;
+    UISwitch *rememberPasswordsSwitch;
     UISwitch *pinSwitch;
     NSString *tempPin;
     NSArray *lockTimeoutLabels;
