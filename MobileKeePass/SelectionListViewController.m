@@ -50,6 +50,7 @@
     
     if (indexPath.row == selectedIndex) {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
+        cell.textLabel.textColor = [UIColor colorWithRed:0.243 green:0.306 blue:0.435 alpha:1];
     } else {
         cell.accessoryType = UITableViewCellAccessoryNone;
     }
@@ -64,10 +65,12 @@
         // Remove the checkmark from the current selection
         cell = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:selectedIndex inSection:0]];
         cell.accessoryType = UITableViewCellAccessoryNone;
+        cell.textLabel.textColor = [UIColor blackColor];
         
         // Add the checkmark to the new selection
         cell = [tableView cellForRowAtIndexPath: indexPath]; 
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
+        cell.textLabel.textColor = [UIColor colorWithRed:0.243 green:0.306 blue:0.435 alpha:1];
         
         selectedIndex = indexPath.row;
         
@@ -75,10 +78,9 @@
         if ([delegate respondsToSelector:@selector(selectionListViewController:selectedIndex:)]) {
             [delegate selectionListViewController:self selectedIndex:selectedIndex];
         }
-        
-        // Pop the view controller
-        [self.navigationController popViewControllerAnimated:YES];
     }
+    
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 @end
