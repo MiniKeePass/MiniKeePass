@@ -28,6 +28,8 @@
 
 @synthesize databaseDocument;
 
+static NSInteger lockTimeoutValues[] = {0, 30, 60, 120, 300};
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Initialize the images array
     int i;
@@ -89,6 +91,7 @@
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
+    // Check if the PIN is enabled
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     if (![userDefaults boolForKey:@"pinEnabled"]) {
         return;
@@ -99,9 +102,14 @@
     if (exitTime == nil) {
         return;
     }
+
+    // Get the lock timeout (in minutes)
+    NSInteger lockTimeout = lockTimeoutValues[[userDefaults integerForKey:@"lockTimeout"]];
+    NSLog(@"Timeout: %d", lockTimeout);
     
+    // Check if it's been longer then lock timeout
     NSTimeInterval timeInterval = [exitTime timeIntervalSinceNow];
-    if (timeInterval < -TIME_INTERVAL_BEFORE_PIN) {
+    if (timeInterval < -lockTimeout) {
         // Present the pin view
         PinViewController *pinViewController = [[PinViewController alloc] init];
         pinViewController.delegate = self;

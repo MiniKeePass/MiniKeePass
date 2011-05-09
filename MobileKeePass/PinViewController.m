@@ -117,6 +117,7 @@
     [textField release];
     [pinTextFields release];
     [infoLabel release];
+    [delegate release];
     [super dealloc];
 }
 

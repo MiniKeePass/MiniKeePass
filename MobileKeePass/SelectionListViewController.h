@@ -16,14 +16,21 @@
  */
 
 #import <UIKit/UIKit.h>
-#import "PinViewController.h"
-#import "SelectionListViewController.h"
 
-@interface SettingsViewController : UITableViewController <PinViewControllerDelegate, SelectionListViewControllerDelegate> {
-    UISwitch *hidePasswordsSwitch;
-    UISwitch *pinSwitch;
-    NSString *tempPin;
-    NSArray *lockTimeoutLabels;
+@protocol SelectionListViewControllerDelegate;
+
+@interface SelectionListViewController : UITableViewController {
+    NSArray *items;
+    NSInteger selectedIndex;
+    id<SelectionListViewControllerDelegate> delegate;
 }
 
+@property (nonatomic, retain) NSArray *items;
+@property (nonatomic) NSInteger selectedIndex;
+@property (nonatomic, retain) id<SelectionListViewControllerDelegate> delegate;
+
+@end
+
+@protocol SelectionListViewControllerDelegate <NSObject>
+- (void)selectionListViewController:(SelectionListViewController*)controller selectedIndex:(NSInteger)selectedIndex;
 @end

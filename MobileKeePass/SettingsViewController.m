@@ -17,12 +17,15 @@
 
 #import <AudioToolbox/AudioToolbox.h>
 #import "SettingsViewController.h"
+#import "SelectionListViewController.h"
 #import "SFHFKeychainUtils.h"
 
 @implementation SettingsViewController
 
 - (void)dealloc {
+    [hidePasswordsSwitch release];
     [pinSwitch release];
+    [lockTimeoutLabels release];
     [super dealloc];
 }
 
@@ -38,6 +41,8 @@
     pinSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(200, 10, 0, 0)];
     pinSwitch.on = [userDefaults boolForKey:@"pinEnabled"];
     [pinSwitch addTarget:self action:@selector(togglePin:) forControlEvents:UIControlEventValueChanged];
+    
+    lockTimeoutLabels = [[NSArray arrayWithObjects:@"Immediately", @"30 Seconds", @"1 Minute", @"2 Minutes", @"5 Minutes", nil] retain];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -45,7 +50,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 2;
+    return 3;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -56,7 +61,7 @@
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
         cell.selectionStyle = UITableViewCellEditingStyleNone;
     }
-
+    
     switch (indexPath.row) {
         case 0:
             cell.textLabel.text = @"Hide Passwords";
@@ -68,11 +73,37 @@
             [cell addSubview:pinSwitch];
             break;
             
+        case 2:
+            cell.textLabel.text = [NSString stringWithFormat:@"Lock Timeout: %@", [lockTimeoutLabels objectAtIndex:[[NSUserDefaults standardUserDefaults] integerForKey:@"lockTimeout"]]];
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            break;
+            
         default:
             break;
     }
     
     return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.row == 2) {
+        SelectionListViewController *selectionListViewController = [[SelectionListViewController alloc] initWithStyle:UITableViewStyleGrouped];
+        selectionListViewController.items = lockTimeoutLabels;
+        selectionListViewController.selectedIndex = [[NSUserDefaults standardUserDefaults] integerForKey:@"lockTimeout"];
+        selectionListViewController.delegate = self;
+        [self.navigationController pushViewController:selectionListViewController animated:YES];
+        [selectionListViewController release];
+    }
+}
+
+- (void)selectionListViewController:(SelectionListViewController *)controller selectedIndex:(NSInteger)selectedIndex {
+    // Save the user setting
+    NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
+    [standardUserDefaults setInteger:selectedIndex forKey:@"lockTimeout"];
+    
+    // Update the cell text
+    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:2 inSection:0]]; 
+    cell.textLabel.text = [NSString stringWithFormat:@"Lock Timeout: %@", [lockTimeoutLabels objectAtIndex:selectedIndex]];
 }
 
 - (void)toggleHidePasswords:(id)sender {

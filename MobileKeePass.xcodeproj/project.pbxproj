@@ -28,6 +28,7 @@
 		687366EC1373979A0053CCA3 /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 687366EB1373979A0053CCA3 /* SFHFKeychainUtils.m */; };
 		687366EE137399360053CCA3 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 687366ED137399360053CCA3 /* Security.framework */; };
 		688E68F5136F761500004216 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 688E68F4136F761500004216 /* Settings.bundle */; };
+		688F3FB51377805C0049808C /* SelectionListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 688F3FB41377805C0049808C /* SelectionListViewController.m */; };
 		689859B1136CDC91001B4204 /* 0.png in Resources */ = {isa = PBXBuildFile; fileRef = 6898596A136CDC91001B4204 /* 0.png */; };
 		689859B2136CDC91001B4204 /* 1.png in Resources */ = {isa = PBXBuildFile; fileRef = 6898596B136CDC91001B4204 /* 1.png */; };
 		689859B3136CDC91001B4204 /* 10.png in Resources */ = {isa = PBXBuildFile; fileRef = 6898596C136CDC91001B4204 /* 10.png */; };
@@ -145,6 +146,8 @@
 		687366EB1373979A0053CCA3 /* SFHFKeychainUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFHFKeychainUtils.m; sourceTree = "<group>"; };
 		687366ED137399360053CCA3 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		688E68F4136F761500004216 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
+		688F3FB31377805C0049808C /* SelectionListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; path = SelectionListViewController.h; sourceTree = "<group>"; };
+		688F3FB41377805C0049808C /* SelectionListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectionListViewController.m; sourceTree = "<group>"; };
 		6898596A136CDC91001B4204 /* 0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 0.png; sourceTree = "<group>"; };
 		6898596B136CDC91001B4204 /* 1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 1.png; sourceTree = "<group>"; };
 		6898596C136CDC91001B4204 /* 10.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 10.png; sourceTree = "<group>"; };
@@ -416,6 +419,8 @@
 				52644C9A1370954700A58D92 /* PinTextField.m */,
 				52644C91137088E800A58D92 /* PinViewController.h */,
 				52644C92137088E800A58D92 /* PinViewController.m */,
+				688F3FB31377805C0049808C /* SelectionListViewController.h */,
+				688F3FB41377805C0049808C /* SelectionListViewController.m */,
 				52F42CF213747BE10074E5D5 /* SettingsViewController.h */,
 				52F42CF313747BE10074E5D5 /* SettingsViewController.m */,
 				525B6515137062F7001883BB /* Cells */,
@@ -619,6 +624,7 @@
 				52F42CF413747BE20074E5D5 /* SettingsViewController.m in Sources */,
 				685985F41377412E0004414C /* OpenHelpView.m in Sources */,
 				6872F02A137746D0008E55B9 /* OpenViewController.m in Sources */,
+				688F3FB51377805C0049808C /* SelectionListViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
