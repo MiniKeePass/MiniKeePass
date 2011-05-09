@@ -105,7 +105,6 @@ static NSInteger lockTimeoutValues[] = {0, 30, 60, 120, 300};
 
     // Get the lock timeout (in minutes)
     NSInteger lockTimeout = lockTimeoutValues[[userDefaults integerForKey:@"lockTimeout"]];
-    NSLog(@"Timeout: %d", lockTimeout);
     
     // Check if it's been longer then lock timeout
     NSTimeInterval timeInterval = [exitTime timeIntervalSinceNow];
