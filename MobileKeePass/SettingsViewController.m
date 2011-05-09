@@ -43,6 +43,8 @@
     [pinSwitch addTarget:self action:@selector(togglePin:) forControlEvents:UIControlEventValueChanged];
     
     lockTimeoutLabels = [[NSArray arrayWithObjects:@"Immediately", @"30 Seconds", @"1 Minute", @"2 Minutes", @"5 Minutes", nil] retain];
+
+    self.title = @"Settings";
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -91,6 +93,7 @@
         selectionListViewController.items = lockTimeoutLabels;
         selectionListViewController.selectedIndex = [[NSUserDefaults standardUserDefaults] integerForKey:@"lockTimeout"];
         selectionListViewController.delegate = self;
+        selectionListViewController.title = @"Lock Timeout";
         [self.navigationController pushViewController:selectionListViewController animated:YES];
         [selectionListViewController release];
     }
