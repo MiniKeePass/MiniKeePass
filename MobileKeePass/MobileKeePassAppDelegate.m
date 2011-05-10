@@ -203,11 +203,21 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
     [openViewController release];
 }
 
-- (void)settingsPressed:(id)sender {
+- (void)settingsPressed:(id)sender {    
     SettingsViewController *settingsViewController = [[SettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
+    settingsViewController.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(dismissSettingsPage:)];
     
-    [navigationController pushViewController:settingsViewController animated:YES];
+    UINavigationController *settingsNavigationController = [[UINavigationController alloc] initWithRootViewController:settingsViewController];
     [settingsViewController release];
+    
+    settingsViewController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+    
+    [navigationController presentModalViewController:settingsNavigationController animated:YES];
+    [settingsNavigationController release];
+}
+
+- (void)dismissSettingsPage:(id)sender {
+    [navigationController dismissModalViewControllerAnimated:YES];
 }
 
 - (void)pinViewController:(PinViewController *)controller pinEntered:(NSString *)pin {
