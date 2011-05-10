@@ -151,7 +151,7 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
     [fileManager release];
     
     // Load the database
-    [[DatabaseManager sharedInstance] openDatabaseDocument:path];
+    [[DatabaseManager sharedInstance] openDatabaseDocument:path animated:NO];
     
     return YES;
 }
@@ -179,7 +179,7 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
         return;
     }
     
-    [[DatabaseManager sharedInstance] openDatabaseDocument:lastFilename];
+    [[DatabaseManager sharedInstance] openDatabaseDocument:lastFilename animated:NO];
 }
 
 - (UIImage*)loadImage:(int)index {

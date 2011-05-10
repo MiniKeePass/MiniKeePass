@@ -11,11 +11,13 @@
 
 @interface DatabaseManager : NSObject <PasswordEntryControllerDelegate> {
     NSString *selectedPath;
+    BOOL animated;
 }
 
 @property (nonatomic, retain) NSString *selectedPath;
+@property (nonatomic) BOOL animated;
 
 + (DatabaseManager*)sharedInstance;
-- (void)openDatabaseDocument:(NSString*)path;
+- (void)openDatabaseDocument:(NSString*)path animated:(BOOL)newAnimated;
 
 @end

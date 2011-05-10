@@ -14,6 +14,7 @@
 @implementation DatabaseManager
 
 @synthesize selectedPath;
+@synthesize animated;
 
 static DatabaseManager *sharedInstance;
 
@@ -34,10 +35,11 @@ static DatabaseManager *sharedInstance;
     [super dealloc];
 }
 
-- (void)openDatabaseDocument:(NSString*)path {
+- (void)openDatabaseDocument:(NSString*)path animated:(BOOL)newAnimated {
     BOOL databaseLoaded = NO;
     
     self.selectedPath = path;
+    self.animated = newAnimated;
     
     // Load the password from the keychain
     NSString *password = [SFHFKeychainUtils getPasswordForUsername:path andServiceName:@"net.fizzawizza.MobileKeePass" error:nil];
@@ -61,7 +63,7 @@ static DatabaseManager *sharedInstance;
             [userDefaults setValue:path forKey:@"lastFilename"];
             
             // Pop to the root view
-            [appDelegate.navigationController popToRootViewControllerAnimated:NO];
+            [appDelegate.navigationController popToRootViewControllerAnimated:animated];
         }
         [dd release];
     }
@@ -98,7 +100,7 @@ static DatabaseManager *sharedInstance;
         }
 
         // Pop to the root view
-        [appDelegate.navigationController popToRootViewControllerAnimated:NO];
+        [appDelegate.navigationController popToRootViewControllerAnimated:animated];
     } else if (databaseError == WRONG_PASSWORD) {
         shouldDismiss = NO;
         controller.statusLabel.text = @"Wrong Password";

@@ -116,7 +116,7 @@
     NSString *path = [documentsDirectory stringByAppendingPathComponent:[files objectAtIndex:indexPath.row]];
 
     // Load the database
-    [[DatabaseManager sharedInstance] openDatabaseDocument:path];
+    [[DatabaseManager sharedInstance] openDatabaseDocument:path animated:YES];
 }
 
 -(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
