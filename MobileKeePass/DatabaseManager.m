@@ -35,28 +35,27 @@ static DatabaseManager *sharedInstance;
 }
 
 - (void)openDatabaseDocument:(NSString*)path {
-    NSError *error;
+    BOOL databaseLoaded = NO;
     
     self.selectedPath = path;
     
     // Load the password from the keychain
-    NSString *password = [SFHFKeychainUtils getPasswordForUsername:path andServiceName:@"net.fizzawizza.MobileKeePass" error:&error];
-    if (error != nil) {
-        return;
-    }
-
+    NSString *password = [SFHFKeychainUtils getPasswordForUsername:path andServiceName:@"net.fizzawizza.MobileKeePass" error:nil];
+    
     // Get the application delegate
     MobileKeePassAppDelegate *appDelegate = (MobileKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
-
-    // Check if the password was in the keychain
+    
+    // Try and load the database with the cached password from the keychain
     if (password != nil) {
         // Load the database
         DatabaseDocument *dd = [[DatabaseDocument alloc] init];
         enum DatabaseError databaseError = [dd open:path password:password];
         if (databaseError == NO_ERROR) {
+            databaseLoaded = YES;
+            
             // Set the database document in the application delegate
             appDelegate.databaseDocument = dd;
-
+            
             // Store the filename as the last opened database
             NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
             [userDefaults setValue:path forKey:@"lastFilename"];
@@ -65,7 +64,10 @@ static DatabaseManager *sharedInstance;
             [appDelegate.navigationController popToRootViewControllerAnimated:NO];
         }
         [dd release];
-    } else {
+    }
+    
+    // Prompt the user for the password if we haven't loaded the database yet
+    if (!databaseLoaded) {
         // Prompt the user for a password
         PasswordEntryController *passwordEntryController = [[PasswordEntryController alloc] init];
         passwordEntryController.delegate = self;
