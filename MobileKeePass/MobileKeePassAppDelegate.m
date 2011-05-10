@@ -18,14 +18,16 @@
 #import <AudioToolbox/AudioToolbox.h>
 #import "MobileKeePassAppDelegate.h"
 #import "OpenViewController.h"
-#import "PasswordEntryController.h"
 #import "SettingsViewController.h"
+#import "DatabaseManager.h"
 #import "SFHFKeychainUtils.h"
 
 #define TIME_INTERVAL_BEFORE_PIN 0
 
 @implementation MobileKeePassAppDelegate
 
+@synthesize window;
+@synthesize navigationController;
 @synthesize databaseDocument;
 
 static NSInteger pinLockTimeoutValues[] = {0, 30, 60, 120, 300};
@@ -132,13 +134,14 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
     
     [self closeDatabase];
     
-    // Retrieve document directory
+    // Retrieve the Documents directory
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
     
     NSString *filename = [url lastPathComponent];
+    NSString *path = [documentsDirectory stringByAppendingPathComponent:filename];
     
-    NSURL *newUrl = [NSURL fileURLWithPath:[documentsDirectory stringByAppendingPathComponent:filename]];
+    NSURL *newUrl = [NSURL fileURLWithPath:path];
     
     // Move input file into documents directory
     NSFileManager *fileManager = [[NSFileManager alloc] init];
@@ -147,16 +150,8 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
     [fileManager removeItemAtPath:[documentsDirectory stringByAppendingPathComponent:@"Inbox"] error:nil];
     [fileManager release];
     
-    // Use OpenViewController to handle opening the new file
-    OpenViewController *openViewController = [[OpenViewController alloc] init];
-    openViewController.selectedFile = filename;
-    
-    PasswordEntryController *passwordEntryController = [[PasswordEntryController alloc] init];
-    passwordEntryController.delegate = openViewController;
-    [openViewController release];
-    
-    [window.rootViewController presentModalViewController:passwordEntryController animated:YES];
-    [passwordEntryController release];
+    // Load the database
+    [[DatabaseManager sharedInstance] openDatabaseDocument:path];
     
     return YES;
 }
@@ -184,21 +179,7 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
         return;
     }
     
-    // Load the password from the keychain
-    NSError *error;
-    NSString *password = [SFHFKeychainUtils getPasswordForUsername:lastFilename andServiceName:@"net.fizzawizza.MobileKeePass" error:&error];
-    if (error != nil || password == nil) {
-        return;
-    }
-    
-    // Load the database
-    DatabaseDocument *dd = [[DatabaseDocument alloc] init];
-    enum DatabaseError databaseError = [dd open:lastFilename password:password];
-    if (databaseError == NO_ERROR) {
-        self.databaseDocument = dd;
-    }
-    
-    [dd release];
+    [[DatabaseManager sharedInstance] openDatabaseDocument:lastFilename];
 }
 
 - (UIImage*)loadImage:(int)index {

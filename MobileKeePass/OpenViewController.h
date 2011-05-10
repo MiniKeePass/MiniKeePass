@@ -16,10 +16,9 @@
  */
 
 #import <Foundation/Foundation.h>
-#import "PasswordEntryController.h"
 #import "OpenHelpView.h"
 
-@interface OpenViewController : UITableViewController <PasswordEntryControllerDelegate> {
+@interface OpenViewController : UITableViewController {
     OpenHelpView *openHelpView;
     
     NSMutableArray *files;

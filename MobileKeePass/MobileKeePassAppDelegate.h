@@ -26,10 +26,12 @@
     GroupViewController *groupViewController;
     
     DatabaseDocument *databaseDocument;
-
+    
     UIImage *images[70];
 }
 
+@property (nonatomic, readonly) UIWindow *window;
+@property (nonatomic, readonly) UINavigationController *navigationController;
 @property (nonatomic, retain) DatabaseDocument *databaseDocument;
 
 - (void)closeDatabase;

@@ -17,7 +17,7 @@
 
 #import "OpenViewController.h"
 #import "MobileKeePassAppDelegate.h"
-#import "SFHFKeychainUtils.h"
+#import "DatabaseManager.h"
 
 @implementation OpenViewController
 
@@ -108,17 +108,15 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (selectedFile != nil) {
-        [selectedFile release];
-    }
-    selectedFile = [[files objectAtIndex:indexPath.row] retain];
+    // Get the Documents directory
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
     
-    PasswordEntryController *passwordEntryController = [[PasswordEntryController alloc] init];
-    passwordEntryController.delegate = self;
-    
-    [self presentModalViewController:passwordEntryController animated:YES];
-    
-    [passwordEntryController release];
+    // Add the filename to the documents directory
+    NSString *path = [documentsDirectory stringByAppendingPathComponent:[files objectAtIndex:indexPath.row]];
+
+    // Load the database
+    [[DatabaseManager sharedInstance] openDatabaseDocument:path];
 }
 
 -(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -126,53 +124,21 @@
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         NSString *filename = [files objectAtIndex:indexPath.row];
 
-        // Retrieve document directory
+        // Retrieve the Document directory
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
         NSString *documentsDirectory = [paths objectAtIndex:0];
         
+        // Delete the file
         NSFileManager *fileManager = [[NSFileManager alloc] init];
         [fileManager removeItemAtPath:[documentsDirectory stringByAppendingPathComponent:filename] error:nil];
         [fileManager release];
         
+        // Remove the file from the array
         [files removeObject:filename];
         
+        // Update the table
         [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
     }
-}
-
-- (BOOL)passwordEntryController:(PasswordEntryController*)controller passwordEntered:(NSString*)password {
-    BOOL shouldDismiss = YES;
-    
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
-    
-    // Add the filename to the documents directory
-    NSString *path = [documentsDirectory stringByAppendingPathComponent:selectedFile];
-    
-    // Load the database
-    DatabaseDocument *dd = [[DatabaseDocument alloc] init];
-    enum DatabaseError databaseError = [dd open:path password:password];
-    if (databaseError == NO_ERROR) {
-        MobileKeePassAppDelegate *appDelegate = (MobileKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
-        appDelegate.databaseDocument = dd;
-        
-        [[NSUserDefaults standardUserDefaults] setValue:path forKey:@"lastFilename"];
-        
-        // Store the password in the keychain
-        NSError *error;
-        [SFHFKeychainUtils storeUsername:path andPassword:password forServiceName:@"net.fizzawizza.MobileKeePass" updateExisting:YES error:&error];
-        
-        [self.navigationController popToRootViewControllerAnimated:NO];
-    } else if (databaseError == WRONG_PASSWORD) {
-        shouldDismiss = NO;
-        controller.statusLabel.text = @"Wrong Password";
-    } else {
-        shouldDismiss = NO;
-        controller.statusLabel.text = @"Failed to open database";
-    }
-    [dd release];
-    
-    return shouldDismiss;
 }
 
 @end
