@@ -166,14 +166,18 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
 }
 
 - (void)closeDatabase {
-    [navigationController popToRootViewControllerAnimated:NO];
+    // Clear the last filename
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults removeObjectForKey:@"lastFilename"];
     
     groupViewController.group = nil;
+    
+    [navigationController popToRootViewControllerAnimated:NO];
 }
 
 - (void)openLastDatabase {
     // Get the last filename
-    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSString *lastFilename = [userDefaults stringForKey:@"lastFilename"];
     if (lastFilename == nil) {
         return;
@@ -236,10 +240,15 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
 
         // Check if they have failed too many times
         if (pinFailedAttempts >= deleteOnFailureAttempts) {
-            [userDefaults setInteger:0 forKey:@"pinFailedAttempts"];
-            
             // Close the current database
             [self closeDatabase];
+            
+            // Reset some settings
+            [userDefaults setInteger:0 forKey:@"pinFailedAttempts"];
+            [userDefaults setBool:NO forKey:@"pinEnabled"];
+            
+            // Delete all our information from the keychain
+            [SFHFKeychainUtils deleteAllItemForServiceName:@"net.fizzawizza.MobileKeePass" error:nil];
             
             // Get the files in the Documents directory
             NSFileManager *fileManager = [NSFileManager defaultManager];
@@ -252,10 +261,8 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
                 [fileManager removeItemAtPath:[documentsDirectory stringByAppendingPathComponent:file] error:nil];
             }
             
-            // TODO Delete all saved passwords
-            
-            // Exit the application
-            exit(0);
+            // Dismiss the pin view
+            [controller dismissModalViewControllerAnimated:YES];
         }
     }
 }
