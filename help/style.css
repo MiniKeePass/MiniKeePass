@@ -1,0 +1,18 @@
+body {
+    font: 13px arial,helvetica,clean,sans-serif;
+}
+
+h1 {
+    font-size:138.5%;  
+}
+
+h2 {
+    font-size:123.1%; 
+}
+h3 {
+    font-size:108%;  
+}
+h1,h2,h3 {
+	margin:1em 0;
+	font-weight:bold; 
+}

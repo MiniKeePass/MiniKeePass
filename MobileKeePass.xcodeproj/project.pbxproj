@@ -115,6 +115,9 @@
 		68D5902F136CB5F30064CEE5 /* Kdb3.m in Sources */ = {isa = PBXBuildFile; fileRef = 68D5902A136CB5F30064CEE5 /* Kdb3.m */; };
 		68D59030136CB5F30064CEE5 /* License.txt in Resources */ = {isa = PBXBuildFile; fileRef = 68D5902B136CB5F30064CEE5 /* License.txt */; };
 		68D5903B136CB7820064CEE5 /* GroupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68D5903A136CB7820064CEE5 /* GroupViewController.m */; };
+		68DCBB4413795F8600B1C089 /* itunes.html in Resources */ = {isa = PBXBuildFile; fileRef = 68DCBB4313795F8600B1C089 /* itunes.html */; };
+		68DCBB471379621800B1C089 /* dropbox.html in Resources */ = {isa = PBXBuildFile; fileRef = 68DCBB461379621800B1C089 /* dropbox.html */; };
+		68DCBB49137965C100B1C089 /* style.css in Resources */ = {isa = PBXBuildFile; fileRef = 68DCBB48137965C100B1C089 /* style.css */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -249,6 +252,9 @@
 		68D5902B136CB5F30064CEE5 /* License.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = License.txt; sourceTree = "<group>"; };
 		68D59039136CB7820064CEE5 /* GroupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupViewController.h; sourceTree = "<group>"; };
 		68D5903A136CB7820064CEE5 /* GroupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupViewController.m; sourceTree = "<group>"; };
+		68DCBB4313795F8600B1C089 /* itunes.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = itunes.html; sourceTree = "<group>"; };
+		68DCBB461379621800B1C089 /* dropbox.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = dropbox.html; sourceTree = "<group>"; };
+		68DCBB48137965C100B1C089 /* style.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = style.css; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -472,8 +478,19 @@
 				523FBD7C1373C05E004575FB /* icon.png */,
 				523FBD6213736834004575FB /* icon@2x.png */,
 				68985969136CDC91001B4204 /* images */,
+				68DCBB4213795F8600B1C089 /* help */,
 			);
 			name = Resources;
+			sourceTree = "<group>";
+		};
+		68DCBB4213795F8600B1C089 /* help */ = {
+			isa = PBXGroup;
+			children = (
+				68DCBB4313795F8600B1C089 /* itunes.html */,
+				68DCBB461379621800B1C089 /* dropbox.html */,
+				68DCBB48137965C100B1C089 /* style.css */,
+			);
+			path = help;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -608,6 +625,9 @@
 				6872F0C1137752F5008E55B9 /* connect@2x.png in Resources */,
 				529F15101378719D00D8A07B /* Default.png in Resources */,
 				529F1513137871A100D8A07B /* Default@2x.png in Resources */,
+				68DCBB4413795F8600B1C089 /* itunes.html in Resources */,
+				68DCBB471379621800B1C089 /* dropbox.html in Resources */,
+				68DCBB49137965C100B1C089 /* style.css in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
