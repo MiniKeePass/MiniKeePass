@@ -28,7 +28,8 @@
 
 @synthesize databaseDocument;
 
-static NSInteger lockTimeoutValues[] = {0, 30, 60, 120, 300};
+static NSInteger pinLockTimeoutValues[] = {0, 30, 60, 120, 300};
+static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Initialize the images array
@@ -40,9 +41,16 @@ static NSInteger lockTimeoutValues[] = {0, 30, 60, 120, 300};
     databaseDocument = nil;
     
     // Set the user defaults
-    NSDictionary *defaults = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:[NSNumber numberWithBool:YES], nil] forKeys:[NSArray arrayWithObjects:@"hidePasswords", nil]];
+    NSMutableDictionary *defaultsDict = [NSMutableDictionary dictionary];
+    [defaultsDict setValue:[NSNumber numberWithBool:NO] forKey:@"pinEnabled"];
+    [defaultsDict setValue:[NSNumber numberWithInt:1] forKey:@"pinLockTimeout"];
+    [defaultsDict setValue:[NSNumber numberWithBool:NO] forKey:@"deleteOnFailureEnabled"];
+    [defaultsDict setValue:[NSNumber numberWithInt:1] forKey:@"deleteOnFailureAttempts"];
+    [defaultsDict setValue:[NSNumber numberWithBool:YES] forKey:@"rememberPasswordsEnabled"];
+    [defaultsDict setValue:[NSNumber numberWithBool:YES] forKey:@"hidePasswords"];
+    
     NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
-    [userDefaults registerDefaults:defaults];
+    [userDefaults registerDefaults:defaultsDict];
     
     // Create the root view
     groupViewController = [[GroupViewController alloc] initWithStyle:UITableViewStylePlain];
@@ -103,12 +111,12 @@ static NSInteger lockTimeoutValues[] = {0, 30, 60, 120, 300};
         return;
     }
 
-    // Get the lock timeout (in minutes)
-    NSInteger lockTimeout = lockTimeoutValues[[userDefaults integerForKey:@"lockTimeout"]];
+    // Get the lock timeout (in seconds)
+    NSInteger pinLockTimeout = pinLockTimeoutValues[[userDefaults integerForKey:@"pinLockTimeout"]];
     
     // Check if it's been longer then lock timeout
     NSTimeInterval timeInterval = [exitTime timeIntervalSinceNow];
-    if (timeInterval < -lockTimeout) {
+    if (timeInterval < -pinLockTimeout) {
         // Present the pin view
         PinViewController *pinViewController = [[PinViewController alloc] init];
         pinViewController.delegate = self;
@@ -162,46 +170,9 @@ static NSInteger lockTimeoutValues[] = {0, 30, 60, 120, 300};
     groupViewController.group = [databaseDocument.database rootGroup];
 }
 
-- (UIImage*)loadImage:(int)index {
-    if (images[index] == nil) {
-        NSString *imagePath = [[NSBundle mainBundle] pathForResource:[NSString stringWithFormat:@"%d", index] ofType:@"png"];
-        images[index] = [[UIImage imageWithContentsOfFile:imagePath] retain];
-    }
-
-    return images[index];
-}
-
-- (void)pinViewController:(PinViewController *)controller pinEntered:(NSString *)pin {
-    NSError *error;
-    NSString *validPin = [SFHFKeychainUtils getPasswordForUsername:@"PIN" andServiceName:@"net.fizzawizza.MobileKeePass" error:&error];
-    if (error != nil || validPin == nil) {
-        // TODO error/no pin, close database
-        return;
-    }
-    
-    if ([pin isEqualToString:validPin]) {
-        [controller dismissModalViewControllerAnimated:YES];
-    } else {
-        // Vibrate to signify they are a bad user
-        AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
-        
-        controller.string = @"Incorrect PIN";
-        [controller clearEntry];
-    }
-}
-
-- (void)pinViewControllerCancelButtonPressed:(PinViewController *)controller {
-    NSString* title = @"Canceling PIN entry will lock active database";
-    
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:title delegate:self cancelButtonTitle:@"Close Database" destructiveButtonTitle:nil otherButtonTitles:@"Try Again", nil];
-    actionSheet.actionSheetStyle = UIActivityIndicatorViewStyleGray;
-    [actionSheet showInView:window];
-    [actionSheet release];
-}
-
 - (void)closeDatabase {
     [navigationController popToRootViewControllerAnimated:NO];
-
+    
     groupViewController.group = nil;
 }
 
@@ -230,12 +201,13 @@ static NSInteger lockTimeoutValues[] = {0, 30, 60, 120, 300};
     [dd release];
 }
 
--(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (buttonIndex == actionSheet.cancelButtonIndex) {
-        [self closeDatabase];
-        [[NSUserDefaults standardUserDefaults] setValue:@"" forKey:@"lastFilename"];
-        [window.rootViewController dismissModalViewControllerAnimated:YES];        
+- (UIImage*)loadImage:(int)index {
+    if (images[index] == nil) {
+        NSString *imagePath = [[NSBundle mainBundle] pathForResource:[NSString stringWithFormat:@"%d", index] ofType:@"png"];
+        images[index] = [[UIImage imageWithContentsOfFile:imagePath] retain];
     }
+    
+    return images[index];
 }
 
 - (void)openPressed:(id)sender {
@@ -251,6 +223,77 @@ static NSInteger lockTimeoutValues[] = {0, 30, 60, 120, 300};
     
     [navigationController pushViewController:settingsViewController animated:YES];
     [settingsViewController release];
+}
+
+- (void)pinViewController:(PinViewController *)controller pinEntered:(NSString *)pin {
+    NSError *error;
+    NSString *validPin = [SFHFKeychainUtils getPasswordForUsername:@"PIN" andServiceName:@"net.fizzawizza.MobileKeePass" error:&error];
+    if (error != nil || validPin == nil) {
+        // TODO error/no pin, close database
+        return;
+    }
+    
+    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+
+    // Check if the PIN is valid
+    if ([pin isEqualToString:validPin]) {
+        [userDefaults setInteger:0 forKey:@"pinFailedAttempts"];
+        [controller dismissModalViewControllerAnimated:YES];
+    } else {
+        // Vibrate to signify they are a bad user
+        AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+        
+        controller.string = @"Incorrect PIN";
+        [controller clearEntry];
+        
+        // Get the number of failed attempts
+        NSInteger pinFailedAttempts = [userDefaults integerForKey:@"pinFailedAttempts"];
+        [userDefaults setInteger:++pinFailedAttempts forKey:@"pinFailedAttempts"];
+
+        // Get the number of failed attempts before deleting
+        NSInteger deleteOnFailureAttempts = deleteOnFailureAttemptsValues[[userDefaults integerForKey:@"deleteOnFailureAttempts"]];
+
+        // Check if they have failed too many times
+        if (pinFailedAttempts >= deleteOnFailureAttempts) {
+            [userDefaults setInteger:0 forKey:@"pinFailedAttempts"];
+            
+            // Close the current database
+            [self closeDatabase];
+            
+            // Get the files in the Documents directory
+            NSFileManager *fileManager = [NSFileManager defaultManager];
+            NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+            NSString *documentsDirectory = [paths objectAtIndex:0];
+            NSArray *files = [fileManager contentsOfDirectoryAtPath:documentsDirectory error:nil];
+            
+            // Delete all the files in the Documents directory
+            for (NSString *file in files) {
+                [fileManager removeItemAtPath:[documentsDirectory stringByAppendingPathComponent:file] error:nil];
+            }
+            
+            // TODO Delete all saved passwords
+            
+            // Exit the application
+            exit(0);
+        }
+    }
+}
+
+- (void)pinViewControllerCancelButtonPressed:(PinViewController *)controller {
+    NSString* title = @"Canceling PIN entry will lock active database";
+    
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:title delegate:self cancelButtonTitle:@"Close Database" destructiveButtonTitle:nil otherButtonTitles:@"Try Again", nil];
+    actionSheet.actionSheetStyle = UIActivityIndicatorViewStyleGray;
+    [actionSheet showInView:window];
+    [actionSheet release];
+}
+
+-(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == actionSheet.cancelButtonIndex) {
+        [self closeDatabase];
+        [[NSUserDefaults standardUserDefaults] setValue:@"" forKey:@"lastFilename"];
+        [window.rootViewController dismissModalViewControllerAnimated:YES];        
+    }
 }
 
 @end

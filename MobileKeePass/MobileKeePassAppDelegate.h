@@ -25,16 +25,16 @@
     UINavigationController *navigationController;
     GroupViewController *groupViewController;
     
-    UIImage *images[70];
-    
     DatabaseDocument *databaseDocument;
+
+    UIImage *images[70];
 }
 
 @property (nonatomic, retain) DatabaseDocument *databaseDocument;
 
-- (UIImage*)loadImage:(int)index;
 - (void)closeDatabase;
 - (void)openLastDatabase;
+- (UIImage*)loadImage:(int)index;
 
 @end
 

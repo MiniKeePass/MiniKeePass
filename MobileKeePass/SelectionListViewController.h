@@ -23,14 +23,16 @@
     NSArray *items;
     NSInteger selectedIndex;
     id<SelectionListViewControllerDelegate> delegate;
+    id<NSObject> reference;
 }
 
 @property (nonatomic, retain) NSArray *items;
 @property (nonatomic) NSInteger selectedIndex;
 @property (nonatomic, retain) id<SelectionListViewControllerDelegate> delegate;
+@property (nonatomic, retain) id<NSObject> reference;
 
 @end
 
 @protocol SelectionListViewControllerDelegate <NSObject>
-- (void)selectionListViewController:(SelectionListViewController*)controller selectedIndex:(NSInteger)selectedIndex;
+- (void)selectionListViewController:(SelectionListViewController*)controller selectedIndex:(NSInteger)selectedIndex withReference:(id<NSObject>)reference;
 @end

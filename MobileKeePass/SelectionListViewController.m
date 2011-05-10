@@ -22,10 +22,12 @@
 @synthesize items;
 @synthesize selectedIndex;
 @synthesize delegate;
+@synthesize reference;
 
 - (void)dealloc {
     [items release];
     [delegate release];
+    [reference release];
     [super dealloc];
 }
 
@@ -75,8 +77,8 @@
         selectedIndex = indexPath.row;
         
         // Notify the delegate
-        if ([delegate respondsToSelector:@selector(selectionListViewController:selectedIndex:)]) {
-            [delegate selectionListViewController:self selectedIndex:selectedIndex];
+        if ([delegate respondsToSelector:@selector(selectionListViewController:selectedIndex:withReference:)]) {
+            [delegate selectionListViewController:self selectedIndex:selectedIndex withReference:reference];
         }
     }
     

@@ -20,44 +20,110 @@
 #import "SelectionListViewController.h"
 #import "SFHFKeychainUtils.h"
 
+enum {
+    SECTION_PIN,
+    SECTION_DELETE_ON_FAILURE,
+    SECTION_REMEMBER_PASSWORDS,
+    SECTION_HIDE_PASSWORDS,
+    SECTION_NUMBER
+};
+
+enum {
+    ROW_PIN_ENABLED,
+    ROW_PIN_LOCK_TIMEOUT,
+    ROW_PIN_NUMBER
+};
+
+enum {
+    ROW_DELETE_ON_FAILURE_ENABLED,
+    ROW_DELETE_ON_FAILURE_ATTEMPTS,
+    ROW_DELETE_ON_FAILURE_NUMBER
+};
+
+enum {
+    ROW_REMEMBER_PASSWORDS_ENABLED,
+    ROW_REMEMBER_PASSWORDS_NUMBER
+};
+
+enum {
+    ROW_HIDE_PASSWORDS_ENABLED,
+    ROW_HIDE_PASSWORDS_NUMBER
+};
+
 @implementation SettingsViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.title = @"Settings";
+    
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    
+    pinEnabledSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(200, 10, 0, 0)];
+    pinEnabledSwitch.on = [userDefaults boolForKey:@"pinEnabled"];
+    [pinEnabledSwitch addTarget:self action:@selector(togglePinEnabled:) forControlEvents:UIControlEventValueChanged];
+    
+    pinLockTimeoutLabels = [[NSArray arrayWithObjects:@"Immediately", @"30 Seconds", @"1 Minute", @"2 Minutes", @"5 Minutes", nil] retain];
+    
+    deleteOnFailureEnabledSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(200, 10, 0, 0)];
+    deleteOnFailureEnabledSwitch.on = [userDefaults boolForKey:@"deleteOnFailureEnabled"];
+    [deleteOnFailureEnabledSwitch addTarget:self action:@selector(toggleDeleteOnFailureEnabled:) forControlEvents:UIControlEventValueChanged];    
+    
+    deleteOnFailureAttemptsLabels = [[NSArray arrayWithObjects:@"3", @"5", @"10", @"15", nil] retain];
+    
+    rememberPasswordsEnabledSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(200, 10, 0, 0)];
+    rememberPasswordsEnabledSwitch.on = [userDefaults boolForKey:@"rememberPasswordsEnabled"];
+    [rememberPasswordsEnabledSwitch addTarget:self action:@selector(toggleRememberPasswords:) forControlEvents:UIControlEventValueChanged];
     
     hidePasswordsSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(200, 10, 0, 0)];
     hidePasswordsSwitch.on = [userDefaults boolForKey:@"hidePasswords"];
     [hidePasswordsSwitch addTarget:self action:@selector(toggleHidePasswords:) forControlEvents:UIControlEventValueChanged];
-    
-    rememberPasswordsSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(200, 10, 0, 0)];
-    rememberPasswordsSwitch.on = [userDefaults boolForKey:@"rememberPasswords"];
-    [rememberPasswordsSwitch addTarget:self action:@selector(toggleRememberPasswords:) forControlEvents:UIControlEventValueChanged];
-    
-    pinSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(200, 10, 0, 0)];
-    pinSwitch.on = [userDefaults boolForKey:@"pinEnabled"];
-    [pinSwitch addTarget:self action:@selector(togglePin:) forControlEvents:UIControlEventValueChanged];
-    
-    lockTimeoutLabels = [[NSArray arrayWithObjects:@"Immediately", @"30 Seconds", @"1 Minute", @"2 Minutes", @"5 Minutes", nil] retain];
-
-    self.title = @"Settings";
 }
 
 - (void)dealloc {
-    [rememberPasswordsSwitch release];
+    [rememberPasswordsEnabledSwitch release];
     [hidePasswordsSwitch release];
-    [pinSwitch release];
-    [lockTimeoutLabels release];
+    [pinEnabledSwitch release];
+    [pinLockTimeoutLabels release];
     [super dealloc];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
+    return SECTION_NUMBER;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 4;
+    switch (section) {
+        case SECTION_PIN:
+            return ROW_PIN_NUMBER;
+            
+        case SECTION_DELETE_ON_FAILURE:
+            return ROW_DELETE_ON_FAILURE_NUMBER;
+            
+        case SECTION_REMEMBER_PASSWORDS:
+            return ROW_REMEMBER_PASSWORDS_NUMBER;
+            
+        case SECTION_HIDE_PASSWORDS:
+            return ROW_HIDE_PASSWORDS_NUMBER;
+    }
+    return 0;
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    switch (section) {
+        case SECTION_PIN:
+            return @"PIN Protection";
+            
+        case SECTION_DELETE_ON_FAILURE:
+            return @"Delete All Data on PIN Failure";
+            
+        case SECTION_REMEMBER_PASSWORDS:
+            return @"Remember Database Passwords";
+            
+        case SECTION_HIDE_PASSWORDS:
+            return @"General";
+    }
+    return nil;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -68,29 +134,52 @@
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
         cell.selectionStyle = UITableViewCellEditingStyleNone;
     }
-    
-    switch (indexPath.row) {
-        case 0:
-            cell.textLabel.text = @"Hide Passwords";
-            [cell addSubview:hidePasswordsSwitch];
-            break;
-        
-        case 1:
-            cell.textLabel.text = @"Remember Passwords";
-            [cell addSubview:rememberPasswordsSwitch];
-            break;
-            
-        case 2:
-            cell.textLabel.text = @"Enable PIN";
-            [cell addSubview:pinSwitch];
-            break;
-            
-        case 3:
-            cell.textLabel.text = [NSString stringWithFormat:@"Lock Timeout: %@", [lockTimeoutLabels objectAtIndex:[[NSUserDefaults standardUserDefaults] integerForKey:@"lockTimeout"]]];
-            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+
+    switch (indexPath.section) {
+        case SECTION_PIN:
+            switch (indexPath.row) {
+                case ROW_PIN_ENABLED:
+                    cell.textLabel.text = @"Enabled";
+                    [cell addSubview:pinEnabledSwitch];
+                    break;
+                case ROW_PIN_LOCK_TIMEOUT:
+                    cell.textLabel.enabled = pinEnabledSwitch.on;
+                    cell.textLabel.text = [NSString stringWithFormat:@"Lock Timeout: %@", [pinLockTimeoutLabels objectAtIndex:[[NSUserDefaults standardUserDefaults] integerForKey:@"pinLockTimeout"]]];
+                    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                    break;
+            }
             break;
             
-        default:
+        case SECTION_DELETE_ON_FAILURE:
+            switch (indexPath.row) {
+                case ROW_DELETE_ON_FAILURE_ENABLED:
+                    cell.textLabel.text = @"Enabled";
+                    [cell addSubview:deleteOnFailureEnabledSwitch];
+                    break;
+                case ROW_DELETE_ON_FAILURE_ATTEMPTS:
+                    cell.textLabel.enabled = deleteOnFailureEnabledSwitch.on;
+                    cell.textLabel.text = [NSString stringWithFormat:@"Attempts: %@", [deleteOnFailureAttemptsLabels objectAtIndex:[[NSUserDefaults standardUserDefaults] integerForKey:@"deleteOnFailureAttempts"]]];
+                    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                    break;
+            }
+            break;
+            
+        case SECTION_REMEMBER_PASSWORDS:
+            switch (indexPath.row) {
+                case ROW_REMEMBER_PASSWORDS_ENABLED:
+                    cell.textLabel.text = @"Enabled";
+                    [cell addSubview:rememberPasswordsEnabledSwitch];
+                    break;
+            }
+            break;
+            
+        case SECTION_HIDE_PASSWORDS:
+            switch (indexPath.row) {
+                case ROW_HIDE_PASSWORDS_ENABLED:
+                    cell.textLabel.text = @"Hide Passwords";
+                    [cell addSubview:hidePasswordsSwitch];
+                    break;
+            }
             break;
     }
     
@@ -98,46 +187,79 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.row == 2) {
+    if (indexPath.section == SECTION_PIN && indexPath.row == ROW_PIN_LOCK_TIMEOUT && pinEnabledSwitch.on) {
         SelectionListViewController *selectionListViewController = [[SelectionListViewController alloc] initWithStyle:UITableViewStyleGrouped];
-        selectionListViewController.items = lockTimeoutLabels;
-        selectionListViewController.selectedIndex = [[NSUserDefaults standardUserDefaults] integerForKey:@"lockTimeout"];
-        selectionListViewController.delegate = self;
         selectionListViewController.title = @"Lock Timeout";
+        selectionListViewController.items = pinLockTimeoutLabels;
+        selectionListViewController.selectedIndex = [[NSUserDefaults standardUserDefaults] integerForKey:@"pinLockTimeout"];
+        selectionListViewController.delegate = self;
+        selectionListViewController.reference = indexPath;
+        [self.navigationController pushViewController:selectionListViewController animated:YES];
+        [selectionListViewController release];
+    } else if (indexPath.section == SECTION_DELETE_ON_FAILURE && indexPath.row == ROW_DELETE_ON_FAILURE_ATTEMPTS && deleteOnFailureEnabledSwitch.on) {
+        SelectionListViewController *selectionListViewController = [[SelectionListViewController alloc] initWithStyle:UITableViewStyleGrouped];
+        selectionListViewController.title = @"Attempts";
+        selectionListViewController.items = deleteOnFailureAttemptsLabels;
+        selectionListViewController.selectedIndex = [[NSUserDefaults standardUserDefaults] integerForKey:@"deleteOnFailureAttempts"];
+        selectionListViewController.delegate = self;
+        selectionListViewController.reference = indexPath;
         [self.navigationController pushViewController:selectionListViewController animated:YES];
         [selectionListViewController release];
     }
 }
 
-- (void)selectionListViewController:(SelectionListViewController *)controller selectedIndex:(NSInteger)selectedIndex {
-    // Save the user setting
-    NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
-    [standardUserDefaults setInteger:selectedIndex forKey:@"lockTimeout"];
-    
-    // Update the cell text
-    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:2 inSection:0]]; 
-    cell.textLabel.text = [NSString stringWithFormat:@"Lock Timeout: %@", [lockTimeoutLabels objectAtIndex:selectedIndex]];
+- (void)selectionListViewController:(SelectionListViewController *)controller selectedIndex:(NSInteger)selectedIndex withReference:(id<NSObject>)reference {
+    NSIndexPath *indexPath = (NSIndexPath*)reference;
+    if (indexPath.section == SECTION_PIN && indexPath.row == ROW_PIN_LOCK_TIMEOUT) {
+        // Save the user setting
+        NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
+        [standardUserDefaults setInteger:selectedIndex forKey:@"pinLockTimeout"];
+        
+        // Update the cell text
+        UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+        cell.textLabel.text = [NSString stringWithFormat:@"Lock Timeout: %@", [pinLockTimeoutLabels objectAtIndex:selectedIndex]];
+    } else if (indexPath.section == SECTION_DELETE_ON_FAILURE && indexPath.row == ROW_DELETE_ON_FAILURE_ATTEMPTS) {
+        // Save the user setting
+        NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
+        [standardUserDefaults setInteger:selectedIndex forKey:@"deleteOnFailureAttempts"];
+        
+        // Update the cell text
+        UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+        cell.textLabel.text = [NSString stringWithFormat:@"Attempts: %@", [deleteOnFailureAttemptsLabels objectAtIndex:selectedIndex]];
+    }    
 }
 
-- (void)toggleHidePasswords:(id)sender {
-    [[NSUserDefaults standardUserDefaults] setBool:hidePasswordsSwitch.on forKey:@"hidePasswords"];
+- (void)setCellAtRow:(NSInteger)row inSection:(NSInteger)section enabled:(BOOL)enabled {
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:section];
+    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+    cell.textLabel.enabled = enabled;    
 }
 
-- (void)toggleRememberPasswords:(id)sender {
-    [[NSUserDefaults standardUserDefaults] setBool:rememberPasswordsSwitch.on forKey:@"rememberPasswords"];
-}
-
-- (void)togglePin:(id)sender {
-    if (pinSwitch.on) {
+- (void)togglePinEnabled:(id)sender {
+    if (pinEnabledSwitch.on) {
         PinViewController* pinViewController = [[PinViewController alloc] initWithText:@"Set PIN"];
         pinViewController.delegate = self;
         [self presentModalViewController:pinViewController animated:YES];
         [pinViewController release];
     } else {
         [SFHFKeychainUtils deleteItemForUsername:@"PIN" andServiceName:@"net.fizzawizza.MobileKeePass" error:nil];
+        [self setCellAtRow:ROW_PIN_LOCK_TIMEOUT inSection:SECTION_PIN enabled:NO];
     }
     
-    [[NSUserDefaults standardUserDefaults] setBool:pinSwitch.on forKey:@"pinEnabled"];
+    [[NSUserDefaults standardUserDefaults] setBool:pinEnabledSwitch.on forKey:@"pinEnabled"];
+}
+
+- (void)toggleDeleteOnFailureEnabled:(id)sender {
+    [[NSUserDefaults standardUserDefaults] setBool:deleteOnFailureEnabledSwitch.on forKey:@"deleteOnFailureEnabled"];
+    [self setCellAtRow:ROW_DELETE_ON_FAILURE_ATTEMPTS inSection:SECTION_DELETE_ON_FAILURE enabled:deleteOnFailureEnabledSwitch.on];
+}
+
+- (void)toggleRememberPasswords:(id)sender {
+    [[NSUserDefaults standardUserDefaults] setBool:rememberPasswordsEnabledSwitch.on forKey:@"rememberPasswordsEnabled"];
+}
+
+- (void)toggleHidePasswords:(id)sender {
+    [[NSUserDefaults standardUserDefaults] setBool:hidePasswordsSwitch.on forKey:@"hidePasswords"];
 }
 
 - (void)pinViewController:(PinViewController *)controller pinEntered:(NSString *)pin {        
@@ -151,6 +273,8 @@
         
         [tempPin release];
         tempPin = nil;
+        
+        [self setCellAtRow:ROW_PIN_LOCK_TIMEOUT inSection:SECTION_PIN enabled:YES];
 
         [controller dismissModalViewControllerAnimated:YES];
     } else {
@@ -165,7 +289,7 @@
 }
 
 - (void)pinViewControllerCancelButtonPressed:(PinViewController *)controller {
-    [pinSwitch setOn:NO animated:YES];
+    [pinEnabledSwitch setOn:NO animated:YES];
 
     [SFHFKeychainUtils deleteItemForUsername:@"PIN" andServiceName:@"net.fizzawizza.MobileKeePass" error:nil];
     
@@ -174,6 +298,8 @@
     
     [tempPin release];
     tempPin = nil;
+    
+    [self setCellAtRow:ROW_PIN_LOCK_TIMEOUT inSection:SECTION_PIN enabled:NO];
 
     [controller dismissModalViewControllerAnimated:YES];
 }

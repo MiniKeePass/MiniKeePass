@@ -20,11 +20,18 @@
 #import "SelectionListViewController.h"
 
 @interface SettingsViewController : UITableViewController <PinViewControllerDelegate, SelectionListViewControllerDelegate> {
-    UISwitch *hidePasswordsSwitch;
-    UISwitch *rememberPasswordsSwitch;
-    UISwitch *pinSwitch;
+    UISwitch *pinEnabledSwitch;
     NSString *tempPin;
-    NSArray *lockTimeoutLabels;
+    NSArray *pinLockTimeoutLabels;
+    
+    UISwitch *deleteOnFailureEnabledSwitch;
+    NSArray *deleteOnFailureAttemptsLabels;
+    
+    UISwitch *rememberPasswordsEnabledSwitch;
+
+    UISwitch *hidePasswordsSwitch;
 }
+
+- (void)setCellAtRow:(NSInteger)row inSection:(NSInteger)section enabled:(BOOL)enabled;
 
 @end
