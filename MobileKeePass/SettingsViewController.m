@@ -244,6 +244,9 @@ enum {
     } else {
         [SFHFKeychainUtils deleteItemForUsername:@"PIN" andServiceName:@"net.fizzawizza.MobileKeePass" error:nil];
         [self setCellAtRow:ROW_PIN_LOCK_TIMEOUT inSection:SECTION_PIN enabled:NO];
+        [self setCellAtRow:ROW_DELETE_ON_FAILURE_ENABLED inSection:SECTION_DELETE_ON_FAILURE enabled:NO];
+        [self setCellAtRow:ROW_DELETE_ON_FAILURE_ATTEMPTS inSection:SECTION_DELETE_ON_FAILURE enabled:NO];
+        deleteOnFailureEnabledSwitch.enabled = NO;
     }
     
     [[NSUserDefaults standardUserDefaults] setBool:pinEnabledSwitch.on forKey:@"pinEnabled"];
@@ -275,6 +278,9 @@ enum {
         tempPin = nil;
         
         [self setCellAtRow:ROW_PIN_LOCK_TIMEOUT inSection:SECTION_PIN enabled:YES];
+        [self setCellAtRow:ROW_DELETE_ON_FAILURE_ENABLED inSection:SECTION_DELETE_ON_FAILURE enabled:YES];
+        [self setCellAtRow:ROW_DELETE_ON_FAILURE_ATTEMPTS inSection:SECTION_DELETE_ON_FAILURE enabled:YES];
+        deleteOnFailureEnabledSwitch.enabled = YES;
 
         [controller dismissModalViewControllerAnimated:YES];
     } else {
