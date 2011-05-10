@@ -399,19 +399,19 @@ static NSString *SFHFKeychainUtilsErrorDomain = @"SFHFKeychainUtilsErrorDomain";
 + (BOOL) deleteItemForUsername: (NSString *) username andServiceName: (NSString *) serviceName error: (NSError **) error 
 {
 	if (!username || !serviceName) 
-  {
-		if (error != nil) 
     {
+		if (error != nil) 
+        {
 			*error = [NSError errorWithDomain: SFHFKeychainUtilsErrorDomain code: -2000 userInfo: nil];
 		}
 		return NO;
 	}
 	
 	if (error != nil) 
-  {
+    {
 		*error = nil;
 	}
-  
+    
 	NSArray *keys = [[[NSArray alloc] initWithObjects: (NSString *) kSecClass, kSecAttrAccount, kSecAttrService, kSecReturnAttributes, nil] autorelease];
 	NSArray *objects = [[[NSArray alloc] initWithObjects: (NSString *) kSecClassGenericPassword, username, serviceName, kCFBooleanTrue, nil] autorelease];
 	
@@ -420,13 +420,46 @@ static NSString *SFHFKeychainUtilsErrorDomain = @"SFHFKeychainUtilsErrorDomain";
 	OSStatus status = SecItemDelete((CFDictionaryRef) query);
 	
 	if (error != nil && status != noErr) 
-  {
+    {
 		*error = [NSError errorWithDomain: SFHFKeychainUtilsErrorDomain code: status userInfo: nil];		
-    
-    return NO;
+        
+        return NO;
 	}
-  
-  return YES;
+    
+    return YES;
+}
+
++ (BOOL) deleteAllItemForServiceName: (NSString *) serviceName error: (NSError **) error 
+{
+	if (!serviceName) 
+    {
+		if (error != nil) 
+        {
+			*error = [NSError errorWithDomain: SFHFKeychainUtilsErrorDomain code: -2000 userInfo: nil];
+		}
+		return NO;
+	}
+	
+	if (error != nil) 
+    {
+		*error = nil;
+	}
+    
+	NSArray *keys = [[[NSArray alloc] initWithObjects: (NSString *) kSecClass, kSecAttrService, kSecReturnAttributes, nil] autorelease];
+	NSArray *objects = [[[NSArray alloc] initWithObjects: (NSString *) kSecClassGenericPassword, serviceName, kCFBooleanTrue, nil] autorelease];
+	
+	NSDictionary *query = [[[NSDictionary alloc] initWithObjects: objects forKeys: keys] autorelease];
+	
+	OSStatus status = SecItemDelete((CFDictionaryRef) query);
+	
+	if (error != nil && status != noErr) 
+    {
+		*error = [NSError errorWithDomain: SFHFKeychainUtilsErrorDomain code: status userInfo: nil];		
+        
+        return NO;
+	}
+    
+    return YES;
 }
 
 #endif
