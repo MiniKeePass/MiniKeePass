@@ -119,6 +119,8 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
     // Check if it's been longer then lock timeout
     NSTimeInterval timeInterval = [exitTime timeIntervalSinceNow];
     if (timeInterval < -pinLockTimeout) {
+        [window.rootViewController dismissModalViewControllerAnimated:NO];
+
         // Present the pin view
         PinViewController *pinViewController = [[PinViewController alloc] init];
         pinViewController.delegate = self;
@@ -212,12 +214,12 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
     
     settingsViewController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
     
-    [navigationController presentModalViewController:settingsNavigationController animated:YES];
+    [window.rootViewController presentModalViewController:settingsNavigationController animated:YES];
     [settingsNavigationController release];
 }
 
 - (void)dismissSettingsPage:(id)sender {
-    [navigationController dismissModalViewControllerAnimated:YES];
+    [window.rootViewController dismissModalViewControllerAnimated:YES];
 }
 
 - (void)pinViewController:(PinViewController *)controller pinEntered:(NSString *)pin {
@@ -234,13 +236,16 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
     if ([pin isEqualToString:validPin]) {
         [userDefaults setInteger:0 forKey:@"pinFailedAttempts"];
         [controller dismissModalViewControllerAnimated:YES];
-    } else {
-        // Vibrate to signify they are a bad user
-        AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
-        
-        controller.string = @"Incorrect PIN";
-        [controller clearEntry];
-        
+        return;
+    } 
+    
+    // Vibrate to signify they are a bad user
+    AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+    
+    controller.string = @"Incorrect PIN";
+    [controller clearEntry];
+    
+    if ([userDefaults boolForKey:@"deleteOnFailureEnabled"]) {
         // Get the number of failed attempts
         NSInteger pinFailedAttempts = [userDefaults integerForKey:@"pinFailedAttempts"];
         [userDefaults setInteger:++pinFailedAttempts forKey:@"pinFailedAttempts"];
