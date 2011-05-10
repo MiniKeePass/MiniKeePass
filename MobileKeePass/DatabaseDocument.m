@@ -16,19 +16,18 @@
  */
 
 #import "DatabaseDocument.h"
-#import "Kdb3.h"
 
 @implementation DatabaseDocument
 
-@synthesize database;
-@synthesize filename;
+@synthesize kdbTree;
 @synthesize dirty;
 
 - (id)init {
     self = [super init];
     if (self) {
-        database = nil;
+        kdbTree = nil;
         filename = nil;
+        password = nil;
         dirty = NO;
     }
     return self;
@@ -36,39 +35,37 @@
 
 
 - (void)dealloc {
-    [database release];
+    [kdbTree release];
     [filename release];
+    [password release];
     [super dealloc];
 }
 
-- (enum DatabaseError)open:(NSString *)path password:(NSString *)password {
-    [database release];
+- (void)open:(NSString *)newFilename password:(NSString *)newPassword {
+    [kdbTree release];
     [filename release];
+    [password release];
     
-    filename = [path retain];
+    filename = [newFilename retain];
+    password = [newPassword retain];
     dirty = NO;
-    database = [[Kdb3 alloc] init];
     
-    return [database openDatabase:filename password:password];
+    WrapperNSData *wrapperNSData = [[WrapperNSData alloc] initWithContentsOfMappedFile:filename];
+    id<KdbReader> kdbReader = [KdbReaderFactory newKdbReader:wrapperNSData];
+    kdbTree = [kdbReader load:wrapperNSData withPassword:password];
+    [kdbReader release];
+    [wrapperNSData release];
 }
 
-- (enum DatabaseError)new:(NSString *)path password:(NSString *)passowrd {
-    [database release];
-    [filename release];
-    
-    filename = [path retain];
-    dirty = NO;
-    database = [[Kdb3 alloc] init];
-    
-    return [database newDatabase:filename password:passowrd];
-}
-
-- (enum DatabaseError)save {
+- (void)save {
     if (dirty) {
         dirty = NO;
-        return [database saveDatabase:filename];
+        
+        if ([kdbTree isKindOfClass:[Kdb3Tree class]]) {
+            Kdb3Writer *writer = [[Kdb3Writer alloc] init];
+            [writer persist:kdbTree file:filename withPassword:password];
+        }
     }
-    return NO_ERROR;
 }
 
 @end

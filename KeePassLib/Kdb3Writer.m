@@ -96,8 +96,6 @@
 	uint32_t numGroups = [self numOfGroups:root]-1; //minus the root itself
 	uint32_t numEntries = [self numOfEntries:root];	
 	
-	DLog(@"-->found  %d entries", numEntries);
-	
 	*((uint32_t *)(_header+48)) = SWAP_INT32_HOST_TO_LE(numGroups); //48..51
 	*((uint32_t *)(_header+52)) = SWAP_INT32_HOST_TO_LE(numEntries); //52..55		
 	

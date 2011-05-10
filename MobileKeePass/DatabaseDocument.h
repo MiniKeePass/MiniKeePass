@@ -16,20 +16,19 @@
  */
 
 #import <Foundation/Foundation.h>
-#import "Database.h"
+#import "KdbLib.h"
 
 @interface DatabaseDocument : NSObject {
-    NSObject<Database> *database;
+    id<KdbTree> kdbTree;
     NSString *filename;
+    NSString *password;
     BOOL dirty;
 }
 
-@property (nonatomic, retain) NSObject<Database> *database;
-@property (nonatomic, retain) NSString *filename;
+@property (nonatomic, retain) id<KdbTree> kdbTree;
 @property (nonatomic) BOOL dirty;
 
-- (enum DatabaseError)open:(NSString *)path password:(NSString *)password;
-- (enum DatabaseError)new:(NSString *)path password:(NSString *)passowrd;
-- (enum DatabaseError)save;
+- (void)open:(NSString*)newFilename password:(NSString*)newPassword;
+- (void)save;
 
 @end

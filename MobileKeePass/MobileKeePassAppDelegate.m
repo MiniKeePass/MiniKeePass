@@ -164,7 +164,7 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
 
 - (void)setDatabaseDocument:(DatabaseDocument *)newDatabaseDocument {
     databaseDocument = [newDatabaseDocument retain];
-    groupViewController.group = [databaseDocument.database rootGroup];
+    groupViewController.group = [databaseDocument.kdbTree getRoot];
 }
 
 - (void)closeDatabase {

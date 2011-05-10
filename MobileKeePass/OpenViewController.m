@@ -63,7 +63,7 @@
     NSString *documentsDirectory = [paths objectAtIndex:0];
     
     NSArray *dirContents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:documentsDirectory error:nil];
-    NSArray *filenames = [dirContents filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"self ENDSWITH '.kdb'"]];
+    NSArray *filenames = [dirContents filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"(self ENDSWITH '.kdb') OR (self ENDSWITH '.kdbx')"]];
     files = [[NSMutableArray arrayWithArray:filenames] retain];
     
     [self.tableView reloadData];

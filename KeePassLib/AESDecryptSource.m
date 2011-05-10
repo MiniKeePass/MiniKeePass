@@ -45,7 +45,6 @@
 	CCCryptorStatus cs;
 	if(read){
 		if(cs=CCCryptorUpdate(_cryptorRef, _inputBuffer, read, _outputBuffer, AES_BUFFERSIZE, &movedBytes)){
-			//DLog(@"error here1 %d", cs);
 			@throw [NSException exceptionWithName:@"DecryptError" reason:@"DecryptError" userInfo:nil];
 		};	
 				
@@ -54,7 +53,6 @@
 	
 	if(read<AES_BUFFERSIZE){
 		if(cs=CCCryptorFinal(_cryptorRef, _outputBuffer+movedBytes, AES_BUFFERSIZE-movedBytes, &movedBytes)){
-			DLog(@"error here2 %d", cs);
 			@throw [NSException exceptionWithName:@"DecryptError" reason:@"DecryptError" userInfo:nil];
 		}	
 		

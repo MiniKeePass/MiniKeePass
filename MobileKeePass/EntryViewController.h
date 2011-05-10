@@ -20,7 +20,7 @@
 #import "UrlFieldCell.h"
 #import "TextViewCell.h"
 #import "PasswordFieldCell.h"
-#import "Database.h"
+#import "KdbLib.h"
 
 @interface EntryViewController : UITableViewController <UITextFieldDelegate, UITextViewDelegate, UIActionSheetDelegate> {
     TextFieldCell *titleCell;
@@ -30,9 +30,9 @@
     TextViewCell *commentsCell;
     CGFloat originalHeight;
 
-    Entry *entry;
+    id<KdbEntry> entry;
 }
 
-@property (nonatomic, retain) Entry *entry;
+@property (nonatomic, retain) id<KdbEntry> entry;
 
 @end

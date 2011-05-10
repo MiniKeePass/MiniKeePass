@@ -47,7 +47,6 @@ static UUID * _AES_UUID;
 			_AES_UUID._bytes[14]=0x5A; _AES_UUID._bytes[15]=0xFF;
 		}
 	}
-	DLog(@"%@", _AES_UUID);
 	return _AES_UUID;
 }
 

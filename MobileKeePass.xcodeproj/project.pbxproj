@@ -32,6 +32,34 @@
 		688D47751378DF9400BEE609 /* DatabaseManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 688D47741378DF9400BEE609 /* DatabaseManager.m */; };
 		688E68F5136F761500004216 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 688E68F4136F761500004216 /* Settings.bundle */; };
 		688F3FB51377805C0049808C /* SelectionListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 688F3FB41377805C0049808C /* SelectionListViewController.m */; };
+		689675971379DCE6006BC268 /* AESDecryptSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 689675491379DCE5006BC268 /* AESDecryptSource.m */; };
+		689675981379DCE6006BC268 /* AESEncryptSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 6896754B1379DCE5006BC268 /* AESEncryptSource.m */; };
+		6896759A1379DCE6006BC268 /* Arc4RandomStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 6896754F1379DCE5006BC268 /* Arc4RandomStream.m */; };
+		6896759B1379DCE6006BC268 /* Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 689675511379DCE5006BC268 /* Base64.m */; };
+		6896759D1379DCE6006BC268 /* BinaryContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 689675551379DCE5006BC268 /* BinaryContainer.m */; };
+		6896759E1379DCE6006BC268 /* ByteBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 689675571379DCE5006BC268 /* ByteBuffer.m */; };
+		689675A11379DCE6006BC268 /* GZipInputData.m in Sources */ = {isa = PBXBuildFile; fileRef = 6896755E1379DCE5006BC268 /* GZipInputData.m */; };
+		689675A21379DCE6006BC268 /* HashedInputData.m in Sources */ = {isa = PBXBuildFile; fileRef = 689675601379DCE5006BC268 /* HashedInputData.m */; };
+		689675A31379DCE6006BC268 /* Kdb3Date.m in Sources */ = {isa = PBXBuildFile; fileRef = 689675631379DCE5006BC268 /* Kdb3Date.m */; };
+		689675A41379DCE6006BC268 /* Kdb3Node.m in Sources */ = {isa = PBXBuildFile; fileRef = 689675651379DCE5006BC268 /* Kdb3Node.m */; };
+		689675A51379DCE6006BC268 /* Kdb3Parser.m in Sources */ = {isa = PBXBuildFile; fileRef = 689675671379DCE5006BC268 /* Kdb3Parser.m */; };
+		689675A61379DCE6006BC268 /* Kdb3Persist.m in Sources */ = {isa = PBXBuildFile; fileRef = 689675691379DCE5006BC268 /* Kdb3Persist.m */; };
+		689675A71379DCE6006BC268 /* Kdb3Reader.m in Sources */ = {isa = PBXBuildFile; fileRef = 6896756B1379DCE5006BC268 /* Kdb3Reader.m */; };
+		689675A91379DCE6006BC268 /* Kdb3Writer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6896756F1379DCE5006BC268 /* Kdb3Writer.m */; };
+		689675AA1379DCE6006BC268 /* Kdb4Node.m in Sources */ = {isa = PBXBuildFile; fileRef = 689675711379DCE5006BC268 /* Kdb4Node.m */; };
+		689675AB1379DCE6006BC268 /* Kdb4Parser.m in Sources */ = {isa = PBXBuildFile; fileRef = 689675731379DCE5006BC268 /* Kdb4Parser.m */; };
+		689675AC1379DCE6006BC268 /* Kdb4Reader.m in Sources */ = {isa = PBXBuildFile; fileRef = 689675751379DCE5006BC268 /* Kdb4Reader.m */; };
+		689675AE1379DCE6006BC268 /* KdbPassword.m in Sources */ = {isa = PBXBuildFile; fileRef = 6896757A1379DCE5006BC268 /* KdbPassword.m */; };
+		689675AF1379DCE6006BC268 /* KdbReaderFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 6896757D1379DCE5006BC268 /* KdbReaderFactory.m */; };
+		689675B21379DCE6006BC268 /* Node.m in Sources */ = {isa = PBXBuildFile; fileRef = 689675831379DCE5006BC268 /* Node.m */; };
+		689675B61379DCE6006BC268 /* Salsa20RandomStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 6896758B1379DCE5006BC268 /* Salsa20RandomStream.m */; };
+		689675B71379DCE6006BC268 /* Stack.m in Sources */ = {isa = PBXBuildFile; fileRef = 6896758D1379DCE5006BC268 /* Stack.m */; };
+		689675B81379DCE6006BC268 /* Tree.m in Sources */ = {isa = PBXBuildFile; fileRef = 6896758F1379DCE5006BC268 /* Tree.m */; };
+		689675B91379DCE6006BC268 /* Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 689675911379DCE5006BC268 /* Utils.m */; };
+		689675BA1379DCE6006BC268 /* UUID.m in Sources */ = {isa = PBXBuildFile; fileRef = 689675931379DCE5006BC268 /* UUID.m */; };
+		689675BB1379DCE6006BC268 /* WrapperNSData.m in Sources */ = {isa = PBXBuildFile; fileRef = 689675951379DCE5006BC268 /* WrapperNSData.m */; };
+		689675BE1379DFD8006BC268 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 689675BD1379DFD8006BC268 /* libxml2.dylib */; };
+		689675C01379ECD6006BC268 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 689675BF1379ECD6006BC268 /* libz.dylib */; };
 		689859B1136CDC91001B4204 /* 0.png in Resources */ = {isa = PBXBuildFile; fileRef = 6898596A136CDC91001B4204 /* 0.png */; };
 		689859B2136CDC91001B4204 /* 1.png in Resources */ = {isa = PBXBuildFile; fileRef = 6898596B136CDC91001B4204 /* 1.png */; };
 		689859B3136CDC91001B4204 /* 10.png in Resources */ = {isa = PBXBuildFile; fileRef = 6898596C136CDC91001B4204 /* 10.png */; };
@@ -110,10 +138,6 @@
 		68D59014136CB5CB0064CEE5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 68D59012136CB5CB0064CEE5 /* InfoPlist.strings */; };
 		68D59017136CB5CB0064CEE5 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 68D59016136CB5CB0064CEE5 /* main.m */; };
 		68D5901A136CB5CB0064CEE5 /* MobileKeePassAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 68D59019136CB5CB0064CEE5 /* MobileKeePassAppDelegate.m */; };
-		68D5902D136CB5F30064CEE5 /* ArcFour.m in Sources */ = {isa = PBXBuildFile; fileRef = 68D59026136CB5F30064CEE5 /* ArcFour.m */; };
-		68D5902E136CB5F30064CEE5 /* Database.m in Sources */ = {isa = PBXBuildFile; fileRef = 68D59028136CB5F30064CEE5 /* Database.m */; };
-		68D5902F136CB5F30064CEE5 /* Kdb3.m in Sources */ = {isa = PBXBuildFile; fileRef = 68D5902A136CB5F30064CEE5 /* Kdb3.m */; };
-		68D59030136CB5F30064CEE5 /* License.txt in Resources */ = {isa = PBXBuildFile; fileRef = 68D5902B136CB5F30064CEE5 /* License.txt */; };
 		68D5903B136CB7820064CEE5 /* GroupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68D5903A136CB7820064CEE5 /* GroupViewController.m */; };
 		68DCBB4413795F8600B1C089 /* itunes.html in Resources */ = {isa = PBXBuildFile; fileRef = 68DCBB4313795F8600B1C089 /* itunes.html */; };
 		68DCBB471379621800B1C089 /* dropbox.html in Resources */ = {isa = PBXBuildFile; fileRef = 68DCBB461379621800B1C089 /* dropbox.html */; };
@@ -158,6 +182,66 @@
 		688E68F4136F761500004216 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		688F3FB31377805C0049808C /* SelectionListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectionListViewController.h; sourceTree = "<group>"; };
 		688F3FB41377805C0049808C /* SelectionListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectionListViewController.m; sourceTree = "<group>"; };
+		689675481379DCE5006BC268 /* AESDecryptSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AESDecryptSource.h; sourceTree = "<group>"; };
+		689675491379DCE5006BC268 /* AESDecryptSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AESDecryptSource.m; sourceTree = "<group>"; };
+		6896754A1379DCE5006BC268 /* AESEncryptSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AESEncryptSource.h; sourceTree = "<group>"; };
+		6896754B1379DCE5006BC268 /* AESEncryptSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AESEncryptSource.m; sourceTree = "<group>"; };
+		6896754E1379DCE5006BC268 /* Arc4RandomStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Arc4RandomStream.h; sourceTree = "<group>"; };
+		6896754F1379DCE5006BC268 /* Arc4RandomStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Arc4RandomStream.m; sourceTree = "<group>"; };
+		689675501379DCE5006BC268 /* Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Base64.h; sourceTree = "<group>"; };
+		689675511379DCE5006BC268 /* Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Base64.m; sourceTree = "<group>"; };
+		689675541379DCE5006BC268 /* BinaryContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BinaryContainer.h; sourceTree = "<group>"; };
+		689675551379DCE5006BC268 /* BinaryContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BinaryContainer.m; sourceTree = "<group>"; };
+		689675561379DCE5006BC268 /* ByteBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ByteBuffer.h; sourceTree = "<group>"; };
+		689675571379DCE5006BC268 /* ByteBuffer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ByteBuffer.m; sourceTree = "<group>"; };
+		689675581379DCE5006BC268 /* DataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataSource.h; sourceTree = "<group>"; };
+		6896755D1379DCE5006BC268 /* GZipInputData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GZipInputData.h; sourceTree = "<group>"; };
+		6896755E1379DCE5006BC268 /* GZipInputData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GZipInputData.m; sourceTree = "<group>"; };
+		6896755F1379DCE5006BC268 /* HashedInputData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HashedInputData.h; sourceTree = "<group>"; };
+		689675601379DCE5006BC268 /* HashedInputData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HashedInputData.m; sourceTree = "<group>"; };
+		689675611379DCE5006BC268 /* Kdb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Kdb.h; sourceTree = "<group>"; };
+		689675621379DCE5006BC268 /* Kdb3Date.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Kdb3Date.h; sourceTree = "<group>"; };
+		689675631379DCE5006BC268 /* Kdb3Date.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Kdb3Date.m; sourceTree = "<group>"; };
+		689675641379DCE5006BC268 /* Kdb3Node.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Kdb3Node.h; sourceTree = "<group>"; };
+		689675651379DCE5006BC268 /* Kdb3Node.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Kdb3Node.m; sourceTree = "<group>"; };
+		689675661379DCE5006BC268 /* Kdb3Parser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Kdb3Parser.h; sourceTree = "<group>"; };
+		689675671379DCE5006BC268 /* Kdb3Parser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Kdb3Parser.m; sourceTree = "<group>"; };
+		689675681379DCE5006BC268 /* Kdb3Persist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Kdb3Persist.h; sourceTree = "<group>"; };
+		689675691379DCE5006BC268 /* Kdb3Persist.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Kdb3Persist.m; sourceTree = "<group>"; };
+		6896756A1379DCE5006BC268 /* Kdb3Reader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Kdb3Reader.h; sourceTree = "<group>"; };
+		6896756B1379DCE5006BC268 /* Kdb3Reader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Kdb3Reader.m; sourceTree = "<group>"; };
+		6896756E1379DCE5006BC268 /* Kdb3Writer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Kdb3Writer.h; sourceTree = "<group>"; };
+		6896756F1379DCE5006BC268 /* Kdb3Writer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Kdb3Writer.m; sourceTree = "<group>"; };
+		689675701379DCE5006BC268 /* Kdb4Node.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Kdb4Node.h; sourceTree = "<group>"; };
+		689675711379DCE5006BC268 /* Kdb4Node.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Kdb4Node.m; sourceTree = "<group>"; };
+		689675721379DCE5006BC268 /* Kdb4Parser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Kdb4Parser.h; sourceTree = "<group>"; };
+		689675731379DCE5006BC268 /* Kdb4Parser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Kdb4Parser.m; sourceTree = "<group>"; };
+		689675741379DCE5006BC268 /* Kdb4Reader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Kdb4Reader.h; sourceTree = "<group>"; };
+		689675751379DCE5006BC268 /* Kdb4Reader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Kdb4Reader.m; sourceTree = "<group>"; };
+		689675781379DCE5006BC268 /* KdbLib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KdbLib.h; sourceTree = "<group>"; };
+		689675791379DCE5006BC268 /* KdbPassword.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KdbPassword.h; sourceTree = "<group>"; };
+		6896757A1379DCE5006BC268 /* KdbPassword.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KdbPassword.m; sourceTree = "<group>"; };
+		6896757B1379DCE5006BC268 /* KdbReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KdbReader.h; sourceTree = "<group>"; };
+		6896757C1379DCE5006BC268 /* KdbReaderFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KdbReaderFactory.h; sourceTree = "<group>"; };
+		6896757D1379DCE5006BC268 /* KdbReaderFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KdbReaderFactory.m; sourceTree = "<group>"; };
+		6896757E1379DCE5006BC268 /* KeePass2_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeePass2_Prefix.pch; sourceTree = "<group>"; };
+		689675821379DCE5006BC268 /* Node.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Node.h; sourceTree = "<group>"; };
+		689675831379DCE5006BC268 /* Node.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Node.m; sourceTree = "<group>"; };
+		689675861379DCE5006BC268 /* RandomStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RandomStream.h; sourceTree = "<group>"; };
+		6896758A1379DCE5006BC268 /* Salsa20RandomStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Salsa20RandomStream.h; sourceTree = "<group>"; };
+		6896758B1379DCE5006BC268 /* Salsa20RandomStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Salsa20RandomStream.m; sourceTree = "<group>"; };
+		6896758C1379DCE5006BC268 /* Stack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Stack.h; sourceTree = "<group>"; };
+		6896758D1379DCE5006BC268 /* Stack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Stack.m; sourceTree = "<group>"; };
+		6896758E1379DCE5006BC268 /* Tree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tree.h; sourceTree = "<group>"; };
+		6896758F1379DCE5006BC268 /* Tree.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Tree.m; sourceTree = "<group>"; };
+		689675901379DCE5006BC268 /* Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utils.h; sourceTree = "<group>"; };
+		689675911379DCE5006BC268 /* Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Utils.m; sourceTree = "<group>"; };
+		689675921379DCE5006BC268 /* UUID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UUID.h; sourceTree = "<group>"; };
+		689675931379DCE5006BC268 /* UUID.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UUID.m; sourceTree = "<group>"; };
+		689675941379DCE5006BC268 /* WrapperNSData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WrapperNSData.h; sourceTree = "<group>"; };
+		689675951379DCE5006BC268 /* WrapperNSData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WrapperNSData.m; sourceTree = "<group>"; };
+		689675BD1379DFD8006BC268 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
+		689675BF1379ECD6006BC268 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		6898596A136CDC91001B4204 /* 0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 0.png; sourceTree = "<group>"; };
 		6898596B136CDC91001B4204 /* 1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 1.png; sourceTree = "<group>"; };
 		6898596C136CDC91001B4204 /* 10.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 10.png; sourceTree = "<group>"; };
@@ -243,13 +327,6 @@
 		68D59016136CB5CB0064CEE5 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		68D59018136CB5CB0064CEE5 /* MobileKeePassAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MobileKeePassAppDelegate.h; sourceTree = "<group>"; };
 		68D59019136CB5CB0064CEE5 /* MobileKeePassAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MobileKeePassAppDelegate.m; sourceTree = "<group>"; };
-		68D59025136CB5F30064CEE5 /* ArcFour.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArcFour.h; sourceTree = "<group>"; };
-		68D59026136CB5F30064CEE5 /* ArcFour.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArcFour.m; sourceTree = "<group>"; };
-		68D59027136CB5F30064CEE5 /* Database.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Database.h; sourceTree = "<group>"; };
-		68D59028136CB5F30064CEE5 /* Database.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Database.m; sourceTree = "<group>"; };
-		68D59029136CB5F30064CEE5 /* Kdb3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Kdb3.h; sourceTree = "<group>"; };
-		68D5902A136CB5F30064CEE5 /* Kdb3.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Kdb3.m; sourceTree = "<group>"; };
-		68D5902B136CB5F30064CEE5 /* License.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = License.txt; sourceTree = "<group>"; };
 		68D59039136CB7820064CEE5 /* GroupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupViewController.h; sourceTree = "<group>"; };
 		68D5903A136CB7820064CEE5 /* GroupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupViewController.m; sourceTree = "<group>"; };
 		68DCBB4313795F8600B1C089 /* itunes.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = itunes.html; sourceTree = "<group>"; };
@@ -267,6 +344,8 @@
 				68D5900E136CB5CB0064CEE5 /* CoreGraphics.framework in Frameworks */,
 				687366EE137399360053CCA3 /* Security.framework in Frameworks */,
 				52B36F851370A46E00C19BF8 /* AudioToolbox.framework in Frameworks */,
+				689675BE1379DFD8006BC268 /* libxml2.dylib in Frameworks */,
+				689675C01379ECD6006BC268 /* libz.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -295,6 +374,71 @@
 				687366EB1373979A0053CCA3 /* SFHFKeychainUtils.m */,
 			);
 			path = Security;
+			sourceTree = "<group>";
+		};
+		689675461379DCE5006BC268 /* KeePassLib */ = {
+			isa = PBXGroup;
+			children = (
+				689675481379DCE5006BC268 /* AESDecryptSource.h */,
+				689675491379DCE5006BC268 /* AESDecryptSource.m */,
+				6896754A1379DCE5006BC268 /* AESEncryptSource.h */,
+				6896754B1379DCE5006BC268 /* AESEncryptSource.m */,
+				6896754E1379DCE5006BC268 /* Arc4RandomStream.h */,
+				6896754F1379DCE5006BC268 /* Arc4RandomStream.m */,
+				689675501379DCE5006BC268 /* Base64.h */,
+				689675511379DCE5006BC268 /* Base64.m */,
+				689675541379DCE5006BC268 /* BinaryContainer.h */,
+				689675551379DCE5006BC268 /* BinaryContainer.m */,
+				689675561379DCE5006BC268 /* ByteBuffer.h */,
+				689675571379DCE5006BC268 /* ByteBuffer.m */,
+				689675581379DCE5006BC268 /* DataSource.h */,
+				6896755D1379DCE5006BC268 /* GZipInputData.h */,
+				6896755E1379DCE5006BC268 /* GZipInputData.m */,
+				6896755F1379DCE5006BC268 /* HashedInputData.h */,
+				689675601379DCE5006BC268 /* HashedInputData.m */,
+				689675611379DCE5006BC268 /* Kdb.h */,
+				689675621379DCE5006BC268 /* Kdb3Date.h */,
+				689675631379DCE5006BC268 /* Kdb3Date.m */,
+				689675641379DCE5006BC268 /* Kdb3Node.h */,
+				689675651379DCE5006BC268 /* Kdb3Node.m */,
+				689675661379DCE5006BC268 /* Kdb3Parser.h */,
+				689675671379DCE5006BC268 /* Kdb3Parser.m */,
+				689675681379DCE5006BC268 /* Kdb3Persist.h */,
+				689675691379DCE5006BC268 /* Kdb3Persist.m */,
+				6896756A1379DCE5006BC268 /* Kdb3Reader.h */,
+				6896756B1379DCE5006BC268 /* Kdb3Reader.m */,
+				6896756E1379DCE5006BC268 /* Kdb3Writer.h */,
+				6896756F1379DCE5006BC268 /* Kdb3Writer.m */,
+				689675701379DCE5006BC268 /* Kdb4Node.h */,
+				689675711379DCE5006BC268 /* Kdb4Node.m */,
+				689675721379DCE5006BC268 /* Kdb4Parser.h */,
+				689675731379DCE5006BC268 /* Kdb4Parser.m */,
+				689675741379DCE5006BC268 /* Kdb4Reader.h */,
+				689675751379DCE5006BC268 /* Kdb4Reader.m */,
+				689675781379DCE5006BC268 /* KdbLib.h */,
+				689675791379DCE5006BC268 /* KdbPassword.h */,
+				6896757A1379DCE5006BC268 /* KdbPassword.m */,
+				6896757B1379DCE5006BC268 /* KdbReader.h */,
+				6896757C1379DCE5006BC268 /* KdbReaderFactory.h */,
+				6896757D1379DCE5006BC268 /* KdbReaderFactory.m */,
+				6896757E1379DCE5006BC268 /* KeePass2_Prefix.pch */,
+				689675821379DCE5006BC268 /* Node.h */,
+				689675831379DCE5006BC268 /* Node.m */,
+				689675861379DCE5006BC268 /* RandomStream.h */,
+				6896758A1379DCE5006BC268 /* Salsa20RandomStream.h */,
+				6896758B1379DCE5006BC268 /* Salsa20RandomStream.m */,
+				6896758C1379DCE5006BC268 /* Stack.h */,
+				6896758D1379DCE5006BC268 /* Stack.m */,
+				6896758E1379DCE5006BC268 /* Tree.h */,
+				6896758F1379DCE5006BC268 /* Tree.m */,
+				689675901379DCE5006BC268 /* Utils.h */,
+				689675911379DCE5006BC268 /* Utils.m */,
+				689675921379DCE5006BC268 /* UUID.h */,
+				689675931379DCE5006BC268 /* UUID.m */,
+				689675941379DCE5006BC268 /* WrapperNSData.h */,
+				689675951379DCE5006BC268 /* WrapperNSData.m */,
+			);
+			path = KeePassLib;
 			sourceTree = "<group>";
 		};
 		68985969136CDC91001B4204 /* images */ = {
@@ -383,7 +527,7 @@
 				6805EBD413764A5F00340C02 /* LICENSE.txt */,
 				6805EBD1137648B800340C02 /* README.md */,
 				68D5900F136CB5CB0064CEE5 /* MobileKeePass */,
-				68D59024136CB5F30064CEE5 /* KeePass */,
+				689675461379DCE5006BC268 /* KeePassLib */,
 				687366E91373979A0053CCA3 /* Security */,
 				68D5903C136CB8300064CEE5 /* Resources */,
 				68D59008136CB5CB0064CEE5 /* Frameworks */,
@@ -407,6 +551,8 @@
 				68D59009136CB5CB0064CEE5 /* UIKit.framework */,
 				52B36F841370A46E00C19BF8 /* AudioToolbox.framework */,
 				687366ED137399360053CCA3 /* Security.framework */,
+				689675BD1379DFD8006BC268 /* libxml2.dylib */,
+				689675BF1379ECD6006BC268 /* libz.dylib */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -454,20 +600,6 @@
 				688E68F4136F761500004216 /* Settings.bundle */,
 			);
 			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		68D59024136CB5F30064CEE5 /* KeePass */ = {
-			isa = PBXGroup;
-			children = (
-				68D59025136CB5F30064CEE5 /* ArcFour.h */,
-				68D59026136CB5F30064CEE5 /* ArcFour.m */,
-				68D59027136CB5F30064CEE5 /* Database.h */,
-				68D59028136CB5F30064CEE5 /* Database.m */,
-				68D59029136CB5F30064CEE5 /* Kdb3.h */,
-				68D5902A136CB5F30064CEE5 /* Kdb3.m */,
-				68D5902B136CB5F30064CEE5 /* License.txt */,
-			);
-			path = KeePass;
 			sourceTree = "<group>";
 		};
 		68D5903C136CB8300064CEE5 /* Resources */ = {
@@ -544,7 +676,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				68D59014136CB5CB0064CEE5 /* InfoPlist.strings in Resources */,
-				68D59030136CB5F30064CEE5 /* License.txt in Resources */,
 				689859B1136CDC91001B4204 /* 0.png in Resources */,
 				689859B2136CDC91001B4204 /* 1.png in Resources */,
 				689859B3136CDC91001B4204 /* 10.png in Resources */,
@@ -640,9 +771,6 @@
 			files = (
 				68D59017136CB5CB0064CEE5 /* main.m in Sources */,
 				68D5901A136CB5CB0064CEE5 /* MobileKeePassAppDelegate.m in Sources */,
-				68D5902D136CB5F30064CEE5 /* ArcFour.m in Sources */,
-				68D5902E136CB5F30064CEE5 /* Database.m in Sources */,
-				68D5902F136CB5F30064CEE5 /* Kdb3.m in Sources */,
 				68D5903B136CB7820064CEE5 /* GroupViewController.m in Sources */,
 				689EB69D136DAE1C00C8DA1E /* TextViewCell.m in Sources */,
 				689EB6A0136DB4BF00C8DA1E /* TextFieldCell.m in Sources */,
@@ -659,6 +787,32 @@
 				6872F02A137746D0008E55B9 /* OpenViewController.m in Sources */,
 				688F3FB51377805C0049808C /* SelectionListViewController.m in Sources */,
 				688D47751378DF9400BEE609 /* DatabaseManager.m in Sources */,
+				689675971379DCE6006BC268 /* AESDecryptSource.m in Sources */,
+				689675981379DCE6006BC268 /* AESEncryptSource.m in Sources */,
+				6896759A1379DCE6006BC268 /* Arc4RandomStream.m in Sources */,
+				6896759B1379DCE6006BC268 /* Base64.m in Sources */,
+				6896759D1379DCE6006BC268 /* BinaryContainer.m in Sources */,
+				6896759E1379DCE6006BC268 /* ByteBuffer.m in Sources */,
+				689675A11379DCE6006BC268 /* GZipInputData.m in Sources */,
+				689675A21379DCE6006BC268 /* HashedInputData.m in Sources */,
+				689675A31379DCE6006BC268 /* Kdb3Date.m in Sources */,
+				689675A41379DCE6006BC268 /* Kdb3Node.m in Sources */,
+				689675A51379DCE6006BC268 /* Kdb3Parser.m in Sources */,
+				689675A61379DCE6006BC268 /* Kdb3Persist.m in Sources */,
+				689675A71379DCE6006BC268 /* Kdb3Reader.m in Sources */,
+				689675A91379DCE6006BC268 /* Kdb3Writer.m in Sources */,
+				689675AA1379DCE6006BC268 /* Kdb4Node.m in Sources */,
+				689675AB1379DCE6006BC268 /* Kdb4Parser.m in Sources */,
+				689675AC1379DCE6006BC268 /* Kdb4Reader.m in Sources */,
+				689675AE1379DCE6006BC268 /* KdbPassword.m in Sources */,
+				689675AF1379DCE6006BC268 /* KdbReaderFactory.m in Sources */,
+				689675B21379DCE6006BC268 /* Node.m in Sources */,
+				689675B61379DCE6006BC268 /* Salsa20RandomStream.m in Sources */,
+				689675B71379DCE6006BC268 /* Stack.m in Sources */,
+				689675B81379DCE6006BC268 /* Tree.m in Sources */,
+				689675B91379DCE6006BC268 /* Utils.m in Sources */,
+				689675BA1379DCE6006BC268 /* UUID.m in Sources */,
+				689675BB1379DCE6006BC268 /* WrapperNSData.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -716,6 +870,7 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MobileKeePass/MobileKeePass-Prefix.pch";
+				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				INFOPLIST_FILE = "MobileKeePass/MobileKeePass-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
@@ -729,6 +884,7 @@
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MobileKeePass/MobileKeePass-Prefix.pch";
+				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				INFOPLIST_FILE = "MobileKeePass/MobileKeePass-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				VALIDATE_PRODUCT = YES;

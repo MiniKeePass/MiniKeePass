@@ -138,7 +138,6 @@
 
 -(void)readHeader:(id<InputDataSource>)source{	
 	uint32_t version = [Utils readInt32LE:source];
-	DLog(@"VERSION:%X", version);
 		
 	if((version & FILE_VERSION_CRITICAL_MASK) > (FILE_VERSION_32 & FILE_VERSION_CRITICAL_MASK)){
 		@throw [NSException exceptionWithName:@"Unsupported" reason:@"UnsupportedVersion" userInfo:nil];
@@ -202,7 +201,6 @@
 			}
 			case HEADER_PROTECTEDKEY:{
 				READ_BYTES(_protectedStreamKey, fieldSize, source);
-				DLog(@"HEADER_PROTECTEDKEY:%@", _protectedStreamKey);
 				break;
 			}
 			case HEADER_STARTBYTES:{

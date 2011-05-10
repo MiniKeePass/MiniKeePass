@@ -46,14 +46,6 @@
 	date[4] = [dateComponents hour];
 	date[5] = [dateComponents minute];
 	date[6] = [dateComponents second];
-	
-	DLog(@"-->%d", date[0]);
-	DLog(@"-->%d", date[1]);
-	DLog(@"-->%d", date[2]);
-	DLog(@"-->%d", date[3]);
-	DLog(@"-->%d", date[4]);
-	DLog(@"-->%d", date[5]);
-	DLog(@"-->%d", date[6]);	
 }
 
 @end

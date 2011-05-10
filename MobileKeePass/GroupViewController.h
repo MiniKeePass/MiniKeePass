@@ -16,12 +16,12 @@
  */
 
 #import <Foundation/Foundation.h>
-#import "Database.h"
+#import "KdbLib.h"
 
 @interface GroupViewController : UITableViewController {
-    Group *group;
+    id<KdbGroup> group;
 }
 
-@property (nonatomic, assign) Group *group;
+@property (nonatomic, assign) id<KdbGroup> group;
 
 @end

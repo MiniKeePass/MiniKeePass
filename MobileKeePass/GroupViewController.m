@@ -26,11 +26,11 @@
     [super dealloc];
 }
 
-- (Group*)group {
+- (id<KdbGroup>)group {
     return group;
 }
 
-- (void)setGroup:(Group *)newGroup {
+- (void)setGroup:(id<KdbGroup>)newGroup {
     group = [newGroup retain];
     [self.tableView reloadData];
 }
@@ -44,7 +44,7 @@
         return 0;
     }
     
-    return [group._children count] + [group._entries count];
+    return [[group getSubGroups] count] + [[group getEntries] count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -59,16 +59,22 @@
     MobileKeePassAppDelegate *appDelegate = (MobileKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
     
     // Configure the cell.
-    int numChildren = [group._children count];
+    int numChildren = [[group getSubGroups] count];
     if (indexPath.row < numChildren) {
-        Group *g = (Group*)[[group._children objectAtIndex:indexPath.row] retain];
-        cell.textLabel.text = g._title;
-        cell.imageView.image = [appDelegate loadImage:g._image];
+        id<KdbGroup> g = [[[group getSubGroups] objectAtIndex:indexPath.row] retain];
+        cell.textLabel.text = [g getGroupName];
+        if ([g isKindOfClass:[Kdb3Group class]]) {
+            Kdb3Group *g3 = (Kdb3Group*)g;
+            cell.imageView.image = [appDelegate loadImage:g3._image];
+        }
         [g release];
     } else {
-        Entry *e = [(Entry*)[group._entries objectAtIndex:(indexPath.row - numChildren)] retain];
-        cell.textLabel.text = e._title;
-        cell.imageView.image = [appDelegate loadImage:e._image];
+        id<KdbEntry> e = [[[group getEntries] objectAtIndex:(indexPath.row - numChildren)] retain];
+        cell.textLabel.text = [e getEntryName];
+        if ([e isKindOfClass:[Kdb3Entry class]]) {
+            Kdb3Entry *e3 = (Kdb3Entry*)e;
+            cell.imageView.image = [appDelegate loadImage:e3._image];
+        }
         [e release];
     }
     
@@ -76,23 +82,23 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    int numChildren = [group._children count];
+    int numChildren = [[group getSubGroups] count];
     if (indexPath.row < numChildren) {
-        Group *g = (Group*)[[group._children objectAtIndex:indexPath.row] retain];
+        id<KdbGroup> g = [[[group getSubGroups] objectAtIndex:indexPath.row] retain];
         
         GroupViewController *groupViewController = [[GroupViewController alloc] initWithStyle:UITableViewStylePlain];
         groupViewController.group = g;
-        groupViewController.title = g._title;
+        groupViewController.title = [g getGroupName];
         [self.navigationController pushViewController:groupViewController animated:YES];
         [groupViewController release];
         
         [g release];
     } else {
-        Entry *e = (Entry*)[[group._entries objectAtIndex:(indexPath.row - numChildren)] retain];
+        id<KdbEntry> e = [[[group getEntries] objectAtIndex:(indexPath.row - numChildren)] retain];
         
         EntryViewController *entryViewController = [[EntryViewController alloc] initWithStyle:UITableViewStyleGrouped];
         entryViewController.entry = e;
-        entryViewController.title = e._title;
+        entryViewController.title = [e getEntryName];
         [self.navigationController pushViewController:entryViewController animated:YES];
         [entryViewController release];
         

@@ -59,11 +59,11 @@
     [notificationCenter addObserver:self selector:@selector(applicationWillResignActive:) name:UIApplicationWillResignActiveNotification object:nil];
     
     // Update the fields
-    titleCell.textField.text = entry._title;
-    urlCell.textField.text = entry._url;
-    usernameCell.textField.text = entry._username;
-    passwordCell.textField.text = entry._password;
-    commentsCell.textView.text = entry._comment;
+    titleCell.textField.text = [entry getEntryName];
+    urlCell.textField.text = [entry getURL];
+    usernameCell.textField.text = [entry getUserName];
+    passwordCell.textField.text = [entry getPassword];
+    commentsCell.textView.text = [entry getComments];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -110,19 +110,19 @@ BOOL stringsEqual(NSString *str1, NSString *str2) {
 }
 
 - (BOOL)isDirty {
-    return !(stringsEqual(entry._title, titleCell.textField.text) &&
-        stringsEqual(entry._url, urlCell.textField.text) &&
-        stringsEqual(entry._username, usernameCell.textField.text) &&
-        stringsEqual(entry._password, passwordCell.textField.text) &&
-        stringsEqual(entry._comment, commentsCell.textView.text));
+    return !(stringsEqual([entry getEntryName], titleCell.textField.text) &&
+        stringsEqual([entry getURL], urlCell.textField.text) &&
+        stringsEqual([entry getUserName], usernameCell.textField.text) &&
+        stringsEqual([entry getPassword], passwordCell.textField.text) &&
+        stringsEqual([entry getComments], commentsCell.textView.text));
 }
 
 - (void)save {
-    entry._title = titleCell.textField.text;
-    entry._url = urlCell.textField.text;
-    entry._username = usernameCell.textField.text;
-    entry._password = passwordCell.textField.text;
-    entry._comment = commentsCell.textView.text;
+    [entry setEntryName:titleCell.textField.text];
+    [entry setURL:urlCell.textField.text];
+    [entry setUserName:usernameCell.textField.text];
+    [entry setPassword:passwordCell.textField.text];
+    [entry setComments:commentsCell.textView.text];
     
     MobileKeePassAppDelegate *appDelegate = (MobileKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
     appDelegate.databaseDocument.dirty = YES;

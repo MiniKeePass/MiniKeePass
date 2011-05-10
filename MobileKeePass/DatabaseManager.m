@@ -51,8 +51,10 @@ static DatabaseManager *sharedInstance;
     if (password != nil) {
         // Load the database
         DatabaseDocument *dd = [[DatabaseDocument alloc] init];
-        enum DatabaseError databaseError = [dd open:path password:password];
-        if (databaseError == NO_ERROR) {
+        
+        @try {
+            [dd open:path password:password];
+            
             databaseLoaded = YES;
             
             // Set the database document in the application delegate
@@ -63,8 +65,10 @@ static DatabaseManager *sharedInstance;
             [userDefaults setValue:path forKey:@"lastFilename"];
             
             // Pop to the root view
-            [appDelegate.navigationController popToRootViewControllerAnimated:animated];
+            [appDelegate.navigationController popToRootViewControllerAnimated:animated];            
+        } @catch (NSException * exception){
         }
+        
         [dd release];
     }
     
@@ -83,8 +87,8 @@ static DatabaseManager *sharedInstance;
     
     // Load the database
     DatabaseDocument *dd = [[DatabaseDocument alloc] init];
-    enum DatabaseError databaseError = [dd open:selectedPath password:password];
-    if (databaseError == NO_ERROR) {
+    
+    @try {
         // Set the database document in the application delegate
         MobileKeePassAppDelegate *appDelegate = (MobileKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
         appDelegate.databaseDocument = dd;
@@ -98,16 +102,14 @@ static DatabaseManager *sharedInstance;
             NSError *error;
             [SFHFKeychainUtils storeUsername:selectedPath andPassword:password forServiceName:@"net.fizzawizza.MobileKeePass" updateExisting:YES error:&error];
         }
-
+        
         // Pop to the root view
         [appDelegate.navigationController popToRootViewControllerAnimated:animated];
-    } else if (databaseError == WRONG_PASSWORD) {
+    } @catch (NSException *exception) {
         shouldDismiss = NO;
-        controller.statusLabel.text = @"Wrong Password";
-    } else {
-        shouldDismiss = NO;
-        controller.statusLabel.text = @"Failed to open database";
+        controller.statusLabel.text = exception.reason;
     }
+
     [dd release];
     
     return shouldDismiss;
