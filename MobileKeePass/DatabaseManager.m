@@ -66,7 +66,7 @@ static DatabaseManager *sharedInstance;
             
             // Pop to the root view
             [appDelegate.navigationController popToRootViewControllerAnimated:animated];            
-        } @catch (NSException * exception){
+        } @catch (NSException * exception) {
         }
         
         [dd release];
@@ -89,6 +89,8 @@ static DatabaseManager *sharedInstance;
     DatabaseDocument *dd = [[DatabaseDocument alloc] init];
     
     @try {
+        [dd open:selectedPath password:password];
+        
         // Set the database document in the application delegate
         MobileKeePassAppDelegate *appDelegate = (MobileKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
         appDelegate.databaseDocument = dd;
