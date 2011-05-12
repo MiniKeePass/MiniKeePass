@@ -48,7 +48,7 @@
     [_protectedStreamKey release];
     [_streamStartBytes release];
     [_password release];
-    [_tree dealloc];
+    [_tree release];
     [super dealloc];
 }
 
@@ -74,9 +74,9 @@
         decrypted = [self createDecryptedInputDataSource:source key:finalKey];
                 
         //double check start block
-        ByteBuffer * startBytes = [[ByteBuffer alloc]initWithSize:32];
+        ByteBuffer * startBytes = [[ByteBuffer alloc] initWithSize:32];
         [decrypted readBytes:startBytes._bytes length:32];
-        if(![startBytes isEqual:_streamStartBytes]){
+        if(![startBytes isEqual:_streamStartBytes]) {
             [startBytes release];
             @throw [NSException exceptionWithName:@"DecryptError" reason:@"Failed to decrypt" userInfo:nil];
         }
@@ -88,7 +88,7 @@
         id<InputDataSource> readerStream = nil;
         
         if(_compressionAlgorithm==COMPRESSION_GZIP){
-            readerStream = [[GZipInputData alloc]initWithDataSource:hashed];
+            readerStream = [[GZipInputData alloc] initWithDataSource:hashed];
         }else{
             readerStream = [hashed retain];
         }
@@ -96,14 +96,14 @@
         //should PlainXML supported?
         id<RandomStream> rs = nil;
         if(_randomStreamID == CSR_SALSA20){
-            rs = [[Salsa20RandomStream alloc]init:_protectedStreamKey._bytes len:_protectedStreamKey._size];
+            rs = [[Salsa20RandomStream alloc] init:_protectedStreamKey._bytes len:_protectedStreamKey._size];
         }else if (_randomStreamID == CSR_ARC4VARIANT){
-            rs = [[Arc4RandomStream alloc]init:_protectedStreamKey._bytes len:_protectedStreamKey._size];
+            rs = [[Arc4RandomStream alloc] init:_protectedStreamKey._bytes len:_protectedStreamKey._size];
         }else{
             @throw [NSException exceptionWithName:@"Unsupported" reason:@"UnsupportedRandomStreamID" userInfo:nil];
         }
         
-        Kdb4Parser * parser = [[Kdb4Parser alloc]init];
+        Kdb4Parser * parser = [[Kdb4Parser alloc] init];
         parser._randomStream = rs;
         
         self._tree = (Kdb4Tree *)[parser parse:readerStream];
@@ -133,7 +133,7 @@
  * Decrypt remaining bytes
  */
 -(id<InputDataSource>)createDecryptedInputDataSource:(id<InputDataSource>)source key:(ByteBuffer *)key{
-    AESDecryptSource * rv = [[AESDecryptSource alloc]initWithInputSource:source Keys:key._bytes andIV:_encryptionIV._bytes];
+    AESDecryptSource * rv = [[AESDecryptSource alloc] initWithInputSource:source Keys:key._bytes andIV:_encryptionIV._bytes];
     return rv;
 }
 
@@ -141,7 +141,7 @@
     uint32_t version = [Utils readInt32LE:source];
         
     if((version & FILE_VERSION_CRITICAL_MASK) > (FILE_VERSION_32 & FILE_VERSION_CRITICAL_MASK)){
-        @throw [NSException exceptionWithName:@"Unsupported" reason:@"UnsupportedVersion" userInfo:nil];
+        @throw [NSException exceptionWithName:@"Unsupported" reason:@"Unsupported version" userInfo:nil];
     }
     
     BOOL eoh = NO; //end of header
