@@ -12,47 +12,47 @@
 @implementation Stack
 #pragma mark alloc/dealloc
 -(id)init{
-	self = [super init];
+    self = [super init];
     if(self) {
-		_stack = [[NSMutableArray alloc]initWithCapacity:8];
-		_length = 0;
-	}
-	return self;
+        _stack = [[NSMutableArray alloc]initWithCapacity:8];
+        _length = 0;
+    }
+    return self;
 }
 
 -(void)dealloc{
-	[_stack release];
-	[super dealloc];
+    [_stack release];
+    [super dealloc];
 }
 
 #pragma mark Stack Operations
 -(void)push:(id)obj{
-	[_stack addObject:obj];
-	_length++;
+    [_stack addObject:obj];
+    _length++;
 }
 
 -(id)pop{
-	if(!_length) return nil;
-	
-	id value = [[[_stack objectAtIndex:(_length-1)] retain] autorelease];
+    if(!_length) return nil;
+    
+    id value = [[[_stack objectAtIndex:(_length-1)] retain] autorelease];
 
-	[_stack removeObjectAtIndex:(_length-1)]; 
-	_length--;
-	return value;
+    [_stack removeObjectAtIndex:(_length-1)]; 
+    _length--;
+    return value;
 }
 
 -(id)peek{
-	if(!_length) return nil;
-	return [_stack objectAtIndex:(_length-1)];
+    if(!_length) return nil;
+    return [_stack objectAtIndex:(_length-1)];
 }
 
 -(BOOL)isEmpty{
-	return !_length;
+    return !_length;
 }
 
 -(void)clear{
-	[_stack removeAllObjects];
-	_length = 0;
+    [_stack removeAllObjects];
+    _length = 0;
 }
 
 @end

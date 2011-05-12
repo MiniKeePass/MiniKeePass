@@ -17,15 +17,15 @@
 @synthesize _root;
 
 -(void)dealloc{
-	[_root breakCyclcReference];
-	[_root release];
-	[super dealloc];
+    [_root breakCyclcReference];
+    [_root release];
+    [super dealloc];
 }
 
 -(void)print{
-	if(_root){
-		[self printTree:_root Indent:0];
-	}
+    if(_root){
+        [self printTree:_root Indent:0];
+    }
 }
 
 -(void)printTree:(Node *)node Indent:(int)indent{

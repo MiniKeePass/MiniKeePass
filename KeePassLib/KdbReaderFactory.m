@@ -35,22 +35,22 @@
    [read release];
  */
 +(id<KdbReader>)newKdbReader:(WrapperNSData *)input{
-	uint32_t signature1 = [Utils readInt32LE:input];
-	uint32_t signature2 = [Utils readInt32LE:input];
-	
-	if(signature1==KDB3_SIG1&&signature2==KDB3_SIG2){
-		return [[Kdb3Reader alloc] init];
-	}
-	
-	if(signature1==KDB4_SIG1&&signature2==KDB4_SIG2){
-		return [[Kdb4Reader alloc]init];
-	}
-		
-	if(signature1==KDB4_PRE_SIG1&&signature2==KDB4_PRE_SIG2){
-		return [[Kdb4Reader alloc]init];
-	}
-	
-	@throw [NSException exceptionWithName:@"Unsupported" reason:@"UnsupportedVersion" userInfo:nil];
+    uint32_t signature1 = [Utils readInt32LE:input];
+    uint32_t signature2 = [Utils readInt32LE:input];
+    
+    if(signature1==KDB3_SIG1&&signature2==KDB3_SIG2){
+        return [[Kdb3Reader alloc] init];
+    }
+    
+    if(signature1==KDB4_SIG1&&signature2==KDB4_SIG2){
+        return [[Kdb4Reader alloc]init];
+    }
+        
+    if(signature1==KDB4_PRE_SIG1&&signature2==KDB4_PRE_SIG2){
+        return [[Kdb4Reader alloc]init];
+    }
+    
+    @throw [NSException exceptionWithName:@"Unsupported" reason:@"UnsupportedVersion" userInfo:nil];
 }
 
 @end

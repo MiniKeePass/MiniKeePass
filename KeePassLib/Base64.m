@@ -54,7 +54,7 @@
  Decoding is the process in reverse.  A 'decode' lookup
  table has been created to avoid string scans.
  
- DESIGN GOALS:	Specifically:
+ DESIGN GOALS:  Specifically:
  Code is a stand-alone utility to perform base64 
  encoding/decoding. It should be genuinely useful 
  when the need arises and it meets a need that is 
@@ -211,10 +211,10 @@ static const char cd64[]="|$$$}rstuvwxyz{$$$$$$$>?@ABCDEFGHIJKLMNOPQRSTUVW$$$$$$
  ** decode a base64 encoded stream discarding padding, line breaks and noise
  */
 +(void)decode:(NSString *)enc to:(NSMutableData *)data{
-	unsigned char * cstr = (unsigned char *)[enc UTF8String];
-	int index=0, len=0, i=0;
-	unsigned char v, inb[4], outb[3];
-	
+    unsigned char * cstr = (unsigned char *)[enc UTF8String];
+    int index=0, len=0, i=0;
+    unsigned char v, inb[4], outb[3];
+    
     while(cstr[index]) {
         for( len = 0, i = 0; i < 4 && cstr[index]; i++ ) {
             v = 0;
@@ -225,22 +225,22 @@ static const char cd64[]="|$$$}rstuvwxyz{$$$$$$$>?@ABCDEFGHIJKLMNOPQRSTUVW$$$$$$
                     v = (unsigned char) ((v == '$') ? 0 : v - 61);
                 }
             }
-			
-			if(v) {
-				len++;
-				inb[i] = (unsigned char) (v - 1);
-			}
+            
+            if(v) {
+                len++;
+                inb[i] = (unsigned char) (v - 1);
+            }
             else {
                 inb[i] = 0;
             }
         }
         if( len ) {
-			outb[ 0 ] = (unsigned char ) (inb[0] << 2 | inb[1] >> 4);
-			outb[ 1 ] = (unsigned char ) (inb[1] << 4 | inb[2] >> 2);
-			outb[ 2 ] = (unsigned char ) (((inb[2] << 6) & 0xc0) | inb[3]);	
-			[data appendBytes:outb length:len-1];
-		}		
-	}
+            outb[ 0 ] = (unsigned char ) (inb[0] << 2 | inb[1] >> 4);
+            outb[ 1 ] = (unsigned char ) (inb[1] << 4 | inb[2] >> 2);
+            outb[ 2 ] = (unsigned char ) (((inb[2] << 6) & 0xc0) | inb[3]); 
+            [data appendBytes:outb length:len-1];
+        }       
+    }
 }
 
 @end

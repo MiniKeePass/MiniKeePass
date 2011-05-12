@@ -14,4 +14,3 @@
 -(id<KdbTree>)load:(WrapperNSData *)input withPassword:(NSString *)password;
 -(id<KdbTree>)getKdbTree;
 @end
-

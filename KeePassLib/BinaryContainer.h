@@ -19,8 +19,7 @@
  * MemoryBinaryContainer saves binary data in the memory
  */
 
-@interface MemoryBinaryContainer : NSObject<BinaryContainer>
-{
+@interface MemoryBinaryContainer : NSObject<BinaryContainer> {
 	ByteBuffer * _buffer;
 }
 
