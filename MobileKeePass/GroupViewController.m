@@ -61,21 +61,13 @@
     // Configure the cell.
     int numChildren = [[group getSubGroups] count];
     if (indexPath.row < numChildren) {
-        id<KdbGroup> g = [[[group getSubGroups] objectAtIndex:indexPath.row] retain];
+        id<KdbGroup> g = [[group getSubGroups] objectAtIndex:indexPath.row];
         cell.textLabel.text = [g getGroupName];
-        if ([g isKindOfClass:[Kdb3Group class]]) {
-            Kdb3Group *g3 = (Kdb3Group*)g;
-            cell.imageView.image = [appDelegate loadImage:g3._image];
-        }
-        [g release];
+        cell.imageView.image = [appDelegate loadImage:[g getImage]];
     } else {
-        id<KdbEntry> e = [[[group getEntries] objectAtIndex:(indexPath.row - numChildren)] retain];
+        id<KdbEntry> e = [[group getEntries] objectAtIndex:(indexPath.row - numChildren)];
         cell.textLabel.text = [e getEntryName];
-        if ([e isKindOfClass:[Kdb3Entry class]]) {
-            Kdb3Entry *e3 = (Kdb3Entry*)e;
-            cell.imageView.image = [appDelegate loadImage:e3._image];
-        }
-        [e release];
+        cell.imageView.image = [appDelegate loadImage:[e getImage]];
     }
     
     return cell;

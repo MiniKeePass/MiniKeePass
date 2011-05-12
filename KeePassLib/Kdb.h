@@ -14,6 +14,9 @@
 -(id<KdbGroup>)getParent;
 -(void)setParent:(id<KdbGroup>)parent;
 
+-(NSUInteger)getImage;
+-(void)setImage:(NSUInteger)image;
+
 -(NSString*)getGroupName;
 -(void)setGroupName:(NSString *)groupName;
 
@@ -35,6 +38,9 @@
 @protocol KdbEntry<NSObject>
 -(id<KdbGroup>)getParent;
 -(void)setParent:(id<KdbGroup>)parent;
+
+-(NSUInteger)getImage;
+-(void)setImage:(NSUInteger)image;
 
 -(NSString*)getEntryName;
 -(void)setEntryName:(NSString *)entryName;

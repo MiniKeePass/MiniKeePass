@@ -13,7 +13,7 @@
 
 @interface Kdb4Group : Node<KdbGroup> {
 	NSString * _uuid;
-	uint32_t _image;
+	NSInteger _image;
 	NSString * _title;
 	NSString * _comment;
 	NSMutableArray * _subGroups;
@@ -21,8 +21,8 @@
 }
 
 @property(nonatomic, retain) NSString * _uuid;
-@property(nonatomic, assign) uint32_t _image;
-@property(nonatomic, retain, getter=getGroupName, setter=setGroupName) NSString * _title;
+@property(nonatomic, assign, getter=getImage, setter=setImage:) NSInteger _image;
+@property(nonatomic, retain, getter=getGroupName, setter=setGroupName:) NSString * _title;
 @property(nonatomic, retain) NSString * _comment;
 @property(nonatomic, retain, getter=getSubGroups) NSMutableArray * _subGroups;
 @property(nonatomic, retain, getter=getEntries) NSMutableArray * _entries;
@@ -32,7 +32,7 @@
 
 @interface Kdb4Entry: Node<KdbEntry>{
 	NSString * _uuid;
-	uint32_t _image;
+	NSInteger _image;
 	NSString * _title;
 	NSString * _url;
 	NSString * _username;
@@ -44,12 +44,12 @@
 }
 
 @property(nonatomic, retain) NSString * _uuid;
-@property(nonatomic, assign) uint32_t _image;
-@property(nonatomic, retain, getter=getEntryName, setter=setEntryName) NSString * _title;
-@property(nonatomic, retain, getter=getUserName, setter=setUserName) NSString * _username;
-@property(nonatomic, retain, getter=getPassword, setter=setPassword) NSString * _password;
-@property(nonatomic, retain, getter=getComments, setter=setComments) NSString * _comment;
-@property(nonatomic, retain, getter=getURL, setter=setURL) NSString * _url;
+@property(nonatomic, assign, getter=getImage, setter=setImage:) NSInteger _image;
+@property(nonatomic, retain, getter=getEntryName, setter=setEntryName:) NSString * _title;
+@property(nonatomic, retain, getter=getUserName, setter=setUserName:) NSString * _username;
+@property(nonatomic, retain, getter=getPassword, setter=setPassword:) NSString * _password;
+@property(nonatomic, retain, getter=getComments, setter=setComments:) NSString * _comment;
+@property(nonatomic, retain, getter=getURL, setter=setURL:) NSString * _url;
 @property(nonatomic, retain) NSArray * _customeAttributeKeys;
 @end
 

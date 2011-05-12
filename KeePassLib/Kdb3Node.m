@@ -231,8 +231,6 @@
 }
 
 -(BOOL)isMeta{
-	//DLog(@"--->%@", self);	
-	
 	if(_binarySize==0) return NO;
 	if(!_comment || ![_comment length]) return NO;
 	if(!_binaryDesc || [_binaryDesc compare:@"bin-stream"]) return NO;

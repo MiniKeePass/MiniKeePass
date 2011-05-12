@@ -21,7 +21,7 @@
 ////
 @interface Kdb3Group : NSObject<KdbGroup>{
 	uint32_t _id;
-	uint32_t _image;
+	NSInteger _image;
 	NSString * _title;
 	Kdb3Group * _parent;
 	NSMutableArray * _subGroups;
@@ -36,9 +36,9 @@
 }
 
 @property(nonatomic, assign) uint32_t _id;
-@property(nonatomic, assign) uint32_t _image;
-@property(nonatomic, retain, getter=getGroupName, setter=setGroupName) NSString * _title;
-@property(nonatomic, retain, getter=getParent, setter=setParent) Kdb3Group * _parent;
+@property(nonatomic, assign, getter=getImage, setter=setImage:) NSInteger _image;
+@property(nonatomic, retain, getter=getGroupName, setter=setGroupName:) NSString * _title;
+@property(nonatomic, retain, getter=getParent, setter=setParent:) Kdb3Group * _parent;
 @property(nonatomic, readonly, getter=getSubGroups) NSArray * _subGroups; 
 @property(nonatomic, readonly, getter=getEntries) NSArray * _entries;
 @property(nonatomic, readonly)NSArray * _metaEntries;
@@ -65,7 +65,7 @@
 @interface Kdb3Entry : NSObject<KdbEntry>{
 	UUID * _uuid;
 
-	uint32_t _image;
+	NSInteger _image;
 	NSString * _title;
 	NSString * _url;
 	NSString * _username;
@@ -83,15 +83,15 @@
 	id<BinaryContainer> _binary;
 }
 @property(nonatomic, retain) UUID * _uuid;
-@property(nonatomic, assign) uint32_t _image;
+@property(nonatomic, assign, getter=getImage, setter=setImage:) NSInteger _image;
 @property(nonatomic, assign) uint32_t _binarySize;
-@property(nonatomic, retain, getter=getParent, setter=setParent) Kdb3Group * _parent;
-@property(nonatomic, retain, getter=getEntryName, setter=setEntryName) NSString * _title;
-@property(nonatomic, retain, getter=getUserName, setter=setUserName) NSString * _username;
-@property(nonatomic, retain, getter=getPassword, setter=setPassword) NSString * _password;
-@property(nonatomic, retain, getter=getComments, setter=setComments) NSString * _comment;
+@property(nonatomic, retain, getter=getParent, setter=setParent:) Kdb3Group * _parent;
+@property(nonatomic, retain, getter=getEntryName, setter=setEntryName:) NSString * _title;
+@property(nonatomic, retain, getter=getUserName, setter=setUserName:) NSString * _username;
+@property(nonatomic, retain, getter=getPassword, setter=setPassword:) NSString * _password;
+@property(nonatomic, retain, getter=getComments, setter=setComments:) NSString * _comment;
 @property(nonatomic, retain) NSString * _binaryDesc;
-@property(nonatomic, retain, getter=getURL, setter=setURL) NSString * _url;
+@property(nonatomic, retain, getter=getURL, setter=setURL:) NSString * _url;
 @property(nonatomic, retain) id<BinaryContainer> _binary;
 
 -(uint8_t *)getCreation;

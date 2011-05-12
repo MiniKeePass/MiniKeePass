@@ -80,10 +80,8 @@
 	
 	for(Node * n in _children){
 		if([n._name isEqualToString:@T_UUID]){
-			//DLog(@"----releasing node:%@ %d %d", n._name, [n retainCount], [n._children count]);
 			self._uuid = n._text;
 			[nodesToRelease addObject:n];
-			//DLog(@"----releasing node:%@ %d %d", n._name, [n retainCount], [n._children count]);
 		}else if([n._name isEqualToString:@T_NAME]){
 			self._title = n._text;
 			[nodesToRelease addObject:n];
@@ -98,28 +96,20 @@
 			self._comment = n._text;
 			[nodesToRelease addObject:n];
 		}else if([n._name isEqualToString:@T_GROUP]){ 
-			//DLog(@"****releasing node:%@ %d %d", n._name, [n retainCount], [n._children count]);
 			[self addSubGroup:(id<KdbGroup>)n];
 			[nodesToMove addObject:n];
 		}else if([n._name isEqualToString:@T_ENTRY]){
-			//DLog(@"****releasing node:%@ %d %d", n._name, [n retainCount], [n._children count]);
 			[self addEntry:(id<KdbEntry>)n];
 			[nodesToMove addObject:n];
 		}
 	}
 	
 	for(Node * n in nodesToRelease){
-		//DLog(@"====releasing node:%@ %d %d", n._name, [n retainCount], [n._children count]);
 		[n breakCyclcReference];
 		[self removeChild:n];
-		//DLog(@"====releasing node:%@ %d %d", n._name, [n retainCount], [n._children count]);
 	}
 
-	//DLog(@"UUID====%d", [self._uuid retainCount]);
-	
 	[nodesToRelease release];
-	
-	//DLog(@"UUID====%@", self._uuid);
 	
 	for(Node * n in nodesToMove){
 		[self removeChild:n];
@@ -127,8 +117,6 @@
 	}
 	
 	[nodesToMove release];
-
-	//DLog(@"Group Title ==> %@", _title);
 }
 
 -(NSString *)description{
@@ -175,7 +163,6 @@
 @synthesize _customeAttributeKeys;
 
 -(void)dealloc{
-	//DLog(@"releas node %@", _title);
 	[_uuid release];
 	[_title release];
 	[_url release];
