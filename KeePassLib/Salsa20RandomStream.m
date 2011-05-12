@@ -138,7 +138,6 @@ static uint32_t SIGMA[4] = {0x61707865, 0x3320646E, 0x79622D32, 0x6B206574};
 	for(int i=0; i<bb._size; i++){
 		if(_index==0) [self updateState];
 		(bb._bytes)[i] ^= _keyStream[_index];
-		//DLog(@"====>%d=====%d", bb._bytes[i], _keyStream[_index]);
 		_index = (_index+1)&0x3F;
 	}
 	

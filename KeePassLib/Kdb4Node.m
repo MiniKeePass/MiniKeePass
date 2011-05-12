@@ -29,7 +29,6 @@
 @synthesize _entries;
 
 -(void)dealloc{
-	//DLog(@"releas node %@", _title);
 	[_uuid release];
 	[_title release];
 	[_comment release];

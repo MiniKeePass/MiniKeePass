@@ -28,7 +28,6 @@
 }
 
 -(id)initWithStringName:(NSString *)name{
-	//DLog(@"+++ Node %@ created", name);
 	if(self = [super init]){
 		self._name = name;
 		_text = [[NSMutableString alloc]initWithCapacity:64];
@@ -37,7 +36,6 @@
 }
 
 -(void)dealloc{
-	//DLog(@"--- Node %@ deallocated", _name);
 	[_parent release];
 	[_children release];
 	[_attributes release];

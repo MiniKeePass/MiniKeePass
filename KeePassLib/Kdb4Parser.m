@@ -42,8 +42,6 @@ static xmlSAXHandler saxHandler;
 }
 
 -(void)dealloc{
-	//DLog(@"==>%d", [_tree retainCount]);
-	//DLog(@"==>%d", [_stack retainCount]);	
 	[_randomStream release];
 	[_tree release];
 	[_stack release];
@@ -102,8 +100,6 @@ static void startElementSAX(void *ctx, const xmlChar *localname, const xmlChar *
 	
 	Node * node = createNode([NSString stringWithUTF8String:(const char *)localname]);
 	
-	//NSLog(@"===>%@ %d %d", node._name, [node._attributes count], [node retainCount]);
-	
     // The 'attributes' argument is a pointer to an array of attributes.
     // Each attribute has five properties: local name, prefix, URI, value, and end.
     // So the first attribute in the array starts at index 0; the second one starts
@@ -133,21 +129,11 @@ static void startElementSAX(void *ctx, const xmlChar *localname, const xmlChar *
 	}
 	
 	[parser._stack push:node];
-	//NSLog(@"===>%@ %d %d", node._name, [node._attributes count], [node retainCount]);	
 	[node release];
-	//NSLog(@"===>%@ %d %d", node._name, [node._attributes count], [node retainCount]);
 }
 
 static void	endElementSAX(void *ctx, const xmlChar *localname, const xmlChar *prefix, const xmlChar *URI) {    
 	Kdb4Parser * parser = (Kdb4Parser*)ctx;
-	
-	// DEBUG
-	//Node * n = [parser._stack peek];
-	//NSLog(@"--->%@ %d %d", n._name, [n._attributes count], [n retainCount]);
-	//n = [parser._stack pop];
-	//NSLog(@"--->%@ %d %d", n._name, [n._attributes count], [n retainCount]);
-	//
-	
 	[[parser._stack pop] postProcess:parser._randomStream];
 }
 
@@ -157,7 +143,6 @@ static void	charactersFoundSAX(void *ctx, const xmlChar *ch, int len) {
 		if(![parser._stack isEmpty]){
 			NSString * value = [[NSString alloc]initWithBytes:ch length:len encoding:NSUTF8StringEncoding];
 			Node * node = [parser._stack peek];
-			//DLog(@"===>%@", value);
 			[node._text appendString:value];
 			[value release];
 		}		

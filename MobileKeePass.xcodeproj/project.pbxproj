@@ -294,7 +294,6 @@
 		6896757B1379DCE5006BC268 /* KdbReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KdbReader.h; sourceTree = "<group>"; };
 		6896757C1379DCE5006BC268 /* KdbReaderFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KdbReaderFactory.h; sourceTree = "<group>"; };
 		6896757D1379DCE5006BC268 /* KdbReaderFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KdbReaderFactory.m; sourceTree = "<group>"; };
-		6896757E1379DCE5006BC268 /* KeePass2_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeePass2_Prefix.pch; sourceTree = "<group>"; };
 		689675821379DCE5006BC268 /* Node.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Node.h; sourceTree = "<group>"; };
 		689675831379DCE5006BC268 /* Node.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Node.m; sourceTree = "<group>"; };
 		689675861379DCE5006BC268 /* RandomStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RandomStream.h; sourceTree = "<group>"; };
@@ -533,7 +532,6 @@
 				6896757B1379DCE5006BC268 /* KdbReader.h */,
 				6896757C1379DCE5006BC268 /* KdbReaderFactory.h */,
 				6896757D1379DCE5006BC268 /* KdbReaderFactory.m */,
-				6896757E1379DCE5006BC268 /* KeePass2_Prefix.pch */,
 				689675821379DCE5006BC268 /* Node.h */,
 				689675831379DCE5006BC268 /* Node.m */,
 				689675861379DCE5006BC268 /* RandomStream.h */,

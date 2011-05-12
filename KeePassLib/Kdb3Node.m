@@ -21,7 +21,6 @@
 
 #pragma mark alloc/dealloc
 -(void)dealloc{
-	//DLog(@"Deallocating group:%@", _title);
 	[_title release];
 	[_parent release];
 	[_subGroups release];
@@ -158,7 +157,6 @@
 }
 
 -(void)dealloc{
-	//DLog(@"Deallocating entry%@", _title);
 	[_uuid release];
 	[_title release];
 	[_url release];

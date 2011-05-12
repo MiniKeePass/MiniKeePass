@@ -44,8 +44,6 @@
 	uint8_t * b = nil;
 	uint32_t s = 64;
 	
-	//DLog(@"length-->%d", length);
-	
 	if(length<=64){
 		b = _buffer;
 	}else{
@@ -72,8 +70,6 @@
 -(void)final{
 	size_t length = CCCryptorGetOutputLength(_cryptorRef, _updatedBytes, YES);
 	uint32_t size = length - [_data length] + _initDataLen;
-	
-	//DLog(@"final length-->%d", size);
 	
 	ByteBuffer * bb = nil;
 	

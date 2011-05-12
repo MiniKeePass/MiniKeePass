@@ -152,14 +152,12 @@
 			case HEADER_COMMENT:{
 				ByteBuffer * comment;
 				READ_BYTES(comment, fieldSize, source);
-				//DLog(@"HEADER_COMMENT:%@", comment);		
 				[comment release];
 				break;
 			}
 			case HEADER_EOH:{
 				ByteBuffer * header;
 				READ_BYTES(header, fieldSize, source);
-				//DLog(@"HEADER_EOH:%@", header);			
 				[header release];
 				eoh = YES;
 				break;
@@ -168,7 +166,6 @@
 				if(fieldSize!=16)
 					@throw [NSException exceptionWithName:@"InvalidHeader" reason:@"InvalidCipherId" userInfo:nil];
 				_cipherUUID = [[UUID alloc]initWithSize:16 dataSource:source];
-				//DLog(@"HEADER_CIPHERID:%@", _cipherUUID);				
 				if(![_cipherUUID isEqual:[UUID getAESUUID]]){
 					@throw [NSException exceptionWithName:@"Unsupported" reason:@"UnsupportedCipher" userInfo:nil];
 				}
@@ -180,7 +177,6 @@
 				ByteBuffer * masterSeed;
 				READ_BYTES(masterSeed, fieldSize, source);
 				_password._masterSeed = masterSeed;
-				//DLog(@"HEADER_MASTERSEED:%@", masterSeed);	
 				[masterSeed release];		
 				break;
 			}
@@ -190,13 +186,11 @@
 				ByteBuffer * transformSeed;
 				READ_BYTES(transformSeed, fieldSize, source);
 				_password._transformSeed = transformSeed;
-				//DLog(@"HEADER_TRANSFORMSEED:%@", transformSeed);
 				[transformSeed release];
 				break;
 			}
 			case HEADER_ENCRYPTIONIV:{
 				READ_BYTES(_encryptionIV, fieldSize, source);
-				//DLog(@"HEADER_ENCRYPTIONIV:%@", _encryptionIV);
 				break;
 			}
 			case HEADER_PROTECTEDKEY:{
@@ -205,26 +199,22 @@
 			}
 			case HEADER_STARTBYTES:{
 				READ_BYTES(_streamStartBytes, fieldSize, source);
-				//DLog(@"HEADER_STARTBYTES:%@", _streamStartBytes);
 				break;
 			}
 			case HEADER_TRANSFORMROUNDS:{
 				_password._rounds = [Utils readInt64LE:source];
-				//DLog(@"HEADER_TRANSFORMROUNDS:%qX", _password._rounds);
 				break;
 			}
 			case HEADER_COMPRESSION:{
 				_compressionAlgorithm = [Utils readInt32LE:source];
 				if(_compressionAlgorithm >= COMPRESSION_COUNT)
 					@throw [NSException exceptionWithName:@"InvalidHeader" reason:@"InvalidCompression" userInfo:nil];
-				//DLog(@"HEADER_COMPRESSION:%X", _compressionAlgorithm);
 				break;
 			}
 			case HEADER_RANDOMSTREAMID:{
 				_randomStreamID = [Utils readInt32LE:source];
 				if(_randomStreamID >= CSR_COUNT)
 					@throw [NSException exceptionWithName:@"InvalidHeader" reason:@"InvalidCSRAlgorithm" userInfo:nil];
-				//DLog(@"HEADER_RANDOMSTREAMID:%X", _randomStreamID);
 				break;
 			}
 			default:

@@ -54,8 +54,6 @@
 	_numGroups = [Utils readInt32LE:input];
 	_numEntries = [Utils readInt32LE:input];
 	
-	//DLog(@"group# %d entry #%d", _numGroups, _numEntries);
-	
 	[input readBytes:_contentHash length:32];	
 
 	ByteBuffer * transformSeed = nil;

@@ -76,8 +76,6 @@
 			}
 		}
 		
-		//DLog(@"offset & size %d %d %d", _bufferSize, _bufferOffset, remaining);
-		
 		NSUInteger bytesToCopy = MIN(remaining, _bufferSize - _bufferOffset);		
 		memcpy((uint8_t *)buffer+offset, _outputBuffer+_bufferOffset, bytesToCopy);
 		
@@ -95,7 +93,6 @@
 }
 
 -(NSUInteger)moveReadOffset:(NSInteger) offset{
-	//DLog(@"offset %d", offset);
 	if(offset<0)
 		@throw [NSException exceptionWithName:@"UnsupportedMethod" reason:@"moveReadOffset" userInfo:nil];
 	else{
