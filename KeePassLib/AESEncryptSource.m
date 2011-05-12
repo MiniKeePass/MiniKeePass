@@ -13,7 +13,8 @@
 @synthesize _data;
 
 -(id)init:(uint8_t *)keys andIV:(uint8_t *)iv{
-	if(self=[super init]){
+    self = [super init];
+	if(self) {
 		_cryptorRef = nil; 
 		CCCryptorCreate(kCCEncrypt, kCCAlgorithmAES128, kCCOptionPKCS7Padding, keys, kCCKeySizeAES256, iv, &_cryptorRef);
 		CC_SHA256_Init(&_shaCtx);
@@ -57,8 +58,9 @@
 	@try{
 		size_t movedBytes = 0;
 		CCCryptorStatus cs;		
-		if(cs=CCCryptorUpdate(_cryptorRef, buffer, size, b, s, &movedBytes)){
-			@throw [NSException exceptionWithName:@"EncryptError" reason:@"EncryptError" userInfo:nil];
+		cs=CCCryptorUpdate(_cryptorRef, buffer, size, b, s, &movedBytes);
+        if(cs==kCCSuccess) {
+			@throw [NSException exceptionWithName:@"EncryptError" reason:@"Failed to encrypt" userInfo:nil];
 		};
 		[_data appendBytes:b length:movedBytes];
 		_updatedBytes += size;
@@ -89,8 +91,9 @@
 	@try{
 		size_t movedBytes = 0;
 		CCCryptorStatus cs;	
-		if(cs=CCCryptorFinal(_cryptorRef, b, s, &movedBytes)){
-			@throw [NSException exceptionWithName:@"EncryptError" reason:@"EncryptError" userInfo:nil];			
+		cs=CCCryptorFinal(_cryptorRef, b, s, &movedBytes);
+        if(cs != kCCSuccess) {
+			@throw [NSException exceptionWithName:@"EncryptError" reason:@"Failed to encrypt" userInfo:nil];			
 		}
 		[_data appendBytes:b length:movedBytes];
 	}@finally {

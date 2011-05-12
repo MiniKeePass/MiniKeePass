@@ -25,7 +25,8 @@
 @synthesize _enc;
 
 -(id)initWithTree:(id<KdbTree>)tree andDest:(AESEncryptSource *)dest{
-	if(self=[super init]){
+	self = [super init];
+    if(self) {
 		self._tree = tree;
 		self._enc = dest;
 		_groupId = 100;

@@ -296,7 +296,8 @@
 
 
 -(id)init{
-	if(self=[super init]){
+    self = [super init];
+	if(self) {
 		_meta = [[NSMutableDictionary alloc]initWithCapacity:4];
 	}
 	return self;

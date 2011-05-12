@@ -23,7 +23,8 @@
 #pragma mark alloc/dealloc
 
 -(id)initWithDataSource:(id<InputDataSource>)input{
-	if(self=[super init]){
+	self = [super init];
+    if(self) {
 		self._dataSource = input;
 		_eof = NO;
 	}

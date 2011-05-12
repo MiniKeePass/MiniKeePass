@@ -13,7 +13,8 @@ static UUID * _AES_UUID;
 @implementation UUID
 
 -(id)init{
-	if(self=[super initWithSize:16]){
+	self = [super initWithSize:16];
+    if(self) {
 		CFUUIDRef uuidref = CFUUIDCreate(kCFAllocatorDefault);
 		CFUUIDBytes bytes = CFUUIDGetUUIDBytes(uuidref);
 		memcpy(_bytes, &bytes, 16);

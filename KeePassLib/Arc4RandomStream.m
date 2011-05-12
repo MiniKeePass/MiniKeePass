@@ -19,7 +19,8 @@
 //-(id)init:(uint8_t *)key len:(uint32_t)len input:(id<InputDataSource>)source {
 -(id)init:(uint8_t *)key len:(uint32_t)len{
 	_i = _j = 0;
-	if(self = [super init]){
+    self = [super init];
+	if(self) {
 		uint32_t index = 0;
 		for (uint32_t w = 0; w < 256; w++)
 			_state[w] = (uint8_t)(w & 0xff);

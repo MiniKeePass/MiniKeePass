@@ -28,7 +28,8 @@
 }
 
 -(id)initWithStringName:(NSString *)name{
-	if(self = [super init]){
+	self = [super init];
+    if(self) {
 		self._name = name;
 		_text = [[NSMutableString alloc]initWithCapacity:64];
 	}

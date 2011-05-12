@@ -19,7 +19,8 @@
 #pragma mark alloc/dealloc
 
 -(id)initWithDataSource:(id<InputDataSource>)zippedSource{
-	if(self=[super init]){
+    self = [super init];
+    if(self) {
 		_eoz = NO;
 		
 		_stream.avail_in = _stream.avail_out = 0;

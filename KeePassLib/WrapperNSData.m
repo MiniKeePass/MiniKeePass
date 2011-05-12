@@ -11,14 +11,16 @@
 
 @implementation WrapperNSData
 -initWithContentsOfMappedFile:(NSString *)filename{
-	if(self=[super init]){
+	self = [super init];
+    if(self) {
 		_nsdata = [[NSData alloc]initWithContentsOfMappedFile:filename];
 	}
 	return self;
 }
 
 -initWithNSData:(NSData *)data{
-	if(self=[super init]){
+	self = [super init];
+    if(self) {
 		_nsdata = [data retain];
 	}
 	return self;

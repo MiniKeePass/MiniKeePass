@@ -18,7 +18,8 @@
 
 // the byte size of input source must be multiples of 16 
 -(id)initWithInputSource:(id<InputDataSource>)source Keys:(uint8_t *)keys andIV:(uint8_t *)iv{
-	if(self=[super init]){
+    self = [super init];
+	if(self) {
 		self._source = source;
 		_cryptorRef = nil; _bufferOffset = 0;
 		_bufferSize = 0; _eof = NO;
@@ -44,7 +45,8 @@
 	size_t movedBytes=0;
 	CCCryptorStatus cs;
 	if(read){
-		if(cs=CCCryptorUpdate(_cryptorRef, _inputBuffer, read, _outputBuffer, AES_BUFFERSIZE, &movedBytes)){
+        cs=CCCryptorUpdate(_cryptorRef, _inputBuffer, read, _outputBuffer, AES_BUFFERSIZE, &movedBytes);
+		if(cs != kCCSuccess) {
 			@throw [NSException exceptionWithName:@"DecryptError" reason:@"Failed to decrypt" userInfo:nil];
 		};	
 				
@@ -52,7 +54,8 @@
 	}	
 	
 	if(read<AES_BUFFERSIZE){
-		if(cs=CCCryptorFinal(_cryptorRef, _outputBuffer+movedBytes, AES_BUFFERSIZE-movedBytes, &movedBytes)){
+		cs=CCCryptorFinal(_cryptorRef, _outputBuffer+movedBytes, AES_BUFFERSIZE-movedBytes, &movedBytes);
+        if(cs != kCCSuccess) {
 			@throw [NSException exceptionWithName:@"DecryptError" reason:@"Failed to decrypt" userInfo:nil];
 		}	
 		

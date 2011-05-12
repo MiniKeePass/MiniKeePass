@@ -119,7 +119,7 @@
 @interface Kdb3Tree : NSObject<KdbTree>{
 	id<KdbGroup> _root;
 }
-@property(nonatomic, retain, getter=getRoot, setter=setRoot) id<KdbGroup> _root;
+@property(nonatomic, retain, getter=getRoot, setter=setRoot:) id<KdbGroup> _root;
 
 //create a new Kdb3 tree
 +(id<KdbTree>)newTree;

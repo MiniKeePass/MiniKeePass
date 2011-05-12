@@ -150,7 +150,8 @@
 
 #pragma mark alloc/dealloc
 -(id)initWithNewUUID{
-	if(self=[super init]){
+    self = [super init];
+	if(self) {
 		_uuid = [[UUID alloc] init];
 	}
 	return self;

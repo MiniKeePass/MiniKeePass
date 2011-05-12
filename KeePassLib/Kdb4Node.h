@@ -30,7 +30,7 @@
 @end
 
 
-@interface Kdb4Entry: Node<KdbEntry>{
+@interface Kdb4Entry: Node<KdbEntry> {
 	NSString * _uuid;
 	NSInteger _image;
 	NSString * _title;
@@ -54,7 +54,7 @@
 @end
 
 
-@interface Kdb4Tree:Tree<KdbTree>{
+@interface Kdb4Tree:Tree<KdbTree> {
 	NSMutableDictionary * _meta;
 }
 

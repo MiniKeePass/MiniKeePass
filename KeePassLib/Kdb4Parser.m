@@ -35,7 +35,8 @@ static xmlSAXHandler saxHandler;
 
 #pragma mark alloc/dealloc
 -(id)init{
-	if(self=[super init]){
+    self = [super init];
+    if(self) {
 		_stack = [[Stack alloc]init];
 	}
 	return self;

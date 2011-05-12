@@ -21,7 +21,7 @@
 	uint8_t _hash[32];
 }
 
-@property(nonatomic, retain, setter=setData) NSMutableData *  _data;
+@property(nonatomic, retain, setter=setData:) NSMutableData *  _data;
 
 -(id)init:(uint8_t *)keys andIV:(uint8_t *)iv;
 -(void)update:(void *)buffer size:(uint32_t)size;

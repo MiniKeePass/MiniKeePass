@@ -14,7 +14,8 @@
 @synthesize _size;
 
 -(id)initWithSize:(NSUInteger)size{
-	if(self=[super init]){
+	self = [super init];
+    if(self) {
 		_size = size;
 		_bytes = calloc(_size, 1);
 	}

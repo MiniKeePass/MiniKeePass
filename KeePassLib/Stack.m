@@ -12,7 +12,8 @@
 @implementation Stack
 #pragma mark alloc/dealloc
 -(id)init{
-	if(self=[super init]){
+	self = [super init];
+    if(self) {
 		_stack = [[NSMutableArray alloc]initWithCapacity:8];
 		_length = 0;
 	}
