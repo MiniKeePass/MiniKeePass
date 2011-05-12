@@ -45,7 +45,7 @@
 	CCCryptorStatus cs;
 	if(read){
 		if(cs=CCCryptorUpdate(_cryptorRef, _inputBuffer, read, _outputBuffer, AES_BUFFERSIZE, &movedBytes)){
-			@throw [NSException exceptionWithName:@"DecryptError" reason:@"DecryptError" userInfo:nil];
+			@throw [NSException exceptionWithName:@"DecryptError" reason:@"Failed to decrypt" userInfo:nil];
 		};	
 				
 		_bufferSize += movedBytes;	
@@ -53,7 +53,7 @@
 	
 	if(read<AES_BUFFERSIZE){
 		if(cs=CCCryptorFinal(_cryptorRef, _outputBuffer+movedBytes, AES_BUFFERSIZE-movedBytes, &movedBytes)){
-			@throw [NSException exceptionWithName:@"DecryptError" reason:@"DecryptError" userInfo:nil];
+			@throw [NSException exceptionWithName:@"DecryptError" reason:@"Failed to decrypt" userInfo:nil];
 		}	
 		
 		_eof = YES;

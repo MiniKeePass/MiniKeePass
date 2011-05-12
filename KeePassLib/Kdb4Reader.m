@@ -77,7 +77,7 @@
 		[decrypted readBytes:startBytes._bytes length:32];
 		if(![startBytes isEqual:_streamStartBytes]){
 			[startBytes release];
-			@throw [NSException exceptionWithName:@"DecryptError" reason:@"DecryptError" userInfo:nil];
+			@throw [NSException exceptionWithName:@"DecryptError" reason:@"Failed to decrypt" userInfo:nil];
 		}
 		[startBytes release];
 		
