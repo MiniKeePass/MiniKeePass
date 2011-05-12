@@ -32,19 +32,19 @@
 #define COMPRESSION_GZIP 1
 #define COMPRESSION_COUNT 2
 
-#define CSR_NONE		0
+#define CSR_NONE        0
 #define CSR_ARC4VARIANT 1
-#define CSR_SALSA20		2
-#define CSR_COUNT		3
+#define CSR_SALSA20     2
+#define CSR_COUNT       3
 
 @interface Kdb4Reader : NSObject<KdbReader>{
-	UUID * _cipherUUID;
-	
-	ByteBuffer * _encryptionIV, * _protectedStreamKey, * _streamStartBytes;
-	uint32_t _compressionAlgorithm, _randomStreamID;
+    UUID * _cipherUUID;
+    
+    ByteBuffer * _encryptionIV, * _protectedStreamKey, * _streamStartBytes;
+    uint32_t _compressionAlgorithm, _randomStreamID;
 
-	KdbPassword * _password;	
-	Kdb4Tree * _tree;
+    KdbPassword * _password;
+    Kdb4Tree * _tree;
 }
 
 @property(nonatomic, retain) Kdb4Tree * _tree;

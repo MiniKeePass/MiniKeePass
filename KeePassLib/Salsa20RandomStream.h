@@ -11,11 +11,11 @@
 #import "RandomStream.h"
 
 @interface Salsa20RandomStream : NSObject </*InputDataSource,*/ RandomStream> {
-	//id<InputDataSource> _source;
-	
-	uint32_t _state[16];
-	uint32_t _index;
-	uint8_t _keyStream[64];
+    //id<InputDataSource> _source;
+    
+    uint32_t _state[16];
+    uint32_t _index;
+    uint8_t _keyStream[64];
 }
 
 //@property(nonatomic, retain) id<InputDataSource> _source;

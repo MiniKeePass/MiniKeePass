@@ -10,8 +10,8 @@
 #import "DataSource.h"
 
 @interface ByteBuffer : NSObject {
-	uint8_t * _bytes;
-	NSUInteger _size;
+    uint8_t * _bytes;
+    NSUInteger _size;
 }
 
 @property(nonatomic, readonly) uint8_t * _bytes;

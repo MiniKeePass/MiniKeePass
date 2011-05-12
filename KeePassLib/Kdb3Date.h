@@ -10,7 +10,7 @@
 
 
 @interface Kdb3Date : NSObject {
-	
+    
 }
 
 //date[0] date[1] yyyy

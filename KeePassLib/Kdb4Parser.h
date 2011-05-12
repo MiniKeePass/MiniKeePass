@@ -14,9 +14,9 @@
 #import "RandomStream.h"
 
 @interface Kdb4Parser : NSObject{
-	Stack * _stack;
-	Tree * _tree;	
-	id<RandomStream> _randomStream; //to decode protected value
+    Stack * _stack;
+    Tree * _tree;
+    id<RandomStream> _randomStream; //to decode protected value
 }
 
 @property(nonatomic, retain) id<RandomStream> _randomStream;

@@ -11,7 +11,7 @@
 
 /*Kdb tree*/
 @interface Tree : NSObject {
-	Node * _root;
+    Node * _root;
 }
 
 @property(nonatomic, retain) Node * _root;

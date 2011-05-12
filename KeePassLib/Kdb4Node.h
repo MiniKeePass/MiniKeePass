@@ -12,12 +12,12 @@
 #import "Tree.h"
 
 @interface Kdb4Group : Node<KdbGroup> {
-	NSString * _uuid;
-	NSInteger _image;
-	NSString * _title;
-	NSString * _comment;
-	NSMutableArray * _subGroups;
-	NSMutableArray * _entries;
+    NSString * _uuid;
+    NSInteger _image;
+    NSString * _title;
+    NSString * _comment;
+    NSMutableArray * _subGroups;
+    NSMutableArray * _entries;
 }
 
 @property(nonatomic, retain) NSString * _uuid;
@@ -31,16 +31,16 @@
 
 
 @interface Kdb4Entry: Node<KdbEntry> {
-	NSString * _uuid;
-	NSInteger _image;
-	NSString * _title;
-	NSString * _url;
-	NSString * _username;
-	NSString * _password;
-	NSString * _comment;
-	
-	NSArray * _customeAttributeKeys;	
-	NSMutableDictionary * _customeAttributes;
+    NSString * _uuid;
+    NSInteger _image;
+    NSString * _title;
+    NSString * _url;
+    NSString * _username;
+    NSString * _password;
+    NSString * _comment;
+    
+    NSArray * _customeAttributeKeys;
+    NSMutableDictionary * _customeAttributes;
 }
 
 @property(nonatomic, retain) NSString * _uuid;
@@ -55,7 +55,7 @@
 
 
 @interface Kdb4Tree:Tree<KdbTree> {
-	NSMutableDictionary * _meta;
+    NSMutableDictionary * _meta;
 }
 
 @property(nonatomic, retain) NSMutableDictionary * _meta;

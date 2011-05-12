@@ -20,19 +20,19 @@
 //// Kdb3Group
 ////
 @interface Kdb3Group : NSObject<KdbGroup>{
-	uint32_t _id;
-	NSInteger _image;
-	NSString * _title;
-	Kdb3Group * _parent;
-	NSMutableArray * _subGroups;
-	NSMutableArray * _metaEntries; //meta data 
-	NSMutableArray * _entries;
-	
-	uint32_t _flags;
-	uint8_t _creation[7];
-	uint8_t _lastMod[7];
-	uint8_t _lastAccess[7];
-	uint8_t _expiry[7];	
+    uint32_t _id;
+    NSInteger _image;
+    NSString * _title;
+    Kdb3Group * _parent;
+    NSMutableArray * _subGroups;
+    NSMutableArray * _metaEntries; //meta data 
+    NSMutableArray * _entries;
+    
+    uint32_t _flags;
+    uint8_t _creation[7];
+    uint8_t _lastMod[7];
+    uint8_t _lastAccess[7];
+    uint8_t _expiry[7]; 
 }
 
 @property(nonatomic, assign) uint32_t _id;
@@ -63,24 +63,24 @@
 //// Kdb3Entry
 ////
 @interface Kdb3Entry : NSObject<KdbEntry>{
-	UUID * _uuid;
+    UUID * _uuid;
 
-	NSInteger _image;
-	NSString * _title;
-	NSString * _url;
-	NSString * _username;
-	NSString * _password;
-	NSString * _comment;
-	Kdb3Group * _parent;
+    NSInteger _image;
+    NSString * _title;
+    NSString * _url;
+    NSString * _username;
+    NSString * _password;
+    NSString * _comment;
+    Kdb3Group * _parent;
 
-	uint8_t _creation[7];
-	uint8_t _lastMod[7];
-	uint8_t _lastAccess[7];
-	uint8_t _expiry[7];
+    uint8_t _creation[7];
+    uint8_t _lastMod[7];
+    uint8_t _lastAccess[7];
+    uint8_t _expiry[7];
 
-	NSString * _binaryDesc;
-	uint32_t _binarySize;
-	id<BinaryContainer> _binary;
+    NSString * _binaryDesc;
+    uint32_t _binarySize;
+    id<BinaryContainer> _binary;
 }
 @property(nonatomic, retain) UUID * _uuid;
 @property(nonatomic, assign, getter=getImage, setter=setImage:) NSInteger _image;
@@ -117,7 +117,7 @@
 
 
 @interface Kdb3Tree : NSObject<KdbTree>{
-	id<KdbGroup> _root;
+    id<KdbGroup> _root;
 }
 @property(nonatomic, retain, getter=getRoot, setter=setRoot:) id<KdbGroup> _root;
 

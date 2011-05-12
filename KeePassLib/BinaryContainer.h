@@ -20,7 +20,7 @@
  */
 
 @interface MemoryBinaryContainer : NSObject<BinaryContainer> {
-	ByteBuffer * _buffer;
+    ByteBuffer * _buffer;
 }
 
 @end

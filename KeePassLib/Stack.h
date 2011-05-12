@@ -10,8 +10,8 @@
 
 
 @interface Stack : NSObject {
-	NSMutableArray * _stack;
-	NSUInteger _length;
+    NSMutableArray * _stack;
+    NSUInteger _length;
 }
 
 -(void)push:(id)obj;

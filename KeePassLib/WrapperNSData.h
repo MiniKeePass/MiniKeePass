@@ -10,8 +10,8 @@
 #import "DataSource.h"
 
 @interface WrapperNSData : NSObject<InputDataSource> {
-	NSData * _nsdata;
-	NSUInteger _offset;
+    NSData * _nsdata;
+    NSUInteger _offset;
 }
 
 -initWithContentsOfMappedFile:(NSString *)filename;

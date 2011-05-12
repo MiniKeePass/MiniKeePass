@@ -11,9 +11,9 @@
 #import "Kdb3Node.h"
 
 @interface Kdb3Persist : NSObject {
-	id<KdbTree> _tree;
-	AESEncryptSource * _enc;
-	NSInteger _groupId;
+    id<KdbTree> _tree;
+    AESEncryptSource * _enc;
+    NSInteger _groupId;
 }
 
 @property(nonatomic, retain) id<KdbTree> _tree;

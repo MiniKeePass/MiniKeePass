@@ -11,11 +11,11 @@
 #import "ByteBuffer.h"
 
 @interface HashedInputData : NSObject <InputDataSource> {
-	id <InputDataSource>  _dataSource;
-	uint32_t _blockIndex;
-	ByteBuffer * _block;
-	uint32_t _blockOffset;
-	BOOL _eof;
+    id <InputDataSource>  _dataSource;
+    uint32_t _blockIndex;
+    ByteBuffer * _block;
+    uint32_t _blockOffset;
+    BOOL _eof;
 }
 
 @property (nonatomic, retain) id<InputDataSource> _dataSource;

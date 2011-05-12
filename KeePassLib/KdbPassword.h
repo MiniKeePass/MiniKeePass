@@ -10,9 +10,9 @@
 #import "ByteBuffer.h"
 
 @interface KdbPassword : NSObject {
-	ByteBuffer * _masterSeed;
-	ByteBuffer * _transformSeed;	
-	uint64_t _rounds;	
+    ByteBuffer * _masterSeed;
+    ByteBuffer * _transformSeed;
+    uint64_t _rounds;
 }
 
 @property(nonatomic, retain) ByteBuffer * _masterSeed;

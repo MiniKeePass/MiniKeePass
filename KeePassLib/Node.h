@@ -66,12 +66,12 @@
 #define T_WINDOW "Window"
 
 @interface Node : NSObject {
-	Node * _parent;
-	NSMutableArray * _children;
-	//xml properties
-	NSMutableDictionary * _attributes;
-	NSMutableString * _text;
-	NSString * _name;
+    Node * _parent;
+    NSMutableArray * _children;
+    //xml properties
+    NSMutableDictionary * _attributes;
+    NSMutableString * _text;
+    NSString * _name;
 }
 
 @property(nonatomic, retain) Node * _parent;

@@ -19,4 +19,3 @@
 @protocol OutputDataSink <NSObject>
 -(NSUInteger)writeBytes:(void *)buffer length:(NSUInteger)length;
 @end
-

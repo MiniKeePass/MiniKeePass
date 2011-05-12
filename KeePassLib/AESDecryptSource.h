@@ -16,15 +16,15 @@
  * Attempts to streaming AES
  */
 @interface AESDecryptSource : NSObject<InputDataSource> {
-	id<InputDataSource> _source;
-	CCCryptorRef _cryptorRef;
-	
-	uint8_t _inputBuffer[AES_BUFFERSIZE];	
-	uint8_t _outputBuffer[AES_BUFFERSIZE];		
-	uint32_t _bufferOffset;
-	uint32_t _bufferSize;
-	
-	BOOL _eof;
+    id<InputDataSource> _source;
+    CCCryptorRef _cryptorRef;
+    
+    uint8_t _inputBuffer[AES_BUFFERSIZE];   
+    uint8_t _outputBuffer[AES_BUFFERSIZE];
+    uint32_t _bufferOffset;
+    uint32_t _bufferSize;
+    
+    BOOL _eof;
 }
 
 @property(nonatomic, retain) id<InputDataSource> _source;

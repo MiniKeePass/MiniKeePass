@@ -15,13 +15,13 @@
 #define IN_BLOCK  16384
 
 @interface GZipInputData : NSObject<InputDataSource> {
-	z_stream _stream;
-	BOOL _eoz; //end of (un)zip
-	
-	NSObject<InputDataSource> * _zipped;
-	ByteBuffer * _in;		
-	ByteBuffer * _out;	
-	uint32_t _outOffset;
+    z_stream _stream;
+    BOOL _eoz; //end of (un)zip
+    
+    NSObject<InputDataSource> * _zipped;
+    ByteBuffer * _in;
+    ByteBuffer * _out;
+    uint32_t _outOffset;
 }
 
 -(id)initWithDataSource:(id<InputDataSource>)zippedSource;

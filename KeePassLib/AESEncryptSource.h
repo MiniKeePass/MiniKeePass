@@ -11,14 +11,14 @@
 #import <CommonCrypto/CommonDigest.h>
 
 @interface AESEncryptSource : NSObject{
-	NSMutableData * _data;
-	CCCryptorRef _cryptorRef;
-	uint32_t _updatedBytes;
-	uint32_t _initDataLen;
-	uint8_t _buffer[64];
-	
-	CC_SHA256_CTX _shaCtx;
-	uint8_t _hash[32];
+    NSMutableData * _data;
+    CCCryptorRef _cryptorRef;
+    uint32_t _updatedBytes;
+    uint32_t _initDataLen;
+    uint8_t _buffer[64];
+    
+    CC_SHA256_CTX _shaCtx;
+    uint8_t _hash[32];
 }
 
 @property(nonatomic, retain, setter=setData:) NSMutableData *  _data;
