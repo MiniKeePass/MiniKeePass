@@ -52,7 +52,7 @@
     
     WrapperNSData *wrapperNSData = [[WrapperNSData alloc] initWithContentsOfMappedFile:filename];
     id<KdbReader> kdbReader = [KdbReaderFactory newKdbReader:wrapperNSData];
-    kdbTree = [kdbReader load:wrapperNSData withPassword:password];
+    self.kdbTree = [kdbReader load:wrapperNSData withPassword:password];
     [kdbReader release];
     [wrapperNSData release];
 }
@@ -64,6 +64,7 @@
         if ([kdbTree isKindOfClass:[Kdb3Tree class]]) {
             Kdb3Writer *writer = [[Kdb3Writer alloc] init];
             [writer persist:kdbTree file:filename withPassword:password];
+            [writer release];
         }
     }
 }
