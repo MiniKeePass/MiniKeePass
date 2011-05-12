@@ -30,6 +30,41 @@
 		687366EC1373979A0053CCA3 /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 687366EB1373979A0053CCA3 /* SFHFKeychainUtils.m */; };
 		687366EE137399360053CCA3 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 687366ED137399360053CCA3 /* Security.framework */; };
 		688D47751378DF9400BEE609 /* DatabaseManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 688D47741378DF9400BEE609 /* DatabaseManager.m */; };
+		688D635D137B63AB00BF3FAB /* sample.1.00.kdb in Resources */ = {isa = PBXBuildFile; fileRef = 688D633A137B63AB00BF3FAB /* sample.1.00.kdb */; };
+		688D635E137B63AB00BF3FAB /* sample.1.01.kdb in Resources */ = {isa = PBXBuildFile; fileRef = 688D633B137B63AB00BF3FAB /* sample.1.01.kdb */; };
+		688D635F137B63AB00BF3FAB /* sample.1.02.kdb in Resources */ = {isa = PBXBuildFile; fileRef = 688D633C137B63AB00BF3FAB /* sample.1.02.kdb */; };
+		688D6360137B63AB00BF3FAB /* sample.1.03.kdb in Resources */ = {isa = PBXBuildFile; fileRef = 688D633D137B63AB00BF3FAB /* sample.1.03.kdb */; };
+		688D6361137B63AB00BF3FAB /* sample.1.04.kdb in Resources */ = {isa = PBXBuildFile; fileRef = 688D633E137B63AB00BF3FAB /* sample.1.04.kdb */; };
+		688D6362137B63AB00BF3FAB /* sample.1.05.kdb in Resources */ = {isa = PBXBuildFile; fileRef = 688D633F137B63AB00BF3FAB /* sample.1.05.kdb */; };
+		688D6363137B63AB00BF3FAB /* sample.1.06.kdb in Resources */ = {isa = PBXBuildFile; fileRef = 688D6340137B63AB00BF3FAB /* sample.1.06.kdb */; };
+		688D6364137B63AB00BF3FAB /* sample.1.07.kdb in Resources */ = {isa = PBXBuildFile; fileRef = 688D6341137B63AB00BF3FAB /* sample.1.07.kdb */; };
+		688D6365137B63AB00BF3FAB /* sample.1.08.kdb in Resources */ = {isa = PBXBuildFile; fileRef = 688D6342137B63AB00BF3FAB /* sample.1.08.kdb */; };
+		688D6366137B63AB00BF3FAB /* sample.1.09.kdb in Resources */ = {isa = PBXBuildFile; fileRef = 688D6343137B63AB00BF3FAB /* sample.1.09.kdb */; };
+		688D6367137B63AB00BF3FAB /* sample.1.10.kdb in Resources */ = {isa = PBXBuildFile; fileRef = 688D6344137B63AB00BF3FAB /* sample.1.10.kdb */; };
+		688D6368137B63AB00BF3FAB /* sample.1.11.kdb in Resources */ = {isa = PBXBuildFile; fileRef = 688D6345137B63AB00BF3FAB /* sample.1.11.kdb */; };
+		688D6369137B63AB00BF3FAB /* sample.1.12.kdb in Resources */ = {isa = PBXBuildFile; fileRef = 688D6346137B63AB00BF3FAB /* sample.1.12.kdb */; };
+		688D636A137B63AB00BF3FAB /* sample.1.13.kdb in Resources */ = {isa = PBXBuildFile; fileRef = 688D6347137B63AB00BF3FAB /* sample.1.13.kdb */; };
+		688D636B137B63AB00BF3FAB /* sample.1.14.kdb in Resources */ = {isa = PBXBuildFile; fileRef = 688D6348137B63AB00BF3FAB /* sample.1.14.kdb */; };
+		688D636C137B63AB00BF3FAB /* sample.1.15.kdb in Resources */ = {isa = PBXBuildFile; fileRef = 688D6349137B63AB00BF3FAB /* sample.1.15.kdb */; };
+		688D636D137B63AB00BF3FAB /* sample.1.16.kdb in Resources */ = {isa = PBXBuildFile; fileRef = 688D634A137B63AB00BF3FAB /* sample.1.16.kdb */; };
+		688D636E137B63AB00BF3FAB /* sample.1.17.kdb in Resources */ = {isa = PBXBuildFile; fileRef = 688D634B137B63AB00BF3FAB /* sample.1.17.kdb */; };
+		688D636F137B63AB00BF3FAB /* sample.1.18.kdb in Resources */ = {isa = PBXBuildFile; fileRef = 688D634C137B63AB00BF3FAB /* sample.1.18.kdb */; };
+		688D6370137B63AB00BF3FAB /* sample.1.19b.kdb in Resources */ = {isa = PBXBuildFile; fileRef = 688D634D137B63AB00BF3FAB /* sample.1.19b.kdb */; };
+		688D6371137B63AB00BF3FAB /* sample.2.01.kdbx in Resources */ = {isa = PBXBuildFile; fileRef = 688D634E137B63AB00BF3FAB /* sample.2.01.kdbx */; };
+		688D6372137B63AB00BF3FAB /* sample.2.02.kdbx in Resources */ = {isa = PBXBuildFile; fileRef = 688D634F137B63AB00BF3FAB /* sample.2.02.kdbx */; };
+		688D6373137B63AB00BF3FAB /* sample.2.03.kdbx in Resources */ = {isa = PBXBuildFile; fileRef = 688D6350137B63AB00BF3FAB /* sample.2.03.kdbx */; };
+		688D6374137B63AB00BF3FAB /* sample.2.04.kdbx in Resources */ = {isa = PBXBuildFile; fileRef = 688D6351137B63AB00BF3FAB /* sample.2.04.kdbx */; };
+		688D6375137B63AB00BF3FAB /* sample.2.05.kdbx in Resources */ = {isa = PBXBuildFile; fileRef = 688D6352137B63AB00BF3FAB /* sample.2.05.kdbx */; };
+		688D6376137B63AB00BF3FAB /* sample.2.06.kdbx in Resources */ = {isa = PBXBuildFile; fileRef = 688D6353137B63AB00BF3FAB /* sample.2.06.kdbx */; };
+		688D6377137B63AB00BF3FAB /* sample.2.07.kdbx in Resources */ = {isa = PBXBuildFile; fileRef = 688D6354137B63AB00BF3FAB /* sample.2.07.kdbx */; };
+		688D6378137B63AB00BF3FAB /* sample.2.08.kdbx in Resources */ = {isa = PBXBuildFile; fileRef = 688D6355137B63AB00BF3FAB /* sample.2.08.kdbx */; };
+		688D6379137B63AB00BF3FAB /* sample.2.09.kdbx in Resources */ = {isa = PBXBuildFile; fileRef = 688D6356137B63AB00BF3FAB /* sample.2.09.kdbx */; };
+		688D637A137B63AB00BF3FAB /* sample.2.10.kdbx in Resources */ = {isa = PBXBuildFile; fileRef = 688D6357137B63AB00BF3FAB /* sample.2.10.kdbx */; };
+		688D637B137B63AB00BF3FAB /* sample.2.11.kdbx in Resources */ = {isa = PBXBuildFile; fileRef = 688D6358137B63AB00BF3FAB /* sample.2.11.kdbx */; };
+		688D637C137B63AB00BF3FAB /* sample.2.12.kdbx in Resources */ = {isa = PBXBuildFile; fileRef = 688D6359137B63AB00BF3FAB /* sample.2.12.kdbx */; };
+		688D637D137B63AB00BF3FAB /* sample.2.13.kdbx in Resources */ = {isa = PBXBuildFile; fileRef = 688D635A137B63AB00BF3FAB /* sample.2.13.kdbx */; };
+		688D637E137B63AB00BF3FAB /* sample.2.14.kdbx in Resources */ = {isa = PBXBuildFile; fileRef = 688D635B137B63AB00BF3FAB /* sample.2.14.kdbx */; };
+		688D637F137B63AB00BF3FAB /* sample.2.15.kdbx in Resources */ = {isa = PBXBuildFile; fileRef = 688D635C137B63AB00BF3FAB /* sample.2.15.kdbx */; };
 		688E68F5136F761500004216 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 688E68F4136F761500004216 /* Settings.bundle */; };
 		688F3FB51377805C0049808C /* SelectionListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 688F3FB41377805C0049808C /* SelectionListViewController.m */; };
 		689675971379DCE6006BC268 /* AESDecryptSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 689675491379DCE5006BC268 /* AESDecryptSource.m */; };
@@ -179,6 +214,41 @@
 		687366ED137399360053CCA3 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		688D47731378DF9400BEE609 /* DatabaseManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DatabaseManager.h; sourceTree = "<group>"; };
 		688D47741378DF9400BEE609 /* DatabaseManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DatabaseManager.m; sourceTree = "<group>"; };
+		688D633A137B63AB00BF3FAB /* sample.1.00.kdb */ = {isa = PBXFileReference; lastKnownFileType = file; path = sample.1.00.kdb; sourceTree = "<group>"; };
+		688D633B137B63AB00BF3FAB /* sample.1.01.kdb */ = {isa = PBXFileReference; lastKnownFileType = file; path = sample.1.01.kdb; sourceTree = "<group>"; };
+		688D633C137B63AB00BF3FAB /* sample.1.02.kdb */ = {isa = PBXFileReference; lastKnownFileType = file; path = sample.1.02.kdb; sourceTree = "<group>"; };
+		688D633D137B63AB00BF3FAB /* sample.1.03.kdb */ = {isa = PBXFileReference; lastKnownFileType = file; path = sample.1.03.kdb; sourceTree = "<group>"; };
+		688D633E137B63AB00BF3FAB /* sample.1.04.kdb */ = {isa = PBXFileReference; lastKnownFileType = file; path = sample.1.04.kdb; sourceTree = "<group>"; };
+		688D633F137B63AB00BF3FAB /* sample.1.05.kdb */ = {isa = PBXFileReference; lastKnownFileType = file; path = sample.1.05.kdb; sourceTree = "<group>"; };
+		688D6340137B63AB00BF3FAB /* sample.1.06.kdb */ = {isa = PBXFileReference; lastKnownFileType = file; path = sample.1.06.kdb; sourceTree = "<group>"; };
+		688D6341137B63AB00BF3FAB /* sample.1.07.kdb */ = {isa = PBXFileReference; lastKnownFileType = file; path = sample.1.07.kdb; sourceTree = "<group>"; };
+		688D6342137B63AB00BF3FAB /* sample.1.08.kdb */ = {isa = PBXFileReference; lastKnownFileType = file; path = sample.1.08.kdb; sourceTree = "<group>"; };
+		688D6343137B63AB00BF3FAB /* sample.1.09.kdb */ = {isa = PBXFileReference; lastKnownFileType = file; path = sample.1.09.kdb; sourceTree = "<group>"; };
+		688D6344137B63AB00BF3FAB /* sample.1.10.kdb */ = {isa = PBXFileReference; lastKnownFileType = file; path = sample.1.10.kdb; sourceTree = "<group>"; };
+		688D6345137B63AB00BF3FAB /* sample.1.11.kdb */ = {isa = PBXFileReference; lastKnownFileType = file; path = sample.1.11.kdb; sourceTree = "<group>"; };
+		688D6346137B63AB00BF3FAB /* sample.1.12.kdb */ = {isa = PBXFileReference; lastKnownFileType = file; path = sample.1.12.kdb; sourceTree = "<group>"; };
+		688D6347137B63AB00BF3FAB /* sample.1.13.kdb */ = {isa = PBXFileReference; lastKnownFileType = file; path = sample.1.13.kdb; sourceTree = "<group>"; };
+		688D6348137B63AB00BF3FAB /* sample.1.14.kdb */ = {isa = PBXFileReference; lastKnownFileType = file; path = sample.1.14.kdb; sourceTree = "<group>"; };
+		688D6349137B63AB00BF3FAB /* sample.1.15.kdb */ = {isa = PBXFileReference; lastKnownFileType = file; path = sample.1.15.kdb; sourceTree = "<group>"; };
+		688D634A137B63AB00BF3FAB /* sample.1.16.kdb */ = {isa = PBXFileReference; lastKnownFileType = file; path = sample.1.16.kdb; sourceTree = "<group>"; };
+		688D634B137B63AB00BF3FAB /* sample.1.17.kdb */ = {isa = PBXFileReference; lastKnownFileType = file; path = sample.1.17.kdb; sourceTree = "<group>"; };
+		688D634C137B63AB00BF3FAB /* sample.1.18.kdb */ = {isa = PBXFileReference; lastKnownFileType = file; path = sample.1.18.kdb; sourceTree = "<group>"; };
+		688D634D137B63AB00BF3FAB /* sample.1.19b.kdb */ = {isa = PBXFileReference; lastKnownFileType = file; path = sample.1.19b.kdb; sourceTree = "<group>"; };
+		688D634E137B63AB00BF3FAB /* sample.2.01.kdbx */ = {isa = PBXFileReference; lastKnownFileType = file; path = sample.2.01.kdbx; sourceTree = "<group>"; };
+		688D634F137B63AB00BF3FAB /* sample.2.02.kdbx */ = {isa = PBXFileReference; lastKnownFileType = file; path = sample.2.02.kdbx; sourceTree = "<group>"; };
+		688D6350137B63AB00BF3FAB /* sample.2.03.kdbx */ = {isa = PBXFileReference; lastKnownFileType = file; path = sample.2.03.kdbx; sourceTree = "<group>"; };
+		688D6351137B63AB00BF3FAB /* sample.2.04.kdbx */ = {isa = PBXFileReference; lastKnownFileType = file; path = sample.2.04.kdbx; sourceTree = "<group>"; };
+		688D6352137B63AB00BF3FAB /* sample.2.05.kdbx */ = {isa = PBXFileReference; lastKnownFileType = file; path = sample.2.05.kdbx; sourceTree = "<group>"; };
+		688D6353137B63AB00BF3FAB /* sample.2.06.kdbx */ = {isa = PBXFileReference; lastKnownFileType = file; path = sample.2.06.kdbx; sourceTree = "<group>"; };
+		688D6354137B63AB00BF3FAB /* sample.2.07.kdbx */ = {isa = PBXFileReference; lastKnownFileType = file; path = sample.2.07.kdbx; sourceTree = "<group>"; };
+		688D6355137B63AB00BF3FAB /* sample.2.08.kdbx */ = {isa = PBXFileReference; lastKnownFileType = file; path = sample.2.08.kdbx; sourceTree = "<group>"; };
+		688D6356137B63AB00BF3FAB /* sample.2.09.kdbx */ = {isa = PBXFileReference; lastKnownFileType = file; path = sample.2.09.kdbx; sourceTree = "<group>"; };
+		688D6357137B63AB00BF3FAB /* sample.2.10.kdbx */ = {isa = PBXFileReference; lastKnownFileType = file; path = sample.2.10.kdbx; sourceTree = "<group>"; };
+		688D6358137B63AB00BF3FAB /* sample.2.11.kdbx */ = {isa = PBXFileReference; lastKnownFileType = file; path = sample.2.11.kdbx; sourceTree = "<group>"; };
+		688D6359137B63AB00BF3FAB /* sample.2.12.kdbx */ = {isa = PBXFileReference; lastKnownFileType = file; path = sample.2.12.kdbx; sourceTree = "<group>"; };
+		688D635A137B63AB00BF3FAB /* sample.2.13.kdbx */ = {isa = PBXFileReference; lastKnownFileType = file; path = sample.2.13.kdbx; sourceTree = "<group>"; };
+		688D635B137B63AB00BF3FAB /* sample.2.14.kdbx */ = {isa = PBXFileReference; lastKnownFileType = file; path = sample.2.14.kdbx; sourceTree = "<group>"; };
+		688D635C137B63AB00BF3FAB /* sample.2.15.kdbx */ = {isa = PBXFileReference; lastKnownFileType = file; path = sample.2.15.kdbx; sourceTree = "<group>"; };
 		688E68F4136F761500004216 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		688F3FB31377805C0049808C /* SelectionListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectionListViewController.h; sourceTree = "<group>"; };
 		688F3FB41377805C0049808C /* SelectionListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectionListViewController.m; sourceTree = "<group>"; };
@@ -376,6 +446,48 @@
 			path = Security;
 			sourceTree = "<group>";
 		};
+		688D6339137B63AB00BF3FAB /* Samples */ = {
+			isa = PBXGroup;
+			children = (
+				688D633A137B63AB00BF3FAB /* sample.1.00.kdb */,
+				688D633B137B63AB00BF3FAB /* sample.1.01.kdb */,
+				688D633C137B63AB00BF3FAB /* sample.1.02.kdb */,
+				688D633D137B63AB00BF3FAB /* sample.1.03.kdb */,
+				688D633E137B63AB00BF3FAB /* sample.1.04.kdb */,
+				688D633F137B63AB00BF3FAB /* sample.1.05.kdb */,
+				688D6340137B63AB00BF3FAB /* sample.1.06.kdb */,
+				688D6341137B63AB00BF3FAB /* sample.1.07.kdb */,
+				688D6342137B63AB00BF3FAB /* sample.1.08.kdb */,
+				688D6343137B63AB00BF3FAB /* sample.1.09.kdb */,
+				688D6344137B63AB00BF3FAB /* sample.1.10.kdb */,
+				688D6345137B63AB00BF3FAB /* sample.1.11.kdb */,
+				688D6346137B63AB00BF3FAB /* sample.1.12.kdb */,
+				688D6347137B63AB00BF3FAB /* sample.1.13.kdb */,
+				688D6348137B63AB00BF3FAB /* sample.1.14.kdb */,
+				688D6349137B63AB00BF3FAB /* sample.1.15.kdb */,
+				688D634A137B63AB00BF3FAB /* sample.1.16.kdb */,
+				688D634B137B63AB00BF3FAB /* sample.1.17.kdb */,
+				688D634C137B63AB00BF3FAB /* sample.1.18.kdb */,
+				688D634D137B63AB00BF3FAB /* sample.1.19b.kdb */,
+				688D634E137B63AB00BF3FAB /* sample.2.01.kdbx */,
+				688D634F137B63AB00BF3FAB /* sample.2.02.kdbx */,
+				688D6350137B63AB00BF3FAB /* sample.2.03.kdbx */,
+				688D6351137B63AB00BF3FAB /* sample.2.04.kdbx */,
+				688D6352137B63AB00BF3FAB /* sample.2.05.kdbx */,
+				688D6353137B63AB00BF3FAB /* sample.2.06.kdbx */,
+				688D6354137B63AB00BF3FAB /* sample.2.07.kdbx */,
+				688D6355137B63AB00BF3FAB /* sample.2.08.kdbx */,
+				688D6356137B63AB00BF3FAB /* sample.2.09.kdbx */,
+				688D6357137B63AB00BF3FAB /* sample.2.10.kdbx */,
+				688D6358137B63AB00BF3FAB /* sample.2.11.kdbx */,
+				688D6359137B63AB00BF3FAB /* sample.2.12.kdbx */,
+				688D635A137B63AB00BF3FAB /* sample.2.13.kdbx */,
+				688D635B137B63AB00BF3FAB /* sample.2.14.kdbx */,
+				688D635C137B63AB00BF3FAB /* sample.2.15.kdbx */,
+			);
+			path = Samples;
+			sourceTree = "<group>";
+		};
 		689675461379DCE5006BC268 /* KeePassLib */ = {
 			isa = PBXGroup;
 			children = (
@@ -532,6 +644,7 @@
 				68D5903C136CB8300064CEE5 /* Resources */,
 				68D59008136CB5CB0064CEE5 /* Frameworks */,
 				68D59006136CB5CB0064CEE5 /* Products */,
+				688D6339137B63AB00BF3FAB /* Samples */,
 			);
 			sourceTree = "<group>";
 		};
@@ -759,6 +872,41 @@
 				68DCBB49137965C100B1C089 /* style.css in Resources */,
 				5269AB001379F7A900517316 /* Default.png in Resources */,
 				5269AB021379F84500517316 /* Default@2x.png in Resources */,
+				688D635D137B63AB00BF3FAB /* sample.1.00.kdb in Resources */,
+				688D635E137B63AB00BF3FAB /* sample.1.01.kdb in Resources */,
+				688D635F137B63AB00BF3FAB /* sample.1.02.kdb in Resources */,
+				688D6360137B63AB00BF3FAB /* sample.1.03.kdb in Resources */,
+				688D6361137B63AB00BF3FAB /* sample.1.04.kdb in Resources */,
+				688D6362137B63AB00BF3FAB /* sample.1.05.kdb in Resources */,
+				688D6363137B63AB00BF3FAB /* sample.1.06.kdb in Resources */,
+				688D6364137B63AB00BF3FAB /* sample.1.07.kdb in Resources */,
+				688D6365137B63AB00BF3FAB /* sample.1.08.kdb in Resources */,
+				688D6366137B63AB00BF3FAB /* sample.1.09.kdb in Resources */,
+				688D6367137B63AB00BF3FAB /* sample.1.10.kdb in Resources */,
+				688D6368137B63AB00BF3FAB /* sample.1.11.kdb in Resources */,
+				688D6369137B63AB00BF3FAB /* sample.1.12.kdb in Resources */,
+				688D636A137B63AB00BF3FAB /* sample.1.13.kdb in Resources */,
+				688D636B137B63AB00BF3FAB /* sample.1.14.kdb in Resources */,
+				688D636C137B63AB00BF3FAB /* sample.1.15.kdb in Resources */,
+				688D636D137B63AB00BF3FAB /* sample.1.16.kdb in Resources */,
+				688D636E137B63AB00BF3FAB /* sample.1.17.kdb in Resources */,
+				688D636F137B63AB00BF3FAB /* sample.1.18.kdb in Resources */,
+				688D6370137B63AB00BF3FAB /* sample.1.19b.kdb in Resources */,
+				688D6371137B63AB00BF3FAB /* sample.2.01.kdbx in Resources */,
+				688D6372137B63AB00BF3FAB /* sample.2.02.kdbx in Resources */,
+				688D6373137B63AB00BF3FAB /* sample.2.03.kdbx in Resources */,
+				688D6374137B63AB00BF3FAB /* sample.2.04.kdbx in Resources */,
+				688D6375137B63AB00BF3FAB /* sample.2.05.kdbx in Resources */,
+				688D6376137B63AB00BF3FAB /* sample.2.06.kdbx in Resources */,
+				688D6377137B63AB00BF3FAB /* sample.2.07.kdbx in Resources */,
+				688D6378137B63AB00BF3FAB /* sample.2.08.kdbx in Resources */,
+				688D6379137B63AB00BF3FAB /* sample.2.09.kdbx in Resources */,
+				688D637A137B63AB00BF3FAB /* sample.2.10.kdbx in Resources */,
+				688D637B137B63AB00BF3FAB /* sample.2.11.kdbx in Resources */,
+				688D637C137B63AB00BF3FAB /* sample.2.12.kdbx in Resources */,
+				688D637D137B63AB00BF3FAB /* sample.2.13.kdbx in Resources */,
+				688D637E137B63AB00BF3FAB /* sample.2.14.kdbx in Resources */,
+				688D637F137B63AB00BF3FAB /* sample.2.15.kdbx in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
