@@ -99,7 +99,7 @@
     if(offset<0)
         @throw [NSException exceptionWithName:@"UnsupportedMethod" reason:@"moveReadOffset" userInfo:nil];
     else{
-        ByteBuffer * b = [[ByteBuffer alloc]initWithSize:offset dataSource:self];
+        ByteBuffer * b = [[ByteBuffer alloc] initWithSize:offset dataSource:self];
         [b release];
     }
     return 0;

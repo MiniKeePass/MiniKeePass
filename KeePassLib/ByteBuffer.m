@@ -30,7 +30,7 @@
 }
 
 -(NSString *)description{
-    NSMutableString * desc = [[NSMutableString alloc]initWithCapacity:_size];
+    NSMutableString * desc = [[NSMutableString alloc] initWithCapacity:_size];
     for(int i=0; i<_size; i++)
         [desc appendFormat:@"%02X ", _bytes[i]];
     return [desc autorelease];

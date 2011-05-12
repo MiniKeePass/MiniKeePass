@@ -259,7 +259,7 @@
 +(id<KdbTree>)newTree{
     ////
     
-    id<KdbGroup> root = [[Kdb3Group alloc]init];
+    id<KdbGroup> root = [[Kdb3Group alloc] init];
     [root setGroupName:@"%ROOT%"];
     
     Kdb3Group * group = [[Kdb3Group alloc] init];

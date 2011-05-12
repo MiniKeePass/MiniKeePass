@@ -37,12 +37,12 @@ static xmlSAXHandler saxHandler;
 -(id)init{
     self = [super init];
     if(self) {
-        _stack = [[Stack alloc]init];
+        _stack = [[Stack alloc] init];
     }
     return self;
 }
 
--(void)dealloc{
+-(void)dealloc {
     [_randomStream release];
     [_tree release];
     [_stack release];
@@ -55,15 +55,15 @@ static xmlSAXHandler saxHandler;
  */
 
 #define BUFFER_SIZE 1024*100
--(Tree *)parse:(id<InputDataSource>)input{
+-(Tree *)parse:(id<InputDataSource>)input {
     [self reset];
     xmlParserCtxtPtr context = xmlCreatePushParserCtxt(&saxHandler, self, NULL, 0, NULL);
     uint8_t buffer[BUFFER_SIZE];
     int read = 0;
-    do{
+    do {
         read = [input readBytes:buffer length:BUFFER_SIZE];
         xmlParseChunk(context, (const char*)buffer, read, 0);
-    }while(read);
+    } while(read);
     xmlParseChunk(context, NULL, 0, 1);
     return _tree;
 }
@@ -72,7 +72,7 @@ static xmlSAXHandler saxHandler;
 -(void)reset{
     [_stack clear]; 
     self._tree = nil;
-    _tree = [[Kdb4Tree alloc]init];
+    _tree = [[Kdb4Tree alloc] init];
 }
 
 @end
@@ -80,15 +80,15 @@ static xmlSAXHandler saxHandler;
 #pragma mark help methods
 static Node * createNode(NSString * name){
     if([name isEqualToString:@T_ROOT]){
-        return [[Kdb4Group alloc]initWithStringName:name];
+        return [[Kdb4Group alloc] initWithStringName:name];
     }
     
     if([name isEqualToString:@T_GROUP]){
-        return [[Kdb4Group alloc]initWithStringName:name];
+        return [[Kdb4Group alloc] initWithStringName:name];
     }
     
     if([name isEqualToString:@T_ENTRY]){
-        return [[Kdb4Entry alloc]initWithStringName:name];
+        return [[Kdb4Entry alloc] initWithStringName:name];
     }
     
     return [[Node alloc] initWithStringName:name];
@@ -121,8 +121,9 @@ static void startElementSAX(void *ctx, const xmlChar *localname, const xmlChar *
     }
     
     //the first element is the root of the tree
-    if(!parser._tree._root)
-        parser._tree._root = node; 
+    if(!parser._tree._root) {
+        parser._tree._root = node;
+    }
     
     if(![parser._stack isEmpty]){
         Node * parent = [parser._stack peek];

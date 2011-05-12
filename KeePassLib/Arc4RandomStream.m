@@ -72,7 +72,7 @@
 }
 
 -(NSString *)xor:(NSData *)data{
-    ByteBuffer * bb = [[ByteBuffer alloc]initWithSize:[data length]];
+    ByteBuffer * bb = [[ByteBuffer alloc] initWithSize:[data length]];
     [data getBytes:bb._bytes length:bb._size];
     
     for(int i=0; i<bb._size; i++){
@@ -81,7 +81,7 @@
         _index = (_index+1)&ARC_BUFFER_SIZE;
     }
     
-    NSString * rv = [[NSString alloc]initWithBytes:bb._bytes length:bb._size encoding:NSUTF8StringEncoding];
+    NSString * rv = [[NSString alloc] initWithBytes:bb._bytes length:bb._size encoding:NSUTF8StringEncoding];
     [bb release];
     return [rv autorelease];
 }
