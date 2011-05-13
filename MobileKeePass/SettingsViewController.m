@@ -279,7 +279,7 @@ enum {
         
         [self setCellAtRow:ROW_PIN_LOCK_TIMEOUT inSection:SECTION_PIN enabled:YES];
         [self setCellAtRow:ROW_DELETE_ON_FAILURE_ENABLED inSection:SECTION_DELETE_ON_FAILURE enabled:YES];
-        [self setCellAtRow:ROW_DELETE_ON_FAILURE_ATTEMPTS inSection:SECTION_DELETE_ON_FAILURE enabled:YES];
+        [self setCellAtRow:ROW_DELETE_ON_FAILURE_ATTEMPTS inSection:SECTION_DELETE_ON_FAILURE enabled:deleteOnFailureEnabledSwitch.on];
         deleteOnFailureEnabledSwitch.enabled = YES;
 
         [controller dismissModalViewControllerAnimated:YES];
