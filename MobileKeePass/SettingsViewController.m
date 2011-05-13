@@ -318,7 +318,7 @@ enum {
     if (tempPin == nil) {
         tempPin = [pin copy];
         
-        controller.string = @"Confirm PIN";
+        controller.textLabel.text = @"Confirm PIN";
         
         // Clear the PIN entry for confirmation
         [controller clearEntry];
@@ -343,7 +343,7 @@ enum {
         tempPin = nil;
         
         // Notify the user the PINs they entered did not match
-        controller.string = @"PINs did not match. Try again";
+        controller.textLabel.text = @"PINs did not match. Try again";
         AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
         
         // Clear the PIN entry to let them try again

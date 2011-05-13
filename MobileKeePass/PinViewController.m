@@ -22,7 +22,7 @@
 @implementation PinViewController
 
 @synthesize delegate;
-@synthesize string;
+@synthesize textLabel;
 
 - (id)init {
     return [self initWithText:@"Enter your PIN to unlock"];
@@ -31,58 +31,61 @@
 - (id)initWithText:(NSString*)text {
     [super init];
     if (self) {
-        string = text;
+        self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
+        
+        UIImage *icon = [UIImage imageNamed:@"icon"];
+        UIView *iconView = [[UIView alloc] initWithFrame:CGRectMake(131, 20, icon.size.width,icon.size.height)];
+        iconView.backgroundColor = [UIColor colorWithPatternImage:icon];
+        [self.view addSubview:iconView];
+        [iconView release];
+        
+        textField = [[UITextField alloc] initWithFrame:CGRectMake(320, 240, 0, 0)];
+        textField.delegate = self;
+        textField.hidden = YES;
+        textField.secureTextEntry = YES;
+        textField.keyboardType = UIKeyboardTypeNumberPad;
+        textField.keyboardAppearance = UIKeyboardAppearanceAlert;
+        
+        [self.view addSubview:textField];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textDidChange:) name:UITextFieldTextDidChangeNotification object:textField];
+        
+        PinTextField *pinTextField1 = [[PinTextField alloc] initWithFrame:CGRectMake(26, 100, 61, 53)];
+        [self.view addSubview:pinTextField1];
+        
+        PinTextField *pinTextField2 = [[PinTextField alloc] initWithFrame:CGRectMake(95, 100, 61, 52)];
+        [self.view addSubview:pinTextField2];
+        
+        PinTextField *pinTextField3 = [[PinTextField alloc] initWithFrame:CGRectMake(164, 100, 61, 53)];
+        [self.view addSubview:pinTextField3];
+        
+        PinTextField *pinTextField4 = [[PinTextField alloc] initWithFrame:CGRectMake(233, 100, 61, 54)];
+        [self.view addSubview:pinTextField4];
+        
+        pinTextFields = [[NSArray arrayWithObjects:pinTextField1, pinTextField2, pinTextField3, pinTextField4, nil] retain];
+        
+        [pinTextField1 release];
+        [pinTextField2 release];
+        [pinTextField3 release];
+        [pinTextField4 release];
+        
+        textLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 165, 320, 40)];
+        textLabel.backgroundColor = [UIColor clearColor];
+        textLabel.numberOfLines = 0;
+        textLabel.textAlignment = UITextAlignmentCenter;
+        textLabel.text = text;
+        [self.view addSubview:textLabel];
     }
     
     return self;
 }
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    
-    self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
-
-    UIImage *icon = [UIImage imageNamed:@"icon"];
-    UIView *iconView = [[UIView alloc] initWithFrame:CGRectMake(131, 20, icon.size.width,icon.size.height)];
-    iconView.backgroundColor = [UIColor colorWithPatternImage:icon];
-    [self.view addSubview:iconView];
-    [iconView release];
-    
-    textField = [[UITextField alloc] initWithFrame:CGRectMake(320, 240, 0, 0)];
-    textField.delegate = self;
-    textField.hidden = YES;
-    textField.secureTextEntry = YES;
-    textField.keyboardType = UIKeyboardTypeNumberPad;
-    textField.keyboardAppearance = UIKeyboardAppearanceAlert;
-    
-    [self.view addSubview:textField];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textDidChange:) name:UITextFieldTextDidChangeNotification object:textField];
-    
-    PinTextField *pinTextField1 = [[PinTextField alloc] initWithFrame:CGRectMake(26, 100, 61, 53)];
-    [self.view addSubview:pinTextField1];
-    
-    PinTextField *pinTextField2 = [[PinTextField alloc] initWithFrame:CGRectMake(95, 100, 61, 52)];
-    [self.view addSubview:pinTextField2];
-    
-    PinTextField *pinTextField3 = [[PinTextField alloc] initWithFrame:CGRectMake(164, 100, 61, 53)];
-    [self.view addSubview:pinTextField3];
-    
-    PinTextField *pinTextField4 = [[PinTextField alloc] initWithFrame:CGRectMake(233, 100, 61, 54)];
-    [self.view addSubview:pinTextField4];
-    
-    pinTextFields = [[NSArray arrayWithObjects:pinTextField1, pinTextField2, pinTextField3, pinTextField4, nil] retain];
-    
-    [pinTextField1 release];
-    [pinTextField2 release];
-    [pinTextField3 release];
-    [pinTextField4 release];
-    
-    infoLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 165, 320, 20)];
-    infoLabel.backgroundColor = [UIColor clearColor];
-    infoLabel.textAlignment = UITextAlignmentCenter;
-    infoLabel.text = string;
-    [self.view addSubview:infoLabel];
+- (void)dealloc {
+    [textField release];
+    [pinTextFields release];
+    [textLabel release];
+    [delegate release];
+    [super dealloc];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -101,14 +104,6 @@
     [super viewDidUnload];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:textField];
-}
-
-- (void)dealloc {
-    [textField release];
-    [pinTextFields release];
-    [infoLabel release];
-    [delegate release];
-    [super dealloc];
 }
 
 - (BOOL)textField:(UITextField *)field shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
@@ -143,11 +138,6 @@
 
 - (void)clearEntry {
     textField.text = @"";
-}
-
-- (void)setString:(NSString *)inString {
-    string = inString;
-    infoLabel.text = string;
 }
 
 @end

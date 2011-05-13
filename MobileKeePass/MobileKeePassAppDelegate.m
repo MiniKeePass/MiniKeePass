@@ -286,7 +286,7 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
         
         if (![userDefaults boolForKey:@"deleteOnFailureEnabled"]) {
             // Update the status message on the PIN view
-            controller.string = @"Incorrect PIN";
+            controller.textLabel.text = @"Incorrect PIN";
         } else {
             // Get the number of failed attempts
             NSInteger pinFailedAttempts = [userDefaults integerForKey:@"pinFailedAttempts"];
@@ -296,7 +296,8 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
             NSInteger deleteOnFailureAttempts = deleteOnFailureAttemptsValues[[userDefaults integerForKey:@"deleteOnFailureAttempts"]];
             
             // Update the status message on the PIN view
-            controller.string = [NSString stringWithFormat:@"Incorrect PIN. %d Tries Remaining", (deleteOnFailureAttempts - pinFailedAttempts)];
+            NSInteger remainingAttempts = (deleteOnFailureAttempts - pinFailedAttempts);
+            controller.textLabel.text = [NSString stringWithFormat:@"Incorrect PIN\n%d attempt%@ remaining", remainingAttempts, remainingAttempts > 1 ? @"s" : @""];
             
             // Check if they have failed too many times
             if (pinFailedAttempts >= deleteOnFailureAttempts) {

@@ -22,8 +22,7 @@
 @interface PinViewController : UIViewController <UITextFieldDelegate> {
     UITextField *textField;
     NSArray *pinTextFields;
-    UILabel *infoLabel;
-    NSString *string;
+    UILabel *textLabel;
     id<PinViewControllerDelegate> delegate;
 }
 
@@ -31,7 +30,7 @@
 - (void)clearEntry;
 
 @property (nonatomic, retain) id<PinViewControllerDelegate> delegate;
-@property (nonatomic, copy) NSString *string;
+@property (nonatomic, copy) UILabel *textLabel;
 
 @end
 
