@@ -47,6 +47,10 @@
     passwordCell.label.text = @"Password";
     
     commentsCell = [[TextViewCell alloc] initWithParent:self.tableView];
+    
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapPressed)];
+    [self.view addGestureRecognizer:tapGesture];
+    [tapGesture release];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -136,6 +140,14 @@ BOOL stringsEqual(NSString *str1, NSString *str2) {
     } else {
         [self.navigationController popViewControllerAnimated:YES];
     }
+}
+
+- (void)tapPressed {
+    [titleCell.textField resignFirstResponder];
+    [urlCell.textField resignFirstResponder];
+    [usernameCell.textField resignFirstResponder];
+    [passwordCell.textField resignFirstResponder];
+    [commentsCell.textView resignFirstResponder];
 }
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
