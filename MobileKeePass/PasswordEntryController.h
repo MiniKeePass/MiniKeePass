@@ -31,9 +31,6 @@
 @property (nonatomic, retain) UILabel *statusLabel;
 @property (nonatomic, retain) id<PasswordEntryControllerDelegate> delegate;
 
-- (void)okPressed;
-- (void)cancelPressed;
-
 @end
 
 @protocol PasswordEntryControllerDelegate <NSObject>

@@ -56,13 +56,13 @@
     okButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     okButton.frame = CGRectMake(20, y, BUTTON_WIDTH, BUTTON_HEIGHT);
     [okButton setTitle:@"OK" forState:UIControlStateNormal];
-    [okButton addTarget:self action:@selector(okPressed) forControlEvents:UIControlEventTouchUpInside];
+    [okButton addTarget:self action:@selector(okPressed:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:okButton];
     
     cancelButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     cancelButton.frame = CGRectMake(20 + BUTTON_WIDTH + SPACER, y, BUTTON_WIDTH, BUTTON_HEIGHT);
     [cancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
-    [cancelButton addTarget:self action:@selector(cancelPressed) forControlEvents:UIControlEventTouchUpInside];
+    [cancelButton addTarget:self action:@selector(cancelPressed:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:cancelButton];
     y += BUTTON_HEIGHT + SPACER;
     
@@ -87,12 +87,7 @@
     [super dealloc];
 }
 
-- (BOOL)textFieldShouldReturn:(UITextField *)textField {
-    [self okPressed];
-    return YES;
-}
-
-- (void)okPressed {
+- (void)okPressed:(id)sender {
     BOOL shouldDismiss = YES;
     
     if ([delegate respondsToSelector:@selector(passwordEntryController:passwordEntered:)]) {
@@ -104,8 +99,13 @@
     }
 }
 
-- (void)cancelPressed {
+- (void)cancelPressed:(id)sender {
     [self dismissModalViewControllerAnimated:YES];
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    [self okPressed:nil];
+    return YES;
 }
 
 @end
