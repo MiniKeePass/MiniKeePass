@@ -28,8 +28,11 @@
     NSArray *deleteOnFailureAttemptsLabels;
     
     UISwitch *rememberPasswordsEnabledSwitch;
-
+    
     UISwitch *hidePasswordsSwitch;
+    
+    UIView *closeDatabaseView;
+    UIButton *closeDatabaseButton;
 }
 
 - (void)setCellAtRow:(NSInteger)row inSection:(NSInteger)section enabled:(BOOL)enabled;

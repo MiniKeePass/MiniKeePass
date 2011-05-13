@@ -179,6 +179,9 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
     
     groupViewController.group = nil;
     
+    [databaseDocument release];
+    databaseDocument = nil;
+    
     if ([navigationController.topViewController isKindOfClass:[GroupViewController class]] || [navigationController.topViewController isKindOfClass:[EntryViewController class]]) {
         [navigationController popToRootViewControllerAnimated:NO];
     }
@@ -214,7 +217,7 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
 
 - (void)settingsPressed:(id)sender {    
     SettingsViewController *settingsViewController = [[SettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
-    settingsViewController.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(dismissSettingsPage:)];
+    settingsViewController.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(dismissSettingsPage:)];
     
     UINavigationController *settingsNavigationController = [[UINavigationController alloc] initWithRootViewController:settingsViewController];
     [settingsViewController release];

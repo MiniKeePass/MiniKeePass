@@ -16,6 +16,7 @@
  */
 
 #import <AudioToolbox/AudioToolbox.h>
+#import "MobileKeePassAppDelegate.h"
 #import "SettingsViewController.h"
 #import "SelectionListViewController.h"
 #import "SFHFKeychainUtils.h"
@@ -78,6 +79,20 @@ enum {
     hidePasswordsSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(200, 10, 0, 0)];
     hidePasswordsSwitch.on = [userDefaults boolForKey:@"hidePasswords"];
     [hidePasswordsSwitch addTarget:self action:@selector(toggleHidePasswords:) forControlEvents:UIControlEventValueChanged];
+    
+    closeDatabaseView = [[UIView alloc] init];
+    
+    closeDatabaseButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    closeDatabaseButton.frame = CGRectMake(10, 10, 300, 44);
+    [closeDatabaseButton setTitle:@"Close Current Database" forState:UIControlStateNormal];
+    UIImage *image = [[UIImage imageNamed:@"button_red.png"] stretchableImageWithLeftCapWidth:8 topCapHeight:8];
+    [closeDatabaseButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [closeDatabaseButton setBackgroundImage:image forState:UIControlStateNormal];
+    [closeDatabaseButton addTarget:self action:@selector(closeDatabasePressed:) forControlEvents:UIControlEventTouchUpInside];
+    [closeDatabaseView addSubview:closeDatabaseButton];
+    
+    MobileKeePassAppDelegate *appDelegate = (MobileKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
+    closeDatabaseButton.enabled = appDelegate.databaseDocument != nil;
 }
 
 - (void)dealloc {
@@ -186,6 +201,20 @@ enum {
     return cell;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+    if (section == SECTION_HIDE_PASSWORDS) {
+        return 64;
+    }
+    return 0;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
+    if (section == SECTION_HIDE_PASSWORDS) {
+        return closeDatabaseView;
+    }
+    return nil;
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == SECTION_PIN && indexPath.row == ROW_PIN_LOCK_TIMEOUT && pinEnabledSwitch.on) {
         SelectionListViewController *selectionListViewController = [[SelectionListViewController alloc] initWithStyle:UITableViewStyleGrouped];
@@ -263,6 +292,13 @@ enum {
 
 - (void)toggleHidePasswords:(id)sender {
     [[NSUserDefaults standardUserDefaults] setBool:hidePasswordsSwitch.on forKey:@"hidePasswords"];
+}
+
+- (void)closeDatabasePressed:(id)sender {
+    MobileKeePassAppDelegate *appDelegate = (MobileKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
+    [appDelegate closeDatabase];
+    
+    closeDatabaseButton.enabled = appDelegate.databaseDocument != nil;
 }
 
 - (void)pinViewController:(PinViewController *)controller pinEntered:(NSString *)pin {        
