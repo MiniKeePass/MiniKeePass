@@ -36,5 +36,6 @@
 }
 
 - (void)setCellAtRow:(NSInteger)row inSection:(NSInteger)section enabled:(BOOL)enabled;
+- (void)updateEnabledControls;
 
 @end

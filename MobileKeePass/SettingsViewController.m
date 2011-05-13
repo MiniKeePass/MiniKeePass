@@ -112,6 +112,26 @@ enum {
     deleteOnFailureEnabledSwitch.on = [userDefaults boolForKey:@"deleteOnFailureEnabled"];
     rememberPasswordsEnabledSwitch.on = [userDefaults boolForKey:@"rememberPasswordsEnabled"];
     hidePasswordsSwitch.on = [userDefaults boolForKey:@"hidePasswords"];
+
+    [self updateEnabledControls];
+}
+
+- (void)setCellAtRow:(NSInteger)row inSection:(NSInteger)section enabled:(BOOL)enabled {
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:section];
+    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+    cell.textLabel.enabled = enabled;    
+}
+
+- (void)updateEnabledControls {
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    BOOL pinEnabled = [userDefaults boolForKey:@"pinEnabled"];
+    BOOL deleteOnFailureEnabled = [userDefaults boolForKey:@"deleteOnFailureEnabled"];
+    
+    // Enable/disable the components dependant on dettings
+    [self setCellAtRow:ROW_PIN_LOCK_TIMEOUT inSection:SECTION_PIN enabled:pinEnabled];
+    [self setCellAtRow:ROW_DELETE_ON_FAILURE_ENABLED inSection:SECTION_DELETE_ON_FAILURE enabled:pinEnabled];
+    deleteOnFailureEnabledSwitch.enabled = pinEnabled;
+    [self setCellAtRow:ROW_DELETE_ON_FAILURE_ATTEMPTS inSection:SECTION_DELETE_ON_FAILURE enabled:pinEnabled && deleteOnFailureEnabled];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -160,6 +180,8 @@ enum {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
         cell.selectionStyle = UITableViewCellEditingStyleNone;
     }
+    
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
 
     switch (indexPath.section) {
         case SECTION_PIN:
@@ -169,8 +191,7 @@ enum {
                     [cell addSubview:pinEnabledSwitch];
                     break;
                 case ROW_PIN_LOCK_TIMEOUT:
-                    cell.textLabel.enabled = pinEnabledSwitch.on;
-                    cell.textLabel.text = [NSString stringWithFormat:@"Lock Timeout: %@", [pinLockTimeoutLabels objectAtIndex:[[NSUserDefaults standardUserDefaults] integerForKey:@"pinLockTimeout"]]];
+                    cell.textLabel.text = [NSString stringWithFormat:@"Lock Timeout: %@", [pinLockTimeoutLabels objectAtIndex:[userDefaults integerForKey:@"pinLockTimeout"]]];
                     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                     break;
             }
@@ -183,8 +204,7 @@ enum {
                     [cell addSubview:deleteOnFailureEnabledSwitch];
                     break;
                 case ROW_DELETE_ON_FAILURE_ATTEMPTS:
-                    cell.textLabel.enabled = deleteOnFailureEnabledSwitch.on;
-                    cell.textLabel.text = [NSString stringWithFormat:@"Attempts: %@", [deleteOnFailureAttemptsLabels objectAtIndex:[[NSUserDefaults standardUserDefaults] integerForKey:@"deleteOnFailureAttempts"]]];
+                    cell.textLabel.text = [NSString stringWithFormat:@"Attempts: %@", [deleteOnFailureAttemptsLabels objectAtIndex:[userDefaults integerForKey:@"deleteOnFailureAttempts"]]];
                     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                     break;
             }
@@ -269,12 +289,6 @@ enum {
     }    
 }
 
-- (void)setCellAtRow:(NSInteger)row inSection:(NSInteger)section enabled:(BOOL)enabled {
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:section];
-    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
-    cell.textLabel.enabled = enabled;    
-}
-
 - (void)togglePinEnabled:(id)sender {
     if (pinEnabledSwitch.on) {
         PinViewController* pinViewController = [[PinViewController alloc] initWithText:@"Set PIN"];
@@ -286,24 +300,26 @@ enum {
         [SFHFKeychainUtils deleteItemForUsername:@"PIN" andServiceName:@"net.fizzawizza.MobileKeePass" error:nil];
         [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"pinEnabled"];
         
-        // Enable/disable the rows dependant on this settings
-        [self setCellAtRow:ROW_PIN_LOCK_TIMEOUT inSection:SECTION_PIN enabled:NO];
-        [self setCellAtRow:ROW_DELETE_ON_FAILURE_ENABLED inSection:SECTION_DELETE_ON_FAILURE enabled:NO];
-        [self setCellAtRow:ROW_DELETE_ON_FAILURE_ATTEMPTS inSection:SECTION_DELETE_ON_FAILURE enabled:NO];
-        deleteOnFailureEnabledSwitch.enabled = NO;
+        // Update which controls are enabled
+        [self updateEnabledControls];
     }
 }
 
 - (void)toggleDeleteOnFailureEnabled:(id)sender {
+    // Update the setting
     [[NSUserDefaults standardUserDefaults] setBool:deleteOnFailureEnabledSwitch.on forKey:@"deleteOnFailureEnabled"];
-    [self setCellAtRow:ROW_DELETE_ON_FAILURE_ATTEMPTS inSection:SECTION_DELETE_ON_FAILURE enabled:deleteOnFailureEnabledSwitch.on];
+    
+    // Update which controls are enabled
+    [self updateEnabledControls];
 }
 
 - (void)toggleRememberPasswords:(id)sender {
+    // Update the setting
     [[NSUserDefaults standardUserDefaults] setBool:rememberPasswordsEnabledSwitch.on forKey:@"rememberPasswordsEnabled"];
 }
 
 - (void)toggleHidePasswords:(id)sender {
+    // Update the setting
     [[NSUserDefaults standardUserDefaults] setBool:hidePasswordsSwitch.on forKey:@"hidePasswords"];
 }
 
@@ -330,11 +346,8 @@ enum {
         [SFHFKeychainUtils storeUsername:@"PIN" andPassword:pin forServiceName:@"net.fizzawizza.MobileKeePass" updateExisting:YES error:nil];
         [[NSUserDefaults standardUserDefaults] setBool:pinEnabledSwitch.on forKey:@"pinEnabled"];
         
-        // Enable/disable the rows dependant on this settings
-        [self setCellAtRow:ROW_PIN_LOCK_TIMEOUT inSection:SECTION_PIN enabled:YES];
-        [self setCellAtRow:ROW_DELETE_ON_FAILURE_ENABLED inSection:SECTION_DELETE_ON_FAILURE enabled:YES];
-        [self setCellAtRow:ROW_DELETE_ON_FAILURE_ATTEMPTS inSection:SECTION_DELETE_ON_FAILURE enabled:deleteOnFailureEnabledSwitch.on];
-        deleteOnFailureEnabledSwitch.enabled = YES;
+        // Update which controls are enabled
+        [self updateEnabledControls];
         
         // Remove the PIN view
         [self.navigationController popViewControllerAnimated:YES];
