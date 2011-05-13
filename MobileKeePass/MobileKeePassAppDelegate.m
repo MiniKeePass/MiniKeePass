@@ -19,6 +19,7 @@
 #import "MobileKeePassAppDelegate.h"
 #import "OpenViewController.h"
 #import "SettingsViewController.h"
+#import "EntryViewController.h"
 #import "DatabaseManager.h"
 #import "SFHFKeychainUtils.h"
 
@@ -174,7 +175,9 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
     
     groupViewController.group = nil;
     
-    [navigationController popToRootViewControllerAnimated:NO];
+    if ([navigationController.topViewController isKindOfClass:[GroupViewController class]] || [navigationController.topViewController isKindOfClass:[EntryViewController class]]) {
+        [navigationController popToRootViewControllerAnimated:NO];
+    }
 }
 
 - (void)openLastDatabase {

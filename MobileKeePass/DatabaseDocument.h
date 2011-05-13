@@ -26,6 +26,7 @@
 }
 
 @property (nonatomic, retain) id<KdbTree> kdbTree;
+@property (nonatomic, retain) NSString *filename;
 @property (nonatomic) BOOL dirty;
 
 - (void)open:(NSString*)newFilename password:(NSString*)newPassword;

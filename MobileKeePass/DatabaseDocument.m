@@ -20,6 +20,7 @@
 @implementation DatabaseDocument
 
 @synthesize kdbTree;
+@synthesize filename;
 @synthesize dirty;
 
 - (id)init {

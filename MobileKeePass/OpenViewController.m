@@ -127,10 +127,19 @@
         // Retrieve the Document directory
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
         NSString *documentsDirectory = [paths objectAtIndex:0];
+        NSString *path = [documentsDirectory stringByAppendingPathComponent:filename];
+        
+        // Get the application delegate
+        MobileKeePassAppDelegate *appDelegate = (MobileKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
+        
+        // Close the current database if we're deleting it's file
+        if ([path isEqualToString:appDelegate.databaseDocument.filename]) {
+            [appDelegate closeDatabase];
+        }
         
         // Delete the file
         NSFileManager *fileManager = [[NSFileManager alloc] init];
-        [fileManager removeItemAtPath:[documentsDirectory stringByAppendingPathComponent:filename] error:nil];
+        [fileManager removeItemAtPath:path error:nil];
         [fileManager release];
         
         // Remove the file from the array
