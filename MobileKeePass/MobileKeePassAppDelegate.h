@@ -26,6 +26,7 @@
     GroupViewController *groupViewController;
     
     DatabaseDocument *databaseDocument;
+    NSString *fileToOpen;
     
     UIImage *images[70];
 }

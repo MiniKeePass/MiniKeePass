@@ -86,6 +86,7 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
         [images[i] release];
     }
     [databaseDocument release];
+    [fileToOpen release];
     [groupViewController release];
     [navigationController release];
     [window release];
@@ -127,16 +128,18 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
         pinViewController.delegate = self;
         [window.rootViewController presentModalViewController:pinViewController animated:YES];
         [pinViewController release];
+    } else {
+        // Check if we're supposed to open a file
+        if (fileToOpen != nil) {
+            [[DatabaseManager sharedInstance] openDatabaseDocument:fileToOpen animated:YES];
+            
+            [fileToOpen release];
+            fileToOpen = nil;
+        }
     }
 }
 
 -(BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
-    
-    // Prevent PIN view from showing by deleting exitTime
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"exitTime"];
-    
-    [self closeDatabase];
-    
     // Retrieve the Documents directory
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
@@ -153,8 +156,9 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
     [fileManager removeItemAtPath:[documentsDirectory stringByAppendingPathComponent:@"Inbox"] error:nil];
     [fileManager release];
     
-    // Load the database
-    [[DatabaseManager sharedInstance] openDatabaseDocument:path animated:NO];
+    // Store the file to open
+    [fileToOpen release];
+    fileToOpen = [path retain];
     
     return YES;
 }
@@ -239,6 +243,14 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
     if ([pin isEqualToString:validPin]) {
         [userDefaults setInteger:0 forKey:@"pinFailedAttempts"];
         [controller dismissModalViewControllerAnimated:YES];
+        
+        // Check if we're supposed to open a file
+        if (fileToOpen != nil) {
+            [[DatabaseManager sharedInstance] openDatabaseDocument:fileToOpen animated:YES];
+            
+            [fileToOpen release];
+            fileToOpen = nil;
+        }
         return;
     } 
     
