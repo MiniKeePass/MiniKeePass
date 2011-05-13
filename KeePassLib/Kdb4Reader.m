@@ -17,7 +17,7 @@
 #import "Arc4RandomStream.h"
 #import "Salsa20RandomStream.h"
 
-#define FILE_VERSION_32 0x00020000
+#define FILE_VERSION_32 0x00030000
 #define FILE_VERSION_CRITICAL_MASK 0xFFFF0000
 
 #define READ_BYTES(X, Y, Z) (X = [[ByteBuffer alloc] initWithSize:Y dataSource:Z])
