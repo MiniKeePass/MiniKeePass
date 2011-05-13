@@ -58,26 +58,20 @@ enum {
     
     self.title = @"Settings";
     
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    
     pinEnabledSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(200, 10, 0, 0)];
-    pinEnabledSwitch.on = [userDefaults boolForKey:@"pinEnabled"];
     [pinEnabledSwitch addTarget:self action:@selector(togglePinEnabled:) forControlEvents:UIControlEventValueChanged];
     
     pinLockTimeoutLabels = [[NSArray arrayWithObjects:@"Immediately", @"30 Seconds", @"1 Minute", @"2 Minutes", @"5 Minutes", nil] retain];
     
     deleteOnFailureEnabledSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(200, 10, 0, 0)];
-    deleteOnFailureEnabledSwitch.on = [userDefaults boolForKey:@"deleteOnFailureEnabled"];
     [deleteOnFailureEnabledSwitch addTarget:self action:@selector(toggleDeleteOnFailureEnabled:) forControlEvents:UIControlEventValueChanged];    
     
     deleteOnFailureAttemptsLabels = [[NSArray arrayWithObjects:@"3", @"5", @"10", @"15", nil] retain];
     
     rememberPasswordsEnabledSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(200, 10, 0, 0)];
-    rememberPasswordsEnabledSwitch.on = [userDefaults boolForKey:@"rememberPasswordsEnabled"];
     [rememberPasswordsEnabledSwitch addTarget:self action:@selector(toggleRememberPasswords:) forControlEvents:UIControlEventValueChanged];
     
     hidePasswordsSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(200, 10, 0, 0)];
-    hidePasswordsSwitch.on = [userDefaults boolForKey:@"hidePasswords"];
     [hidePasswordsSwitch addTarget:self action:@selector(toggleHidePasswords:) forControlEvents:UIControlEventValueChanged];
     
     closeDatabaseView = [[UIView alloc] init];
@@ -96,11 +90,28 @@ enum {
 }
 
 - (void)dealloc {
-    [rememberPasswordsEnabledSwitch release];
-    [hidePasswordsSwitch release];
     [pinEnabledSwitch release];
     [pinLockTimeoutLabels release];
+    [deleteOnFailureEnabledSwitch release];
+    [deleteOnFailureAttemptsLabels release];
+    [rememberPasswordsEnabledSwitch release];
+    [hidePasswordsSwitch release];
     [super dealloc];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    // Delete the temp pin
+    [tempPin release];
+    tempPin = nil;
+    
+    // Initialize all the controls with their settings
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    pinEnabledSwitch.on = [userDefaults boolForKey:@"pinEnabled"];
+    deleteOnFailureEnabledSwitch.on = [userDefaults boolForKey:@"deleteOnFailureEnabled"];
+    rememberPasswordsEnabledSwitch.on = [userDefaults boolForKey:@"rememberPasswordsEnabled"];
+    hidePasswordsSwitch.on = [userDefaults boolForKey:@"hidePasswords"];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -268,17 +279,19 @@ enum {
     if (pinEnabledSwitch.on) {
         PinViewController* pinViewController = [[PinViewController alloc] initWithText:@"Set PIN"];
         pinViewController.delegate = self;
-        [self presentModalViewController:pinViewController animated:YES];
+        [self.navigationController pushViewController:pinViewController animated:YES];
         [pinViewController release];
     } else {
+        // Delete the PIN and disable the PIN enabled setting
         [SFHFKeychainUtils deleteItemForUsername:@"PIN" andServiceName:@"net.fizzawizza.MobileKeePass" error:nil];
+        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"pinEnabled"];
+        
+        // Enable/disable the rows dependant on this settings
         [self setCellAtRow:ROW_PIN_LOCK_TIMEOUT inSection:SECTION_PIN enabled:NO];
         [self setCellAtRow:ROW_DELETE_ON_FAILURE_ENABLED inSection:SECTION_DELETE_ON_FAILURE enabled:NO];
         [self setCellAtRow:ROW_DELETE_ON_FAILURE_ATTEMPTS inSection:SECTION_DELETE_ON_FAILURE enabled:NO];
         deleteOnFailureEnabledSwitch.enabled = NO;
     }
-    
-    [[NSUserDefaults standardUserDefaults] setBool:pinEnabledSwitch.on forKey:@"pinEnabled"];
 }
 
 - (void)toggleDeleteOnFailureEnabled:(id)sender {
@@ -304,28 +317,36 @@ enum {
 - (void)pinViewController:(PinViewController *)controller pinEntered:(NSString *)pin {        
     if (tempPin == nil) {
         tempPin = [pin copy];
+        
         controller.string = @"Confirm PIN";
+        
+        // Clear the PIN entry for confirmation
         [controller clearEntry];
     } else if ([tempPin isEqualToString:pin]) {
-        NSError *error;
-        [SFHFKeychainUtils storeUsername:@"PIN" andPassword:pin forServiceName:@"net.fizzawizza.MobileKeePass" updateExisting:YES error:&error];
-        
         [tempPin release];
         tempPin = nil;
         
+        // Set the PIN and enable the PIN enabled setting
+        [SFHFKeychainUtils storeUsername:@"PIN" andPassword:pin forServiceName:@"net.fizzawizza.MobileKeePass" updateExisting:YES error:nil];
+        [[NSUserDefaults standardUserDefaults] setBool:pinEnabledSwitch.on forKey:@"pinEnabled"];
+        
+        // Enable/disable the rows dependant on this settings
         [self setCellAtRow:ROW_PIN_LOCK_TIMEOUT inSection:SECTION_PIN enabled:YES];
         [self setCellAtRow:ROW_DELETE_ON_FAILURE_ENABLED inSection:SECTION_DELETE_ON_FAILURE enabled:YES];
         [self setCellAtRow:ROW_DELETE_ON_FAILURE_ATTEMPTS inSection:SECTION_DELETE_ON_FAILURE enabled:deleteOnFailureEnabledSwitch.on];
         deleteOnFailureEnabledSwitch.enabled = YES;
         
-        [controller dismissModalViewControllerAnimated:YES];
+        // Remove the PIN view
+        [self.navigationController popViewControllerAnimated:YES];
     } else {
-        controller.string = @"PINs did not match. Try again";
-        AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
-        
         [tempPin release];
         tempPin = nil;
         
+        // Notify the user the PINs they entered did not match
+        controller.string = @"PINs did not match. Try again";
+        AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+        
+        // Clear the PIN entry to let them try again
         [controller clearEntry];
     }
 }
