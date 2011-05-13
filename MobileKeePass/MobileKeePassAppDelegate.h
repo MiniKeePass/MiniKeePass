@@ -37,6 +37,7 @@
 
 - (void)closeDatabase;
 - (void)openLastDatabase;
+- (void)deleteAllData;
 - (UIImage*)loadImage:(int)index;
 
 @end

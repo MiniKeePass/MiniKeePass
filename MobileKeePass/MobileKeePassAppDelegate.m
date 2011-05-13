@@ -198,6 +198,30 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
     [[DatabaseManager sharedInstance] openDatabaseDocument:lastFilename animated:NO];
 }
 
+- (void)deleteAllData {
+    // Close the current database
+    [self closeDatabase];
+    
+    // Reset some settings
+    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults setInteger:0 forKey:@"pinFailedAttempts"];
+    [userDefaults setBool:NO forKey:@"pinEnabled"];
+    
+    // Delete all our information from the keychain
+    [SFHFKeychainUtils deleteAllItemForServiceName:@"net.fizzawizza.MobileKeePass" error:nil];
+    
+    // Get the files in the Documents directory
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSArray *files = [fileManager contentsOfDirectoryAtPath:documentsDirectory error:nil];
+    
+    // Delete all the files in the Documents directory
+    for (NSString *file in files) {
+        [fileManager removeItemAtPath:[documentsDirectory stringByAppendingPathComponent:file] error:nil];
+    }
+}
+
 - (UIImage*)loadImage:(int)index {
     if (images[index] == nil) {
         NSString *imagePath = [[NSBundle mainBundle] pathForResource:[NSString stringWithFormat:@"%d", index] ofType:@"png"];
@@ -255,47 +279,33 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
             fileToOpen = nil;
         }
         return;
-    } 
-    
-    // Vibrate to signify they are a bad user
-    AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
-    
-    controller.string = @"Incorrect PIN";
-    [controller clearEntry];
-    
-    if ([userDefaults boolForKey:@"deleteOnFailureEnabled"]) {
-        // Get the number of failed attempts
-        NSInteger pinFailedAttempts = [userDefaults integerForKey:@"pinFailedAttempts"];
-        [userDefaults setInteger:++pinFailedAttempts forKey:@"pinFailedAttempts"];
-
-        // Get the number of failed attempts before deleting
-        NSInteger deleteOnFailureAttempts = deleteOnFailureAttemptsValues[[userDefaults integerForKey:@"deleteOnFailureAttempts"]];
-
-        // Check if they have failed too many times
-        if (pinFailedAttempts >= deleteOnFailureAttempts) {
-            // Close the current database
-            [self closeDatabase];
+    } else {
+        // Vibrate to signify they are a bad user
+        AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+        [controller clearEntry];
+        
+        if (![userDefaults boolForKey:@"deleteOnFailureEnabled"]) {
+            // Update the status message on the PIN view
+            controller.string = @"Incorrect PIN";
+        } else {
+            // Get the number of failed attempts
+            NSInteger pinFailedAttempts = [userDefaults integerForKey:@"pinFailedAttempts"];
+            [userDefaults setInteger:++pinFailedAttempts forKey:@"pinFailedAttempts"];
             
-            // Reset some settings
-            [userDefaults setInteger:0 forKey:@"pinFailedAttempts"];
-            [userDefaults setBool:NO forKey:@"pinEnabled"];
+            // Get the number of failed attempts before deleting
+            NSInteger deleteOnFailureAttempts = deleteOnFailureAttemptsValues[[userDefaults integerForKey:@"deleteOnFailureAttempts"]];
             
-            // Delete all our information from the keychain
-            [SFHFKeychainUtils deleteAllItemForServiceName:@"net.fizzawizza.MobileKeePass" error:nil];
+            // Update the status message on the PIN view
+            controller.string = [NSString stringWithFormat:@"Incorrect PIN. %d Tries Remaining", (deleteOnFailureAttempts - pinFailedAttempts)];
             
-            // Get the files in the Documents directory
-            NSFileManager *fileManager = [NSFileManager defaultManager];
-            NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-            NSString *documentsDirectory = [paths objectAtIndex:0];
-            NSArray *files = [fileManager contentsOfDirectoryAtPath:documentsDirectory error:nil];
-            
-            // Delete all the files in the Documents directory
-            for (NSString *file in files) {
-                [fileManager removeItemAtPath:[documentsDirectory stringByAppendingPathComponent:file] error:nil];
+            // Check if they have failed too many times
+            if (pinFailedAttempts >= deleteOnFailureAttempts) {
+                // Delete all data
+                [self deleteAllData];
+                
+                // Dismiss the pin view
+                [controller dismissModalViewControllerAnimated:YES];
             }
-            
-            // Dismiss the pin view
-            [controller dismissModalViewControllerAnimated:YES];
         }
     }
 }
