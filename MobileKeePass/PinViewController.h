@@ -37,5 +37,4 @@
 
 @protocol PinViewControllerDelegate <NSObject>
 - (void)pinViewController:(PinViewController*)controller pinEntered:(NSString*)pin;
-- (void)pinViewControllerCancelButtonPressed:(PinViewController*)controller;
 @end

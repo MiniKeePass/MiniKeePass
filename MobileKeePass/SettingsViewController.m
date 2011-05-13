@@ -317,7 +317,7 @@ enum {
         [self setCellAtRow:ROW_DELETE_ON_FAILURE_ENABLED inSection:SECTION_DELETE_ON_FAILURE enabled:YES];
         [self setCellAtRow:ROW_DELETE_ON_FAILURE_ATTEMPTS inSection:SECTION_DELETE_ON_FAILURE enabled:deleteOnFailureEnabledSwitch.on];
         deleteOnFailureEnabledSwitch.enabled = YES;
-
+        
         [controller dismissModalViewControllerAnimated:YES];
     } else {
         controller.string = @"PINs did not match. Try again";
@@ -328,22 +328,6 @@ enum {
         
         [controller clearEntry];
     }
-}
-
-- (void)pinViewControllerCancelButtonPressed:(PinViewController *)controller {
-    [pinEnabledSwitch setOn:NO animated:YES];
-
-    [SFHFKeychainUtils deleteItemForUsername:@"PIN" andServiceName:@"net.fizzawizza.MobileKeePass" error:nil];
-    
-    NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
-    [standardUserDefaults setBool:NO forKey:@"pinEnabled"];
-    
-    [tempPin release];
-    tempPin = nil;
-    
-    [self setCellAtRow:ROW_PIN_LOCK_TIMEOUT inSection:SECTION_PIN enabled:NO];
-
-    [controller dismissModalViewControllerAnimated:YES];
 }
 
 @end

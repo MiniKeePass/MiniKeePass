@@ -48,22 +48,12 @@
     [self.view addSubview:iconView];
     [iconView release];
     
-    UIButton *cancelButton = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarStyleBlack target:self action:@selector(cancelButtonPressed:)];
-
-    UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 0, 44)];
-    toolbar.barStyle = UIBarStyleBlack;
-    toolbar.translucent = YES;    
-    toolbar.items = [NSArray arrayWithObject:cancelButton];
-    [cancelButton release];
-
     textField = [[UITextField alloc] initWithFrame:CGRectMake(320, 240, 0, 0)];
     textField.delegate = self;
     textField.hidden = YES;
     textField.secureTextEntry = YES;
     textField.keyboardType = UIKeyboardTypeNumberPad;
     textField.keyboardAppearance = UIKeyboardAppearanceAlert;
-    textField.inputAccessoryView = toolbar;
-    [toolbar release];
     
     [self.view addSubview:textField];
     
@@ -148,12 +138,6 @@
 - (void)checkPin:(id)sender {
     if ([delegate respondsToSelector:@selector(pinViewController:pinEntered:)]) {
         [delegate pinViewController:self pinEntered:textField.text];
-    }
-}
- 
-- (void)cancelButtonPressed:(id)sender {
-    if ([delegate respondsToSelector:@selector(pinViewControllerCancelButtonPressed:)]) {
-        [delegate pinViewControllerCancelButtonPressed:self];
     }
 }
 

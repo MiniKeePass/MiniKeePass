@@ -300,21 +300,4 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
     }
 }
 
-- (void)pinViewControllerCancelButtonPressed:(PinViewController *)controller {
-    NSString* title = @"Canceling PIN entry will lock active database";
-    
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:title delegate:self cancelButtonTitle:@"Close Database" destructiveButtonTitle:nil otherButtonTitles:@"Try Again", nil];
-    actionSheet.actionSheetStyle = UIActivityIndicatorViewStyleGray;
-    [actionSheet showInView:window];
-    [actionSheet release];
-}
-
--(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (buttonIndex == actionSheet.cancelButtonIndex) {
-        [self closeDatabase];
-        [[NSUserDefaults standardUserDefaults] setValue:@"" forKey:@"lastFilename"];
-        [window.rootViewController dismissModalViewControllerAnimated:YES];        
-    }
-}
-
 @end
