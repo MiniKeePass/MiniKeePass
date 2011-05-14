@@ -19,15 +19,14 @@
 
 @protocol PasswordEntryControllerDelegate;
 
-@interface PasswordEntryController : UIViewController <UITextFieldDelegate> {
-    UITextField *passwordTextField;
+@interface PasswordEntryController : UITableViewController <UITextFieldDelegate> {
+    UITextField *textField;
     UIButton *okButton;
     UIButton *cancelButton;
     UILabel *statusLabel;
     id<PasswordEntryControllerDelegate> delegate;
 }
 
-@property (nonatomic, retain) UITextField *passwordTextField;
 @property (nonatomic, retain) UILabel *statusLabel;
 @property (nonatomic, retain) id<PasswordEntryControllerDelegate> delegate;
 
@@ -35,4 +34,5 @@
 
 @protocol PasswordEntryControllerDelegate <NSObject>
 - (BOOL)passwordEntryController:(PasswordEntryController*)controller passwordEntered:(NSString*)password;
+- (void)passwordEntryControllerCancelButtonPressed:(PasswordEntryController*)controller;
 @end

@@ -17,81 +17,104 @@
 
 #import "PasswordEntryController.h"
 
-#define SPACER 8
+#define SPACER 12
 #define LABEL_FIELD_HEIGHT 21
-#define TEXT_FIELD_HEIGHT 31
 #define BUTTON_HEIGHT 37
-#define BUTTON_WIDTH (140 - SPACER / 2)
+#define BUTTON_WIDTH (147 - SPACER / 2)
 
 @implementation PasswordEntryController
 
-@synthesize passwordTextField;
 @synthesize statusLabel;
 @synthesize delegate;
 
+-(id)initWithStyle:(UITableViewStyle)style {
+    return [super initWithStyle:UITableViewStyleGrouped];
+}
+
 - (void)viewDidLoad {
-    int y = 20;
+    int y = 100;
     
     [super viewDidLoad];
     
-    self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
-    
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(20, y, 280, LABEL_FIELD_HEIGHT)];
-    label.text = @"Password:";
-    label.textColor = [UIColor darkTextColor];
-    label.backgroundColor = [UIColor clearColor];
-    [self.view addSubview:label];
-    [label release];
-    y += LABEL_FIELD_HEIGHT + SPACER;
-    
-    passwordTextField = [[UITextField alloc] initWithFrame:CGRectMake(20, y, 280, TEXT_FIELD_HEIGHT)];
-    passwordTextField.borderStyle = UITextBorderStyleRoundedRect;
-    passwordTextField.secureTextEntry = YES;
-    passwordTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
-    passwordTextField.returnKeyType = UIReturnKeyDone;
-    passwordTextField.delegate = self;
-    [self.view addSubview:passwordTextField];
-    y += TEXT_FIELD_HEIGHT + SPACER;
+    self.tableView.delegate = self;
+    self.tableView.scrollEnabled = NO;
+        
+    textField = [[UITextField alloc] init];
+    textField.secureTextEntry = YES;
+    textField.placeholder = @"Password";
+    textField.delegate = self;
+    textField.returnKeyType = UIReturnKeyDone;
+    [textField becomeFirstResponder];
     
     okButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    okButton.frame = CGRectMake(20, y, BUTTON_WIDTH, BUTTON_HEIGHT);
+    okButton.frame = CGRectMake(9, y, BUTTON_WIDTH, BUTTON_HEIGHT);
     [okButton setTitle:@"OK" forState:UIControlStateNormal];
     [okButton addTarget:self action:@selector(okPressed:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:okButton];
     
     cancelButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    cancelButton.frame = CGRectMake(20 + BUTTON_WIDTH + SPACER, y, BUTTON_WIDTH, BUTTON_HEIGHT);
+    cancelButton.frame = CGRectMake(17 + BUTTON_WIDTH + SPACER, y, BUTTON_WIDTH, BUTTON_HEIGHT);
     [cancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
     [cancelButton addTarget:self action:@selector(cancelPressed:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:cancelButton];
     y += BUTTON_HEIGHT + SPACER;
     
-    statusLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, y, 280, LABEL_FIELD_HEIGHT)];
+    statusLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, y, 280, LABEL_FIELD_HEIGHT)];
     statusLabel.textColor = [UIColor redColor];
     statusLabel.backgroundColor = [UIColor clearColor];
     [self.view addSubview:statusLabel];
 }
 
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    
-    passwordTextField.text = @"";
-    statusLabel.text = @"";
-    
-    [passwordTextField becomeFirstResponder];
-}
+//- (void)viewWillAppear:(BOOL)animated {
+//    [super viewWillAppear:animated];
+//    
+//    statusLabel.text = @"";
+//    
+//    [passwordTextField becomeFirstResponder];
+//}
 
 - (void)dealloc {
-    [passwordTextField release];
     [statusLabel release];
     [super dealloc];
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 37;
+}
+
+-(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    return @"Database password";
+}
+
+-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 1;    
+}
+
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return 1;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+    cell.selectionStyle = UITableViewCellEditingStyleNone;
+    
+    CGRect frame = cell.frame;
+    frame.size.width -= 40;
+    frame.size.height -= 23;
+    frame.origin.x = 20;
+    frame.origin.y = 8;
+    
+    textField.frame = frame;
+    [cell addSubview:textField];
+    
+    return cell;
 }
 
 - (void)okPressed:(id)sender {
     BOOL shouldDismiss = YES;
     
     if ([delegate respondsToSelector:@selector(passwordEntryController:passwordEntered:)]) {
-        shouldDismiss = [delegate passwordEntryController:self passwordEntered:passwordTextField.text];
+        shouldDismiss = [delegate passwordEntryController:self passwordEntered:textField.text];
     }
     
     if (shouldDismiss) {
@@ -100,7 +123,9 @@
 }
 
 - (void)cancelPressed:(id)sender {
-    [self dismissModalViewControllerAnimated:YES];
+    if ([delegate respondsToSelector:@selector(passwordEntryControllerCancelButtonPressed:)]) {
+        [delegate passwordEntryControllerCancelButtonPressed:self];
+    }
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {

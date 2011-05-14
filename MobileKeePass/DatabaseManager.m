@@ -77,7 +77,7 @@ static DatabaseManager *sharedInstance;
         // Prompt the user for a password
         PasswordEntryController *passwordEntryController = [[PasswordEntryController alloc] init];
         passwordEntryController.delegate = self;
-        [appDelegate.navigationController presentModalViewController:passwordEntryController animated:YES];
+        [appDelegate.navigationController pushViewController:passwordEntryController animated:YES];
         [passwordEntryController release];
     }
 }
@@ -115,6 +115,11 @@ static DatabaseManager *sharedInstance;
     [dd release];
     
     return shouldDismiss;
+}
+
+-(void)passwordEntryControllerCancelButtonPressed:(PasswordEntryController *)controller {
+    MobileKeePassAppDelegate *appDelegate = (MobileKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
+    [appDelegate.navigationController popViewControllerAnimated:YES];
 }
 
 @end
