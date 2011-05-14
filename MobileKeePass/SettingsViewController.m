@@ -272,16 +272,16 @@ enum {
     NSIndexPath *indexPath = (NSIndexPath*)reference;
     if (indexPath.section == SECTION_PIN && indexPath.row == ROW_PIN_LOCK_TIMEOUT) {
         // Save the user setting
-        NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
-        [standardUserDefaults setInteger:selectedIndex forKey:@"pinLockTimeout"];
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        [userDefaults setInteger:selectedIndex forKey:@"pinLockTimeout"];
         
         // Update the cell text
         UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
         cell.textLabel.text = [NSString stringWithFormat:@"Lock Timeout: %@", [pinLockTimeoutLabels objectAtIndex:selectedIndex]];
     } else if (indexPath.section == SECTION_DELETE_ON_FAILURE && indexPath.row == ROW_DELETE_ON_FAILURE_ATTEMPTS) {
         // Save the user setting
-        NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
-        [standardUserDefaults setInteger:selectedIndex forKey:@"deleteOnFailureAttempts"];
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        [userDefaults setInteger:selectedIndex forKey:@"deleteOnFailureAttempts"];
         
         // Update the cell text
         UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
