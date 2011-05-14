@@ -58,8 +58,6 @@
     
     // Add listeners to the keyboard
     NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
-    [notificationCenter addObserver:self selector:@selector(keyboardWasShown:) name:UIKeyboardDidShowNotification object:nil];
-    [notificationCenter addObserver:self selector:@selector(keyboardWillBeHidden:) name:UIKeyboardWillHideNotification object:nil];
     [notificationCenter addObserver:self selector:@selector(applicationWillResignActive:) name:UIApplicationWillResignActiveNotification object:nil];
     
     // Update the fields
@@ -156,23 +154,6 @@ BOOL stringsEqual(NSString *str1, NSString *str2) {
     }
     
     [self.navigationController popViewControllerAnimated:YES];
-}
-
-- (void)keyboardWasShown:(NSNotification*)notification {
-    NSDictionary* info = [notification userInfo];
-    CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
-    
-    CGRect frame = self.view.frame;
-    frame.size.height = originalHeight - kbSize.height;
-    
-    self.tableView.frame = frame;
-}
-
-- (void)keyboardWillBeHidden:(NSNotification*)notification {
-    CGRect rect = self.view.frame;
-    rect.size.height = originalHeight;
-    
-    self.tableView.frame = rect;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
