@@ -29,7 +29,7 @@
         tableView = [parent retain];
         
         self.selectionStyle = UITableViewCellSelectionStyleNone;
-
+        
         textField = [[UITextField alloc] init];
         textField.delegate = self;
         textField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
@@ -60,7 +60,7 @@
     [super layoutSubviews];
     
     CGRect rect = self.contentView.frame;
-
+    
     textField.frame = CGRectMake(rect.origin.x + 110, rect.origin.y, rect.size.width - 120, rect.size.height);
 }
 
@@ -79,12 +79,12 @@
             pasteboard.string = textField.text;
             break;
         }
-
+        
         case 1: {
             [textField becomeFirstResponder];
             break;
         }
-
+        
         default:
             break;
     }
@@ -107,7 +107,7 @@
 - (BOOL)textFieldShouldReturn:(UITextField*)field {
     // Hide the keyboard
     [field resignFirstResponder];
-        
+    
     return YES;
 }
 
