@@ -35,9 +35,6 @@
     titleCell = [[TextFieldCell alloc] initWithParent:self.tableView];
     titleCell.textLabel.text = @"Title";
     
-    urlCell = [[UrlFieldCell alloc] initWithParent:self.tableView];    
-    urlCell.textLabel.text = @"URL";
-    
     usernameCell = [[TextFieldCell alloc] initWithParent:self.tableView];
     usernameCell.textLabel.text = @"Username";
     usernameCell.textField.autocorrectionType = UITextAutocorrectionTypeNo;
@@ -45,6 +42,9 @@
     
     passwordCell = [[PasswordFieldCell alloc] initWithParent:self.tableView];
     passwordCell.textLabel.text = @"Password";
+    
+    urlCell = [[UrlFieldCell alloc] initWithParent:self.tableView];    
+    urlCell.textLabel.text = @"URL";
     
     commentsCell = [[TextViewCell alloc] initWithParent:self.tableView];
     
@@ -64,9 +64,9 @@
     
     // Update the fields
     titleCell.textField.text = [entry getEntryName];
-    urlCell.textField.text = [entry getURL];
     usernameCell.textField.text = [entry getUserName];
     passwordCell.textField.text = [entry getPassword];
+    urlCell.textField.text = [entry getURL];
     commentsCell.textView.text = [entry getComments];
 }
 
@@ -86,22 +86,22 @@
 - (void)applicationWillResignActive:(id)sender {
     //resign first responder to prevent password being in sight and UI glitchs
     [titleCell.textField resignFirstResponder];
-    [urlCell.textField resignFirstResponder];
     [usernameCell.textField resignFirstResponder];
     [passwordCell.textField resignFirstResponder];
+    [urlCell.textField resignFirstResponder];
     [commentsCell.textView resignFirstResponder];
     
     [titleCell dismissActionSheet];
-    [urlCell dismissActionSheet];
     [usernameCell dismissActionSheet];
     [passwordCell dismissActionSheet];
+    [urlCell dismissActionSheet];
 }
 
 - (void)dealloc {
     [titleCell release];
-    [urlCell release];
     [usernameCell release];
     [passwordCell release];
+    [urlCell release];
     [commentsCell release];
     [entry release];
     [super dealloc];
@@ -115,17 +115,17 @@ BOOL stringsEqual(NSString *str1, NSString *str2) {
 
 - (BOOL)isDirty {
     return !(stringsEqual([entry getEntryName], titleCell.textField.text) &&
-        stringsEqual([entry getURL], urlCell.textField.text) &&
         stringsEqual([entry getUserName], usernameCell.textField.text) &&
         stringsEqual([entry getPassword], passwordCell.textField.text) &&
+        stringsEqual([entry getURL], urlCell.textField.text) &&
         stringsEqual([entry getComments], commentsCell.textView.text));
 }
 
 - (void)save {
     [entry setEntryName:titleCell.textField.text];
-    [entry setURL:urlCell.textField.text];
     [entry setUserName:usernameCell.textField.text];
     [entry setPassword:passwordCell.textField.text];
+    [entry setURL:urlCell.textField.text];
     [entry setComments:commentsCell.textView.text];
     
     MobileKeePassAppDelegate *appDelegate = (MobileKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
@@ -144,9 +144,9 @@ BOOL stringsEqual(NSString *str1, NSString *str2) {
 
 - (void)tapPressed {
     [titleCell.textField resignFirstResponder];
-    [urlCell.textField resignFirstResponder];
     [usernameCell.textField resignFirstResponder];
     [passwordCell.textField resignFirstResponder];
+    [urlCell.textField resignFirstResponder];
     [commentsCell.textView resignFirstResponder];
 }
 

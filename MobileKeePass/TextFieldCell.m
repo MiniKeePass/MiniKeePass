@@ -30,7 +30,7 @@
         
         self.selectionStyle = UITableViewCellSelectionStyleNone;
 
-        textField = [[UITextField alloc] initWithFrame:CGRectZero];
+        textField = [[UITextField alloc] init];
         textField.delegate = self;
         textField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
         textField.textColor = [UIColor colorWithRed:.285 green:.376 blue:.541 alpha:1];
