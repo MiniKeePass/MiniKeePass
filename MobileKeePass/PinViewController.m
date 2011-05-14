@@ -29,12 +29,12 @@
 }
 
 - (id)initWithText:(NSString*)text {
-    [super init];
+    self = [super init];
     if (self) {
         self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
         
         UIImage *icon = [UIImage imageNamed:@"icon"];
-        UIView *iconView = [[UIView alloc] initWithFrame:CGRectMake(131, 20, icon.size.width,icon.size.height)];
+        UIView *iconView = [[UIView alloc] initWithFrame:CGRectMake(131, 20, icon.size.width, icon.size.height)];
         iconView.backgroundColor = [UIColor colorWithPatternImage:icon];
         [self.view addSubview:iconView];
         [iconView release];
