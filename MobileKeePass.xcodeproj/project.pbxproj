@@ -67,6 +67,8 @@
 		688D637F137B63AB00BF3FAB /* sample.2.15.kdbx in Resources */ = {isa = PBXBuildFile; fileRef = 688D635C137B63AB00BF3FAB /* sample.2.15.kdbx */; };
 		688E68F5136F761500004216 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 688E68F4136F761500004216 /* Settings.bundle */; };
 		688F3FB51377805C0049808C /* SelectionListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 688F3FB41377805C0049808C /* SelectionListViewController.m */; };
+		68964206137F2549001B87A4 /* ChoiceCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68964205137F2549001B87A4 /* ChoiceCell.m */; };
+		6896420A137F325E001B87A4 /* ButtonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68964209137F325D001B87A4 /* ButtonCell.m */; };
 		689675971379DCE6006BC268 /* AESDecryptSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 689675491379DCE5006BC268 /* AESDecryptSource.m */; };
 		689675981379DCE6006BC268 /* AESEncryptSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 6896754B1379DCE5006BC268 /* AESEncryptSource.m */; };
 		6896759A1379DCE6006BC268 /* Arc4RandomStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 6896754F1379DCE5006BC268 /* Arc4RandomStream.m */; };
@@ -168,6 +170,7 @@
 		689EB6A0136DB4BF00C8DA1E /* TextFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 689EB69F136DB4BF00C8DA1E /* TextFieldCell.m */; };
 		689EB6A3136DC24C00C8DA1E /* EntryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 689EB6A2136DC24C00C8DA1E /* EntryViewController.m */; };
 		68A17D96137D974400D80DAA /* button_red.png in Resources */ = {isa = PBXBuildFile; fileRef = 68A17D95137D974400D80DAA /* button_red.png */; };
+		68C6BDEE137F10CF0013373A /* SwitchCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68C6BDED137F10CF0013373A /* SwitchCell.m */; };
 		68D5900A136CB5CB0064CEE5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68D59009136CB5CB0064CEE5 /* UIKit.framework */; };
 		68D5900C136CB5CB0064CEE5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68D5900B136CB5CB0064CEE5 /* Foundation.framework */; };
 		68D5900E136CB5CB0064CEE5 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68D5900D136CB5CB0064CEE5 /* CoreGraphics.framework */; };
@@ -253,6 +256,10 @@
 		688E68F4136F761500004216 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		688F3FB31377805C0049808C /* SelectionListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectionListViewController.h; sourceTree = "<group>"; };
 		688F3FB41377805C0049808C /* SelectionListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectionListViewController.m; sourceTree = "<group>"; };
+		68964204137F2549001B87A4 /* ChoiceCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChoiceCell.h; sourceTree = "<group>"; };
+		68964205137F2549001B87A4 /* ChoiceCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChoiceCell.m; sourceTree = "<group>"; };
+		68964208137F325D001B87A4 /* ButtonCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ButtonCell.h; sourceTree = "<group>"; };
+		68964209137F325D001B87A4 /* ButtonCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ButtonCell.m; sourceTree = "<group>"; };
 		689675481379DCE5006BC268 /* AESDecryptSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AESDecryptSource.h; sourceTree = "<group>"; };
 		689675491379DCE5006BC268 /* AESDecryptSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AESDecryptSource.m; sourceTree = "<group>"; };
 		6896754A1379DCE5006BC268 /* AESEncryptSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AESEncryptSource.h; sourceTree = "<group>"; };
@@ -388,6 +395,8 @@
 		689EB6A1136DC24C00C8DA1E /* EntryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EntryViewController.h; sourceTree = "<group>"; };
 		689EB6A2136DC24C00C8DA1E /* EntryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EntryViewController.m; sourceTree = "<group>"; };
 		68A17D95137D974400D80DAA /* button_red.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_red.png; sourceTree = "<group>"; };
+		68C6BDEC137F10CF0013373A /* SwitchCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwitchCell.h; sourceTree = "<group>"; };
+		68C6BDED137F10CF0013373A /* SwitchCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SwitchCell.m; sourceTree = "<group>"; };
 		68D59005136CB5CB0064CEE5 /* MobileKeePass.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MobileKeePass.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		68D59009136CB5CB0064CEE5 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		68D5900B136CB5CB0064CEE5 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -426,12 +435,18 @@
 		525B6515137062F7001883BB /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				68964208137F325D001B87A4 /* ButtonCell.h */,
+				68964209137F325D001B87A4 /* ButtonCell.m */,
+				68964204137F2549001B87A4 /* ChoiceCell.h */,
+				68964205137F2549001B87A4 /* ChoiceCell.m */,
 				689EB69B136DAE1C00C8DA1E /* TextViewCell.h */,
 				689EB69C136DAE1C00C8DA1E /* TextViewCell.m */,
 				689EB69E136DB4BF00C8DA1E /* TextFieldCell.h */,
 				689EB69F136DB4BF00C8DA1E /* TextFieldCell.m */,
 				68132637136F8B79004F4864 /* PasswordFieldCell.h */,
 				68132638136F8B79004F4864 /* PasswordFieldCell.m */,
+				68C6BDEC137F10CF0013373A /* SwitchCell.h */,
+				68C6BDED137F10CF0013373A /* SwitchCell.m */,
 				6813262C136F7BA7004F4864 /* UrlFieldCell.h */,
 				6813262D136F7BA7004F4864 /* UrlFieldCell.m */,
 			);
@@ -963,6 +978,9 @@
 				689675B91379DCE6006BC268 /* Utils.m in Sources */,
 				689675BA1379DCE6006BC268 /* UUID.m in Sources */,
 				689675BB1379DCE6006BC268 /* WrapperNSData.m in Sources */,
+				68C6BDEE137F10CF0013373A /* SwitchCell.m in Sources */,
+				68964206137F2549001B87A4 /* ChoiceCell.m in Sources */,
+				6896420A137F325E001B87A4 /* ButtonCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

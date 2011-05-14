@@ -17,25 +17,23 @@
 
 #import <UIKit/UIKit.h>
 #import "PinViewController.h"
+#import "ButtonCell.h"
+#import "ChoiceCell.h"
+#import "SwitchCell.h"
 #import "SelectionListViewController.h"
 
 @interface SettingsViewController : UITableViewController <PinViewControllerDelegate, SelectionListViewControllerDelegate> {
-    UISwitch *pinEnabledSwitch;
+    SwitchCell *pinEnabledCell;
+    ChoiceCell *pinLockTimeoutCell;
+    SwitchCell *deleteOnFailureEnabledCell;
+    ChoiceCell *deleteOnFailureAttemptsCell;
+    SwitchCell *rememberPasswordsEnabledCell;
+    SwitchCell *hidePasswordsCell;
+    ButtonCell *closeDatabaseCell;
+    
     NSString *tempPin;
-    NSArray *pinLockTimeoutLabels;
-    
-    UISwitch *deleteOnFailureEnabledSwitch;
-    NSArray *deleteOnFailureAttemptsLabels;
-    
-    UISwitch *rememberPasswordsEnabledSwitch;
-    
-    UISwitch *hidePasswordsSwitch;
-    
-    UIView *closeDatabaseView;
-    UIButton *closeDatabaseButton;
 }
 
-- (void)setCellAtRow:(NSInteger)row inSection:(NSInteger)section enabled:(BOOL)enabled;
 - (void)updateEnabledControls;
 
 @end
