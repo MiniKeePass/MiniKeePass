@@ -44,7 +44,6 @@
     textField.placeholder = @"Password";
     textField.delegate = self;
     textField.returnKeyType = UIReturnKeyDone;
-    [textField becomeFirstResponder];
     
     okButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     okButton.frame = CGRectMake(9, y, BUTTON_WIDTH, BUTTON_HEIGHT);
@@ -63,19 +62,23 @@
     statusLabel.textColor = [UIColor redColor];
     statusLabel.backgroundColor = [UIColor clearColor];
     [self.view addSubview:statusLabel];
+    
+    NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+    [notificationCenter addObserver:self selector:@selector(applicationWillResignActive:) name:UIApplicationWillResignActiveNotification object:nil];
 }
 
-//- (void)viewWillAppear:(BOOL)animated {
-//    [super viewWillAppear:animated];
-//    
-//    statusLabel.text = @"";
-//    
-//    [passwordTextField becomeFirstResponder];
-//}
-
 - (void)dealloc {
+    [textField release];
     [statusLabel release];
     [super dealloc];
+}
+
+-(void)viewDidAppear:(BOOL)animated {
+    [textField becomeFirstResponder];
+}
+
+-(void)applicationWillResignActive:(id)sender {
+    [textField resignFirstResponder];
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -105,6 +108,7 @@
     frame.origin.y = 8;
     
     textField.frame = frame;
+    [textField becomeFirstResponder];
     [cell addSubview:textField];
     
     return cell;
