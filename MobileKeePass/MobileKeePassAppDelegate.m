@@ -122,7 +122,7 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
     NSTimeInterval timeInterval = [exitTime timeIntervalSinceNow];
     if (timeInterval < -pinLockTimeout) {
         [window.rootViewController dismissModalViewControllerAnimated:NO];
-
+        
         // Present the pin view
         PinViewController *pinViewController = [[PinViewController alloc] init];
         pinViewController.delegate = self;
@@ -257,9 +257,8 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
 }
 
 - (void)pinViewController:(PinViewController *)controller pinEntered:(NSString *)pin {
-    NSError *error;
-    NSString *validPin = [SFHFKeychainUtils getPasswordForUsername:@"PIN" andServiceName:@"net.fizzawizza.MobileKeePass" error:&error];
-    if (error != nil || validPin == nil) {
+    NSString *validPin = [SFHFKeychainUtils getPasswordForUsername:@"PIN" andServiceName:@"net.fizzawizza.MobileKeePass" error:nil];
+    if (validPin == nil) {
         // TODO error/no pin, close database
         return;
     }
@@ -268,7 +267,10 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
 
     // Check if the PIN is valid
     if ([pin isEqualToString:validPin]) {
+        // Reset the number of pin failed attempts
         [userDefaults setInteger:0 forKey:@"pinFailedAttempts"];
+        
+        // Dismiss the pin view
         [controller dismissModalViewControllerAnimated:YES];
         
         // Check if we're supposed to open a file
@@ -278,7 +280,6 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
             [fileToOpen release];
             fileToOpen = nil;
         }
-        return;
     } else {
         // Vibrate to signify they are a bad user
         AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
