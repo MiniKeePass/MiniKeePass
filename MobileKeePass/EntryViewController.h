@@ -24,9 +24,9 @@
 
 @interface EntryViewController : UITableViewController <UITextFieldDelegate, UITextViewDelegate, UIActionSheetDelegate> {
     TextFieldCell *titleCell;
-    UrlFieldCell *urlCell;
     TextFieldCell *usernameCell;
     PasswordFieldCell *passwordCell;
+    UrlFieldCell *urlCell;
     TextViewCell *commentsCell;
     CGFloat originalHeight;
 
