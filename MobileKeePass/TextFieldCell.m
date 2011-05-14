@@ -91,11 +91,8 @@
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)field {
-    CGRect rect = [field convertRect:field.frame toView:tableView];
-    CGFloat y = rect.origin.y - 12;
-    if (y != tableView.contentOffset.y) {
-        [tableView setContentOffset:CGPointMake(0.0, y) animated:YES];
-    }
+    //Scroll to the top
+    [tableView setContentOffset:CGPointMake(0.0, 0.0) animated:YES];
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)field {
