@@ -19,13 +19,11 @@
 
 @interface TextFieldCell : UITableViewCell <UITextFieldDelegate, UIActionSheetDelegate> {
     UITableView *tableView;
-    UILabel *label;
     UITextField *textField;
     UIGestureRecognizer *tapGesture;
     UIActionSheet *actionSheet;
 }
 
-@property (nonatomic, retain) UILabel *label;
 @property (nonatomic, retain) UITextField *textField;
 
 - (id)initWithParent:(UITableView*)parent;

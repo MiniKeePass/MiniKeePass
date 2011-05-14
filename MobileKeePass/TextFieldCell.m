@@ -20,7 +20,6 @@
 
 @implementation TextFieldCell
 
-@synthesize label;
 @synthesize textField;
 
 - (id)initWithParent:(UITableView*)parent {
@@ -30,17 +29,11 @@
         tableView = [parent retain];
         
         self.selectionStyle = UITableViewCellSelectionStyleNone;
-        
-        label = [[UILabel alloc] initWithFrame:CGRectZero];
-        label.textAlignment = UITextAlignmentRight;
-        label.backgroundColor = [UIColor clearColor];
-        label.textColor = [UIColor colorWithRed:.285 green:.376 blue:.541 alpha:1];
-        label.font = [UIFont fontWithName:@"Helvetica" size:12];
-        [self addSubview:label];
-        
+
         textField = [[UITextField alloc] initWithFrame:CGRectZero];
         textField.delegate = self;
         textField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+        textField.textColor = [UIColor colorWithRed:.285 green:.376 blue:.541 alpha:1];
         textField.font = [UIFont systemFontOfSize:16];
         textField.returnKeyType = UIReturnKeyDone;
         [self addSubview:textField];
@@ -52,7 +45,6 @@
 }
 
 - (void)dealloc {
-    [label release];
     [textField release];
     [tapGesture release];
     [tableView release];
@@ -69,8 +61,7 @@
     
     CGRect rect = self.contentView.frame;
 
-    label.frame = CGRectMake(rect.origin.x, rect.origin.y, 80, rect.size.height);
-    textField.frame = CGRectMake(rect.origin.x+95, rect.origin.y, rect.size.width-110, rect.size.height);
+    textField.frame = CGRectMake(rect.origin.x + 110, rect.origin.y, rect.size.width - 120, rect.size.height);
 }
 
 - (void)tapPressed {

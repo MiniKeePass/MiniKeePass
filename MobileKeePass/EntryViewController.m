@@ -33,18 +33,18 @@
     [backButton release];    
     
     titleCell = [[TextFieldCell alloc] initWithParent:self.tableView];
-    titleCell.label.text = @"Title";
+    titleCell.textLabel.text = @"Title";
     
     urlCell = [[UrlFieldCell alloc] initWithParent:self.tableView];    
-    urlCell.label.text = @"URL";
+    urlCell.textLabel.text = @"URL";
     
     usernameCell = [[TextFieldCell alloc] initWithParent:self.tableView];
-    usernameCell.label.text = @"Username";
+    usernameCell.textLabel.text = @"Username";
     usernameCell.textField.autocorrectionType = UITextAutocorrectionTypeNo;
     usernameCell.textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
     
     passwordCell = [[PasswordFieldCell alloc] initWithParent:self.tableView];
-    passwordCell.label.text = @"Password";
+    passwordCell.textLabel.text = @"Password";
     
     commentsCell = [[TextViewCell alloc] initWithParent:self.tableView];
     
