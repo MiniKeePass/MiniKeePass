@@ -169,7 +169,6 @@
 		689EB69D136DAE1C00C8DA1E /* TextViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 689EB69C136DAE1C00C8DA1E /* TextViewCell.m */; };
 		689EB6A0136DB4BF00C8DA1E /* TextFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 689EB69F136DB4BF00C8DA1E /* TextFieldCell.m */; };
 		689EB6A3136DC24C00C8DA1E /* EntryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 689EB6A2136DC24C00C8DA1E /* EntryViewController.m */; };
-		68A17D96137D974400D80DAA /* button_red.png in Resources */ = {isa = PBXBuildFile; fileRef = 68A17D95137D974400D80DAA /* button_red.png */; };
 		68C6BDEE137F10CF0013373A /* SwitchCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68C6BDED137F10CF0013373A /* SwitchCell.m */; };
 		68D5900A136CB5CB0064CEE5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68D59009136CB5CB0064CEE5 /* UIKit.framework */; };
 		68D5900C136CB5CB0064CEE5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68D5900B136CB5CB0064CEE5 /* Foundation.framework */; };
@@ -394,7 +393,6 @@
 		689EB69F136DB4BF00C8DA1E /* TextFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextFieldCell.m; sourceTree = "<group>"; };
 		689EB6A1136DC24C00C8DA1E /* EntryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EntryViewController.h; sourceTree = "<group>"; };
 		689EB6A2136DC24C00C8DA1E /* EntryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EntryViewController.m; sourceTree = "<group>"; };
-		68A17D95137D974400D80DAA /* button_red.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_red.png; sourceTree = "<group>"; };
 		68C6BDEC137F10CF0013373A /* SwitchCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwitchCell.h; sourceTree = "<group>"; };
 		68C6BDED137F10CF0013373A /* SwitchCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SwitchCell.m; sourceTree = "<group>"; };
 		68D59005136CB5CB0064CEE5 /* MobileKeePass.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MobileKeePass.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -573,7 +571,6 @@
 			children = (
 				52644C951370915400A58D92 /* box.png */,
 				52644C961370915400A58D92 /* box@2x.png */,
-				68A17D95137D974400D80DAA /* button_red.png */,
 				6872F0BE137752F5008E55B9 /* connect.png */,
 				6872F0BF137752F5008E55B9 /* connect@2x.png */,
 				6898596A136CDC91001B4204 /* 0.png */,
@@ -923,7 +920,6 @@
 				688D637D137B63AB00BF3FAB /* sample.2.13.kdbx in Resources */,
 				688D637E137B63AB00BF3FAB /* sample.2.14.kdbx in Resources */,
 				688D637F137B63AB00BF3FAB /* sample.2.15.kdbx in Resources */,
-				68A17D96137D974400D80DAA /* button_red.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
