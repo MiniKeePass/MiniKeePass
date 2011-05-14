@@ -182,7 +182,7 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
     [databaseDocument release];
     databaseDocument = nil;
     
-    if ([navigationController.topViewController isKindOfClass:[GroupViewController class]] ||[navigationController.topViewController isKindOfClass:[EntryViewController class]]) {
+    if ([navigationController.topViewController isKindOfClass:[GroupViewController class]] || [navigationController.topViewController isKindOfClass:[EntryViewController class]]) {
         [navigationController popToRootViewControllerAnimated:NO];
     }
 }
