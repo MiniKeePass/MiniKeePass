@@ -69,7 +69,7 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
     
     // Create the navigation controller
     navigationController = [[UINavigationController alloc] initWithRootViewController:groupViewController];
-
+    
     // Create the window
     window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     window.rootViewController = navigationController;
@@ -108,13 +108,13 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
     if (![userDefaults boolForKey:@"pinEnabled"]) {
         return;
     }
-
+    
     // Get the time when the application last exited
     NSDate *exitTime = [userDefaults valueForKey:@"exitTime"];
     if (exitTime == nil) {
         return;
     }
-
+    
     // Get the lock timeout (in seconds)
     NSInteger pinLockTimeout = pinLockTimeoutValues[[userDefaults integerForKey:@"pinLockTimeout"]];
     
@@ -182,7 +182,7 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
     [databaseDocument release];
     databaseDocument = nil;
     
-    if ([navigationController.topViewController isKindOfClass:[GroupViewController class]] || [navigationController.topViewController isKindOfClass:[EntryViewController class]]) {
+    if ([navigationController.topViewController isKindOfClass:[GroupViewController class]] ||Ä[navigationController.topViewController isKindOfClass:[EntryViewController class]]) {
         [navigationController popToRootViewControllerAnimated:NO];
     }
 }
@@ -239,13 +239,13 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
     [openViewController release];
 }
 
-- (void)settingsPressed:(id)sender {    
+- (void)settingsPressed:(id)sender {
     SettingsViewController *settingsViewController = [[SettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
     
     UINavigationController *settingsNavigationController = [[UINavigationController alloc] initWithRootViewController:settingsViewController];
     [settingsViewController release];
     
-    [navigationController pushViewController:settingsViewController animated:YES];  
+    [navigationController pushViewController:settingsViewController animated:YES];
     [settingsNavigationController release];
 }
 
@@ -257,7 +257,7 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
     }
     
     NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
-
+    
     // Check if the PIN is valid
     if ([pin isEqualToString:validPin]) {
         // Reset the number of pin failed attempts
