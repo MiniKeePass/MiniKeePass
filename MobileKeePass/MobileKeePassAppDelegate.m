@@ -207,8 +207,11 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
     [userDefaults setInteger:0 forKey:@"pinFailedAttempts"];
     [userDefaults setBool:NO forKey:@"pinEnabled"];
     
-    // Delete all our information from the keychain
-    [SFHFKeychainUtils deleteAllItemForServiceName:@"net.fizzawizza.MobileKeePass" error:nil];
+    // Delete the PIN from the keychain
+    [SFHFKeychainUtils deleteItemForUsername:@"PIN" andServiceName:@"net.fizzawizza.MobileKeePass.pin" error:nil];
+    
+    // Delete all database passwords from the keychain
+    [SFHFKeychainUtils deleteAllItemForServiceName:@"net.fizzawizza.MobileKeePass.passwords" error:nil];
     
     // Get the files in the Documents directory
     NSFileManager *fileManager = [NSFileManager defaultManager];
@@ -246,7 +249,7 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
 }
 
 - (void)pinViewController:(PinViewController *)controller pinEntered:(NSString *)pin {
-    NSString *validPin = [SFHFKeychainUtils getPasswordForUsername:@"PIN" andServiceName:@"net.fizzawizza.MobileKeePass" error:nil];
+    NSString *validPin = [SFHFKeychainUtils getPasswordForUsername:@"PIN" andServiceName:@"net.fizzawizza.MobileKeePass.pin" error:nil];
     if (validPin == nil) {
         // TODO error/no pin, close database
         return;

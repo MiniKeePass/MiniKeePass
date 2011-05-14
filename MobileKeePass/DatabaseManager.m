@@ -42,7 +42,7 @@ static DatabaseManager *sharedInstance;
     self.animated = newAnimated;
     
     // Load the password from the keychain
-    NSString *password = [SFHFKeychainUtils getPasswordForUsername:path andServiceName:@"net.fizzawizza.MobileKeePass" error:nil];
+    NSString *password = [SFHFKeychainUtils getPasswordForUsername:path andServiceName:@"net.fizzawizza.MobileKeePass.passwords" error:nil];
     
     // Get the application delegate
     MobileKeePassAppDelegate *appDelegate = (MobileKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
@@ -102,7 +102,7 @@ static DatabaseManager *sharedInstance;
         // Store the password in the keychain
         if ([userDefaults boolForKey:@"rememberPasswordsEnabled"]) {
             NSError *error;
-            [SFHFKeychainUtils storeUsername:selectedPath andPassword:password forServiceName:@"net.fizzawizza.MobileKeePass" updateExisting:YES error:&error];
+            [SFHFKeychainUtils storeUsername:selectedPath andPassword:password forServiceName:@"net.fizzawizza.MobileKeePass.passwords" updateExisting:YES error:&error];
         }
         
         // Pop to the root view
