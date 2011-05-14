@@ -219,11 +219,11 @@ BOOL stringsEqual(NSString *str1, NSString *str2) {
                 case 0:
                     return titleCell;
                 case 1:
-                    return urlCell;
-                case 2:
                     return usernameCell;
-                case 3:
+                case 2:
                     return passwordCell;
+                case 3:
+                    return urlCell;
             }
         case 1:
             return commentsCell;
