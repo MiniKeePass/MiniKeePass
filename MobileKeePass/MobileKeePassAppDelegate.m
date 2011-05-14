@@ -241,12 +241,8 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
 
 - (void)settingsPressed:(id)sender {
     SettingsViewController *settingsViewController = [[SettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
-    
-    UINavigationController *settingsNavigationController = [[UINavigationController alloc] initWithRootViewController:settingsViewController];
-    [settingsViewController release];
-    
     [navigationController pushViewController:settingsViewController animated:YES];
-    [settingsNavigationController release];
+    [settingsViewController release];
 }
 
 - (void)pinViewController:(PinViewController *)controller pinEntered:(NSString *)pin {
