@@ -108,7 +108,6 @@
     frame.origin.y = 8;
     
     textField.frame = frame;
-    [textField becomeFirstResponder];
     [cell addSubview:textField];
     
     return cell;
