@@ -112,8 +112,7 @@ static DatabaseManager *sharedInstance;
 }
 
 -(void)passwordEntryControllerCancelButtonPressed:(PasswordEntryController *)controller {
-    MobileKeePassAppDelegate *appDelegate = (MobileKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
-    [appDelegate.window.rootViewController dismissModalViewControllerAnimated:YES];
+    [controller dismissModalViewControllerAnimated:YES];
 }
 
 @end
