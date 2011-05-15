@@ -176,7 +176,7 @@ BOOL stringsEqual(NSString *str1, NSString *str2) {
         case 0:
             return 40;
         case 1:
-            return 190;
+            return 140;
     }
     
     return 40;
