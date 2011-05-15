@@ -25,8 +25,6 @@
 		68132639136F8B79004F4864 /* PasswordFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68132638136F8B79004F4864 /* PasswordFieldCell.m */; };
 		685985F41377412E0004414C /* OpenHelpView.m in Sources */ = {isa = PBXBuildFile; fileRef = 685985F31377412E0004414C /* OpenHelpView.m */; };
 		6872F02A137746D0008E55B9 /* OpenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6872F029137746D0008E55B9 /* OpenViewController.m */; };
-		6872F0C0137752F5008E55B9 /* connect.png in Resources */ = {isa = PBXBuildFile; fileRef = 6872F0BE137752F5008E55B9 /* connect.png */; };
-		6872F0C1137752F5008E55B9 /* connect@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6872F0BF137752F5008E55B9 /* connect@2x.png */; };
 		687366EC1373979A0053CCA3 /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 687366EB1373979A0053CCA3 /* SFHFKeychainUtils.m */; };
 		687366EE137399360053CCA3 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 687366ED137399360053CCA3 /* Security.framework */; };
 		688D47751378DF9400BEE609 /* DatabaseManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 688D47741378DF9400BEE609 /* DatabaseManager.m */; };
@@ -169,6 +167,8 @@
 		689EB69D136DAE1C00C8DA1E /* TextViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 689EB69C136DAE1C00C8DA1E /* TextViewCell.m */; };
 		689EB6A0136DB4BF00C8DA1E /* TextFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 689EB69F136DB4BF00C8DA1E /* TextFieldCell.m */; };
 		689EB6A3136DC24C00C8DA1E /* EntryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 689EB6A2136DC24C00C8DA1E /* EntryViewController.m */; };
+		68A6C234138014B8006E4867 /* background.png in Resources */ = {isa = PBXBuildFile; fileRef = 68A6C232138014B8006E4867 /* background.png */; };
+		68A6C235138014B8006E4867 /* background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 68A6C233138014B8006E4867 /* background@2x.png */; };
 		68C6BDEE137F10CF0013373A /* SwitchCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68C6BDED137F10CF0013373A /* SwitchCell.m */; };
 		68D5900A136CB5CB0064CEE5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68D59009136CB5CB0064CEE5 /* UIKit.framework */; };
 		68D5900C136CB5CB0064CEE5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68D5900B136CB5CB0064CEE5 /* Foundation.framework */; };
@@ -210,8 +210,6 @@
 		685985F31377412E0004414C /* OpenHelpView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OpenHelpView.m; sourceTree = "<group>"; };
 		6872F028137746D0008E55B9 /* OpenViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenViewController.h; sourceTree = "<group>"; };
 		6872F029137746D0008E55B9 /* OpenViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OpenViewController.m; sourceTree = "<group>"; };
-		6872F0BE137752F5008E55B9 /* connect.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = connect.png; sourceTree = "<group>"; };
-		6872F0BF137752F5008E55B9 /* connect@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "connect@2x.png"; sourceTree = "<group>"; };
 		687366EA1373979A0053CCA3 /* SFHFKeychainUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFHFKeychainUtils.h; sourceTree = "<group>"; };
 		687366EB1373979A0053CCA3 /* SFHFKeychainUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFHFKeychainUtils.m; sourceTree = "<group>"; };
 		687366ED137399360053CCA3 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -393,6 +391,8 @@
 		689EB69F136DB4BF00C8DA1E /* TextFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextFieldCell.m; sourceTree = "<group>"; };
 		689EB6A1136DC24C00C8DA1E /* EntryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EntryViewController.h; sourceTree = "<group>"; };
 		689EB6A2136DC24C00C8DA1E /* EntryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EntryViewController.m; sourceTree = "<group>"; };
+		68A6C232138014B8006E4867 /* background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background.png; sourceTree = "<group>"; };
+		68A6C233138014B8006E4867 /* background@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "background@2x.png"; sourceTree = "<group>"; };
 		68C6BDEC137F10CF0013373A /* SwitchCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwitchCell.h; sourceTree = "<group>"; };
 		68C6BDED137F10CF0013373A /* SwitchCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SwitchCell.m; sourceTree = "<group>"; };
 		68D59005136CB5CB0064CEE5 /* MobileKeePass.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MobileKeePass.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -569,10 +569,10 @@
 		68985969136CDC91001B4204 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				68A6C232138014B8006E4867 /* background.png */,
+				68A6C233138014B8006E4867 /* background@2x.png */,
 				52644C951370915400A58D92 /* box.png */,
 				52644C961370915400A58D92 /* box@2x.png */,
-				6872F0BE137752F5008E55B9 /* connect.png */,
-				6872F0BF137752F5008E55B9 /* connect@2x.png */,
 				6898596A136CDC91001B4204 /* 0.png */,
 				6898596B136CDC91001B4204 /* 1.png */,
 				6898596C136CDC91001B4204 /* 10.png */,
@@ -878,8 +878,6 @@
 				523FBD7D1373C05E004575FB /* icon.png in Resources */,
 				6805EBD2137648B800340C02 /* README.md in Resources */,
 				6805EBD513764A5F00340C02 /* LICENSE.txt in Resources */,
-				6872F0C0137752F5008E55B9 /* connect.png in Resources */,
-				6872F0C1137752F5008E55B9 /* connect@2x.png in Resources */,
 				68DCBB4413795F8600B1C089 /* itunes.html in Resources */,
 				68DCBB471379621800B1C089 /* dropbox.html in Resources */,
 				68DCBB49137965C100B1C089 /* style.css in Resources */,
@@ -920,6 +918,8 @@
 				688D637D137B63AB00BF3FAB /* sample.2.13.kdbx in Resources */,
 				688D637E137B63AB00BF3FAB /* sample.2.14.kdbx in Resources */,
 				688D637F137B63AB00BF3FAB /* sample.2.15.kdbx in Resources */,
+				68A6C234138014B8006E4867 /* background.png in Resources */,
+				68A6C235138014B8006E4867 /* background@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
