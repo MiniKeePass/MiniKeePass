@@ -17,13 +17,14 @@
 
 #import <UIKit/UIKit.h>
 #import "GroupViewController.h"
+#import "SearchViewController.h"
 #import "PinViewController.h"
 #import "DatabaseDocument.h"
 
 @interface MobileKeePassAppDelegate : NSObject <UIApplicationDelegate, PinViewControllerDelegate, UIActionSheetDelegate> {
     UIWindow *window;
-    UINavigationController *navigationController;
     GroupViewController *groupViewController;
+    SearchViewController *searchViewController;
     
     DatabaseDocument *databaseDocument;
     NSString *fileToOpen;
@@ -32,7 +33,6 @@
 }
 
 @property (nonatomic, readonly) UIWindow *window;
-@property (nonatomic, readonly) UINavigationController *navigationController;
 @property (nonatomic, retain) DatabaseDocument *databaseDocument;
 
 - (void)closeDatabase;

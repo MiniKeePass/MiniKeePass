@@ -117,6 +117,9 @@
 
     // Load the database
     [[DatabaseManager sharedInstance] openDatabaseDocument:path animated:YES];
+    
+    // Deselct the current cell
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 -(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {

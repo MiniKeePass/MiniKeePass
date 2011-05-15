@@ -18,7 +18,9 @@
 #import <UIKit/UIKit.h>
 
 @interface OpenHelpView : UIView {
-    
+    UINavigationController *navigationController;
 }
+
+@property (nonatomic, retain) UINavigationController *navigationController;
 
 @end

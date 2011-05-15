@@ -31,5 +31,6 @@
 
 - (void)open:(NSString*)newFilename password:(NSString*)newPassword;
 - (void)save;
+- (void)searchGroup:(id<KdbGroup>)group searchText:(NSString*)searchText results:(NSMutableArray*)results;
 
 @end

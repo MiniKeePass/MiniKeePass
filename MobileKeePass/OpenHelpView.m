@@ -16,9 +16,10 @@
  */
 
 #import "OpenHelpView.h"
-#import "MobileKeePassAppDelegate.h"
 
 @implementation OpenHelpView
+
+@synthesize navigationController;
 
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
@@ -28,13 +29,13 @@
         
         UIImage *image = [UIImage imageNamed:@"background.png"];
         
-        CGFloat y = 32;
+        CGFloat y = 16;
         UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
         imageView.frame = CGRectMake(160 - image.size.width / 2.0, y, image.size.width, image.size.height);
         [self addSubview:imageView];
         [imageView release];
         
-        y += imageView.frame.size.height + 32;
+        y += imageView.frame.size.height + 16;
         
         UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, y, 320, 40)];
         label.backgroundColor = [UIColor clearColor];
@@ -69,6 +70,7 @@
 }
 
 - (void)dealloc {
+    [navigationController release];
     [super dealloc];
 }
 
@@ -83,8 +85,8 @@
     viewController.view = webView;
     [webView release];
     
-    MobileKeePassAppDelegate *appDelegate = (MobileKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
-    [appDelegate.navigationController pushViewController:viewController animated:YES];
+    [self.navigationController pushViewController:viewController animated:YES];
+    
     [viewController release];
 }
 

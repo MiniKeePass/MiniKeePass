@@ -63,9 +63,6 @@ static DatabaseManager *sharedInstance;
             // Store the filename as the last opened database
             NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
             [userDefaults setValue:path forKey:@"lastFilename"];
-            
-            // Pop to the root view
-            [appDelegate.navigationController popToRootViewControllerAnimated:animated];            
         } @catch (NSException * exception) {
         }
         
@@ -77,7 +74,7 @@ static DatabaseManager *sharedInstance;
         // Prompt the user for a password
         PasswordEntryController *passwordEntryController = [[PasswordEntryController alloc] init];
         passwordEntryController.delegate = self;
-        [appDelegate.navigationController pushViewController:passwordEntryController animated:YES];
+        [appDelegate.window.rootViewController presentModalViewController:passwordEntryController animated:YES];
         [passwordEntryController release];
     }
 }
@@ -104,9 +101,6 @@ static DatabaseManager *sharedInstance;
             NSError *error;
             [SFHFKeychainUtils storeUsername:selectedPath andPassword:password forServiceName:@"net.fizzawizza.MobileKeePass.passwords" updateExisting:YES error:&error];
         }
-        
-        // Pop to the root view
-        [appDelegate.navigationController popToRootViewControllerAnimated:animated];
     } @catch (NSException *exception) {
         shouldDismiss = NO;
         controller.statusLabel.text = exception.reason;
@@ -119,7 +113,7 @@ static DatabaseManager *sharedInstance;
 
 -(void)passwordEntryControllerCancelButtonPressed:(PasswordEntryController *)controller {
     MobileKeePassAppDelegate *appDelegate = (MobileKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
-    [appDelegate.navigationController popViewControllerAnimated:YES];
+    [appDelegate.window.rootViewController dismissModalViewControllerAnimated:YES];
 }
 
 @end

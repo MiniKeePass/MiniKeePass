@@ -70,4 +70,17 @@
     }
 }
 
+- (void)searchGroup:(id<KdbGroup>)group searchText:(NSString*)searchText results:(NSMutableArray*)results {
+    for (id<KdbEntry> entry in [group getEntries]) {
+        NSRange range = [[entry getEntryName] rangeOfString:searchText options:NSCaseInsensitiveSearch];
+        if (range.location != NSNotFound) {
+            [results addObject:entry];
+        }
+    }
+    
+    for (id<KdbGroup> g in [group getSubGroups]) {
+        [self searchGroup:g searchText:searchText results:results];
+    }
+}
+
 @end

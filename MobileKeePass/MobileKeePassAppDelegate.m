@@ -18,6 +18,7 @@
 #import <AudioToolbox/AudioToolbox.h>
 #import "MobileKeePassAppDelegate.h"
 #import "OpenViewController.h"
+#import "SearchViewController.h"
 #import "SettingsViewController.h"
 #import "EntryViewController.h"
 #import "DatabaseManager.h"
@@ -28,7 +29,6 @@
 @implementation MobileKeePassAppDelegate
 
 @synthesize window;
-@synthesize navigationController;
 @synthesize databaseDocument;
 
 static NSInteger pinLockTimeoutValues[] = {0, 30, 60, 120, 300};
@@ -55,25 +55,44 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
     NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
     [userDefaults registerDefaults:defaultsDict];
     
-    // Create the root view
+    // Create the group view
     groupViewController = [[GroupViewController alloc] initWithStyle:UITableViewStylePlain];
     groupViewController.title = @"KeePass";
+    groupViewController.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Passwords" image:[UIImage imageNamed:@"tab_key.png"] tag:0];
+    UINavigationController *groupNavController = [[UINavigationController alloc] initWithRootViewController:groupViewController];
     
-    UIBarButtonItem *openButton = [[UIBarButtonItem alloc] initWithTitle:@"Open" style:UIBarButtonItemStyleBordered target:self action:@selector(openPressed:)];
-    groupViewController.navigationItem.rightBarButtonItem = openButton;
-    [openButton release];
+    // Create the search view
+    searchViewController = [[SearchViewController alloc] init];
+    searchViewController.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Search" image:[UIImage imageNamed:@"tab_search.png"] tag:1];
+    UINavigationController *searchNavController = [[UINavigationController alloc] initWithRootViewController:searchViewController];
     
-    UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithTitle:@"Settings" style:UIBarButtonItemStyleBordered target:self action:@selector(settingsPressed:)];
-    groupViewController.navigationItem.leftBarButtonItem = settingsButton;
-    [settingsButton release];
+    // Create the open view
+    OpenViewController *openViewController = [[OpenViewController alloc] initWithStyle:UITableViewStylePlain];
+    openViewController.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Files" image:[UIImage imageNamed:@"tab_files.png"] tag:2];
+    UINavigationController *openNavController = [[UINavigationController alloc] initWithRootViewController:openViewController];
+    [openViewController release];
     
-    // Create the navigation controller
-    navigationController = [[UINavigationController alloc] initWithRootViewController:groupViewController];
+    // Create the settings view
+    SettingsViewController *settingsViewController = [[SettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
+    settingsViewController.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Settings" image:[UIImage imageNamed:@"tab_gear.png"] tag:3];
+    UINavigationController *settingsNavController = [[UINavigationController alloc] initWithRootViewController:settingsViewController];
+    [settingsViewController release];
+    
+    // Create the tab bar controller
+    UITabBarController *tabBarController = [[UITabBarController alloc] init];
+    tabBarController.viewControllers = [NSArray arrayWithObjects:groupNavController, searchNavController, openNavController, settingsNavController, nil];
+    
+    [groupNavController release];
+    [searchNavController release];
+    [openNavController release];
+    [settingsNavController release];
     
     // Create the window
     window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    window.rootViewController = navigationController;
+    window.rootViewController = tabBarController;
     [window makeKeyAndVisible];
+    
+    [tabBarController release];
     
     [self openLastDatabase];
     
@@ -88,7 +107,7 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
     [databaseDocument release];
     [fileToOpen release];
     [groupViewController release];
-    [navigationController release];
+    [searchViewController release];
     [window release];
     [super dealloc];
 }
@@ -169,7 +188,13 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
 
 - (void)setDatabaseDocument:(DatabaseDocument *)newDatabaseDocument {
     databaseDocument = [newDatabaseDocument retain];
+    
+    // Set the group in the root group view controller
     groupViewController.group = [databaseDocument.kdbTree getRoot];
+    [groupViewController.navigationController popToRootViewControllerAnimated:NO];            
+    
+    // Clear the search view controller
+    [searchViewController clearResults];
 }
 
 - (void)closeDatabase {
@@ -177,14 +202,15 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     [userDefaults removeObjectForKey:@"lastFilename"];
     
+    // Clear the root group view controller
     groupViewController.group = nil;
+    [groupViewController.navigationController popToRootViewControllerAnimated:NO];
+    
+    // Clear the search view controller
+    [searchViewController clearResults];
     
     [databaseDocument release];
     databaseDocument = nil;
-    
-    if ([navigationController.topViewController isKindOfClass:[GroupViewController class]] || [navigationController.topViewController isKindOfClass:[EntryViewController class]]) {
-        [navigationController popToRootViewControllerAnimated:NO];
-    }
 }
 
 - (void)openLastDatabase {
@@ -232,20 +258,6 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
     }
     
     return images[index];
-}
-
-- (void)openPressed:(id)sender {
-    OpenViewController *openViewController = [[OpenViewController alloc] initWithStyle:UITableViewStylePlain];
-    
-    // Push the OpenViewController onto the view stack
-    [navigationController pushViewController:openViewController animated:YES];
-    [openViewController release];
-}
-
-- (void)settingsPressed:(id)sender {
-    SettingsViewController *settingsViewController = [[SettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
-    [navigationController pushViewController:settingsViewController animated:YES];
-    [settingsViewController release];
 }
 
 - (void)pinViewController:(PinViewController *)controller pinEntered:(NSString *)pin {
