@@ -32,6 +32,7 @@
 - (void)displayHelpPage {
     if (openHelpView == nil) {
         openHelpView = [[OpenHelpView alloc] initWithFrame:self.view.frame];
+        openHelpView.navigationController = self.navigationController;
     }
     
     [self.view addSubview:openHelpView];
