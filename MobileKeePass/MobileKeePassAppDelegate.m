@@ -57,7 +57,7 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
     
     // Create the group view
     groupViewController = [[GroupViewController alloc] initWithStyle:UITableViewStylePlain];
-    groupViewController.title = @"KeePass";
+    groupViewController.title = @"Passwords";
     groupViewController.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Passwords" image:[UIImage imageNamed:@"tab_key.png"] tag:0];
     UINavigationController *groupNavController = [[UINavigationController alloc] initWithRootViewController:groupViewController];
     
