@@ -24,7 +24,7 @@
 		6813262E136F7BA7004F4864 /* UrlFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6813262D136F7BA7004F4864 /* UrlFieldCell.m */; };
 		68132639136F8B79004F4864 /* PasswordFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68132638136F8B79004F4864 /* PasswordFieldCell.m */; };
 		685985F41377412E0004414C /* OpenHelpView.m in Sources */ = {isa = PBXBuildFile; fileRef = 685985F31377412E0004414C /* OpenHelpView.m */; };
-		6872F02A137746D0008E55B9 /* OpenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6872F029137746D0008E55B9 /* OpenViewController.m */; };
+		6872F02A137746D0008E55B9 /* FilesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6872F029137746D0008E55B9 /* FilesViewController.m */; };
 		687366EC1373979A0053CCA3 /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 687366EB1373979A0053CCA3 /* SFHFKeychainUtils.m */; };
 		687366EE137399360053CCA3 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 687366ED137399360053CCA3 /* Security.framework */; };
 		688231DC138046FC0046B00D /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 688231DB138046FC0046B00D /* SearchViewController.m */; };
@@ -217,8 +217,8 @@
 		68132638136F8B79004F4864 /* PasswordFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PasswordFieldCell.m; sourceTree = "<group>"; };
 		685985F21377412D0004414C /* OpenHelpView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenHelpView.h; sourceTree = "<group>"; };
 		685985F31377412E0004414C /* OpenHelpView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OpenHelpView.m; sourceTree = "<group>"; };
-		6872F028137746D0008E55B9 /* OpenViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenViewController.h; sourceTree = "<group>"; };
-		6872F029137746D0008E55B9 /* OpenViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OpenViewController.m; sourceTree = "<group>"; };
+		6872F028137746D0008E55B9 /* FilesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; path = FilesViewController.h; sourceTree = "<group>"; };
+		6872F029137746D0008E55B9 /* FilesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilesViewController.m; sourceTree = "<group>"; };
 		687366EA1373979A0053CCA3 /* SFHFKeychainUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFHFKeychainUtils.h; sourceTree = "<group>"; };
 		687366EB1373979A0053CCA3 /* SFHFKeychainUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFHFKeychainUtils.m; sourceTree = "<group>"; };
 		687366ED137399360053CCA3 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -723,8 +723,8 @@
 				689EB6A2136DC24C00C8DA1E /* EntryViewController.m */,
 				685985F21377412D0004414C /* OpenHelpView.h */,
 				685985F31377412E0004414C /* OpenHelpView.m */,
-				6872F028137746D0008E55B9 /* OpenViewController.h */,
-				6872F029137746D0008E55B9 /* OpenViewController.m */,
+				6872F028137746D0008E55B9 /* FilesViewController.h */,
+				6872F029137746D0008E55B9 /* FilesViewController.m */,
 				68D59039136CB7820064CEE5 /* GroupViewController.h */,
 				68D5903A136CB7820064CEE5 /* GroupViewController.m */,
 				523232A6136F128300692CEA /* PasswordEntryController.h */,
@@ -982,7 +982,7 @@
 				687366EC1373979A0053CCA3 /* SFHFKeychainUtils.m in Sources */,
 				52F42CF413747BE20074E5D5 /* SettingsViewController.m in Sources */,
 				685985F41377412E0004414C /* OpenHelpView.m in Sources */,
-				6872F02A137746D0008E55B9 /* OpenViewController.m in Sources */,
+				6872F02A137746D0008E55B9 /* FilesViewController.m in Sources */,
 				688F3FB51377805C0049808C /* SelectionListViewController.m in Sources */,
 				688D47751378DF9400BEE609 /* DatabaseManager.m in Sources */,
 				689675971379DCE6006BC268 /* AESDecryptSource.m in Sources */,

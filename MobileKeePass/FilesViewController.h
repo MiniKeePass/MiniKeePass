@@ -15,30 +15,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#import <UIKit/UIKit.h>
-#import "FilesViewController.h"
-#import "SearchViewController.h"
-#import "PinViewController.h"
-#import "DatabaseDocument.h"
+#import <Foundation/Foundation.h>
+#import "OpenHelpView.h"
 
-@interface MobileKeePassAppDelegate : NSObject <UIApplicationDelegate, PinViewControllerDelegate, UIActionSheetDelegate> {
-    UIWindow *window;
-    FilesViewController *filesViewController;
-    SearchViewController *searchViewController;
+@interface FilesViewController : UITableViewController {
+    OpenHelpView *openHelpView;
     
-    DatabaseDocument *databaseDocument;
-    NSString *fileToOpen;
-    
-    UIImage *images[70];
+    NSMutableArray *files;
+    NSString *selectedFile;
 }
 
-@property (nonatomic, readonly) UIWindow *window;
-@property (nonatomic, retain) DatabaseDocument *databaseDocument;
-
-- (void)closeDatabase;
-- (void)openLastDatabase;
-- (void)deleteAllData;
-- (UIImage*)loadImage:(int)index;
+@property (nonatomic, copy) NSString* selectedFile;
 
 @end
-

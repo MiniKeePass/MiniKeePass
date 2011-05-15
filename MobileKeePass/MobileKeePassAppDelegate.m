@@ -17,14 +17,12 @@
 
 #import <AudioToolbox/AudioToolbox.h>
 #import "MobileKeePassAppDelegate.h"
-#import "OpenViewController.h"
+#import "GroupViewController.h"
 #import "SearchViewController.h"
 #import "SettingsViewController.h"
 #import "EntryViewController.h"
 #import "DatabaseManager.h"
 #import "SFHFKeychainUtils.h"
-
-#define TIME_INTERVAL_BEFORE_PIN 0
 
 @implementation MobileKeePassAppDelegate
 
@@ -54,23 +52,17 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
     
     NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
     [userDefaults registerDefaults:defaultsDict];
-    
-    // Create the group view
-    groupViewController = [[GroupViewController alloc] initWithStyle:UITableViewStylePlain];
-    groupViewController.title = @"Passwords";
-    groupViewController.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Passwords" image:[UIImage imageNamed:@"tab_key.png"] tag:0];
-    UINavigationController *groupNavController = [[UINavigationController alloc] initWithRootViewController:groupViewController];
+        
+    // Create the files view
+    filesViewController = [[FilesViewController alloc] initWithStyle:UITableViewStylePlain];
+    filesViewController.title = @"Files";
+    filesViewController.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Files" image:[UIImage imageNamed:@"tab_files.png"] tag:2];
+    UINavigationController *filesNavController = [[UINavigationController alloc] initWithRootViewController:filesViewController];
     
     // Create the search view
     searchViewController = [[SearchViewController alloc] init];
     searchViewController.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Search" image:[UIImage imageNamed:@"tab_search.png"] tag:1];
     UINavigationController *searchNavController = [[UINavigationController alloc] initWithRootViewController:searchViewController];
-    
-    // Create the open view
-    OpenViewController *openViewController = [[OpenViewController alloc] initWithStyle:UITableViewStylePlain];
-    openViewController.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Files" image:[UIImage imageNamed:@"tab_files.png"] tag:2];
-    UINavigationController *openNavController = [[UINavigationController alloc] initWithRootViewController:openViewController];
-    [openViewController release];
     
     // Create the settings view
     SettingsViewController *settingsViewController = [[SettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
@@ -80,11 +72,10 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
     
     // Create the tab bar controller
     UITabBarController *tabBarController = [[UITabBarController alloc] init];
-    tabBarController.viewControllers = [NSArray arrayWithObjects:groupNavController, searchNavController, openNavController, settingsNavController, nil];
+    tabBarController.viewControllers = [NSArray arrayWithObjects:filesNavController, searchNavController, settingsNavController, nil];
     
-    [groupNavController release];
     [searchNavController release];
-    [openNavController release];
+    [filesNavController release];
     [settingsNavController release];
     
     // Create the window
@@ -106,7 +97,7 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
     }
     [databaseDocument release];
     [fileToOpen release];
-    [groupViewController release];
+    [filesViewController release];
     [searchViewController release];
     [window release];
     [super dealloc];
@@ -134,30 +125,26 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
         return;
     }
     
-    UIViewController *parent = window.rootViewController;
-    if (window.rootViewController.modalViewController != nil) {
-        parent = window.rootViewController.modalViewController;
-    }
-
-    BOOL showPinView = NO;
     
-    // Check if the PIN view is already on the screen
-    if (![parent isKindOfClass:[PinViewController class]] && ![parent.modalViewController isKindOfClass:[PinViewController class]]) {
-        // Get the lock timeout (in seconds)
-        NSInteger pinLockTimeout = pinLockTimeoutValues[[userDefaults integerForKey:@"pinLockTimeout"]];
+    // Get the lock timeout (in seconds)
+    NSInteger pinLockTimeout = pinLockTimeoutValues[[userDefaults integerForKey:@"pinLockTimeout"]];
+    
+    // Check if it's been longer then lock timeout
+    NSTimeInterval timeInterval = [exitTime timeIntervalSinceNow];
+    if (timeInterval < -pinLockTimeout) {
+        UIViewController *frontViewController = window.rootViewController;
         
-        // Check if it's been longer then lock timeout
-        NSTimeInterval timeInterval = [exitTime timeIntervalSinceNow];
-        showPinView = timeInterval < -pinLockTimeout;
-    }
-    
-    // Show the PIN view
-    if (showPinView) {
-        // Present the pin view
-        PinViewController *pinViewController = [[PinViewController alloc] init];
-        pinViewController.delegate = self;
-        [parent presentModalViewController:pinViewController animated:YES];
-        [pinViewController release];
+        while (frontViewController.modalViewController != nil) {
+            frontViewController = frontViewController.modalViewController;
+        }
+        
+        if (![frontViewController isKindOfClass:[PinViewController class]]) {
+            // Present the pin view
+            PinViewController *pinViewController = [[PinViewController alloc] init];
+            pinViewController.delegate = self;
+            [frontViewController presentModalViewController:pinViewController animated:YES];
+            [pinViewController release];            
+        }
     } else {
         // Check if we're supposed to open a file
         if (fileToOpen != nil) {
@@ -201,8 +188,11 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
     databaseDocument = [newDatabaseDocument retain];
     
     // Set the group in the root group view controller
+    GroupViewController *groupViewController = [[GroupViewController alloc] initWithStyle:UITableViewStylePlain];
+    
     groupViewController.group = [databaseDocument.kdbTree getRoot];
-    [groupViewController.navigationController popToRootViewControllerAnimated:NO];            
+    [filesViewController.navigationController pushViewController:groupViewController animated:YES];
+    [groupViewController release];
     
     // Clear the search view controller
     [searchViewController clearResults];
@@ -214,9 +204,10 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
     [userDefaults removeObjectForKey:@"lastFilename"];
     
     // Clear the root group view controller
-    groupViewController.group = nil;
-    [groupViewController.navigationController popToRootViewControllerAnimated:NO];
-    
+    //FIXME commented out temporailly while changing how Files view works
+//    groupViewController.group = nil;
+//    [groupViewController.navigationController popToRootViewControllerAnimated:NO];
+//    
     // Clear the search view controller
     [searchViewController clearResults];
     

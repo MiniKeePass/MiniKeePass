@@ -74,7 +74,7 @@ static DatabaseManager *sharedInstance;
         // Prompt the user for a password
         PasswordEntryController *passwordEntryController = [[PasswordEntryController alloc] init];
         passwordEntryController.delegate = self;
-        [appDelegate.window.rootViewController presentModalViewController:passwordEntryController animated:YES];
+        [appDelegate.window.rootViewController presentModalViewController:passwordEntryController animated:animated];
         [passwordEntryController release];
     }
 }

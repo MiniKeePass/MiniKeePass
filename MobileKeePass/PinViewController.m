@@ -44,6 +44,7 @@
         textField.hidden = YES;
         textField.secureTextEntry = YES;
         textField.keyboardType = UIKeyboardTypeNumberPad;
+        textField.keyboardAppearance = UIKeyboardAppearanceAlert;
         
         [self.view addSubview:textField];
         

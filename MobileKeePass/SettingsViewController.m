@@ -274,7 +274,7 @@ enum {
     if (pinEnabledCell.switchControl.on) {
         PinViewController *pinViewController = [[PinViewController alloc] initWithText:@"Set PIN"];
         pinViewController.delegate = self;
-        [self.navigationController pushViewController:pinViewController animated:YES];
+        [self presentModalViewController:pinViewController animated:YES];
         [pinViewController release];
     } else {
         // Delete the PIN and disable the PIN enabled setting
@@ -327,7 +327,7 @@ enum {
         [self updateEnabledControls];
         
         // Remove the PIN view
-        [self.navigationController popViewControllerAnimated:YES];
+        [self dismissModalViewControllerAnimated:YES];
     } else {
         [tempPin release];
         tempPin = nil;
