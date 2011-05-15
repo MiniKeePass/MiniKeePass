@@ -134,18 +134,29 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
         return;
     }
     
-    // Get the lock timeout (in seconds)
-    NSInteger pinLockTimeout = pinLockTimeoutValues[[userDefaults integerForKey:@"pinLockTimeout"]];
+    UIViewController *parent = window.rootViewController;
+    if (window.rootViewController.modalViewController != nil) {
+        parent = window.rootViewController.modalViewController;
+    }
+
+    BOOL showPinView = NO;
     
-    // Check if it's been longer then lock timeout
-    NSTimeInterval timeInterval = [exitTime timeIntervalSinceNow];
-    if (timeInterval < -pinLockTimeout) {
-        [window.rootViewController dismissModalViewControllerAnimated:NO];
+    // Check if the PIN view is already on the screen
+    if (![parent isKindOfClass:[PinViewController class]] && ![parent.modalViewController isKindOfClass:[PinViewController class]]) {
+        // Get the lock timeout (in seconds)
+        NSInteger pinLockTimeout = pinLockTimeoutValues[[userDefaults integerForKey:@"pinLockTimeout"]];
         
+        // Check if it's been longer then lock timeout
+        NSTimeInterval timeInterval = [exitTime timeIntervalSinceNow];
+        showPinView = timeInterval < -pinLockTimeout;
+    }
+    
+    // Show the PIN view
+    if (showPinView) {
         // Present the pin view
         PinViewController *pinViewController = [[PinViewController alloc] init];
         pinViewController.delegate = self;
-        [window.rootViewController presentModalViewController:pinViewController animated:YES];
+        [parent presentModalViewController:pinViewController animated:YES];
         [pinViewController release];
     } else {
         // Check if we're supposed to open a file
