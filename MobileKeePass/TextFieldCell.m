@@ -91,7 +91,7 @@
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)field {
-    //Scroll to the top
+    // Scroll to the top
     [tableView setContentOffset:CGPointMake(0.0, 0.0) animated:YES];
 }
 
