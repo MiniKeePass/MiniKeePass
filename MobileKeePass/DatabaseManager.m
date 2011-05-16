@@ -79,6 +79,14 @@ static DatabaseManager *sharedInstance;
     }
 }
 
+- (void)loadDatabaseDocument:(DatabaseDocument*)databaseDocument {
+    // Set the database document in the application delegate
+    MobileKeePassAppDelegate *appDelegate = (MobileKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
+    appDelegate.databaseDocument = databaseDocument;
+    
+    [databaseDocument release];
+}
+
 - (BOOL)passwordEntryController:(PasswordEntryController*)controller passwordEntered:(NSString*)password {
     BOOL shouldDismiss = YES;
     
@@ -86,11 +94,8 @@ static DatabaseManager *sharedInstance;
     DatabaseDocument *dd = [[DatabaseDocument alloc] init];
     
     @try {
+        // Open the database
         [dd open:selectedPath password:password];
-        
-        // Set the database document in the application delegate
-        MobileKeePassAppDelegate *appDelegate = (MobileKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
-        appDelegate.databaseDocument = dd;
         
         // Store the filename as the last opened database
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
@@ -101,17 +106,19 @@ static DatabaseManager *sharedInstance;
             NSError *error;
             [SFHFKeychainUtils storeUsername:selectedPath andPassword:password forServiceName:@"net.fizzawizza.MobileKeePass.passwords" updateExisting:YES error:&error];
         }
+
+        // Load the database after a short delay so the push animation is visible
+        [self performSelector:@selector(loadDatabaseDocument:) withObject:dd afterDelay:0.01];
     } @catch (NSException *exception) {
         shouldDismiss = NO;
         controller.statusLabel.text = exception.reason;
+        [dd release];
     }
-
-    [dd release];
     
     return shouldDismiss;
 }
 
--(void)passwordEntryControllerCancelButtonPressed:(PasswordEntryController *)controller {
+- (void)passwordEntryControllerCancelButtonPressed:(PasswordEntryController *)controller {
     [controller dismissModalViewControllerAnimated:YES];
 }
 
