@@ -23,6 +23,21 @@
 
 @synthesize selectedFile;
 
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        self.title = @"Files";
+    }
+    return self;
+}
+
+- (void)dealloc {
+    [openHelpView release];
+    [files release];
+    [selectedFile release];
+    [super dealloc];
+}
+
 - (void)displayHelpPage {
     if (openHelpView == nil) {
         openHelpView = [[OpenHelpView alloc] initWithFrame:self.view.frame];
@@ -62,13 +77,6 @@
     files = [[NSMutableArray arrayWithArray:filenames] retain];
     
     [self.tableView reloadData];
-}
-
-- (void)dealloc {
-    [openHelpView release];
-    [files release];
-    [selectedFile release];
-    [super dealloc];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -112,9 +120,6 @@
 
     // Load the database
     [[DatabaseManager sharedInstance] openDatabaseDocument:path animated:YES];
-    
-    // Deselct the current cell
-//    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 -(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
