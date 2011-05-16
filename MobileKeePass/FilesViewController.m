@@ -32,19 +32,19 @@
 }
 
 - (void)dealloc {
-    [openHelpView release];
+    [filesHelpView release];
     [files release];
     [selectedFile release];
     [super dealloc];
 }
 
 - (void)displayHelpPage {
-    if (openHelpView == nil) {
-        openHelpView = [[OpenHelpView alloc] initWithFrame:self.view.frame];
-        openHelpView.navigationController = self.navigationController;
+    if (filesHelpView == nil) {
+        filesHelpView = [[FilesHelpView alloc] initWithFrame:self.view.frame];
+        filesHelpView.navigationController = self.navigationController;
     }
     
-    [self.view addSubview:openHelpView];
+    [self.view addSubview:filesHelpView];
     
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.scrollEnabled = NO;
@@ -53,8 +53,8 @@
 }
 
 - (void)hideHelpPage {
-    if (openHelpView != nil) {
-        [openHelpView removeFromSuperview];
+    if (filesHelpView != nil) {
+        [filesHelpView removeFromSuperview];
     }
     
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;

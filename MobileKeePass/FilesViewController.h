@@ -16,10 +16,10 @@
  */
 
 #import <Foundation/Foundation.h>
-#import "OpenHelpView.h"
+#import "FilesHelpView.h"
 
 @interface FilesViewController : UITableViewController {
-    OpenHelpView *openHelpView;
+    FilesHelpView *filesHelpView;
     
     NSMutableArray *files;
     NSString *selectedFile;

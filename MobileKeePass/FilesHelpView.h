@@ -17,7 +17,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface OpenHelpView : UIView {
+@interface FilesHelpView : UIView {
     UINavigationController *navigationController;
 }
 

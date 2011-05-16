@@ -23,7 +23,7 @@
 		6805EBD513764A5F00340C02 /* LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = 6805EBD413764A5F00340C02 /* LICENSE.txt */; };
 		6813262E136F7BA7004F4864 /* UrlFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6813262D136F7BA7004F4864 /* UrlFieldCell.m */; };
 		68132639136F8B79004F4864 /* PasswordFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68132638136F8B79004F4864 /* PasswordFieldCell.m */; };
-		685985F41377412E0004414C /* OpenHelpView.m in Sources */ = {isa = PBXBuildFile; fileRef = 685985F31377412E0004414C /* OpenHelpView.m */; };
+		685985F41377412E0004414C /* FilesHelpView.m in Sources */ = {isa = PBXBuildFile; fileRef = 685985F31377412E0004414C /* FilesHelpView.m */; };
 		6872F02A137746D0008E55B9 /* FilesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6872F029137746D0008E55B9 /* FilesViewController.m */; };
 		687366EC1373979A0053CCA3 /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 687366EB1373979A0053CCA3 /* SFHFKeychainUtils.m */; };
 		687366EE137399360053CCA3 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 687366ED137399360053CCA3 /* Security.framework */; };
@@ -213,8 +213,8 @@
 		6813262D136F7BA7004F4864 /* UrlFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UrlFieldCell.m; sourceTree = "<group>"; };
 		68132637136F8B79004F4864 /* PasswordFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasswordFieldCell.h; sourceTree = "<group>"; };
 		68132638136F8B79004F4864 /* PasswordFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PasswordFieldCell.m; sourceTree = "<group>"; };
-		685985F21377412D0004414C /* OpenHelpView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenHelpView.h; sourceTree = "<group>"; };
-		685985F31377412E0004414C /* OpenHelpView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OpenHelpView.m; sourceTree = "<group>"; };
+		685985F21377412D0004414C /* FilesHelpView.h */ = {isa = PBXFileReference; fileEncoding = 4; path = FilesHelpView.h; sourceTree = "<group>"; };
+		685985F31377412E0004414C /* FilesHelpView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilesHelpView.m; sourceTree = "<group>"; };
 		6872F028137746D0008E55B9 /* FilesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilesViewController.h; sourceTree = "<group>"; };
 		6872F029137746D0008E55B9 /* FilesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilesViewController.m; sourceTree = "<group>"; };
 		687366EA1373979A0053CCA3 /* SFHFKeychainUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFHFKeychainUtils.h; sourceTree = "<group>"; };
@@ -715,8 +715,8 @@
 				688D47741378DF9400BEE609 /* DatabaseManager.m */,
 				689EB6A1136DC24C00C8DA1E /* EntryViewController.h */,
 				689EB6A2136DC24C00C8DA1E /* EntryViewController.m */,
-				685985F21377412D0004414C /* OpenHelpView.h */,
-				685985F31377412E0004414C /* OpenHelpView.m */,
+				685985F21377412D0004414C /* FilesHelpView.h */,
+				685985F31377412E0004414C /* FilesHelpView.m */,
 				6872F028137746D0008E55B9 /* FilesViewController.h */,
 				6872F029137746D0008E55B9 /* FilesViewController.m */,
 				68D59039136CB7820064CEE5 /* GroupViewController.h */,
@@ -973,7 +973,7 @@
 				52644C9B1370954700A58D92 /* PinTextField.m in Sources */,
 				687366EC1373979A0053CCA3 /* SFHFKeychainUtils.m in Sources */,
 				52F42CF413747BE20074E5D5 /* SettingsViewController.m in Sources */,
-				685985F41377412E0004414C /* OpenHelpView.m in Sources */,
+				685985F41377412E0004414C /* FilesHelpView.m in Sources */,
 				6872F02A137746D0008E55B9 /* FilesViewController.m in Sources */,
 				688F3FB51377805C0049808C /* SelectionListViewController.m in Sources */,
 				688D47751378DF9400BEE609 /* DatabaseManager.m in Sources */,
