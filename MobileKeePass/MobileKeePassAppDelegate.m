@@ -55,7 +55,6 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
         
     // Create the files view
     filesViewController = [[FilesViewController alloc] initWithStyle:UITableViewStylePlain];
-    filesViewController.title = @"Files";
     filesViewController.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Files" image:[UIImage imageNamed:@"tab_files.png"] tag:2];
     UINavigationController *filesNavController = [[UINavigationController alloc] initWithRootViewController:filesViewController];
     
@@ -74,15 +73,14 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
     UITabBarController *tabBarController = [[UITabBarController alloc] init];
     tabBarController.viewControllers = [NSArray arrayWithObjects:filesNavController, searchNavController, settingsNavController, nil];
     
-    [searchNavController release];
-    [filesNavController release];
-    [settingsNavController release];
-    
     // Create the window
     window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     window.rootViewController = tabBarController;
     [window makeKeyAndVisible];
     
+    [filesNavController release];
+    [searchNavController release];
+    [settingsNavController release];
     [tabBarController release];
     
     [self openLastDatabase];
@@ -133,7 +131,6 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
     NSTimeInterval timeInterval = [exitTime timeIntervalSinceNow];
     if (timeInterval < -pinLockTimeout) {
         UIViewController *frontViewController = window.rootViewController;
-        
         while (frontViewController.modalViewController != nil) {
             frontViewController = frontViewController.modalViewController;
         }
@@ -189,7 +186,7 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
     
     // Set the group in the root group view controller
     GroupViewController *groupViewController = [[GroupViewController alloc] initWithStyle:UITableViewStylePlain];
-    
+    groupViewController.title = @"Passwords";
     groupViewController.group = [databaseDocument.kdbTree getRoot];
     [filesViewController.navigationController pushViewController:groupViewController animated:YES];
     [groupViewController release];
@@ -202,12 +199,10 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
     // Clear the last filename
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     [userDefaults removeObjectForKey:@"lastFilename"];
+
+    // Close any open database views
+    [filesViewController.navigationController popToRootViewControllerAnimated:NO];
     
-    // Clear the root group view controller
-    //FIXME commented out temporailly while changing how Files view works
-//    groupViewController.group = nil;
-//    [groupViewController.navigationController popToRootViewControllerAnimated:NO];
-//    
     // Clear the search view controller
     [searchViewController clearResults];
     
@@ -223,6 +218,7 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
         return;
     }
     
+    // Open the database
     [[DatabaseManager sharedInstance] openDatabaseDocument:lastFilename animated:NO];
 }
 
@@ -255,8 +251,7 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
 
 - (UIImage*)loadImage:(int)index {
     if (images[index] == nil) {
-        NSString *imagePath = [[NSBundle mainBundle] pathForResource:[NSString stringWithFormat:@"%d", index] ofType:@"png"];
-        images[index] = [[UIImage imageWithContentsOfFile:imagePath] retain];
+        images[index] = [[UIImage imageNamed:[NSString stringWithFormat:@"%d.png", index]] retain];
     }
     
     return images[index];
@@ -265,54 +260,58 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
 - (void)pinViewController:(PinViewController *)controller pinEntered:(NSString *)pin {
     NSString *validPin = [SFHFKeychainUtils getPasswordForUsername:@"PIN" andServiceName:@"net.fizzawizza.MobileKeePass.pin" error:nil];
     if (validPin == nil) {
-        // TODO error/no pin, close database
-        return;
-    }
-    
-    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
-    
-    // Check if the PIN is valid
-    if ([pin isEqualToString:validPin]) {
-        // Reset the number of pin failed attempts
-        [userDefaults setInteger:0 forKey:@"pinFailedAttempts"];
+        // Delete all data
+        [self deleteAllData];
         
         // Dismiss the pin view
         [controller dismissModalViewControllerAnimated:YES];
-        
-        // Check if we're supposed to open a file
-        if (fileToOpen != nil) {
-            [[DatabaseManager sharedInstance] openDatabaseDocument:fileToOpen animated:YES];
-            
-            [fileToOpen release];
-            fileToOpen = nil;
-        }
     } else {
-        // Vibrate to signify they are a bad user
-        AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
-        [controller clearEntry];
+        NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
         
-        if (![userDefaults boolForKey:@"deleteOnFailureEnabled"]) {
-            // Update the status message on the PIN view
-            controller.textLabel.text = @"Incorrect PIN";
-        } else {
-            // Get the number of failed attempts
-            NSInteger pinFailedAttempts = [userDefaults integerForKey:@"pinFailedAttempts"];
-            [userDefaults setInteger:++pinFailedAttempts forKey:@"pinFailedAttempts"];
+        // Check if the PIN is valid
+        if ([pin isEqualToString:validPin]) {
+            // Reset the number of pin failed attempts
+            [userDefaults setInteger:0 forKey:@"pinFailedAttempts"];
             
-            // Get the number of failed attempts before deleting
-            NSInteger deleteOnFailureAttempts = deleteOnFailureAttemptsValues[[userDefaults integerForKey:@"deleteOnFailureAttempts"]];
+            // Dismiss the pin view
+            [controller dismissModalViewControllerAnimated:YES];
             
-            // Update the status message on the PIN view
-            NSInteger remainingAttempts = (deleteOnFailureAttempts - pinFailedAttempts);
-            controller.textLabel.text = [NSString stringWithFormat:@"Incorrect PIN\n%d attempt%@ remaining", remainingAttempts, remainingAttempts > 1 ? @"s" : @""];
-            
-            // Check if they have failed too many times
-            if (pinFailedAttempts >= deleteOnFailureAttempts) {
-                // Delete all data
-                [self deleteAllData];
+            // Check if we're supposed to open a file
+            if (fileToOpen != nil) {
+                // Open the file
+                [[DatabaseManager sharedInstance] openDatabaseDocument:fileToOpen animated:YES];
                 
-                // Dismiss the pin view
-                [controller dismissModalViewControllerAnimated:YES];
+                [fileToOpen release];
+                fileToOpen = nil;
+            }
+        } else {
+            // Vibrate to signify they are a bad user
+            AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+            [controller clearEntry];
+            
+            if (![userDefaults boolForKey:@"deleteOnFailureEnabled"]) {
+                // Update the status message on the PIN view
+                controller.textLabel.text = @"Incorrect PIN";
+            } else {
+                // Get the number of failed attempts
+                NSInteger pinFailedAttempts = [userDefaults integerForKey:@"pinFailedAttempts"];
+                [userDefaults setInteger:++pinFailedAttempts forKey:@"pinFailedAttempts"];
+                
+                // Get the number of failed attempts before deleting
+                NSInteger deleteOnFailureAttempts = deleteOnFailureAttemptsValues[[userDefaults integerForKey:@"deleteOnFailureAttempts"]];
+                
+                // Update the status message on the PIN view
+                NSInteger remainingAttempts = (deleteOnFailureAttempts - pinFailedAttempts);
+                controller.textLabel.text = [NSString stringWithFormat:@"Incorrect PIN\n%d attempt%@ remaining", remainingAttempts, remainingAttempts > 1 ? @"s" : @""];
+                
+                // Check if they have failed too many times
+                if (pinFailedAttempts >= deleteOnFailureAttempts) {
+                    // Delete all data
+                    [self deleteAllData];
+                    
+                    // Dismiss the pin view
+                    [controller dismissModalViewControllerAnimated:YES];
+                }
             }
         }
     }
