@@ -54,7 +54,7 @@
 
 - (void)textViewDidBeginEditing:(UITextView *)view {    
     CGRect rect = [view convertRect:view.frame toView:tableView];
-    CGFloat y = rect.origin.y - 12;
+    CGFloat y = rect.origin.y - 44;
     if (y != tableView.contentOffset.y) {
         [tableView setContentOffset:CGPointMake(0.0, y) animated:YES];
     }
