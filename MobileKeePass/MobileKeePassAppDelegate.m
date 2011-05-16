@@ -215,6 +215,14 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
         return;
     }
     
+    //DEBUG
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    
+    NSLog(@"trying to open: %@", lastFilename);
+    NSLog(@"Documents Directory: %@", documentsDirectory);
+    //\DEBUG
+    
     // Open the database
     [[DatabaseManager sharedInstance] openDatabaseDocument:lastFilename animated:NO];
 }
