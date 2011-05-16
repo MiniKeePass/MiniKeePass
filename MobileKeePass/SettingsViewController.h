@@ -17,7 +17,6 @@
 
 #import <UIKit/UIKit.h>
 #import "PinViewController.h"
-#import "ButtonCell.h"
 #import "ChoiceCell.h"
 #import "SwitchCell.h"
 #import "SelectionListViewController.h"
