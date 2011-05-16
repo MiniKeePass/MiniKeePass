@@ -27,18 +27,12 @@
     self.title = @"Search";
     
     searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
-    searchBar.delegate = self;
     [self.view addSubview:searchBar];
     
-    tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 44, 320, 343) style:UITableViewStylePlain];
-    tableView.dataSource = self;
-    tableView.delegate = self;
-    [self.view addSubview:tableView];
-    
-    disableViewOverlay = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 44.0f, 320.0f, 416.0f)];
-    disableViewOverlay.backgroundColor = [UIColor blackColor];
-    disableViewOverlay.alpha = 0;
-    [self.view addSubview:disableViewOverlay];
+    searchController = [[UISearchDisplayController alloc] initWithSearchBar:searchBar contentsController:self];
+    searchController.delegate = self;
+    searchController.searchResultsDataSource = self;
+    searchController.searchResultsDelegate = self;
     
     results = [[NSMutableArray alloc] init];
 }
@@ -53,9 +47,8 @@
 }
 
 - (void)dealloc {
-    [tableView release];
     [searchBar release];
-    [disableViewOverlay release];
+    [searchController release];
     [results release];
     [super dealloc];
 }
@@ -74,19 +67,7 @@
     [tableView reloadData];
 }
 
-- (void)searchBarTextDidBeginEditing:(UISearchBar*)control {
-    [self setSearchBar:control active:YES];
-}
-
-- (void)searchBarCancelButtonClicked:(UISearchBar*)control {
-    // Clear the search text
-    control.text = @"";
-    
-    // Deactivate the UISearchBar
-    [self setSearchBar:control active:NO];
-}
-
-- (void)searchBarSearchButtonClicked:(UISearchBar*)control {
+- (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString {
     [results removeAllObjects];
     
     MobileKeePassAppDelegate *appDelegate = (MobileKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
@@ -94,36 +75,12 @@
     
     if (databaseDocument != nil) {
         id<KdbGroup> root = [databaseDocument.kdbTree getRoot];
-
+        
         // Perform the search
-        [databaseDocument searchGroup:root searchText:control.text results:results];
-    }
-	
-    // Deactivate the UISearchBar
-    [self setSearchBar:control active:NO];
-	
-    // Update the table
-    [tableView reloadData];
-}
-
-- (void)setSearchBar:(UISearchBar*)control active:(BOOL)active {
-    tableView.allowsSelection = !active;
-    tableView.scrollEnabled = !active;
-    
-    if (!active) {
-        [disableViewOverlay removeFromSuperview];
-        [control resignFirstResponder];
-    } else {
-        disableViewOverlay.alpha = 0;
-        [self.view addSubview:disableViewOverlay];
-		
-        [UIView beginAnimations:@"FadeIn" context:nil];
-        [UIView setAnimationDuration:0.5];
-        disableViewOverlay.alpha = 0.6;
-        [UIView commitAnimations];
+        [databaseDocument searchGroup:root searchText:searchString results:results];
     }
     
-    [control setShowsCancelButton:active animated:YES];
+    return YES;
 }
 
 - (NSInteger)tableView:(UITableView*)control numberOfRowsInSection:(NSInteger)section {

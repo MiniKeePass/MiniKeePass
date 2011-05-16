@@ -17,16 +17,14 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SearchViewController : UIViewController
-<UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate> {
+@interface SearchViewController : UITableViewController <UISearchDisplayDelegate> {
 	UITableView *tableView;
 	UISearchBar *searchBar;
-	UIView *disableViewOverlay;
+    UISearchDisplayController *searchController;
     
 	NSMutableArray *results;
 }
 
 - (void)clearResults;
-- (void)setSearchBar:(UISearchBar*)control active:(BOOL)active;
 
 @end
