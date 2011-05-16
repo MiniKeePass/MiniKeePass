@@ -29,7 +29,6 @@
     ChoiceCell *deleteOnFailureAttemptsCell;
     SwitchCell *rememberPasswordsEnabledCell;
     SwitchCell *hidePasswordsCell;
-    ButtonCell *closeDatabaseCell;
     
     NSString *tempPin;
 }

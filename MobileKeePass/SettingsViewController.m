@@ -26,7 +26,6 @@ enum {
     SECTION_DELETE_ON_FAILURE,
     SECTION_REMEMBER_PASSWORDS,
     SECTION_HIDE_PASSWORDS,
-    SECTION_CLOSE_DATABASE,
     SECTION_NUMBER
 };
 
@@ -52,11 +51,6 @@ enum {
     ROW_HIDE_PASSWORDS_NUMBER
 };
 
-enum {
-    ROW_CLOSE_DATABASE_BUTTON,
-    ROW_CLOSE_DATABASE_NUMBER
-};
-
 @implementation SettingsViewController
 
 - (void)viewDidLoad {
@@ -79,8 +73,6 @@ enum {
     
     hidePasswordsCell = [[SwitchCell alloc] initWithLabel:@"Hide Passwords"];
     [hidePasswordsCell.switchControl addTarget:self action:@selector(toggleHidePasswords:) forControlEvents:UIControlEventValueChanged];
-    
-    closeDatabaseCell = [[ButtonCell alloc] initWithLabel:@"Close Current Database"];
 }
 
 - (void)dealloc {
@@ -90,7 +82,6 @@ enum {
     [deleteOnFailureAttemptsCell release];
     [rememberPasswordsEnabledCell release];
     [hidePasswordsCell release];
-    [closeDatabaseCell release];
     [super dealloc];
 }
 
@@ -123,9 +114,6 @@ enum {
     [pinLockTimeoutCell setEnabled:pinEnabled];
     [deleteOnFailureEnabledCell setEnabled:pinEnabled];
     [deleteOnFailureAttemptsCell setEnabled:pinEnabled && deleteOnFailureEnabled];
-    
-     MobileKeePassAppDelegate *appDelegate = (MobileKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
-     [closeDatabaseCell setEnabled:(appDelegate.databaseDocument != nil)];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -145,9 +133,6 @@ enum {
             
         case SECTION_HIDE_PASSWORDS:
             return ROW_HIDE_PASSWORDS_NUMBER;
-            
-        case SECTION_CLOSE_DATABASE:
-            return ROW_CLOSE_DATABASE_NUMBER;
     }
     return 0;
 }
@@ -165,9 +150,6 @@ enum {
             
         case SECTION_HIDE_PASSWORDS:
             return @"General";
-        
-        case SECTION_CLOSE_DATABASE:
-            return nil;
     }
     return nil;
 }
@@ -207,13 +189,6 @@ enum {
                     return hidePasswordsCell;
             }
             break;
-            
-        case SECTION_CLOSE_DATABASE:
-            switch (indexPath.row) {
-                case ROW_CLOSE_DATABASE_BUTTON:
-                    return closeDatabaseCell;
-            }
-            break;
     }
     
     return nil;
@@ -238,16 +213,6 @@ enum {
         selectionListViewController.reference = indexPath;
         [self.navigationController pushViewController:selectionListViewController animated:YES];
         [selectionListViewController release];
-    } else if (indexPath.section == SECTION_CLOSE_DATABASE && indexPath.row == ROW_CLOSE_DATABASE_BUTTON && closeDatabaseCell.textLabel.enabled) {
-        // Deselect the row
-        [tableView deselectRowAtIndexPath:indexPath animated:YES];
-        
-        // Close the database
-        MobileKeePassAppDelegate *appDelegate = (MobileKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
-        [appDelegate closeDatabase];
-        
-        // Update the enablement
-        [self updateEnabledControls];
     }
 }
 

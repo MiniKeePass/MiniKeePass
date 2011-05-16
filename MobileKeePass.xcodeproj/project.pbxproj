@@ -73,7 +73,6 @@
 		688E68F5136F761500004216 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 688E68F4136F761500004216 /* Settings.bundle */; };
 		688F3FB51377805C0049808C /* SelectionListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 688F3FB41377805C0049808C /* SelectionListViewController.m */; };
 		68964206137F2549001B87A4 /* ChoiceCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68964205137F2549001B87A4 /* ChoiceCell.m */; };
-		6896420A137F325E001B87A4 /* ButtonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68964209137F325D001B87A4 /* ButtonCell.m */; };
 		689675971379DCE6006BC268 /* AESDecryptSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 689675491379DCE5006BC268 /* AESDecryptSource.m */; };
 		689675981379DCE6006BC268 /* AESEncryptSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 6896754B1379DCE5006BC268 /* AESEncryptSource.m */; };
 		6896759A1379DCE6006BC268 /* Arc4RandomStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 6896754F1379DCE5006BC268 /* Arc4RandomStream.m */; };
@@ -213,7 +212,7 @@
 		6813262D136F7BA7004F4864 /* UrlFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UrlFieldCell.m; sourceTree = "<group>"; };
 		68132637136F8B79004F4864 /* PasswordFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasswordFieldCell.h; sourceTree = "<group>"; };
 		68132638136F8B79004F4864 /* PasswordFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PasswordFieldCell.m; sourceTree = "<group>"; };
-		685985F21377412D0004414C /* FilesHelpView.h */ = {isa = PBXFileReference; fileEncoding = 4; path = FilesHelpView.h; sourceTree = "<group>"; };
+		685985F21377412D0004414C /* FilesHelpView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilesHelpView.h; sourceTree = "<group>"; };
 		685985F31377412E0004414C /* FilesHelpView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilesHelpView.m; sourceTree = "<group>"; };
 		6872F028137746D0008E55B9 /* FilesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilesViewController.h; sourceTree = "<group>"; };
 		6872F029137746D0008E55B9 /* FilesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilesViewController.m; sourceTree = "<group>"; };
@@ -270,8 +269,6 @@
 		688F3FB41377805C0049808C /* SelectionListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectionListViewController.m; sourceTree = "<group>"; };
 		68964204137F2549001B87A4 /* ChoiceCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChoiceCell.h; sourceTree = "<group>"; };
 		68964205137F2549001B87A4 /* ChoiceCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChoiceCell.m; sourceTree = "<group>"; };
-		68964208137F325D001B87A4 /* ButtonCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ButtonCell.h; sourceTree = "<group>"; };
-		68964209137F325D001B87A4 /* ButtonCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ButtonCell.m; sourceTree = "<group>"; };
 		689675481379DCE5006BC268 /* AESDecryptSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AESDecryptSource.h; sourceTree = "<group>"; };
 		689675491379DCE5006BC268 /* AESDecryptSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AESDecryptSource.m; sourceTree = "<group>"; };
 		6896754A1379DCE5006BC268 /* AESEncryptSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AESEncryptSource.h; sourceTree = "<group>"; };
@@ -448,8 +445,6 @@
 		525B6515137062F7001883BB /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				68964208137F325D001B87A4 /* ButtonCell.h */,
-				68964209137F325D001B87A4 /* ButtonCell.m */,
 				68964204137F2549001B87A4 /* ChoiceCell.h */,
 				68964205137F2549001B87A4 /* ChoiceCell.m */,
 				689EB69B136DAE1C00C8DA1E /* TextViewCell.h */,
@@ -1005,7 +1000,6 @@
 				689675BB1379DCE6006BC268 /* WrapperNSData.m in Sources */,
 				68C6BDEE137F10CF0013373A /* SwitchCell.m in Sources */,
 				68964206137F2549001B87A4 /* ChoiceCell.m in Sources */,
-				6896420A137F325E001B87A4 /* ButtonCell.m in Sources */,
 				688231DC138046FC0046B00D /* SearchViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

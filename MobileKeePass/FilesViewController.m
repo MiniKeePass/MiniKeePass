@@ -66,6 +66,9 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
+    MobileKeePassAppDelegate *appDelegate = (MobileKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
+    [appDelegate closeDatabase];
+    
     [files release];
     
     // Get the document's directory
