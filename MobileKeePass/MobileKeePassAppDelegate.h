@@ -23,6 +23,7 @@
 
 @interface MobileKeePassAppDelegate : NSObject <UIApplicationDelegate, PinViewControllerDelegate, UIActionSheetDelegate> {
     UIWindow *window;
+    UITabBarController *tabBarController;
     FilesViewController *filesViewController;
     SearchViewController *searchViewController;
     
@@ -37,6 +38,7 @@
 
 - (void)closeDatabase;
 - (void)openLastDatabase;
+- (void)loadFileToOpen;
 - (void)deleteAllData;
 - (UIImage*)loadImage:(int)index;
 

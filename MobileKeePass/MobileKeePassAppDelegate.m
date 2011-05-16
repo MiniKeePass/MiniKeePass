@@ -70,18 +70,17 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
     [settingsViewController release];
     
     // Create the tab bar controller
-    UITabBarController *tabBarController = [[UITabBarController alloc] init];
+    tabBarController = [[UITabBarController alloc] init];
     tabBarController.viewControllers = [NSArray arrayWithObjects:filesNavController, searchNavController, settingsNavController, nil];
+    
+    [filesNavController release];
+    [searchNavController release];
+    [settingsNavController release];
     
     // Create the window
     window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     window.rootViewController = tabBarController;
     [window makeKeyAndVisible];
-    
-    [filesNavController release];
-    [searchNavController release];
-    [settingsNavController release];
-    [tabBarController release];
     
     [self openLastDatabase];
     
@@ -97,6 +96,7 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
     [fileToOpen release];
     [filesViewController release];
     [searchViewController release];
+    [tabBarController release];
     [window release];
     [super dealloc];
 }
@@ -111,45 +111,42 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
+    BOOL presentedPin = NO;
+    
     // Check if the PIN is enabled
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    if (![userDefaults boolForKey:@"pinEnabled"]) {
-        return;
-    }
-    
-    // Get the time when the application last exited
-    NSDate *exitTime = [userDefaults valueForKey:@"exitTime"];
-    if (exitTime == nil) {
-        return;
-    }
-    
-    
-    // Get the lock timeout (in seconds)
-    NSInteger pinLockTimeout = pinLockTimeoutValues[[userDefaults integerForKey:@"pinLockTimeout"]];
-    
-    // Check if it's been longer then lock timeout
-    NSTimeInterval timeInterval = [exitTime timeIntervalSinceNow];
-    if (timeInterval < -pinLockTimeout) {
-        UIViewController *frontViewController = window.rootViewController;
-        while (frontViewController.modalViewController != nil) {
-            frontViewController = frontViewController.modalViewController;
-        }
-        
-        if (![frontViewController isKindOfClass:[PinViewController class]]) {
-            // Present the pin view
-            PinViewController *pinViewController = [[PinViewController alloc] init];
-            pinViewController.delegate = self;
-            [frontViewController presentModalViewController:pinViewController animated:YES];
-            [pinViewController release];            
-        }
-    } else {
-        // Check if we're supposed to open a file
-        if (fileToOpen != nil) {
-            [[DatabaseManager sharedInstance] openDatabaseDocument:fileToOpen animated:YES];
+    if ([userDefaults boolForKey:@"pinEnabled"]) {
+        // Get the time when the application last exited
+        NSDate *exitTime = [userDefaults valueForKey:@"exitTime"];
+        if (exitTime != nil) {
+            // Get the lock timeout (in seconds)
+            NSInteger pinLockTimeout = pinLockTimeoutValues[[userDefaults integerForKey:@"pinLockTimeout"]];
             
-            [fileToOpen release];
-            fileToOpen = nil;
+            // Check if it's been longer then lock timeout
+            NSTimeInterval timeInterval = [exitTime timeIntervalSinceNow];
+            if (timeInterval < -pinLockTimeout) {
+                presentedPin = YES;
+                
+                UIViewController *frontViewController = window.rootViewController;
+                while (frontViewController.modalViewController != nil) {
+                    frontViewController = frontViewController.modalViewController;
+                }
+                
+                // Check if the pin view is already on the screen
+                if (![frontViewController isKindOfClass:[PinViewController class]]) {
+                    // Present the pin view
+                    PinViewController *pinViewController = [[PinViewController alloc] init];
+                    pinViewController.delegate = self;
+                    [frontViewController presentModalViewController:pinViewController animated:YES];
+                    [pinViewController release];            
+                }
+            }
         }
+    }
+    
+    // Check if we're supposed to open a file
+    if (!presentedPin) {
+        [self loadFileToOpen];
     }
 }
 
@@ -172,7 +169,7 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
     
     // Store the file to open
     [fileToOpen release];
-    fileToOpen = [path retain];
+    fileToOpen = [path copy];
     
     return YES;
 }
@@ -220,6 +217,19 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
     
     // Open the database
     [[DatabaseManager sharedInstance] openDatabaseDocument:lastFilename animated:NO];
+}
+
+- (void)loadFileToOpen {
+    // Check if we're supposed to open a file
+    if (fileToOpen != nil) {
+        [tabBarController setSelectedIndex:0];
+        
+        // Open the file
+        [[DatabaseManager sharedInstance] openDatabaseDocument:fileToOpen animated:YES];
+        
+        [fileToOpen release];
+        fileToOpen = nil;
+    }
 }
 
 - (void)deleteAllData {
@@ -274,16 +284,9 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
             [userDefaults setInteger:0 forKey:@"pinFailedAttempts"];
             
             // Dismiss the pin view
-            [controller dismissModalViewControllerAnimated:YES];
+            [controller dismissModalViewControllerAnimated:NO];
             
-            // Check if we're supposed to open a file
-            if (fileToOpen != nil) {
-                // Open the file
-                [[DatabaseManager sharedInstance] openDatabaseDocument:fileToOpen animated:YES];
-                
-                [fileToOpen release];
-                fileToOpen = nil;
-            }
+            [self performSelector:@selector(loadFileToOpen) withObject:nil afterDelay:0.01];
         } else {
             // Vibrate to signify they are a bad user
             AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
