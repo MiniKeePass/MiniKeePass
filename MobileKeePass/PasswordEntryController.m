@@ -44,6 +44,7 @@
     textField.placeholder = @"Password";
     textField.delegate = self;
     textField.returnKeyType = UIReturnKeyDone;
+    textField.clearButtonMode = UITextFieldViewModeWhileEditing;
     
     okButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     okButton.frame = CGRectMake(9, y, BUTTON_WIDTH, BUTTON_HEIGHT);
