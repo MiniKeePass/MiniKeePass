@@ -106,8 +106,8 @@
 }
 
 BOOL stringsEqual(NSString *str1, NSString *str2) {
-    str1 = str1 == nil ? @"" : str1;
-    str2 = str2 == nil ? @"" : str2;
+    str1 = str1 == nil ? @"" : [str1 stringByReplacingOccurrencesOfString:@"\r\n" withString:@"\n"];
+    str2 = str2 == nil ? @"" : [str2 stringByReplacingOccurrencesOfString:@"\r\n" withString:@"\n"];
     return [str1 isEqualToString:str2];
 }
 
