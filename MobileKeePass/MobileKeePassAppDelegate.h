@@ -37,7 +37,6 @@
 @property (nonatomic, retain) DatabaseDocument *databaseDocument;
 
 - (void)closeDatabase;
-- (void)openLastDatabase;
 - (void)loadFileToOpen;
 - (void)deleteAllData;
 - (UIImage*)loadImage:(int)index;

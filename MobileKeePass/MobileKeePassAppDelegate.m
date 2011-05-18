@@ -82,8 +82,6 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
     window.rootViewController = tabBarController;
     [window makeKeyAndVisible];
     
-    [self openLastDatabase];
-    
     return YES;
 }
 
@@ -102,9 +100,6 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
-    // Save the database document
-    [databaseDocument save];
-    
     // Store the current time as when the application exited
     NSDate *currentTime = [NSDate date];
     [[NSUserDefaults standardUserDefaults] setValue:currentTime forKey:@"exitTime"];
@@ -151,11 +146,12 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
 }
 
 -(BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
-    // Retrieve the Documents directory
+    // Get the filename
+    NSString *filename = [url lastPathComponent];
+    
+    // Get the full path of where we're going to move the file
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
-    
-    NSString *filename = [url lastPathComponent];
     NSString *path = [documentsDirectory stringByAppendingPathComponent:filename];
     
     NSURL *newUrl = [NSURL fileURLWithPath:path];
@@ -167,9 +163,9 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
     [fileManager removeItemAtPath:[documentsDirectory stringByAppendingPathComponent:@"Inbox"] error:nil];
     [fileManager release];
     
-    // Store the file to open
+    // Store the filename to open
     [fileToOpen release];
-    fileToOpen = [path copy];
+    fileToOpen = [filename copy];
     
     return YES;
 }
@@ -179,9 +175,13 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
 }
 
 - (void)setDatabaseDocument:(DatabaseDocument *)newDatabaseDocument {
+    if (databaseDocument != nil) {
+        [self closeDatabase];
+    }
+    
     databaseDocument = [newDatabaseDocument retain];
     
-    // Set the group in the root group view controller
+    // Create and push on the root group view controller
     GroupViewController *groupViewController = [[GroupViewController alloc] initWithStyle:UITableViewStylePlain];
     groupViewController.title = [[databaseDocument.filename lastPathComponent] stringByDeletingPathExtension];
     groupViewController.group = [databaseDocument.kdbTree getRoot];
@@ -193,10 +193,6 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
 }
 
 - (void)closeDatabase {
-    // Clear the last filename
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    [userDefaults removeObjectForKey:@"lastFilename"];
-
     // Close any open database views
     [filesViewController.navigationController popToRootViewControllerAnimated:NO];
     
@@ -205,18 +201,6 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
     
     [databaseDocument release];
     databaseDocument = nil;
-}
-
-- (void)openLastDatabase {
-    // Get the last filename
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSString *lastFilename = [userDefaults stringForKey:@"lastFilename"];
-    if (lastFilename == nil) {
-        return;
-    }
-    
-    // Open the database
-    [[DatabaseManager sharedInstance] openDatabaseDocument:lastFilename animated:NO];
 }
 
 - (void)loadFileToOpen {

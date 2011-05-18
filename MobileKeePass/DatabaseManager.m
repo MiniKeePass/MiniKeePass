@@ -22,7 +22,7 @@
 
 @implementation DatabaseManager
 
-@synthesize selectedPath;
+@synthesize selectedFilename;
 @synthesize animated;
 
 static DatabaseManager *sharedInstance;
@@ -40,27 +40,30 @@ static DatabaseManager *sharedInstance;
 }
 
 - (void)dealloc {
-    [selectedPath release];
+    [selectedFilename release];
     [super dealloc];
 }
 
-- (void)openDatabaseDocument:(NSString*)path animated:(BOOL)newAnimated {
+- (void)openDatabaseDocument:(NSString*)filename animated:(BOOL)newAnimated {
     BOOL databaseLoaded = NO;
     
-    self.selectedPath = path;
+    self.selectedFilename = filename;
     self.animated = newAnimated;
     
     // Load the password from the keychain
-    NSString *password = [SFHFKeychainUtils getPasswordForUsername:path andServiceName:@"net.fizzawizza.MobileKeePass.passwords" error:nil];
+    NSString *password = [SFHFKeychainUtils getPasswordForUsername:selectedFilename andServiceName:@"net.fizzawizza.MobileKeePass.passwords" error:nil];
     
     // Get the application delegate
     MobileKeePassAppDelegate *appDelegate = (MobileKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
     
     // Try and load the database with the cached password from the keychain
     if (password != nil) {
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *documentsDirectory = [paths objectAtIndex:0];
+        NSString *path = [documentsDirectory stringByAppendingPathComponent:selectedFilename];
+
         // Load the database
         DatabaseDocument *dd = [[DatabaseDocument alloc] init];
-        
         @try {
             [dd open:path password:password];
             
@@ -68,11 +71,8 @@ static DatabaseManager *sharedInstance;
             
             // Set the database document in the application delegate
             appDelegate.databaseDocument = dd;
-            
-            // Store the filename as the last opened database
-            NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-            [userDefaults setValue:path forKey:@"lastFilename"];
         } @catch (NSException * exception) {
+            // Ignore
         }
         
         [dd release];
@@ -99,23 +99,23 @@ static DatabaseManager *sharedInstance;
 - (BOOL)passwordEntryController:(PasswordEntryController*)controller passwordEntered:(NSString*)password {
     BOOL shouldDismiss = YES;
     
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString *path = [documentsDirectory stringByAppendingPathComponent:selectedFilename];
+    
     // Load the database
     DatabaseDocument *dd = [[DatabaseDocument alloc] init];
-    
     @try {
         // Open the database
-        [dd open:selectedPath password:password];
-        
-        // Store the filename as the last opened database
-        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-        [userDefaults setValue:selectedPath forKey:@"lastFilename"];
+        [dd open:path password:password];
         
         // Store the password in the keychain
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
         if ([userDefaults boolForKey:@"rememberPasswordsEnabled"]) {
             NSError *error;
-            [SFHFKeychainUtils storeUsername:selectedPath andPassword:password forServiceName:@"net.fizzawizza.MobileKeePass.passwords" updateExisting:YES error:&error];
+            [SFHFKeychainUtils storeUsername:selectedFilename andPassword:password forServiceName:@"net.fizzawizza.MobileKeePass.passwords" updateExisting:YES error:&error];
         }
-
+        
         // Load the database after a short delay so the push animation is visible
         [self performSelector:@selector(loadDatabaseDocument:) withObject:dd afterDelay:0.01];
     } @catch (NSException *exception) {

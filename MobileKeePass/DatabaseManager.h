@@ -19,11 +19,11 @@
 #import "PasswordEntryController.h"
 
 @interface DatabaseManager : NSObject <PasswordEntryControllerDelegate> {
-    NSString *selectedPath;
+    NSString *selectedFilename;
     BOOL animated;
 }
 
-@property (nonatomic, retain) NSString *selectedPath;
+@property (nonatomic, copy) NSString *selectedFilename;
 @property (nonatomic) BOOL animated;
 
 + (DatabaseManager*)sharedInstance;
