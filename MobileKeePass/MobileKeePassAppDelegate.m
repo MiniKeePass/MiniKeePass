@@ -106,7 +106,19 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
-    BOOL presentedPin = NO;
+    // Check if we're supposed to open a file
+    if (fileToOpen != nil) {
+        [tabBarController setSelectedIndex:0];
+        
+        // Close the current database
+        [self closeDatabase];
+        
+        // Open the file
+        [[DatabaseManager sharedInstance] openDatabaseDocument:fileToOpen animated:NO];
+        
+        [fileToOpen release];
+        fileToOpen = nil;
+    }
     
     // Check if the PIN is enabled
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
@@ -120,8 +132,6 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
             // Check if it's been longer then lock timeout
             NSTimeInterval timeInterval = [exitTime timeIntervalSinceNow];
             if (timeInterval < -pinLockTimeout) {
-                presentedPin = YES;
-                
                 UIViewController *frontViewController = window.rootViewController;
                 while (frontViewController.modalViewController != nil) {
                     frontViewController = frontViewController.modalViewController;
@@ -137,11 +147,6 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
                 }
             }
         }
-    }
-    
-    // Check if we're supposed to open a file
-    if (!presentedPin) {
-        [self loadFileToOpen];
     }
 }
 
@@ -203,22 +208,6 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
     databaseDocument = nil;
 }
 
-- (void)loadFileToOpen {
-    // Check if we're supposed to open a file
-    if (fileToOpen != nil) {
-        [tabBarController setSelectedIndex:0];
-        
-        // Close the current database
-        [self closeDatabase];
-        
-        // Open the file
-        [[DatabaseManager sharedInstance] openDatabaseDocument:fileToOpen animated:YES];
-        
-        [fileToOpen release];
-        fileToOpen = nil;
-    }
-}
-
 - (void)deleteAllData {
     // Close the current database
     [self closeDatabase];
@@ -271,9 +260,7 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
             [userDefaults setInteger:0 forKey:@"pinFailedAttempts"];
             
             // Dismiss the pin view
-            [controller dismissModalViewControllerAnimated:NO];
-            
-            [self performSelector:@selector(loadFileToOpen) withObject:nil afterDelay:0.01];
+            [controller dismissModalViewControllerAnimated:YES];
         } else {
             // Vibrate to signify they are a bad user
             AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
