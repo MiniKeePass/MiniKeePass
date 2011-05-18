@@ -18,7 +18,6 @@
 #import <UIKit/UIKit.h>
 
 @interface TextFieldCell : UITableViewCell <UITextFieldDelegate, UIActionSheetDelegate> {
-    UITableView *tableView;
     UITextField *textField;
     UIGestureRecognizer *tapGesture;
     UIActionSheet *actionSheet;
@@ -26,7 +25,6 @@
 
 @property (nonatomic, retain) UITextField *textField;
 
-- (id)initWithParent:(UITableView*)parent;
 - (void)dismissActionSheet;
 
 @end

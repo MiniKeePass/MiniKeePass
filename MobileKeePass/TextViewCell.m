@@ -21,12 +21,10 @@
 
 @synthesize textView;
 
-- (id)initWithParent:(UITableView*)parent {
-    self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
-        tableView = [parent retain];
-        
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         
         textView = [[UITextView alloc] initWithFrame:CGRectZero];
@@ -40,7 +38,6 @@
 
 - (void)dealloc {
     [textView release];
-    [tableView release];
     [super dealloc];
 }
 
@@ -52,12 +49,11 @@
     textView.frame = CGRectMake(rect.origin.x + 3, rect.origin.y + 3, rect.size.width - 6, rect.size.height - 6);
 }
 
-- (void)textViewDidBeginEditing:(UITextView *)view {    
-    CGRect rect = [view convertRect:view.frame toView:tableView];
-    CGFloat y = rect.origin.y - 44;
-    if (y != tableView.contentOffset.y) {
-        [tableView setContentOffset:CGPointMake(0.0, y) animated:YES];
-    }
+- (void)textViewDidBeginEditing:(UITextView *)view {
+    UITableView *tableView = (UITableView*)self.superview;
+    
+    NSIndexPath *indexPath = [tableView indexPathForCell:self];
+    [tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
 }
 
 @end

@@ -19,8 +19,8 @@
 
 @implementation PasswordFieldCell
 
-- (id)initWithParent:(UITableView*)parent {
-    self = [super initWithParent:parent];
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
         textField.autocorrectionType = UITextAutocorrectionTypeNo;

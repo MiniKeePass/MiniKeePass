@@ -22,12 +22,10 @@
 
 @synthesize textField;
 
-- (id)initWithParent:(UITableView*)parent {
-    self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
-        tableView = [parent retain];
-        
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         
         textField = [[UITextField alloc] init];
@@ -47,7 +45,6 @@
 - (void)dealloc {
     [textField release];
     [tapGesture release];
-    [tableView release];
     [actionSheet release];
     [super dealloc];
 }
@@ -92,6 +89,7 @@
 
 - (void)textFieldDidBeginEditing:(UITextField *)field {
     // Scroll to the top
+    UITableView *tableView = (UITableView*)self.superview;
     [tableView setContentOffset:CGPointMake(0.0, 0.0) animated:YES];
 }
 

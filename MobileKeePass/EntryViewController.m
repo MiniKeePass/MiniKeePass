@@ -32,21 +32,21 @@
     self.navigationItem.leftBarButtonItem = backButton;
     [backButton release];    
     
-    titleCell = [[TextFieldCell alloc] initWithParent:self.tableView];
+    titleCell = [[TextFieldCell alloc] init];
     titleCell.textLabel.text = @"Title";
     
-    usernameCell = [[TextFieldCell alloc] initWithParent:self.tableView];
+    usernameCell = [[TextFieldCell alloc] init];
     usernameCell.textLabel.text = @"Username";
     usernameCell.textField.autocorrectionType = UITextAutocorrectionTypeNo;
     usernameCell.textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
     
-    passwordCell = [[PasswordFieldCell alloc] initWithParent:self.tableView];
+    passwordCell = [[PasswordFieldCell alloc] init];
     passwordCell.textLabel.text = @"Password";
     
-    urlCell = [[UrlFieldCell alloc] initWithParent:self.tableView];    
+    urlCell = [[UrlFieldCell alloc] init];
     urlCell.textLabel.text = @"URL";
     
-    commentsCell = [[TextViewCell alloc] initWithParent:self.tableView];
+    commentsCell = [[TextViewCell alloc] init];
     
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapPressed)];
     [self.view addGestureRecognizer:tapGesture];
