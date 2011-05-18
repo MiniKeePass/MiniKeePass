@@ -128,6 +128,9 @@ BOOL stringsEqual(NSString *str1, NSString *str2) {
     
     MobileKeePassAppDelegate *appDelegate = (MobileKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
     appDelegate.databaseDocument.dirty = YES;
+    
+    // Save the database document
+    [appDelegate.databaseDocument save];
 }
 
 - (void)backPressed:(id)sender {
