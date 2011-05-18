@@ -208,6 +208,9 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
     if (fileToOpen != nil) {
         [tabBarController setSelectedIndex:0];
         
+        // Close the current database
+        [self closeDatabase];
+        
         // Open the file
         [[DatabaseManager sharedInstance] openDatabaseDocument:fileToOpen animated:YES];
         
