@@ -21,6 +21,25 @@
    inkscape:export-ydpi="90">
   <defs
      id="defs4057">
+    <linearGradient
+       id="linearGradient5819">
+      <stop
+         id="stop5821"
+         offset="0"
+         style="stop-color:#ffffff;stop-opacity:0.33725491;" />
+      <stop
+         id="stop5823"
+         offset="0.68434292"
+         style="stop-color:#ffffff;stop-opacity:0.29565218;" />
+      <stop
+         style="stop-color:#000000;stop-opacity:0.23478261;"
+         offset="0.70111585"
+         id="stop5825" />
+      <stop
+         id="stop5827"
+         offset="1"
+         style="stop-color:#ffffff;stop-opacity:0;" />
+    </linearGradient>
     <radialGradient
        gradientTransform="matrix(0,-1.8158107,2.8158187,0,-279.76878,786.80923)"
        gradientUnits="userSpaceOnUse"
@@ -56,12 +75,74 @@
        xlink:href="#linearGradient4114"
        id="radialGradient4107"
        gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(0,-1.8158107,2.8158187,0,-223.49941,793.37694)"
+       gradientTransform="matrix(0,-1.8158107,2.8158187,0,-93.389046,794.91126)"
        cx="213.09673"
        cy="217.3687"
        fx="214.47353"
        fy="217.3687"
        r="57" />
+    <radialGradient
+       r="203.48213"
+       fy="36.421394"
+       fx="-159.28571"
+       cy="36.421394"
+       cx="-159.28571"
+       gradientTransform="matrix(-0.38216285,0,0,-0.21875388,-214.61368,-76.629388)"
+       gradientUnits="userSpaceOnUse"
+       id="radialGradient5647"
+       xlink:href="#linearGradient4975-9-9"
+       inkscape:collect="always" />
+    <linearGradient
+       id="linearGradient4975-9-9">
+      <stop
+         style="stop-color:#ffffff;stop-opacity:0.33725491;"
+         offset="0"
+         id="stop4977-3-34" />
+      <stop
+         style="stop-color:#ffffff;stop-opacity:0.29565218;"
+         offset="0.62"
+         id="stop4979-8-0" />
+      <stop
+         id="stop5277-0-7-78"
+         offset="0.63"
+         style="stop-color:#000000;stop-opacity:0.23478261;" />
+      <stop
+         style="stop-color:#ffffff;stop-opacity:0;"
+         offset="1"
+         id="stop5279-2-57" />
+    </linearGradient>
+    <linearGradient
+       y2="1036.3945"
+       x2="157.10591"
+       y1="1022.0414"
+       x1="156.84698"
+       gradientTransform="matrix(0.98245614,0,0,0.98245614,-279.59027,-1088.9533)"
+       gradientUnits="userSpaceOnUse"
+       id="linearGradient5649"
+       xlink:href="#linearGradient5244"
+       inkscape:collect="always" />
+    <linearGradient
+       id="linearGradient5244">
+      <stop
+         style="stop-color:#ffffff;stop-opacity:1;"
+         offset="0"
+         id="stop5246" />
+      <stop
+         style="stop-color:#ffffff;stop-opacity:0;"
+         offset="1"
+         id="stop5248" />
+    </linearGradient>
+    <radialGradient
+       r="203.48213"
+       fy="36.421394"
+       fx="-159.28571"
+       cy="36.421394"
+       cx="-159.28571"
+       gradientTransform="matrix(-0.77797437,0,0,-0.4453204,264.65126,420.15283)"
+       gradientUnits="userSpaceOnUse"
+       id="radialGradient5014"
+       xlink:href="#linearGradient5819"
+       inkscape:collect="always" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -94,7 +175,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -111,12 +192,15 @@
        x="331.57144"
        y="403.93362" />
     <rect
-       style="fill:url(#radialGradient4107);fill-opacity:1;stroke:none"
-       id="rect3946-1"
+       style="fill:url(#radialGradient5014);fill-opacity:1;fill-rule:evenodd;stroke:none;display:inline"
+       id="rect2548-3"
        width="114"
        height="114"
        x="331.57144"
-       y="403.93362" />
+       y="403.93362"
+       inkscape:export-filename="/Users/matt/Desktop/something.png"
+       inkscape:export-xdpi="113.22862"
+       inkscape:export-ydpi="113.22862" />
     <path
        style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none"
        d="m 388.5625,422.4375 c -14.87606,0 -28,9.92324 -28,23.5 l 0,12 10,0 0,-12 c 0,-6.85778 7.47096,-13.5 18,-13.5 10.52904,0 18,6.64222 18,13.5 l 0,12 10,0 0,-12 c 0,-13.57676 -13.12394,-23.5 -28,-23.5 z m -30,37.5 0,12 60,0 0,-12 -60,0 z m 0,14 0,12 60,0 0,-12 -60,0 z m 0,14 0,12 60,0 0,-12 -60,0 z"
