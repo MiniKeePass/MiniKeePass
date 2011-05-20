@@ -135,7 +135,7 @@ BOOL stringsEqual(NSString *str1, NSString *str2) {
 
 - (void)backPressed:(id)sender {
     if ([self isDirty]) {
-        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"Save Changes?" delegate:self cancelButtonTitle:nil destructiveButtonTitle:@"Discard" otherButtonTitles:@"Save", nil];
+        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"Save Changes?" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Discard" otherButtonTitles:@"Save", nil];
         [actionSheet showInView:self.view.window];
         [actionSheet release];
     } else {
@@ -152,11 +152,13 @@ BOOL stringsEqual(NSString *str1, NSString *str2) {
 }
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (buttonIndex != actionSheet.destructiveButtonIndex) {
-        [self save];
-    }
+    if (buttonIndex != actionSheet.cancelButtonIndex) {
+        if (buttonIndex != actionSheet.destructiveButtonIndex) {
+            [self save];
+        }
     
-    [self.navigationController popViewControllerAnimated:YES];
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
