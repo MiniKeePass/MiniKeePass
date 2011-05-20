@@ -55,16 +55,16 @@
     
     CC_SHA256_Update(&_shaCtx, buffer, size);
 
-    @try{
+    @try {
         size_t movedBytes = 0;
         CCCryptorStatus cs;
-        cs=CCCryptorUpdate(_cryptorRef, buffer, size, b, s, &movedBytes);
-        if(cs==kCCSuccess) {
+        cs = CCCryptorUpdate(_cryptorRef, buffer, size, b, s, &movedBytes);
+        if (cs != kCCSuccess) {
             @throw [NSException exceptionWithName:@"EncryptError" reason:@"Failed to encrypt" userInfo:nil];
-        };
+        }
         [_data appendBytes:b length:movedBytes];
         _updatedBytes += size;
-    }@finally {
+    } @finally {
         [bb release];
     }
 }
