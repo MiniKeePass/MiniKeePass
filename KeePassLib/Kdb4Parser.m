@@ -11,6 +11,7 @@
 #import "Base64.h"
 
 @interface Kdb4Parser (PrivateMethods)
+- (void)decodeProtected:(GDataXMLElement*)root;
 - (Kdb4Group*)parseGroup:(GDataXMLElement*)root;
 - (Kdb4Entry*)parseEntry:(GDataXMLElement*)root;
 @end
@@ -34,14 +35,16 @@ int closeCallback(void *context) {
         @throw [[NSException alloc] initWithName:@"ParseError" reason:@"Failed to parse database" userInfo:nil];
     }
     
+    // Get the root document element
     GDataXMLElement *rootElement = [document rootElement];
+    
+    // Decode all the protected entries
+    [self decodeProtected:rootElement];
     
     GDataXMLElement *root = [rootElement elementForName:@"Root"];
     if (root == nil) {
         @throw [[NSException alloc] initWithName:@"ParseError" reason:@"Failed to parse database" userInfo:nil];
     }
-    
-    NSLog(@"XML\n%@", root);
     
     GDataXMLElement *element = [root elementForName:@"Group"];
     if (element == nil) {
@@ -54,21 +57,38 @@ int closeCallback(void *context) {
     return [tree autorelease];
 }
 
+- (void)decodeProtected:(GDataXMLElement*)root {
+    GDataXMLNode *protectedAttribute = [root attributeForName:@"Protected"];
+    if ([[protectedAttribute stringValue] isEqual:@"True"]) {
+        NSString *str = [root stringValue];
+        NSMutableData *data = [[NSMutableData alloc] initWithCapacity:[str length]];
+        [Base64 decode:str to:data];
+        [root setStringValue:[_randomStream xor:data]];
+        [data release];
+    }
+    
+    for (GDataXMLNode *node in [root children]) {
+        if ([node kind] == GDataXMLElementKind) {
+            [self decodeProtected:(GDataXMLElement*)node];
+        }
+    }
+}
+
 - (Kdb4Group*)parseGroup:(GDataXMLElement*)root {
     Kdb4Group *group = [[[Kdb4Group alloc] initWithElement:root] autorelease];
-    
-    for (GDataXMLElement *element in [root elementsForName:@"Group"]) {
-        Kdb4Group *subGroup = [self parseGroup:element];
-        subGroup._parent = group;
-        
-        [group addSubGroup:subGroup];
-    }
     
     for (GDataXMLElement *element in [root elementsForName:@"Entry"]) {
         Kdb4Entry *entry = [self parseEntry:element];
         entry._parent = group;
         
         [group addEntry:entry];
+    }
+    
+    for (GDataXMLElement *element in [root elementsForName:@"Group"]) {
+        Kdb4Group *subGroup = [self parseGroup:element];
+        subGroup._parent = group;
+        
+        [group addSubGroup:subGroup];
     }
     
     return group;
@@ -85,20 +105,11 @@ int closeCallback(void *context) {
         GDataXMLElement *valueElement = [element elementForName:@"Value"];
         NSString *value = [valueElement stringValue];
         
-        GDataXMLNode *protectedAttribute = [valueElement attributeForName:@"Protected"];
-        if ([[protectedAttribute stringValue] isEqual:@"True"]) {
-            NSMutableData *data = [[NSMutableData alloc] initWithCapacity:[value length]];
-            [Base64 decode:value to:data];
-            value = [_randomStream xor:data];
-            [data release];
-        }
-        
         if ([key isEqualToString:@"Title"]) {
             entry._entryName = value;
         } else if ([key isEqualToString:@"UserName"]) {
             entry._username = value;
         } else if ([key isEqualToString:@"Password"]) {
-            NSLog(@"PASSWORD:   %@", element);
             entry._password = value;
         } else if ([key isEqualToString:@"URL"]) {
             entry._url = value;
