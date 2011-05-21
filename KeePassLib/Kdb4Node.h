@@ -23,7 +23,6 @@
 @property(nonatomic, retain, getter=getEntries) NSMutableArray * _entries;
 
 - (id)initWithElement:(GDataXMLElement*)element;
-- (void)breakCyclcReference;
 
 @end
 
@@ -51,21 +50,20 @@
 @property(nonatomic, copy, getter=getComments, setter=setComments:) NSString *_comment;
 
 - (id)initWithElement:(GDataXMLElement*)element;
-- (void)breakCyclcReference;
 
 @end
 
 
 @interface Kdb4Tree : NSObject<KdbTree> {
-    GDataXMLElement *_element;
+    GDataXMLDocument *_document;
     Kdb4Group *_root;
     NSMutableDictionary *_meta;
 }
 
-@property(nonatomic, retain, getter=getElement) GDataXMLElement *_element;
+@property(nonatomic, retain, getter=getDocument) GDataXMLDocument *_document;
 @property(nonatomic, retain, getter=getRoot) Kdb4Group *_root;
 @property(nonatomic, retain) NSMutableDictionary *_meta;
 
-- (id)initWithElement:(GDataXMLElement*)element;
+- (id)initWithDocument:(GDataXMLDocument*)document;
 
 @end

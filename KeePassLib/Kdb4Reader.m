@@ -61,18 +61,14 @@
 -(id<KdbTree>)load:(WrapperNSData *)source withPassword:(NSString *)password{
     ByteBuffer * finalKey = nil;
     
-    id<InputDataSource>  decrypted = nil;
-    id<InputDataSource>  hashed = nil;
-    id<InputDataSource>  readerStream = nil;
-    
     @try{
         //read header
         [self readHeader:source];
         
         //decrypt data
         finalKey = [_password createFinalKey32ForPasssword:password coding:NSUTF8StringEncoding kdbVersion:4];
-        decrypted = [self createDecryptedInputDataSource:source key:finalKey];
-                
+        id<InputDataSource> decrypted = [self createDecryptedInputDataSource:source key:finalKey];
+        
         //double check start block
         ByteBuffer * startBytes = [[ByteBuffer alloc] initWithSize:32];
         [decrypted readBytes:startBytes._bytes length:32];
@@ -82,23 +78,17 @@
         }
         [startBytes release];
         
-        
-        hashed = [[HashedInputData alloc] initWithDataSource:decrypted];
-        
-        id<InputDataSource> readerStream = nil;
-        
+        id<InputDataSource> readerStream = [[[HashedInputData alloc] initWithDataSource:decrypted] autorelease];
         if(_compressionAlgorithm==COMPRESSION_GZIP){
-            readerStream = [[GZipInputData alloc] initWithDataSource:hashed];
-        }else{
-            readerStream = [hashed retain];
+            readerStream = [[[GZipInputData alloc] initWithDataSource:readerStream] autorelease];
         }
         
         //should PlainXML supported?
         id<RandomStream> rs = nil;
         if(_randomStreamID == CSR_SALSA20){
-            rs = [[Salsa20RandomStream alloc] init:_protectedStreamKey._bytes len:_protectedStreamKey._size];
+            rs = [[[Salsa20RandomStream alloc] init:_protectedStreamKey._bytes len:_protectedStreamKey._size] autorelease];
         }else if (_randomStreamID == CSR_ARC4VARIANT){
-            rs = [[Arc4RandomStream alloc] init:_protectedStreamKey._bytes len:_protectedStreamKey._size];
+            rs = [[[Arc4RandomStream alloc] init:_protectedStreamKey._bytes len:_protectedStreamKey._size] autorelease];
         }else{
             @throw [NSException exceptionWithName:@"Unsupported" reason:@"UnsupportedRandomStreamID" userInfo:nil];
         }
@@ -111,12 +101,7 @@
         [parser release];
     }
     @finally{
-        [hashed release];
-        [decrypted release];
-        [readerStream release];
-        
         [finalKey release];
-        [source release];
     }
     
     return self._tree;
@@ -129,12 +114,12 @@
 
 #pragma mark -
 #pragma mark Private Methods
+
 /*
  * Decrypt remaining bytes
  */
 -(id<InputDataSource>)createDecryptedInputDataSource:(id<InputDataSource>)source key:(ByteBuffer *)key{
-    AESDecryptSource * rv = [[AESDecryptSource alloc] initWithInputSource:source Keys:key._bytes andIV:_encryptionIV._bytes];
-    return rv;
+    return [[[AESDecryptSource alloc] initWithInputSource:source Keys:key._bytes andIV:_encryptionIV._bytes] autorelease];
 }
 
 -(void)readHeader:(id<InputDataSource>)source{

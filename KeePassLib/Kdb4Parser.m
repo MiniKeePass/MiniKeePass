@@ -20,6 +20,11 @@
 
 @synthesize _randomStream;
 
+- (void)dealloc {
+    [_randomStream release];
+    [super dealloc];
+}
+
 int	readCallback(void *context, char *buffer, int len) {
     id<InputDataSource> input = (id<InputDataSource>)context;
     return [input readBytes:buffer length:len];
@@ -51,8 +56,10 @@ int closeCallback(void *context) {
         @throw [[NSException alloc] initWithName:@"ParseError" reason:@"Failed to parse database" userInfo:nil];
     }
     
-    Kdb4Tree *tree = [[Kdb4Tree alloc] initWithElement:rootElement];
+    Kdb4Tree *tree = [[Kdb4Tree alloc] initWithDocument:document];
     tree._root = [self parseGroup:element];
+    
+    [document release];
     
     return [tree autorelease];
 }

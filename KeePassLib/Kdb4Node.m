@@ -33,6 +33,7 @@
 
 - (void)dealloc {
     [_element release];
+    [_parent release];
     [_subGroups release];
     [_entries release];
     [super dealloc];
@@ -106,17 +107,6 @@
     return [NSString stringWithFormat:@"Kdb4Group [name=%@, image=%d", [self getGroupName], [self getImage]];
 }
 
-- (void)breakCyclcReference {
-    self._parent = nil;
-    for(Kdb4Group *group in _subGroups){
-        [group breakCyclcReference];
-    }
-    
-    for(Kdb4Entry *entry in _entries){
-        [entry breakCyclcReference];
-    }
-}
-
 @end
 
 
@@ -142,6 +132,12 @@
 
 - (void)dealloc {
     [_element release];
+    [_parent release];
+    [_entryName release];
+    [_username release];
+    [_password release];
+    [_url release];
+    [_comment release];
     [super dealloc];
 }
 
@@ -177,28 +173,26 @@
     return [NSString stringWithFormat:@"Kdb4Entry [name=%@, image=%d", [self getEntryName], [self getImage]];
 }
 
-- (void)breakCyclcReference {
-    self._parent = nil;
-}
-
 @end
 
 @implementation Kdb4Tree
 
-@synthesize _element;
+@synthesize _document;
 @synthesize _root;
 @synthesize _meta;
 
-- (id)initWithElement:(GDataXMLElement*)element {
+- (id)initWithDocument:(GDataXMLDocument*)document {
     self = [super init];
     if(self) {
-        self._element = element;
+        self._document = document;
     }
     return self;
 }
 
 - (void)dealloc {
+    [_document release];
     [_root release];
+    [_meta release];
     [super dealloc];
 }
 
