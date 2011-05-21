@@ -74,15 +74,13 @@
 }
 
 -(BOOL)isMeta{
-    /*
     if(_binarySize==0) return NO;
-    if(!_comment || ![_comment length]) return NO;
+    if(!notes || ![notes length]) return NO;
     if(!_binaryDesc || [_binaryDesc compare:@"bin-stream"]) return NO;
-    if(!_title || [_title compare:@"Meta-Info"]) return NO;
-    if(!_username || [_username compare:@"SYSTEM"]) return NO;
-    if(!_url || [_url compare:@"$"]) return NO;
-    if(_image) return NO;
-     */
+    if(!title || [title compare:@"Meta-Info"]) return NO;
+    if(!username || [username compare:@"SYSTEM"]) return NO;
+    if(!url || [url compare:@"$"]) return NO;
+    if(image) return NO;
     return YES;
 }
 
