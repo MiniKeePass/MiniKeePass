@@ -72,6 +72,7 @@
 		688D637F137B63AB00BF3FAB /* sample.2.15.kdbx in Resources */ = {isa = PBXBuildFile; fileRef = 688D635C137B63AB00BF3FAB /* sample.2.15.kdbx */; };
 		688E68F5136F761500004216 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 688E68F4136F761500004216 /* Settings.bundle */; };
 		688F3FB51377805C0049808C /* SelectionListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 688F3FB41377805C0049808C /* SelectionListViewController.m */; };
+		6891056C13874D4300106245 /* GDataXMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 6891056B13874D4300106245 /* GDataXMLNode.m */; };
 		68964206137F2549001B87A4 /* ChoiceCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68964205137F2549001B87A4 /* ChoiceCell.m */; };
 		689675971379DCE6006BC268 /* AESDecryptSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 689675491379DCE5006BC268 /* AESDecryptSource.m */; };
 		689675981379DCE6006BC268 /* AESEncryptSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 6896754B1379DCE5006BC268 /* AESEncryptSource.m */; };
@@ -92,10 +93,7 @@
 		689675AC1379DCE6006BC268 /* Kdb4Reader.m in Sources */ = {isa = PBXBuildFile; fileRef = 689675751379DCE5006BC268 /* Kdb4Reader.m */; };
 		689675AE1379DCE6006BC268 /* KdbPassword.m in Sources */ = {isa = PBXBuildFile; fileRef = 6896757A1379DCE5006BC268 /* KdbPassword.m */; };
 		689675AF1379DCE6006BC268 /* KdbReaderFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 6896757D1379DCE5006BC268 /* KdbReaderFactory.m */; };
-		689675B21379DCE6006BC268 /* Node.m in Sources */ = {isa = PBXBuildFile; fileRef = 689675831379DCE5006BC268 /* Node.m */; };
 		689675B61379DCE6006BC268 /* Salsa20RandomStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 6896758B1379DCE5006BC268 /* Salsa20RandomStream.m */; };
-		689675B71379DCE6006BC268 /* Stack.m in Sources */ = {isa = PBXBuildFile; fileRef = 6896758D1379DCE5006BC268 /* Stack.m */; };
-		689675B81379DCE6006BC268 /* Tree.m in Sources */ = {isa = PBXBuildFile; fileRef = 6896758F1379DCE5006BC268 /* Tree.m */; };
 		689675B91379DCE6006BC268 /* Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 689675911379DCE5006BC268 /* Utils.m */; };
 		689675BA1379DCE6006BC268 /* UUID.m in Sources */ = {isa = PBXBuildFile; fileRef = 689675931379DCE5006BC268 /* UUID.m */; };
 		689675BB1379DCE6006BC268 /* WrapperNSData.m in Sources */ = {isa = PBXBuildFile; fileRef = 689675951379DCE5006BC268 /* WrapperNSData.m */; };
@@ -267,6 +265,8 @@
 		688E68F4136F761500004216 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		688F3FB31377805C0049808C /* SelectionListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectionListViewController.h; sourceTree = "<group>"; };
 		688F3FB41377805C0049808C /* SelectionListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectionListViewController.m; sourceTree = "<group>"; };
+		6891056A13874D4200106245 /* GDataXMLNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GDataXMLNode.h; sourceTree = "<group>"; };
+		6891056B13874D4300106245 /* GDataXMLNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GDataXMLNode.m; sourceTree = "<group>"; };
 		68964204137F2549001B87A4 /* ChoiceCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChoiceCell.h; sourceTree = "<group>"; };
 		68964205137F2549001B87A4 /* ChoiceCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChoiceCell.m; sourceTree = "<group>"; };
 		689675481379DCE5006BC268 /* AESDecryptSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AESDecryptSource.h; sourceTree = "<group>"; };
@@ -311,15 +311,9 @@
 		6896757B1379DCE5006BC268 /* KdbReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KdbReader.h; sourceTree = "<group>"; };
 		6896757C1379DCE5006BC268 /* KdbReaderFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KdbReaderFactory.h; sourceTree = "<group>"; };
 		6896757D1379DCE5006BC268 /* KdbReaderFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KdbReaderFactory.m; sourceTree = "<group>"; };
-		689675821379DCE5006BC268 /* Node.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Node.h; sourceTree = "<group>"; };
-		689675831379DCE5006BC268 /* Node.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Node.m; sourceTree = "<group>"; };
 		689675861379DCE5006BC268 /* RandomStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RandomStream.h; sourceTree = "<group>"; };
 		6896758A1379DCE5006BC268 /* Salsa20RandomStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Salsa20RandomStream.h; sourceTree = "<group>"; };
 		6896758B1379DCE5006BC268 /* Salsa20RandomStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Salsa20RandomStream.m; sourceTree = "<group>"; };
-		6896758C1379DCE5006BC268 /* Stack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Stack.h; sourceTree = "<group>"; };
-		6896758D1379DCE5006BC268 /* Stack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Stack.m; sourceTree = "<group>"; };
-		6896758E1379DCE5006BC268 /* Tree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tree.h; sourceTree = "<group>"; };
-		6896758F1379DCE5006BC268 /* Tree.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Tree.m; sourceTree = "<group>"; };
 		689675901379DCE5006BC268 /* Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utils.h; sourceTree = "<group>"; };
 		689675911379DCE5006BC268 /* Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Utils.m; sourceTree = "<group>"; };
 		689675921379DCE5006BC268 /* UUID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UUID.h; sourceTree = "<group>"; };
@@ -528,6 +522,8 @@
 				689675561379DCE5006BC268 /* ByteBuffer.h */,
 				689675571379DCE5006BC268 /* ByteBuffer.m */,
 				689675581379DCE5006BC268 /* DataSource.h */,
+				6891056A13874D4200106245 /* GDataXMLNode.h */,
+				6891056B13874D4300106245 /* GDataXMLNode.m */,
 				6896755D1379DCE5006BC268 /* GZipInputData.h */,
 				6896755E1379DCE5006BC268 /* GZipInputData.m */,
 				6896755F1379DCE5006BC268 /* HashedInputData.h */,
@@ -557,15 +553,9 @@
 				6896757B1379DCE5006BC268 /* KdbReader.h */,
 				6896757C1379DCE5006BC268 /* KdbReaderFactory.h */,
 				6896757D1379DCE5006BC268 /* KdbReaderFactory.m */,
-				689675821379DCE5006BC268 /* Node.h */,
-				689675831379DCE5006BC268 /* Node.m */,
 				689675861379DCE5006BC268 /* RandomStream.h */,
 				6896758A1379DCE5006BC268 /* Salsa20RandomStream.h */,
 				6896758B1379DCE5006BC268 /* Salsa20RandomStream.m */,
-				6896758C1379DCE5006BC268 /* Stack.h */,
-				6896758D1379DCE5006BC268 /* Stack.m */,
-				6896758E1379DCE5006BC268 /* Tree.h */,
-				6896758F1379DCE5006BC268 /* Tree.m */,
 				689675901379DCE5006BC268 /* Utils.h */,
 				689675911379DCE5006BC268 /* Utils.m */,
 				689675921379DCE5006BC268 /* UUID.h */,
@@ -991,16 +981,14 @@
 				689675AC1379DCE6006BC268 /* Kdb4Reader.m in Sources */,
 				689675AE1379DCE6006BC268 /* KdbPassword.m in Sources */,
 				689675AF1379DCE6006BC268 /* KdbReaderFactory.m in Sources */,
-				689675B21379DCE6006BC268 /* Node.m in Sources */,
 				689675B61379DCE6006BC268 /* Salsa20RandomStream.m in Sources */,
-				689675B71379DCE6006BC268 /* Stack.m in Sources */,
-				689675B81379DCE6006BC268 /* Tree.m in Sources */,
 				689675B91379DCE6006BC268 /* Utils.m in Sources */,
 				689675BA1379DCE6006BC268 /* UUID.m in Sources */,
 				689675BB1379DCE6006BC268 /* WrapperNSData.m in Sources */,
 				68C6BDEE137F10CF0013373A /* SwitchCell.m in Sources */,
 				68964206137F2549001B87A4 /* ChoiceCell.m in Sources */,
 				688231DC138046FC0046B00D /* SearchViewController.m in Sources */,
+				6891056C13874D4300106245 /* GDataXMLNode.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

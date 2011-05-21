@@ -7,20 +7,17 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <libxml/tree.h>
-#import "Stack.h"
-#import "Tree.h"
+#import "GDataXMLNode.h"
 #import "DataSource.h"
 #import "RandomStream.h"
+#import "Kdb.h"
 
-@interface Kdb4Parser : NSObject{
-    Stack * _stack;
-    Tree * _tree;
-    id<RandomStream> _randomStream; //to decode protected value
+@interface Kdb4Parser : NSObject {
+    id<RandomStream> _randomStream;
 }
 
-@property(nonatomic, retain) id<RandomStream> _randomStream;
-@property(nonatomic, readonly) Stack * _stack;
-@property(nonatomic, retain) Tree * _tree;
--(Tree *)parse:(id<InputDataSource>)input;
+@property (nonatomic, retain) id<RandomStream> _randomStream;
+
+- (id<KdbTree>)parse:(id<InputDataSource>)input;
+
 @end

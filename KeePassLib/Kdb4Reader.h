@@ -10,7 +10,6 @@
 #import "ByteBuffer.h"
 #import "UUID.h"
 #import "KdbPassword.h"
-#import "Tree.h"
 #import "Kdb4Node.h"
 #import "KdbReader.h"
 #import "WrapperNSData.h"

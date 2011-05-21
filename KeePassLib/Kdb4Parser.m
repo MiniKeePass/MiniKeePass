@@ -7,186 +7,107 @@
 //
 
 #import "Kdb4Parser.h"
-#import "Node.h"
 #import "Kdb4Node.h"
 #import "Base64.h"
 
-
-#define A_PROTECTED "Protected"
-
-static void startElementSAX(void *ctx, const xmlChar *localname, const xmlChar *prefix, const xmlChar *URI, int nb_namespaces, const xmlChar **namespaces, int nb_attributes, int nb_defaulted, const xmlChar **attributes);
-static void endElementSAX(void *ctx, const xmlChar *localname, const xmlChar *prefix, const xmlChar *URI);
-static void charactersFoundSAX(void * ctx, const xmlChar * ch, int len);
-static void errorEncounteredSAX(void * ctx, const char * msg, ...);
-static Node * createNode(NSString * name);
-
-
-static xmlSAXHandler saxHandler;
-
-@interface Kdb4Parser(PrivateMethods)
--(void)reset;
+@interface Kdb4Parser (PrivateMethods)
+- (Kdb4Group*)parseGroup:(GDataXMLElement*)root;
+- (Kdb4Entry*)parseEntry:(GDataXMLElement*)root;
 @end
-
 
 @implementation Kdb4Parser
-@synthesize _stack;
-@synthesize _tree;
+
 @synthesize _randomStream;
 
-#pragma mark alloc/dealloc
--(id)init{
-    self = [super init];
-    if(self) {
-        _stack = [[Stack alloc] init];
+int	readCallback(void *context, char *buffer, int len) {
+    id<InputDataSource> input = (id<InputDataSource>)context;
+    return [input readBytes:buffer length:len];
+}
+
+int closeCallback(void *context) {
+    return 0;
+}
+
+- (id<KdbTree>)parse:(id<InputDataSource>)input {
+    GDataXMLDocument *document = [[GDataXMLDocument alloc] initWithReadIO:readCallback closeIO:closeCallback context:input options:0 error:nil];
+    if (document == nil) {
+        @throw [[NSException alloc] initWithName:@"ParseError" reason:@"Failed to parse database" userInfo:nil];
     }
-    return self;
+    
+    GDataXMLElement *rootElement = [document rootElement];
+    
+    GDataXMLElement *root = [rootElement elementForName:@"Root"];
+    if (root == nil) {
+        @throw [[NSException alloc] initWithName:@"ParseError" reason:@"Failed to parse database" userInfo:nil];
+    }
+    
+    NSLog(@"XML\n%@", root);
+    
+    GDataXMLElement *element = [root elementForName:@"Group"];
+    if (element == nil) {
+        @throw [[NSException alloc] initWithName:@"ParseError" reason:@"Failed to parse database" userInfo:nil];
+    }
+    
+    Kdb4Tree *tree = [[Kdb4Tree alloc] initWithElement:rootElement];
+    tree._root = [self parseGroup:element];
+    
+    return [tree autorelease];
 }
 
--(void)dealloc {
-    [_randomStream release];
-    [_tree release];
-    [_stack release];
-    [super dealloc];
+- (Kdb4Group*)parseGroup:(GDataXMLElement*)root {
+    Kdb4Group *group = [[[Kdb4Group alloc] initWithElement:root] autorelease];
+    
+    for (GDataXMLElement *element in [root elementsForName:@"Group"]) {
+        Kdb4Group *subGroup = [self parseGroup:element];
+        subGroup._parent = group;
+        
+        [group addSubGroup:subGroup];
+    }
+    
+    for (GDataXMLElement *element in [root elementsForName:@"Entry"]) {
+        Kdb4Entry *entry = [self parseEntry:element];
+        entry._parent = group;
+        
+        [group addEntry:entry];
+    }
+    
+    return group;
 }
 
-#pragma mark Pasing
-/*
- prototype
- */
+- (Kdb4Entry*)parseEntry:(GDataXMLElement*)root {
+    Kdb4Entry *entry = [[[Kdb4Entry alloc] initWithElement:root] autorelease];
+    
+    entry._image = [[[root elementForName:@"IconID"] stringValue] intValue];
+    
+    for (GDataXMLElement *element in [root elementsForName:@"String"]) {
+        NSString *key = [[element elementForName:@"Key"] stringValue];
 
-#define BUFFER_SIZE 1024*100
--(Tree *)parse:(id<InputDataSource>)input {
-    [self reset];
-    xmlParserCtxtPtr context = xmlCreatePushParserCtxt(&saxHandler, self, NULL, 0, NULL);
-    uint8_t buffer[BUFFER_SIZE];
-    int read = 0;
-    do {
-        read = [input readBytes:buffer length:BUFFER_SIZE];
-        xmlParseChunk(context, (const char*)buffer, read, 0);
-    } while(read);
-    xmlParseChunk(context, NULL, 0, 1);
-    return _tree;
-}
-
-#pragma mark Private Methods
--(void)reset{
-    [_stack clear]; 
-    self._tree = nil;
-    _tree = [[Kdb4Tree alloc] init];
+        GDataXMLElement *valueElement = [element elementForName:@"Value"];
+        NSString *value = [valueElement stringValue];
+        
+        GDataXMLNode *protectedAttribute = [valueElement attributeForName:@"Protected"];
+        if ([[protectedAttribute stringValue] isEqual:@"True"]) {
+            NSMutableData *data = [[NSMutableData alloc] initWithCapacity:[value length]];
+            [Base64 decode:value to:data];
+            value = [_randomStream xor:data];
+            [data release];
+        }
+        
+        if ([key isEqualToString:@"Title"]) {
+            entry._entryName = value;
+        } else if ([key isEqualToString:@"UserName"]) {
+            entry._username = value;
+        } else if ([key isEqualToString:@"Password"]) {
+            NSLog(@"PASSWORD:   %@", element);
+            entry._password = value;
+        } else if ([key isEqualToString:@"URL"]) {
+            entry._url = value;
+        } else if ([key isEqualToString:@"Notes"]) {
+            entry._comment = value;
+        }
+    }
+    
+    return entry;
 }
 
 @end
-
-#pragma mark help methods
-static Node * createNode(NSString * name){
-    if([name isEqualToString:@T_ROOT]){
-        return [[Kdb4Group alloc] initWithStringName:name];
-    }
-    
-    if([name isEqualToString:@T_GROUP]){
-        return [[Kdb4Group alloc] initWithStringName:name];
-    }
-    
-    if([name isEqualToString:@T_ENTRY]){
-        return [[Kdb4Entry alloc] initWithStringName:name];
-    }
-    
-    return [[Node alloc] initWithStringName:name];
-}
-
-#pragma mark SAX Parsing Callbacks
-static void startElementSAX(void *ctx, const xmlChar *localname, const xmlChar *prefix, const xmlChar *URI, 
-                            int nb_namespaces, const xmlChar **namespaces, int nb_attributes, int nb_defaulted, const xmlChar **attributes) {
-    Kdb4Parser * parser = (Kdb4Parser*)ctx;
-    
-    Node * node = createNode([NSString stringWithUTF8String:(const char *)localname]);
-    
-    // The 'attributes' argument is a pointer to an array of attributes.
-    // Each attribute has five properties: local name, prefix, URI, value, and end.
-    // So the first attribute in the array starts at index 0; the second one starts
-    // at index 5.
-    for(int i=0; i<nb_attributes; i++){
-        NSString * aname = [[NSString alloc]initWithUTF8String:(const char *)(attributes[i*5])];
-        
-        const char *valueBegin = (const char *)attributes[i*5+3];
-        const char *valueEnd = (const char *)attributes[i*5 + 4];
-        
-        if (valueBegin && valueEnd) {
-            NSString * avalue = [[NSString alloc] initWithBytes:attributes[i*5+3] length:(strlen(valueBegin) - strlen(valueEnd)) encoding:NSUTF8StringEncoding];
-            [node addAttribute:aname value:avalue];
-            [avalue release];
-        }
-        
-        [aname release];
-    }
-    
-    //the first element is the root of the tree
-    if(!parser._tree._root) {
-        parser._tree._root = node;
-    }
-    
-    if(![parser._stack isEmpty]){
-        Node * parent = [parser._stack peek];
-        [parent addChild:node];
-    }
-    
-    [parser._stack push:node];
-    [node release];
-}
-
-static void endElementSAX(void *ctx, const xmlChar *localname, const xmlChar *prefix, const xmlChar *URI) {    
-    Kdb4Parser * parser = (Kdb4Parser*)ctx;
-    [[parser._stack pop] postProcess:parser._randomStream];
-}
-
-static void charactersFoundSAX(void *ctx, const xmlChar *ch, int len) {
-    Kdb4Parser * parser = (Kdb4Parser*)ctx;
-    if(len){
-        if(![parser._stack isEmpty]){
-            NSString * value = [[NSString alloc]initWithBytes:ch length:len encoding:NSUTF8StringEncoding];
-            Node * node = [parser._stack peek];
-            [node._text appendString:value];
-            [value release];
-        }       
-    }
-}
-
-static void errorEncounteredSAX(void *ctx, const char *msg, ...) {
-    @throw [NSException exceptionWithName:@"InvalidData" reason:@"XmlParseError" userInfo:nil];
-}
-
-static xmlSAXHandler saxHandler = {
-    NULL,                       /* internalSubset */
-    NULL,                       /* isStandalone   */
-    NULL,                       /* hasInternalSubset */
-    NULL,                       /* hasExternalSubset */
-    NULL,                       /* resolveEntity */
-    NULL,                       /* getEntity */
-    NULL,                       /* entityDecl */
-    NULL,                       /* notationDecl */
-    NULL,                       /* attributeDecl */
-    NULL,                       /* elementDecl */
-    NULL,                       /* unparsedEntityDecl */
-    NULL,                       /* setDocumentLocator */
-    NULL,                       /* startDocument */
-    NULL,                       /* endDocument */
-    NULL,                       /* startElement*/
-    NULL,                       /* endElement */
-    NULL,                       /* reference */
-    charactersFoundSAX,         /* characters */
-    NULL,                       /* ignorableWhitespace */
-    NULL,                       /* processingInstruction */
-    NULL,                       /* comment */
-    NULL,                       /* warning */
-    errorEncounteredSAX,        /* error */
-    NULL,                       /* fatalError //: unused error() get all the errors */
-    NULL,                       /* getParameterEntity */
-    NULL,                       /* cdataBlock */
-    NULL,                       /* externalSubset */
-    XML_SAX2_MAGIC,             //
-    NULL,
-    startElementSAX,            /* startElementNs */
-    endElementSAX,              /* endElementNs */
-    NULL,                       /* serror */
-};
-

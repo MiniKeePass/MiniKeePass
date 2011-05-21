@@ -106,7 +106,7 @@
         Kdb4Parser * parser = [[Kdb4Parser alloc] init];
         parser._randomStream = rs;
         
-        self._tree = (Kdb4Tree *)[parser parse:readerStream];
+        self._tree = [parser parse:readerStream];
         
         [parser release];
     }
