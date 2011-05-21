@@ -306,9 +306,8 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
     if (myActionSheet != nil) {
         [myActionSheet dismissWithClickedButtonIndex:myActionSheet.cancelButtonIndex animated:NO];
     }
-    [actionSheet retain];
-    
-    myActionSheet = actionSheet;
+
+    myActionSheet = [actionSheet retain];
     myActionSheetDelegate = actionSheet.delegate;
     
     actionSheet.delegate = self;
