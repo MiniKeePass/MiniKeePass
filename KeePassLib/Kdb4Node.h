@@ -19,10 +19,10 @@
     NSMutableArray * _subGroups;
     NSMutableArray * _entries;
     
-    NSDate *_creationDate;
-    NSDate *_lastModifiedDate;
-    NSDate *_lastAccessDate;
-    NSDate *_expirationDate;
+    NSDate *_creationTime;
+    NSDate *_lastModificationTime;
+    NSDate *_lastAccessTime;
+    NSDate *_expiryTime;
 }
 
 @property(nonatomic, retain, getter=getElement) GDataXMLElement *_element;
@@ -33,10 +33,10 @@
 @property(nonatomic, retain, getter=getSubGroups) NSMutableArray * _subGroups;
 @property(nonatomic, retain, getter=getEntries) NSMutableArray * _entries;
 
-@property(nonatomic, retain, getter=getCreationDate, setter=setCreationDate:) NSDate *_creationDate;
-@property(nonatomic, retain, getter=getLastModifiedDate, setter=setLastModifiedDate:) NSDate *_lastModifiedDate;
-@property(nonatomic, retain, getter=getLastAccessDate, setter=setLastAccessDate:) NSDate *_lastAccessDate;
-@property(nonatomic, retain, getter=getExpirationDate, setter=setExpirationDate:) NSDate *_expirationDate;
+@property(nonatomic, retain, getter=getCreationTime, setter=setCreationTime:) NSDate *_creationTime;
+@property(nonatomic, retain, getter=getLastModificationTime, setter=setLastModificationTime:) NSDate *_lastModificationTime;
+@property(nonatomic, retain, getter=getLastAccessTime, setter=setLastAccessTime:) NSDate *_lastAccessTime;
+@property(nonatomic, retain, getter=getExpiryTime, setter=setExpiryTime:) NSDate *_expiryTime;
 
 - (id)initWithElement:(GDataXMLElement*)element;
 
@@ -54,10 +54,10 @@
     NSString *_url;
     NSString *_comment;
     
-    NSDate *_creationDate;
-    NSDate *_lastModifiedDate;
-    NSDate *_lastAccessDate;
-    NSDate *_expirationDate;
+    NSDate *_creationTime;
+    NSDate *_lastModificationTime;
+    NSDate *_lastAccessTime;
+    NSDate *_expiryTime;
 }
 
 @property(nonatomic, retain, getter=getElement) GDataXMLElement *_element;
@@ -70,10 +70,10 @@
 @property(nonatomic, copy, getter=getURL, setter=setURL:) NSString *_url;
 @property(nonatomic, copy, getter=getComments, setter=setComments:) NSString *_comment;
 
-@property(nonatomic, retain, getter=getCreationDate, setter=setCreationDate:) NSDate *_creationDate;
-@property(nonatomic, retain, getter=getLastModifiedDate, setter=setLastModifiedDate:) NSDate *_lastModifiedDate;
-@property(nonatomic, retain, getter=getLastAccessDate, setter=setLastAccessDate:) NSDate *_lastAccessDate;
-@property(nonatomic, retain, getter=getExpirationDate, setter=setExpirationDate:) NSDate *_expirationDate;
+@property(nonatomic, retain, getter=getCreationTime, setter=setCreationTime:) NSDate *_creationTime;
+@property(nonatomic, retain, getter=getLastModificationTime, setter=setLastModificationTime:) NSDate *_lastModificationTime;
+@property(nonatomic, retain, getter=getLastAccessTime, setter=setLastAccessTime:) NSDate *_lastAccessTime;
+@property(nonatomic, retain, getter=getExpiryTime, setter=setExpiryTime:) NSDate *_expiryTime;
 
 - (id)initWithElement:(GDataXMLElement*)element;
 

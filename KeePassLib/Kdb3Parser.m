@@ -65,22 +65,22 @@
                 }
                 case 0x0003: { 
                     [input readBytes:dateBuffer length:fieldSize];
-                    group._creationDate = [Kdb3Date fromPacked:dateBuffer];
+                    group._creationTime = [Kdb3Date fromPacked:dateBuffer];
                     break;
                 }
                 case 0x0004: {  
                     [input readBytes:dateBuffer length:fieldSize];
-                    group._lastModifiedDate = [Kdb3Date fromPacked:dateBuffer];
+                    group._lastModificationTime = [Kdb3Date fromPacked:dateBuffer];
                     break;
                 }
                 case 0x0005: { 
                     [input readBytes:dateBuffer length:fieldSize];
-                    group._lastAccessDate = [Kdb3Date fromPacked:dateBuffer];
+                    group._lastAccessTime = [Kdb3Date fromPacked:dateBuffer];
                     break;
                 }
                 case 0x0006: { 
                     [input readBytes:dateBuffer length:fieldSize];
-                    group._expirationDate = [Kdb3Date fromPacked:dateBuffer];
+                    group._expiryTime = [Kdb3Date fromPacked:dateBuffer];
                     break;
                 }
                 case 0x0007: {
@@ -188,22 +188,22 @@
                 }
                 case 0x0009:{
                     [input readBytes:dateBuffer length:fieldSize];
-                    entry._creationDate = [Kdb3Date fromPacked:dateBuffer];
+                    entry._creationTime = [Kdb3Date fromPacked:dateBuffer];
                     break;
                 }
                 case 0x000A:{
                     [input readBytes:dateBuffer length:fieldSize];
-                    entry._lastModifiedDate = [Kdb3Date fromPacked:dateBuffer];
+                    entry._lastModificationTime = [Kdb3Date fromPacked:dateBuffer];
                     break;
                 }
                 case 0x000B:{
                     [input readBytes:dateBuffer length:fieldSize];
-                    entry._lastAccessDate = [Kdb3Date fromPacked:dateBuffer];
+                    entry._lastAccessTime = [Kdb3Date fromPacked:dateBuffer];
                     break;
                 }
                 case 0x000C:{
                     [input readBytes:dateBuffer length:fieldSize];
-                    entry._expirationDate = [Kdb3Date fromPacked:dateBuffer];
+                    entry._expiryTime = [Kdb3Date fromPacked:dateBuffer];
                     break;
                 }
                 case 0x000D:{

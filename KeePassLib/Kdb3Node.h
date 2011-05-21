@@ -29,10 +29,10 @@
     NSMutableArray *_entries;
     NSMutableArray *_metaEntries;
     
-    NSDate *_creationDate;
-    NSDate *_lastModifiedDate;
-    NSDate *_lastAccessDate;
-    NSDate *_expirationDate;
+    NSDate *_creationTime;
+    NSDate *_lastModificationTime;
+    NSDate *_lastAccessTime;
+    NSDate *_expiryTime;
     
     uint32_t _flags;
 }
@@ -46,10 +46,10 @@
 @property(nonatomic, readonly, getter=getEntries) NSArray *_entries;
 @property(nonatomic, readonly) NSArray *_metaEntries;
 
-@property(nonatomic, retain, getter=getCreationDate, setter=setCreationDate:) NSDate *_creationDate;
-@property(nonatomic, retain, getter=getLastModifiedDate, setter=setLastModifiedDate:) NSDate *_lastModifiedDate;
-@property(nonatomic, retain, getter=getLastAccessDate, setter=setLastAccessDate:) NSDate *_lastAccessDate;
-@property(nonatomic, retain, getter=getExpirationDate, setter=setExpirationDate:) NSDate *_expirationDate;
+@property(nonatomic, retain, getter=getCreationTime, setter=setCreationTime:) NSDate *_creationTime;
+@property(nonatomic, retain, getter=getLastModificationTime, setter=setLastModificationTime:) NSDate *_lastModificationTime;
+@property(nonatomic, retain, getter=getLastAccessTime, setter=setLastAccessTime:) NSDate *_lastAccessTime;
+@property(nonatomic, retain, getter=getExpiryTime, setter=setExpiryTime:) NSDate *_expiryTime;
 
 @property(nonatomic, assign) uint32_t _flags;
 
@@ -71,12 +71,12 @@
     NSString *_password;
     NSString *_url;
     NSString *_comment;
-
-    NSDate *_creationDate;
-    NSDate *_lastModifiedDate;
-    NSDate *_lastAccessDate;
-    NSDate *_expirationDate;
-
+    
+    NSDate *_creationTime;
+    NSDate *_lastModificationTime;
+    NSDate *_lastAccessTime;
+    NSDate *_expiryTime;
+    
     NSString *_binaryDesc;
     uint32_t _binarySize;
     id<BinaryContainer> _binary;
@@ -92,10 +92,10 @@
 @property(nonatomic, retain, getter=getURL, setter=setURL:) NSString *_url;
 @property(nonatomic, retain, getter=getComments, setter=setComments:) NSString *_comment;
 
-@property(nonatomic, retain, getter=getCreationDate, setter=setCreationDate:) NSDate *_creationDate;
-@property(nonatomic, retain, getter=getLastModifiedDate, setter=setLastModifiedDate:) NSDate *_lastModifiedDate;
-@property(nonatomic, retain, getter=getLastAccessDate, setter=setLastAccessDate:) NSDate *_lastAccessDate;
-@property(nonatomic, retain, getter=getExpirationDate, setter=setExpirationDate:) NSDate *_expirationDate;
+@property(nonatomic, retain, getter=getCreationTime, setter=setCreationTime:) NSDate *_creationTime;
+@property(nonatomic, retain, getter=getLastModificationTime, setter=setLastModificationTime:) NSDate *_lastModificationTime;
+@property(nonatomic, retain, getter=getLastAccessTime, setter=setLastAccessTime:) NSDate *_lastAccessTime;
+@property(nonatomic, retain, getter=getExpiryTime, setter=setExpiryTime:) NSDate *_expiryTime;
 
 @property(nonatomic, retain) NSString *_binaryDesc;
 @property(nonatomic, assign) uint32_t _binarySize;

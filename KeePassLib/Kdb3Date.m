@@ -22,7 +22,6 @@
     int s = dw5 & 0x0000003F;
     
     if (y == 2999 && mon == 12 && d == 28 && h == 23 && min == 59 && s == 59) {
-        NSLog(@"parse %02X %02X %02X %02X %02X Date: (null)", dw1, dw2, dw3, dw4, dw5);
         return nil;
     }
     
@@ -36,12 +35,6 @@
     
     NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
     NSDate *date = [calendar dateFromComponents:dateComponents];
-    
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setTimeStyle:NSDateFormatterMediumStyle];
-    [dateFormatter setDateStyle:NSDateFormatterShortStyle];
-    NSLog(@"parse %02X %02X %02X %02X %02X Date: %@", dw1, dw2, dw3, dw4, dw5, [dateFormatter stringFromDate:date]);
-    [dateFormatter release];
     
     [calendar release];
     [dateComponents release];
@@ -82,12 +75,6 @@
     bytes[2] = (uint8_t)(((mon & 0x00000003) << 6) | ((d & 0x0000001F) << 1) | ((h >> 4) & 0x00000001));
     bytes[3] = (uint8_t)(((h & 0x0000000F) << 4) | ((min >> 2) & 0x0000000F));
     bytes[4] = (uint8_t)(((min & 0x00000003) << 6) | (s & 0x0000003F));
-    
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setTimeStyle:NSDateFormatterMediumStyle];
-    [dateFormatter setDateStyle:NSDateFormatterShortStyle];
-    NSLog(@"pack %02X %02X %02X %02X %02X Date: %@", bytes[0], bytes[1], bytes[2], bytes[3], bytes[4], [dateFormatter stringFromDate:date]);
-    [dateFormatter release];
 }
 
 @end

@@ -18,10 +18,10 @@
 @synthesize _subGroups;
 @synthesize _entries;
 @synthesize _metaEntries;
-@synthesize _creationDate;
-@synthesize _lastModifiedDate;
-@synthesize _lastAccessDate;
-@synthesize _expirationDate;
+@synthesize _creationTime;
+@synthesize _lastModificationTime;
+@synthesize _lastAccessTime;
+@synthesize _expiryTime;
 
 @synthesize _flags;
 
@@ -111,10 +111,10 @@
 @synthesize _username;
 @synthesize _password;
 @synthesize _comment;
-@synthesize _creationDate;
-@synthesize _lastModifiedDate;
-@synthesize _lastAccessDate;
-@synthesize _expirationDate;
+@synthesize _creationTime;
+@synthesize _lastModificationTime;
+@synthesize _lastAccessTime;
+@synthesize _expiryTime;
 
 @synthesize _binaryDesc;
 @synthesize _binarySize;

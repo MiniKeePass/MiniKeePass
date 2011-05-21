@@ -24,10 +24,10 @@
 @synthesize _groupName;
 @synthesize _subGroups;
 @synthesize _entries;
-@synthesize _creationDate;
-@synthesize _lastModifiedDate;
-@synthesize _lastAccessDate;
-@synthesize _expirationDate;
+@synthesize _creationTime;
+@synthesize _lastModificationTime;
+@synthesize _lastAccessTime;
+@synthesize _expiryTime;
 
 - (id)initWithElement:(GDataXMLElement*)element {
     self = [super init];
@@ -92,10 +92,10 @@
 @synthesize _password;
 @synthesize _url;
 @synthesize _comment;
-@synthesize _creationDate;
-@synthesize _lastModifiedDate;
-@synthesize _lastAccessDate;
-@synthesize _expirationDate;
+@synthesize _creationTime;
+@synthesize _lastModificationTime;
+@synthesize _lastAccessTime;
+@synthesize _expiryTime;
 
 - (id)initWithElement:(GDataXMLElement*)element {
     self = [super init];

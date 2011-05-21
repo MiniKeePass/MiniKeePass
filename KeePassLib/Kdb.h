@@ -28,17 +28,17 @@
 - (void)addSubGroup:(id<KdbGroup>)child;
 - (void)deleteSubGroup:(id<KdbGroup>)child;
 
-- (NSDate*)getCreationDate;
-- (void)setCreationDate:(NSDate*)date;
+- (NSDate*)getCreationTime;
+- (void)setCreationTime:(NSDate*)date;
 
-- (NSDate*)getLastModifiedDate;
-- (void)setLastModifiedDate:(NSDate*)date;
+- (NSDate*)getLastModificationTime;
+- (void)setLastModificationTime:(NSDate*)date;
 
-- (NSDate*)getLastAccessDate;
-- (void)setLastAccessDate:(NSDate*)date;
+- (NSDate*)getLastAccessTime;
+- (void)setLastAccessTime:(NSDate*)date;
 
-- (NSDate*)getExpirationDate;
-- (void)setExpirationDate:(NSDate*)date;
+- (NSDate*)getExpiryTime;
+- (void)setExpiryTime:(NSDate*)date;
 
 @end
 
@@ -64,17 +64,17 @@
 - (NSString*)getComments;
 - (void)setComments:(NSString*)comments;
 
-- (NSDate*)getCreationDate;
-- (void)setCreationDate:(NSDate*)date;
+- (NSDate*)getCreationTime;
+- (void)setCreationTime:(NSDate*)date;
 
-- (NSDate*)getLastModifiedDate;
-- (void)setLastModifiedDate:(NSDate*)date;
+- (NSDate*)getLastModificationTime;
+- (void)setLastModificationTime:(NSDate*)date;
 
-- (NSDate*)getLastAccessDate;
-- (void)setLastAccessDate:(NSDate*)date;
+- (NSDate*)getLastAccessTime;
+- (void)setLastAccessTime:(NSDate*)date;
 
-- (NSDate*)getExpirationDate;
-- (void)setExpirationDate:(NSDate*)date;
+- (NSDate*)getExpiryTime;
+- (void)setExpiryTime:(NSDate*)date;
 
 @end
 
