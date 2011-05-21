@@ -61,7 +61,7 @@ enum {
     pinEnabledCell = [[SwitchCell alloc] initWithLabel:@"Pin Enabled"];
     [pinEnabledCell.switchControl addTarget:self action:@selector(togglePinEnabled:) forControlEvents:UIControlEventValueChanged];
     
-    pinLockTimeoutCell = [[ChoiceCell alloc] initWithLabel:@"Attempts" choices:[NSArray arrayWithObjects:@"Immediately", @"30 Seconds", @"1 Minute", @"2 Minutes", @"5 Minutes", nil] selectedIndex:0];
+    pinLockTimeoutCell = [[ChoiceCell alloc] initWithLabel:@"Lock Timeout" choices:[NSArray arrayWithObjects:@"Immediately", @"30 Seconds", @"1 Minute", @"2 Minutes", @"5 Minutes", nil] selectedIndex:0];
     
     deleteOnFailureEnabledCell = [[SwitchCell alloc] initWithLabel:@"Enabled"];
     [deleteOnFailureEnabledCell.switchControl addTarget:self action:@selector(toggleDeleteOnFailureEnabled:) forControlEvents:UIControlEventValueChanged];    
