@@ -8,7 +8,6 @@
 
 #import "Kdb3Writer.h"
 #import "Kdb3Node.h"
-#import "Stack.h"
 #import "Utils.h"
 #import "AESEncryptSource.h"
 #import "Kdb3Persist.h"

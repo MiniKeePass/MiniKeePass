@@ -10,6 +10,7 @@
 #import "Kdb3Date.h"
 
 @implementation Kdb3Group
+
 @synthesize _id;
 @synthesize _image;
 @synthesize _title;

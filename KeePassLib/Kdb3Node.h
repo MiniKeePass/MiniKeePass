@@ -19,7 +19,7 @@
 ////
 //// Kdb3Group
 ////
-@interface Kdb3Group : NSObject<KdbGroup>{
+@interface Kdb3Group : NSObject<KdbGroup> {
     uint32_t _id;
     NSInteger _image;
     NSString * _title;
@@ -116,7 +116,7 @@
 @end
 
 
-@interface Kdb3Tree : NSObject<KdbTree>{
+@interface Kdb3Tree : NSObject<KdbTree> {
     id<KdbGroup> _root;
 }
 @property(nonatomic, retain, getter=getRoot, setter=setRoot:) id<KdbGroup> _root;
