@@ -18,7 +18,7 @@
 }
 
 @property(nonatomic, retain, getter=getElement) GDataXMLElement *_element;
-@property(nonatomic, retain, getter=getParent, setter=setParent:) Kdb4Group * _parent;
+@property(nonatomic, assign, getter=getParent, setter=setParent:) Kdb4Group * _parent;
 @property(nonatomic, retain, getter=getSubGroups) NSMutableArray * _subGroups;
 @property(nonatomic, retain, getter=getEntries) NSMutableArray * _entries;
 
@@ -40,7 +40,7 @@
 }
 
 @property(nonatomic, retain, getter=getElement) GDataXMLElement *_element;
-@property(nonatomic, retain, getter=getParent, setter=setParent:) Kdb4Group *_parent;
+@property(nonatomic, assign, getter=getParent, setter=setParent:) Kdb4Group *_parent;
 
 @property(nonatomic, assign, getter=getImage, setter=setImage:) NSInteger _image;
 @property(nonatomic, copy, getter=getEntryName, setter=setEntryName:) NSString *_entryName;

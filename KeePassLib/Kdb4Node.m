@@ -33,7 +33,6 @@
 
 - (void)dealloc {
     [_element release];
-    [_parent release];
     [_subGroups release];
     [_entries release];
     [super dealloc];
@@ -132,7 +131,6 @@
 
 - (void)dealloc {
     [_element release];
-    [_parent release];
     [_entryName release];
     [_username release];
     [_password release];
