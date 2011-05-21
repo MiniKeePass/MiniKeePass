@@ -8,10 +8,9 @@
 
 #import "Kdb3Date.h"
 
-
 @implementation Kdb3Date
 
-+(void)date:(uint8_t *)date fromPacked:(uint8_t *)buffer{
++ (NSDate*)fromPacked:(uint8_t*)buffer {
     uint32_t dw1, dw2, dw3, dw4, dw5;
     dw1 = (uint32_t)buffer[0]; dw2 = (uint32_t)buffer[1]; dw3 = (uint32_t)buffer[2];
     dw4 = (uint32_t)buffer[3]; dw5 = (uint32_t)buffer[4];
@@ -22,30 +21,73 @@
     int min = ((dw4 & 0x0000000F) << 2) | (dw5 >> 6);
     int s = dw5 & 0x0000003F;
     
-    date[0] = y/100; date[1] = y%100;
-    date[2] = mon; date[3]=d;
-    date[4]=h; date[5]=min; date[6]=s;
+    if (y == 2999 && mon == 12 && d == 28 && h == 23 && min == 59 && s == 59) {
+        NSLog(@"parse %02X %02X %02X %02X %02X Date: (null)", dw1, dw2, dw3, dw4, dw5);
+        return nil;
+    }
+    
+    NSDateComponents *dateComponents = [[NSDateComponents alloc] init];
+    [dateComponents setYear:y];
+    [dateComponents setMonth:mon];
+    [dateComponents setDay:d];
+    [dateComponents setHour:h];
+    [dateComponents setMinute:min];
+    [dateComponents setSecond:s];
+    
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSDate *date = [calendar dateFromComponents:dateComponents];
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setTimeStyle:NSDateFormatterMediumStyle];
+    [dateFormatter setDateStyle:NSDateFormatterShortStyle];
+    NSLog(@"parse %02X %02X %02X %02X %02X Date: %@", dw1, dw2, dw3, dw4, dw5, [dateFormatter stringFromDate:date]);
+    [dateFormatter release];
+    
+    [calendar release];
+    [dateComponents release];
+    
+    return date;
 }
 
-+(void)date:(uint8_t *)date ToPacked:(uint8_t *) buffer{
-    uint32_t y = date[0]*100+date[1], mon = date[2], d=date[3], h=date[4], min=date[5], s=date[6];
-    buffer[0] = (uint8_t)(((uint32_t)y >> 6) & 0x0000003F);
-    buffer[1] = (uint8_t)((((uint32_t)y & 0x0000003F) << 2) | (((uint32_t)mon >> 2) & 0x00000003));
-    buffer[2] = (uint8_t)((((uint32_t)mon & 0x00000003) << 6) | (((uint32_t)d & 0x0000001F) << 1) | (((uint32_t)h >> 4) & 0x00000001));
-    buffer[3] = (uint8_t)((((uint32_t)h & 0x0000000F) << 4) | (((uint32_t)min >> 2) & 0x0000000F));
-    buffer[4] = (uint8_t)((((uint32_t)min & 0x00000003) << 6) | ((uint32_t)s & 0x0000003F));
-}
-
-+(void)date:(uint8_t *)date fromNSDate:(NSDate *)nsDate{
-    NSCalendar *calendar = [NSCalendar currentCalendar];
-    NSDateComponents *dateComponents = [calendar components:( NSYearCalendarUnit | NSMonthCalendarUnit |  NSDayCalendarUnit|NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit ) fromDate:nsDate];
-    date[0] = [dateComponents year]/100;
-    date[1] = [dateComponents year]%100;
-    date[2] = [dateComponents month];
-    date[3] = [dateComponents day];
-    date[4] = [dateComponents hour];
-    date[5] = [dateComponents minute];
-    date[6] = [dateComponents second];
++ (void)toPacked:(NSDate*)date bytes:(uint8_t*)bytes {
+    uint32_t y;
+    uint32_t mon;
+    uint32_t d;
+    uint32_t h;
+    uint32_t min;
+    uint32_t s;
+    
+    if (date != nil) {
+        NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+        NSDateComponents *dateComponents = [calendar components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit) fromDate:date];
+        [calendar release];
+        
+        y = [dateComponents year];
+        mon = [dateComponents month];
+        d = [dateComponents day];
+        h = [dateComponents hour];
+        min = [dateComponents minute];
+        s = [dateComponents second];
+    } else {
+        y = 2999;
+        mon = 12;
+        d = 28;
+        h = 23;
+        min = 59;
+        s = 59;
+    }
+    
+    bytes[0] = (uint8_t)((y >> 6) & 0x0000003F);
+    bytes[1] = (uint8_t)(((y & 0x0000003F) << 2) | ((mon >> 2) & 0x00000003));
+    bytes[2] = (uint8_t)(((mon & 0x00000003) << 6) | ((d & 0x0000001F) << 1) | ((h >> 4) & 0x00000001));
+    bytes[3] = (uint8_t)(((h & 0x0000000F) << 4) | ((min >> 2) & 0x0000000F));
+    bytes[4] = (uint8_t)(((min & 0x00000003) << 6) | (s & 0x0000003F));
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setTimeStyle:NSDateFormatterMediumStyle];
+    [dateFormatter setDateStyle:NSDateFormatterShortStyle];
+    NSLog(@"pack %02X %02X %02X %02X %02X Date: %@", bytes[0], bytes[1], bytes[2], bytes[3], bytes[4], [dateFormatter stringFromDate:date]);
+    [dateFormatter release];
 }
 
 @end

@@ -11,13 +11,18 @@
 
 @implementation Kdb3Group
 
+@synthesize _parent;
 @synthesize _id;
 @synthesize _image;
 @synthesize _title;
-@synthesize _parent;
 @synthesize _subGroups;
-@synthesize _metaEntries;
 @synthesize _entries;
+@synthesize _metaEntries;
+@synthesize _creationDate;
+@synthesize _lastModifiedDate;
+@synthesize _lastAccessDate;
+@synthesize _expirationDate;
+
 @synthesize _flags;
 
 #pragma mark alloc/dealloc
@@ -33,45 +38,6 @@
 -(NSString *)description{
     NSString * descr = [NSString stringWithFormat:@"[id:%d title:%@]", _id, _title];
     return descr;
-}
-
-#pragma mark Public Methods
--(uint8_t *)getCreation{
-    return _creation;
-}
-
--(uint8_t *)getLastMod{
-    return _lastMod;
-}
-
--(uint8_t *)getLastAccess{
-    return _lastAccess;
-}
-
--(uint8_t *)getExpiry{
-    return _expiry;
-}
-
--(void)setCreation:(NSDate *) date{
-    [Kdb3Date date:_creation fromNSDate:date];
-}
-
--(void)setLastMod:(NSDate *) date{
-    [Kdb3Date date:_lastMod fromNSDate:date];
-}
-
--(void)setLastAccess:(NSDate *) date{
-    [Kdb3Date date:_lastAccess fromNSDate:date];
-}
-
--(void)setExpiry:(NSDate *) date{
-    if(date==nil){
-        _expiry[0]=29; _expiry[1]=99;
-        _expiry[2]=12; _expiry[3]=28;
-        _expiry[4]=23; _expiry[5]=59; _expiry[6]=59;
-    }else{
-        [Kdb3Date date:_expiry fromNSDate:date];
-    }
 }
 
 #pragma mark KdbGroup Protocol
@@ -136,6 +102,8 @@
 
 @implementation Kdb3Entry
 
+@synthesize _parent;
+
 @synthesize _uuid;
 @synthesize _image;
 @synthesize _title;
@@ -143,11 +111,14 @@
 @synthesize _username;
 @synthesize _password;
 @synthesize _comment;
+@synthesize _creationDate;
+@synthesize _lastModifiedDate;
+@synthesize _lastAccessDate;
+@synthesize _expirationDate;
+
 @synthesize _binaryDesc;
-@synthesize _parent;
 @synthesize _binarySize;
 @synthesize _binary;
-
 
 #pragma mark alloc/dealloc
 -(id)initWithNewUUID{
@@ -171,63 +142,10 @@
     [super dealloc];
 }
 
-#pragma mark Public Methods and KdbEntry Protocl
--(uint8_t *)getCreation{
-    return _creation;
-}
-
--(uint8_t *)getLastMod{
-    return _lastMod;
-}
-
--(uint8_t *)getLastAccess{
-    return _lastAccess;
-}
-
--(uint8_t *)getExpiry{
-    return _expiry;
-}
-
-
--(void)setCreation:(NSDate *) date{
-    [Kdb3Date date:_creation fromNSDate:date];
-}
-
--(void)setLastMod:(NSDate *) date{
-    [Kdb3Date date:_lastMod fromNSDate:date];
-}
-
--(void)setLastAccess:(NSDate *) date{
-    [Kdb3Date date:_lastAccess fromNSDate:date];
-}
-
-
--(void)setExpiry:(NSDate *) date{
-    if(date==nil){
-        _expiry[0]=29; _expiry[1]=99;
-        _expiry[2]=12; _expiry[3]=28;
-        _expiry[4]=23; _expiry[5]=59; _expiry[6]=59;
-    }else{
-        [Kdb3Date date:_expiry fromNSDate:date];
-    }
-}
-
 -(NSString *)description{
     NSString * descr = [NSString stringWithFormat:@"[UUID:%@ title:%@ \nusername:%@ \npassword:%@ \nurl:%@ \ncomment:%@ \nbinaryDesc:%@]", 
                         _uuid, _title, _username, _password, _url, _comment, _binaryDesc];
     return descr;
-}
-
--(NSUInteger)getNumberOfCustomAttributes{
-    return 0;
-}
-
--(NSString *)getCustomAttributeName:(NSUInteger) index{
-    return nil;
-}
-
--(NSString *)getCustomAttributeValue:(NSUInteger) index{
-    return nil;
 }
 
 -(BOOL)isMeta{

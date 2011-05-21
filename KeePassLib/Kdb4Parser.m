@@ -84,6 +84,12 @@ int closeCallback(void *context) {
 - (Kdb4Group*)parseGroup:(GDataXMLElement*)root {
     Kdb4Group *group = [[[Kdb4Group alloc] initWithElement:root] autorelease];
     
+    GDataXMLElement *element = [root elementForName:@"IconID"];
+    group._image = element.stringValue.intValue;
+    
+    element = [root elementForName:@"Name"];
+    group._groupName =  element.stringValue;
+    
     for (GDataXMLElement *element in [root elementsForName:@"Entry"]) {
         Kdb4Entry *entry = [self parseEntry:element];
         entry._parent = group;

@@ -95,19 +95,19 @@
     uint8_t packedDate[5];
     
     //creation
-    [Kdb3Date date:[entry getCreation] ToPacked:packedDate];
+    [Kdb3Date toPacked:[entry getCreationDate] bytes:packedDate];
     [self appendField:9 size:5 bytes:packedDate];
     
     //last mod
-    [Kdb3Date date:[entry getLastMod] ToPacked:packedDate];
+    [Kdb3Date toPacked:[entry getLastModifiedDate] bytes:packedDate];
     [self appendField:10 size:5 bytes:packedDate];
     
     //last access
-    [Kdb3Date date:[entry getLastAccess] ToPacked:packedDate];
+    [Kdb3Date toPacked:[entry getLastAccessDate] bytes:packedDate];
     [self appendField:11 size:5 bytes:packedDate];
     
     //expire
-    [Kdb3Date date:[entry getExpiry] ToPacked:packedDate];
+    [Kdb3Date toPacked:[entry getExpirationDate] bytes:packedDate];
     [self appendField:12 size:5 bytes:packedDate];
     
     //binary desc
@@ -150,19 +150,19 @@
     uint8_t packedDate[5];
     
     //creation date 2+4+5
-    [Kdb3Date date:[group getCreation] ToPacked:packedDate];
+    [Kdb3Date toPacked:[group getCreationDate] bytes:packedDate];
     [self appendField:3 size:5 bytes:packedDate];
     
     //last mod 2+4+5
-    [Kdb3Date date:[group getLastMod] ToPacked:packedDate];
+    [Kdb3Date toPacked:[group getLastModifiedDate] bytes:packedDate];
     [self appendField:3 size:5 bytes:packedDate];
     
     //last access 2+4+5
-    [Kdb3Date date:[group getLastAccess] ToPacked:packedDate];
+    [Kdb3Date toPacked:[group getLastAccessDate] bytes:packedDate];
     [self appendField:3 size:5 bytes:packedDate];
     
     //expire 2+4+5
-    [Kdb3Date date:[group getExpiry] ToPacked:packedDate];
+    [Kdb3Date toPacked:[group getExpirationDate] bytes:packedDate];
     [self appendField:3 size:5 bytes:packedDate];
     
     //image 2+4+4

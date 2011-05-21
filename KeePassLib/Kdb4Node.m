@@ -20,8 +20,14 @@
 
 @synthesize _element;
 @synthesize _parent;
+@synthesize _image;
+@synthesize _groupName;
 @synthesize _subGroups;
 @synthesize _entries;
+@synthesize _creationDate;
+@synthesize _lastModifiedDate;
+@synthesize _lastAccessDate;
+@synthesize _expirationDate;
 
 - (id)initWithElement:(GDataXMLElement*)element {
     self = [super init];
@@ -33,27 +39,10 @@
 
 - (void)dealloc {
     [_element release];
+    [_groupName release];
     [_subGroups release];
     [_entries release];
     [super dealloc];
-}
-
-- (NSUInteger)getImage {
-    GDataXMLElement *element = [_element elementForName:@"IconID"];
-    return element.stringValue.intValue;
-}
-
-- (void)setImage:(NSUInteger)image {
-    // TODO
-}
-
-- (NSString*)getGroupName {
-    GDataXMLElement *element = [_element elementForName:@"Name"];
-    return element.stringValue;
-}
-
-- (void)setGroupName:(NSString*)groupName {
-    // TODO
 }
 
 - (void)addEntry:(id<KdbEntry>)child {
@@ -86,22 +75,6 @@
     [_subGroups removeObject:child];
 }
 
-- (void)setCreation:(NSDate*)date {
-    // TODO
-}
-
-- (void)setLastMod:(NSDate*)date {
-    // TODO
-}
-
-- (void)setLastAccess:(NSDate*)date {
-    // TODO
-}
-
-- (void)setExpiry:(NSDate*)date {
-    // TODO
-}
-
 - (NSString*)description {
     return [NSString stringWithFormat:@"Kdb4Group [name=%@, image=%d", [self getGroupName], [self getImage]];
 }
@@ -113,13 +86,16 @@
 
 @synthesize _element;
 @synthesize _parent;
-
 @synthesize _image;
 @synthesize _entryName;
 @synthesize _username;
 @synthesize _password;
 @synthesize _url;
 @synthesize _comment;
+@synthesize _creationDate;
+@synthesize _lastModifiedDate;
+@synthesize _lastAccessDate;
+@synthesize _expirationDate;
 
 - (id)initWithElement:(GDataXMLElement*)element {
     self = [super init];
@@ -137,34 +113,6 @@
     [_url release];
     [_comment release];
     [super dealloc];
-}
-
-- (NSUInteger)getNumberOfCustomAttributes {
-    return 0; // TODO
-}
-
-- (NSString*)getCustomAttributeName:(NSUInteger)index {
-    return nil; // TODO
-}
-
-- (NSString*)getCustomAttributeValue:(NSUInteger)index {
-    return nil; // TODO
-}
-
-- (void)setCreation:(NSDate*)date {
-    // TODO
-}
-
-- (void)setLastMod:(NSDate*)date {
-    // TODO
-}
-
-- (void)setLastAccess:(NSDate*)date {
-    // TODO
-}
-
-- (void)setExpiry:(NSDate*)date {
-    // TODO
 }
 
 - (NSString*)description {

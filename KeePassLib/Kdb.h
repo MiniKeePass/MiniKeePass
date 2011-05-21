@@ -11,72 +11,70 @@
 @protocol KdbEntry;
 
 @protocol KdbGroup<NSObject>
--(id<KdbGroup>)getParent;
--(void)setParent:(id<KdbGroup>)parent;
+- (id<KdbGroup>)getParent;
+- (void)setParent:(id<KdbGroup>)parent;
 
--(NSUInteger)getImage;
--(void)setImage:(NSUInteger)image;
+- (NSUInteger)getImage;
+- (void)setImage:(NSUInteger)image;
 
--(NSString*)getGroupName;
--(void)setGroupName:(NSString *)groupName;
+- (NSString*)getGroupName;
+- (void)setGroupName:(NSString*)groupName;
 
--(NSArray *)getEntries;
--(void)addEntry:(id<KdbEntry>)child;
--(void)deleteEntry:(id<KdbEntry>)child;
+- (NSArray*)getEntries;
+- (void)addEntry:(id<KdbEntry>)child;
+- (void)deleteEntry:(id<KdbEntry>)child;
 
--(NSArray *)getSubGroups;
--(void)addSubGroup:(id<KdbGroup>)child;
--(void)deleteSubGroup:(id<KdbGroup>)child;
+- (NSArray*)getSubGroups;
+- (void)addSubGroup:(id<KdbGroup>)child;
+- (void)deleteSubGroup:(id<KdbGroup>)child;
 
--(void)setCreation:(NSDate *) date;
--(void)setLastMod:(NSDate *) date;
--(void)setLastAccess:(NSDate *) date;
--(void)setExpiry:(NSDate *) date;
+- (NSDate*)getCreationDate;
+- (void)setCreationDate:(NSDate*)date;
+
+- (NSDate*)getLastModifiedDate;
+- (void)setLastModifiedDate:(NSDate*)date;
+
+- (NSDate*)getLastAccessDate;
+- (void)setLastAccessDate:(NSDate*)date;
+
+- (NSDate*)getExpirationDate;
+- (void)setExpirationDate:(NSDate*)date;
 
 @end
 
 @protocol KdbEntry<NSObject>
--(id<KdbGroup>)getParent;
--(void)setParent:(id<KdbGroup>)parent;
+- (id<KdbGroup>)getParent;
+- (void)setParent:(id<KdbGroup>)parent;
 
--(NSUInteger)getImage;
--(void)setImage:(NSUInteger)image;
+- (NSUInteger)getImage;
+- (void)setImage:(NSUInteger)image;
 
--(NSString*)getEntryName;
--(void)setEntryName:(NSString *)entryName;
+- (NSString*)getEntryName;
+- (void)setEntryName:(NSString*)entryName;
 
--(NSString*)getUserName;
--(void)setUserName:(NSString *)userName;
+- (NSString*)getUserName;
+- (void)setUserName:(NSString*)userName;
 
--(NSString*)getPassword;
--(void)setPassword:(NSString *)password;
+- (NSString*)getPassword;
+- (void)setPassword:(NSString*)password;
 
--(NSString*)getURL;
--(void)setURL:(NSString *)url;
+- (NSString*)getURL;
+- (void)setURL:(NSString*)url;
 
--(NSString*)getComments;
--(void)setComments:(NSString *)comments;
+- (NSString*)getComments;
+- (void)setComments:(NSString*)comments;
 
--(NSUInteger)getNumberOfCustomAttributes;
--(NSString *)getCustomAttributeName:(NSUInteger) index;
--(NSString *)getCustomAttributeValue:(NSUInteger) index;
+- (NSDate*)getCreationDate;
+- (void)setCreationDate:(NSDate*)date;
 
--(void)setCreation:(NSDate *) date;
--(void)setLastMod:(NSDate *) date;
--(void)setLastAccess:(NSDate *) date;
--(void)setExpiry:(NSDate *) date;
+- (NSDate*)getLastModifiedDate;
+- (void)setLastModifiedDate:(NSDate*)date;
 
-/* TODO: 
--(NSDate*)getCreationDate;
--(NSDate*)getLastAccessDate;
--(NSDate*)getModificationDate;
--(NSDate*)getExpiry;
+- (NSDate*)getLastAccessDate;
+- (void)setLastAccessDate:(NSDate*)date;
 
--(void)setCreationDateYear:(int)yyyy month:(int)mm day:(int)dd hour:(int)hh minutes:(int)mi seconds:(int)ss;
--(void)setLastAccessDate:(int)yyyy month:(int)mm day:(int)dd hour:(int)hh minutes:(int)mi seconds:(int)ss;
--(void)setModificationDate:(int)yyyy month:(int)mm day:(int)dd hour:(int)hh minutes:(int)mi seconds:(int)ss;
--(void)setExpiry:(int)yyyy month:(int)mm day:(int)dd hour:(int)hh minutes:(int)mi seconds:(int)ss;
-*/
+- (NSDate*)getExpirationDate;
+- (void)setExpirationDate:(NSDate*)date;
 
 @end
 

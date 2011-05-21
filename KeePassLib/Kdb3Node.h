@@ -20,39 +20,38 @@
 //// Kdb3Group
 ////
 @interface Kdb3Group : NSObject<KdbGroup> {
+    Kdb3Group *_parent;
+    
     uint32_t _id;
     NSInteger _image;
-    NSString * _title;
-    Kdb3Group * _parent;
-    NSMutableArray * _subGroups;
-    NSMutableArray * _metaEntries; //meta data 
-    NSMutableArray * _entries;
+    NSString *_title;
+    NSMutableArray *_subGroups;
+    NSMutableArray *_entries;
+    NSMutableArray *_metaEntries;
+    
+    NSDate *_creationDate;
+    NSDate *_lastModifiedDate;
+    NSDate *_lastAccessDate;
+    NSDate *_expirationDate;
     
     uint32_t _flags;
-    uint8_t _creation[7];
-    uint8_t _lastMod[7];
-    uint8_t _lastAccess[7];
-    uint8_t _expiry[7]; 
 }
+
+@property(nonatomic, retain, getter=getParent, setter=setParent:) Kdb3Group *_parent;
 
 @property(nonatomic, assign) uint32_t _id;
 @property(nonatomic, assign, getter=getImage, setter=setImage:) NSInteger _image;
-@property(nonatomic, retain, getter=getGroupName, setter=setGroupName:) NSString * _title;
-@property(nonatomic, retain, getter=getParent, setter=setParent:) Kdb3Group * _parent;
-@property(nonatomic, readonly, getter=getSubGroups) NSArray * _subGroups; 
-@property(nonatomic, readonly, getter=getEntries) NSArray * _entries;
-@property(nonatomic, readonly)NSArray * _metaEntries;
+@property(nonatomic, retain, getter=getGroupName, setter=setGroupName:) NSString *_title;
+@property(nonatomic, readonly, getter=getSubGroups) NSArray *_subGroups; 
+@property(nonatomic, readonly, getter=getEntries) NSArray *_entries;
+@property(nonatomic, readonly) NSArray *_metaEntries;
+
+@property(nonatomic, retain, getter=getCreationDate, setter=setCreationDate:) NSDate *_creationDate;
+@property(nonatomic, retain, getter=getLastModifiedDate, setter=setLastModifiedDate:) NSDate *_lastModifiedDate;
+@property(nonatomic, retain, getter=getLastAccessDate, setter=setLastAccessDate:) NSDate *_lastAccessDate;
+@property(nonatomic, retain, getter=getExpirationDate, setter=setExpirationDate:) NSDate *_expirationDate;
+
 @property(nonatomic, assign) uint32_t _flags;
-
--(uint8_t *)getCreation;
--(uint8_t *)getLastMod;
--(uint8_t *)getLastAccess;
--(uint8_t *)getExpiry;
-
--(void)setCreation:(NSDate *) date;
--(void)setLastMod:(NSDate *) date;
--(void)setLastAccess:(NSDate *) date;
--(void)setExpiry:(NSDate *) date;
 
 //break cyclic references
 -(void)breakCyclcReference;
@@ -62,51 +61,45 @@
 ////
 //// Kdb3Entry
 ////
-@interface Kdb3Entry : NSObject<KdbEntry>{
-    UUID * _uuid;
+@interface Kdb3Entry : NSObject<KdbEntry> {
+    Kdb3Group *_parent;
 
+    UUID *_uuid;
     NSInteger _image;
-    NSString * _title;
-    NSString * _url;
-    NSString * _username;
-    NSString * _password;
-    NSString * _comment;
-    Kdb3Group * _parent;
+    NSString *_title;
+    NSString *_username;
+    NSString *_password;
+    NSString *_url;
+    NSString *_comment;
 
-    uint8_t _creation[7];
-    uint8_t _lastMod[7];
-    uint8_t _lastAccess[7];
-    uint8_t _expiry[7];
+    NSDate *_creationDate;
+    NSDate *_lastModifiedDate;
+    NSDate *_lastAccessDate;
+    NSDate *_expirationDate;
 
-    NSString * _binaryDesc;
+    NSString *_binaryDesc;
     uint32_t _binarySize;
     id<BinaryContainer> _binary;
 }
-@property(nonatomic, retain) UUID * _uuid;
+
+@property(nonatomic, retain, getter=getParent, setter=setParent:) Kdb3Group *_parent;
+
+@property(nonatomic, retain) UUID *_uuid;
 @property(nonatomic, assign, getter=getImage, setter=setImage:) NSInteger _image;
+@property(nonatomic, retain, getter=getEntryName, setter=setEntryName:) NSString *_title;
+@property(nonatomic, retain, getter=getUserName, setter=setUserName:) NSString *_username;
+@property(nonatomic, retain, getter=getPassword, setter=setPassword:) NSString *_password;
+@property(nonatomic, retain, getter=getURL, setter=setURL:) NSString *_url;
+@property(nonatomic, retain, getter=getComments, setter=setComments:) NSString *_comment;
+
+@property(nonatomic, retain, getter=getCreationDate, setter=setCreationDate:) NSDate *_creationDate;
+@property(nonatomic, retain, getter=getLastModifiedDate, setter=setLastModifiedDate:) NSDate *_lastModifiedDate;
+@property(nonatomic, retain, getter=getLastAccessDate, setter=setLastAccessDate:) NSDate *_lastAccessDate;
+@property(nonatomic, retain, getter=getExpirationDate, setter=setExpirationDate:) NSDate *_expirationDate;
+
+@property(nonatomic, retain) NSString *_binaryDesc;
 @property(nonatomic, assign) uint32_t _binarySize;
-@property(nonatomic, retain, getter=getParent, setter=setParent:) Kdb3Group * _parent;
-@property(nonatomic, retain, getter=getEntryName, setter=setEntryName:) NSString * _title;
-@property(nonatomic, retain, getter=getUserName, setter=setUserName:) NSString * _username;
-@property(nonatomic, retain, getter=getPassword, setter=setPassword:) NSString * _password;
-@property(nonatomic, retain, getter=getComments, setter=setComments:) NSString * _comment;
-@property(nonatomic, retain) NSString * _binaryDesc;
-@property(nonatomic, retain, getter=getURL, setter=setURL:) NSString * _url;
 @property(nonatomic, retain) id<BinaryContainer> _binary;
-
--(uint8_t *)getCreation;
--(uint8_t *)getLastMod;
--(uint8_t *)getLastAccess;
--(uint8_t *)getExpiry;
-
--(void)setCreation:(NSDate *) date;
--(void)setLastMod:(NSDate *) date;
--(void)setLastAccess:(NSDate *) date;
--(void)setExpiry:(NSDate *) date;
-
--(NSUInteger)getNumberOfCustomAttributes;
--(NSString *)getCustomAttributeName:(NSUInteger) index;
--(NSString *)getCustomAttributeValue:(NSUInteger) index;
 
 -(BOOL)isMeta;
 -(void)breakCyclcReference;
