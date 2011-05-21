@@ -15,16 +15,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#import "MobileKeePassAppDelegate.h"
 #import <UIKit/UIKit.h>
 
 @interface TextFieldCell : UITableViewCell <UITextFieldDelegate, UIActionSheetDelegate> {
+    MobileKeePassAppDelegate *appDelegate;
     UITextField *textField;
     UIGestureRecognizer *tapGesture;
-    UIActionSheet *actionSheet;
 }
 
 @property (nonatomic, retain) UITextField *textField;
-
-- (void)dismissActionSheet;
 
 @end

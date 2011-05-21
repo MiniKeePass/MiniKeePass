@@ -21,8 +21,10 @@
 #import "TextViewCell.h"
 #import "PasswordFieldCell.h"
 #import "KdbLib.h"
+#import "MobileKeePassAppDelegate.h"
 
 @interface EntryViewController : UITableViewController <UITextFieldDelegate, UITextViewDelegate, UIActionSheetDelegate> {
+    MobileKeePassAppDelegate *appDelegate;
     TextFieldCell *titleCell;
     TextFieldCell *usernameCell;
     PasswordFieldCell *passwordCell;

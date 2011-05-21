@@ -38,6 +38,8 @@
         
         tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapPressed)];
         [textField addGestureRecognizer:tapGesture];
+        
+        appDelegate = (MobileKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
     }
     return self;
 }
@@ -45,12 +47,7 @@
 - (void)dealloc {
     [textField release];
     [tapGesture release];
-    [actionSheet release];
     [super dealloc];
-}
-
-- (void)dismissActionSheet {
-    [actionSheet dismissWithClickedButtonIndex:actionSheet.cancelButtonIndex animated:NO];
 }
 
 - (void)layoutSubviews {
@@ -62,11 +59,10 @@
 }
 
 - (void)tapPressed {
-    if (actionSheet != nil) {
-        [actionSheet release];
-    }
-    actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Copy", @"Edit", nil];
-    [actionSheet showInView:self.window];
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Copy", @"Edit", nil];
+    
+    [appDelegate showActionSheet:actionSheet];
+    [actionSheet release];
 }
 
 - (void)actionSheet:(UIActionSheet*)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {

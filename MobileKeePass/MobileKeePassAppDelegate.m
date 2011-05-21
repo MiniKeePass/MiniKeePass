@@ -103,6 +103,8 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
     // Store the current time as when the application exited
     NSDate *currentTime = [NSDate date];
     [[NSUserDefaults standardUserDefaults] setValue:currentTime forKey:@"exitTime"];
+    
+    [self dismissActionSheet];
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
@@ -291,6 +293,53 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
                 }
             }
         }
+    }
+}
+
+-(void)dismissActionSheet {
+    if (myActionSheet != nil) {
+        [myActionSheet dismissWithClickedButtonIndex:myActionSheet.cancelButtonIndex animated:YES];
+    }
+}
+
+-(void)showActionSheet:(UIActionSheet *)actionSheet {
+    if (myActionSheet != nil) {
+        [myActionSheet dismissWithClickedButtonIndex:myActionSheet.cancelButtonIndex animated:NO];
+    }
+    [actionSheet retain];
+    
+    myActionSheet = actionSheet;
+    myActionSheetDelegate = actionSheet.delegate;
+    
+    actionSheet.delegate = self;
+    [actionSheet showInView:window];
+    [actionSheet release];
+}
+
+-(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if ([myActionSheetDelegate respondsToSelector:@selector(actionSheet:clickedButtonAtIndex:)]) {
+        [myActionSheetDelegate actionSheet:actionSheet clickedButtonAtIndex:buttonIndex];
+    }
+}
+
+-(void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
+    if ([myActionSheetDelegate respondsToSelector:@selector(actionSheet:didDismissWithButtonIndex:)]) {
+        [myActionSheetDelegate actionSheet:actionSheet didDismissWithButtonIndex:buttonIndex];
+    }
+    
+    myActionSheet = nil;
+    myActionSheetDelegate = nil;
+}
+
+-(void)actionSheet:(UIActionSheet *)actionSheet willDismissWithButtonIndex:(NSInteger)buttonIndex{
+    if ([myActionSheetDelegate respondsToSelector:@selector(actionSheet:willDismissWithButtonIndex:)]) {
+        [myActionSheetDelegate actionSheet:actionSheet willDismissWithButtonIndex:buttonIndex];
+    }
+}
+
+-(void)actionSheetCancel:(UIActionSheet *)actionSheet {
+    if ([myActionSheetDelegate respondsToSelector:@selector(actionSheetCancel:)]) {
+        [myActionSheetDelegate actionSheetCancel:actionSheet];
     }
 }
 

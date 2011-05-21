@@ -26,6 +26,8 @@
     UITabBarController *tabBarController;
     FilesViewController *filesViewController;
     SearchViewController *searchViewController;
+    UIActionSheet* myActionSheet;
+    id<UIActionSheetDelegate> myActionSheetDelegate;
     
     DatabaseDocument *databaseDocument;
     NSString *fileToOpen;
@@ -39,6 +41,8 @@
 - (void)closeDatabase;
 - (void)deleteAllData;
 - (UIImage*)loadImage:(int)index;
+- (void)showActionSheet:(UIActionSheet*)actionSheet;
+- (void)dismissActionSheet;
 
 @end
 

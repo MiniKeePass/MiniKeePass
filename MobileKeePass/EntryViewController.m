@@ -16,7 +16,6 @@
  */
 
 #import "EntryViewController.h"
-#import "MobileKeePassAppDelegate.h"
 
 @implementation EntryViewController
 
@@ -47,6 +46,8 @@
     urlCell.textLabel.text = @"URL";
     
     commentsCell = [[TextViewCell alloc] init];
+    
+    appDelegate = (MobileKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
     
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapPressed)];
     [self.view addGestureRecognizer:tapGesture];
@@ -88,11 +89,6 @@
     [passwordCell.textField resignFirstResponder];
     [urlCell.textField resignFirstResponder];
     [commentsCell.textView resignFirstResponder];
-    
-    [titleCell dismissActionSheet];
-    [usernameCell dismissActionSheet];
-    [passwordCell dismissActionSheet];
-    [urlCell dismissActionSheet];
 }
 
 - (void)dealloc {
@@ -126,7 +122,6 @@ BOOL stringsEqual(NSString *str1, NSString *str2) {
     [entry setURL:urlCell.textField.text];
     [entry setComments:commentsCell.textView.text];
     
-    MobileKeePassAppDelegate *appDelegate = (MobileKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
     appDelegate.databaseDocument.dirty = YES;
     
     // Save the database document
@@ -136,7 +131,8 @@ BOOL stringsEqual(NSString *str1, NSString *str2) {
 - (void)backPressed:(id)sender {
     if ([self isDirty]) {
         UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"Save Changes?" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Discard" otherButtonTitles:@"Save", nil];
-        [actionSheet showInView:self.view.window];
+
+        [appDelegate showActionSheet:actionSheet];
         [actionSheet release];
     } else {
         [self.navigationController popViewControllerAnimated:YES];
