@@ -7,24 +7,23 @@
 //
 
 #import "Kdb3Persist.h"
-#import "Stack.h"
 #import "Utils.h"
 #import "Kdb3Date.h"
 
 @interface Kdb3Persist(PrivateMethods)
-    -(void) persistGroups:(Kdb3Group *) root;
-    -(void) persistEntries:(Kdb3Group *)root;
-    -(void) persistMetaEntries:(Kdb3Group *)root;
-    -(void) writeGroup:(Kdb3Group *)group;
-    -(void) writeEntry:(Kdb3Entry *)entry;
-    -(void) appendField:(uint16_t)type size:(uint32_t)size bytes:(void *)value;
+    - (void)persistGroups:(Kdb3Group *)root;
+    - (void)persistEntries:(Kdb3Group *)root;
+    - (void)persistMetaEntries:(Kdb3Group *)root;
+    - (void)writeGroup:(Kdb3Group *)group;
+    - (void)writeEntry:(Kdb3Entry *)entry;
+    - (void)appendField:(uint16_t)type size:(uint32_t)size bytes:(void *)value;
 @end
 
 @implementation Kdb3Persist
 @synthesize _tree;
 @synthesize _enc;
 
--(id)initWithTree:(id<KdbTree>)tree andDest:(AESEncryptSource *)dest{
+- (id)initWithTree:(id<KdbTree>)tree andDest:(AESEncryptSource *)dest {
     self = [super init];
     if(self) {
         self._tree = tree;
@@ -34,13 +33,13 @@
     return self;
 }
 
--(void)dealloc{
+- (void)dealloc {
     [_tree release];
     [_enc release];
     [super dealloc];
 }
 
--(void) appendField:(uint16_t)type size:(uint32_t)size bytes:(void *)buffer{
+- (void)appendField:(uint16_t)type size:(uint32_t)size bytes:(void *)buffer {
     type = SWAP_INT16_HOST_TO_LE(type);
     size = SWAP_INT32_HOST_TO_LE(size);
     
@@ -49,7 +48,7 @@
     if(size&&buffer) [_enc update:buffer size:size];
 }
 
--(void)writeEntry:(Kdb3Entry *)entry{
+- (void)writeEntry:(Kdb3Entry *)entry {
     uint32_t tmp32;
     
     //uuid 2+4+16
@@ -127,7 +126,7 @@
     //so the total size for each entry is: (2+4)*15 + 16 + 4 + 4 + 5*4 + strings + binary = 134 + strings + binary 
 }
 
--(void) writeGroup:(Kdb3Group *)group{
+- (void)writeGroup:(Kdb3Group *)group {
     //get the level/depth of the group
     uint16_t level = -1;
     Kdb3Group * tmp = group;
@@ -185,65 +184,40 @@
     //=94+title size
 }
 
--(void) persistGroups:(Kdb3Group *) root{
-    Stack * stack = [[Stack alloc]init];
-    for(Kdb3Group * group in root._subGroups){
-        [stack push:group];
-    }
-    
-    while(![stack isEmpty]){
-        Kdb3Group * group = [stack pop];
-        //assign unique group ids
-        group._id = _groupId++;
-        for(Kdb3Group * g in group._subGroups)
-            [stack push:g];
+- (void)persistGroups:(Kdb3Group*)root {
+    for (Kdb3Group *group in root._subGroups) {
         [self writeGroup:group];
+        [self persistGroups:group];
     }
-    [stack release];
 }
 
 
--(void) persistEntries:(Kdb3Group *)root{
-    Stack * stack = [[Stack alloc]init];
-    for(Kdb3Group * group in root._subGroups){
-        [stack push:group];
+- (void)persistEntries:(Kdb3Group*)root {
+    for (Kdb3Entry *entry in root._entries) {
+        [self writeEntry:entry];
     }
-    
-    while(![stack isEmpty]){
-        Kdb3Group * group = [stack pop];
-        for(Kdb3Group * g in group._subGroups)
-            [stack push:g];
-        for(Kdb3Entry * e in group._entries){
-            [self writeEntry:e];
-        }
+
+    for (Kdb3Group *group in root._subGroups) {
+        [self persistEntries:group];
     }
-    
-    [stack release];
 }
 
--(void) persistMetaEntries:(Kdb3Group *)root{
-    Stack * stack = [[Stack alloc]init];
-    for(Kdb3Group * group in root._subGroups){
-        [stack push:group];
+- (void)persistMetaEntries:(Kdb3Group*)root {
+    for (Kdb3Entry *entry in root._metaEntries) {
+        [self writeEntry:entry];
     }
     
-    while(![stack isEmpty]){
-        Kdb3Group * group = [stack pop];
-        for(Kdb3Group * g in group._subGroups)
-            [stack push:g];
-        for(Kdb3Entry * e in group._metaEntries){
-            [self writeEntry:e];
-        }
+    for (Kdb3Group *group in root._subGroups) {
+        [self persistEntries:group];
     }
-    
-    [stack release];
 }
 
--(void)persist{
+- (void)persist {
     Kdb3Group * root = (Kdb3Group *)[_tree getRoot];
     [self persistGroups:root];
     [self persistEntries:root];
     [self persistMetaEntries:root];
     [_enc final];
 }
+
 @end
