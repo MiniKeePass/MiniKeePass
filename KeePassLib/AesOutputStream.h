@@ -8,7 +8,6 @@
 
 #import <Foundation/Foundation.h>
 #import <CommonCrypto/CommonCryptor.h>
-#import <CommonCrypto/CommonDigest.h>
 #import "OutputStream.h"
 
 @interface AesOutputStream : OutputStream {
