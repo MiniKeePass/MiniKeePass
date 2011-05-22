@@ -7,11 +7,8 @@
 //
 
 #import "Kdb.h"
-#import "Kdb3Node.h"
-#import "Kdb4Node.h"
-#import "Kdb3Reader.h"
-#import "Kdb3Writer.h"
-#import "Kdb4Reader.h"
+#import "KdbReader.h"
+#import "KdbWriter.h"
 #import "KdbReaderFactory.h"
-#import "WrapperNSData.h"
+#import "KdbWriterFactory.h"
 
