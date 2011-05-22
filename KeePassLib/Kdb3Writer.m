@@ -17,8 +17,7 @@
 @interface Kdb3Writer(PrivateMethods)
 -(uint32_t) numOfGroups:(Kdb3Group *) root;
 -(uint32_t) numOfEntries:(Kdb3Group *)root;
--(void) initKdbPassword;
--(void) writeHeader:(Kdb3Group *)root to:(NSMutableData *)data;
+- (void)writeHeader:(Kdb3Group *)root kdbPassword:(KdbPassword*)kdbPassword iv:(uint8_t*)iv to:(NSMutableData *)data;
 @end
 
 
@@ -49,80 +48,58 @@
 }
 
 /**
- * Init the Kdb password:
- * 1. randomly generate 32 bytes transform seed
- * 2. randomly generate 16 bytes master seed
- * 3. set the default round to 600
- */
--(void) initKdbPassword{
-    ByteBuffer * transformSeed = [[ByteBuffer alloc]initWithSize:32];
-    uint8_t * ts = transformSeed._bytes;
-    
-    *((uint32_t *)&ts[0]) = arc4random(); *((uint32_t *)&ts[4]) = arc4random();
-    *((uint32_t *)&ts[8]) = arc4random(); *((uint32_t *)&ts[12]) = arc4random();
-    *((uint32_t *)&ts[16]) = arc4random(); *((uint32_t *)&ts[20]) = arc4random();
-    *((uint32_t *)&ts[24]) = arc4random(); *((uint32_t *)&ts[28]) = arc4random();
-    
-    ByteBuffer * masterSeed = [[ByteBuffer alloc]initWithSize:16];
-    ts = masterSeed._bytes;
-    
-    *((uint32_t *)&ts[0]) = arc4random(); *((uint32_t *)&ts[4]) = arc4random();
-    *((uint32_t *)&ts[8]) = arc4random(); *((uint32_t *)&ts[12]) = arc4random();
-    
-    _password = [[KdbPassword alloc]init];
-    _password._masterSeed = masterSeed;
-    _password._transformSeed = transformSeed;
-    _password._rounds = 600;
-    
-    [masterSeed release];
-    [transformSeed release];
-}
-
-/**
  * Write the KDB3 header
  *
  */
--(void) writeHeader:(Kdb3Group *)root to:(NSMutableData *)data{
+- (void)writeHeader:(Kdb3Group *)root kdbPassword:(KdbPassword*)kdbPassword iv:(uint8_t*)iv to:(NSMutableData *)data {
+    uint8_t header[KDB3_HEADER_SIZE];
+
     //Version, Flags & Version
-    *((uint32_t *)(_header)) = SWAP_INT32_HOST_TO_LE(KDB3_SIG1);   //0..3
-    *((uint32_t *)(_header+4)) = SWAP_INT32_HOST_TO_LE(KDB3_SIG2); //4..7
-    *((uint32_t *)(_header+8)) = SWAP_INT32_HOST_TO_LE(FLAG_SHA2|FLAG_RIJNDAEL); //8..11
-    *((uint32_t *)(_header+12)) = SWAP_INT32_HOST_TO_LE(KDB3_VER); //12..15
+    *((uint32_t *)(header)) = SWAP_INT32_HOST_TO_LE(KDB3_SIG1);   //0..3
+    *((uint32_t *)(header+4)) = SWAP_INT32_HOST_TO_LE(KDB3_SIG2); //4..7
+    *((uint32_t *)(header+8)) = SWAP_INT32_HOST_TO_LE(FLAG_SHA2|FLAG_RIJNDAEL); //8..11
+    *((uint32_t *)(header+12)) = SWAP_INT32_HOST_TO_LE(KDB3_VER); //12..15
     
-    memcpy(_header+16, _password._masterSeed._bytes, 16); //16..31
-    memcpy(_header+32, _encryptionIV, 16);  //32..47
+    memcpy(header+16, kdbPassword._masterSeed._bytes, 16); //16..31
+    memcpy(header+32, iv, 16);  //32..47
     
     uint32_t numGroups = [self numOfGroups:root]-1; //minus the root itself
     uint32_t numEntries = [self numOfEntries:root];
     
-    *((uint32_t *)(_header+48)) = SWAP_INT32_HOST_TO_LE(numGroups); //48..51
-    *((uint32_t *)(_header+52)) = SWAP_INT32_HOST_TO_LE(numEntries); //52..55
+    *((uint32_t *)(header+48)) = SWAP_INT32_HOST_TO_LE(numGroups); //48..51
+    *((uint32_t *)(header+52)) = SWAP_INT32_HOST_TO_LE(numEntries); //52..55
     
     //56..87 content hash
     
-    memcpy(_header+88, _password._transformSeed._bytes, 32); //88..119
-    *((uint32_t *)(_header+120)) = SWAP_INT32_HOST_TO_LE(_password._rounds); //120..123
-    [data appendBytes:_header length:KDB3_HEADER_SIZE]; 
+    memcpy(header+88, kdbPassword._transformSeed._bytes, 32); //88..119
+    *((uint32_t *)(header+120)) = SWAP_INT32_HOST_TO_LE(kdbPassword._rounds); //120..123
+    [data appendBytes:header length:KDB3_HEADER_SIZE]; 
 }
 
 /**
  * Persist a tree into a file, using the specified password
  */
 - (void)persist:(Kdb3Tree*)tree file:(NSString *) fileName withPassword:(NSString *)password {
-    [self initKdbPassword];
-
-    *((uint32_t *)&_encryptionIV[0]) = arc4random(); *((uint32_t *)&_encryptionIV[4]) = arc4random();
-    *((uint32_t *)&_encryptionIV[8]) = arc4random(); *((uint32_t *)&_encryptionIV[12]) = arc4random();
-    ByteBuffer * finalKey = [_password createFinalKey32ForPasssword:password coding:NSWindowsCP1252StringEncoding kdbVersion:3];
+    KdbPassword *kdbPassword = [[KdbPassword alloc] initForEncryption];
     
-    //write the header
+    // Setup the encryption initialization vector
+    uint8_t iv[16];
+    *((uint32_t *)&iv[0]) = arc4random();
+    *((uint32_t *)&iv[4]) = arc4random();
+    *((uint32_t *)&iv[8]) = arc4random();
+    *((uint32_t *)&iv[12]) = arc4random();
+    
+    ByteBuffer *finalKey = [kdbPassword createFinalKey32ForPasssword:password coding:NSWindowsCP1252StringEncoding kdbVersion:3];
+    
+    // write the header
     NSMutableData * data = [[NSMutableData alloc]initWithCapacity:DEFAULT_BIN_SIZE];
-    [self writeHeader:(Kdb3Group *)tree.root to:data];
+    [self writeHeader:(Kdb3Group *)tree.root kdbPassword:kdbPassword iv:iv to:data];
     
-    AESEncryptSource * enc = [[AESEncryptSource alloc] init:finalKey._bytes andIV:_encryptionIV];
+    AESEncryptSource * enc = [[AESEncryptSource alloc] init:finalKey._bytes andIV:iv];
     enc._data = data;
     [data release];
     [finalKey release];
+    [kdbPassword release];
 
     Kdb3Persist * persist = nil;
     

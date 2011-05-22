@@ -22,6 +22,27 @@
 @synthesize _transformSeed;
 @synthesize _rounds;
 
+- (id)initForEncryption {
+    self = [super init];
+    if (self) {
+        uint8_t *ts;
+        
+        _masterSeed = [[ByteBuffer alloc]initWithSize:16];
+        ts = _masterSeed._bytes;
+        *((uint32_t *)&ts[0]) = arc4random(); *((uint32_t *)&ts[4]) = arc4random();
+        *((uint32_t *)&ts[8]) = arc4random(); *((uint32_t *)&ts[12]) = arc4random();
+                
+        _transformSeed = [[ByteBuffer alloc] initWithSize:32];
+        ts = _transformSeed._bytes;
+        *((uint32_t *)&ts[0]) = arc4random(); *((uint32_t *)&ts[4]) = arc4random();
+        *((uint32_t *)&ts[8]) = arc4random(); *((uint32_t *)&ts[12]) = arc4random();
+        *((uint32_t *)&ts[16]) = arc4random(); *((uint32_t *)&ts[20]) = arc4random();
+        *((uint32_t *)&ts[24]) = arc4random(); *((uint32_t *)&ts[28]) = arc4random();
+        
+        _rounds = 600;
+    }
+    return self;
+}
  
 -(void)dealloc{
     [_masterSeed release];

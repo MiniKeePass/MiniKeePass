@@ -14,7 +14,7 @@
 #define KDB3_SIG1 (0x9AA2D903)
 #define KDB3_SIG2 (0xB54BFB65)
 
-#define FLAG_SHA2       1
+#define FLAG_SHA2     1
 #define FLAG_RIJNDAEL 2
 #define FLAG_ARCFOUR  4
 #define FLAG_TWOFISH  8
@@ -22,13 +22,7 @@
 #define KDB3_VER  (0x00030002)
 #define KDB3_HEADER_SIZE (124)
 
-/**
- Given a KDB3 Tree, Kdb3Writer persist it to hard driver
- */
 @interface Kdb3Writer : NSObject {
-    uint8_t _header[KDB3_HEADER_SIZE];
-    uint8_t _encryptionIV[16];
-    KdbPassword * _password;
 }
 
 - (void)persist:(Kdb3Tree*)tree file:(NSString *) fileName withPassword:(NSString *)password;

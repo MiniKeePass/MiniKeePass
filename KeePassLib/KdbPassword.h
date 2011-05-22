@@ -19,6 +19,7 @@
 @property(nonatomic, retain) ByteBuffer * _transformSeed;
 @property(nonatomic, assign) uint64_t _rounds;
 
+- (id)initForEncryption;
 -(ByteBuffer *)createFinalKey32ForPasssword:(NSString *)password coding:(NSStringEncoding)coding kdbVersion:(uint8_t)ver;
 
 @end
