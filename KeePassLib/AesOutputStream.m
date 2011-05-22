@@ -50,9 +50,6 @@
 }
 
 - (void)close {
-    // Ensure the buffer has enough space to store the encrypted data
-    [self ensureBufferCapacity:CCCryptorGetOutputLength(cryptorRef, 0, NO)];
-    
     // Encrypt the last block
     size_t n = 0;
     CCCryptorStatus cs = CCCryptorFinal(cryptorRef, buffer, bufferCapacity, &n);
