@@ -100,6 +100,8 @@
 		689675BB1379DCE6006BC268 /* WrapperNSData.m in Sources */ = {isa = PBXBuildFile; fileRef = 689675951379DCE5006BC268 /* WrapperNSData.m */; };
 		689675BE1379DFD8006BC268 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 689675BD1379DFD8006BC268 /* libxml2.dylib */; };
 		689675C01379ECD6006BC268 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 689675BF1379ECD6006BC268 /* libz.dylib */; };
+		689764AE1388AA4B006BC0A6 /* Kdb4Writer.m in Sources */ = {isa = PBXBuildFile; fileRef = 689764AD1388AA4B006BC0A6 /* Kdb4Writer.m */; };
+		689764C81388C3CB006BC0A6 /* KdbWriterFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 689764C71388C3CA006BC0A6 /* KdbWriterFactory.m */; };
 		689859B1136CDC91001B4204 /* 0.png in Resources */ = {isa = PBXBuildFile; fileRef = 6898596A136CDC91001B4204 /* 0.png */; };
 		689859B2136CDC91001B4204 /* 1.png in Resources */ = {isa = PBXBuildFile; fileRef = 6898596B136CDC91001B4204 /* 1.png */; };
 		689859B3136CDC91001B4204 /* 10.png in Resources */ = {isa = PBXBuildFile; fileRef = 6898596C136CDC91001B4204 /* 10.png */; };
@@ -326,6 +328,11 @@
 		689675951379DCE5006BC268 /* WrapperNSData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WrapperNSData.m; sourceTree = "<group>"; };
 		689675BD1379DFD8006BC268 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
 		689675BF1379ECD6006BC268 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		689764AC1388AA4B006BC0A6 /* Kdb4Writer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Kdb4Writer.h; sourceTree = "<group>"; };
+		689764AD1388AA4B006BC0A6 /* Kdb4Writer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Kdb4Writer.m; sourceTree = "<group>"; };
+		689764C41388C304006BC0A6 /* KdbWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KdbWriter.h; sourceTree = "<group>"; };
+		689764C61388C3C9006BC0A6 /* KdbWriterFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KdbWriterFactory.h; sourceTree = "<group>"; };
+		689764C71388C3CA006BC0A6 /* KdbWriterFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KdbWriterFactory.m; sourceTree = "<group>"; };
 		6898596A136CDC91001B4204 /* 0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 0.png; sourceTree = "<group>"; };
 		6898596B136CDC91001B4204 /* 1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 1.png; sourceTree = "<group>"; };
 		6898596C136CDC91001B4204 /* 10.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 10.png; sourceTree = "<group>"; };
@@ -555,12 +562,17 @@
 				689675731379DCE5006BC268 /* Kdb4Parser.m */,
 				689675741379DCE5006BC268 /* Kdb4Reader.h */,
 				689675751379DCE5006BC268 /* Kdb4Reader.m */,
+				689764AC1388AA4B006BC0A6 /* Kdb4Writer.h */,
+				689764AD1388AA4B006BC0A6 /* Kdb4Writer.m */,
 				689675781379DCE5006BC268 /* KdbLib.h */,
 				689675791379DCE5006BC268 /* KdbPassword.h */,
 				6896757A1379DCE5006BC268 /* KdbPassword.m */,
 				6896757B1379DCE5006BC268 /* KdbReader.h */,
 				6896757C1379DCE5006BC268 /* KdbReaderFactory.h */,
 				6896757D1379DCE5006BC268 /* KdbReaderFactory.m */,
+				689764C41388C304006BC0A6 /* KdbWriter.h */,
+				689764C61388C3C9006BC0A6 /* KdbWriterFactory.h */,
+				689764C71388C3CA006BC0A6 /* KdbWriterFactory.m */,
 				689675861379DCE5006BC268 /* RandomStream.h */,
 				6896758A1379DCE5006BC268 /* Salsa20RandomStream.h */,
 				6896758B1379DCE5006BC268 /* Salsa20RandomStream.m */,
@@ -999,6 +1011,8 @@
 				6891056C13874D4300106245 /* GDataXMLNode.m in Sources */,
 				68A9D33C1388759B00AE9AD6 /* Kdb.m in Sources */,
 				52E791F4138894EE001FD104 /* TitleFieldCell.m in Sources */,
+				689764AE1388AA4B006BC0A6 /* Kdb4Writer.m in Sources */,
+				689764C81388C3CB006BC0A6 /* KdbWriterFactory.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

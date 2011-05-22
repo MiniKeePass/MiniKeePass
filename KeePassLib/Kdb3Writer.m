@@ -14,10 +14,10 @@
 
 #define DEFAULT_BIN_SIZE (32*1024)
 
-@interface Kdb3Writer(PrivateMethods)
--(uint32_t) numOfGroups:(Kdb3Group *) root;
--(uint32_t) numOfEntries:(Kdb3Group *)root;
-- (void)writeHeader:(Kdb3Group *)root kdbPassword:(KdbPassword*)kdbPassword iv:(uint8_t*)iv to:(NSMutableData *)data;
+@interface Kdb3Writer (PrivateMethods)
+- (uint32_t)numOfGroups:(Kdb3Group*)root;
+- (uint32_t)numOfEntries:(Kdb3Group*)root;
+- (void)writeHeader:(Kdb3Group*)root kdbPassword:(KdbPassword*)kdbPassword iv:(uint8_t*)iv buffer:(NSMutableData*)buffer;
 @end
 
 
@@ -51,7 +51,7 @@
  * Write the KDB3 header
  *
  */
-- (void)writeHeader:(Kdb3Group *)root kdbPassword:(KdbPassword*)kdbPassword iv:(uint8_t*)iv to:(NSMutableData *)data {
+- (void)writeHeader:(Kdb3Group *)root kdbPassword:(KdbPassword*)kdbPassword iv:(uint8_t*)iv buffer:(NSMutableData *)buffer {
     uint8_t header[KDB3_HEADER_SIZE];
 
     //Version, Flags & Version
@@ -73,13 +73,13 @@
     
     memcpy(header+88, kdbPassword._transformSeed._bytes, 32); //88..119
     *((uint32_t *)(header+120)) = SWAP_INT32_HOST_TO_LE(kdbPassword._rounds); //120..123
-    [data appendBytes:header length:KDB3_HEADER_SIZE]; 
+    [buffer appendBytes:header length:KDB3_HEADER_SIZE]; 
 }
 
 /**
  * Persist a tree into a file, using the specified password
  */
-- (void)persist:(Kdb3Tree*)tree file:(NSString *) fileName withPassword:(NSString *)password {
+- (void)persist:(Kdb3Tree*)tree file:(NSString*)filename withPassword:(NSString*)password {
     KdbPassword *kdbPassword = [[KdbPassword alloc] initForEncryption];
     
     // Setup the encryption initialization vector
@@ -93,7 +93,7 @@
     
     // write the header
     NSMutableData * data = [[NSMutableData alloc]initWithCapacity:DEFAULT_BIN_SIZE];
-    [self writeHeader:(Kdb3Group *)tree.root kdbPassword:kdbPassword iv:iv to:data];
+    [self writeHeader:(Kdb3Group *)tree.root kdbPassword:kdbPassword iv:iv buffer:data];
     
     AESEncryptSource * enc = [[AESEncryptSource alloc] init:finalKey._bytes andIV:iv];
     enc._data = data;
@@ -111,7 +111,7 @@
         range.length = 32;
         //backfill the content hash
         [enc._data replaceBytesInRange:range withBytes:[enc getHash]];
-        if(![enc._data writeToFile:fileName atomically:YES]){
+        if(![enc._data writeToFile:filename atomically:YES]){
             @throw [NSException exceptionWithName:@"IOError" reason:@"WriteFile" userInfo:nil];
         }
     }@finally {

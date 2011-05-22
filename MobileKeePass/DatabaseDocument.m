@@ -61,12 +61,7 @@
 - (void)save {
     if (dirty) {
         dirty = NO;
-        
-        if ([kdbTree isKindOfClass:[Kdb3Tree class]]) {
-            Kdb3Writer *writer = [[Kdb3Writer alloc] init];
-            [writer persist:(Kdb3Tree*)kdbTree file:filename withPassword:password];
-            [writer release];
-        }
+        [KdbWriterFactory persist:kdbTree file:filename withPassword:password];
     }
 }
 
