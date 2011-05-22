@@ -8,9 +8,14 @@
 
 #import <Foundation/Foundation.h>
 #import "KdbWriter.h"
+#import "KdbPassword.h"
 #import "Kdb4Node.h"
 
 @interface Kdb4Writer : NSObject<KdbWriter> {
+    KdbPassword *kdbPassword;
+    uint8_t encryptionIv[16];
+    uint8_t protectedStreamKey[32];
+    uint8_t streamStartBytes[32];
 }
 
 @end
