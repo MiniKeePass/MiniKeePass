@@ -8,14 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
-
 @protocol InputDataSource <NSObject>
 -(NSUInteger)readBytes:(void *)buffer length:(NSUInteger)length;
 -(NSUInteger)lengthOfRemainingReadbleBytes;
 -(NSUInteger)setReadOffset:(NSUInteger) offset; 
 -(NSUInteger)moveReadOffset:(NSInteger) offset; 
-@end
-
-@protocol OutputDataSink <NSObject>
--(NSUInteger)writeBytes:(void *)buffer length:(NSUInteger)length;
 @end
