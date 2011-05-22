@@ -208,7 +208,7 @@
     }
     
     for (Kdb3Group *group in root.groups) {
-        [self persistEntries:group];
+        [self persistMetaEntries:group];
     }
 }
 
