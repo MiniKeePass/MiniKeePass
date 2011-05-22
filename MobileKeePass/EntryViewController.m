@@ -31,7 +31,7 @@
     self.navigationItem.leftBarButtonItem = backButton;
     [backButton release];    
     
-    titleCell = [[TextFieldCell alloc] init];
+    titleCell = [[TitleFieldCell alloc] init];
     titleCell.textLabel.text = @"Title";
     
     usernameCell = [[TextFieldCell alloc] init];

@@ -15,27 +15,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#import <Foundation/Foundation.h>
 #import "TextFieldCell.h"
-#import "TitleFieldCell.h"
-#import "UrlFieldCell.h"
-#import "TextViewCell.h"
-#import "PasswordFieldCell.h"
-#import "KdbLib.h"
-#import "MobileKeePassAppDelegate.h"
 
-@interface EntryViewController : UITableViewController <UITextFieldDelegate, UITextViewDelegate, UIActionSheetDelegate> {
-    MobileKeePassAppDelegate *appDelegate;
-    TitleFieldCell *titleCell;
-    TextFieldCell *usernameCell;
-    PasswordFieldCell *passwordCell;
-    UrlFieldCell *urlCell;
-    TextViewCell *commentsCell;
-    CGFloat originalHeight;
-
-    KdbEntry *entry;
+@interface TitleFieldCell : TextFieldCell {
 }
-
-@property (nonatomic, retain) KdbEntry *entry;
 
 @end
