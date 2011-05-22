@@ -80,7 +80,7 @@
     id<InputDataSource> decrypted = nil;
     Kdb3Parser * parser;
     @try{
-        finalKey= [_password createFinalKey32ForPasssword:password coding:NSWindowsCP1252StringEncoding kdbVersion:3];
+        finalKey= [_password createFinalKey32ForPasssword:password encoding:NSWindowsCP1252StringEncoding kdbVersion:3];
         decrypted = [self createDecryptedInputDataSource:input key:finalKey];
         
         parser = [[Kdb3Parser alloc]init];

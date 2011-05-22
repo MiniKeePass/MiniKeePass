@@ -10,16 +10,16 @@
 #import "ByteBuffer.h"
 
 @interface KdbPassword : NSObject {
-    ByteBuffer * _masterSeed;
-    ByteBuffer * _transformSeed;
+    ByteBuffer *_masterSeed;
+    ByteBuffer *_transformSeed;
     uint64_t _rounds;
 }
 
-@property(nonatomic, retain) ByteBuffer * _masterSeed;
-@property(nonatomic, retain) ByteBuffer * _transformSeed;
+@property(nonatomic, retain) ByteBuffer *_masterSeed;
+@property(nonatomic, retain) ByteBuffer *_transformSeed;
 @property(nonatomic, assign) uint64_t _rounds;
 
-- (id)initForEncryption;
--(ByteBuffer *)createFinalKey32ForPasssword:(NSString *)password coding:(NSStringEncoding)coding kdbVersion:(uint8_t)ver;
+- (id)initForEncryption:(NSInteger)masterSeedSize;
+- (ByteBuffer*)createFinalKey32ForPasssword:(NSString*)password encoding:(NSStringEncoding)encoding kdbVersion:(uint8_t)ver;
 
 @end

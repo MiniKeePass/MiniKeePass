@@ -22,24 +22,16 @@
 @synthesize _transformSeed;
 @synthesize _rounds;
 
-- (id)initForEncryption {
+- (id)initForEncryption:(NSInteger)masterSeedSize {
     self = [super init];
     if (self) {
-        uint8_t *ts;
+        _masterSeed = [[ByteBuffer alloc]initWithSize:masterSeedSize];
+        [Utils getRandomBytes:_masterSeed._bytes length:_masterSeed._size];
         
-        _masterSeed = [[ByteBuffer alloc]initWithSize:16];
-        ts = _masterSeed._bytes;
-        *((uint32_t *)&ts[0]) = arc4random(); *((uint32_t *)&ts[4]) = arc4random();
-        *((uint32_t *)&ts[8]) = arc4random(); *((uint32_t *)&ts[12]) = arc4random();
-                
         _transformSeed = [[ByteBuffer alloc] initWithSize:32];
-        ts = _transformSeed._bytes;
-        *((uint32_t *)&ts[0]) = arc4random(); *((uint32_t *)&ts[4]) = arc4random();
-        *((uint32_t *)&ts[8]) = arc4random(); *((uint32_t *)&ts[12]) = arc4random();
-        *((uint32_t *)&ts[16]) = arc4random(); *((uint32_t *)&ts[20]) = arc4random();
-        *((uint32_t *)&ts[24]) = arc4random(); *((uint32_t *)&ts[28]) = arc4random();
+        [Utils getRandomBytes:_transformSeed._bytes length:_transformSeed._size];
         
-        _rounds = 600;
+        _rounds = 6000;
     }
     return self;
 }
@@ -67,8 +59,9 @@
     CC_SHA256(keyHash, 32, result);
 }
 
--(ByteBuffer *)createFinalKey32ForPasssword:(NSString *)password coding:(NSStringEncoding)coding kdbVersion:(uint8_t)ver{
-    ByteBuffer * pwd = [Utils createByteBufferForString:password coding:coding];
+- (ByteBuffer*)createFinalKey32ForPasssword:(NSString*)password encoding:(NSStringEncoding)encoding kdbVersion:(uint8_t)ver {
+    ByteBuffer *pwd = [[ByteBuffer alloc] initWithString:password encoding:encoding];
+    
     uint8_t keyHash[32];
     CC_SHA256(pwd._bytes, pwd._size, keyHash);
     

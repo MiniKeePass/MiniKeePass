@@ -66,7 +66,7 @@
         [self readHeader:source];
         
         //decrypt data
-        finalKey = [_password createFinalKey32ForPasssword:password coding:NSUTF8StringEncoding kdbVersion:4];
+        finalKey = [_password createFinalKey32ForPasssword:password encoding:NSUTF8StringEncoding kdbVersion:4];
         id<InputDataSource> decrypted = [self createDecryptedInputDataSource:source key:finalKey];
         
         //double check start block

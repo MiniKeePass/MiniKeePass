@@ -80,22 +80,22 @@
  * Persist a tree into a file, using the specified password
  */
 - (void)persist:(Kdb3Tree*)tree file:(NSString*)filename withPassword:(NSString*)password {
-    KdbPassword *kdbPassword = [[KdbPassword alloc] initForEncryption];
+    KdbPassword *kdbPassword = [[KdbPassword alloc] initForEncryption:16];
     
     // Setup the encryption initialization vector
-    uint8_t iv[16];
-    *((uint32_t *)&iv[0]) = arc4random();
-    *((uint32_t *)&iv[4]) = arc4random();
-    *((uint32_t *)&iv[8]) = arc4random();
-    *((uint32_t *)&iv[12]) = arc4random();
+    uint8_t encryptionIv[16];
+    *((uint32_t *)&encryptionIv[0]) = arc4random();
+    *((uint32_t *)&encryptionIv[4]) = arc4random();
+    *((uint32_t *)&encryptionIv[8]) = arc4random();
+    *((uint32_t *)&encryptionIv[12]) = arc4random();
     
-    ByteBuffer *finalKey = [kdbPassword createFinalKey32ForPasssword:password coding:NSWindowsCP1252StringEncoding kdbVersion:3];
+    ByteBuffer *finalKey = [kdbPassword createFinalKey32ForPasssword:password encoding:NSWindowsCP1252StringEncoding kdbVersion:3];
     
     // write the header
     NSMutableData * data = [[NSMutableData alloc]initWithCapacity:DEFAULT_BIN_SIZE];
-    [self writeHeader:(Kdb3Group *)tree.root kdbPassword:kdbPassword iv:iv buffer:data];
+    [self writeHeader:(Kdb3Group *)tree.root kdbPassword:kdbPassword iv:encryptionIv buffer:data];
     
-    AESEncryptSource * enc = [[AESEncryptSource alloc] init:finalKey._bytes andIV:iv];
+    AESEncryptSource * enc = [[AESEncryptSource alloc] init:finalKey._bytes andIV:encryptionIv];
     enc._data = data;
     [data release];
     [finalKey release];
