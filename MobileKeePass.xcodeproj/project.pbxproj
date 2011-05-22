@@ -532,28 +532,9 @@
 			path = Samples;
 			sourceTree = "<group>";
 		};
-		689675461379DCE5006BC268 /* KeePassLib */ = {
+		6893568C1389824E00BB263D /* OutputStream */ = {
 			isa = PBXGroup;
 			children = (
-				689675481379DCE5006BC268 /* AESDecryptSource.h */,
-				689675491379DCE5006BC268 /* AESDecryptSource.m */,
-				6896754A1379DCE5006BC268 /* AESEncryptSource.h */,
-				6896754B1379DCE5006BC268 /* AESEncryptSource.m */,
-				6896754E1379DCE5006BC268 /* Arc4RandomStream.h */,
-				6896754F1379DCE5006BC268 /* Arc4RandomStream.m */,
-				689675501379DCE5006BC268 /* Base64.h */,
-				689675511379DCE5006BC268 /* Base64.m */,
-				689675541379DCE5006BC268 /* BinaryContainer.h */,
-				689675551379DCE5006BC268 /* BinaryContainer.m */,
-				689675561379DCE5006BC268 /* ByteBuffer.h */,
-				689675571379DCE5006BC268 /* ByteBuffer.m */,
-				689675581379DCE5006BC268 /* DataSource.h */,
-				6891056A13874D4200106245 /* GDataXMLNode.h */,
-				6891056B13874D4300106245 /* GDataXMLNode.m */,
-				6896755D1379DCE5006BC268 /* GZipInputData.h */,
-				6896755E1379DCE5006BC268 /* GZipInputData.m */,
-				6896755F1379DCE5006BC268 /* HashedInputData.h */,
-				689675601379DCE5006BC268 /* HashedInputData.m */,
 				68C1765513896B480046E0E1 /* OutputStream.h */,
 				68C1765613896B4A0046E0E1 /* OutputStream.m */,
 				68C1764E13895BB20046E0E1 /* HashedOutputStream.h */,
@@ -562,8 +543,13 @@
 				68C17653138969820046E0E1 /* DataOutputStream.m */,
 				689356881389711B00BB263D /* AesOutputStream.h */,
 				689356891389711B00BB263D /* AesOutputStream.m */,
-				689675611379DCE5006BC268 /* Kdb.h */,
-				68A9D33B1388759A00AE9AD6 /* Kdb.m */,
+			);
+			name = OutputStream;
+			sourceTree = "<group>";
+		};
+		6893568D1389826200BB263D /* Kdb3 */ = {
+			isa = PBXGroup;
+			children = (
 				689675621379DCE5006BC268 /* Kdb3Date.h */,
 				689675631379DCE5006BC268 /* Kdb3Date.m */,
 				689675641379DCE5006BC268 /* Kdb3Node.h */,
@@ -576,6 +562,13 @@
 				6896756B1379DCE5006BC268 /* Kdb3Reader.m */,
 				6896756E1379DCE5006BC268 /* Kdb3Writer.h */,
 				6896756F1379DCE5006BC268 /* Kdb3Writer.m */,
+			);
+			name = Kdb3;
+			sourceTree = "<group>";
+		};
+		6893568E1389827600BB263D /* Kdb4 */ = {
+			isa = PBXGroup;
+			children = (
 				689675701379DCE5006BC268 /* Kdb4Node.h */,
 				689675711379DCE5006BC268 /* Kdb4Node.m */,
 				689675721379DCE5006BC268 /* Kdb4Parser.h */,
@@ -584,6 +577,51 @@
 				689675751379DCE5006BC268 /* Kdb4Reader.m */,
 				689764AC1388AA4B006BC0A6 /* Kdb4Writer.h */,
 				689764AD1388AA4B006BC0A6 /* Kdb4Writer.m */,
+			);
+			name = Kdb4;
+			sourceTree = "<group>";
+		};
+		6893568F1389829000BB263D /* RandomStream */ = {
+			isa = PBXGroup;
+			children = (
+				6896754E1379DCE5006BC268 /* Arc4RandomStream.h */,
+				6896754F1379DCE5006BC268 /* Arc4RandomStream.m */,
+				689675861379DCE5006BC268 /* RandomStream.h */,
+				6896758A1379DCE5006BC268 /* Salsa20RandomStream.h */,
+				6896758B1379DCE5006BC268 /* Salsa20RandomStream.m */,
+			);
+			name = RandomStream;
+			sourceTree = "<group>";
+		};
+		689356901389831100BB263D /* DataSource */ = {
+			isa = PBXGroup;
+			children = (
+				689675481379DCE5006BC268 /* AESDecryptSource.h */,
+				689675491379DCE5006BC268 /* AESDecryptSource.m */,
+				689675581379DCE5006BC268 /* DataSource.h */,
+				6896755D1379DCE5006BC268 /* GZipInputData.h */,
+				6896755E1379DCE5006BC268 /* GZipInputData.m */,
+				6896755F1379DCE5006BC268 /* HashedInputData.h */,
+				689675601379DCE5006BC268 /* HashedInputData.m */,
+			);
+			name = DataSource;
+			sourceTree = "<group>";
+		};
+		689675461379DCE5006BC268 /* KeePassLib */ = {
+			isa = PBXGroup;
+			children = (
+				6896754A1379DCE5006BC268 /* AESEncryptSource.h */,
+				6896754B1379DCE5006BC268 /* AESEncryptSource.m */,
+				689675501379DCE5006BC268 /* Base64.h */,
+				689675511379DCE5006BC268 /* Base64.m */,
+				689675541379DCE5006BC268 /* BinaryContainer.h */,
+				689675551379DCE5006BC268 /* BinaryContainer.m */,
+				689675561379DCE5006BC268 /* ByteBuffer.h */,
+				689675571379DCE5006BC268 /* ByteBuffer.m */,
+				6891056A13874D4200106245 /* GDataXMLNode.h */,
+				6891056B13874D4300106245 /* GDataXMLNode.m */,
+				689675611379DCE5006BC268 /* Kdb.h */,
+				68A9D33B1388759A00AE9AD6 /* Kdb.m */,
 				689675781379DCE5006BC268 /* KdbLib.h */,
 				689675791379DCE5006BC268 /* KdbPassword.h */,
 				6896757A1379DCE5006BC268 /* KdbPassword.m */,
@@ -593,15 +631,17 @@
 				689764C41388C304006BC0A6 /* KdbWriter.h */,
 				689764C61388C3C9006BC0A6 /* KdbWriterFactory.h */,
 				689764C71388C3CA006BC0A6 /* KdbWriterFactory.m */,
-				689675861379DCE5006BC268 /* RandomStream.h */,
-				6896758A1379DCE5006BC268 /* Salsa20RandomStream.h */,
-				6896758B1379DCE5006BC268 /* Salsa20RandomStream.m */,
 				689675901379DCE5006BC268 /* Utils.h */,
 				689675911379DCE5006BC268 /* Utils.m */,
 				689675921379DCE5006BC268 /* UUID.h */,
 				689675931379DCE5006BC268 /* UUID.m */,
 				689675941379DCE5006BC268 /* WrapperNSData.h */,
 				689675951379DCE5006BC268 /* WrapperNSData.m */,
+				689356901389831100BB263D /* DataSource */,
+				6893568F1389829000BB263D /* RandomStream */,
+				6893568C1389824E00BB263D /* OutputStream */,
+				6893568D1389826200BB263D /* Kdb3 */,
+				6893568E1389827600BB263D /* Kdb4 */,
 			);
 			path = KeePassLib;
 			sourceTree = "<group>";
