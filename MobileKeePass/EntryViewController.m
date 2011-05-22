@@ -62,11 +62,11 @@
     [notificationCenter addObserver:self selector:@selector(applicationWillResignActive:) name:UIApplicationWillResignActiveNotification object:nil];
     
     // Update the fields
-    titleCell.textField.text = [entry getEntryName];
-    usernameCell.textField.text = [entry getUserName];
-    passwordCell.textField.text = [entry getPassword];
-    urlCell.textField.text = [entry getURL];
-    commentsCell.textView.text = [entry getComments];
+    titleCell.textField.text = entry.title;
+    usernameCell.textField.text = entry.username;
+    passwordCell.textField.text = entry.password;
+    urlCell.textField.text = entry.url;
+    commentsCell.textView.text = entry.notes;
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -108,19 +108,19 @@ BOOL stringsEqual(NSString *str1, NSString *str2) {
 }
 
 - (BOOL)isDirty {
-    return !(stringsEqual([entry getEntryName], titleCell.textField.text) &&
-        stringsEqual([entry getUserName], usernameCell.textField.text) &&
-        stringsEqual([entry getPassword], passwordCell.textField.text) &&
-        stringsEqual([entry getURL], urlCell.textField.text) &&
-        stringsEqual([entry getComments], commentsCell.textView.text));
+    return !(stringsEqual(entry.title, titleCell.textField.text) &&
+        stringsEqual(entry.username, usernameCell.textField.text) &&
+        stringsEqual(entry.password, passwordCell.textField.text) &&
+        stringsEqual(entry.url, urlCell.textField.text) &&
+        stringsEqual(entry.notes, commentsCell.textView.text));
 }
 
 - (void)save {
-    [entry setEntryName:titleCell.textField.text];
-    [entry setUserName:usernameCell.textField.text];
-    [entry setPassword:passwordCell.textField.text];
-    [entry setURL:urlCell.textField.text];
-    [entry setComments:commentsCell.textView.text];
+    entry.title = titleCell.textField.text;
+    entry.username = usernameCell.textField.text;
+    entry.password = passwordCell.textField.text;
+    entry.url = urlCell.textField.text;
+    entry.notes = commentsCell.textView.text;
     
     appDelegate.databaseDocument.dirty = YES;
     

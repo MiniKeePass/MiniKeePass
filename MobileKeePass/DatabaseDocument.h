@@ -19,18 +19,18 @@
 #import "KdbLib.h"
 
 @interface DatabaseDocument : NSObject {
-    id<KdbTree> kdbTree;
+    KdbTree *kdbTree;
     NSString *filename;
     NSString *password;
     BOOL dirty;
 }
 
-@property (nonatomic, retain) id<KdbTree> kdbTree;
+@property (nonatomic, retain) KdbTree *kdbTree;
 @property (nonatomic, retain) NSString *filename;
 @property (nonatomic) BOOL dirty;
 
 - (void)open:(NSString*)newFilename password:(NSString*)newPassword;
 - (void)save;
-- (void)searchGroup:(id<KdbGroup>)group searchText:(NSString*)searchText results:(NSMutableArray*)results;
+- (void)searchGroup:(KdbGroup*)group searchText:(NSString*)searchText results:(NSMutableArray*)results;
 
 @end

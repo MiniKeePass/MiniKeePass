@@ -74,10 +74,8 @@
     DatabaseDocument *databaseDocument = appDelegate.databaseDocument;
     
     if (databaseDocument != nil) {
-        id<KdbGroup> root = [databaseDocument.kdbTree getRoot];
-        
         // Perform the search
-        [databaseDocument searchGroup:root searchText:searchString results:results];
+        [databaseDocument searchGroup:databaseDocument.kdbTree.root searchText:searchString results:results];
     }
     
     return YES;
@@ -99,19 +97,19 @@
     MobileKeePassAppDelegate *appDelegate = (MobileKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
     
     // Configure the cell.
-    id<KdbEntry> e = [results objectAtIndex:indexPath.row];
-    cell.textLabel.text = [e getEntryName];
-    cell.imageView.image = [appDelegate loadImage:[e getImage]];
+    KdbEntry *e = [results objectAtIndex:indexPath.row];
+    cell.textLabel.text = e.title;
+    cell.imageView.image = [appDelegate loadImage:e.image];
     
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    id<KdbEntry> e = [results objectAtIndex:indexPath.row];
+    KdbEntry *e = [results objectAtIndex:indexPath.row];
     
     EntryViewController *entryViewController = [[EntryViewController alloc] initWithStyle:UITableViewStyleGrouped];
     entryViewController.entry = e;
-    entryViewController.title = [e getEntryName];
+    entryViewController.title = e.title;
     [self.navigationController pushViewController:entryViewController animated:YES];
     [entryViewController release];
 }

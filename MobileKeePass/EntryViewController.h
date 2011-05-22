@@ -32,9 +32,9 @@
     TextViewCell *commentsCell;
     CGFloat originalHeight;
 
-    id<KdbEntry> entry;
+    KdbEntry *entry;
 }
 
-@property (nonatomic, retain) id<KdbEntry> entry;
+@property (nonatomic, retain) KdbEntry *entry;
 
 @end

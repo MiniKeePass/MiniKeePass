@@ -29,7 +29,6 @@
 
 
 @implementation Kdb4Reader
-@synthesize _tree;
 
 #pragma mark -
 #pragma mark alloc/dealloc
@@ -58,10 +57,11 @@
 //TODO:
 // only Kdb4Format.Default is supported; will add support for Kdb4Format.PlainXml
 //
--(id<KdbTree>)load:(WrapperNSData *)source withPassword:(NSString *)password{
+- (KdbTree*)load:(WrapperNSData *)source withPassword:(NSString *)password {
+    Kdb4Tree *tree = nil;
     ByteBuffer * finalKey = nil;
     
-    @try{
+    @try {
         //read header
         [self readHeader:source];
         
@@ -96,7 +96,7 @@
         Kdb4Parser * parser = [[Kdb4Parser alloc] init];
         parser._randomStream = rs;
         
-        self._tree = [parser parse:readerStream];
+        tree = [parser parse:readerStream];
         
         [parser release];
     }
@@ -104,13 +104,8 @@
         [finalKey release];
     }
     
-    return self._tree;
+    return tree;
 }
-
--(id<KdbTree>)getKdbTree{
-    return self._tree;
-}
-
 
 #pragma mark -
 #pragma mark Private Methods

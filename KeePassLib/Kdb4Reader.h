@@ -36,7 +36,7 @@
 #define CSR_SALSA20     2
 #define CSR_COUNT       3
 
-@interface Kdb4Reader : NSObject<KdbReader>{
+@interface Kdb4Reader : NSObject<KdbReader> {
     UUID * _cipherUUID;
     
     ByteBuffer * _encryptionIV, * _protectedStreamKey, * _streamStartBytes;
@@ -46,7 +46,6 @@
     Kdb4Tree * _tree;
 }
 
-@property(nonatomic, retain) Kdb4Tree * _tree;
+- (KdbTree*)load:(WrapperNSData *)input withPassword:(NSString*)password;
 
--(id<KdbTree>)load:(WrapperNSData *)source withPassword:(NSString *)password;
 @end

@@ -34,7 +34,7 @@ int closeCallback(void *context) {
     return 0;
 }
 
-- (id<KdbTree>)parse:(id<InputDataSource>)input {
+- (Kdb4Tree*)parse:(id<InputDataSource>)input {
     GDataXMLDocument *document = [[GDataXMLDocument alloc] initWithReadIO:readCallback closeIO:closeCallback context:input options:0 error:nil];
     if (document == nil) {
         @throw [[NSException alloc] initWithName:@"ParseError" reason:@"Failed to parse database" userInfo:nil];
@@ -57,7 +57,7 @@ int closeCallback(void *context) {
     }
     
     Kdb4Tree *tree = [[Kdb4Tree alloc] initWithDocument:document];
-    tree._root = [self parseGroup:element];
+    tree.root = [self parseGroup:element];
     
     [document release];
     
@@ -85,23 +85,23 @@ int closeCallback(void *context) {
     Kdb4Group *group = [[[Kdb4Group alloc] initWithElement:root] autorelease];
     
     GDataXMLElement *element = [root elementForName:@"IconID"];
-    group._image = element.stringValue.intValue;
+    group.image = element.stringValue.intValue;
     
     element = [root elementForName:@"Name"];
-    group._groupName =  element.stringValue;
+    group.name =  element.stringValue;
     
     for (GDataXMLElement *element in [root elementsForName:@"Entry"]) {
         Kdb4Entry *entry = [self parseEntry:element];
-        entry._parent = group;
+        entry.parent = group;
         
         [group addEntry:entry];
     }
     
     for (GDataXMLElement *element in [root elementsForName:@"Group"]) {
         Kdb4Group *subGroup = [self parseGroup:element];
-        subGroup._parent = group;
+        subGroup.parent = group;
         
-        [group addSubGroup:subGroup];
+        [group addGroup:subGroup];
     }
     
     return group;
@@ -110,7 +110,7 @@ int closeCallback(void *context) {
 - (Kdb4Entry*)parseEntry:(GDataXMLElement*)root {
     Kdb4Entry *entry = [[[Kdb4Entry alloc] initWithElement:root] autorelease];
     
-    entry._image = [[[root elementForName:@"IconID"] stringValue] intValue];
+    entry.image = [[[root elementForName:@"IconID"] stringValue] intValue];
     
     for (GDataXMLElement *element in [root elementsForName:@"String"]) {
         NSString *key = [[element elementForName:@"Key"] stringValue];
@@ -119,15 +119,15 @@ int closeCallback(void *context) {
         NSString *value = [valueElement stringValue];
         
         if ([key isEqualToString:@"Title"]) {
-            entry._entryName = value;
+            entry.title = value;
         } else if ([key isEqualToString:@"UserName"]) {
-            entry._username = value;
+            entry.username = value;
         } else if ([key isEqualToString:@"Password"]) {
-            entry._password = value;
+            entry.password = value;
         } else if ([key isEqualToString:@"URL"]) {
-            entry._url = value;
+            entry.url = value;
         } else if ([key isEqualToString:@"Notes"]) {
-            entry._comment = value;
+            entry.notes = value;
         }
     }
     

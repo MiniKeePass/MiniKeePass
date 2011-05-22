@@ -73,7 +73,7 @@
 
 #pragma mark -
 #pragma mark public methods
--(id<KdbTree>)load:(WrapperNSData *)input withPassword:(NSString *)password{
+-(KdbTree*)load:(WrapperNSData *)input withPassword:(NSString *)password{
     _password = [[KdbPassword alloc]init];
     [self readHeader:input];
     ByteBuffer * finalKey = nil;
@@ -91,10 +91,6 @@
         [decrypted release];
         [_password release];
     }
-    return self._tree;
-}
-
--(id<KdbTree>)getKdbTree{
     return self._tree;
 }
 

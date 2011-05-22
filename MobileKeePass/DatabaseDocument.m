@@ -64,21 +64,21 @@
         
         if ([kdbTree isKindOfClass:[Kdb3Tree class]]) {
             Kdb3Writer *writer = [[Kdb3Writer alloc] init];
-            [writer persist:kdbTree file:filename withPassword:password];
+            [writer persist:(Kdb3Tree*)kdbTree file:filename withPassword:password];
             [writer release];
         }
     }
 }
 
-- (void)searchGroup:(id<KdbGroup>)group searchText:(NSString*)searchText results:(NSMutableArray*)results {
-    for (id<KdbEntry> entry in [group getEntries]) {
-        NSRange range = [[entry getEntryName] rangeOfString:searchText options:NSCaseInsensitiveSearch];
+- (void)searchGroup:(KdbGroup*)group searchText:(NSString*)searchText results:(NSMutableArray*)results {
+    for (KdbEntry *entry in group.entries) {
+        NSRange range = [entry.title rangeOfString:searchText options:NSCaseInsensitiveSearch];
         if (range.location != NSNotFound) {
             [results addObject:entry];
         }
     }
     
-    for (id<KdbGroup> g in [group getSubGroups]) {
+    for (KdbGroup *g in group.groups) {
         [self searchGroup:g searchText:searchText results:results];
     }
 }

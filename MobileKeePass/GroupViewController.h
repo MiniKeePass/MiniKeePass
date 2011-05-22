@@ -19,9 +19,9 @@
 #import "KdbLib.h"
 
 @interface GroupViewController : UITableViewController {
-    id<KdbGroup> group;
+    KdbGroup *group;
 }
 
-@property (nonatomic, assign) id<KdbGroup> group;
+@property (nonatomic, assign) KdbGroup *group;
 
 @end

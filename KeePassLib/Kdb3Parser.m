@@ -14,11 +14,12 @@
 @interface Kdb3Parser(PrivateMethods)
 -(void)read:(id<InputDataSource>)input toGroups:(NSMutableArray *)groups levels:(NSMutableArray *)levels numOfGroups:(uint32_t)numGroups;
 -(void)read:(id<InputDataSource>)input toEntries:(NSMutableArray *)entries numOfEntries:(uint32_t)numEntries withGroups:(NSArray *)groups;
--(id<KdbTree>)buildTree:(NSArray *)groups levels:(NSArray *)levels entries:(NSArray *)entries;
+-(Kdb3Tree*)buildTree:(NSArray *)groups levels:(NSArray *)levels entries:(NSArray *)entries;
 @end
 
 @implementation Kdb3Parser
--(id<KdbTree>)parse:(id<InputDataSource>)input numGroups:(uint32_t)numGroups numEntris:(uint32_t)numEntries{
+
+- (Kdb3Tree*)parse:(id<InputDataSource>)input numGroups:(uint32_t)numGroups numEntris:(uint32_t)numEntries {
     NSMutableArray * levels = [[NSMutableArray alloc]initWithCapacity:numGroups];
     NSMutableArray * groups = [[NSMutableArray alloc]initWithCapacity:numGroups];
     
@@ -26,7 +27,7 @@
     NSMutableArray * entries = [[NSMutableArray alloc]initWithCapacity:numEntries]; 
     [self read:input toEntries:entries numOfEntries:numEntries withGroups:groups];
     
-    id<KdbTree> rv = [self buildTree:groups levels:levels entries:entries];
+    Kdb3Tree *rv = [self buildTree:groups levels:levels entries:entries];
     
     [groups release];
     [levels release];
@@ -58,33 +59,33 @@
                 case 0x0002: {
                     ByteBuffer * buffer = [[ByteBuffer alloc]initWithSize:fieldSize dataSource:input];
                     NSString * groupTitle = [[NSString alloc]initWithCString:(const char *)buffer._bytes encoding:NSUTF8StringEncoding];
-                    group._title = groupTitle;
+                    group.name = groupTitle;
                     [groupTitle release];
                     [buffer release];
                     break;
                 }
                 case 0x0003: { 
                     [input readBytes:dateBuffer length:fieldSize];
-                    group._creationTime = [Kdb3Date fromPacked:dateBuffer];
+                    group.creationTime = [Kdb3Date fromPacked:dateBuffer];
                     break;
                 }
                 case 0x0004: {  
                     [input readBytes:dateBuffer length:fieldSize];
-                    group._lastModificationTime = [Kdb3Date fromPacked:dateBuffer];
+                    group.lastModificationTime = [Kdb3Date fromPacked:dateBuffer];
                     break;
                 }
                 case 0x0005: { 
                     [input readBytes:dateBuffer length:fieldSize];
-                    group._lastAccessTime = [Kdb3Date fromPacked:dateBuffer];
+                    group.lastAccessTime = [Kdb3Date fromPacked:dateBuffer];
                     break;
                 }
                 case 0x0006: { 
                     [input readBytes:dateBuffer length:fieldSize];
-                    group._expiryTime = [Kdb3Date fromPacked:dateBuffer];
+                    group.expiryTime = [Kdb3Date fromPacked:dateBuffer];
                     break;
                 }
                 case 0x0007: {
-                    group._image = [Utils readInt32LE:input];
+                    group.image = [Utils readInt32LE:input];
                     break;
                 }
                 case 0x0008: {
@@ -143,13 +144,13 @@
                     break;  
                 }
                 case 0x0003:{
-                    entry._image = [Utils readInt32LE:input]; 
+                    entry.image = [Utils readInt32LE:input]; 
                     break;
                 }
                 case 0x0004: {
                     ByteBuffer * buffer = [[ByteBuffer alloc]initWithSize:fieldSize dataSource:input];
                     NSString * title = [[NSString alloc]initWithCString:(const char *)buffer._bytes encoding:NSUTF8StringEncoding];
-                    entry._title = title;
+                    entry.title = title;
                     [title release];
                     [buffer release];
                     break;
@@ -157,7 +158,7 @@
                 case 0x0005: {
                     ByteBuffer * buffer = [[ByteBuffer alloc]initWithSize:fieldSize dataSource:input];
                     NSString * url = [[NSString alloc]initWithCString:(const char *)buffer._bytes encoding:NSUTF8StringEncoding];
-                    entry._url = url;
+                    entry.url = url;
                     [url release];
                     [buffer release];
                     break;
@@ -165,7 +166,7 @@
                 case 0x0006: {
                     ByteBuffer * buffer = [[ByteBuffer alloc]initWithSize:fieldSize dataSource:input];
                     NSString * username = [[NSString alloc]initWithCString:(const char *)buffer._bytes encoding:NSUTF8StringEncoding];
-                    entry._username = username;
+                    entry.username = username;
                     [username release];
                     [buffer release];
                     break;
@@ -173,7 +174,7 @@
                 case 0x0007:{
                     ByteBuffer * buffer = [[ByteBuffer alloc]initWithSize:fieldSize dataSource:input];
                     NSString * password = [[NSString alloc]initWithCString:(const char *)buffer._bytes encoding:NSUTF8StringEncoding];
-                    entry._password = password;
+                    entry.password = password;
                     [password release];
                     [buffer release];
                     break;
@@ -181,29 +182,29 @@
                 case 0x0008:{
                     ByteBuffer * buffer = [[ByteBuffer alloc]initWithSize:fieldSize dataSource:input];
                     NSString * comment = [[NSString alloc]initWithCString:(const char *)buffer._bytes encoding:NSUTF8StringEncoding];
-                    entry._comment = comment;
+                    entry.notes = comment;
                     [comment release];
                     [buffer release];
                     break;
                 }
                 case 0x0009:{
                     [input readBytes:dateBuffer length:fieldSize];
-                    entry._creationTime = [Kdb3Date fromPacked:dateBuffer];
+                    entry.creationTime = [Kdb3Date fromPacked:dateBuffer];
                     break;
                 }
                 case 0x000A:{
                     [input readBytes:dateBuffer length:fieldSize];
-                    entry._lastModificationTime = [Kdb3Date fromPacked:dateBuffer];
+                    entry.lastModificationTime = [Kdb3Date fromPacked:dateBuffer];
                     break;
                 }
                 case 0x000B:{
                     [input readBytes:dateBuffer length:fieldSize];
-                    entry._lastAccessTime = [Kdb3Date fromPacked:dateBuffer];
+                    entry.lastAccessTime = [Kdb3Date fromPacked:dateBuffer];
                     break;
                 }
                 case 0x000C:{
                     [input readBytes:dateBuffer length:fieldSize];
-                    entry._expiryTime = [Kdb3Date fromPacked:dateBuffer];
+                    entry.expiryTime = [Kdb3Date fromPacked:dateBuffer];
                     break;
                 }
                 case 0x000D:{
@@ -249,19 +250,18 @@
     }
 }
 
--(id<KdbTree>)buildTree:(NSArray *)groups levels:(NSArray *)levels entries:(NSArray *)entries{
+
+-(Kdb3Tree*)buildTree:(NSArray *)groups levels:(NSArray *)levels entries:(NSArray *)entries{
     ///
     uint32_t level = [[levels objectAtIndex:0]unsignedIntValue];
     if(level!=0) @throw [NSException exceptionWithName:@"InvalidData" reason:@"InvalidTree" userInfo:nil];
     
-    id<KdbTree> tree = [[Kdb3Tree alloc]init];
+    Kdb3Tree *tree = [[Kdb3Tree alloc] init];
     
-    Kdb3Group * rootGroup = [[Kdb3Group alloc] init];
-
-    rootGroup._title = @"$ROOT$";
-    rootGroup._parent = nil;
-    ((Kdb3Tree *)tree)._root = rootGroup;
-    [rootGroup release];
+    Kdb3Group *root = [[Kdb3Group alloc] init];
+    root.name = @"$ROOT$";
+    root.parent = nil;
+    tree.root = root;
     
     //find the parent for every group
     for(int i=0; i<[groups count]; i++){
@@ -269,7 +269,7 @@
         level = [[levels objectAtIndex:i]unsignedIntValue];
         
         if(level==0){
-            [rootGroup addSubGroup:group];
+            [root addGroup:group];
             continue;
         }
         
@@ -289,10 +289,12 @@
                 @throw [NSException exceptionWithName:@"InvalidData" reason:@"InvalidTree" userInfo:nil];
         }
         
-        Kdb3Group * parent = [groups objectAtIndex:j];
-        [parent addSubGroup:group];
+        Kdb3Group *parent = [groups objectAtIndex:j];
+        [parent addGroup:group];
     }
     
+    [root release];
+
     return [tree autorelease];
 }
 

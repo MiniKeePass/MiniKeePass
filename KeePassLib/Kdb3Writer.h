@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "AESEncryptSource.h"
 #import "KdbPassword.h"
-#import "Kdb.h"
+#import "Kdb3Node.h"
 
 #define KDB3_SIG1 (0x9AA2D903)
 #define KDB3_SIG2 (0xB54BFB65)
@@ -30,6 +30,8 @@
     uint8_t _encryptionIV[16];
     KdbPassword * _password;
 }
--(void)persist:(id<KdbTree>)tree file:(NSString *) fileName withPassword:(NSString *)password;
--(void)newFile:(NSString *)fileName withPassword:(NSString *)password;
+
+- (void)persist:(Kdb3Tree*)tree file:(NSString *) fileName withPassword:(NSString *)password;
+- (void)newFile:(NSString *)fileName withPassword:(NSString *)password;
+
 @end

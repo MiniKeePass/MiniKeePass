@@ -191,7 +191,7 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
     // Create and push on the root group view controller
     GroupViewController *groupViewController = [[GroupViewController alloc] initWithStyle:UITableViewStylePlain];
     groupViewController.title = [[databaseDocument.filename lastPathComponent] stringByDeletingPathExtension];
-    groupViewController.group = [databaseDocument.kdbTree getRoot];
+    groupViewController.group = databaseDocument.kdbTree.root;
     [filesViewController.navigationController pushViewController:groupViewController animated:YES];
     [groupViewController release];
     

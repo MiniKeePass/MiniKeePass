@@ -8,77 +8,78 @@
 
 #import <Foundation/Foundation.h>
 
-@protocol KdbEntry;
+@class KdbEntry;
 
-@protocol KdbGroup<NSObject>
-- (id<KdbGroup>)getParent;
-- (void)setParent:(id<KdbGroup>)parent;
+@interface KdbGroup : NSObject {
+    KdbGroup *parent;
+    
+    NSInteger image;
+    NSString *name;
+    NSMutableArray *groups;
+    NSMutableArray *entries;
+    
+    NSDate *creationTime;
+    NSDate *lastModificationTime;
+    NSDate *lastAccessTime;
+    NSDate *expiryTime;
+}
 
-- (NSUInteger)getImage;
-- (void)setImage:(NSUInteger)image;
+@property(nonatomic, retain) KdbGroup *parent;
 
-- (NSString*)getGroupName;
-- (void)setGroupName:(NSString*)groupName;
+@property(nonatomic, assign) NSInteger image;
+@property(nonatomic, copy) NSString *name;
+@property(nonatomic, readonly) NSArray *groups; 
+@property(nonatomic, readonly) NSArray *entries;
 
-- (NSArray*)getEntries;
-- (void)addEntry:(id<KdbEntry>)child;
-- (void)deleteEntry:(id<KdbEntry>)child;
+@property(nonatomic, retain) NSDate *creationTime;
+@property(nonatomic, retain) NSDate *lastModificationTime;
+@property(nonatomic, retain) NSDate *lastAccessTime;
+@property(nonatomic, retain) NSDate *expiryTime;
 
-- (NSArray*)getSubGroups;
-- (void)addSubGroup:(id<KdbGroup>)child;
-- (void)deleteSubGroup:(id<KdbGroup>)child;
+- (void)addGroup:(KdbGroup*)group;
+- (void)deleteGroup:(KdbGroup*)group;
 
-- (NSDate*)getCreationTime;
-- (void)setCreationTime:(NSDate*)date;
-
-- (NSDate*)getLastModificationTime;
-- (void)setLastModificationTime:(NSDate*)date;
-
-- (NSDate*)getLastAccessTime;
-- (void)setLastAccessTime:(NSDate*)date;
-
-- (NSDate*)getExpiryTime;
-- (void)setExpiryTime:(NSDate*)date;
-
-@end
-
-@protocol KdbEntry<NSObject>
-- (id<KdbGroup>)getParent;
-- (void)setParent:(id<KdbGroup>)parent;
-
-- (NSUInteger)getImage;
-- (void)setImage:(NSUInteger)image;
-
-- (NSString*)getEntryName;
-- (void)setEntryName:(NSString*)entryName;
-
-- (NSString*)getUserName;
-- (void)setUserName:(NSString*)userName;
-
-- (NSString*)getPassword;
-- (void)setPassword:(NSString*)password;
-
-- (NSString*)getURL;
-- (void)setURL:(NSString*)url;
-
-- (NSString*)getComments;
-- (void)setComments:(NSString*)comments;
-
-- (NSDate*)getCreationTime;
-- (void)setCreationTime:(NSDate*)date;
-
-- (NSDate*)getLastModificationTime;
-- (void)setLastModificationTime:(NSDate*)date;
-
-- (NSDate*)getLastAccessTime;
-- (void)setLastAccessTime:(NSDate*)date;
-
-- (NSDate*)getExpiryTime;
-- (void)setExpiryTime:(NSDate*)date;
+- (void)addEntry:(KdbEntry*)entry;
+- (void)deleteEntry:(KdbEntry*)entry;
 
 @end
 
-@protocol KdbTree<NSObject>
--(id<KdbGroup>)getRoot;
--(BOOL)isRecycleBin:(id<KdbGroup>)group;
+@interface KdbEntry : NSObject {
+    KdbGroup *parent;
+    
+    NSInteger image;
+    NSString *title;
+    NSString *username;
+    NSString *password;
+    NSString *url;
+    NSString *notes;
+    
+    NSDate *creationTime;
+    NSDate *lastModificationTime;
+    NSDate *lastAccessTime;
+    NSDate *expiryTime;
+}
+
+@property(nonatomic, retain) KdbGroup *parent;
+
+@property(nonatomic, assign) NSInteger image;
+@property(nonatomic, copy) NSString *title;
+@property(nonatomic, copy) NSString *username;
+@property(nonatomic, copy) NSString *password;
+@property(nonatomic, copy) NSString *url;
+@property(nonatomic, copy) NSString *notes;
+
+@property(nonatomic, retain) NSDate *creationTime;
+@property(nonatomic, retain) NSDate *lastModificationTime;
+@property(nonatomic, retain) NSDate *lastAccessTime;
+@property(nonatomic, retain) NSDate *expiryTime;
+
+@end
+
+@interface KdbTree : NSObject {
+    KdbGroup *root;
+}
+
+@property(nonatomic, retain) KdbGroup *root;
+
 @end

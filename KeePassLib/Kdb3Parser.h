@@ -8,9 +8,11 @@
 
 #import <Foundation/Foundation.h>
 #import "DataSource.h"
-#import "Kdb.h"
+#import "Kdb3Node.h"
 
 @interface Kdb3Parser : NSObject {
 }
--(id<KdbTree>)parse:(id<InputDataSource>)input numGroups:(uint32_t)numGroups numEntris:(uint32_t)numEntries;
+
+- (Kdb3Tree*)parse:(id<InputDataSource>)input numGroups:(uint32_t)numGroups numEntris:(uint32_t)numEntries;
+
 @end

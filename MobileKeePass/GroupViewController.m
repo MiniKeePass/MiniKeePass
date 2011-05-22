@@ -26,11 +26,11 @@
     [super dealloc];
 }
 
-- (id<KdbGroup>)group {
+- (KdbGroup*)group {
     return group;
 }
 
-- (void)setGroup:(id<KdbGroup>)newGroup {
+- (void)setGroup:(KdbGroup*)newGroup {
     group = [newGroup retain];
     [self.tableView reloadData];
 }
@@ -44,7 +44,7 @@
         return 0;
     }
     
-    return [[group getSubGroups] count] + [[group getEntries] count];
+    return [group.groups count] + [group.entries count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -59,42 +59,38 @@
     MobileKeePassAppDelegate *appDelegate = (MobileKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
     
     // Configure the cell.
-    int numChildren = [[group getSubGroups] count];
+    int numChildren = [group.groups count];
     if (indexPath.row < numChildren) {
-        id<KdbGroup> g = [[group getSubGroups] objectAtIndex:indexPath.row];
-        cell.textLabel.text = [g getGroupName];
-        cell.imageView.image = [appDelegate loadImage:[g getImage]];
+        KdbGroup *g = [group.groups objectAtIndex:indexPath.row];
+        cell.textLabel.text = g.name;
+        cell.imageView.image = [appDelegate loadImage:g.image];
     } else {
-        id<KdbEntry> e = [[group getEntries] objectAtIndex:(indexPath.row - numChildren)];
-        cell.textLabel.text = [e getEntryName];
-        cell.imageView.image = [appDelegate loadImage:[e getImage]];
+        KdbEntry *e = [group.entries objectAtIndex:(indexPath.row - numChildren)];
+        cell.textLabel.text = e.title;
+        cell.imageView.image = [appDelegate loadImage:e.image];
     }
     
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    int numChildren = [[group getSubGroups] count];
+    int numChildren = [group.groups count];
     if (indexPath.row < numChildren) {
-        id<KdbGroup> g = [[[group getSubGroups] objectAtIndex:indexPath.row] retain];
+        KdbGroup *g = [group.groups objectAtIndex:indexPath.row];
         
         GroupViewController *groupViewController = [[GroupViewController alloc] initWithStyle:UITableViewStylePlain];
         groupViewController.group = g;
-        groupViewController.title = [g getGroupName];
+        groupViewController.title = g.name;
         [self.navigationController pushViewController:groupViewController animated:YES];
         [groupViewController release];
-        
-        [g release];
     } else {
-        id<KdbEntry> e = [[[group getEntries] objectAtIndex:(indexPath.row - numChildren)] retain];
+        KdbEntry *e = [group.entries objectAtIndex:(indexPath.row - numChildren)];
         
         EntryViewController *entryViewController = [[EntryViewController alloc] initWithStyle:UITableViewStyleGrouped];
         entryViewController.entry = e;
-        entryViewController.title = [e getEntryName];
+        entryViewController.title = e.title;
         [self.navigationController pushViewController:entryViewController animated:YES];
         [entryViewController release];
-        
-        [e release];
     }
 }
 

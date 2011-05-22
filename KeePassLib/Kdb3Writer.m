@@ -30,7 +30,7 @@
  */
 -(uint32_t)numOfGroups:(Kdb3Group *) root {
     int num = 0;
-    for(Kdb3Group * g in root._subGroups){
+    for(Kdb3Group * g in root.groups){
         num+=[self numOfGroups:g];
     }
     return num+1;
@@ -41,8 +41,8 @@
  *
  */
 -(uint32_t)numOfEntries:(Kdb3Group *)root{
-    int num = [root._entries count] + [root._metaEntries count];
-    for(Kdb3Group * g in root._subGroups){
+    int num = [root.entries count] + [root._metaEntries count];
+    for(Kdb3Group * g in root.groups){
         num+=[self numOfEntries:g];
     }
     return num;
@@ -108,7 +108,7 @@
 /**
  * Persist a tree into a file, using the specified password
  */
--(void)persist:(id<KdbTree>)tree file:(NSString *) fileName withPassword:(NSString *)password{
+- (void)persist:(Kdb3Tree*)tree file:(NSString *) fileName withPassword:(NSString *)password {
     [self initKdbPassword];
 
     *((uint32_t *)&_encryptionIV[0]) = arc4random(); *((uint32_t *)&_encryptionIV[4]) = arc4random();
@@ -117,7 +117,7 @@
     
     //write the header
     NSMutableData * data = [[NSMutableData alloc]initWithCapacity:DEFAULT_BIN_SIZE];
-    [self writeHeader:(Kdb3Group *)[tree getRoot] to:data];
+    [self writeHeader:(Kdb3Group *)tree.root to:data];
     
     AESEncryptSource * enc = [[AESEncryptSource alloc] init:finalKey._bytes andIV:_encryptionIV];
     enc._data = data;
@@ -143,9 +143,8 @@
     }
 }
 
-
 -(void)newFile:(NSString *)fileName withPassword:(NSString *)password{
-    Kdb3Tree * tree = [Kdb3Tree newTree];
+    Kdb3Tree *tree = [[Kdb3Tree alloc] initNewTree];
     [self persist:tree file:fileName withPassword:password];
     [tree release];
     

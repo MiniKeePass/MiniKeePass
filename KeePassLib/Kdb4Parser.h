@@ -10,7 +10,7 @@
 #import "GDataXMLNode.h"
 #import "DataSource.h"
 #import "RandomStream.h"
-#import "Kdb.h"
+#import "Kdb4Node.h"
 
 @interface Kdb4Parser : NSObject {
     id<RandomStream> _randomStream;
@@ -18,6 +18,6 @@
 
 @property (nonatomic, retain) id<RandomStream> _randomStream;
 
-- (id<KdbTree>)parse:(id<InputDataSource>)input;
+- (Kdb4Tree*)parse:(id<InputDataSource>)input;
 
 @end

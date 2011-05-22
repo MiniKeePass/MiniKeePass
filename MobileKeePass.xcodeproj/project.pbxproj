@@ -173,6 +173,7 @@
 		689EB6A3136DC24C00C8DA1E /* EntryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 689EB6A2136DC24C00C8DA1E /* EntryViewController.m */; };
 		68A6C234138014B8006E4867 /* background.png in Resources */ = {isa = PBXBuildFile; fileRef = 68A6C232138014B8006E4867 /* background.png */; };
 		68A6C235138014B8006E4867 /* background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 68A6C233138014B8006E4867 /* background@2x.png */; };
+		68A9D33C1388759B00AE9AD6 /* Kdb.m in Sources */ = {isa = PBXBuildFile; fileRef = 68A9D33B1388759A00AE9AD6 /* Kdb.m */; };
 		68C6BDEE137F10CF0013373A /* SwitchCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68C6BDED137F10CF0013373A /* SwitchCell.m */; };
 		68D5900A136CB5CB0064CEE5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68D59009136CB5CB0064CEE5 /* UIKit.framework */; };
 		68D5900C136CB5CB0064CEE5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68D5900B136CB5CB0064CEE5 /* Foundation.framework */; };
@@ -399,6 +400,7 @@
 		689EB6A2136DC24C00C8DA1E /* EntryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EntryViewController.m; sourceTree = "<group>"; };
 		68A6C232138014B8006E4867 /* background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background.png; sourceTree = "<group>"; };
 		68A6C233138014B8006E4867 /* background@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "background@2x.png"; sourceTree = "<group>"; };
+		68A9D33B1388759A00AE9AD6 /* Kdb.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Kdb.m; sourceTree = "<group>"; };
 		68C6BDEC137F10CF0013373A /* SwitchCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwitchCell.h; sourceTree = "<group>"; };
 		68C6BDED137F10CF0013373A /* SwitchCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SwitchCell.m; sourceTree = "<group>"; };
 		68D59005136CB5CB0064CEE5 /* MobileKeePass.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MobileKeePass.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -529,6 +531,7 @@
 				6896755F1379DCE5006BC268 /* HashedInputData.h */,
 				689675601379DCE5006BC268 /* HashedInputData.m */,
 				689675611379DCE5006BC268 /* Kdb.h */,
+				68A9D33B1388759A00AE9AD6 /* Kdb.m */,
 				689675621379DCE5006BC268 /* Kdb3Date.h */,
 				689675631379DCE5006BC268 /* Kdb3Date.m */,
 				689675641379DCE5006BC268 /* Kdb3Node.h */,
@@ -989,6 +992,7 @@
 				68964206137F2549001B87A4 /* ChoiceCell.m in Sources */,
 				688231DC138046FC0046B00D /* SearchViewController.m in Sources */,
 				6891056C13874D4300106245 /* GDataXMLNode.m in Sources */,
+				68A9D33C1388759B00AE9AD6 /* Kdb.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

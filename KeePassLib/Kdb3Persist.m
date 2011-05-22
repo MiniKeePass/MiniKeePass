@@ -23,7 +23,7 @@
 @synthesize _tree;
 @synthesize _enc;
 
-- (id)initWithTree:(id<KdbTree>)tree andDest:(AESEncryptSource *)dest {
+- (id)initWithTree:(Kdb3Tree*)tree andDest:(AESEncryptSource *)dest {
     self = [super init];
     if(self) {
         self._tree = tree;
@@ -55,59 +55,59 @@
     [self appendField:1 size:16 bytes:(void *)(entry._uuid._bytes)];
     
     //groupId
-    tmp32 = SWAP_INT32_HOST_TO_LE(entry._parent._id);
+    tmp32 = SWAP_INT32_HOST_TO_LE(((Kdb3Group*)entry.parent)._id);
     [self appendField:2 size:4 bytes:&tmp32];
     
     //image
-    tmp32 = SWAP_INT32_HOST_TO_LE(entry._image);
+    tmp32 = SWAP_INT32_HOST_TO_LE(entry.image);
     [self appendField:3 size:4 bytes:&tmp32];
     
     //title
-    if(![Utils emptyString:entry._title]){
-        const char * tmp = [entry._title cStringUsingEncoding:NSUTF8StringEncoding];
+    if(![Utils emptyString:entry.title]){
+        const char * tmp = [entry.title cStringUsingEncoding:NSUTF8StringEncoding];
         [self appendField:4 size:strlen(tmp)+1 bytes:(void *)tmp];
     }
     
     //url
-    if(![Utils emptyString:entry._url]){
-        const char * tmp = [entry._url cStringUsingEncoding:NSUTF8StringEncoding];
+    if(![Utils emptyString:entry.url]){
+        const char * tmp = [entry.url cStringUsingEncoding:NSUTF8StringEncoding];
         [self appendField:5 size:strlen(tmp)+1 bytes:(void *)tmp];
     }
     
     //username
-    if(![Utils emptyString:entry._username]){
-        const char * tmp = [entry._username cStringUsingEncoding:NSUTF8StringEncoding];
+    if(![Utils emptyString:entry.username]){
+        const char * tmp = [entry.username cStringUsingEncoding:NSUTF8StringEncoding];
         [self appendField:6 size:strlen(tmp)+1 bytes:(void *)tmp];
     }
     
     //password
-    if(![Utils emptyString:entry._password]){
-        const char * tmp = [entry._password cStringUsingEncoding:NSUTF8StringEncoding];
+    if(![Utils emptyString:entry.password]){
+        const char * tmp = [entry.password cStringUsingEncoding:NSUTF8StringEncoding];
         [self appendField:7 size:strlen(tmp)+1 bytes:(void *)tmp];
     }
     
     //comment
-    if(![Utils emptyString:entry._comment]){
-        const char * tmp = [entry._comment cStringUsingEncoding:NSUTF8StringEncoding];
+    if(![Utils emptyString:entry.notes]){
+        const char * tmp = [entry.notes cStringUsingEncoding:NSUTF8StringEncoding];
         [self appendField:8 size:strlen(tmp)+1 bytes:(void *)tmp];
     }
     
     uint8_t packedDate[5];
     
     //creation
-    [Kdb3Date toPacked:[entry getCreationTime] bytes:packedDate];
+    [Kdb3Date toPacked:entry.creationTime bytes:packedDate];
     [self appendField:9 size:5 bytes:packedDate];
     
     //last mod
-    [Kdb3Date toPacked:[entry getLastModificationTime] bytes:packedDate];
+    [Kdb3Date toPacked:entry.lastModificationTime bytes:packedDate];
     [self appendField:10 size:5 bytes:packedDate];
     
     //last access
-    [Kdb3Date toPacked:[entry getLastAccessTime] bytes:packedDate];
+    [Kdb3Date toPacked:entry.lastAccessTime bytes:packedDate];
     [self appendField:11 size:5 bytes:packedDate];
     
     //expire
-    [Kdb3Date toPacked:[entry getExpiryTime] bytes:packedDate];
+    [Kdb3Date toPacked:entry.expiryTime bytes:packedDate];
     [self appendField:12 size:5 bytes:packedDate];
     
     //binary desc
@@ -129,10 +129,10 @@
 - (void)writeGroup:(Kdb3Group *)group {
     //get the level/depth of the group
     uint16_t level = -1;
-    Kdb3Group * tmp = group;
-    while(tmp._parent){
+    KdbGroup * tmp = group;
+    while(tmp.parent){
         level++;
-        tmp = tmp._parent;
+        tmp = tmp.parent;
     }
     
     uint32_t tmp32;
@@ -142,31 +142,31 @@
     
     
     //title 2+4+title size
-    if(![Utils emptyString:group._title]){
-        const char * title = [group._title cStringUsingEncoding:NSUTF8StringEncoding];
+    if(![Utils emptyString:group.name]){
+        const char * title = [group.name cStringUsingEncoding:NSUTF8StringEncoding];
         [self appendField:2 size:strlen(title)+1 bytes:(void *)title];
     }
     
     uint8_t packedDate[5];
     
     //creation date 2+4+5
-    [Kdb3Date toPacked:[group getCreationTime] bytes:packedDate];
+    [Kdb3Date toPacked:group.creationTime bytes:packedDate];
     [self appendField:3 size:5 bytes:packedDate];
     
     //last mod 2+4+5
-    [Kdb3Date toPacked:[group getLastModificationTime] bytes:packedDate];
+    [Kdb3Date toPacked:group.lastModificationTime bytes:packedDate];
     [self appendField:3 size:5 bytes:packedDate];
     
     //last access 2+4+5
-    [Kdb3Date toPacked:[group getLastAccessTime] bytes:packedDate];
+    [Kdb3Date toPacked:group.lastAccessTime bytes:packedDate];
     [self appendField:3 size:5 bytes:packedDate];
     
     //expire 2+4+5
-    [Kdb3Date toPacked:[group getExpiryTime] bytes:packedDate];
+    [Kdb3Date toPacked:group.expiryTime bytes:packedDate];
     [self appendField:3 size:5 bytes:packedDate];
     
     //image 2+4+4
-    tmp32 = SWAP_INT32_HOST_TO_LE(group._image);
+    tmp32 = SWAP_INT32_HOST_TO_LE(group.image);
     [self appendField:7 size:4 bytes:&tmp32];
     
     //level 2+4+2
@@ -185,7 +185,7 @@
 }
 
 - (void)persistGroups:(Kdb3Group*)root {
-    for (Kdb3Group *group in root._subGroups) {
+    for (Kdb3Group *group in root.groups) {
         [self writeGroup:group];
         [self persistGroups:group];
     }
@@ -193,11 +193,11 @@
 
 
 - (void)persistEntries:(Kdb3Group*)root {
-    for (Kdb3Entry *entry in root._entries) {
+    for (Kdb3Entry *entry in root.entries) {
         [self writeEntry:entry];
     }
 
-    for (Kdb3Group *group in root._subGroups) {
+    for (Kdb3Group *group in root.groups) {
         [self persistEntries:group];
     }
 }
@@ -207,13 +207,13 @@
         [self writeEntry:entry];
     }
     
-    for (Kdb3Group *group in root._subGroups) {
+    for (Kdb3Group *group in root.groups) {
         [self persistEntries:group];
     }
 }
 
 - (void)persist {
-    Kdb3Group * root = (Kdb3Group *)[_tree getRoot];
+    Kdb3Group *root = (Kdb3Group*)_tree.root;
     [self persistGroups:root];
     [self persistEntries:root];
     [self persistMetaEntries:root];
