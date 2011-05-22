@@ -59,12 +59,7 @@
     
     // read the block
     uint32_t blockSize = [Utils readInt32LE:_dataSource];
-    
-    if(blockSize < 0){
-        @throw [NSException exceptionWithName:@"InvalidData" reason:@"InvalidBlockSize" userInfo:nil];
-    }
-    
-    if(blockSize){
+    if (blockSize) {
         if(_block) [_block release];
         _block = [[ByteBuffer alloc ]initWithSize:blockSize];
         
