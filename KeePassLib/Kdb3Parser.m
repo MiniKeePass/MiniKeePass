@@ -94,7 +94,7 @@
                     break;
                 }
                 case 0x0009: { 
-                    group._flags = [Utils readInt32LE:input];
+                    group.flags = [Utils readInt32LE:input];
                     break;
                 }
                 case 0xFFFF: { [input moveReadOffset:fieldSize];break; }

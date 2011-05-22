@@ -174,7 +174,7 @@
     [self appendField:8 size:2 bytes:&level];
     
     //flags (unused) 2+4+4
-    tmp32 = SWAP_INT32_HOST_TO_LE(group._flags);
+    tmp32 = SWAP_INT32_HOST_TO_LE(group.flags);
     [self appendField:9 size:4 bytes:&tmp32];
     
     //end of the group 2+4
@@ -203,7 +203,7 @@
 }
 
 - (void)persistMetaEntries:(Kdb3Group*)root {
-    for (Kdb3Entry *entry in root._metaEntries) {
+    for (Kdb3Entry *entry in root.metaEntries) {
         [self writeEntry:entry];
     }
     

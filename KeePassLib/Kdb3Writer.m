@@ -41,7 +41,7 @@
  *
  */
 -(uint32_t)numOfEntries:(Kdb3Group *)root{
-    int num = [root.entries count] + [root._metaEntries count];
+    int num = [root.entries count] + [root.metaEntries count];
     for(Kdb3Group * g in root.groups){
         num+=[self numOfEntries:g];
     }

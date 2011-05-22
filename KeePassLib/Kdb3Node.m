@@ -12,40 +12,41 @@
 @implementation Kdb3Group
 
 @synthesize _id;
-@synthesize _flags;
-@synthesize _metaEntries;
+@synthesize flags;
+@synthesize metaEntries;
+
+- (id)init {
+    self = [super init];
+    if (self) {
+        metaEntries = [[NSMutableArray alloc] initWithCapacity:4];
+    }
+    return self;
+}
 
 - (void)dealloc {
-    [_metaEntries release];
+    [metaEntries release];
     [super dealloc];
 }
 
-/*
--(void)addEntry:(id<KdbEntry>)child{
-    Kdb3Entry * entry = (Kdb3Entry *)child;
-    entry._parent = self;
-    // meta node
-    if([entry isMeta]){
-        if(!_metaEntries)
-            _metaEntries = [[NSMutableArray alloc] initWithCapacity:4];
-        [_metaEntries addObject:child];
-    }else{
-        // normal node
-        if(!_entries)
-            _entries = [[NSMutableArray alloc] initWithCapacity:16];
-        [_entries addObject:child];
+- (void)addEntry:(KdbEntry*)entry {
+    entry.parent = self;
+    
+    if ([(Kdb3Entry*)entry isMeta]) {
+        [metaEntries addObject:entry];
+    } else {
+        [entries addObject:entry];
     }
 }
 
--(void)deleteEntry:(id<KdbEntry>)child{
-    Kdb3Entry * entry = (Kdb3Entry *)child;
-    entry._parent = nil;
-    if([entry isMeta])
-        [_metaEntries removeObject:child];
-    else
-        [_entries removeObject:child];
+- (void)deleteEntry:(KdbEntry*)entry {
+    entry.parent = nil;
+    
+    if ([(Kdb3Entry*)entry isMeta]) {
+        [metaEntries removeObject:entry];
+    } else {
+        [entries removeObject:entry];
+    }
 }
-*/
 
 @end
 
