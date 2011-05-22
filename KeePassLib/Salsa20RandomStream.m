@@ -20,11 +20,8 @@ static uint32_t SIGMA[4] = {0x61707865, 0x3320646E, 0x79622D32, 0x6B206574};
 -(void)updateState;
 @end
 
-
 @implementation Salsa20RandomStream
-//@synthesize _source;
 
-//-(id)init:(uint8_t *)key len:(uint32_t)len input:(id<InputDataSource>)source{
 -(id)init:(uint8_t *)key len:(uint32_t)len{
     self = [super init];
     if(self) {
@@ -34,14 +31,11 @@ static uint32_t SIGMA[4] = {0x61707865, 0x3320646E, 0x79622D32, 0x6B206574};
         [self setKey:key32];
         [self setIV:iv];
         _index = 0;
-        
-        //self._source = source;
     }
     return self;
 }
 
 -(void)dealloc{
-    //[_source release];
     [super dealloc];
 }
 
@@ -146,33 +140,5 @@ static uint32_t SIGMA[4] = {0x61707865, 0x3320646E, 0x79622D32, 0x6B206574};
     [bb release];
     return [rv autorelease];
 }
-
-
-/*
- * remove the support of InputdataSource to make the class less confusing
- *
- 
--(NSUInteger)readBytes:(void *)buffer length:(NSUInteger)length{
-    NSUInteger read = [_source readBytes:buffer length:length];
-    for(int i=0; i<read; i++){
-        if(_index==0) [self updateState];
-        ((uint8_t *)buffer)[i] ^= _keyStream[_index];
-        _index = (_index+1)&0x3F;
-    }   
-    return read;
-}
-
--(NSUInteger)lengthOfRemainingReadbleBytes{
-    @throw [NSException exceptionWithName:@"UnsupportedMethod" reason:@"lengthOfRemainingReadbleBytes" userInfo:nil];
-}
-
--(NSUInteger)setReadOffset:(NSUInteger) offset{
-    @throw [NSException exceptionWithName:@"UnsupportedMethod" reason:@"setReadOffset" userInfo:nil];
-}
-
--(NSUInteger)moveReadOffset:(NSInteger) offset{
-    @throw [NSException exceptionWithName:@"UnsupportedMethod" reason:@"moveReadOffset" userInfo:nil];
-}
-*/
 
 @end

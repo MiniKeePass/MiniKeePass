@@ -13,10 +13,8 @@
 -(void)updateState;
 @end
 
-
 @implementation Arc4RandomStream
 
-//-(id)init:(uint8_t *)key len:(uint32_t)len input:(id<InputDataSource>)source {
 -(id)init:(uint8_t *)key len:(uint32_t)len{
     _i = _j = 0;
     self = [super init];
@@ -43,14 +41,11 @@
         
         [self updateState];
         _index = 512; //skip first 512 bytes
-        
-        //self._source = source;
     }
     return self;
 }
 
 -(void)dealloc{
-    //[_source release];
     [super dealloc];
 }
 
@@ -86,32 +81,4 @@
     return [rv autorelease];
 }
 
-/* 
- * remove the support of InputSource protocol to make the class less confusing
- *
- 
- -(NSUInteger)readBytes:(void *)buffer length:(NSUInteger)length{
- NSUInteger read = [_source readBytes:buffer length:length];
- 
- for(int i=0; i<read; i++){
- if(_index==0) [self updateState];
- ((uint8_t *)buffer)[i] ^= _buffer[_index];
- _index = (_index+1)&ARC_BUFFER_SIZE;
- }
- 
- return read;
- }
- 
- -(NSUInteger)lengthOfRemainingReadbleBytes{
-    @throw [NSException exceptionWithName:@"UnsupportedMethod" reason:@"lengthOfRemainingReadbleBytes" userInfo:nil];
-}
-
--(NSUInteger)setReadOffset:(NSUInteger) offset{
-    @throw [NSException exceptionWithName:@"UnsupportedMethod" reason:@"setReadOffset" userInfo:nil];
-}
-
--(NSUInteger)moveReadOffset:(NSInteger) offset{
-    @throw [NSException exceptionWithName:@"UnsupportedMethod" reason:@"moveReadOffset" userInfo:nil];
-}
-*/
 @end
