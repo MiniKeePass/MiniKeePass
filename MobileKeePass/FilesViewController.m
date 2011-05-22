@@ -64,8 +64,6 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    
     [files release];
     
     // Get the document's directory
@@ -77,7 +75,15 @@
     NSArray *filenames = [dirContents filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"(self ENDSWITH '.kdb') OR (self ENDSWITH '.kdbx')"]];
     files = [[NSMutableArray arrayWithArray:filenames] retain];
     
+    NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
+
     [self.tableView reloadData];
+
+    if (selectedIndexPath != nil) {
+        [self.tableView selectRowAtIndexPath:selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];        
+    }
+    
+    [super viewWillAppear:animated];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
