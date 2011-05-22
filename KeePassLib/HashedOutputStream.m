@@ -15,16 +15,16 @@
 
 @implementation HashedOutputStream
 
-- (id)initWithOutputStream:(OutputStream*)stream blockSize:(uint32_t)size {
+- (id)initWithOutputStream:(OutputStream*)stream blockSize:(uint32_t)blockSize {
     self = [super init];
     if (self) {
         outputStream = [stream retain];
         
-        blockSize = size;
         blockIndex = 0;
         
-        buffer = malloc(size);
+        buffer = malloc(blockSize);
         bufferOffset = 0;
+        bufferLength = blockSize;
     }
     return self;
 }
@@ -41,11 +41,11 @@
     NSUInteger n;
     
     while (length > 0) {
-        if (bufferOffset == blockSize) {
+        if (bufferOffset == bufferLength) {
             [self writeHashedBlock];
         }
         
-        n = MIN(blockSize - bufferOffset, length);
+        n = MIN(bufferLength - bufferOffset, length);
         memcpy(buffer, bytes + offset, n);
         
         bufferOffset += n;

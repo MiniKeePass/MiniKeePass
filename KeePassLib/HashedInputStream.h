@@ -1,5 +1,5 @@
 //
-//  HashedOutputData.h
+//  HashedInputStream.h
 //  MobileKeePass
 //
 //  Created by Jason Rush on 5/22/11.
@@ -7,18 +7,20 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "OutputStream.h"
+#import "InputStream.h"
 
-@interface HashedOutputStream : OutputStream {
-    OutputStream *outputStream;
+@interface HashedInputStream : InputStream {
+    InputStream *inputStream;
     
     uint32_t blockIndex;
     
     uint8_t *buffer;
     uint32_t bufferOffset;
     uint32_t bufferLength;
+    
+    BOOL eof;
 }
 
-- (id)initWithOutputStream:(OutputStream*)stream blockSize:(uint32_t)blockSize;
+- (id)initWithInputStream:(InputStream*)stream;
 
 @end
