@@ -12,7 +12,7 @@
 @implementation AESEncryptSource
 @synthesize _data;
 
--(id)init:(uint8_t *)keys andIV:(uint8_t *)iv{
+- (id)init:(uint8_t*)keys andIV:(uint8_t*)iv {
     self = [super init];
     if(self) {
         _cryptorRef = nil; 
@@ -23,13 +23,13 @@
     return self;
 }
 
--(void)dealloc{
+- (void)dealloc {
     CCCryptorRelease(_cryptorRef);  
     [_data release];
     [super dealloc];
 }
 
--(void)setData:(NSMutableData *)data{
+- (void)setData:(NSMutableData *)data {
     if(_data!=data){
         [_data release];
         _data = [data retain];
@@ -37,7 +37,7 @@
     }
 }
 
--(void)update:(void *)buffer size:(uint32_t)size{
+- (void)update:(const void*)buffer size:(uint32_t)size {
     size_t length = CCCryptorGetOutputLength(_cryptorRef, size, NO);
     
     ByteBuffer * bb = nil;
@@ -69,7 +69,7 @@
     }
 }
 
--(void)final{
+- (void)final {
     size_t length = CCCryptorGetOutputLength(_cryptorRef, _updatedBytes, YES);
     uint32_t size = length - [_data length] + _initDataLen;
     
@@ -78,9 +78,9 @@
     uint8_t * b = nil;
     uint32_t s = 64;
     
-    if(size<=64){
+    if (size<=64) {
         b = _buffer;
-    }else{
+    } else {
         bb = [[ByteBuffer alloc] initWithSize:size];
         b = bb._bytes;
         s = bb._size;
@@ -88,7 +88,7 @@
     
     CC_SHA256_Final(_hash, &_shaCtx);
     
-    @try{
+    @try {
         size_t movedBytes = 0;
         CCCryptorStatus cs;
         cs=CCCryptorFinal(_cryptorRef, b, s, &movedBytes);
@@ -96,12 +96,12 @@
             @throw [NSException exceptionWithName:@"EncryptError" reason:@"Failed to encrypt" userInfo:nil];
         }
         [_data appendBytes:b length:movedBytes];
-    }@finally {
+    } @finally {
         [bb release];
     }
 }
 
--(uint8_t *)getHash{
+- (uint8_t*)getHash {
     return _hash;
 }
 
