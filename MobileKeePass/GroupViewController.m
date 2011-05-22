@@ -21,6 +21,18 @@
 
 @implementation GroupViewController
 
+-(void)viewWillAppear:(BOOL)animated {
+    NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
+    
+    //Reload the cell incase the title was changed by the entry view
+    if (selectedIndexPath != nil) {
+        [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:selectedIndexPath] withRowAnimation:UITableViewRowAnimationNone];
+        [self.tableView selectRowAtIndexPath:selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+    }
+    
+    [super viewWillAppear:animated];
+}
+
 - (void)dealloc {
     [group release];
     [super dealloc];
