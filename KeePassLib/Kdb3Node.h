@@ -12,6 +12,16 @@
 #import "ByteBuffer.h"
 #import "BinaryContainer.h"
 
+#define KDB3_SIG1 (0x9AA2D903)
+#define KDB3_SIG2 (0xB54BFB65)
+
+#define KDB3_VER  (0x00030002)
+#define KDB3_HEADER_SIZE (124)
+
+#define FLAG_SHA2     1
+#define FLAG_RIJNDAEL 2
+#define FLAG_ARCFOUR  4
+#define FLAG_TWOFISH  8
 
 @interface Kdb3Group : KdbGroup {
     uint32_t _id;

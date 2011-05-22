@@ -17,8 +17,8 @@
 #import "Arc4RandomStream.h"
 #import "Salsa20RandomStream.h"
 
-#define FILE_VERSION_32 0x00030000
-#define FILE_VERSION_CRITICAL_MASK 0xFFFF0000
+#define VERSION_CRITICAL_MAX_32 0x00030000
+#define VERSION_CRITICAL_MASK 0xFFFF0000
 
 #define READ_BYTES(X, Y, Z) (X = [[ByteBuffer alloc] initWithSize:Y dataSource:Z])
 
@@ -120,7 +120,7 @@
 -(void)readHeader:(id<InputDataSource>)source{
     uint32_t version = [Utils readInt32LE:source];
         
-    if((version & FILE_VERSION_CRITICAL_MASK) > (FILE_VERSION_32 & FILE_VERSION_CRITICAL_MASK)){
+    if((version & VERSION_CRITICAL_MASK) > (VERSION_CRITICAL_MAX_32 & VERSION_CRITICAL_MASK)){
         @throw [NSException exceptionWithName:@"Unsupported" reason:@"Unsupported version" userInfo:nil];
     }
     

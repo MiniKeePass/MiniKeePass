@@ -11,16 +11,6 @@
 #import "Kdb4Reader.h"
 #import "Utils.h"
 
-#define KDB3_SIG1 (0x9AA2D903)
-#define KDB3_SIG2 (0xB54BFB65)
-
-#define KDB4_PRE_SIG1 (0x9AA2D903)
-#define KDB4_PRE_SIG2 (0xB54BFB66)
-
-#define KDB4_SIG1 (0x9AA2D903)
-#define KDB4_SIG2 (0xB54BFB67)
-
-
 @implementation KdbReaderFactory
 
 /*

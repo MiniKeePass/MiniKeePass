@@ -20,13 +20,6 @@
 #import "WrapperNSData.h"
 #import "KdbPassword.h"
 
-#define FLAG_SHA2     1
-#define FLAG_RIJNDAEL 2
-#define FLAG_ARCFOUR  4
-
-#define KDB3_VER  (0x00030002)
-#define KDB3_HEADER_SIZE (124)
-
 @interface Kdb3Reader : NSObject<KdbReader> {
     uint32_t _numGroups, _numEntries;
     uint8_t _contentHash[32];
