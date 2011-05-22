@@ -31,10 +31,7 @@
     KdbPassword *kdbPassword = [[[KdbPassword alloc] init] autorelease];
     ByteBuffer *finalKey = [[kdbPassword createFinalKey32ForPasssword:password coding:NSUTF8StringEncoding kdbVersion:4] autorelease];
     
-    @try {
-    } @finally{
-        [finalKey release];
-    }
+    // TODO serialize XML and encrypt
 }
 
 - (void)writeHeader:(NSMutableData*)buffer {
@@ -45,6 +42,8 @@
     *((uint32_t*)(bytes+4)) = SWAP_INT32_HOST_TO_LE(KDB4_SIG2);    //4..7
     *((uint32_t*)(bytes+8)) = SWAP_INT32_HOST_TO_LE(KDB4_VERSION); //8..11
     [buffer appendBytes:bytes length:12];
+    
+    // TODO serialize other headers
 }
 
 @end
