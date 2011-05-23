@@ -20,19 +20,8 @@
 @end
 
 @implementation Kdb3Reader
-@synthesize _tree;
 
-#pragma mark -
-#pragma mark alloc/dealloc
-
--(void)dealloc{
-    [_tree release];
-    [super dealloc];
-}
-
-#pragma mark -
-#pragma mark private methods
--(void)readHeader:(id<InputDataSource>) input{
+- (void)readHeader:(id<InputDataSource>)input {
     uint32_t flags, version;
     
     flags = [Utils readInt32LE:input]; 
@@ -40,8 +29,8 @@
     
     if((version & 0xFFFFFF00)!=(KDB3_VER & 0xFFFFFF00)){
         @throw [NSException exceptionWithName:@"Unsupported" reason:@"UnsupportedVersion" userInfo:nil];
-    }   
-        
+    }
+    
     if(!(flags & FLAG_RIJNDAEL)) 
         @throw [NSException exceptionWithName:@"Unsupported" reason:@"UnsupportedAlgorithm" userInfo:nil];
 
@@ -70,28 +59,28 @@
     return rv;
 }
 
-
-#pragma mark -
-#pragma mark public methods
--(KdbTree*)load:(WrapperNSData *)input withPassword:(NSString *)password{
+- (KdbTree*)load:(WrapperNSData *)input withPassword:(NSString *)password {
     _password = [[KdbPassword alloc]init];
     [self readHeader:input];
-    ByteBuffer * finalKey = nil;
+    Kdb3Tree *tree;
+    
+    ByteBuffer *finalKey = nil;
     id<InputDataSource> decrypted = nil;
-    Kdb3Parser * parser;
+    Kdb3Parser *parser;
     @try{
         finalKey= [_password createFinalKey32ForPasssword:password encoding:NSWindowsCP1252StringEncoding kdbVersion:3];
         decrypted = [self createDecryptedInputDataSource:input key:finalKey];
         
         parser = [[Kdb3Parser alloc]init];
-        self._tree = [parser parse:decrypted numGroups:_numGroups numEntris:_numEntries];
+        tree = [parser parse:decrypted numGroups:_numGroups numEntris:_numEntries];
     }@finally {
         [parser release];
         [finalKey release];
         [decrypted release];
         [_password release];
     }
-    return self._tree;
+    
+    return tree;
 }
 
 @end

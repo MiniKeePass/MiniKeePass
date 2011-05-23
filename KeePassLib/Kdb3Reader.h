@@ -25,10 +25,7 @@
     uint8_t _contentHash[32];
     uint8_t _encryptionIV[16];
     KdbPassword * _password;
-    KdbTree *_tree;
 }
-
-@property(nonatomic, retain) KdbTree *_tree;
 
 - (KdbTree*)load:(WrapperNSData *)input withPassword:(NSString*)password;
 
