@@ -11,23 +11,23 @@
 #import "Kdb3Date.h"
 
 @interface Kdb3Persist(PrivateMethods)
-    - (void)persistGroups:(Kdb3Group *)root;
-    - (void)persistEntries:(Kdb3Group *)root;
-    - (void)persistMetaEntries:(Kdb3Group *)root;
-    - (void)writeGroup:(Kdb3Group *)group;
-    - (void)writeEntry:(Kdb3Entry *)entry;
-    - (void)appendField:(uint16_t)type size:(uint32_t)size bytes:(void *)value;
+- (void)persistGroups:(Kdb3Group *)root;
+- (void)persistEntries:(Kdb3Group *)root;
+- (void)persistMetaEntries:(Kdb3Group *)root;
+- (void)writeGroup:(Kdb3Group *)group;
+- (void)writeEntry:(Kdb3Entry *)entry;
+- (void)appendField:(uint16_t)type size:(uint32_t)size bytes:(void *)value;
 @end
 
 @implementation Kdb3Persist
-@synthesize _tree;
-@synthesize _enc;
 
-- (id)initWithTree:(Kdb3Tree*)tree andDest:(AESEncryptSource *)dest {
+@synthesize _tree;
+
+- (id)initWithTree:(Kdb3Tree*)tree andOutputStream:(OutputStream*)stream {
     self = [super init];
-    if(self) {
+    if (self) {
         self._tree = tree;
-        self._enc = dest;
+        outputStream = [stream retain];
         _groupId = 100;
     }
     return self;
@@ -35,17 +35,16 @@
 
 - (void)dealloc {
     [_tree release];
-    [_enc release];
+    [outputStream release];
     [super dealloc];
 }
 
 - (void)appendField:(uint16_t)type size:(uint32_t)size bytes:(void *)buffer {
-    type = SWAP_INT16_HOST_TO_LE(type);
-    size = SWAP_INT32_HOST_TO_LE(size);
-    
-    [_enc update:&type size:2];
-    [_enc update:&size size:4];
-    if(size&&buffer) [_enc update:buffer size:size];
+    [outputStream writeInt16:SWAP_INT16_HOST_TO_LE(type)];
+    [outputStream writeInt32:SWAP_INT32_HOST_TO_LE(size)];
+    if (size > 0) {
+        [outputStream write:buffer length:size];
+    }
 }
 
 - (void)writeEntry:(Kdb3Entry *)entry {
@@ -217,7 +216,6 @@
     [self persistGroups:root];
     [self persistEntries:root];
     [self persistMetaEntries:root];
-    [_enc final];
 }
 
 @end

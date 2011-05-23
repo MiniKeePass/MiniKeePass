@@ -7,14 +7,15 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "AESEncryptSource.h"
 #import "KdbWriter.h"
 #import "KdbPassword.h"
 #import "Kdb3Node.h"
 
 @interface Kdb3Writer : NSObject<KdbWriter> {
+    KdbPassword *kdbPassword;
+    uint8_t encryptionIv[16];
 }
 
-- (void)newFile:(NSString *)fileName withPassword:(NSString *)password;
+- (void)newFile:(NSString*)fileName withPassword:(NSString*)password;
 
 @end

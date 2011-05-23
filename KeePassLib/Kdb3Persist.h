@@ -7,19 +7,18 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "AESEncryptSource.h"
 #import "Kdb3Node.h"
+#import "OutputStream.h"
 
 @interface Kdb3Persist : NSObject {
     Kdb3Tree *_tree;
-    AESEncryptSource * _enc;
+    OutputStream *outputStream;
     NSInteger _groupId;
 }
 
 @property(nonatomic, retain) KdbTree *_tree;
-@property(nonatomic, retain) AESEncryptSource * _enc;
 
-- (id)initWithTree:(Kdb3Tree*)tree andDest:(AESEncryptSource *)dest; 
+- (id)initWithTree:(Kdb3Tree*)tree andOutputStream:(OutputStream*)stream;
 - (void)persist;
 
 @end

@@ -31,6 +31,7 @@
 		68738A0D1389A5CE00DFC837 /* HashedInputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 68738A0C1389A5CE00DFC837 /* HashedInputStream.m */; };
 		68738A0F1389AE1300DFC837 /* HashedInputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 68738A0C1389A5CE00DFC837 /* HashedInputStream.m */; };
 		68738A121389AE4F00DFC837 /* HashedStreamTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 68738A111389AE4E00DFC837 /* HashedStreamTest.m */; };
+		68738A151389B71900DFC837 /* Sha256OutputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 68738A141389B71900DFC837 /* Sha256OutputStream.m */; };
 		688231DC138046FC0046B00D /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 688231DB138046FC0046B00D /* SearchViewController.m */; };
 		688231E613806D270046B00D /* tab_files.png in Resources */ = {isa = PBXBuildFile; fileRef = 688231DE13806D270046B00D /* tab_files.png */; };
 		688231E713806D270046B00D /* tab_files@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 688231DF13806D270046B00D /* tab_files@2x.png */; };
@@ -87,7 +88,6 @@
 		689356D913899C5F00BB263D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 689356D713899C5F00BB263D /* InfoPlist.strings */; };
 		689356DC13899C5F00BB263D /* AesStreamTest.h in Resources */ = {isa = PBXBuildFile; fileRef = 689356DB13899C5F00BB263D /* AesStreamTest.h */; };
 		689356DE13899C5F00BB263D /* AesStreamTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 689356DD13899C5F00BB263D /* AesStreamTest.m */; };
-		689356E213899CD500BB263D /* AESEncryptSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 6896754B1379DCE5006BC268 /* AESEncryptSource.m */; };
 		689356E313899CD500BB263D /* Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 689675511379DCE5006BC268 /* Base64.m */; };
 		689356E413899CD500BB263D /* BinaryContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 689675551379DCE5006BC268 /* BinaryContainer.m */; };
 		689356E513899CD500BB263D /* ByteBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 689675571379DCE5006BC268 /* ByteBuffer.m */; };
@@ -127,7 +127,6 @@
 		6893570E13899DD800BB263D /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6893570D13899DD800BB263D /* AudioToolbox.framework */; };
 		68964206137F2549001B87A4 /* ChoiceCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68964205137F2549001B87A4 /* ChoiceCell.m */; };
 		689675971379DCE6006BC268 /* AESDecryptSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 689675491379DCE5006BC268 /* AESDecryptSource.m */; };
-		689675981379DCE6006BC268 /* AESEncryptSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 6896754B1379DCE5006BC268 /* AESEncryptSource.m */; };
 		6896759A1379DCE6006BC268 /* Arc4RandomStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 6896754F1379DCE5006BC268 /* Arc4RandomStream.m */; };
 		6896759B1379DCE6006BC268 /* Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 689675511379DCE5006BC268 /* Base64.m */; };
 		6896759D1379DCE6006BC268 /* BinaryContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 689675551379DCE5006BC268 /* BinaryContainer.m */; };
@@ -222,6 +221,8 @@
 		689859F3136CDC91001B4204 /* 7.png in Resources */ = {isa = PBXBuildFile; fileRef = 689859AC136CDC91001B4204 /* 7.png */; };
 		689859F4136CDC91001B4204 /* 8.png in Resources */ = {isa = PBXBuildFile; fileRef = 689859AD136CDC91001B4204 /* 8.png */; };
 		689859F5136CDC91001B4204 /* 9.png in Resources */ = {isa = PBXBuildFile; fileRef = 689859AE136CDC91001B4204 /* 9.png */; };
+		689CBB8E1389B93F009A26DB /* Sha256StreamTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 689CBB8D1389B93F009A26DB /* Sha256StreamTest.m */; };
+		689CBB8F1389BD19009A26DB /* Sha256OutputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 68738A141389B71900DFC837 /* Sha256OutputStream.m */; };
 		689EB69D136DAE1C00C8DA1E /* TextViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 689EB69C136DAE1C00C8DA1E /* TextViewCell.m */; };
 		689EB6A0136DB4BF00C8DA1E /* TextFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 689EB69F136DB4BF00C8DA1E /* TextFieldCell.m */; };
 		689EB6A3136DC24C00C8DA1E /* EntryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 689EB6A2136DC24C00C8DA1E /* EntryViewController.m */; };
@@ -281,6 +282,8 @@
 		68738A0C1389A5CE00DFC837 /* HashedInputStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HashedInputStream.m; sourceTree = "<group>"; };
 		68738A101389AE4E00DFC837 /* HashedStreamTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HashedStreamTest.h; sourceTree = "<group>"; };
 		68738A111389AE4E00DFC837 /* HashedStreamTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HashedStreamTest.m; sourceTree = "<group>"; };
+		68738A131389B71900DFC837 /* Sha256OutputStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Sha256OutputStream.h; sourceTree = "<group>"; };
+		68738A141389B71900DFC837 /* Sha256OutputStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Sha256OutputStream.m; sourceTree = "<group>"; };
 		688231DA138046FC0046B00D /* SearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchViewController.h; sourceTree = "<group>"; };
 		688231DB138046FC0046B00D /* SearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchViewController.m; sourceTree = "<group>"; };
 		688231DE13806D270046B00D /* tab_files.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tab_files.png; sourceTree = "<group>"; };
@@ -353,8 +356,6 @@
 		68964205137F2549001B87A4 /* ChoiceCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChoiceCell.m; sourceTree = "<group>"; };
 		689675481379DCE5006BC268 /* AESDecryptSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AESDecryptSource.h; sourceTree = "<group>"; };
 		689675491379DCE5006BC268 /* AESDecryptSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AESDecryptSource.m; sourceTree = "<group>"; };
-		6896754A1379DCE5006BC268 /* AESEncryptSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AESEncryptSource.h; sourceTree = "<group>"; };
-		6896754B1379DCE5006BC268 /* AESEncryptSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AESEncryptSource.m; sourceTree = "<group>"; };
 		6896754E1379DCE5006BC268 /* Arc4RandomStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Arc4RandomStream.h; sourceTree = "<group>"; };
 		6896754F1379DCE5006BC268 /* Arc4RandomStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Arc4RandomStream.m; sourceTree = "<group>"; };
 		689675501379DCE5006BC268 /* Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Base64.h; sourceTree = "<group>"; };
@@ -478,6 +479,8 @@
 		689859AC136CDC91001B4204 /* 7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 7.png; sourceTree = "<group>"; };
 		689859AD136CDC91001B4204 /* 8.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 8.png; sourceTree = "<group>"; };
 		689859AE136CDC91001B4204 /* 9.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 9.png; sourceTree = "<group>"; };
+		689CBB8C1389B93F009A26DB /* Sha256StreamTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Sha256StreamTest.h; sourceTree = "<group>"; };
+		689CBB8D1389B93F009A26DB /* Sha256StreamTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Sha256StreamTest.m; sourceTree = "<group>"; };
 		689EB69B136DAE1C00C8DA1E /* TextViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextViewCell.h; sourceTree = "<group>"; };
 		689EB69C136DAE1C00C8DA1E /* TextViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextViewCell.m; sourceTree = "<group>"; };
 		689EB69E136DB4BF00C8DA1E /* TextFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextFieldCell.h; sourceTree = "<group>"; };
@@ -625,6 +628,8 @@
 				68C17653138969820046E0E1 /* DataOutputStream.m */,
 				68C1764E13895BB20046E0E1 /* HashedOutputStream.h */,
 				68C1764F13895BB30046E0E1 /* HashedOutputStream.m */,
+				68738A131389B71900DFC837 /* Sha256OutputStream.h */,
+				68738A141389B71900DFC837 /* Sha256OutputStream.m */,
 				68C1765513896B480046E0E1 /* OutputStream.h */,
 				68C1765613896B4A0046E0E1 /* OutputStream.m */,
 			);
@@ -713,6 +718,8 @@
 				689356DD13899C5F00BB263D /* AesStreamTest.m */,
 				68738A101389AE4E00DFC837 /* HashedStreamTest.h */,
 				68738A111389AE4E00DFC837 /* HashedStreamTest.m */,
+				689CBB8C1389B93F009A26DB /* Sha256StreamTest.h */,
+				689CBB8D1389B93F009A26DB /* Sha256StreamTest.m */,
 				689356D513899C5F00BB263D /* Supporting Files */,
 				6893570F13899E9900BB263D /* Frameworks */,
 			);
@@ -743,8 +750,6 @@
 		689675461379DCE5006BC268 /* KeePassLib */ = {
 			isa = PBXGroup;
 			children = (
-				6896754A1379DCE5006BC268 /* AESEncryptSource.h */,
-				6896754B1379DCE5006BC268 /* AESEncryptSource.m */,
 				689675501379DCE5006BC268 /* Base64.h */,
 				689675511379DCE5006BC268 /* Base64.m */,
 				689675541379DCE5006BC268 /* BinaryContainer.h */,
@@ -1204,8 +1209,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				689CBB8F1389BD19009A26DB /* Sha256OutputStream.m in Sources */,
 				68738A0F1389AE1300DFC837 /* HashedInputStream.m in Sources */,
-				689356E213899CD500BB263D /* AESEncryptSource.m in Sources */,
 				689356E313899CD500BB263D /* Base64.m in Sources */,
 				689356E413899CD500BB263D /* BinaryContainer.m in Sources */,
 				689356E513899CD500BB263D /* ByteBuffer.m in Sources */,
@@ -1241,6 +1246,7 @@
 				6893570313899CD600BB263D /* Salsa20RandomStream.m in Sources */,
 				689356DE13899C5F00BB263D /* AesStreamTest.m in Sources */,
 				68738A121389AE4F00DFC837 /* HashedStreamTest.m in Sources */,
+				689CBB8E1389B93F009A26DB /* Sha256StreamTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1267,7 +1273,6 @@
 				688F3FB51377805C0049808C /* SelectionListViewController.m in Sources */,
 				688D47751378DF9400BEE609 /* DatabaseManager.m in Sources */,
 				689675971379DCE6006BC268 /* AESDecryptSource.m in Sources */,
-				689675981379DCE6006BC268 /* AESEncryptSource.m in Sources */,
 				6896759A1379DCE6006BC268 /* Arc4RandomStream.m in Sources */,
 				6896759B1379DCE6006BC268 /* Base64.m in Sources */,
 				6896759D1379DCE6006BC268 /* BinaryContainer.m in Sources */,
@@ -1305,6 +1310,7 @@
 				689356C013898E6C00BB263D /* DataInputStream.m in Sources */,
 				689356C3138990BD00BB263D /* AesInputStream.m in Sources */,
 				68738A0D1389A5CE00DFC837 /* HashedInputStream.m in Sources */,
+				68738A151389B71900DFC837 /* Sha256OutputStream.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
