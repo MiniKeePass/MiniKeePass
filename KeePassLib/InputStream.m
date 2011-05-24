@@ -14,6 +14,14 @@
     @throw [NSException exceptionWithName:@"AbstractMethod" reason:@"read:length:" userInfo:nil];
 }
 
+- (NSData*)readData:(NSUInteger)length {
+    uint8_t bytes[length];
+    
+    [self read:bytes length:length];
+    
+    return [NSData dataWithBytes:bytes length:length];
+}
+
 - (uint8_t)readInt8 {
     uint8_t value;
     
@@ -44,6 +52,22 @@
     [self read:&value length:8];
     
     return value;
+}
+
+- (NSString*)readString:(NSUInteger)length encoding:(NSStringEncoding)encoding {
+    uint8_t bytes[length];
+    
+    [self read:bytes length:length];
+    
+    return [[[NSString alloc] initWithBytes:bytes length:length encoding:encoding] autorelease];
+}
+
+- (NSString*)readCString:(NSUInteger)length encoding:(NSStringEncoding)encoding {
+    char str[length];
+    
+    [self read:str length:length];
+    
+    return [NSString stringWithCString:str encoding:encoding];
 }
 
 - (void)close {
