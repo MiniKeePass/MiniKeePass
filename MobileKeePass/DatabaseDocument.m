@@ -51,11 +51,7 @@
     password = [newPassword retain];
     dirty = NO;
     
-    WrapperNSData *wrapperNSData = [[WrapperNSData alloc] initWithContentsOfMappedFile:filename];
-    id<KdbReader> kdbReader = [KdbReaderFactory newKdbReader:wrapperNSData];
-    self.kdbTree = [kdbReader load:wrapperNSData withPassword:password];
-    [kdbReader release];
-    [wrapperNSData release];
+    self.kdbTree = [KdbReaderFactory load:filename withPassword:password];
 }
 
 - (void)save {
