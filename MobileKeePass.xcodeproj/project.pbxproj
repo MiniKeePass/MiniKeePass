@@ -89,7 +89,6 @@
 		689356DC13899C5F00BB263D /* AesStreamTest.h in Resources */ = {isa = PBXBuildFile; fileRef = 689356DB13899C5F00BB263D /* AesStreamTest.h */; };
 		689356DE13899C5F00BB263D /* AesStreamTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 689356DD13899C5F00BB263D /* AesStreamTest.m */; };
 		689356E313899CD500BB263D /* Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 689675511379DCE5006BC268 /* Base64.m */; };
-		689356E413899CD500BB263D /* BinaryContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 689675551379DCE5006BC268 /* BinaryContainer.m */; };
 		689356E513899CD500BB263D /* ByteBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 689675571379DCE5006BC268 /* ByteBuffer.m */; };
 		689356E613899CD600BB263D /* GDataXMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 6891056B13874D4300106245 /* GDataXMLNode.m */; };
 		689356E713899CD600BB263D /* Kdb.m in Sources */ = {isa = PBXBuildFile; fileRef = 68A9D33B1388759A00AE9AD6 /* Kdb.m */; };
@@ -129,7 +128,6 @@
 		689675971379DCE6006BC268 /* AESDecryptSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 689675491379DCE5006BC268 /* AESDecryptSource.m */; };
 		6896759A1379DCE6006BC268 /* Arc4RandomStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 6896754F1379DCE5006BC268 /* Arc4RandomStream.m */; };
 		6896759B1379DCE6006BC268 /* Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 689675511379DCE5006BC268 /* Base64.m */; };
-		6896759D1379DCE6006BC268 /* BinaryContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 689675551379DCE5006BC268 /* BinaryContainer.m */; };
 		6896759E1379DCE6006BC268 /* ByteBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 689675571379DCE5006BC268 /* ByteBuffer.m */; };
 		689675A11379DCE6006BC268 /* GZipInputData.m in Sources */ = {isa = PBXBuildFile; fileRef = 6896755E1379DCE5006BC268 /* GZipInputData.m */; };
 		689675A21379DCE6006BC268 /* HashedInputData.m in Sources */ = {isa = PBXBuildFile; fileRef = 689675601379DCE5006BC268 /* HashedInputData.m */; };
@@ -360,8 +358,6 @@
 		6896754F1379DCE5006BC268 /* Arc4RandomStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Arc4RandomStream.m; sourceTree = "<group>"; };
 		689675501379DCE5006BC268 /* Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Base64.h; sourceTree = "<group>"; };
 		689675511379DCE5006BC268 /* Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Base64.m; sourceTree = "<group>"; };
-		689675541379DCE5006BC268 /* BinaryContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BinaryContainer.h; sourceTree = "<group>"; };
-		689675551379DCE5006BC268 /* BinaryContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BinaryContainer.m; sourceTree = "<group>"; };
 		689675561379DCE5006BC268 /* ByteBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ByteBuffer.h; sourceTree = "<group>"; };
 		689675571379DCE5006BC268 /* ByteBuffer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ByteBuffer.m; sourceTree = "<group>"; };
 		689675581379DCE5006BC268 /* DataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataSource.h; sourceTree = "<group>"; };
@@ -752,8 +748,6 @@
 			children = (
 				689675501379DCE5006BC268 /* Base64.h */,
 				689675511379DCE5006BC268 /* Base64.m */,
-				689675541379DCE5006BC268 /* BinaryContainer.h */,
-				689675551379DCE5006BC268 /* BinaryContainer.m */,
 				689675561379DCE5006BC268 /* ByteBuffer.h */,
 				689675571379DCE5006BC268 /* ByteBuffer.m */,
 				6891056A13874D4200106245 /* GDataXMLNode.h */,
@@ -1212,7 +1206,6 @@
 				689CBB8F1389BD19009A26DB /* Sha256OutputStream.m in Sources */,
 				68738A0F1389AE1300DFC837 /* HashedInputStream.m in Sources */,
 				689356E313899CD500BB263D /* Base64.m in Sources */,
-				689356E413899CD500BB263D /* BinaryContainer.m in Sources */,
 				689356E513899CD500BB263D /* ByteBuffer.m in Sources */,
 				689356E613899CD600BB263D /* GDataXMLNode.m in Sources */,
 				689356E713899CD600BB263D /* Kdb.m in Sources */,
@@ -1275,7 +1268,6 @@
 				689675971379DCE6006BC268 /* AESDecryptSource.m in Sources */,
 				6896759A1379DCE6006BC268 /* Arc4RandomStream.m in Sources */,
 				6896759B1379DCE6006BC268 /* Base64.m in Sources */,
-				6896759D1379DCE6006BC268 /* BinaryContainer.m in Sources */,
 				6896759E1379DCE6006BC268 /* ByteBuffer.m in Sources */,
 				689675A11379DCE6006BC268 /* GZipInputData.m in Sources */,
 				689675A21379DCE6006BC268 /* HashedInputData.m in Sources */,
