@@ -17,7 +17,7 @@
 @synthesize _source;
 
 // the byte size of input source must be multiples of 16 
--(id)initWithInputSource:(id<InputDataSource>)source Keys:(uint8_t *)keys andIV:(uint8_t *)iv{
+-(id)initWithInputSource:(id<InputDataSource>)source Keys:(const uint8_t *)keys andIV:(uint8_t *)iv{
     self = [super init];
     if(self) {
         self._source = source;

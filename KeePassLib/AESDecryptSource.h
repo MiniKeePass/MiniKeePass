@@ -29,5 +29,6 @@
 
 @property(nonatomic, retain) id<InputDataSource> _source;
 
--(id)initWithInputSource:(id<InputDataSource>)source Keys:(uint8_t *)keys andIV:(uint8_t *)iv;
+-(id)initWithInputSource:(id<InputDataSource>)source Keys:(const uint8_t *)keys andIV:(uint8_t *)iv;
+
 @end
