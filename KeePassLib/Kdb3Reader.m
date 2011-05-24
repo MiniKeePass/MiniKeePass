@@ -10,74 +10,94 @@
 #import "UUID.h"
 #import "Utils.h"
 #import "Kdb3Parser.h"
-#import "AESDecryptSource.h"
+#import "AesInputStream.h"
 
 #define READ_BYTES(X, Y, Z) (X = [[ByteBuffer alloc] initWithSize:Y dataSource:Z])
 
 @interface Kdb3Reader (privateMethods)
--(id<InputDataSource>)createDecryptedInputDataSource:(id<InputDataSource>)source key:(ByteBuffer *)key;
--(void)readHeader:(id<InputDataSource>) source;
+- (void)readHeader:(InputStream*)inputStream;
 @end
 
 @implementation Kdb3Reader
 
-- (void)readHeader:(id<InputDataSource>)input {
-    uint32_t flags, version;
+- (id)init {
+    self = [super init];
+    if (self) {
+        masterSeed = nil;
+        encryptionIv = nil;
+        numGroups = 0;
+        numEntries = 0;
+        contentHash = nil;
+        transformSeed = nil;
+        rounds = 0;
+    }
+    return self;
+}
+
+- (void)dealloc {
+    [masterSeed release];
+    [encryptionIv release];
+    [contentHash release];
+    [transformSeed release];
+    [super dealloc];
+}
+
+- (void)readHeader:(InputStream*)inputStream {
+    uint8_t buffer[32];
     
-    flags = [Utils readInt32LE:input]; 
-    version = [Utils readInt32LE:input];
+    flags = [inputStream readInt32];
+    flags = CFSwapInt32LittleToHost(flags);
     
-    if((version & 0xFFFFFF00)!=(KDB3_VER & 0xFFFFFF00)){
-        @throw [NSException exceptionWithName:@"Unsupported" reason:@"UnsupportedVersion" userInfo:nil];
+    version = [inputStream readInt32];
+    version = CFSwapInt32LittleToHost(version);
+    
+    // Check the version
+    if ((version & 0xFFFFFF00) != (KDB3_VER & 0xFFFFFF00)) {
+        @throw [NSException exceptionWithName:@"Unsupported" reason:@"Unsupported version" userInfo:nil];
     }
     
-    if(!(flags & FLAG_RIJNDAEL)) 
-        @throw [NSException exceptionWithName:@"Unsupported" reason:@"UnsupportedAlgorithm" userInfo:nil];
+    // Check the encryption algorithm
+    if (!(flags & FLAG_RIJNDAEL)) {
+        @throw [NSException exceptionWithName:@"Unsupported" reason:@"Unsupported algorithm" userInfo:nil];
+    }
+    
+    [inputStream read:buffer length:16];
+    masterSeed = [[NSData alloc] initWithBytes:buffer length:16];
 
+    [inputStream read:buffer length:16];
+    encryptionIv = [[NSData alloc] initWithBytes:buffer length:16];
     
-    ByteBuffer * masterSeed;
-    READ_BYTES(masterSeed, 16, input);
-    _password._masterSeed = masterSeed;
-    [masterSeed release];
-    [input readBytes:_encryptionIV length:16];
-    _numGroups = [Utils readInt32LE:input];
-    _numEntries = [Utils readInt32LE:input];
+    numGroups = [inputStream readInt32];
+    numGroups = CFSwapInt32LittleToHost(numGroups);
     
-    [input readBytes:_contentHash length:32];
-
-    ByteBuffer * transformSeed = nil;
-    READ_BYTES(transformSeed, 32, input);
-    _password._transformSeed = transformSeed;
-    [transformSeed release];
+    numEntries = [inputStream readInt32];
+    numEntries = CFSwapInt32LittleToHost(numEntries);
     
-    _password._rounds = [Utils readInt32LE:input];
+    [inputStream read:buffer length:32];
+    contentHash = [[NSData alloc] initWithBytes:buffer length:32];
+    
+    [inputStream read:buffer length:32];
+    transformSeed = [[NSData alloc] initWithBytes:buffer length:32];
+    
+    rounds = [inputStream readInt32];
+    rounds = CFSwapInt32LittleToHost(rounds);
 }
 
-
--(id<InputDataSource>)createDecryptedInputDataSource:(id<InputDataSource>)source key:(ByteBuffer *)key{
-    AESDecryptSource * rv = [[AESDecryptSource alloc]initWithInputSource:source Keys:key._bytes andIV:_encryptionIV];
-    return rv;
-}
-
-- (KdbTree*)load:(WrapperNSData *)input withPassword:(NSString *)password {
-    _password = [[KdbPassword alloc]init];
-    [self readHeader:input];
+- (KdbTree*)load:(InputStream*)inputStream withPassword:(NSString*)password {
     Kdb3Tree *tree;
     
-    ByteBuffer *finalKey = nil;
-    id<InputDataSource> decrypted = nil;
-    Kdb3Parser *parser;
-    @try{
-        finalKey= [_password createFinalKey32ForPasssword:password encoding:NSWindowsCP1252StringEncoding kdbVersion:3];
-        decrypted = [self createDecryptedInputDataSource:input key:finalKey];
-        
-        parser = [[Kdb3Parser alloc]init];
-        tree = [parser parse:decrypted numGroups:_numGroups numEntris:_numEntries];
-    }@finally {
+    // Read the header
+    [self readHeader:inputStream];
+    
+    NSData *key = [KdbPassword createFinalKey32ForPasssword:password encoding:NSWindowsCP1252StringEncoding kdbVersion:3 masterSeed:masterSeed transformSeed:transformSeed rounds:rounds];
+    AesInputStream *aesInputStream = [[AesInputStream alloc] initWithInputStream:inputStream key:key iv:encryptionIv];
+
+    Kdb3Parser *parser = [[Kdb3Parser alloc]init];
+    @try {
+        tree = [parser parse:aesInputStream numGroups:numGroups numEntris:numEntries];
+    } @finally {
         [parser release];
-        [finalKey release];
-        [decrypted release];
-        [_password release];
+        [aesInputStream release];
     }
     
     return tree;

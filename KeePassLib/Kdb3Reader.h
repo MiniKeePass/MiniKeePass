@@ -21,13 +21,16 @@
 #import "KdbPassword.h"
 
 @interface Kdb3Reader : NSObject<KdbReader> {
-    uint32_t _numGroups, _numEntries;
-    uint8_t _contentHash[32];
-    uint8_t _encryptionIV[16];
-    KdbPassword * _password;
+    uint32_t flags;
+    uint32_t version;
+    NSData *masterSeed;
+    NSData *encryptionIv;
+    uint32_t numGroups;
+    uint32_t numEntries;
+    NSData *contentHash;
+    NSData *transformSeed;
+    uint32_t rounds;
 }
-
-- (KdbTree*)load:(WrapperNSData *)input withPassword:(NSString*)password;
 
 @end
 

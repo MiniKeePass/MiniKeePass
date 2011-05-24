@@ -9,38 +9,34 @@
 #import "KdbReaderFactory.h"
 #import "Kdb3Reader.h"
 #import "Kdb4Reader.h"
-#import "Utils.h"
+#import "DataInputStream.h"
 
 @implementation KdbReaderFactory
 
-/*
- * This function checks the signature of the input stream, and returns
- * appropriate KdbReader instance;
- * The caller is the owner of the reader returned, and should release it after use;
- * This function returns nil if the signatures are unknown
- *
- * The way to use this class and KDB reader is:
-   id<KdbReader> read = [KdbReaderFactory newKdbReader:input];
-   [read load:input withPassword:password];
-   [read release];
- */
-+(id<KdbReader>)newKdbReader:(WrapperNSData *)input{
-    uint32_t signature1 = [Utils readInt32LE:input];
-    uint32_t signature2 = [Utils readInt32LE:input];
++ (KdbTree*)load:(NSString*)filename withPassword:(NSString*)password {
+    // FIXME this is horribly broken
+    KdbTree *tree = nil;
     
-    if(signature1==KDB3_SIG1&&signature2==KDB3_SIG2){
-        return [[Kdb3Reader alloc] init];
+    DataInputStream *inputStream = [[DataInputStream alloc] initWithData:[NSData dataWithContentsOfFile:filename]];
+    uint32_t sig1 = [inputStream readInt32];
+    sig1 = CFSwapInt32LittleToHost(sig1);
+    
+    uint32_t sig2 = [inputStream readInt32];
+    sig2 = CFSwapInt32LittleToHost(sig2);
+    
+    if (sig1 == KDB3_SIG1 && sig2 == KDB3_SIG2) {
+        Kdb3Reader *reader = [[Kdb3Reader alloc] init];
+        tree = [reader load:inputStream withPassword:password];
+        [reader release];
     }
     
-    if(signature1==KDB4_SIG1&&signature2==KDB4_SIG2){
-        return [[Kdb4Reader alloc]init];
-    }
-        
-    if(signature1==KDB4_PRE_SIG1&&signature2==KDB4_PRE_SIG2){
-        return [[Kdb4Reader alloc]init];
+    [inputStream release];
+    
+    if (tree == nil) {
+        @throw [NSException exceptionWithName:@"IOException" reason:@"Invalid file signature" userInfo:nil];
     }
     
-    @throw [NSException exceptionWithName:@"Unsupported" reason:@"UnsupportedVersion" userInfo:nil];
+    return tree;
 }
 
 @end

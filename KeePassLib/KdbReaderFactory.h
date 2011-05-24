@@ -13,6 +13,6 @@
 
 }
 
-+(id<KdbReader>)newKdbReader:(WrapperNSData *)input;
++ (KdbTree*)load:(NSString*)filename withPassword:(NSString*)password;
 
 @end
