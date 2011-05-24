@@ -23,6 +23,6 @@
     BOOL eof;
 }
 
-- (id)initWithInputStream:(InputStream*)stream key:(const void*)key iv:(const void*)iv;
+- (id)initWithInputStream:(InputStream*)stream key:(NSData*)key iv:(NSData*)iv;
 
 @end

@@ -19,6 +19,6 @@
     uint8_t *buffer;
 }
 
-- (id)initWithOutputStream:(OutputStream*)stream key:(const void*)key iv:(const void*)iv;
+- (id)initWithOutputStream:(OutputStream*)stream key:(NSData*)key iv:(NSData*)iv;
 
 @end

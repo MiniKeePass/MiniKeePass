@@ -14,12 +14,12 @@
 
 @implementation AesOutputStream
 
-- (id)initWithOutputStream:(OutputStream*)stream key:(const void*)key iv:(const void*)iv {
+- (id)initWithOutputStream:(OutputStream*)stream key:(NSData*)key iv:(NSData*)iv {
     self = [super init];
     if (self) {
         outputStream = [stream retain];
         
-        CCCryptorCreate(kCCEncrypt, kCCAlgorithmAES128, kCCOptionPKCS7Padding, key, kCCKeySizeAES256, iv, &cryptorRef);
+        CCCryptorCreate(kCCEncrypt, kCCAlgorithmAES128, kCCOptionPKCS7Padding, key.bytes, kCCKeySizeAES256, iv.bytes, &cryptorRef);
         
         bufferCapacity = 1024;
         buffer = malloc(bufferCapacity);
