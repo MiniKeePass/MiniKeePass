@@ -7,19 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "ByteBuffer.h"
 
 @interface KdbPassword : NSObject {
-    ByteBuffer *_masterSeed;
-    ByteBuffer *_transformSeed;
-    uint64_t _rounds;
 }
 
-@property(nonatomic, retain) ByteBuffer *_masterSeed;
-@property(nonatomic, retain) ByteBuffer *_transformSeed;
-@property(nonatomic, assign) uint64_t _rounds;
-
-- (id)initForEncryption:(NSInteger)masterSeedSize;
-- (ByteBuffer*)createFinalKey32ForPasssword:(NSString*)password encoding:(NSStringEncoding)encoding kdbVersion:(uint8_t)ver;
++ (NSData*)createFinalKey32ForPasssword:(NSString*)password encoding:(NSStringEncoding)encoding kdbVersion:(uint8_t)version masterSeed:(NSData*)masterSeed transformSeed:(NSData*)transformSeed rounds:(uint64_t)rounds;
 
 @end
