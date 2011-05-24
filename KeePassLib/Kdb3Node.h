@@ -10,7 +10,6 @@
 #import "Kdb.h"
 #import "UUID.h"
 #import "ByteBuffer.h"
-#import "BinaryContainer.h"
 
 #define KDB3_SIG1 (0x9AA2D903)
 #define KDB3_SIG2 (0xB54BFB65)
@@ -37,16 +36,16 @@
 
 
 @interface Kdb3Entry : KdbEntry {
-    UUID *_uuid;
+    NSData *_uuid;
     NSString *_binaryDesc;
     uint32_t _binarySize;
-    id<BinaryContainer> _binary;
+    NSData *_binary;
 }
 
-@property(nonatomic, retain) UUID *_uuid;
+@property(nonatomic, retain) NSData *_uuid;
 @property(nonatomic, retain) NSString *_binaryDesc;
 @property(nonatomic, assign) uint32_t _binarySize;
-@property(nonatomic, retain) id<BinaryContainer> _binary;
+@property(nonatomic, retain) NSData *_binary;
 
 - (id)initWithNewUUID;
 - (BOOL)isMeta;

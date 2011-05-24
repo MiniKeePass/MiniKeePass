@@ -16,7 +16,7 @@
 - (void)persistMetaEntries:(Kdb3Group *)root;
 - (void)writeGroup:(Kdb3Group *)group;
 - (void)writeEntry:(Kdb3Entry *)entry;
-- (void)appendField:(uint16_t)type size:(uint32_t)size bytes:(void *)value;
+- (void)appendField:(uint16_t)type size:(uint32_t)size bytes:(const void *)value;
 @end
 
 @implementation Kdb3Persist
@@ -39,7 +39,7 @@
     [super dealloc];
 }
 
-- (void)appendField:(uint16_t)type size:(uint32_t)size bytes:(void *)buffer {
+- (void)appendField:(uint16_t)type size:(uint32_t)size bytes:(const void *)buffer {
     [outputStream writeInt16:SWAP_INT16_HOST_TO_LE(type)];
     [outputStream writeInt32:SWAP_INT32_HOST_TO_LE(size)];
     if (size > 0) {
@@ -51,7 +51,7 @@
     uint32_t tmp32;
     
     //uuid 2+4+16
-    [self appendField:1 size:16 bytes:(void *)(entry._uuid._bytes)];
+    [self appendField:1 size:16 bytes:(void *)(entry._uuid.bytes)];
     
     //groupId
     tmp32 = SWAP_INT32_HOST_TO_LE(((Kdb3Group*)entry.parent)._id);
@@ -116,8 +116,8 @@
     }
     
     //binary
-    if(entry._binary && [entry._binary getSize]){
-        [self appendField:14 size:[entry._binary getSize] bytes:[entry._binary getBinary]];
+    if(entry._binary && entry._binary.length){
+        [self appendField:14 size:entry._binary.length bytes:entry._binary.bytes];
     }
     
     [self appendField:0xFFFF size:0 bytes:nil];
