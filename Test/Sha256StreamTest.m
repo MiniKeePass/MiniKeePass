@@ -9,7 +9,6 @@
 #import "Sha256StreamTest.h"
 #import "Sha256OutputStream.h"
 #import "DataOutputStream.h"
-#import "Utils.h"
 
 @implementation Sha256StreamTest
 

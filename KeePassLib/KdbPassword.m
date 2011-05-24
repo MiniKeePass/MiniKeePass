@@ -10,7 +10,6 @@
 #import <CommonCrypto/CommonCryptor.h>
 
 #import "KdbPassword.h"
-#import "Utils.h"
 
 @interface KdbPassword(PrivateMethods)
 - (void)transformKeyHash:(uint8_t*)keyHash result:(uint8_t*)result;
