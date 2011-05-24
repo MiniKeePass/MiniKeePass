@@ -73,14 +73,28 @@
     [super dealloc];
 }
 
--(BOOL)isMeta{
-    if(_binarySize==0) return NO;
-    if(!notes || ![notes length]) return NO;
-    if(!_binaryDesc || [_binaryDesc compare:@"bin-stream"]) return NO;
-    if(!title || [title compare:@"Meta-Info"]) return NO;
-    if(!username || [username compare:@"SYSTEM"]) return NO;
-    if(!url || [url compare:@"$"]) return NO;
-    if(image) return NO;
+-(BOOL)isMeta {
+    if (_binarySize == 0) {
+        return NO;
+    }
+    if (!notes || ![notes length]) {
+        return NO;
+    }
+    if (!_binaryDesc || [_binaryDesc compare:@"bin-stream"]) {
+        return NO;
+    }
+    if (!title || [title compare:@"Meta-Info"]) {
+        return NO;
+    }
+    if (!username || [username compare:@"SYSTEM"]) {
+        return NO;
+    }
+    if (!url || [url compare:@"$"]) {
+        return NO;
+    }
+    if (image) {
+        return NO;
+    }
     return YES;
 }
 
