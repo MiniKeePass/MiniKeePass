@@ -18,7 +18,7 @@
 #define DEFAULT_BIN_SIZE (32*1024)
 
 @interface Kdb4Writer (PrivateMethods)
-- (void)writeHeaderField:(OutputStream*)outputStream headerId:(uint8_t)headerId data:(void*)data length:(uint16_t)length;
+- (void)writeHeaderField:(OutputStream*)outputStream headerId:(uint8_t)headerId data:(const void*)data length:(uint16_t)length;
 - (void)writeHeader:(OutputStream*)outputStream;
 @end
 
@@ -27,23 +27,22 @@
 - init {
     self = [super init];
     if (self) {
-        // Initialize the KdbPassword for encryption
-        kdbPassword = [[KdbPassword alloc] initForEncryption:32];
-        
-        // Setup the encryption initialization vector
-        [Utils getRandomBytes:encryptionIv length:16];
-        
-        // Setup the protected stream key
-        [Utils getRandomBytes:protectedStreamKey length:32];
-        
-        // Setup the stream start bytes
-        [Utils getRandomBytes:streamStartBytes length:32];
+        masterSeed = [[Utils randomBytes:32] retain];
+        transformSeed = [[Utils randomBytes:32] retain];
+        rounds = 6000;
+        encryptionIv = [[Utils randomBytes:16] retain];
+        protectedStreamKey = [[Utils randomBytes:32] retain];
+        streamStartBytes = [[Utils randomBytes:32] retain];
     }
     return self;
 }
 
 - (void)dealloc {
-    [kdbPassword dealloc];
+    [masterSeed release];
+    [transformSeed release];
+    [encryptionIv release];
+    [protectedStreamKey release];
+    [streamStartBytes release];
     [super dealloc];
 }
 
@@ -58,9 +57,8 @@
     HashedOutputStream *hashedOutputStream = [[HashedOutputStream alloc] initWithOutputStream:outputStream blockSize:1014*1024];
     
     // Create the encryption output stream
-    ByteBuffer *finalKey = [kdbPassword createFinalKey32ForPasssword:password encoding:NSUTF8StringEncoding kdbVersion:4];
-    AesOutputStream *aesOutputStream = [[AesOutputStream alloc] initWithOutputStream:hashedOutputStream key:finalKey._bytes iv:encryptionIv];
-    [finalKey release];
+    NSData *key = [KdbPassword createFinalKey32ForPasssword:password encoding:NSUTF8StringEncoding kdbVersion:4 masterSeed:masterSeed transformSeed:transformSeed rounds:rounds];
+    AesOutputStream *aesOutputStream = [[AesOutputStream alloc] initWithOutputStream:hashedOutputStream key:key iv:encryptionIv];
     
     // Write the stream start bytes
     [aesOutputStream write:streamStartBytes length:32];
@@ -77,7 +75,7 @@
     }
 }
 
-- (void)writeHeaderField:(OutputStream*)outputStream headerId:(uint8_t)headerId data:(void*)data length:(uint16_t)length {
+- (void)writeHeaderField:(OutputStream*)outputStream headerId:(uint8_t)headerId data:(const void*)data length:(uint16_t)length {
     [outputStream writeInt8:headerId];
     
     [outputStream writeInt16:SWAP_INT16_HOST_TO_LE(length)];
@@ -104,18 +102,18 @@
     i32 = SWAP_INT32_HOST_TO_LE(COMPRESSION_NONE);
     [self writeHeaderField:outputStream headerId:HEADER_COMPRESSION data:&i32 length:4];
     
-    [self writeHeaderField:outputStream headerId:HEADER_MASTERSEED data:kdbPassword._masterSeed._bytes length:kdbPassword._masterSeed._size];
+    [self writeHeaderField:outputStream headerId:HEADER_MASTERSEED data:masterSeed.bytes length:masterSeed.length];
     
-    [self writeHeaderField:outputStream headerId:HEADER_TRANSFORMSEED data:kdbPassword._transformSeed._bytes length:kdbPassword._transformSeed._size];
+    [self writeHeaderField:outputStream headerId:HEADER_TRANSFORMSEED data:transformSeed.bytes length:transformSeed.length];
     
-    i64 = SWAP_INT64_HOST_TO_LE(kdbPassword._rounds);
+    i64 = SWAP_INT64_HOST_TO_LE(rounds);
     [self writeHeaderField:outputStream headerId:HEADER_TRANSFORMROUNDS data:&i64 length:8];
     
-    [self writeHeaderField:outputStream headerId:HEADER_ENCRYPTIONIV data:encryptionIv length:16];
+    [self writeHeaderField:outputStream headerId:HEADER_ENCRYPTIONIV data:encryptionIv.bytes length:encryptionIv.length];
     
-    [self writeHeaderField:outputStream headerId:HEADER_PROTECTEDKEY data:protectedStreamKey length:32];
+    [self writeHeaderField:outputStream headerId:HEADER_PROTECTEDKEY data:protectedStreamKey.bytes length:protectedStreamKey.length];
     
-    [self writeHeaderField:outputStream headerId:HEADER_STARTBYTES data:streamStartBytes length:32];
+    [self writeHeaderField:outputStream headerId:HEADER_STARTBYTES data:streamStartBytes.bytes length:streamStartBytes.length];
     
     i32 = SWAP_INT32_HOST_TO_LE(CSR_SALSA20);
     [self writeHeaderField:outputStream headerId:HEADER_RANDOMSTREAMID data:&i32 length:4];

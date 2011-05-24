@@ -27,11 +27,10 @@
 - init {
     self = [super init];
     if (self) {
-        // Initialize the KdbPassword for encryption
-        kdbPassword = [[KdbPassword alloc] initForEncryption:16];
-        
-        // Setup the encryption initialization vector
-        [Utils getRandomBytes:encryptionIv length:16];
+        masterSeed = [Utils randomBytes:16];
+        encryptionIv = [Utils randomBytes:16];
+        transformSeed = [Utils randomBytes:32];
+        rounds = 6000;
     }
     return self;
 }
@@ -63,28 +62,28 @@
  */
 - (void)writeHeader:(OutputStream*)outputStream withRoot:(Kdb3Group*)root {
     // Signature, Flags & Version
-    [outputStream writeInt32:SWAP_INT32_HOST_TO_LE(KDB3_SIG1)];
-    [outputStream writeInt32:SWAP_INT32_HOST_TO_LE(KDB3_SIG2)];
-    [outputStream writeInt32:SWAP_INT32_HOST_TO_LE(FLAG_SHA2|FLAG_RIJNDAEL)];
-    [outputStream writeInt32:SWAP_INT32_HOST_TO_LE(KDB3_VER)];
+    [outputStream writeInt32:CFSwapInt32HostToLittle(KDB3_SIG1)];
+    [outputStream writeInt32:CFSwapInt32HostToLittle(KDB3_SIG2)];
+    [outputStream writeInt32:CFSwapInt32HostToLittle(FLAG_SHA2|FLAG_RIJNDAEL)];
+    [outputStream writeInt32:CFSwapInt32HostToLittle(KDB3_VER)];
     
-    [outputStream write:kdbPassword._masterSeed._bytes length:16];
-    [outputStream write:encryptionIv length:16];
+    [outputStream write:masterSeed];
+    [outputStream write:encryptionIv];
     
-    uint32_t numGroups = [self numOfGroups:root]-1; //minus the root itself
-    [outputStream writeInt32:SWAP_INT32_HOST_TO_LE(numGroups)];
+    uint32_t numGroups = [self numOfGroups:root] - 1; // Minus the root
+    [outputStream writeInt32:CFSwapInt32HostToLittle(numGroups)];
     
     uint32_t numEntries = [self numOfEntries:root];
-    [outputStream writeInt32:SWAP_INT32_HOST_TO_LE(numEntries)];
+    [outputStream writeInt32:CFSwapInt32HostToLittle(numEntries)];
     
     // Write a bogus content hash until we can go back and fill it in
     uint8_t contentHash[32];
     memset(contentHash, 0xFF, 32);
     [outputStream write:contentHash length:32];
     
-    [outputStream write:kdbPassword._transformSeed._bytes length:32];
+    [outputStream write:transformSeed];
     
-    [outputStream writeInt32:SWAP_INT32_HOST_TO_LE(kdbPassword._rounds)];
+    [outputStream writeInt32:CFSwapInt32HostToLittle(rounds)];
 }
 
 /**
@@ -97,9 +96,8 @@
     [self writeHeader:dataOutputStream withRoot:(Kdb3Group*)tree.root];
     
     // Create the encryption output stream
-    ByteBuffer *finalKey = [kdbPassword createFinalKey32ForPasssword:password encoding:NSWindowsCP1252StringEncoding kdbVersion:3];
-    AesOutputStream *aesOutputStream = [[AesOutputStream alloc] initWithOutputStream:dataOutputStream key:finalKey._bytes iv:encryptionIv];
-    [finalKey release];
+    NSData *key = [KdbPassword createFinalKey32ForPasssword:password encoding:NSWindowsCP1252StringEncoding kdbVersion:3 masterSeed:masterSeed transformSeed:transformSeed rounds:rounds];
+    AesOutputStream *aesOutputStream = [[AesOutputStream alloc] initWithOutputStream:dataOutputStream key:key iv:encryptionIv];
     
     // Wrap the AES output stream in a SHA256 output stream to calculate a hash
     Sha256OutputStream *outputStream = [[Sha256OutputStream alloc] initWithOutputStream:aesOutputStream];

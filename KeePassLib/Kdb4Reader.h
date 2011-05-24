@@ -17,13 +17,12 @@
 @interface Kdb4Reader : NSObject<KdbReader> {
     UUID * _cipherUUID;
     
-    ByteBuffer * _encryptionIV, * _protectedStreamKey, * _streamStartBytes;
+    ByteBuffer * _encryptionIV, * _protectedStreamKey, * _streamStartBytes, *_masterSeed, *_transformSeed;
     uint32_t _compressionAlgorithm, _randomStreamID;
+    uint64_t _rounds;
 
     KdbPassword * _password;
     Kdb4Tree * _tree;
 }
-
-- (KdbTree*)load:(WrapperNSData *)input withPassword:(NSString*)password;
 
 @end

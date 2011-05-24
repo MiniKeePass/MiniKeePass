@@ -24,7 +24,7 @@
 
 @interface Kdb4Reader (PrivateMethods)
 -(void)readHeader:(id<InputDataSource>) source;
--(id<InputDataSource>)createDecryptedInputDataSource:(id<InputDataSource>)source key:(ByteBuffer *)key;
+-(id<InputDataSource>)createDecryptedInputDataSource:(id<InputDataSource>)source key:(const void*)key;
 @end
 
 
@@ -66,8 +66,10 @@
         [self readHeader:source];
         
         //decrypt data
-        finalKey = [_password createFinalKey32ForPasssword:password encoding:NSUTF8StringEncoding kdbVersion:4];
-        id<InputDataSource> decrypted = [self createDecryptedInputDataSource:source key:finalKey];
+        NSData *masterSeed = [NSData dataWithBytes:_masterSeed._bytes length:_masterSeed._size];
+        NSData *transformSeed = [NSData dataWithBytes:_transformSeed._bytes length:_transformSeed._size];
+        NSData *key = [KdbPassword createFinalKey32ForPasssword:password encoding:NSUTF8StringEncoding kdbVersion:4 masterSeed:masterSeed transformSeed:transformSeed rounds:_rounds];
+        id<InputDataSource> decrypted = [self createDecryptedInputDataSource:source key:key.bytes];
         
         //double check start block
         ByteBuffer * startBytes = [[ByteBuffer alloc] initWithSize:32];
@@ -113,8 +115,8 @@
 /*
  * Decrypt remaining bytes
  */
--(id<InputDataSource>)createDecryptedInputDataSource:(id<InputDataSource>)source key:(ByteBuffer *)key{
-    return [[[AESDecryptSource alloc] initWithInputSource:source Keys:key._bytes andIV:_encryptionIV._bytes] autorelease];
+-(id<InputDataSource>)createDecryptedInputDataSource:(id<InputDataSource>)source key:(const void*)key {
+    return [[[AESDecryptSource alloc] initWithInputSource:source Keys:key andIV:_encryptionIV._bytes] autorelease];
 }
 
 -(void)readHeader:(id<InputDataSource>)source{
@@ -153,21 +155,16 @@
                 break;
             }
             case HEADER_MASTERSEED:{
-                if(fieldSize!=32)
+                if(fieldSize!=32) {
                     @throw [NSException exceptionWithName:@"InvalidHeader" reason:@"InvalidMasterSeed" userInfo:nil];
-                ByteBuffer * masterSeed;
-                READ_BYTES(masterSeed, fieldSize, source);
-                _password._masterSeed = masterSeed;
-                [masterSeed release];
+                }
+                READ_BYTES(_masterSeed, fieldSize, source);
                 break;
             }
             case HEADER_TRANSFORMSEED:{
                 if(fieldSize!=32)
                     @throw [NSException exceptionWithName:@"InvalidHeader" reason:@"InvalidTransformSeed" userInfo:nil];
-                ByteBuffer * transformSeed;
-                READ_BYTES(transformSeed, fieldSize, source);
-                _password._transformSeed = transformSeed;
-                [transformSeed release];
+                READ_BYTES(_transformSeed, fieldSize, source);
                 break;
             }
             case HEADER_ENCRYPTIONIV:{
@@ -183,7 +180,7 @@
                 break;
             }
             case HEADER_TRANSFORMROUNDS:{
-                _password._rounds = [Utils readInt64LE:source];
+                _rounds = [Utils readInt64LE:source];
                 break;
             }
             case HEADER_COMPRESSION:{

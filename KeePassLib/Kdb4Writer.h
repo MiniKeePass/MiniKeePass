@@ -12,10 +12,12 @@
 #import "Kdb4Node.h"
 
 @interface Kdb4Writer : NSObject<KdbWriter> {
-    KdbPassword *kdbPassword;
-    uint8_t encryptionIv[16];
-    uint8_t protectedStreamKey[32];
-    uint8_t streamStartBytes[32];
+    NSData *masterSeed;
+    NSData *transformSeed;
+    uint64_t rounds;
+    NSData *encryptionIv;
+    NSData *protectedStreamKey;
+    NSData *streamStartBytes;
 }
 
 @end

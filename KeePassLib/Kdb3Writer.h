@@ -12,8 +12,10 @@
 #import "Kdb3Node.h"
 
 @interface Kdb3Writer : NSObject<KdbWriter> {
-    KdbPassword *kdbPassword;
-    uint8_t encryptionIv[16];
+    NSData *masterSeed;
+    NSData *encryptionIv;
+    NSData *transformSeed;
+    uint32_t rounds;
 }
 
 - (void)newFile:(NSString*)fileName withPassword:(NSString*)password;
