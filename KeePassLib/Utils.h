@@ -27,6 +27,9 @@
 
 + (BOOL)emptyString:(NSString*)str;
 
-+ (void)getRandomBytes:(uint8_t*)buffer length:(uint32_t)length;
++ (NSData*)randomBytes:(uint32_t)length;
+
++ (NSString*)hexDumpData:(NSData*)data;
++ (NSString*)hexDumpBytes:(const void *)buffer length:(ssize_t)length;
 
 @end
