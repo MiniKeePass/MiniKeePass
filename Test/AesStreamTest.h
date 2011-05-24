@@ -7,13 +7,14 @@
 //
 
 #import <SenTestingKit/SenTestingKit.h>
-#import "KdbPassword.h"
 
 @interface AesStreamTest : SenTestCase {
     NSString *password;
-    uint8_t encryptionIv[16];
-    KdbPassword *kdbPassword;
-    ByteBuffer *key;
+    NSData *encryptionIv;
+    NSData *masterSeed;
+    NSData *transformSeed;
+    uint32_t rounds;
+    NSData *key;
 }
 
 - (void)testAesStream;

@@ -11,6 +11,7 @@
 #import "AesInputStream.h"
 #import "DataOutputStream.h"
 #import "DataInputStream.h"
+#import "KdbPassword.h"
 #import "Utils.h"
 
 @implementation AesStreamTest
@@ -18,15 +19,19 @@
 - (void)setUp {
     password = @"test";
     
-    [Utils getRandomBytes:encryptionIv length:16];
-    
-    kdbPassword = [[KdbPassword alloc] initForEncryption:32];
-    key = [kdbPassword createFinalKey32ForPasssword:password encoding:NSUTF8StringEncoding kdbVersion:4];
+    encryptionIv = [[Utils randomBytes:16] retain];
+    masterSeed = [[Utils randomBytes:32] retain];
+    transformSeed = [[Utils randomBytes:32] retain];
+    rounds = 6000;
+
+    key = [[KdbPassword createFinalKey32ForPasssword:password encoding:NSUTF8StringEncoding kdbVersion:4 masterSeed:masterSeed transformSeed:transformSeed rounds:rounds] retain];
 }
 
 - (void)tearDown {
+    [encryptionIv release];
+    [masterSeed release];
+    [transformSeed release];
     [key release];
-    [kdbPassword release];
 }
 
 - (void)testAesStream {
@@ -38,7 +43,7 @@
     
     // Create the output stream
     DataOutputStream *dataOutputStream = [[DataOutputStream alloc] init];
-    AesOutputStream *aesOutputStream = [[AesOutputStream alloc] initWithOutputStream:dataOutputStream key:key._bytes iv:encryptionIv];
+    AesOutputStream *aesOutputStream = [[AesOutputStream alloc] initWithOutputStream:dataOutputStream key:key.bytes iv:encryptionIv];
     
     // Write out 1MB of data 1024 bytes at a time
     for (int i = 0; i < 1024*1024; i += 1024) {
@@ -50,7 +55,7 @@
     
     // Create the input stream from the output streams data
     DataInputStream *dataInputStream = [[DataInputStream alloc] initWithData:dataOutputStream.data];
-    AesInputStream *aesInputStream = [[AesInputStream alloc] initWithInputStream:dataInputStream key:key._bytes iv:encryptionIv];
+    AesInputStream *aesInputStream = [[AesInputStream alloc] initWithInputStream:dataInputStream key:key.bytes iv:encryptionIv];
     
     // Read in 1MB of data 512 blocks at a time
     uint8_t inputBuffer[1024 * 1024];
