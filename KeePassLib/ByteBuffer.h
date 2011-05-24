@@ -19,6 +19,5 @@
 
 - (id)initWithSize:(NSUInteger)size;
 - (id)initWithSize:(NSUInteger)size dataSource:(id<InputDataSource>)datasource;
-- (id)initWithString:(NSString*)string encoding:(NSStringEncoding)encoding;
 
 @end

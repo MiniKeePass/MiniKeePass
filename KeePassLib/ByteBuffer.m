@@ -30,16 +30,6 @@
     return self;
 }
 
-- (id)initWithString:(NSString*)string encoding:(NSStringEncoding)encoding {
-    [self initWithSize:[string lengthOfBytesUsingEncoding:encoding]];
-    if (self) {
-        NSRange range;
-        range.location = 0; range.length=[string length];
-        [string getBytes:_bytes maxLength:_size usedLength:nil encoding:encoding options:0 range:range remainingRange:nil];
-    }
-    return self;
-}
-
 - (void)dealloc {
     free(_bytes);
     [super dealloc];
