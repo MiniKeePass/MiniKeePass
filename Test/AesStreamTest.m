@@ -43,7 +43,7 @@
     
     // Create the output stream
     DataOutputStream *dataOutputStream = [[DataOutputStream alloc] init];
-    AesOutputStream *aesOutputStream = [[AesOutputStream alloc] initWithOutputStream:dataOutputStream key:key.bytes iv:encryptionIv];
+    AesOutputStream *aesOutputStream = [[AesOutputStream alloc] initWithOutputStream:dataOutputStream key:key iv:encryptionIv];
     
     // Write out 1MB of data 1024 bytes at a time
     for (int i = 0; i < 1024*1024; i += 1024) {
@@ -55,7 +55,7 @@
     
     // Create the input stream from the output streams data
     DataInputStream *dataInputStream = [[DataInputStream alloc] initWithData:dataOutputStream.data];
-    AesInputStream *aesInputStream = [[AesInputStream alloc] initWithInputStream:dataInputStream key:key.bytes iv:encryptionIv];
+    AesInputStream *aesInputStream = [[AesInputStream alloc] initWithInputStream:dataInputStream key:key iv:encryptionIv];
     
     // Read in 1MB of data 512 blocks at a time
     uint8_t inputBuffer[1024 * 1024];
