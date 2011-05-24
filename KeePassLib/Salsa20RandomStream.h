@@ -16,6 +16,6 @@
     uint8_t _keyStream[64];
 }
 
-- (id)init:(uint8_t*)key len:(uint32_t)len;
+- (id)init:(NSData*)key;
 
 @end

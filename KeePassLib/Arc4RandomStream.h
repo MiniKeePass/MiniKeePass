@@ -21,6 +21,6 @@
     uint32_t _index;
 }
 
-- (id)init:(uint8_t*)key len:(uint32_t)len;
+- (id)init:(NSData*)key;
 
 @end

@@ -10,24 +10,30 @@
 #import "ByteBuffer.h"
 
 @interface Arc4RandomStream (PrivateMethods)
--(void)updateState;
+- (void)updateState;
 @end
 
 @implementation Arc4RandomStream
 
--(id)init:(uint8_t *)key len:(uint32_t)len{
-    _i = _j = 0;
+- (id)init:(NSData*)key {
     self = [super init];
-    if(self) {
+    if (self) {
+        const uint8_t *bytes = key.bytes;
+        NSUInteger length = key.length;
+
+        _i = 0;
+        _j = 0;
+
         uint32_t index = 0;
-        for (uint32_t w = 0; w < 256; w++)
+        for (uint32_t w = 0; w < 256; w++) {
             _state[w] = (uint8_t)(w & 0xff);
+        }
         
         int i = 0, j = 0;
         uint8_t t = 0;
         
-        for (uint32_t w = 0; w < 256; w++){
-            j += ((_state[w] + key[index]));
+        for (uint32_t w = 0; w < 256; w++) {
+            j += ((_state[w] + bytes[index]));
             j &= 0xff;
             
             t = _state[i]; 
@@ -35,8 +41,9 @@
             _state[j] = t;
             
             ++index;
-            if (index >= len)
+            if (index >= length) {
                 index = 0;
+            }
         }
         
         [self updateState];
@@ -45,11 +52,11 @@
     return self;
 }
 
--(void)dealloc{
+- (void)dealloc {
     [super dealloc];
 }
 
--(void)updateState{
+- (void)updateState {
     uint8_t t = 0;
     for (uint32_t w = 0; w < ARC_BUFFER_SIZE; w++) {
         ++_i;
@@ -66,19 +73,21 @@
     }
 }
 
--(NSString *)xor:(NSData *)data{
-    ByteBuffer * bb = [[ByteBuffer alloc] initWithSize:[data length]];
-    [data getBytes:bb._bytes length:bb._size];
+- (NSString*)xor:(NSData*)data {
+    NSUInteger length = data.length;
+    uint8_t bytes[length];
+    [data getBytes:bytes length:length];
     
-    for(int i=0; i<bb._size; i++){
-        if(_index==0) [self updateState];
-        (bb._bytes)[i] ^= _buffer[_index];
-        _index = (_index+1)&ARC_BUFFER_SIZE;
+    for (int i = 0; i < length; i++) {
+        if (_index == 0) {
+            [self updateState];
+        }
+        
+        bytes[i] ^= _buffer[_index];
+        _index = (_index + 1) & ARC_BUFFER_SIZE;
     }
     
-    NSString * rv = [[NSString alloc] initWithBytes:bb._bytes length:bb._size encoding:NSUTF8StringEncoding];
-    [bb release];
-    return [rv autorelease];
+    return [[[NSString alloc] initWithBytes:bytes length:length encoding:NSUTF8StringEncoding] autorelease];
 }
 
 @end

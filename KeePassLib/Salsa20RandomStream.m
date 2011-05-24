@@ -13,42 +13,44 @@
 static uint32_t SIGMA[4] = {0x61707865, 0x3320646E, 0x79622D32, 0x6B206574};
 
 @interface Salsa20RandomStream (PrivateMethods)
--(void)setKey:(uint8_t *)key;
--(void)setIV:(uint8_t *)iv;
--(uint32_t)uint8To32Little:(uint8_t *)buffer offset:(uint32_t)offset;
--(uint32_t)rotl:(uint32_t)x y:(uint32_t)y;
--(void)updateState;
+- (void)setKey:(uint8_t*)key;
+- (void)setIV:(uint8_t*)iv;
+- (uint)uint8To32Little:(uint8_t*)buffer offset:(uint32_t)offset;
+- (uint32_t)rotl:(uint32_t)x y:(uint32_t)y;
+- (void)updateState;
 @end
 
 @implementation Salsa20RandomStream
 
--(id)init:(uint8_t *)key len:(uint32_t)len{
+- (id)init:(NSData*)key {
     self = [super init];
-    if(self) {
+    if (self) {
         uint8_t key32[32];
-        CC_SHA256(key, len, key32);
-        uint8_t iv[] = {0xE8, 0x30, 0x09, 0x4B, 0x97, 0x20, 0x5D, 0x2A};
+        CC_SHA256(key.bytes, key.length, key32);
         [self setKey:key32];
+        
+        uint8_t iv[] = {0xE8, 0x30, 0x09, 0x4B, 0x97, 0x20, 0x5D, 0x2A};
         [self setIV:iv];
+        
         _index = 0;
     }
     return self;
 }
 
--(void)dealloc{
+- (void)dealloc {
     [super dealloc];
 }
 
--(uint)uint8To32Little:(uint8_t *)buffer offset:(uint32_t)offset{
+- (uint)uint8To32Little:(uint8_t*)buffer offset:(uint32_t)offset {
     return ((uint)buffer[offset] | ((uint)buffer[offset + 1] << 8) |
             ((uint)buffer[offset + 2] << 16) | ((uint)buffer[offset + 3] << 24));
 }
 
--(uint32_t)rotl:(uint32_t)x y:(uint32_t)y{
+- (uint32_t)rotl:(uint32_t)x y:(uint32_t)y {
     return (x<<y)|(x>>(32-y));
 }
 
--(void)setKey:(uint8_t *)key{
+- (void)setKey:(uint8_t*)key {
     _state[1] = [self uint8To32Little:key offset:0];
     _state[2] = [self uint8To32Little:key offset:4];
     _state[3] = [self uint8To32Little:key offset:8];
@@ -64,14 +66,14 @@ static uint32_t SIGMA[4] = {0x61707865, 0x3320646E, 0x79622D32, 0x6B206574};
     _state[15] = SIGMA[3];
 }
 
--(void)setIV:(uint8_t *)iv{
+- (void)setIV:(uint8_t*)iv {
     _state[6] = [self uint8To32Little:iv offset:0];
     _state[7] = [self uint8To32Little:iv offset:4];
     _state[8] = 0;
     _state[9] = 0;
 }
 
--(void)updateState{
+- (void)updateState {
     uint32_t x[16];
     
     for(int i=0; i<16; i++) x[i] = _state[i];
@@ -111,10 +113,10 @@ static uint32_t SIGMA[4] = {0x61707865, 0x3320646E, 0x79622D32, 0x6B206574};
         x[15] ^= [self rotl:(x[14]+x[13]) y:18];
     }
     
-    for (int i=0; i<16; i++)
+    for (int i = 0; i < 16; i++)
         x[i] += _state[i];
     
-    for (int i = 0, j = 0; i<16; i++,j+=4){
+    for (int i = 0, j = 0; i < 16; i++, j +=4 ){
         uint32_t t = x[i];
         _keyStream[j+0] = (uint8_t)t;
         _keyStream[j+1] = (uint8_t)(t >> 8);
@@ -123,22 +125,26 @@ static uint32_t SIGMA[4] = {0x61707865, 0x3320646E, 0x79622D32, 0x6B206574};
     }
     
     _state[8]++; 
-    if(!_state[8]) _state[9]++;
+    if (!_state[8]) {
+        _state[9]++;
+    }
 }
 
--(NSString *)xor:(NSData *)data{
-    ByteBuffer * bb = [[ByteBuffer alloc]initWithSize:[data length]];
-    [data getBytes:bb._bytes length:bb._size];
+- (NSString*)xor:(NSData*)data {
+    NSUInteger length = data.length;
+    uint8_t bytes[length];
+    [data getBytes:bytes length:length];
     
-    for(int i=0; i<bb._size; i++){
-        if(_index==0) [self updateState];
-        (bb._bytes)[i] ^= _keyStream[_index];
-        _index = (_index+1)&0x3F;
+    for (int i = 0; i < length; i++) {
+        if (_index == 0) {
+            [self updateState];
+        }
+
+        bytes[i] ^= _keyStream[_index];
+        _index = (_index + 1) & 0x3F;
     }
     
-    NSString * rv = [[NSString alloc]initWithBytes:bb._bytes length:bb._size encoding:NSUTF8StringEncoding];
-    [bb release];
-    return [rv autorelease];
+    return [[[NSString alloc]initWithBytes:bytes length:length encoding:NSUTF8StringEncoding] autorelease];
 }
 
 @end
