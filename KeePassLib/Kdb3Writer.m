@@ -27,12 +27,19 @@
 - init {
     self = [super init];
     if (self) {
-        masterSeed = [Utils randomBytes:16];
-        encryptionIv = [Utils randomBytes:16];
-        transformSeed = [Utils randomBytes:32];
+        masterSeed = [[Utils randomBytes:16] retain];
+        encryptionIv = [[Utils randomBytes:16] retain];
+        transformSeed = [[Utils randomBytes:32] retain];
         rounds = 6000;
     }
     return self;
+}
+
+- (void)dealloc {
+    [masterSeed release];
+    [encryptionIv release];
+    [transformSeed release];
+    [super dealloc];
 }
 
 /**
