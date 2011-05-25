@@ -21,6 +21,23 @@
 
 @implementation GroupViewController
 
+-(void)viewDidLoad {
+    MobileKeePassAppDelegate *appDelegate = (MobileKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
+    
+    UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"tab_gear"] style:UIBarButtonItemStylePlain target:appDelegate action:@selector(showSettingsView)];
+    UIBarButtonItem *actionButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:nil action:nil];
+    UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:nil action:nil];
+    UIBarButtonItem *spacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    
+    self.toolbarItems = [NSArray arrayWithObjects:settingsButton, spacer, actionButton, spacer, addButton, nil];
+    self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    
+    [settingsButton release];
+    [actionButton release];
+    [addButton release];
+    [spacer release];
+}
+
 -(void)viewWillAppear:(BOOL)animated {
     NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
     
