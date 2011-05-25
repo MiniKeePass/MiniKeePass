@@ -60,7 +60,7 @@
     AesOutputStream *aesOutputStream = [[AesOutputStream alloc] initWithOutputStream:hashedOutputStream key:key iv:encryptionIv];
     
     // Write the stream start bytes
-    [aesOutputStream write:streamStartBytes length:32];
+    [aesOutputStream write:streamStartBytes];
     
     // Serialize the XML
     [aesOutputStream write:[tree.document XMLData]];
