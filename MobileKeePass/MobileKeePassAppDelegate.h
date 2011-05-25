@@ -23,9 +23,7 @@
 
 @interface MobileKeePassAppDelegate : NSObject <UIApplicationDelegate, PinViewControllerDelegate, UIActionSheetDelegate> {
     UIWindow *window;
-    UITabBarController *tabBarController;
-    FilesViewController *filesViewController;
-    SearchViewController *searchViewController;
+    UINavigationController *navigationController;
     UIActionSheet* myActionSheet;
     id<UIActionSheetDelegate> myActionSheetDelegate;
     
@@ -41,8 +39,9 @@
 - (void)closeDatabase;
 - (void)deleteAllData;
 - (UIImage*)loadImage:(int)index;
+- (void)showSettingsView;
+- (void)dismissSettingsView;
 - (void)showActionSheet:(UIActionSheet*)actionSheet;
 - (void)dismissActionSheet;
 
 @end
-
