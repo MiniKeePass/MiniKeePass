@@ -9,8 +9,7 @@
 #import "Kdb3Reader.h"
 #import "Kdb3Parser.h"
 #import "AesInputStream.h"
-
-#define READ_BYTES(X, Y, Z) (X = [[ByteBuffer alloc] initWithSize:Y dataSource:Z])
+#import "KdbPassword.h"
 
 @interface Kdb3Reader (privateMethods)
 - (void)readHeader:(InputStream*)inputStream;

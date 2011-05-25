@@ -14,11 +14,8 @@
 #import <CommonCrypto/CommonDigest.h>
 #import <CommonCrypto/CommonCryptor.h>
 
-#import "Kdb.h"
-#import "Kdb3Node.h"
 #import "KdbReader.h"
-#import "WrapperNSData.h"
-#import "KdbPassword.h"
+#import "Kdb3Node.h"
 
 @interface Kdb3Reader : NSObject<KdbReader> {
     uint32_t flags;

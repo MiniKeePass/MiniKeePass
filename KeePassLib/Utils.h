@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "ByteBuffer.h"
 
 #define SWAP_INT16_LE_TO_HOST(X) (CFSwapInt16LittleToHost(*((uint16_t*)X))) 
 #define SWAP_INT32_LE_TO_HOST(X) (CFSwapInt32LittleToHost(*((uint32_t*)X)))
@@ -19,11 +18,6 @@
 
 @interface Utils : NSObject {
 }
-
-+ (uint8_t)readInt8LE:(id<InputDataSource>)ds;
-+ (uint16_t)readInt16LE:(id<InputDataSource>)ds;
-+ (uint32_t)readInt32LE:(id<InputDataSource>)ds;
-+ (uint64_t)readInt64LE:(id<InputDataSource>)ds;
 
 + (BOOL)emptyString:(NSString*)str;
 

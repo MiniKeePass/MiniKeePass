@@ -58,14 +58,6 @@
 @synthesize _binarySize;
 @synthesize _binary;
 
-- (id)initWithNewUUID {
-    self = [super init];
-    if (self) {
-        _uuid = [[UUID alloc] init];
-    }
-    return self;
-}
-
 - (void)dealloc {
     [_uuid release];
     [_binaryDesc release];

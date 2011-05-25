@@ -11,7 +11,6 @@
 #import "DataOutputStream.h"
 #import "HashedOutputStream.h"
 #import "AesOutputStream.h"
-#import "ByteBuffer.h"
 #import "UUID.h"
 #import "Utils.h"
 
@@ -95,8 +94,8 @@
     [outputStream writeInt32:SWAP_INT32_HOST_TO_LE(KDB4_SIG2)];
     [outputStream writeInt32:SWAP_INT32_HOST_TO_LE(KDB4_VERSION)];
     
-    UUID *cipherUuid = [UUID getAESUUID];
-    [self writeHeaderField:outputStream headerId:HEADER_CIPHERID data:cipherUuid._bytes length:cipherUuid._size];
+    NSData *cipherUuid = [UUID getAESUUID];
+    [self writeHeaderField:outputStream headerId:HEADER_CIPHERID data:cipherUuid.bytes length:cipherUuid.length];
     
     // FIXME support gzip
     i32 = SWAP_INT32_HOST_TO_LE(COMPRESSION_NONE);

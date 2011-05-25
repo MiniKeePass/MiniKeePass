@@ -7,10 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "ByteBuffer.h"
 
-@interface UUID : ByteBuffer {
+@interface UUID : NSData {
 
 }
-+(UUID*)getAESUUID;
+
++ (UUID*)getAESUUID;
+
 @end

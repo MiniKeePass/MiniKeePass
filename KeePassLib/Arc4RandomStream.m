@@ -7,7 +7,6 @@
 //
 
 #import "Arc4RandomStream.h"
-#import "ByteBuffer.h"
 
 @interface Arc4RandomStream (PrivateMethods)
 - (void)updateState;

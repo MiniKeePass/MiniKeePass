@@ -8,8 +8,6 @@
 
 #import <Foundation/Foundation.h>
 #import "Kdb.h"
-#import "UUID.h"
-#import "ByteBuffer.h"
 
 #define KDB3_SIG1 (0x9AA2D903)
 #define KDB3_SIG2 (0xB54BFB65)
@@ -47,7 +45,6 @@
 @property(nonatomic, assign) uint32_t _binarySize;
 @property(nonatomic, retain) NSData *_binary;
 
-- (id)initWithNewUUID;
 - (BOOL)isMeta;
 
 @end
