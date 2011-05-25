@@ -40,8 +40,8 @@
 }
 
 - (void)appendField:(uint16_t)type size:(uint32_t)size bytes:(const void *)buffer {
-    [outputStream writeInt16:SWAP_INT16_HOST_TO_LE(type)];
-    [outputStream writeInt32:SWAP_INT32_HOST_TO_LE(size)];
+    [outputStream writeInt16:CFSwapInt16HostToLittle(type)];
+    [outputStream writeInt32:CFSwapInt32HostToLittle(size)];
     if (size > 0) {
         [outputStream write:buffer length:size];
     }
@@ -54,11 +54,11 @@
     [self appendField:1 size:16 bytes:(void *)(entry._uuid.bytes)];
     
     //groupId
-    tmp32 = SWAP_INT32_HOST_TO_LE(((Kdb3Group*)entry.parent)._id);
+    tmp32 = CFSwapInt32HostToLittle(((Kdb3Group*)entry.parent)._id);
     [self appendField:2 size:4 bytes:&tmp32];
     
     //image
-    tmp32 = SWAP_INT32_HOST_TO_LE(entry.image);
+    tmp32 = CFSwapInt32HostToLittle(entry.image);
     [self appendField:3 size:4 bytes:&tmp32];
     
     //title
@@ -136,7 +136,7 @@
     
     uint32_t tmp32;
     //id 2+4+4
-    tmp32 = SWAP_INT32_HOST_TO_LE(group._id);
+    tmp32 = CFSwapInt32HostToLittle(group._id);
     [self appendField:1 size:4 bytes:&tmp32];
     
     
@@ -165,15 +165,15 @@
     [self appendField:3 size:5 bytes:packedDate];
     
     //image 2+4+4
-    tmp32 = SWAP_INT32_HOST_TO_LE(group.image);
+    tmp32 = CFSwapInt32HostToLittle(group.image);
     [self appendField:7 size:4 bytes:&tmp32];
     
     //level 2+4+2
-    level = SWAP_INT16_HOST_TO_LE(level);
+    level = CFSwapInt16HostToLittle(level);
     [self appendField:8 size:2 bytes:&level];
     
     //flags (unused) 2+4+4
-    tmp32 = SWAP_INT32_HOST_TO_LE(group.flags);
+    tmp32 = CFSwapInt32HostToLittle(group.flags);
     [self appendField:9 size:4 bytes:&tmp32];
     
     //end of the group 2+4
