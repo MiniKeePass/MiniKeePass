@@ -7,21 +7,23 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "ByteBuffer.h"
-#import "UUID.h"
-#import "KdbPassword.h"
-#import "Kdb4Node.h"
+
 #import "KdbReader.h"
-#import "WrapperNSData.h"
+#import "Kdb4Node.h"
 
 @interface Kdb4Reader : NSObject<KdbReader> {
-    UUID * _cipherUUID;
+    NSData *cipherUuid;
+    NSData *encryptionIv;
+    NSData *masterSeed;
+    NSData *transformSeed;
+    NSData *streamStartBytes;
+    NSData *protectedStreamKey;
+    NSData *comment;
     
-    ByteBuffer * _encryptionIV, * _protectedStreamKey, * _streamStartBytes, *_masterSeed, *_transformSeed;
-    uint32_t _compressionAlgorithm, _randomStreamID;
-    uint64_t _rounds;
-
-    KdbPassword * _password;
+    uint32_t compressionAlgorithm;
+    uint32_t randomStreamID;
+    uint64_t rounds;
+    
     Kdb4Tree * _tree;
 }
 

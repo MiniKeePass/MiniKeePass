@@ -35,24 +35,24 @@
 }
 
 - (NSUInteger)read:(void*)bytes length:(NSUInteger)bytesLength {
-    NSUInteger length = bytesLength; //number of remaining bytes to read
+    NSUInteger remaining = bytesLength;
     NSUInteger offset = 0;
     NSUInteger n;
     
-    while (length > 0) {
+    while (remaining > 0) {
         if (bufferOffset >= bufferSize) {
             if (![self decrypt]) {
-                return bytesLength - length;
+                return bytesLength - remaining;
             }
         }
         
-        n = MIN(length, bufferSize - bufferOffset);       
+        n = MIN(remaining, bufferSize - bufferOffset);       
         memcpy(((uint8_t*)bytes) + offset, outputBuffer + bufferOffset, n);
         
         bufferOffset += n;
         
         offset += n;
-        length -= n;
+        remaining -= n;
     }
     
     return bytesLength;

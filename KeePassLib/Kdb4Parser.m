@@ -26,16 +26,16 @@
 }
 
 int	readCallback(void *context, char *buffer, int len) {
-    id<InputDataSource> input = (id<InputDataSource>)context;
-    return [input readBytes:buffer length:len];
+    InputStream *inputStream = (InputStream*)context;
+    return [inputStream read:buffer length:len];
 }
 
 int closeCallback(void *context) {
     return 0;
 }
 
-- (Kdb4Tree*)parse:(id<InputDataSource>)input {
-    GDataXMLDocument *document = [[GDataXMLDocument alloc] initWithReadIO:readCallback closeIO:closeCallback context:input options:0 error:nil];
+- (Kdb4Tree*)parse:(InputStream*)inputStream {
+    GDataXMLDocument *document = [[GDataXMLDocument alloc] initWithReadIO:readCallback closeIO:closeCallback context:inputStream options:0 error:nil];
     if (document == nil) {
         @throw [[NSException alloc] initWithName:@"ParseError" reason:@"Failed to parse database" userInfo:nil];
     }

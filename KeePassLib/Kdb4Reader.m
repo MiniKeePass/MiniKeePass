@@ -8,191 +8,162 @@
 
 #import <CommonCrypto/CommonCryptor.h>
 #import "Kdb4Reader.h"
-#import "Kdb.h"
-#import "HashedInputData.h"
-#import "GZipInputData.h"
 #import "Kdb4Parser.h"
-#import "Utils.h"
-#import "AESDecryptSource.h"
+#import "AesInputStream.h"
+#import "HashedInputStream.h"
+#import "GZipInputStream.h"
 #import "Arc4RandomStream.h"
 #import "Salsa20RandomStream.h"
+#import "KdbPassword.h"
+#import "UUID.h"
 
 #define VERSION_CRITICAL_MAX_32 0x00030000
 #define VERSION_CRITICAL_MASK 0xFFFF0000
 
-#define READ_BYTES(X, Y, Z) (X = [[ByteBuffer alloc] initWithSize:Y dataSource:Z])
-
 @interface Kdb4Reader (PrivateMethods)
--(void)readHeader:(id<InputDataSource>) source;
--(id<InputDataSource>)createDecryptedInputDataSource:(id<InputDataSource>)source key:(const void*)key;
+- (void)readHeader:(InputStream*)inputStream;
 @end
-
 
 @implementation Kdb4Reader
 
-#pragma mark -
-#pragma mark alloc/dealloc
+- (void)dealloc {
+    [encryptionIv release];
+    [masterSeed release];
+    [transformSeed release];
+    [streamStartBytes release];
+    
+    [cipherUuid release];
+    [protectedStreamKey release];
 
--(id)init{
-    self = [super init];
-    if(self) {
-        _password = [[KdbPassword alloc]init];
-    }
-    return self;
-}
-
--(void)dealloc{
-    [_cipherUUID release];
-    [_encryptionIV release];
-    [_protectedStreamKey release];
-    [_streamStartBytes release];
-    [_password release];
     [_tree release];
     [super dealloc];
 }
 
-#pragma mark -
-#pragma mark Public Methods
-
-//TODO:
-// only Kdb4Format.Default is supported; will add support for Kdb4Format.PlainXml
-//
-- (KdbTree*)load:(WrapperNSData *)source withPassword:(NSString *)password {
+- (KdbTree*)load:(InputStream*)inputStream withPassword:(NSString*)password {
     Kdb4Tree *tree = nil;
-    ByteBuffer * finalKey = nil;
     
-    @try {
-        //read header
-        [self readHeader:source];
-        
-        //decrypt data
-        NSData *masterSeed = [NSData dataWithBytes:_masterSeed._bytes length:_masterSeed._size];
-        NSData *transformSeed = [NSData dataWithBytes:_transformSeed._bytes length:_transformSeed._size];
-        NSData *key = [KdbPassword createFinalKey32ForPasssword:password encoding:NSUTF8StringEncoding kdbVersion:4 masterSeed:masterSeed transformSeed:transformSeed rounds:_rounds];
-        id<InputDataSource> decrypted = [self createDecryptedInputDataSource:source key:key.bytes];
-        
-        //double check start block
-        ByteBuffer * startBytes = [[ByteBuffer alloc] initWithSize:32];
-        [decrypted readBytes:startBytes._bytes length:32];
-        if(![startBytes isEqual:_streamStartBytes]) {
-            [startBytes release];
-            @throw [NSException exceptionWithName:@"DecryptError" reason:@"Failed to decrypt" userInfo:nil];
-        }
-        [startBytes release];
-        
-        id<InputDataSource> readerStream = [[[HashedInputData alloc] initWithDataSource:decrypted] autorelease];
-        if(_compressionAlgorithm==COMPRESSION_GZIP){
-            readerStream = [[[GZipInputData alloc] initWithDataSource:readerStream] autorelease];
-        }
-        
-        //should PlainXML supported?
-        id<RandomStream> rs = nil;
-        if(_randomStreamID == CSR_SALSA20){
-            rs = [[[Salsa20RandomStream alloc] init:_protectedStreamKey._bytes len:_protectedStreamKey._size] autorelease];
-        }else if (_randomStreamID == CSR_ARC4VARIANT){
-            rs = [[[Arc4RandomStream alloc] init:_protectedStreamKey._bytes len:_protectedStreamKey._size] autorelease];
-        }else{
-            @throw [NSException exceptionWithName:@"Unsupported" reason:@"UnsupportedRandomStreamID" userInfo:nil];
-        }
-        
-        Kdb4Parser * parser = [[Kdb4Parser alloc] init];
-        parser._randomStream = rs;
-        
-        tree = [parser parse:readerStream];
-        
-        [parser release];
+    //read header
+    [self readHeader:inputStream];
+    
+    if (![cipherUuid isEqual:[UUID getAESUUID]]) {
+        @throw [NSException exceptionWithName:@"Unsupported" reason:@"UnsupportedCipher" userInfo:nil];
     }
-    @finally{
-        [finalKey release];
+    
+    //decrypt data
+    NSData *key = [KdbPassword createFinalKey32ForPasssword:password encoding:NSUTF8StringEncoding kdbVersion:4 masterSeed:masterSeed transformSeed:transformSeed rounds:rounds];
+    AesInputStream *aesInputStream = [[AesInputStream alloc] initWithInputStream:inputStream key:key iv:encryptionIv];
+    
+    // Verify the stream start bytes match
+    NSData *startBytes = [aesInputStream readData:32];
+    if (![startBytes isEqual:streamStartBytes]) {
+        @throw [NSException exceptionWithName:@"DecryptError" reason:@"Failed to decrypt" userInfo:nil];
     }
+    
+    InputStream *stream = [[[HashedInputStream alloc] initWithInputStream:aesInputStream] autorelease];
+    if (compressionAlgorithm == COMPRESSION_GZIP) {
+        stream = [[[GZipInputStream alloc] initWithInputStream:stream] autorelease];
+    }
+    
+    //should PlainXML supported?
+    id<RandomStream> rs = nil;
+    if (randomStreamID == CSR_SALSA20) {
+        rs = [[[Salsa20RandomStream alloc] init:protectedStreamKey] autorelease];
+    } else if (randomStreamID == CSR_ARC4VARIANT) {
+        rs = [[[Arc4RandomStream alloc] init:protectedStreamKey] autorelease];
+    } else {
+        @throw [NSException exceptionWithName:@"Unsupported" reason:@"UnsupportedRandomStreamID" userInfo:nil];
+    }
+    
+    Kdb4Parser * parser = [[Kdb4Parser alloc] init];
+    parser._randomStream = rs;
+    
+    tree = [parser parse:stream];
+    
+    [parser release];
+    [aesInputStream release];
     
     return tree;
 }
 
-#pragma mark -
-#pragma mark Private Methods
-
-/*
- * Decrypt remaining bytes
- */
--(id<InputDataSource>)createDecryptedInputDataSource:(id<InputDataSource>)source key:(const void*)key {
-    return [[[AESDecryptSource alloc] initWithInputSource:source Keys:key andIV:_encryptionIV._bytes] autorelease];
-}
-
--(void)readHeader:(id<InputDataSource>)source{
-    uint32_t version = [Utils readInt32LE:source];
+- (void)readHeader:inputStream {
+    uint32_t version = [inputStream readInt32];
+    version = CFSwapInt32LittleToHost(version);
         
-    if((version & VERSION_CRITICAL_MASK) > (VERSION_CRITICAL_MAX_32 & VERSION_CRITICAL_MASK)){
+    if ((version & VERSION_CRITICAL_MASK) > (VERSION_CRITICAL_MAX_32 & VERSION_CRITICAL_MASK)) {
         @throw [NSException exceptionWithName:@"Unsupported" reason:@"Unsupported version" userInfo:nil];
     }
     
-    BOOL eoh = NO; //end of header
-    
-    while(!eoh){
-        uint8_t fieldType = [Utils readInt8LE:source];
-        uint16_t fieldSize = [Utils readInt16LE:source];
+    BOOL eoh = NO;
+    while (!eoh) {
+        uint8_t fieldType = [inputStream readInt8];
+
+        uint16_t fieldSize = [inputStream readInt16];
+        fieldSize = CFSwapInt16LittleToHost(fieldSize);
+        
         switch (fieldType) {
-            case HEADER_COMMENT:{
-                ByteBuffer * comment;
-                READ_BYTES(comment, fieldSize, source);
-                [comment release];
-                break;
-            }
             case HEADER_EOH:{
-                ByteBuffer * header;
-                READ_BYTES(header, fieldSize, source);
-                [header release];
+                NSData *skip = [inputStream readData:fieldSize];
                 eoh = YES;
                 break;
             }
+            case HEADER_COMMENT:{
+                // FIXME this should prolly be a string
+                comment = [[inputStream readData:fieldSize] retain];
+                break;
+            }
             case HEADER_CIPHERID:{
-                if(fieldSize!=16)
-                    @throw [NSException exceptionWithName:@"InvalidHeader" reason:@"InvalidCipherId" userInfo:nil];
-                _cipherUUID = [[UUID alloc]initWithSize:16 dataSource:source];
-                if(![_cipherUUID isEqual:[UUID getAESUUID]]){
-                    @throw [NSException exceptionWithName:@"Unsupported" reason:@"UnsupportedCipher" userInfo:nil];
+                if (fieldSize != 16) {
+                    @throw [NSException exceptionWithName:@"IOException" reason:@"Invalid cipher id" userInfo:nil];
                 }
+                cipherUuid = [[inputStream readData:fieldSize] retain];
                 break;
             }
             case HEADER_MASTERSEED:{
-                if(fieldSize!=32) {
-                    @throw [NSException exceptionWithName:@"InvalidHeader" reason:@"InvalidMasterSeed" userInfo:nil];
+                if (fieldSize != 32) {
+                    @throw [NSException exceptionWithName:@"IOException" reason:@"Invalid field size" userInfo:nil];
                 }
-                READ_BYTES(_masterSeed, fieldSize, source);
+                masterSeed = [[inputStream readData:fieldSize] retain];
                 break;
             }
             case HEADER_TRANSFORMSEED:{
-                if(fieldSize!=32)
-                    @throw [NSException exceptionWithName:@"InvalidHeader" reason:@"InvalidTransformSeed" userInfo:nil];
-                READ_BYTES(_transformSeed, fieldSize, source);
+                if (fieldSize != 32) {
+                    @throw [NSException exceptionWithName:@"IOException" reason:@"Invalid field size" userInfo:nil];
+                }
+                
+                transformSeed = [[inputStream readData:fieldSize] retain];
                 break;
             }
             case HEADER_ENCRYPTIONIV:{
-                READ_BYTES(_encryptionIV, fieldSize, source);
+                encryptionIv = [[inputStream readData:fieldSize] retain];
                 break;
             }
             case HEADER_PROTECTEDKEY:{
-                READ_BYTES(_protectedStreamKey, fieldSize, source);
+                protectedStreamKey = [[inputStream readData:fieldSize] retain];
                 break;
             }
             case HEADER_STARTBYTES:{
-                READ_BYTES(_streamStartBytes, fieldSize, source);
+                streamStartBytes = [[inputStream readData:fieldSize] retain];
                 break;
             }
             case HEADER_TRANSFORMROUNDS:{
-                _rounds = [Utils readInt64LE:source];
+                rounds = [inputStream readInt64];
+                rounds = CFSwapInt64LittleToHost(rounds);
                 break;
             }
             case HEADER_COMPRESSION:{
-                _compressionAlgorithm = [Utils readInt32LE:source];
-                if(_compressionAlgorithm >= COMPRESSION_COUNT)
-                    @throw [NSException exceptionWithName:@"InvalidHeader" reason:@"InvalidCompression" userInfo:nil];
+                compressionAlgorithm = [inputStream readInt32];
+                compressionAlgorithm = CFSwapInt32LittleToHost(compressionAlgorithm);
+                if (compressionAlgorithm >= COMPRESSION_COUNT) {
+                    @throw [NSException exceptionWithName:@"IOException" reason:@"Invalid compression" userInfo:nil];
+                }
                 break;
             }
             case HEADER_RANDOMSTREAMID:{
-                _randomStreamID = [Utils readInt32LE:source];
-                if(_randomStreamID >= CSR_COUNT)
-                    @throw [NSException exceptionWithName:@"InvalidHeader" reason:@"InvalidCSRAlgorithm" userInfo:nil];
+                randomStreamID = [inputStream readInt32];
+                randomStreamID = CFSwapInt32LittleToHost(randomStreamID);
+                if (randomStreamID >= CSR_COUNT) {
+                    @throw [NSException exceptionWithName:@"IOException" reason:@"Invalid CSR algorithm" userInfo:nil];
+                }
                 break;
             }
             default:

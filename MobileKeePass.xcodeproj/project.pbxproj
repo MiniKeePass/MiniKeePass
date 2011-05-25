@@ -97,10 +97,7 @@
 		689356EA13899CD600BB263D /* KdbWriterFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 689764C71388C3CA006BC0A6 /* KdbWriterFactory.m */; };
 		689356EB13899CD600BB263D /* Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 689675911379DCE5006BC268 /* Utils.m */; };
 		689356EC13899CD600BB263D /* UUID.m in Sources */ = {isa = PBXBuildFile; fileRef = 689675931379DCE5006BC268 /* UUID.m */; };
-		689356ED13899CD600BB263D /* WrapperNSData.m in Sources */ = {isa = PBXBuildFile; fileRef = 689675951379DCE5006BC268 /* WrapperNSData.m */; };
-		689356EE13899CD600BB263D /* AESDecryptSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 689675491379DCE5006BC268 /* AESDecryptSource.m */; };
 		689356EF13899CD600BB263D /* GZipInputData.m in Sources */ = {isa = PBXBuildFile; fileRef = 6896755E1379DCE5006BC268 /* GZipInputData.m */; };
-		689356F013899CD600BB263D /* HashedInputData.m in Sources */ = {isa = PBXBuildFile; fileRef = 689675601379DCE5006BC268 /* HashedInputData.m */; };
 		689356F113899CD600BB263D /* Kdb3Date.m in Sources */ = {isa = PBXBuildFile; fileRef = 689675631379DCE5006BC268 /* Kdb3Date.m */; };
 		689356F213899CD600BB263D /* Kdb3Node.m in Sources */ = {isa = PBXBuildFile; fileRef = 689675651379DCE5006BC268 /* Kdb3Node.m */; };
 		689356F313899CD600BB263D /* Kdb3Parser.m in Sources */ = {isa = PBXBuildFile; fileRef = 689675671379DCE5006BC268 /* Kdb3Parser.m */; };
@@ -125,12 +122,10 @@
 		6893570A13899DB200BB263D /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 6893570913899DB100BB263D /* libz.dylib */; };
 		6893570E13899DD800BB263D /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6893570D13899DD800BB263D /* AudioToolbox.framework */; };
 		68964206137F2549001B87A4 /* ChoiceCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68964205137F2549001B87A4 /* ChoiceCell.m */; };
-		689675971379DCE6006BC268 /* AESDecryptSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 689675491379DCE5006BC268 /* AESDecryptSource.m */; };
 		6896759A1379DCE6006BC268 /* Arc4RandomStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 6896754F1379DCE5006BC268 /* Arc4RandomStream.m */; };
 		6896759B1379DCE6006BC268 /* Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 689675511379DCE5006BC268 /* Base64.m */; };
 		6896759E1379DCE6006BC268 /* ByteBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 689675571379DCE5006BC268 /* ByteBuffer.m */; };
 		689675A11379DCE6006BC268 /* GZipInputData.m in Sources */ = {isa = PBXBuildFile; fileRef = 6896755E1379DCE5006BC268 /* GZipInputData.m */; };
-		689675A21379DCE6006BC268 /* HashedInputData.m in Sources */ = {isa = PBXBuildFile; fileRef = 689675601379DCE5006BC268 /* HashedInputData.m */; };
 		689675A31379DCE6006BC268 /* Kdb3Date.m in Sources */ = {isa = PBXBuildFile; fileRef = 689675631379DCE5006BC268 /* Kdb3Date.m */; };
 		689675A41379DCE6006BC268 /* Kdb3Node.m in Sources */ = {isa = PBXBuildFile; fileRef = 689675651379DCE5006BC268 /* Kdb3Node.m */; };
 		689675A51379DCE6006BC268 /* Kdb3Parser.m in Sources */ = {isa = PBXBuildFile; fileRef = 689675671379DCE5006BC268 /* Kdb3Parser.m */; };
@@ -145,7 +140,6 @@
 		689675B61379DCE6006BC268 /* Salsa20RandomStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 6896758B1379DCE5006BC268 /* Salsa20RandomStream.m */; };
 		689675B91379DCE6006BC268 /* Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 689675911379DCE5006BC268 /* Utils.m */; };
 		689675BA1379DCE6006BC268 /* UUID.m in Sources */ = {isa = PBXBuildFile; fileRef = 689675931379DCE5006BC268 /* UUID.m */; };
-		689675BB1379DCE6006BC268 /* WrapperNSData.m in Sources */ = {isa = PBXBuildFile; fileRef = 689675951379DCE5006BC268 /* WrapperNSData.m */; };
 		689675BE1379DFD8006BC268 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 689675BD1379DFD8006BC268 /* libxml2.dylib */; };
 		689675C01379ECD6006BC268 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 689675BF1379ECD6006BC268 /* libz.dylib */; };
 		689764AE1388AA4B006BC0A6 /* Kdb4Writer.m in Sources */ = {isa = PBXBuildFile; fileRef = 689764AD1388AA4B006BC0A6 /* Kdb4Writer.m */; };
@@ -241,6 +235,8 @@
 		68DCBB4413795F8600B1C089 /* itunes.html in Resources */ = {isa = PBXBuildFile; fileRef = 68DCBB4313795F8600B1C089 /* itunes.html */; };
 		68DCBB471379621800B1C089 /* dropbox.html in Resources */ = {isa = PBXBuildFile; fileRef = 68DCBB461379621800B1C089 /* dropbox.html */; };
 		68DCBB49137965C100B1C089 /* style.css in Resources */ = {isa = PBXBuildFile; fileRef = 68DCBB48137965C100B1C089 /* style.css */; };
+		68DEB786138BDFFC00FC1F09 /* GZipInputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 68DEB785138BDFFC00FC1F09 /* GZipInputStream.m */; };
+		68DEB789138BE3B500FC1F09 /* GZipInputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 68DEB785138BDFFC00FC1F09 /* GZipInputStream.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -352,8 +348,6 @@
 		6893570D13899DD800BB263D /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		68964204137F2549001B87A4 /* ChoiceCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChoiceCell.h; sourceTree = "<group>"; };
 		68964205137F2549001B87A4 /* ChoiceCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChoiceCell.m; sourceTree = "<group>"; };
-		689675481379DCE5006BC268 /* AESDecryptSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AESDecryptSource.h; sourceTree = "<group>"; };
-		689675491379DCE5006BC268 /* AESDecryptSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AESDecryptSource.m; sourceTree = "<group>"; };
 		6896754E1379DCE5006BC268 /* Arc4RandomStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Arc4RandomStream.h; sourceTree = "<group>"; };
 		6896754F1379DCE5006BC268 /* Arc4RandomStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Arc4RandomStream.m; sourceTree = "<group>"; };
 		689675501379DCE5006BC268 /* Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Base64.h; sourceTree = "<group>"; };
@@ -363,8 +357,6 @@
 		689675581379DCE5006BC268 /* DataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataSource.h; sourceTree = "<group>"; };
 		6896755D1379DCE5006BC268 /* GZipInputData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GZipInputData.h; sourceTree = "<group>"; };
 		6896755E1379DCE5006BC268 /* GZipInputData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GZipInputData.m; sourceTree = "<group>"; };
-		6896755F1379DCE5006BC268 /* HashedInputData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HashedInputData.h; sourceTree = "<group>"; };
-		689675601379DCE5006BC268 /* HashedInputData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HashedInputData.m; sourceTree = "<group>"; };
 		689675611379DCE5006BC268 /* Kdb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Kdb.h; sourceTree = "<group>"; };
 		689675621379DCE5006BC268 /* Kdb3Date.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Kdb3Date.h; sourceTree = "<group>"; };
 		689675631379DCE5006BC268 /* Kdb3Date.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Kdb3Date.m; sourceTree = "<group>"; };
@@ -397,8 +389,6 @@
 		689675911379DCE5006BC268 /* Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Utils.m; sourceTree = "<group>"; };
 		689675921379DCE5006BC268 /* UUID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UUID.h; sourceTree = "<group>"; };
 		689675931379DCE5006BC268 /* UUID.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UUID.m; sourceTree = "<group>"; };
-		689675941379DCE5006BC268 /* WrapperNSData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WrapperNSData.h; sourceTree = "<group>"; };
-		689675951379DCE5006BC268 /* WrapperNSData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WrapperNSData.m; sourceTree = "<group>"; };
 		689675BD1379DFD8006BC268 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
 		689675BF1379ECD6006BC268 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		689764AC1388AA4B006BC0A6 /* Kdb4Writer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Kdb4Writer.h; sourceTree = "<group>"; };
@@ -509,6 +499,8 @@
 		68DCBB4313795F8600B1C089 /* itunes.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = itunes.html; sourceTree = "<group>"; };
 		68DCBB461379621800B1C089 /* dropbox.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = dropbox.html; sourceTree = "<group>"; };
 		68DCBB48137965C100B1C089 /* style.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = style.css; sourceTree = "<group>"; };
+		68DEB784138BDFFC00FC1F09 /* GZipInputStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GZipInputStream.h; sourceTree = "<group>"; };
+		68DEB785138BDFFC00FC1F09 /* GZipInputStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GZipInputStream.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -681,13 +673,9 @@
 		689356901389831100BB263D /* DataSource */ = {
 			isa = PBXGroup;
 			children = (
-				689675481379DCE5006BC268 /* AESDecryptSource.h */,
-				689675491379DCE5006BC268 /* AESDecryptSource.m */,
 				689675581379DCE5006BC268 /* DataSource.h */,
 				6896755D1379DCE5006BC268 /* GZipInputData.h */,
 				6896755E1379DCE5006BC268 /* GZipInputData.m */,
-				6896755F1379DCE5006BC268 /* HashedInputData.h */,
-				689675601379DCE5006BC268 /* HashedInputData.m */,
 			);
 			name = DataSource;
 			sourceTree = "<group>";
@@ -699,6 +687,8 @@
 				689356C2138990BD00BB263D /* AesInputStream.m */,
 				689356BE13898E6C00BB263D /* DataInputStream.h */,
 				689356BF13898E6C00BB263D /* DataInputStream.m */,
+				68DEB784138BDFFC00FC1F09 /* GZipInputStream.h */,
+				68DEB785138BDFFC00FC1F09 /* GZipInputStream.m */,
 				68738A0B1389A5CE00DFC837 /* HashedInputStream.h */,
 				68738A0C1389A5CE00DFC837 /* HashedInputStream.m */,
 				689356BB13898D8B00BB263D /* InputStream.h */,
@@ -767,8 +757,6 @@
 				689675911379DCE5006BC268 /* Utils.m */,
 				689675921379DCE5006BC268 /* UUID.h */,
 				689675931379DCE5006BC268 /* UUID.m */,
-				689675941379DCE5006BC268 /* WrapperNSData.h */,
-				689675951379DCE5006BC268 /* WrapperNSData.m */,
 				689356901389831100BB263D /* DataSource */,
 				6893568D1389826200BB263D /* Kdb3 */,
 				6893568E1389827600BB263D /* Kdb4 */,
@@ -1203,6 +1191,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				68DEB789138BE3B500FC1F09 /* GZipInputStream.m in Sources */,
 				689CBB8F1389BD19009A26DB /* Sha256OutputStream.m in Sources */,
 				68738A0F1389AE1300DFC837 /* HashedInputStream.m in Sources */,
 				689356E313899CD500BB263D /* Base64.m in Sources */,
@@ -1214,10 +1203,7 @@
 				689356EA13899CD600BB263D /* KdbWriterFactory.m in Sources */,
 				689356EB13899CD600BB263D /* Utils.m in Sources */,
 				689356EC13899CD600BB263D /* UUID.m in Sources */,
-				689356ED13899CD600BB263D /* WrapperNSData.m in Sources */,
-				689356EE13899CD600BB263D /* AESDecryptSource.m in Sources */,
 				689356EF13899CD600BB263D /* GZipInputData.m in Sources */,
-				689356F013899CD600BB263D /* HashedInputData.m in Sources */,
 				689356F113899CD600BB263D /* Kdb3Date.m in Sources */,
 				689356F213899CD600BB263D /* Kdb3Node.m in Sources */,
 				689356F313899CD600BB263D /* Kdb3Parser.m in Sources */,
@@ -1265,12 +1251,10 @@
 				6872F02A137746D0008E55B9 /* FilesViewController.m in Sources */,
 				688F3FB51377805C0049808C /* SelectionListViewController.m in Sources */,
 				688D47751378DF9400BEE609 /* DatabaseManager.m in Sources */,
-				689675971379DCE6006BC268 /* AESDecryptSource.m in Sources */,
 				6896759A1379DCE6006BC268 /* Arc4RandomStream.m in Sources */,
 				6896759B1379DCE6006BC268 /* Base64.m in Sources */,
 				6896759E1379DCE6006BC268 /* ByteBuffer.m in Sources */,
 				689675A11379DCE6006BC268 /* GZipInputData.m in Sources */,
-				689675A21379DCE6006BC268 /* HashedInputData.m in Sources */,
 				689675A31379DCE6006BC268 /* Kdb3Date.m in Sources */,
 				689675A41379DCE6006BC268 /* Kdb3Node.m in Sources */,
 				689675A51379DCE6006BC268 /* Kdb3Parser.m in Sources */,
@@ -1285,7 +1269,6 @@
 				689675B61379DCE6006BC268 /* Salsa20RandomStream.m in Sources */,
 				689675B91379DCE6006BC268 /* Utils.m in Sources */,
 				689675BA1379DCE6006BC268 /* UUID.m in Sources */,
-				689675BB1379DCE6006BC268 /* WrapperNSData.m in Sources */,
 				68C6BDEE137F10CF0013373A /* SwitchCell.m in Sources */,
 				68964206137F2549001B87A4 /* ChoiceCell.m in Sources */,
 				688231DC138046FC0046B00D /* SearchViewController.m in Sources */,
@@ -1303,6 +1286,7 @@
 				689356C3138990BD00BB263D /* AesInputStream.m in Sources */,
 				68738A0D1389A5CE00DFC837 /* HashedInputStream.m in Sources */,
 				68738A151389B71900DFC837 /* Sha256OutputStream.m in Sources */,
+				68DEB786138BDFFC00FC1F09 /* GZipInputStream.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
