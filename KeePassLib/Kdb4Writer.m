@@ -52,21 +52,21 @@
     // Write the header
     [self writeHeader:outputStream];
     
-    // Create the hashed output stream
-    HashedOutputStream *hashedOutputStream = [[HashedOutputStream alloc] initWithOutputStream:outputStream blockSize:1024*1024];
-    
     // Create the encryption output stream
     NSData *key = [KdbPassword createFinalKey32ForPasssword:password encoding:NSUTF8StringEncoding kdbVersion:4 masterSeed:masterSeed transformSeed:transformSeed rounds:rounds];
-    AesOutputStream *aesOutputStream = [[AesOutputStream alloc] initWithOutputStream:hashedOutputStream key:key iv:encryptionIv];
+    AesOutputStream *aesOutputStream = [[AesOutputStream alloc] initWithOutputStream:outputStream key:key iv:encryptionIv];
+    
+    // Create the hashed output stream
+    HashedOutputStream *hashedOutputStream = [[HashedOutputStream alloc] initWithOutputStream:aesOutputStream blockSize:1024*1024];
     
     // Write the stream start bytes
-    [aesOutputStream write:streamStartBytes];
+    [hashedOutputStream write:streamStartBytes];
     
     // Serialize the XML
-    [aesOutputStream write:[tree.document XMLData]];
+    [hashedOutputStream write:[tree.document XMLData]];
     
     // Close the output stream
-    [aesOutputStream close];
+    [hashedOutputStream close];
     
     // Write to the file
     if (![outputStream.data writeToFile:[filename stringByAppendingPathExtension:@"test.kdbx"] atomically:YES]) {
