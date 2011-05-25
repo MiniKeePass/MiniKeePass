@@ -53,7 +53,7 @@
     [self writeHeader:outputStream];
     
     // Create the hashed output stream
-    HashedOutputStream *hashedOutputStream = [[HashedOutputStream alloc] initWithOutputStream:outputStream blockSize:1014*1024];
+    HashedOutputStream *hashedOutputStream = [[HashedOutputStream alloc] initWithOutputStream:outputStream blockSize:1024*1024];
     
     // Create the encryption output stream
     NSData *key = [KdbPassword createFinalKey32ForPasssword:password encoding:NSUTF8StringEncoding kdbVersion:4 masterSeed:masterSeed transformSeed:transformSeed rounds:rounds];
