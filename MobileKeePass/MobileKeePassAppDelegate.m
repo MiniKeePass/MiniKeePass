@@ -54,32 +54,13 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
     [userDefaults registerDefaults:defaultsDict];
         
     // Create the files view
-    filesViewController = [[FilesViewController alloc] initWithStyle:UITableViewStylePlain];
-    filesViewController.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Files" image:[UIImage imageNamed:@"tab_files.png"] tag:2];
-    UINavigationController *filesNavController = [[UINavigationController alloc] initWithRootViewController:filesViewController];
-    
-    // Create the search view
-    searchViewController = [[SearchViewController alloc] init];
-    searchViewController.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Search" image:[UIImage imageNamed:@"tab_search.png"] tag:1];
-    UINavigationController *searchNavController = [[UINavigationController alloc] initWithRootViewController:searchViewController];
-    
-    // Create the settings view
-    SettingsViewController *settingsViewController = [[SettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
-    settingsViewController.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Settings" image:[UIImage imageNamed:@"tab_gear.png"] tag:3];
-    UINavigationController *settingsNavController = [[UINavigationController alloc] initWithRootViewController:settingsViewController];
-    [settingsViewController release];
-    
-    // Create the tab bar controller
-    tabBarController = [[UITabBarController alloc] init];
-    tabBarController.viewControllers = [NSArray arrayWithObjects:filesNavController, searchNavController, settingsNavController, nil];
-    
-    [filesNavController release];
-    [searchNavController release];
-    [settingsNavController release];
+    FilesViewController *filesViewController = [[FilesViewController alloc] initWithStyle:UITableViewStylePlain];
+    navigationController = [[UINavigationController alloc] initWithRootViewController:filesViewController];
+    navigationController.toolbarHidden = NO;
     
     // Create the window
     window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    window.rootViewController = tabBarController;
+    window.rootViewController = navigationController;
     [window makeKeyAndVisible];
     
     return YES;
@@ -92,9 +73,7 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
     }
     [databaseDocument release];
     [fileToOpen release];
-    [filesViewController release];
-    [searchViewController release];
-    [tabBarController release];
+    [navigationController release];
     [window release];
     [super dealloc];
 }
@@ -110,8 +89,6 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     // Check if we're supposed to open a file
     if (fileToOpen != nil) {
-        [tabBarController setSelectedIndex:0];
-        
         // Close the current database
         [self closeDatabase];
         
@@ -192,19 +169,13 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
     GroupViewController *groupViewController = [[GroupViewController alloc] initWithStyle:UITableViewStylePlain];
     groupViewController.title = [[databaseDocument.filename lastPathComponent] stringByDeletingPathExtension];
     groupViewController.group = databaseDocument.kdbTree.root;
-    [filesViewController.navigationController pushViewController:groupViewController animated:YES];
+    [navigationController pushViewController:groupViewController animated:YES];
     [groupViewController release];
-    
-    // Clear the search view controller
-    [searchViewController clearResults];
 }
 
 - (void)closeDatabase {
     // Close any open database views
-    [filesViewController.navigationController popToRootViewControllerAnimated:NO];
-    
-    // Clear the search view controller
-    [searchViewController clearResults];
+    [navigationController popToRootViewControllerAnimated:NO];
     
     [databaseDocument release];
     databaseDocument = nil;
@@ -300,6 +271,22 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
     if (myActionSheet != nil) {
         [myActionSheet dismissWithClickedButtonIndex:myActionSheet.cancelButtonIndex animated:YES];
     }
+}
+
+-(void)showSettingsView {
+    SettingsViewController *settingsViewController = [[SettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
+    settingsViewController.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(dismissSettingsView)];
+    UINavigationController *settingsNavController = [[UINavigationController alloc] initWithRootViewController:settingsViewController];
+    settingsNavController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+    
+    [window.rootViewController presentModalViewController:settingsNavController animated:YES];
+
+    [settingsViewController release];
+    [settingsNavController release];
+}
+
+-(void)dismissSettingsView {
+    [window.rootViewController dismissModalViewControllerAnimated:YES];
 }
 
 -(void)showActionSheet:(UIActionSheet *)actionSheet {
