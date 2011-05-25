@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "DataSource.h"
 
 @interface Base64 : NSObject  {
 

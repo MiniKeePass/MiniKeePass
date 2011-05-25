@@ -89,7 +89,6 @@
 		689356DC13899C5F00BB263D /* AesStreamTest.h in Resources */ = {isa = PBXBuildFile; fileRef = 689356DB13899C5F00BB263D /* AesStreamTest.h */; };
 		689356DE13899C5F00BB263D /* AesStreamTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 689356DD13899C5F00BB263D /* AesStreamTest.m */; };
 		689356E313899CD500BB263D /* Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 689675511379DCE5006BC268 /* Base64.m */; };
-		689356E513899CD500BB263D /* ByteBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 689675571379DCE5006BC268 /* ByteBuffer.m */; };
 		689356E613899CD600BB263D /* GDataXMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 6891056B13874D4300106245 /* GDataXMLNode.m */; };
 		689356E713899CD600BB263D /* Kdb.m in Sources */ = {isa = PBXBuildFile; fileRef = 68A9D33B1388759A00AE9AD6 /* Kdb.m */; };
 		689356E813899CD600BB263D /* KdbPassword.m in Sources */ = {isa = PBXBuildFile; fileRef = 6896757A1379DCE5006BC268 /* KdbPassword.m */; };
@@ -97,7 +96,6 @@
 		689356EA13899CD600BB263D /* KdbWriterFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 689764C71388C3CA006BC0A6 /* KdbWriterFactory.m */; };
 		689356EB13899CD600BB263D /* Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 689675911379DCE5006BC268 /* Utils.m */; };
 		689356EC13899CD600BB263D /* UUID.m in Sources */ = {isa = PBXBuildFile; fileRef = 689675931379DCE5006BC268 /* UUID.m */; };
-		689356EF13899CD600BB263D /* GZipInputData.m in Sources */ = {isa = PBXBuildFile; fileRef = 6896755E1379DCE5006BC268 /* GZipInputData.m */; };
 		689356F113899CD600BB263D /* Kdb3Date.m in Sources */ = {isa = PBXBuildFile; fileRef = 689675631379DCE5006BC268 /* Kdb3Date.m */; };
 		689356F213899CD600BB263D /* Kdb3Node.m in Sources */ = {isa = PBXBuildFile; fileRef = 689675651379DCE5006BC268 /* Kdb3Node.m */; };
 		689356F313899CD600BB263D /* Kdb3Parser.m in Sources */ = {isa = PBXBuildFile; fileRef = 689675671379DCE5006BC268 /* Kdb3Parser.m */; };
@@ -124,8 +122,6 @@
 		68964206137F2549001B87A4 /* ChoiceCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68964205137F2549001B87A4 /* ChoiceCell.m */; };
 		6896759A1379DCE6006BC268 /* Arc4RandomStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 6896754F1379DCE5006BC268 /* Arc4RandomStream.m */; };
 		6896759B1379DCE6006BC268 /* Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 689675511379DCE5006BC268 /* Base64.m */; };
-		6896759E1379DCE6006BC268 /* ByteBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 689675571379DCE5006BC268 /* ByteBuffer.m */; };
-		689675A11379DCE6006BC268 /* GZipInputData.m in Sources */ = {isa = PBXBuildFile; fileRef = 6896755E1379DCE5006BC268 /* GZipInputData.m */; };
 		689675A31379DCE6006BC268 /* Kdb3Date.m in Sources */ = {isa = PBXBuildFile; fileRef = 689675631379DCE5006BC268 /* Kdb3Date.m */; };
 		689675A41379DCE6006BC268 /* Kdb3Node.m in Sources */ = {isa = PBXBuildFile; fileRef = 689675651379DCE5006BC268 /* Kdb3Node.m */; };
 		689675A51379DCE6006BC268 /* Kdb3Parser.m in Sources */ = {isa = PBXBuildFile; fileRef = 689675671379DCE5006BC268 /* Kdb3Parser.m */; };
@@ -352,11 +348,6 @@
 		6896754F1379DCE5006BC268 /* Arc4RandomStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Arc4RandomStream.m; sourceTree = "<group>"; };
 		689675501379DCE5006BC268 /* Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Base64.h; sourceTree = "<group>"; };
 		689675511379DCE5006BC268 /* Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Base64.m; sourceTree = "<group>"; };
-		689675561379DCE5006BC268 /* ByteBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ByteBuffer.h; sourceTree = "<group>"; };
-		689675571379DCE5006BC268 /* ByteBuffer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ByteBuffer.m; sourceTree = "<group>"; };
-		689675581379DCE5006BC268 /* DataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataSource.h; sourceTree = "<group>"; };
-		6896755D1379DCE5006BC268 /* GZipInputData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GZipInputData.h; sourceTree = "<group>"; };
-		6896755E1379DCE5006BC268 /* GZipInputData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GZipInputData.m; sourceTree = "<group>"; };
 		689675611379DCE5006BC268 /* Kdb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Kdb.h; sourceTree = "<group>"; };
 		689675621379DCE5006BC268 /* Kdb3Date.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Kdb3Date.h; sourceTree = "<group>"; };
 		689675631379DCE5006BC268 /* Kdb3Date.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Kdb3Date.m; sourceTree = "<group>"; };
@@ -670,16 +661,6 @@
 			name = RandomStream;
 			sourceTree = "<group>";
 		};
-		689356901389831100BB263D /* DataSource */ = {
-			isa = PBXGroup;
-			children = (
-				689675581379DCE5006BC268 /* DataSource.h */,
-				6896755D1379DCE5006BC268 /* GZipInputData.h */,
-				6896755E1379DCE5006BC268 /* GZipInputData.m */,
-			);
-			name = DataSource;
-			sourceTree = "<group>";
-		};
 		689356BA13898D4F00BB263D /* InputStream */ = {
 			isa = PBXGroup;
 			children = (
@@ -738,8 +719,6 @@
 			children = (
 				689675501379DCE5006BC268 /* Base64.h */,
 				689675511379DCE5006BC268 /* Base64.m */,
-				689675561379DCE5006BC268 /* ByteBuffer.h */,
-				689675571379DCE5006BC268 /* ByteBuffer.m */,
 				6891056A13874D4200106245 /* GDataXMLNode.h */,
 				6891056B13874D4300106245 /* GDataXMLNode.m */,
 				689675611379DCE5006BC268 /* Kdb.h */,
@@ -757,7 +736,6 @@
 				689675911379DCE5006BC268 /* Utils.m */,
 				689675921379DCE5006BC268 /* UUID.h */,
 				689675931379DCE5006BC268 /* UUID.m */,
-				689356901389831100BB263D /* DataSource */,
 				6893568D1389826200BB263D /* Kdb3 */,
 				6893568E1389827600BB263D /* Kdb4 */,
 				689356BA13898D4F00BB263D /* InputStream */,
@@ -1195,7 +1173,6 @@
 				689CBB8F1389BD19009A26DB /* Sha256OutputStream.m in Sources */,
 				68738A0F1389AE1300DFC837 /* HashedInputStream.m in Sources */,
 				689356E313899CD500BB263D /* Base64.m in Sources */,
-				689356E513899CD500BB263D /* ByteBuffer.m in Sources */,
 				689356E613899CD600BB263D /* GDataXMLNode.m in Sources */,
 				689356E713899CD600BB263D /* Kdb.m in Sources */,
 				689356E813899CD600BB263D /* KdbPassword.m in Sources */,
@@ -1203,7 +1180,6 @@
 				689356EA13899CD600BB263D /* KdbWriterFactory.m in Sources */,
 				689356EB13899CD600BB263D /* Utils.m in Sources */,
 				689356EC13899CD600BB263D /* UUID.m in Sources */,
-				689356EF13899CD600BB263D /* GZipInputData.m in Sources */,
 				689356F113899CD600BB263D /* Kdb3Date.m in Sources */,
 				689356F213899CD600BB263D /* Kdb3Node.m in Sources */,
 				689356F313899CD600BB263D /* Kdb3Parser.m in Sources */,
@@ -1253,8 +1229,6 @@
 				688D47751378DF9400BEE609 /* DatabaseManager.m in Sources */,
 				6896759A1379DCE6006BC268 /* Arc4RandomStream.m in Sources */,
 				6896759B1379DCE6006BC268 /* Base64.m in Sources */,
-				6896759E1379DCE6006BC268 /* ByteBuffer.m in Sources */,
-				689675A11379DCE6006BC268 /* GZipInputData.m in Sources */,
 				689675A31379DCE6006BC268 /* Kdb3Date.m in Sources */,
 				689675A41379DCE6006BC268 /* Kdb3Node.m in Sources */,
 				689675A51379DCE6006BC268 /* Kdb3Parser.m in Sources */,

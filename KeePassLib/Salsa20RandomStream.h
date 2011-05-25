@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "DataSource.h"
 #import "RandomStream.h"
 
 @interface Salsa20RandomStream : NSObject <RandomStream> {

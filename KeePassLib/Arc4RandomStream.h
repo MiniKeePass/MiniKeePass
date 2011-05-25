@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "DataSource.h"
 #import "RandomStream.h"
 
 #define ARC_BUFFER_SIZE 0x3FF
