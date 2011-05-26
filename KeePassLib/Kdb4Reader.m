@@ -56,7 +56,7 @@
     // Verify the stream start bytes match
     NSData *startBytes = [aesInputStream readData:32];
     if (![startBytes isEqual:streamStartBytes]) {
-        @throw [NSException exceptionWithName:@"DecryptError" reason:@"Failed to decrypt" userInfo:nil];
+        @throw [NSException exceptionWithName:@"IOException" reason:@"Failed to decrypt" userInfo:nil];
     }
     
     InputStream *stream = [[[HashedInputStream alloc] initWithInputStream:aesInputStream] autorelease];
@@ -71,7 +71,7 @@
     } else if (randomStreamID == CSR_ARC4VARIANT) {
         rs = [[[Arc4RandomStream alloc] init:protectedStreamKey] autorelease];
     } else {
-        @throw [NSException exceptionWithName:@"Unsupported" reason:@"UnsupportedRandomStreamID" userInfo:nil];
+        @throw [NSException exceptionWithName:@"Unsupported" reason:@"Unsupported CSR algorithm" userInfo:nil];
     }
     
     Kdb4Parser * parser = [[Kdb4Parser alloc] init];

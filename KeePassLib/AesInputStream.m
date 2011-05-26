@@ -73,7 +73,7 @@
     if (n > 0) {
         CCCryptorStatus cs = CCCryptorUpdate(cryptorRef, inputBuffer, n, outputBuffer, AES_BUFFERSIZE, &decryptedBytes);
         if (cs != kCCSuccess) {
-            @throw [NSException exceptionWithName:@"DecryptError" reason:@"Failed to decrypt" userInfo:nil];
+            @throw [NSException exceptionWithName:@"IOException" reason:@"Error during decrypt" userInfo:nil];
         }
         
         bufferSize += decryptedBytes;
@@ -82,7 +82,7 @@
     if (n < AES_BUFFERSIZE) {
         CCCryptorStatus cs = CCCryptorFinal(cryptorRef, outputBuffer + decryptedBytes, AES_BUFFERSIZE - decryptedBytes, &decryptedBytes);
         if (cs != kCCSuccess) {
-            @throw [NSException exceptionWithName:@"DecryptError" reason:@"Failed to decrypt" userInfo:nil];
+            @throw [NSException exceptionWithName:@"DecryptError" reason:@"Error during decrypt" userInfo:nil];
         }
         
         eof = YES;
