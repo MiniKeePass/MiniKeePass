@@ -75,6 +75,7 @@
 		688D637D137B63AB00BF3FAB /* sample.2.13.kdbx in Resources */ = {isa = PBXBuildFile; fileRef = 688D635A137B63AB00BF3FAB /* sample.2.13.kdbx */; };
 		688D637E137B63AB00BF3FAB /* sample.2.14.kdbx in Resources */ = {isa = PBXBuildFile; fileRef = 688D635B137B63AB00BF3FAB /* sample.2.14.kdbx */; };
 		688D637F137B63AB00BF3FAB /* sample.2.15.kdbx in Resources */ = {isa = PBXBuildFile; fileRef = 688D635C137B63AB00BF3FAB /* sample.2.15.kdbx */; };
+		688DCC57138DE2E400082FA3 /* GZipOutputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 688DCC56138DE2E400082FA3 /* GZipOutputStream.m */; };
 		688E68F5136F761500004216 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 688E68F4136F761500004216 /* Settings.bundle */; };
 		688F3FB51377805C0049808C /* SelectionListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 688F3FB41377805C0049808C /* SelectionListViewController.m */; };
 		6891056C13874D4300106245 /* GDataXMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 6891056B13874D4300106245 /* GDataXMLNode.m */; };
@@ -214,6 +215,8 @@
 		689EB69D136DAE1C00C8DA1E /* TextViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 689EB69C136DAE1C00C8DA1E /* TextViewCell.m */; };
 		689EB6A0136DB4BF00C8DA1E /* TextFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 689EB69F136DB4BF00C8DA1E /* TextFieldCell.m */; };
 		689EB6A3136DC24C00C8DA1E /* EntryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 689EB6A2136DC24C00C8DA1E /* EntryViewController.m */; };
+		689FBEE3138E01E50097091C /* GZipOutputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 688DCC56138DE2E400082FA3 /* GZipOutputStream.m */; };
+		689FBEE4138E01E50097091C /* GZipStreamTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 689FBEE0138E01B40097091C /* GZipStreamTest.m */; };
 		68A6C234138014B8006E4867 /* background.png in Resources */ = {isa = PBXBuildFile; fileRef = 68A6C232138014B8006E4867 /* background.png */; };
 		68A6C235138014B8006E4867 /* background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 68A6C233138014B8006E4867 /* background@2x.png */; };
 		68A9D33C1388759B00AE9AD6 /* Kdb.m in Sources */ = {isa = PBXBuildFile; fileRef = 68A9D33B1388759A00AE9AD6 /* Kdb.m */; };
@@ -319,6 +322,8 @@
 		688D635A137B63AB00BF3FAB /* sample.2.13.kdbx */ = {isa = PBXFileReference; lastKnownFileType = file; path = sample.2.13.kdbx; sourceTree = "<group>"; };
 		688D635B137B63AB00BF3FAB /* sample.2.14.kdbx */ = {isa = PBXFileReference; lastKnownFileType = file; path = sample.2.14.kdbx; sourceTree = "<group>"; };
 		688D635C137B63AB00BF3FAB /* sample.2.15.kdbx */ = {isa = PBXFileReference; lastKnownFileType = file; path = sample.2.15.kdbx; sourceTree = "<group>"; };
+		688DCC55138DE2E400082FA3 /* GZipOutputStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GZipOutputStream.h; sourceTree = "<group>"; };
+		688DCC56138DE2E400082FA3 /* GZipOutputStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GZipOutputStream.m; sourceTree = "<group>"; };
 		688E68F4136F761500004216 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		688F3FB31377805C0049808C /* SelectionListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectionListViewController.h; sourceTree = "<group>"; };
 		688F3FB41377805C0049808C /* SelectionListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectionListViewController.m; sourceTree = "<group>"; };
@@ -464,6 +469,8 @@
 		689EB69F136DB4BF00C8DA1E /* TextFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextFieldCell.m; sourceTree = "<group>"; };
 		689EB6A1136DC24C00C8DA1E /* EntryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EntryViewController.h; sourceTree = "<group>"; };
 		689EB6A2136DC24C00C8DA1E /* EntryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EntryViewController.m; sourceTree = "<group>"; };
+		689FBEDF138E01B40097091C /* GZipStreamTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GZipStreamTest.h; sourceTree = "<group>"; };
+		689FBEE0138E01B40097091C /* GZipStreamTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GZipStreamTest.m; sourceTree = "<group>"; };
 		68A6C232138014B8006E4867 /* background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background.png; sourceTree = "<group>"; };
 		68A6C233138014B8006E4867 /* background@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "background@2x.png"; sourceTree = "<group>"; };
 		68A9D33B1388759A00AE9AD6 /* Kdb.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Kdb.m; sourceTree = "<group>"; };
@@ -605,6 +612,8 @@
 				689356891389711B00BB263D /* AesOutputStream.m */,
 				68C17652138969810046E0E1 /* DataOutputStream.h */,
 				68C17653138969820046E0E1 /* DataOutputStream.m */,
+				688DCC55138DE2E400082FA3 /* GZipOutputStream.h */,
+				688DCC56138DE2E400082FA3 /* GZipOutputStream.m */,
 				68C1764E13895BB20046E0E1 /* HashedOutputStream.h */,
 				68C1764F13895BB30046E0E1 /* HashedOutputStream.m */,
 				68738A131389B71900DFC837 /* Sha256OutputStream.h */,
@@ -683,6 +692,8 @@
 			children = (
 				689356DB13899C5F00BB263D /* AesStreamTest.h */,
 				689356DD13899C5F00BB263D /* AesStreamTest.m */,
+				689FBEDF138E01B40097091C /* GZipStreamTest.h */,
+				689FBEE0138E01B40097091C /* GZipStreamTest.m */,
 				68738A101389AE4E00DFC837 /* HashedStreamTest.h */,
 				68738A111389AE4E00DFC837 /* HashedStreamTest.m */,
 				689CBB8C1389B93F009A26DB /* Sha256StreamTest.h */,
@@ -1169,6 +1180,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				689FBEE3138E01E50097091C /* GZipOutputStream.m in Sources */,
+				689FBEE4138E01E50097091C /* GZipStreamTest.m in Sources */,
 				68DEB789138BE3B500FC1F09 /* GZipInputStream.m in Sources */,
 				689CBB8F1389BD19009A26DB /* Sha256OutputStream.m in Sources */,
 				68738A0F1389AE1300DFC837 /* HashedInputStream.m in Sources */,
@@ -1261,6 +1274,7 @@
 				68738A0D1389A5CE00DFC837 /* HashedInputStream.m in Sources */,
 				68738A151389B71900DFC837 /* Sha256OutputStream.m in Sources */,
 				68DEB786138BDFFC00FC1F09 /* GZipInputStream.m in Sources */,
+				688DCC57138DE2E400082FA3 /* GZipOutputStream.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

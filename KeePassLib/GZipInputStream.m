@@ -63,7 +63,8 @@
 }
 
 - (BOOL)decompress {
-    int32_t n;
+    int ret;
+    int n;
     
     if (eof) {
         return NO;
@@ -86,12 +87,12 @@
         }
         
         // Inflate the input data
-        n = inflate(&zstream, Z_NO_FLUSH);
-        if (n != Z_OK) {
+        ret = inflate(&zstream, Z_NO_FLUSH);
+        if (ret != Z_OK) {
             inflateEnd(&zstream);
             
-            if (n != Z_STREAM_END) {
-                @throw [NSException exceptionWithName:@"InvalidData" reason:@"UnzipError" userInfo:nil];
+            if (ret != Z_STREAM_END) {
+                @throw [NSException exceptionWithName:@"IOException" reason:@"Failed to inflate data" userInfo:nil];
             }
             
             eof = YES;
@@ -104,6 +105,8 @@
     } else {
         bufferSize = GZIP_OUTPUT_BUFFERSIZE;
     }
+    
+    bufferOffset = 0;
     
     return YES;
 }
