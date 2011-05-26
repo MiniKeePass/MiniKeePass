@@ -56,11 +56,13 @@
     NSData *key = [KdbPassword createFinalKey32ForPasssword:password encoding:NSUTF8StringEncoding kdbVersion:4 masterSeed:masterSeed transformSeed:transformSeed rounds:rounds];
     AesOutputStream *aesOutputStream = [[AesOutputStream alloc] initWithOutputStream:outputStream key:key iv:encryptionIv];
     
+    // Write the stream start bytes
+    [aesOutputStream write:streamStartBytes];
+    
     // Create the hashed output stream
     HashedOutputStream *hashedOutputStream = [[HashedOutputStream alloc] initWithOutputStream:aesOutputStream blockSize:1024*1024];
     
-    // Write the stream start bytes
-    [hashedOutputStream write:streamStartBytes];
+    // FIXME add gzip here
     
     // Serialize the XML
     [hashedOutputStream write:[tree.document XMLData]];
