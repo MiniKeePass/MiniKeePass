@@ -47,20 +47,20 @@
 
 - (void)persist:(Kdb4Tree*)tree file:(NSString*)filename withPassword:(NSString*)password {
     // Configure the output stream
-    DataOutputStream *outputStream = [[DataOutputStream alloc] init];
+    DataOutputStream *outputStream = [[[DataOutputStream alloc] init] autorelease];
     
     // Write the header
     [self writeHeader:outputStream];
     
     // Create the encryption output stream
     NSData *key = [KdbPassword createFinalKey32ForPasssword:password encoding:NSUTF8StringEncoding kdbVersion:4 masterSeed:masterSeed transformSeed:transformSeed rounds:rounds];
-    AesOutputStream *aesOutputStream = [[AesOutputStream alloc] initWithOutputStream:outputStream key:key iv:encryptionIv];
+    AesOutputStream *aesOutputStream = [[[AesOutputStream alloc] initWithOutputStream:outputStream key:key iv:encryptionIv] autorelease];
     
     // Write the stream start bytes
     [aesOutputStream write:streamStartBytes];
     
     // Create the hashed output stream
-    HashedOutputStream *hashedOutputStream = [[HashedOutputStream alloc] initWithOutputStream:aesOutputStream blockSize:1024*1024];
+    HashedOutputStream *hashedOutputStream = [[[HashedOutputStream alloc] initWithOutputStream:aesOutputStream blockSize:1024*1024] autorelease];
     
     // FIXME add gzip here
     
