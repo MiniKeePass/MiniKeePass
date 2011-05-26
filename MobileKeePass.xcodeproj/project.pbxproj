@@ -224,6 +224,7 @@
 		68C17654138969830046E0E1 /* DataOutputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 68C17653138969820046E0E1 /* DataOutputStream.m */; };
 		68C1765713896B4C0046E0E1 /* OutputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 68C1765613896B4A0046E0E1 /* OutputStream.m */; };
 		68C6BDEE137F10CF0013373A /* SwitchCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68C6BDED137F10CF0013373A /* SwitchCell.m */; };
+		68C7C323138E7558001F3229 /* Kdb4Persist.m in Sources */ = {isa = PBXBuildFile; fileRef = 68C7C322138E7558001F3229 /* Kdb4Persist.m */; };
 		68D5900A136CB5CB0064CEE5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68D59009136CB5CB0064CEE5 /* UIKit.framework */; };
 		68D5900C136CB5CB0064CEE5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68D5900B136CB5CB0064CEE5 /* Foundation.framework */; };
 		68D5900E136CB5CB0064CEE5 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68D5900D136CB5CB0064CEE5 /* CoreGraphics.framework */; };
@@ -482,6 +483,8 @@
 		68C1765613896B4A0046E0E1 /* OutputStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OutputStream.m; sourceTree = "<group>"; };
 		68C6BDEC137F10CF0013373A /* SwitchCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwitchCell.h; sourceTree = "<group>"; };
 		68C6BDED137F10CF0013373A /* SwitchCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SwitchCell.m; sourceTree = "<group>"; };
+		68C7C321138E7558001F3229 /* Kdb4Persist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Kdb4Persist.h; sourceTree = "<group>"; };
+		68C7C322138E7558001F3229 /* Kdb4Persist.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Kdb4Persist.m; sourceTree = "<group>"; };
 		68D59005136CB5CB0064CEE5 /* MobileKeePass.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MobileKeePass.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		68D59009136CB5CB0064CEE5 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		68D5900B136CB5CB0064CEE5 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -650,6 +653,8 @@
 				689675711379DCE5006BC268 /* Kdb4Node.m */,
 				689675721379DCE5006BC268 /* Kdb4Parser.h */,
 				689675731379DCE5006BC268 /* Kdb4Parser.m */,
+				68C7C321138E7558001F3229 /* Kdb4Persist.h */,
+				68C7C322138E7558001F3229 /* Kdb4Persist.m */,
 				689675741379DCE5006BC268 /* Kdb4Reader.h */,
 				689675751379DCE5006BC268 /* Kdb4Reader.m */,
 				689764AC1388AA4B006BC0A6 /* Kdb4Writer.h */,
@@ -1275,6 +1280,7 @@
 				68738A151389B71900DFC837 /* Sha256OutputStream.m in Sources */,
 				68DEB786138BDFFC00FC1F09 /* GZipInputStream.m in Sources */,
 				688DCC57138DE2E400082FA3 /* GZipOutputStream.m in Sources */,
+				68C7C323138E7558001F3229 /* Kdb4Persist.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
