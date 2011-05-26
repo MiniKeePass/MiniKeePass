@@ -16,9 +16,11 @@
  */
 
 #import <Foundation/Foundation.h>
+#import "MobileKeePassAppDelegate.h"
 #import "KdbLib.h"
 
-@interface GroupViewController : UITableViewController {
+@interface GroupViewController : UITableViewController <UIDocumentInteractionControllerDelegate> {
+    MobileKeePassAppDelegate *appDelegate;
     KdbGroup *group;
 }
 
