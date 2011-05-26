@@ -124,15 +124,11 @@
 
 - (void)exportFile {
     NSString *filename = appDelegate.databaseDocument.filename;
-    
-    // Retrieve the Documents directory
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
-    NSString *path = [documentsDirectory stringByAppendingPathComponent:filename];
-    NSURL *url = [NSURL fileURLWithPath:path];
-    
+
+    NSURL *url = [NSURL fileURLWithPath:filename];    
     UIDocumentInteractionController *uidic = [[UIDocumentInteractionController interactionControllerWithURL:url] retain];
-    uidic.delegate = self;
+    //FIXME there's probably a memory leak here
+    
     BOOL didShow;
     didShow = [uidic presentOpenInMenuFromRect:CGRectZero inView:self.view.window animated:YES];
     
@@ -142,10 +138,6 @@
         [appDelegate showActionSheet:actionSheet];
         [actionSheet release];
     }
-}
-
--(void)documentInteractionControllerDidDismissOpenInMenu:(UIDocumentInteractionController *)controller {
-    [controller autorelease];
 }
 
 @end
