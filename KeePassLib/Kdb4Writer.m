@@ -71,7 +71,7 @@
     [hashedOutputStream close];
     
     // Write to the file
-    if (![outputStream.data writeToFile:[filename stringByAppendingPathExtension:@"test.kdbx"] atomically:YES]) {
+    if (![outputStream.data writeToFile:filename atomically:YES]) {
         @throw [NSException exceptionWithName:@"IOError" reason:@"Failed to write file" userInfo:nil];
     }
 }
