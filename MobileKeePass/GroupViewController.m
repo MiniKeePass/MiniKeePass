@@ -131,7 +131,8 @@
     NSString *path = [documentsDirectory stringByAppendingPathComponent:filename];
     NSURL *url = [NSURL fileURLWithPath:path];
     
-    UIDocumentInteractionController *uidic = [UIDocumentInteractionController interactionControllerWithURL:url];
+    UIDocumentInteractionController *uidic = [[UIDocumentInteractionController interactionControllerWithURL:url] retain];
+    uidic.delegate = self;
     BOOL didShow;
     didShow = [uidic presentOpenInMenuFromRect:CGRectZero inView:self.view.window animated:YES];
     
@@ -141,6 +142,10 @@
         [appDelegate showActionSheet:actionSheet];
         [actionSheet release];
     }
+}
+
+-(void)documentInteractionControllerDidDismissOpenInMenu:(UIDocumentInteractionController *)controller {
+    [controller autorelease];
 }
 
 @end
