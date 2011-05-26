@@ -78,6 +78,8 @@
 }
 
 - (void)readHeader:inputStream {
+    NSData *skip;
+    
     uint32_t version = [inputStream readInt32];
     version = CFSwapInt32LittleToHost(version);
         
@@ -93,71 +95,71 @@
         fieldSize = CFSwapInt16LittleToHost(fieldSize);
         
         switch (fieldType) {
-            case HEADER_EOH:{
-                NSData *skip = [inputStream readData:fieldSize];
+            case HEADER_EOH:
+                skip = [inputStream readData:fieldSize];
                 eoh = YES;
                 break;
-            }
-            case HEADER_COMMENT:{
+            
+            case HEADER_COMMENT:
                 // FIXME this should prolly be a string
                 comment = [[inputStream readData:fieldSize] retain];
                 break;
-            }
-            case HEADER_CIPHERID:{
+            
+            case HEADER_CIPHERID:
                 if (fieldSize != 16) {
                     @throw [NSException exceptionWithName:@"IOException" reason:@"Invalid cipher id" userInfo:nil];
                 }
                 cipherUuid = [[inputStream readData:fieldSize] retain];
                 break;
-            }
-            case HEADER_MASTERSEED:{
+            
+            case HEADER_MASTERSEED:
                 if (fieldSize != 32) {
                     @throw [NSException exceptionWithName:@"IOException" reason:@"Invalid field size" userInfo:nil];
                 }
                 masterSeed = [[inputStream readData:fieldSize] retain];
                 break;
-            }
-            case HEADER_TRANSFORMSEED:{
+            
+            case HEADER_TRANSFORMSEED:
                 if (fieldSize != 32) {
                     @throw [NSException exceptionWithName:@"IOException" reason:@"Invalid field size" userInfo:nil];
                 }
                 
                 transformSeed = [[inputStream readData:fieldSize] retain];
                 break;
-            }
-            case HEADER_ENCRYPTIONIV:{
+            
+            case HEADER_ENCRYPTIONIV:
                 encryptionIv = [[inputStream readData:fieldSize] retain];
                 break;
-            }
-            case HEADER_PROTECTEDKEY:{
+            
+            case HEADER_PROTECTEDKEY:
                 protectedStreamKey = [[inputStream readData:fieldSize] retain];
                 break;
-            }
-            case HEADER_STARTBYTES:{
+            
+            case HEADER_STARTBYTES:
                 streamStartBytes = [[inputStream readData:fieldSize] retain];
                 break;
-            }
-            case HEADER_TRANSFORMROUNDS:{
+            
+            case HEADER_TRANSFORMROUNDS:
                 rounds = [inputStream readInt64];
                 rounds = CFSwapInt64LittleToHost(rounds);
                 break;
-            }
-            case HEADER_COMPRESSION:{
+            
+            case HEADER_COMPRESSION:
                 compressionAlgorithm = [inputStream readInt32];
                 compressionAlgorithm = CFSwapInt32LittleToHost(compressionAlgorithm);
                 if (compressionAlgorithm >= COMPRESSION_COUNT) {
                     @throw [NSException exceptionWithName:@"IOException" reason:@"Invalid compression" userInfo:nil];
                 }
                 break;
-            }
-            case HEADER_RANDOMSTREAMID:{
+            
+            case HEADER_RANDOMSTREAMID:
                 randomStreamID = [inputStream readInt32];
                 randomStreamID = CFSwapInt32LittleToHost(randomStreamID);
                 if (randomStreamID >= CSR_COUNT) {
                     @throw [NSException exceptionWithName:@"IOException" reason:@"Invalid CSR algorithm" userInfo:nil];
                 }
                 break;
-            }
+            
             default:
                 @throw [NSException exceptionWithName:@"InvalidHeader" reason:@"InvalidField" userInfo:nil];
         }
