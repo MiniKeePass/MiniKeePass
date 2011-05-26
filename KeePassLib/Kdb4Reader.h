@@ -12,19 +12,16 @@
 #import "Kdb4Node.h"
 
 @interface Kdb4Reader : NSObject<KdbReader> {
+    NSData *comment;
     NSData *cipherUuid;
-    NSData *encryptionIv;
+    uint32_t compressionAlgorithm;
     NSData *masterSeed;
     NSData *transformSeed;
-    NSData *streamStartBytes;
-    NSData *protectedStreamKey;
-    NSData *comment;
-    
-    uint32_t compressionAlgorithm;
-    uint32_t randomStreamID;
     uint64_t rounds;
-    
-    Kdb4Tree * _tree;
+    NSData *encryptionIv;
+    NSData *protectedStreamKey;
+    NSData *streamStartBytes;
+    uint32_t randomStreamID;
 }
 
 @end

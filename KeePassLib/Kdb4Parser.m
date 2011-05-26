@@ -18,10 +18,16 @@
 
 @implementation Kdb4Parser
 
-@synthesize _randomStream;
+- (id)initWithRandomStream:(id<RandomStream>)cryptoRandomStream {
+    self = [super init];
+    if (self) {
+        randomStream = [cryptoRandomStream retain];
+    }
+    return self;
+}
 
 - (void)dealloc {
-    [_randomStream release];
+    [randomStream release];
     [super dealloc];
 }
 
@@ -70,7 +76,7 @@ int closeCallback(void *context) {
         NSString *str = [root stringValue];
         NSMutableData *data = [[NSMutableData alloc] initWithCapacity:[str length]];
         [Base64 decode:str to:data];
-        [root setStringValue:[_randomStream xor:data]];
+        [root setStringValue:[randomStream xor:data]];
         [data release];
     }
     

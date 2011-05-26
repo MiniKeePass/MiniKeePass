@@ -27,31 +27,28 @@
 @implementation Kdb4Reader
 
 - (void)dealloc {
-    [encryptionIv release];
+    [comment release];
+    [cipherUuid release];
     [masterSeed release];
     [transformSeed release];
-    [streamStartBytes release];
-    
-    [cipherUuid release];
+    [encryptionIv release];
     [protectedStreamKey release];
-
-    [_tree release];
+    [streamStartBytes release];
     [super dealloc];
 }
 
 - (KdbTree*)load:(InputStream*)inputStream withPassword:(NSString*)password {
-    Kdb4Tree *tree = nil;
-    
-    //read header
+    // Read the header
     [self readHeader:inputStream];
     
+    // Check the cipher algorithm
     if (![cipherUuid isEqual:[UUID getAESUUID]]) {
-        @throw [NSException exceptionWithName:@"Unsupported" reason:@"UnsupportedCipher" userInfo:nil];
+        @throw [NSException exceptionWithName:@"Unsupported" reason:@"Unsupported cipher" userInfo:nil];
     }
     
-    //decrypt data
+    // Create the AES input stream
     NSData *key = [KdbPassword createFinalKey32ForPasssword:password encoding:NSUTF8StringEncoding kdbVersion:4 masterSeed:masterSeed transformSeed:transformSeed rounds:rounds];
-    AesInputStream *aesInputStream = [[AesInputStream alloc] initWithInputStream:inputStream key:key iv:encryptionIv];
+    AesInputStream *aesInputStream = [[[AesInputStream alloc] initWithInputStream:inputStream key:key iv:encryptionIv] autorelease];
     
     // Verify the stream start bytes match
     NSData *startBytes = [aesInputStream readData:32];
@@ -59,30 +56,25 @@
         @throw [NSException exceptionWithName:@"IOException" reason:@"Failed to decrypt" userInfo:nil];
     }
     
+    // Create the hashed input stream and swap in the compression input stream if compressed
     InputStream *stream = [[[HashedInputStream alloc] initWithInputStream:aesInputStream] autorelease];
     if (compressionAlgorithm == COMPRESSION_GZIP) {
         stream = [[[GZipInputStream alloc] initWithInputStream:stream] autorelease];
     }
     
-    //should PlainXML supported?
-    id<RandomStream> rs = nil;
+    // Create the CRS Algorithm
+    id<RandomStream> randomStream = nil;
     if (randomStreamID == CSR_SALSA20) {
-        rs = [[[Salsa20RandomStream alloc] init:protectedStreamKey] autorelease];
+        randomStream = [[[Salsa20RandomStream alloc] init:protectedStreamKey] autorelease];
     } else if (randomStreamID == CSR_ARC4VARIANT) {
-        rs = [[[Arc4RandomStream alloc] init:protectedStreamKey] autorelease];
+        randomStream = [[[Arc4RandomStream alloc] init:protectedStreamKey] autorelease];
     } else {
         @throw [NSException exceptionWithName:@"Unsupported" reason:@"Unsupported CSR algorithm" userInfo:nil];
     }
     
-    Kdb4Parser * parser = [[Kdb4Parser alloc] init];
-    parser._randomStream = rs;
-    
-    tree = [parser parse:stream];
-    
-    [parser release];
-    [aesInputStream release];
-    
-    return tree;
+    // Parse the tree
+    Kdb4Parser *parser = [[[Kdb4Parser alloc] initWithRandomStream:randomStream] autorelease];
+    return [parser parse:stream];
 }
 
 - (void)readHeader:inputStream {

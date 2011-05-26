@@ -12,11 +12,10 @@
 #import "InputStream.h"
 
 @interface Kdb4Parser : NSObject {
-    id<RandomStream> _randomStream;
+    id<RandomStream> randomStream;
 }
 
-@property (nonatomic, retain) id<RandomStream> _randomStream;
-
+- (id)initWithRandomStream:(id<RandomStream>)cryptoRandomStream;
 - (Kdb4Tree*)parse:(InputStream*)inputStream;
 
 @end
