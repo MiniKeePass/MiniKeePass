@@ -8,6 +8,7 @@
 
 #import "Kdb4Writer.h"
 #import "Kdb4Node.h"
+#import "Kdb4Persist.h"
 #import "DataOutputStream.h"
 #import "HashedOutputStream.h"
 #import "AesOutputStream.h"
@@ -65,7 +66,8 @@
     // FIXME add gzip here
     
     // Serialize the XML
-    [hashedOutputStream write:[tree.document XMLData]];
+    Kdb4Persist *persist = [[[Kdb4Persist alloc] initWithTree:tree andOutputStream:hashedOutputStream] autorelease];
+    [persist persist];
     
     // Close the output stream
     [hashedOutputStream close];
