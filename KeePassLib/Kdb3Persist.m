@@ -21,20 +21,17 @@
 
 @implementation Kdb3Persist
 
-@synthesize _tree;
-
-- (id)initWithTree:(Kdb3Tree*)tree andOutputStream:(OutputStream*)stream {
+- (id)initWithTree:(Kdb3Tree*)t andOutputStream:(OutputStream*)stream {
     self = [super init];
     if (self) {
-        self._tree = tree;
+        tree = [t retain];
         outputStream = [stream retain];
-        _groupId = 100;
     }
     return self;
 }
 
 - (void)dealloc {
-    [_tree release];
+    [tree release];
     [outputStream release];
     [super dealloc];
 }
@@ -212,7 +209,7 @@
 }
 
 - (void)persist {
-    Kdb3Group *root = (Kdb3Group*)_tree.root;
+    Kdb3Group *root = (Kdb3Group*)tree.root;
     [self persistGroups:root];
     [self persistEntries:root];
     [self persistMetaEntries:root];

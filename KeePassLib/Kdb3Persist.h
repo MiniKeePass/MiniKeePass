@@ -11,12 +11,9 @@
 #import "OutputStream.h"
 
 @interface Kdb3Persist : NSObject {
-    Kdb3Tree *_tree;
+    Kdb3Tree *tree;
     OutputStream *outputStream;
-    NSInteger _groupId;
 }
-
-@property(nonatomic, retain) KdbTree *_tree;
 
 - (id)initWithTree:(Kdb3Tree*)tree andOutputStream:(OutputStream*)stream;
 - (void)persist;
