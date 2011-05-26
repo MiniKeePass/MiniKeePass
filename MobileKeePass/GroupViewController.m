@@ -17,15 +17,14 @@
 
 #import "GroupViewController.h"
 #import "EntryViewController.h"
-#import "MobileKeePassAppDelegate.h"
 
 @implementation GroupViewController
 
 -(void)viewDidLoad {
-    MobileKeePassAppDelegate *appDelegate = (MobileKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
+    appDelegate = (MobileKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
     
     UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"tab_gear"] style:UIBarButtonItemStylePlain target:appDelegate action:@selector(showSettingsView)];
-    UIBarButtonItem *actionButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:nil action:nil];
+    UIBarButtonItem *actionButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(exportFile)];
     UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:nil action:nil];
     UIBarButtonItem *spacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     
@@ -85,7 +84,7 @@
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     
-    MobileKeePassAppDelegate *appDelegate = (MobileKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
+    appDelegate = (MobileKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
     
     // Configure the cell.
     int numChildren = [group.groups count];
@@ -120,6 +119,27 @@
         entryViewController.title = e.title;
         [self.navigationController pushViewController:entryViewController animated:YES];
         [entryViewController release];
+    }
+}
+
+- (void)exportFile {
+    NSString *filename = appDelegate.databaseDocument.filename;
+    
+    // Retrieve the Documents directory
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString *path = [documentsDirectory stringByAppendingPathComponent:filename];
+    NSURL *url = [NSURL fileURLWithPath:path];
+    
+    UIDocumentInteractionController *uidic = [UIDocumentInteractionController interactionControllerWithURL:url];
+    BOOL didShow;
+    didShow = [uidic presentOpenInMenuFromRect:CGRectZero inView:self.view.window animated:YES];
+    
+    if (!didShow) {
+        NSString *prompt = @"There are no other applications installed capable of imporing KeePass files";
+        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:prompt delegate:nil cancelButtonTitle:@"OK" destructiveButtonTitle:nil otherButtonTitles: nil];
+        [appDelegate showActionSheet:actionSheet];
+        [actionSheet release];
     }
 }
 
