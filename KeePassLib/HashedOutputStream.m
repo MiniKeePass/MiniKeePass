@@ -46,7 +46,7 @@
         }
         
         n = MIN(bufferLength - bufferOffset, length);
-        memcpy(buffer, bytes + offset, n);
+        memcpy(buffer + bufferOffset, bytes + offset, n);
         
         bufferOffset += n;
         
