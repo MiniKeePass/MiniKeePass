@@ -10,8 +10,9 @@
 #import "Kdb4Node.h"
 #import "Kdb4Persist.h"
 #import "DataOutputStream.h"
-#import "HashedOutputStream.h"
 #import "AesOutputStream.h"
+#import "HashedOutputStream.h"
+#import "GZipOutputStream.h"
 #import "UUID.h"
 #import "Utils.h"
 
@@ -63,17 +64,18 @@
     // Create the hashed output stream
     HashedOutputStream *hashedOutputStream = [[[HashedOutputStream alloc] initWithOutputStream:aesOutputStream blockSize:1024*1024] autorelease];
     
-    // FIXME add gzip here
-    
+    // Create the gzip output stream
+    GZipOutputStream *gzipOutputStream = [[[GZipOutputStream alloc] initWithOutputStream:hashedOutputStream] autorelease];
+
     // Serialize the XML
-    Kdb4Persist *persist = [[[Kdb4Persist alloc] initWithTree:tree andOutputStream:hashedOutputStream] autorelease];
+    Kdb4Persist *persist = [[[Kdb4Persist alloc] initWithTree:tree andOutputStream:gzipOutputStream] autorelease];
     [persist persist];
     
     // Close the output stream
-    [hashedOutputStream close];
+    [gzipOutputStream close];
     
     // Write to the file
-    if (![outputStream.data writeToFile:filename atomically:YES]) {
+    if (![outputStream.data writeToFile:[filename stringByAppendingPathExtension:@"test.kdbx"] atomically:YES]) {
         @throw [NSException exceptionWithName:@"IOError" reason:@"Failed to write file" userInfo:nil];
     }
 }
@@ -81,7 +83,7 @@
 - (void)writeHeaderField:(OutputStream*)outputStream headerId:(uint8_t)headerId data:(const void*)data length:(uint16_t)length {
     [outputStream writeInt8:headerId];
     
-    [outputStream writeInt16:SWAP_INT16_HOST_TO_LE(length)];
+    [outputStream writeInt16:CFSwapInt16HostToLittle(length)];
     
     if (length > 0) {
         [outputStream write:data length:length];
@@ -94,22 +96,22 @@
     uint64_t i64;
     
     // Signature and version
-    [outputStream writeInt32:SWAP_INT32_HOST_TO_LE(KDB4_SIG1)];
-    [outputStream writeInt32:SWAP_INT32_HOST_TO_LE(KDB4_SIG2)];
-    [outputStream writeInt32:SWAP_INT32_HOST_TO_LE(KDB4_VERSION)];
+    [outputStream writeInt32:CFSwapInt32HostToLittle(KDB4_SIG1)];
+    [outputStream writeInt32:CFSwapInt32HostToLittle(KDB4_SIG2)];
+    [outputStream writeInt32:CFSwapInt32HostToLittle(KDB4_VERSION)];
     
     NSData *cipherUuid = [UUID getAESUUID];
     [self writeHeaderField:outputStream headerId:HEADER_CIPHERID data:cipherUuid.bytes length:cipherUuid.length];
     
     // FIXME support gzip
-    i32 = SWAP_INT32_HOST_TO_LE(COMPRESSION_NONE);
+    i32 = CFSwapInt32HostToLittle(COMPRESSION_GZIP);
     [self writeHeaderField:outputStream headerId:HEADER_COMPRESSION data:&i32 length:4];
     
     [self writeHeaderField:outputStream headerId:HEADER_MASTERSEED data:masterSeed.bytes length:masterSeed.length];
     
     [self writeHeaderField:outputStream headerId:HEADER_TRANSFORMSEED data:transformSeed.bytes length:transformSeed.length];
     
-    i64 = SWAP_INT64_HOST_TO_LE(rounds);
+    i64 = CFSwapInt64HostToLittle(rounds);
     [self writeHeaderField:outputStream headerId:HEADER_TRANSFORMROUNDS data:&i64 length:8];
     
     [self writeHeaderField:outputStream headerId:HEADER_ENCRYPTIONIV data:encryptionIv.bytes length:encryptionIv.length];
@@ -118,7 +120,7 @@
     
     [self writeHeaderField:outputStream headerId:HEADER_STARTBYTES data:streamStartBytes.bytes length:streamStartBytes.length];
     
-    i32 = SWAP_INT32_HOST_TO_LE(CSR_SALSA20);
+    i32 = CFSwapInt32HostToLittle(CSR_SALSA20);
     [self writeHeaderField:outputStream headerId:HEADER_RANDOMSTREAMID data:&i32 length:4];
     
     bytes[0] = '\r';
