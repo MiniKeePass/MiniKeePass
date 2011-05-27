@@ -47,79 +47,63 @@
 - (void)writeEntry:(Kdb3Entry *)entry {
     uint32_t tmp32;
     
-    //uuid 2+4+16
     [self appendField:1 size:16 bytes:(void *)(entry._uuid.bytes)];
     
-    //groupId
     tmp32 = CFSwapInt32HostToLittle(((Kdb3Group*)entry.parent)._id);
     [self appendField:2 size:4 bytes:&tmp32];
     
-    //image
     tmp32 = CFSwapInt32HostToLittle(entry.image);
     [self appendField:3 size:4 bytes:&tmp32];
     
-    //title
-    if(![Utils emptyString:entry.title]){
+    if (![Utils emptyString:entry.title]) {
         const char * tmp = [entry.title cStringUsingEncoding:NSUTF8StringEncoding];
         [self appendField:4 size:strlen(tmp)+1 bytes:(void *)tmp];
     }
     
-    //url
-    if(![Utils emptyString:entry.url]){
+    if (![Utils emptyString:entry.url]) {
         const char * tmp = [entry.url cStringUsingEncoding:NSUTF8StringEncoding];
         [self appendField:5 size:strlen(tmp)+1 bytes:(void *)tmp];
     }
     
-    //username
-    if(![Utils emptyString:entry.username]){
+    if (![Utils emptyString:entry.username]) {
         const char * tmp = [entry.username cStringUsingEncoding:NSUTF8StringEncoding];
         [self appendField:6 size:strlen(tmp)+1 bytes:(void *)tmp];
     }
     
-    //password
-    if(![Utils emptyString:entry.password]){
+    if (![Utils emptyString:entry.password]) {
         const char * tmp = [entry.password cStringUsingEncoding:NSUTF8StringEncoding];
         [self appendField:7 size:strlen(tmp)+1 bytes:(void *)tmp];
     }
     
-    //comment
-    if(![Utils emptyString:entry.notes]){
+    if (![Utils emptyString:entry.notes]) {
         const char * tmp = [entry.notes cStringUsingEncoding:NSUTF8StringEncoding];
         [self appendField:8 size:strlen(tmp)+1 bytes:(void *)tmp];
     }
     
     uint8_t packedDate[5];
     
-    //creation
     [Kdb3Date toPacked:entry.creationTime bytes:packedDate];
     [self appendField:9 size:5 bytes:packedDate];
     
-    //last mod
     [Kdb3Date toPacked:entry.lastModificationTime bytes:packedDate];
     [self appendField:10 size:5 bytes:packedDate];
     
-    //last access
     [Kdb3Date toPacked:entry.lastAccessTime bytes:packedDate];
     [self appendField:11 size:5 bytes:packedDate];
     
-    //expire
     [Kdb3Date toPacked:entry.expiryTime bytes:packedDate];
     [self appendField:12 size:5 bytes:packedDate];
     
-    //binary desc
-    if(![Utils emptyString:entry._binaryDesc]){
+    if (![Utils emptyString:entry._binaryDesc]) {
         const char * tmp = [entry._binaryDesc cStringUsingEncoding:NSUTF8StringEncoding];
         [self appendField:13 size:strlen(tmp)+1 bytes:(void *)tmp];
     }
     
-    //binary
-    if(entry._binary && entry._binary.length){
+    if (entry._binary && entry._binary.length) {
         [self appendField:14 size:entry._binary.length bytes:entry._binary.bytes];
     }
     
     [self appendField:0xFFFF size:0 bytes:nil];
-    
-    //so the total size for each entry is: (2+4)*15 + 16 + 4 + 4 + 5*4 + strings + binary = 134 + strings + binary 
 }
 
 - (void)writeGroup:(Kdb3Group *)group {
