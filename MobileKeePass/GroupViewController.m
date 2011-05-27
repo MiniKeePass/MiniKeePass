@@ -124,16 +124,14 @@
 
 - (void)exportFile {
     NSString *filename = appDelegate.databaseDocument.filename;
-
+    
     NSURL *url = [NSURL fileURLWithPath:filename];    
     UIDocumentInteractionController *uidic = [[UIDocumentInteractionController interactionControllerWithURL:url] retain];
     //FIXME there's probably a memory leak here
     
-    BOOL didShow;
-    didShow = [uidic presentOpenInMenuFromRect:CGRectZero inView:self.view.window animated:YES];
-    
+    BOOL didShow = [uidic presentOpenInMenuFromRect:CGRectZero inView:self.view.window animated:YES];
     if (!didShow) {
-        NSString *prompt = @"There are no other applications installed capable of imporing KeePass files";
+        NSString *prompt = @"There are no other applications installed capable of importing KeePass files";
         UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:prompt delegate:nil cancelButtonTitle:@"OK" destructiveButtonTitle:nil otherButtonTitles: nil];
         [appDelegate showActionSheet:actionSheet];
         [actionSheet release];
