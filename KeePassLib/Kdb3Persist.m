@@ -11,12 +11,12 @@
 #import "Kdb3Date.h"
 
 @interface Kdb3Persist(PrivateMethods)
-- (void)persistGroups:(Kdb3Group *)root;
-- (void)persistEntries:(Kdb3Group *)root;
-- (void)persistMetaEntries:(Kdb3Group *)root;
-- (void)writeGroup:(Kdb3Group *)group;
-- (void)writeEntry:(Kdb3Entry *)entry;
-- (void)appendField:(uint16_t)type size:(uint32_t)size bytes:(const void *)value;
+- (void)persistGroups:(Kdb3Group*)root;
+- (void)persistEntries:(Kdb3Group*)root;
+- (void)persistMetaEntries:(Kdb3Group*)root;
+- (void)writeGroup:(Kdb3Group*)group;
+- (void)writeEntry:(Kdb3Entry*)entry;
+- (void)appendField:(uint16_t)type size:(uint32_t)size bytes:(const void*)value;
 @end
 
 @implementation Kdb3Persist
@@ -36,18 +36,88 @@
     [super dealloc];
 }
 
-- (void)appendField:(uint16_t)type size:(uint32_t)size bytes:(const void *)buffer {
-    [outputStream writeInt16:CFSwapInt16HostToLittle(type)];
-    [outputStream writeInt32:CFSwapInt32HostToLittle(size)];
-    if (size > 0) {
-        [outputStream write:buffer length:size];
+- (void)persist {
+    Kdb3Group *root = (Kdb3Group*)tree.root;
+    [self persistGroups:root];
+    [self persistEntries:root];
+    [self persistMetaEntries:root];
+}
+
+- (void)persistGroups:(Kdb3Group*)root {
+    for (Kdb3Group *group in root.groups) {
+        [self writeGroup:group];
+        [self persistGroups:group];
     }
 }
 
-- (void)writeEntry:(Kdb3Entry *)entry {
+- (void)persistEntries:(Kdb3Group*)root {
+    for (Kdb3Entry *entry in root.entries) {
+        [self writeEntry:entry];
+    }
+    
+    for (Kdb3Group *group in root.groups) {
+        [self persistEntries:group];
+    }
+}
+
+- (void)persistMetaEntries:(Kdb3Group*)root {
+    for (Kdb3Entry *entry in root.metaEntries) {
+        [self writeEntry:entry];
+    }
+    
+    for (Kdb3Group *group in root.groups) {
+        [self persistMetaEntries:group];
+    }
+}
+
+- (void)writeGroup:(Kdb3Group*)group {
+    uint8_t packedDate[5];
     uint32_t tmp32;
     
-    [self appendField:1 size:16 bytes:(void *)(entry._uuid.bytes)];
+    tmp32 = CFSwapInt32HostToLittle(group._id);
+    [self appendField:1 size:4 bytes:&tmp32];
+    
+    if(![Utils emptyString:group.name]){
+        const char * title = [group.name cStringUsingEncoding:NSUTF8StringEncoding];
+        [self appendField:2 size:strlen(title)+1 bytes:(void *)title];
+    }
+    
+    [Kdb3Date toPacked:group.creationTime bytes:packedDate];
+    [self appendField:3 size:5 bytes:packedDate];
+    
+    [Kdb3Date toPacked:group.lastModificationTime bytes:packedDate];
+    [self appendField:3 size:5 bytes:packedDate];
+    
+    [Kdb3Date toPacked:group.lastAccessTime bytes:packedDate];
+    [self appendField:3 size:5 bytes:packedDate];
+    
+    [Kdb3Date toPacked:group.expiryTime bytes:packedDate];
+    [self appendField:3 size:5 bytes:packedDate];
+    
+    tmp32 = CFSwapInt32HostToLittle(group.image);
+    [self appendField:7 size:4 bytes:&tmp32];
+    
+    // Get the level of the group
+    uint16_t level = -1;
+    for (KdbGroup *g = group; g.parent != nil; g = g.parent) {
+        level++;
+    }
+    
+    level = CFSwapInt16HostToLittle(level);
+    [self appendField:8 size:2 bytes:&level];
+    
+    tmp32 = CFSwapInt32HostToLittle(group.flags);
+    [self appendField:9 size:4 bytes:&tmp32];
+    
+    // End of the group
+    [self appendField:0xFFFF size:0 bytes:nil];
+}
+
+- (void)writeEntry:(Kdb3Entry*)entry {
+    uint8_t packedDate[5];
+    uint32_t tmp32;
+    
+    [self appendField:1 size:16 bytes:(entry._uuid.bytes)];
     
     tmp32 = CFSwapInt32HostToLittle(((Kdb3Group*)entry.parent)._id);
     [self appendField:2 size:4 bytes:&tmp32];
@@ -56,31 +126,29 @@
     [self appendField:3 size:4 bytes:&tmp32];
     
     if (![Utils emptyString:entry.title]) {
-        const char * tmp = [entry.title cStringUsingEncoding:NSUTF8StringEncoding];
-        [self appendField:4 size:strlen(tmp)+1 bytes:(void *)tmp];
+        const char *tmp = [entry.title cStringUsingEncoding:NSUTF8StringEncoding];
+        [self appendField:4 size:strlen(tmp) + 1 bytes:tmp];
     }
     
     if (![Utils emptyString:entry.url]) {
-        const char * tmp = [entry.url cStringUsingEncoding:NSUTF8StringEncoding];
-        [self appendField:5 size:strlen(tmp)+1 bytes:(void *)tmp];
+        const char *tmp = [entry.url cStringUsingEncoding:NSUTF8StringEncoding];
+        [self appendField:5 size:strlen(tmp) + 1 bytes:tmp];
     }
     
     if (![Utils emptyString:entry.username]) {
-        const char * tmp = [entry.username cStringUsingEncoding:NSUTF8StringEncoding];
-        [self appendField:6 size:strlen(tmp)+1 bytes:(void *)tmp];
+        const char *tmp = [entry.username cStringUsingEncoding:NSUTF8StringEncoding];
+        [self appendField:6 size:strlen(tmp) + 1 bytes:tmp];
     }
     
     if (![Utils emptyString:entry.password]) {
-        const char * tmp = [entry.password cStringUsingEncoding:NSUTF8StringEncoding];
-        [self appendField:7 size:strlen(tmp)+1 bytes:(void *)tmp];
+        const char *tmp = [entry.password cStringUsingEncoding:NSUTF8StringEncoding];
+        [self appendField:7 size:strlen(tmp) + 1 bytes:tmp];
     }
     
     if (![Utils emptyString:entry.notes]) {
-        const char * tmp = [entry.notes cStringUsingEncoding:NSUTF8StringEncoding];
-        [self appendField:8 size:strlen(tmp)+1 bytes:(void *)tmp];
+        const char *tmp = [entry.notes cStringUsingEncoding:NSUTF8StringEncoding];
+        [self appendField:8 size:strlen(tmp) + 1 bytes:tmp];
     }
-    
-    uint8_t packedDate[5];
     
     [Kdb3Date toPacked:entry.creationTime bytes:packedDate];
     [self appendField:9 size:5 bytes:packedDate];
@@ -106,97 +174,13 @@
     [self appendField:0xFFFF size:0 bytes:nil];
 }
 
-- (void)writeGroup:(Kdb3Group *)group {
-    //get the level/depth of the group
-    uint16_t level = -1;
-    KdbGroup * tmp = group;
-    while(tmp.parent){
-        level++;
-        tmp = tmp.parent;
-    }
-    
-    uint32_t tmp32;
-    //id 2+4+4
-    tmp32 = CFSwapInt32HostToLittle(group._id);
-    [self appendField:1 size:4 bytes:&tmp32];
-    
-    
-    //title 2+4+title size
-    if(![Utils emptyString:group.name]){
-        const char * title = [group.name cStringUsingEncoding:NSUTF8StringEncoding];
-        [self appendField:2 size:strlen(title)+1 bytes:(void *)title];
-    }
-    
-    uint8_t packedDate[5];
-    
-    //creation date 2+4+5
-    [Kdb3Date toPacked:group.creationTime bytes:packedDate];
-    [self appendField:3 size:5 bytes:packedDate];
-    
-    //last mod 2+4+5
-    [Kdb3Date toPacked:group.lastModificationTime bytes:packedDate];
-    [self appendField:3 size:5 bytes:packedDate];
-    
-    //last access 2+4+5
-    [Kdb3Date toPacked:group.lastAccessTime bytes:packedDate];
-    [self appendField:3 size:5 bytes:packedDate];
-    
-    //expire 2+4+5
-    [Kdb3Date toPacked:group.expiryTime bytes:packedDate];
-    [self appendField:3 size:5 bytes:packedDate];
-    
-    //image 2+4+4
-    tmp32 = CFSwapInt32HostToLittle(group.image);
-    [self appendField:7 size:4 bytes:&tmp32];
-    
-    //level 2+4+2
-    level = CFSwapInt16HostToLittle(level);
-    [self appendField:8 size:2 bytes:&level];
-    
-    //flags (unused) 2+4+4
-    tmp32 = CFSwapInt32HostToLittle(group.flags);
-    [self appendField:9 size:4 bytes:&tmp32];
-    
-    //end of the group 2+4
-    [self appendField:0xFFFF size:0 bytes:nil];
-    
-    //so the size of each group is: 2+4+4 + (2+4+titleSize) + 4*(2+4+5) + 2+4+4 + 2+4+2 + 2+4+4 +2+4
-    //=94+title size
-}
-
-- (void)persistGroups:(Kdb3Group*)root {
-    for (Kdb3Group *group in root.groups) {
-        [self writeGroup:group];
-        [self persistGroups:group];
+- (void)appendField:(uint16_t)type size:(uint32_t)size bytes:(const void*)buffer {
+    [outputStream writeInt16:CFSwapInt16HostToLittle(type)];
+    [outputStream writeInt32:CFSwapInt32HostToLittle(size)];
+    if (size > 0) {
+        [outputStream write:buffer length:size];
     }
 }
 
-
-- (void)persistEntries:(Kdb3Group*)root {
-    for (Kdb3Entry *entry in root.entries) {
-        [self writeEntry:entry];
-    }
-
-    for (Kdb3Group *group in root.groups) {
-        [self persistEntries:group];
-    }
-}
-
-- (void)persistMetaEntries:(Kdb3Group*)root {
-    for (Kdb3Entry *entry in root.metaEntries) {
-        [self writeEntry:entry];
-    }
-    
-    for (Kdb3Group *group in root.groups) {
-        [self persistMetaEntries:group];
-    }
-}
-
-- (void)persist {
-    Kdb3Group *root = (Kdb3Group*)tree.root;
-    [self persistGroups:root];
-    [self persistEntries:root];
-    [self persistMetaEntries:root];
-}
 
 @end
