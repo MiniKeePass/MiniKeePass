@@ -89,24 +89,8 @@
 		689356D913899C5F00BB263D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 689356D713899C5F00BB263D /* InfoPlist.strings */; };
 		689356DC13899C5F00BB263D /* AesStreamTest.h in Resources */ = {isa = PBXBuildFile; fileRef = 689356DB13899C5F00BB263D /* AesStreamTest.h */; };
 		689356DE13899C5F00BB263D /* AesStreamTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 689356DD13899C5F00BB263D /* AesStreamTest.m */; };
-		689356E313899CD500BB263D /* Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 689675511379DCE5006BC268 /* Base64.m */; };
-		689356E613899CD600BB263D /* GDataXMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 6891056B13874D4300106245 /* GDataXMLNode.m */; };
-		689356E713899CD600BB263D /* Kdb.m in Sources */ = {isa = PBXBuildFile; fileRef = 68A9D33B1388759A00AE9AD6 /* Kdb.m */; };
 		689356E813899CD600BB263D /* KdbPassword.m in Sources */ = {isa = PBXBuildFile; fileRef = 6896757A1379DCE5006BC268 /* KdbPassword.m */; };
-		689356E913899CD600BB263D /* KdbReaderFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 6896757D1379DCE5006BC268 /* KdbReaderFactory.m */; };
-		689356EA13899CD600BB263D /* KdbWriterFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 689764C71388C3CA006BC0A6 /* KdbWriterFactory.m */; };
 		689356EB13899CD600BB263D /* Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 689675911379DCE5006BC268 /* Utils.m */; };
-		689356EC13899CD600BB263D /* UUID.m in Sources */ = {isa = PBXBuildFile; fileRef = 689675931379DCE5006BC268 /* UUID.m */; };
-		689356F113899CD600BB263D /* Kdb3Date.m in Sources */ = {isa = PBXBuildFile; fileRef = 689675631379DCE5006BC268 /* Kdb3Date.m */; };
-		689356F213899CD600BB263D /* Kdb3Node.m in Sources */ = {isa = PBXBuildFile; fileRef = 689675651379DCE5006BC268 /* Kdb3Node.m */; };
-		689356F313899CD600BB263D /* Kdb3Parser.m in Sources */ = {isa = PBXBuildFile; fileRef = 689675671379DCE5006BC268 /* Kdb3Parser.m */; };
-		689356F413899CD600BB263D /* Kdb3Persist.m in Sources */ = {isa = PBXBuildFile; fileRef = 689675691379DCE5006BC268 /* Kdb3Persist.m */; };
-		689356F513899CD600BB263D /* Kdb3Reader.m in Sources */ = {isa = PBXBuildFile; fileRef = 6896756B1379DCE5006BC268 /* Kdb3Reader.m */; };
-		689356F613899CD600BB263D /* Kdb3Writer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6896756F1379DCE5006BC268 /* Kdb3Writer.m */; };
-		689356F713899CD600BB263D /* Kdb4Node.m in Sources */ = {isa = PBXBuildFile; fileRef = 689675711379DCE5006BC268 /* Kdb4Node.m */; };
-		689356F813899CD600BB263D /* Kdb4Parser.m in Sources */ = {isa = PBXBuildFile; fileRef = 689675731379DCE5006BC268 /* Kdb4Parser.m */; };
-		689356F913899CD600BB263D /* Kdb4Reader.m in Sources */ = {isa = PBXBuildFile; fileRef = 689675751379DCE5006BC268 /* Kdb4Reader.m */; };
-		689356FA13899CD600BB263D /* Kdb4Writer.m in Sources */ = {isa = PBXBuildFile; fileRef = 689764AD1388AA4B006BC0A6 /* Kdb4Writer.m */; };
 		689356FB13899CD600BB263D /* AesInputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 689356C2138990BD00BB263D /* AesInputStream.m */; };
 		689356FC13899CD600BB263D /* DataInputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 689356BF13898E6C00BB263D /* DataInputStream.m */; };
 		689356FD13899CD600BB263D /* InputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 689356BC13898D8B00BB263D /* InputStream.m */; };
@@ -114,8 +98,6 @@
 		689356FF13899CD600BB263D /* DataOutputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 68C17653138969820046E0E1 /* DataOutputStream.m */; };
 		6893570013899CD600BB263D /* HashedOutputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 68C1764F13895BB30046E0E1 /* HashedOutputStream.m */; };
 		6893570113899CD600BB263D /* OutputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 68C1765613896B4A0046E0E1 /* OutputStream.m */; };
-		6893570213899CD600BB263D /* Arc4RandomStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 6896754F1379DCE5006BC268 /* Arc4RandomStream.m */; };
-		6893570313899CD600BB263D /* Salsa20RandomStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 6896758B1379DCE5006BC268 /* Salsa20RandomStream.m */; };
 		6893570613899D9200BB263D /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6893570513899D9100BB263D /* Security.framework */; };
 		6893570813899DA100BB263D /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 6893570713899DA100BB263D /* libxml2.dylib */; };
 		6893570A13899DB200BB263D /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 6893570913899DB100BB263D /* libz.dylib */; };
@@ -1185,41 +1167,23 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				689356FB13899CD600BB263D /* AesInputStream.m in Sources */,
+				689356FE13899CD600BB263D /* AesOutputStream.m in Sources */,
+				689356DE13899C5F00BB263D /* AesStreamTest.m in Sources */,
+				689356FC13899CD600BB263D /* DataInputStream.m in Sources */,
+				689356FF13899CD600BB263D /* DataOutputStream.m in Sources */,
+				68DEB789138BE3B500FC1F09 /* GZipInputStream.m in Sources */,
 				689FBEE3138E01E50097091C /* GZipOutputStream.m in Sources */,
 				689FBEE4138E01E50097091C /* GZipStreamTest.m in Sources */,
-				68DEB789138BE3B500FC1F09 /* GZipInputStream.m in Sources */,
-				689CBB8F1389BD19009A26DB /* Sha256OutputStream.m in Sources */,
 				68738A0F1389AE1300DFC837 /* HashedInputStream.m in Sources */,
-				689356E313899CD500BB263D /* Base64.m in Sources */,
-				689356E613899CD600BB263D /* GDataXMLNode.m in Sources */,
-				689356E713899CD600BB263D /* Kdb.m in Sources */,
-				689356E813899CD600BB263D /* KdbPassword.m in Sources */,
-				689356E913899CD600BB263D /* KdbReaderFactory.m in Sources */,
-				689356EA13899CD600BB263D /* KdbWriterFactory.m in Sources */,
-				689356EB13899CD600BB263D /* Utils.m in Sources */,
-				689356EC13899CD600BB263D /* UUID.m in Sources */,
-				689356F113899CD600BB263D /* Kdb3Date.m in Sources */,
-				689356F213899CD600BB263D /* Kdb3Node.m in Sources */,
-				689356F313899CD600BB263D /* Kdb3Parser.m in Sources */,
-				689356F413899CD600BB263D /* Kdb3Persist.m in Sources */,
-				689356F513899CD600BB263D /* Kdb3Reader.m in Sources */,
-				689356F613899CD600BB263D /* Kdb3Writer.m in Sources */,
-				689356F713899CD600BB263D /* Kdb4Node.m in Sources */,
-				689356F813899CD600BB263D /* Kdb4Parser.m in Sources */,
-				689356F913899CD600BB263D /* Kdb4Reader.m in Sources */,
-				689356FA13899CD600BB263D /* Kdb4Writer.m in Sources */,
-				689356FB13899CD600BB263D /* AesInputStream.m in Sources */,
-				689356FC13899CD600BB263D /* DataInputStream.m in Sources */,
-				689356FD13899CD600BB263D /* InputStream.m in Sources */,
-				689356FE13899CD600BB263D /* AesOutputStream.m in Sources */,
-				689356FF13899CD600BB263D /* DataOutputStream.m in Sources */,
 				6893570013899CD600BB263D /* HashedOutputStream.m in Sources */,
-				6893570113899CD600BB263D /* OutputStream.m in Sources */,
-				6893570213899CD600BB263D /* Arc4RandomStream.m in Sources */,
-				6893570313899CD600BB263D /* Salsa20RandomStream.m in Sources */,
-				689356DE13899C5F00BB263D /* AesStreamTest.m in Sources */,
 				68738A121389AE4F00DFC837 /* HashedStreamTest.m in Sources */,
+				689CBB8F1389BD19009A26DB /* Sha256OutputStream.m in Sources */,
 				689CBB8E1389B93F009A26DB /* Sha256StreamTest.m in Sources */,
+				689356FD13899CD600BB263D /* InputStream.m in Sources */,
+				6893570113899CD600BB263D /* OutputStream.m in Sources */,
+				689356E813899CD600BB263D /* KdbPassword.m in Sources */,
+				689356EB13899CD600BB263D /* Utils.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
