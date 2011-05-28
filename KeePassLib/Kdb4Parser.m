@@ -74,10 +74,16 @@ int closeCallback(void *context) {
     GDataXMLNode *protectedAttribute = [root attributeForName:@"Protected"];
     if ([[protectedAttribute stringValue] isEqual:@"True"]) {
         NSString *str = [root stringValue];
-        NSMutableData *data = [[NSMutableData alloc] initWithCapacity:[str length]];
-        [Base64 decode:str to:data];
-        [root setStringValue:[randomStream xor:data]];
-        [data release];
+        
+        // Base64 decode the string
+        NSMutableData *data = [Base64 decode:[str dataUsingEncoding:NSASCIIStringEncoding]];
+        
+        // Unprotect the password
+        [randomStream xor:data];
+        
+        NSString *unprotected = [[NSString alloc] initWithBytes:data.bytes length:data.length encoding:NSUTF8StringEncoding];
+        [root setStringValue:unprotected];
+        [unprotected release];
     }
     
     for (GDataXMLNode *node in [root children]) {
