@@ -7,19 +7,22 @@
 //
 
 #import "Kdb4Persist.h"
+#import "Base64.h"
 
 @interface Kdb4Persist (PrivateMethods)
 - (void)updateGroup:(Kdb4Group*)group;
 - (void)updateEntry:(Kdb4Entry*)entry;
+- (void)encodeProtected:(GDataXMLElement*)root;
 @end
 
 @implementation Kdb4Persist
 
-- (id)initWithTree:(Kdb4Tree*)t andOutputStream:(OutputStream*)stream {
+- (id)initWithTree:(Kdb4Tree*)t outputStream:(OutputStream*)stream randomStream:(id<RandomStream>)cryptoRandomStream {
     self = [super init];
     if (self) {
         tree = [t retain];
         outputStream = [stream retain];
+        randomStream = [cryptoRandomStream retain];
     }
     return self;
 }
@@ -27,6 +30,7 @@
 - (void)dealloc {
     [tree release];
     [outputStream release];
+    [randomStream release];
     [super dealloc];
 }
 
@@ -34,7 +38,8 @@
     // Update the DOM model
     [self updateGroup:(Kdb4Group*)tree.root];
     
-    // FIXME Apply CSR to protected fields
+    // Apply CSR to protected fields
+    [self encodeProtected:tree.document.rootElement];
     
     // Serialize the DOM to XML
     [outputStream write:[tree.document XMLData]];
@@ -74,6 +79,30 @@
             valueElement.stringValue = entry.url;
         } else if ([key isEqualToString:@"Notes"]) {
             valueElement.stringValue = entry.notes;
+        }
+    }
+}
+
+- (void)encodeProtected:(GDataXMLElement*)root {
+    GDataXMLNode *protectedAttribute = [root attributeForName:@"Protected"];
+    if ([[protectedAttribute stringValue] isEqual:@"True"]) {
+        NSString *str = [root stringValue];
+        NSMutableData *data = [[str dataUsingEncoding:NSUTF8StringEncoding] mutableCopy];
+        
+        // Unprotect the password
+        [randomStream xor:data];
+        
+        // Base64 encode the string
+        data = [Base64 encode:data];
+        
+        NSString *protected = [[NSString alloc] initWithBytes:data.bytes length:data.length encoding:NSUTF8StringEncoding];
+        [root setStringValue:protected];
+        [protected release];
+    }
+    
+    for (GDataXMLNode *node in [root children]) {
+        if ([node kind] == GDataXMLElementKind) {
+            [self encodeProtected:(GDataXMLElement*)node];
         }
     }
 }
