@@ -192,6 +192,8 @@
 		689859F3136CDC91001B4204 /* 7.png in Resources */ = {isa = PBXBuildFile; fileRef = 689859AC136CDC91001B4204 /* 7.png */; };
 		689859F4136CDC91001B4204 /* 8.png in Resources */ = {isa = PBXBuildFile; fileRef = 689859AD136CDC91001B4204 /* 8.png */; };
 		689859F5136CDC91001B4204 /* 9.png in Resources */ = {isa = PBXBuildFile; fileRef = 689859AE136CDC91001B4204 /* 9.png */; };
+		689A360713904F3B00637C5C /* Base64Test.m in Sources */ = {isa = PBXBuildFile; fileRef = 689A360613904F3B00637C5C /* Base64Test.m */; };
+		689A36091390519300637C5C /* Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 689675511379DCE5006BC268 /* Base64.m */; };
 		689CBB8E1389B93F009A26DB /* Sha256StreamTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 689CBB8D1389B93F009A26DB /* Sha256StreamTest.m */; };
 		689CBB8F1389BD19009A26DB /* Sha256OutputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 68738A141389B71900DFC837 /* Sha256OutputStream.m */; };
 		689EB69D136DAE1C00C8DA1E /* TextViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 689EB69C136DAE1C00C8DA1E /* TextViewCell.m */; };
@@ -444,6 +446,8 @@
 		689859AC136CDC91001B4204 /* 7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 7.png; sourceTree = "<group>"; };
 		689859AD136CDC91001B4204 /* 8.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 8.png; sourceTree = "<group>"; };
 		689859AE136CDC91001B4204 /* 9.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 9.png; sourceTree = "<group>"; };
+		689A360513904F3B00637C5C /* Base64Test.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Base64Test.h; sourceTree = "<group>"; };
+		689A360613904F3B00637C5C /* Base64Test.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Base64Test.m; sourceTree = "<group>"; };
 		689CBB8C1389B93F009A26DB /* Sha256StreamTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Sha256StreamTest.h; sourceTree = "<group>"; };
 		689CBB8D1389B93F009A26DB /* Sha256StreamTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Sha256StreamTest.m; sourceTree = "<group>"; };
 		689EB69B136DAE1C00C8DA1E /* TextViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextViewCell.h; sourceTree = "<group>"; };
@@ -679,6 +683,8 @@
 			children = (
 				689356DB13899C5F00BB263D /* AesStreamTest.h */,
 				689356DD13899C5F00BB263D /* AesStreamTest.m */,
+				689A360513904F3B00637C5C /* Base64Test.h */,
+				689A360613904F3B00637C5C /* Base64Test.m */,
 				689FBEDF138E01B40097091C /* GZipStreamTest.h */,
 				689FBEE0138E01B40097091C /* GZipStreamTest.m */,
 				68738A101389AE4E00DFC837 /* HashedStreamTest.h */,
@@ -1170,6 +1176,8 @@
 				689356FB13899CD600BB263D /* AesInputStream.m in Sources */,
 				689356FE13899CD600BB263D /* AesOutputStream.m in Sources */,
 				689356DE13899C5F00BB263D /* AesStreamTest.m in Sources */,
+				689A36091390519300637C5C /* Base64.m in Sources */,
+				689A360713904F3B00637C5C /* Base64Test.m in Sources */,
 				689356FC13899CD600BB263D /* DataInputStream.m in Sources */,
 				689356FF13899CD600BB263D /* DataOutputStream.m in Sources */,
 				68DEB789138BE3B500FC1F09 /* GZipInputStream.m in Sources */,
