@@ -9,5 +9,5 @@
 #import <Foundation/Foundation.h>
 
 @protocol RandomStream <NSObject>
-- (NSString*)xor:(NSData*)data;
+- (void)xor:(NSMutableData*)data;
 @end

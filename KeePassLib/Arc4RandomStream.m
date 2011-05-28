@@ -72,10 +72,9 @@
     }
 }
 
-- (NSString*)xor:(NSData*)data {
+- (void)xor:(NSMutableData*)data {
+    uint8_t *bytes = (uint8_t*)data.mutableBytes;
     NSUInteger length = data.length;
-    uint8_t bytes[length];
-    [data getBytes:bytes length:length];
     
     for (int i = 0; i < length; i++) {
         if (_index == 0) {
@@ -85,8 +84,6 @@
         bytes[i] ^= _buffer[_index];
         _index = (_index + 1) & ARC_BUFFER_SIZE;
     }
-    
-    return [[[NSString alloc] initWithBytes:bytes length:length encoding:NSUTF8StringEncoding] autorelease];
 }
 
 @end

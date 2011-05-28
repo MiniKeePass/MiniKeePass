@@ -129,10 +129,9 @@ static uint32_t SIGMA[4] = {0x61707865, 0x3320646E, 0x79622D32, 0x6B206574};
     }
 }
 
-- (NSString*)xor:(NSData*)data {
+- (void)xor:(NSMutableData*)data {
+    uint8_t *bytes = (uint8_t*)data.mutableBytes;
     NSUInteger length = data.length;
-    uint8_t bytes[length];
-    [data getBytes:bytes length:length];
     
     for (int i = 0; i < length; i++) {
         if (_index == 0) {
@@ -142,8 +141,6 @@ static uint32_t SIGMA[4] = {0x61707865, 0x3320646E, 0x79622D32, 0x6B206574};
         bytes[i] ^= _keyStream[_index];
         _index = (_index + 1) & 0x3F;
     }
-    
-    return [[[NSString alloc]initWithBytes:bytes length:length encoding:NSUTF8StringEncoding] autorelease];
 }
 
 @end
