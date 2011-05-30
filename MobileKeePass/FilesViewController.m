@@ -137,7 +137,7 @@
     [[DatabaseManager sharedInstance] openDatabaseDocument:[files objectAtIndex:indexPath.row] animated:YES];
 }
 
--(void)tableView:(UITableView*)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)tableView:(UITableView*)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         NSString *filename = [files objectAtIndex:indexPath.row];
