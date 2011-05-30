@@ -114,7 +114,7 @@
         return NO;
     }
     
-    for (Kdb3Group *g in root.groups) {
+    for (Kdb3Group *g in group.groups) {
         if (![self isGroupIdUnique:g groupId:groupId]) {
             return NO;
         }
