@@ -12,6 +12,8 @@ static UUID *AES_UUID;
 
 @implementation UUID
 
+@synthesize uuid;
+
 - (id)init {
     self = [super init];
 	if (self) {
@@ -40,6 +42,25 @@ static UUID *AES_UUID;
     
     CFUUIDBytes uuidBytes = CFUUIDGetUUIDBytes(uuid);
     memcpy(bytes, &uuidBytes, 16);
+}
+
+- (BOOL)isEqual:(id)object {
+    if (self == object) {
+        return YES;
+    }
+    
+    if ([object isKindOfClass:[UUID class]]) {
+        CFUUIDBytes uuidBytes1 = CFUUIDGetUUIDBytes(uuid);
+        CFUUIDBytes uuidBytes2 = CFUUIDGetUUIDBytes(((UUID*)object).uuid);
+        return memcmp(&uuidBytes1, &uuidBytes2, sizeof(CFUUIDBytes)) == 0;
+    }
+    
+    return NO;
+}
+
+- (NSString*)description {
+    NSString *uuidString = (NSString *)CFUUIDCreateString(NULL, uuid);
+    return [uuidString autorelease];
 }
 
 + (UUID*)getAESUUID {
