@@ -11,7 +11,8 @@
 @implementation InputStream
 
 - (NSUInteger)read:(void*)bytes length:(NSUInteger)bytesLength {
-    @throw [NSException exceptionWithName:@"AbstractMethod" reason:@"read:length:" userInfo:nil];
+    [self doesNotRecognizeSelector:_cmd];
+    return 0;
 }
 
 - (NSData*)readData:(NSUInteger)length {

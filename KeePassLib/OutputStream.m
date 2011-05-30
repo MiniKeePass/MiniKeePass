@@ -11,7 +11,8 @@
 @implementation OutputStream
 
 - (NSUInteger)write:(const void*)bytes length:(NSUInteger)bytesLength {
-    @throw [NSException exceptionWithName:@"AbstractMethod" reason:@"write:length:" userInfo:nil];
+    [self doesNotRecognizeSelector:_cmd];
+    return 0;
 }
 
 - (NSUInteger)write:(NSData*)data {
