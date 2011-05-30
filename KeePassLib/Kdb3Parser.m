@@ -60,8 +60,8 @@
                     break;
                     
                 case 0x0001:
-                    group._id = [inputStream readInt32];
-                    group._id = CFSwapInt32LittleToHost(group._id);
+                    group.groupId = [inputStream readInt32];
+                    group.groupId = CFSwapInt32LittleToHost(group.groupId);
                     break;
                 
                 case 0x0002:
@@ -128,7 +128,7 @@
 - (void)read:(InputStream*)inputStream toEntries:(NSMutableArray*)entries numOfEntries:(uint32_t)numEntries withGroups:(NSArray*)groups {
     uint16_t fieldType;
     uint32_t fieldSize;
-    uint8_t dateBuffer[5];
+    uint8_t buffer[16];
     uint32_t groupId;
     
     // Parse the entries
@@ -151,7 +151,13 @@
                     break;
                     
                 case 0x0001:
-                    entry._uuid = [inputStream readData:fieldSize];
+                    if (fieldSize != 16) {
+                        @throw [NSException exceptionWithName:@"IOException" reason:@"Invalid field size" userInfo:nil];
+                    }
+                    if ([inputStream read:buffer length:fieldSize] != fieldSize) {
+                        @throw [NSException exceptionWithName:@"IOException" reason:@"Failed to read UUID" userInfo:nil];
+                    }
+                    entry.uuid = [[UUID alloc] initWithBytes:buffer];
                     break; 
                 
                 case 0x0002:
@@ -185,33 +191,45 @@
                     break;
                 
                 case 0x0009:
-                    [inputStream read:dateBuffer length:fieldSize];
-                    entry.creationTime = [Kdb3Date fromPacked:dateBuffer];
+                    if (fieldSize != 5) {
+                        @throw [NSException exceptionWithName:@"IOException" reason:@"Invalid field size" userInfo:nil];
+                    }
+                    [inputStream read:buffer length:fieldSize];
+                    entry.creationTime = [Kdb3Date fromPacked:buffer];
                     break;
                 
                 case 0x000A:
-                    [inputStream read:dateBuffer length:fieldSize];
-                    entry.lastModificationTime = [Kdb3Date fromPacked:dateBuffer];
+                    if (fieldSize != 5) {
+                        @throw [NSException exceptionWithName:@"IOException" reason:@"Invalid field size" userInfo:nil];
+                    }
+                    [inputStream read:buffer length:fieldSize];
+                    entry.lastModificationTime = [Kdb3Date fromPacked:buffer];
                     break;
                 
                 case 0x000B:
-                    [inputStream read:dateBuffer length:fieldSize];
-                    entry.lastAccessTime = [Kdb3Date fromPacked:dateBuffer];
+                    if (fieldSize != 5) {
+                        @throw [NSException exceptionWithName:@"IOException" reason:@"Invalid field size" userInfo:nil];
+                    }
+                    [inputStream read:buffer length:fieldSize];
+                    entry.lastAccessTime = [Kdb3Date fromPacked:buffer];
                     break;
                 
                 case 0x000C:
-                    [inputStream read:dateBuffer length:fieldSize];
-                    entry.expiryTime = [Kdb3Date fromPacked:dateBuffer];
+                    if (fieldSize != 5) {
+                        @throw [NSException exceptionWithName:@"IOException" reason:@"Invalid field size" userInfo:nil];
+                    }
+                    [inputStream read:buffer length:fieldSize];
+                    entry.expiryTime = [Kdb3Date fromPacked:buffer];
                     break;
                 
                 case 0x000D:
-                    entry._binaryDesc = [inputStream readCString:fieldSize encoding:NSUTF8StringEncoding];
+                    entry.binaryDesc = [inputStream readCString:fieldSize encoding:NSUTF8StringEncoding];
                     break;
                 
                 case 0x000E:
-                    entry._binarySize = fieldSize;
+                    entry.binarySize = fieldSize;
                     if (fieldSize) {
-                        entry._binary = [inputStream readData:fieldSize];
+                        entry.binary = [inputStream readData:fieldSize];
                     }
                     break;
                     
@@ -228,7 +246,7 @@
             if (fieldType == 0xFFFF) {
                 // Find the parent group
                 for (Kdb3Group *g in groups) {
-                    if (g._id == groupId) {
+                    if (g.groupId == groupId) {
                         [g addEntry:entry];
                         break;
                     }

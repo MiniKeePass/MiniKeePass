@@ -95,7 +95,7 @@
 }
 
 - (void)writeHeader:(OutputStream*)outputStream {
-    uint8_t bytes[4];
+    uint8_t buffer[16];
     uint32_t i32;
     uint64_t i64;
     
@@ -104,8 +104,9 @@
     [outputStream writeInt32:CFSwapInt32HostToLittle(KDB4_SIG2)];
     [outputStream writeInt32:CFSwapInt32HostToLittle(KDB4_VERSION)];
     
-    NSData *cipherUuid = [UUID getAESUUID];
-    [self writeHeaderField:outputStream headerId:HEADER_CIPHERID data:cipherUuid.bytes length:cipherUuid.length];
+    UUID *cipherUuid = [UUID getAESUUID];
+    [cipherUuid getBytes:buffer length:16];
+    [self writeHeaderField:outputStream headerId:HEADER_CIPHERID data:buffer length:16];
     
     // FIXME support gzip
     i32 = CFSwapInt32HostToLittle(COMPRESSION_GZIP);
@@ -127,11 +128,11 @@
     i32 = CFSwapInt32HostToLittle(CSR_SALSA20);
     [self writeHeaderField:outputStream headerId:HEADER_RANDOMSTREAMID data:&i32 length:4];
     
-    bytes[0] = '\r';
-    bytes[1] = '\n';
-    bytes[2] = '\r';
-    bytes[3] = '\n';
-    [self writeHeaderField:outputStream headerId:HEADER_EOH data:bytes length:4];
+    buffer[0] = '\r';
+    buffer[1] = '\n';
+    buffer[2] = '\r';
+    buffer[3] = '\n';
+    [self writeHeaderField:outputStream headerId:HEADER_EOH data:buffer length:4];
 }
 
 @end

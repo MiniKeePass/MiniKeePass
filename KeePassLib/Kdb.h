@@ -82,4 +82,7 @@
 
 @property(nonatomic, retain) KdbGroup *root;
 
+- (KdbGroup*)createGroup:(KdbGroup*)parent;
+- (KdbEntry*)createEntry:(KdbGroup*)parent;
+
 @end

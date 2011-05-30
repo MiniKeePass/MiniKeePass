@@ -74,7 +74,7 @@
     uint8_t packedDate[5];
     uint32_t tmp32;
     
-    tmp32 = CFSwapInt32HostToLittle(group._id);
+    tmp32 = CFSwapInt32HostToLittle(group.groupId);
     [self appendField:1 size:4 bytes:&tmp32];
     
     if(![Utils emptyString:group.name]){
@@ -114,12 +114,13 @@
 }
 
 - (void)writeEntry:(Kdb3Entry*)entry {
-    uint8_t packedDate[5];
+    uint8_t buffer[16];
     uint32_t tmp32;
     
-    [self appendField:1 size:16 bytes:(entry._uuid.bytes)];
+    [entry.uuid getBytes:buffer length:16];
+    [self appendField:1 size:16 bytes:buffer];
     
-    tmp32 = CFSwapInt32HostToLittle(((Kdb3Group*)entry.parent)._id);
+    tmp32 = CFSwapInt32HostToLittle(((Kdb3Group*)entry.parent).groupId);
     [self appendField:2 size:4 bytes:&tmp32];
     
     tmp32 = CFSwapInt32HostToLittle(entry.image);
@@ -150,25 +151,25 @@
         [self appendField:8 size:strlen(tmp) + 1 bytes:tmp];
     }
     
-    [Kdb3Date toPacked:entry.creationTime bytes:packedDate];
-    [self appendField:9 size:5 bytes:packedDate];
+    [Kdb3Date toPacked:entry.creationTime bytes:buffer];
+    [self appendField:9 size:5 bytes:buffer];
     
-    [Kdb3Date toPacked:entry.lastModificationTime bytes:packedDate];
-    [self appendField:10 size:5 bytes:packedDate];
+    [Kdb3Date toPacked:entry.lastModificationTime bytes:buffer];
+    [self appendField:10 size:5 bytes:buffer];
     
-    [Kdb3Date toPacked:entry.lastAccessTime bytes:packedDate];
-    [self appendField:11 size:5 bytes:packedDate];
+    [Kdb3Date toPacked:entry.lastAccessTime bytes:buffer];
+    [self appendField:11 size:5 bytes:buffer];
     
-    [Kdb3Date toPacked:entry.expiryTime bytes:packedDate];
-    [self appendField:12 size:5 bytes:packedDate];
+    [Kdb3Date toPacked:entry.expiryTime bytes:buffer];
+    [self appendField:12 size:5 bytes:buffer];
     
-    if (![Utils emptyString:entry._binaryDesc]) {
-        const char * tmp = [entry._binaryDesc cStringUsingEncoding:NSUTF8StringEncoding];
+    if (![Utils emptyString:entry.binaryDesc]) {
+        const char * tmp = [entry.binaryDesc cStringUsingEncoding:NSUTF8StringEncoding];
         [self appendField:13 size:strlen(tmp)+1 bytes:(void *)tmp];
     }
     
-    if (entry._binary && entry._binary.length) {
-        [self appendField:14 size:entry._binary.length bytes:entry._binary.bytes];
+    if (entry.binary && entry.binary.length) {
+        [self appendField:14 size:entry.binary.length bytes:entry.binary.bytes];
     }
     
     [self appendField:0xFFFF size:0 bytes:nil];

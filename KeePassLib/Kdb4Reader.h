@@ -10,10 +10,11 @@
 
 #import "KdbReader.h"
 #import "Kdb4Node.h"
+#import "UUID.h"
 
 @interface Kdb4Reader : NSObject<KdbReader> {
     NSData *comment;
-    NSData *cipherUuid;
+    UUID *cipherUuid;
     uint32_t compressionAlgorithm;
     NSData *masterSeed;
     NSData *transformSeed;

@@ -110,4 +110,14 @@
     [super dealloc];
 }
 
+- (KdbGroup*)createGroup:(KdbGroup*)parent {
+    [self doesNotRecognizeSelector:_cmd];
+    return nil;
+}
+
+- (KdbEntry*)createEntry:(KdbGroup*)parent {
+    [self doesNotRecognizeSelector:_cmd];
+    return nil;
+}
+
 @end

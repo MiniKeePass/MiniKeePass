@@ -78,7 +78,7 @@
 }
 
 - (void)readHeader:inputStream {
-    NSData *skip;
+    uint8_t buffer[16];
     
     uint32_t version = [inputStream readInt32];
     version = CFSwapInt32LittleToHost(version);
@@ -96,7 +96,7 @@
         
         switch (fieldType) {
             case HEADER_EOH:
-                skip = [inputStream readData:fieldSize];
+                [inputStream read:buffer length:fieldSize];
                 eoh = YES;
                 break;
             
@@ -109,7 +109,8 @@
                 if (fieldSize != 16) {
                     @throw [NSException exceptionWithName:@"IOException" reason:@"Invalid cipher id" userInfo:nil];
                 }
-                cipherUuid = [[inputStream readData:fieldSize] retain];
+                [inputStream read:buffer length:fieldSize];
+                cipherUuid = [[UUID alloc] initWithBytes:buffer];
                 break;
             
             case HEADER_MASTERSEED:

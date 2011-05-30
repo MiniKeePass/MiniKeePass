@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "Kdb.h"
+#import "UUID.h"
 
 #define KDB3_SIG1 (0x9AA2D903)
 #define KDB3_SIG2 (0xB54BFB65)
@@ -21,12 +22,12 @@
 #define FLAG_TWOFISH  8
 
 @interface Kdb3Group : KdbGroup {
-    uint32_t _id;
+    uint32_t groupId;
     uint32_t flags;
     NSMutableArray *metaEntries;
 }
 
-@property(nonatomic, assign) uint32_t _id;
+@property(nonatomic, assign) uint32_t groupId;
 @property(nonatomic, assign) uint32_t flags;
 @property(nonatomic, readonly) NSArray *metaEntries;
 
@@ -34,16 +35,16 @@
 
 
 @interface Kdb3Entry : KdbEntry {
-    NSData *_uuid;
-    NSString *_binaryDesc;
-    uint32_t _binarySize;
-    NSData *_binary;
+    UUID *uuid;
+    NSString *binaryDesc;
+    uint32_t binarySize;
+    NSData *binary;
 }
 
-@property(nonatomic, retain) NSData *_uuid;
-@property(nonatomic, retain) NSString *_binaryDesc;
-@property(nonatomic, assign) uint32_t _binarySize;
-@property(nonatomic, retain) NSData *_binary;
+@property(nonatomic, retain) UUID *uuid;
+@property(nonatomic, retain) NSString *binaryDesc;
+@property(nonatomic, assign) uint32_t binarySize;
+@property(nonatomic, retain) NSData *binary;
 
 - (BOOL)isMeta;
 

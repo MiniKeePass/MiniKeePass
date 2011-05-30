@@ -46,8 +46,13 @@
 }
 
 - (void)updateGroup:(Kdb4Group*)group {
-    GDataXMLElement *nameElement = [group.element elementForName:@"Name"];
-    nameElement.stringValue = group.name;
+    GDataXMLElement *element;
+    
+    element = [group.element elementForName:@"Name"];
+    element.stringValue = group.name;
+    
+    element = [group.element elementForName:@"IconID"];
+    element.stringValue = [NSString stringWithFormat:@"%d", group.image];
     
     for (Kdb4Entry *entry in group.entries) {
         [self updateEntry:entry];

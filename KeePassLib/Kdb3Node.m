@@ -11,7 +11,7 @@
 
 @implementation Kdb3Group
 
-@synthesize _id;
+@synthesize groupId;
 @synthesize flags;
 @synthesize metaEntries;
 
@@ -53,26 +53,26 @@
 
 @implementation Kdb3Entry
 
-@synthesize _uuid;
-@synthesize _binaryDesc;
-@synthesize _binarySize;
-@synthesize _binary;
+@synthesize uuid;
+@synthesize binaryDesc;
+@synthesize binarySize;
+@synthesize binary;
 
 - (void)dealloc {
-    [_uuid release];
-    [_binaryDesc release];
-    [_binary release];
+    [uuid release];
+    [binaryDesc release];
+    [binary release];
     [super dealloc];
 }
 
--(BOOL)isMeta {
-    if (_binarySize == 0) {
+- (BOOL)isMeta {
+    if (binarySize == 0) {
         return NO;
     }
     if (!notes || ![notes length]) {
         return NO;
     }
-    if (!_binaryDesc || [_binaryDesc compare:@"bin-stream"]) {
+    if (!binaryDesc || [binaryDesc compare:@"bin-stream"]) {
         return NO;
     }
     if (!title || [title compare:@"Meta-Info"]) {
@@ -107,6 +107,39 @@
         [group release];
     }
     return self;
+}
+
+- (BOOL)isGroupIdUnique:(Kdb3Group*)group groupId:(uint32_t)groupId {
+    if (group.groupId == groupId) {
+        return NO;
+    }
+    
+    for (Kdb3Group *g in root.groups) {
+        if (![self isGroupIdUnique:g groupId:groupId]) {
+            return NO;
+        }
+    }
+    
+    return YES;
+}
+
+- (KdbGroup*)createGroup:(KdbGroup*)parent {
+    Kdb3Group *group = [[Kdb3Group alloc] init];
+    group.parent = parent;
+    
+    do {
+        group.groupId = random();
+    } while (![self isGroupIdUnique:(Kdb3Group*)root groupId:group.groupId]);
+    
+    return [group autorelease];
+}
+
+- (KdbEntry*)createEntry:(KdbGroup*)parent {
+    Kdb3Entry *entry = [[Kdb3Entry alloc] init];
+    entry.parent = parent;
+    entry.uuid = [[[UUID alloc] init] autorelease];
+    
+    return [entry autorelease];
 }
 
 @end
