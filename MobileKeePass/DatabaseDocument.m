@@ -39,7 +39,16 @@
     [kdbTree release];
     [filename release];
     [password release];
+    [documentInteractionController release];
     [super dealloc];
+}
+
+- (UIDocumentInteractionController *)documentInteractionController {
+    if (documentInteractionController == nil) {
+        NSURL *url = [NSURL fileURLWithPath:filename];
+        documentInteractionController = [[UIDocumentInteractionController interactionControllerWithURL:url] retain];
+    }
+    return documentInteractionController;
 }
 
 - (void)open:(NSString *)newFilename password:(NSString *)newPassword {

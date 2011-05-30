@@ -20,7 +20,7 @@
 
 @implementation GroupViewController
 
--(void)viewDidLoad {
+- (void)viewDidLoad {
     appDelegate = (MobileKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
     
     UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"tab_gear"] style:UIBarButtonItemStylePlain target:appDelegate action:@selector(showSettingsView)];
@@ -37,10 +37,10 @@
     [spacer release];
 }
 
--(void)viewWillAppear:(BOOL)animated {
+- (void)viewWillAppear:(BOOL)animated {
     NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
     
-    //Reload the cell incase the title was changed by the entry view
+    // Reload the cell in case the title was changed by the entry view
     if (selectedIndexPath != nil) {
         [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:selectedIndexPath] withRowAnimation:UITableViewRowAnimationNone];
         [self.tableView selectRowAtIndexPath:selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
@@ -67,7 +67,7 @@
     return 1;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+- (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section {
     if (group == nil) {
         return 0;
     }
@@ -75,7 +75,7 @@
     return [group.groups count] + [group.entries count];
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath {
     static NSString *CellIdentifier = @"Cell";
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
@@ -101,7 +101,7 @@
     return cell;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath {
     int numChildren = [group.groups count];
     if (indexPath.row < numChildren) {
         KdbGroup *g = [group.groups objectAtIndex:indexPath.row];
@@ -123,15 +123,9 @@
 }
 
 - (void)exportFile {
-    NSString *filename = appDelegate.databaseDocument.filename;
-    
-    NSURL *url = [NSURL fileURLWithPath:filename];    
-    UIDocumentInteractionController *uidic = [[UIDocumentInteractionController interactionControllerWithURL:url] retain];
-    //FIXME there's probably a memory leak here
-    
-    BOOL didShow = [uidic presentOpenInMenuFromRect:CGRectZero inView:self.view.window animated:YES];
+    BOOL didShow = [appDelegate.databaseDocument.documentInteractionController presentOpenInMenuFromRect:CGRectZero inView:self.view.window animated:YES];
     if (!didShow) {
-        NSString *prompt = @"There are no other applications installed capable of importing KeePass files";
+        NSString *prompt = @"There are no applications installed capable of importing KeePass files";
         UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:prompt delegate:nil cancelButtonTitle:@"OK" destructiveButtonTitle:nil otherButtonTitles: nil];
         [appDelegate showActionSheet:actionSheet];
         [actionSheet release];

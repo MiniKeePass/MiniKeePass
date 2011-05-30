@@ -23,11 +23,13 @@
     NSString *filename;
     NSString *password;
     BOOL dirty;
+    UIDocumentInteractionController *documentInteractionController;
 }
 
 @property (nonatomic, retain) KdbTree *kdbTree;
 @property (nonatomic, retain) NSString *filename;
 @property (nonatomic) BOOL dirty;
+@property (nonatomic, readonly) UIDocumentInteractionController *documentInteractionController;
 
 - (void)open:(NSString*)newFilename password:(NSString*)newPassword;
 - (void)save;
