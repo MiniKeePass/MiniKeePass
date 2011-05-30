@@ -24,8 +24,8 @@
     appDelegate = (MobileKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
     
     UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"tab_gear"] style:UIBarButtonItemStylePlain target:appDelegate action:@selector(showSettingsView)];
-    UIBarButtonItem *actionButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(exportFile)];
-    UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:nil action:nil];
+    UIBarButtonItem *actionButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(exportFilePressed)];
+    UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addPressed)];
     UIBarButtonItem *spacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     
     self.toolbarItems = [NSArray arrayWithObjects:settingsButton, spacer, actionButton, spacer, addButton, nil];
@@ -122,13 +122,51 @@
     }
 }
 
-- (void)exportFile {
+- (void)exportFilePressed {
     BOOL didShow = [appDelegate.databaseDocument.documentInteractionController presentOpenInMenuFromRect:CGRectZero inView:self.view.window animated:YES];
     if (!didShow) {
         NSString *prompt = @"There are no applications installed capable of importing KeePass files";
-        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:prompt delegate:nil cancelButtonTitle:@"OK" destructiveButtonTitle:nil otherButtonTitles: nil];
+        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:prompt delegate:nil cancelButtonTitle:@"OK" destructiveButtonTitle:nil otherButtonTitles:nil];
         [appDelegate showActionSheet:actionSheet];
         [actionSheet release];
+    }
+}
+
+- (void)addPressed {
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"Add" delegate:nil cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Group", @"Entry", nil];
+    actionSheet.delegate = self;
+    [appDelegate showActionSheet:actionSheet];
+    [actionSheet release];    
+}
+
+- (void)actionSheet:(UIActionSheet*)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+    DatabaseDocument *databaseDocument = appDelegate.databaseDocument;
+    if (buttonIndex == 0) {
+        // Create and add a group
+        KdbGroup *g = [databaseDocument.kdbTree createGroup:group];
+        g.name = @"New Group";
+        [group addGroup:g];
+        
+        databaseDocument.dirty = YES;
+        [databaseDocument save];
+        
+        [self.tableView reloadData];
+    } else if (buttonIndex == 1) {
+        // Create and add an entry
+        KdbEntry *e = [databaseDocument.kdbTree createEntry:group];
+        e.title = @"New Entry";
+        [group addEntry:e];
+        
+        databaseDocument.dirty = YES;
+        [databaseDocument save];
+        
+        EntryViewController *entryViewController = [[EntryViewController alloc] initWithStyle:UITableViewStyleGrouped];
+        entryViewController.entry = e;
+        entryViewController.title = e.title;
+        [self.navigationController pushViewController:entryViewController animated:YES];
+        [entryViewController release];
+        
+        [self.tableView reloadData];
     }
 }
 
