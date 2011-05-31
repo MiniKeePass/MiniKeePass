@@ -55,6 +55,4 @@
 
 }
 
-- (id)initNewTree;
-
 @end

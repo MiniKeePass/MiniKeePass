@@ -95,20 +95,6 @@
 
 @implementation Kdb3Tree
 
-- (id)initNewTree {
-    self = [super init];
-    if (self) {
-        root = [[Kdb3Group alloc] init];
-        root.name = @"%ROOT%";
-        
-        Kdb3Group *group = [[Kdb3Group alloc] init];
-        group.name = NSLocalizedString(@"Internet", @"Internet");
-        [root addGroup:group];
-        [group release];
-    }
-    return self;
-}
-
 - (BOOL)isGroupIdUnique:(Kdb3Group*)group groupId:(uint32_t)groupId {
     if (group.groupId == groupId) {
         return NO;

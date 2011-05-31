@@ -18,6 +18,4 @@
     uint32_t rounds;
 }
 
-- (void)newFile:(NSString*)fileName withPassword:(NSString*)password;
-
 @end

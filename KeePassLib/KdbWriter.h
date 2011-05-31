@@ -11,4 +11,5 @@
 
 @protocol KdbWriter<NSObject>
 - (void)persist:(KdbTree*)tree file:(NSString*)filename withPassword:(NSString*)password;
+- (void)newFile:(NSString*)fileName withPassword:(NSString*)password;
 @end

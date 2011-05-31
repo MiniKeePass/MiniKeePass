@@ -18,6 +18,7 @@
 #import "FilesViewController.h"
 #import "MobileKeePassAppDelegate.h"
 #import "DatabaseManager.h"
+#import "Kdb3Writer.h"
 
 @implementation FilesViewController
 
@@ -27,7 +28,7 @@
     MobileKeePassAppDelegate *appDelegate = (MobileKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
     
     UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"tab_gear"] style:UIBarButtonItemStylePlain target:appDelegate action:@selector(showSettingsView)];
-    UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:nil action:nil];
+    UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addPressed)];
     UIBarButtonItem *spacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     
     self.toolbarItems = [NSArray arrayWithObjects:settingsButton, spacer, addButton, nil];
@@ -166,6 +167,17 @@
         // Update the table
         [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
     }
+}
+
+- (void)addPressed {
+    // Retrieve the Document directory
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString *path = [documentsDirectory stringByAppendingPathComponent:@"newfile.kdb"];
+    
+    id<KdbWriter> writer = [[Kdb3Writer alloc] init];
+    [writer newFile:path withPassword:@"test"];
+    [writer release];
 }
 
 @end
