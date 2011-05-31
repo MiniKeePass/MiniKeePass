@@ -227,8 +227,7 @@
                     break;
                 
                 case 0x000E:
-                    entry.binarySize = fieldSize;
-                    if (fieldSize) {
+                    if (fieldSize > 0) {
                         entry.binary = [inputStream readData:fieldSize];
                     }
                     break;
@@ -262,9 +261,10 @@
 }
 
 - (Kdb3Tree*)buildTree:(NSArray*)groups levels:(NSArray*)levels entries:(NSArray*)entries {
-    ///
-    uint32_t level = [[levels objectAtIndex:0]unsignedIntValue];
-    if(level!=0) @throw [NSException exceptionWithName:@"InvalidData" reason:@"InvalidTree" userInfo:nil];
+    uint32_t level = [[levels objectAtIndex:0] unsignedIntValue];
+    if (level != 0) {
+        @throw [NSException exceptionWithName:@"InvalidData" reason:@"InvalidTree" userInfo:nil];
+    }
     
     Kdb3Tree *tree = [[Kdb3Tree alloc] init];
     
@@ -273,12 +273,12 @@
     root.parent = nil;
     tree.root = root;
     
-    //find the parent for every group
-    for(int i=0; i<[groups count]; i++){
-        Kdb3Group * group = [groups objectAtIndex:i];
-        level = [[levels objectAtIndex:i]unsignedIntValue];
+    // Find the parent for every group
+    for (int i = 0; i < [groups count]; i++) {
+        Kdb3Group *group = [groups objectAtIndex:i];
+        level = [[levels objectAtIndex:i] unsignedIntValue];
         
-        if(level==0){
+        if (level == 0) {
             [root addGroup:group];
             continue;
         }
@@ -286,17 +286,19 @@
         uint32_t level2;
         int j;
         
-        //the first item with a lower level is the parent
-        for(j=i-1; j>=0; j--){
-            level2 = [[levels objectAtIndex:j]unsignedIntValue];
-            if(level2<level){
-                if(level-level2!=1) 
+        // The first item with a lower level is the parent
+        for (j = i - 1; j >= 0; j--) {
+            level2 = [[levels objectAtIndex:j] unsignedIntValue];
+            if (level2 < level) {
+                if (level - level2 != 1) {
                     @throw [NSException exceptionWithName:@"InvalidData" reason:@"InvalidTree" userInfo:nil];
-                else
+                } else {
                     break;
+                }
             }
-            if(j==0)
+            if (j == 0) {
                 @throw [NSException exceptionWithName:@"InvalidData" reason:@"InvalidTree" userInfo:nil];
+            }
         }
         
         Kdb3Group *parent = [groups objectAtIndex:j];

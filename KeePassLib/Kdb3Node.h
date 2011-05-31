@@ -37,13 +37,11 @@
 @interface Kdb3Entry : KdbEntry {
     UUID *uuid;
     NSString *binaryDesc;
-    uint32_t binarySize;
     NSData *binary;
 }
 
 @property(nonatomic, retain) UUID *uuid;
 @property(nonatomic, retain) NSString *binaryDesc;
-@property(nonatomic, assign) uint32_t binarySize;
 @property(nonatomic, retain) NSData *binary;
 
 - (BOOL)isMeta;
