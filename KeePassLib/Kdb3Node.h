@@ -41,7 +41,7 @@
 }
 
 @property(nonatomic, retain) UUID *uuid;
-@property(nonatomic, retain) NSString *binaryDesc;
+@property(nonatomic, copy) NSString *binaryDesc;
 @property(nonatomic, retain) NSData *binary;
 
 - (BOOL)isMeta;

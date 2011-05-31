@@ -29,8 +29,8 @@
 - (id)initWithText:(NSString*)text;
 - (void)clearEntry;
 
-@property (nonatomic, retain) id<PinViewControllerDelegate> delegate;
 @property (nonatomic, copy) UILabel *textLabel;
+@property (nonatomic, retain) id<PinViewControllerDelegate> delegate;
 
 @end
 

@@ -133,7 +133,7 @@
     
     // Parse the entries
     for (uint32_t i = 0; i < numEntries; i++) {
-        Kdb3Entry * entry = [[Kdb3Entry alloc]init];
+        Kdb3Entry *entry = [[Kdb3Entry alloc]init];
         
         // Parse the field
         do {
@@ -157,7 +157,7 @@
                     if ([inputStream read:buffer length:fieldSize] != fieldSize) {
                         @throw [NSException exceptionWithName:@"IOException" reason:@"Failed to read UUID" userInfo:nil];
                     }
-                    entry.uuid = [[UUID alloc] initWithBytes:buffer];
+                    entry.uuid = [[[UUID alloc] initWithBytes:buffer] autorelease];
                     break; 
                 
                 case 0x0002:

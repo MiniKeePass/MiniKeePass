@@ -24,7 +24,7 @@
     NSDate *expiryTime;
 }
 
-@property(nonatomic, retain) KdbGroup *parent;
+@property(nonatomic, assign) KdbGroup *parent;
 
 @property(nonatomic, assign) NSInteger image;
 @property(nonatomic, copy) NSString *name;
@@ -60,7 +60,7 @@
     NSDate *expiryTime;
 }
 
-@property(nonatomic, retain) KdbGroup *parent;
+@property(nonatomic, assign) KdbGroup *parent;
 
 @property(nonatomic, assign) NSInteger image;
 @property(nonatomic, copy) NSString *title;

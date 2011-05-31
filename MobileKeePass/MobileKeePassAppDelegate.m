@@ -56,6 +56,8 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
     // Create the files view
     FilesViewController *filesViewController = [[FilesViewController alloc] initWithStyle:UITableViewStylePlain];
     navigationController = [[UINavigationController alloc] initWithRootViewController:filesViewController];
+    [filesViewController release];
+    
     navigationController.toolbarHidden = NO;
     
     // Create the window
@@ -86,7 +88,7 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
     [self dismissActionSheet];
 }
 
-- (void)applicationDidBecomeActive:(UIApplication *)application {
+- (void)applicationDidBecomeActive:(UIApplication*)application {
     // Check if we're supposed to open a file
     if (fileToOpen != nil) {
         // Close the current database
@@ -129,7 +131,7 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
     }
 }
 
--(BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+- (BOOL)application:(UIApplication*)application openURL:(NSURL*)url sourceApplication:(NSString*)sourceApplication annotation:(id)annotation {
     // Get the filename
     NSString *filename = [url lastPathComponent];
     
@@ -267,15 +269,19 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
     }
 }
 
--(void)dismissActionSheet {
+- (void)dismissActionSheet {
     if (myActionSheet != nil) {
         [myActionSheet dismissWithClickedButtonIndex:myActionSheet.cancelButtonIndex animated:YES];
     }
 }
 
--(void)showSettingsView {
+- (void)showSettingsView {
     SettingsViewController *settingsViewController = [[SettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
-    settingsViewController.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(dismissSettingsView)];
+    
+    UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(dismissSettingsView)];
+    settingsViewController.navigationItem.rightBarButtonItem = doneButton;
+    [doneButton release];
+    
     UINavigationController *settingsNavController = [[UINavigationController alloc] initWithRootViewController:settingsViewController];
     settingsNavController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
     
@@ -285,11 +291,11 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
     [settingsNavController release];
 }
 
--(void)dismissSettingsView {
+- (void)dismissSettingsView {
     [window.rootViewController dismissModalViewControllerAnimated:YES];
 }
 
--(void)showActionSheet:(UIActionSheet *)actionSheet {
+- (void)showActionSheet:(UIActionSheet*)actionSheet {
     if (myActionSheet != nil) {
         [myActionSheet dismissWithClickedButtonIndex:myActionSheet.cancelButtonIndex animated:NO];
     }
@@ -302,13 +308,13 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
     [actionSheet release];
 }
 
--(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+- (void)actionSheet:(UIActionSheet*)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     if ([myActionSheetDelegate respondsToSelector:@selector(actionSheet:clickedButtonAtIndex:)]) {
         [myActionSheetDelegate actionSheet:actionSheet clickedButtonAtIndex:buttonIndex];
     }
 }
 
--(void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
+- (void)actionSheet:(UIActionSheet*)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
     if ([myActionSheetDelegate respondsToSelector:@selector(actionSheet:didDismissWithButtonIndex:)]) {
         [myActionSheetDelegate actionSheet:actionSheet didDismissWithButtonIndex:buttonIndex];
     }
@@ -317,13 +323,13 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
     myActionSheetDelegate = nil;
 }
 
--(void)actionSheet:(UIActionSheet *)actionSheet willDismissWithButtonIndex:(NSInteger)buttonIndex{
+- (void)actionSheet:(UIActionSheet*)actionSheet willDismissWithButtonIndex:(NSInteger)buttonIndex {
     if ([myActionSheetDelegate respondsToSelector:@selector(actionSheet:willDismissWithButtonIndex:)]) {
         [myActionSheetDelegate actionSheet:actionSheet willDismissWithButtonIndex:buttonIndex];
     }
 }
 
--(void)actionSheetCancel:(UIActionSheet *)actionSheet {
+- (void)actionSheetCancel:(UIActionSheet*)actionSheet {
     if ([myActionSheetDelegate respondsToSelector:@selector(actionSheetCancel:)]) {
         [myActionSheetDelegate actionSheetCancel:actionSheet];
     }

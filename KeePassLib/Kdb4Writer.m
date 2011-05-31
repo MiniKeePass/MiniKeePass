@@ -176,7 +176,6 @@
     [self persist:tree file:fileName withPassword:password];
     
     [tree release];
-    [parentGroup release];
 }
 
 @end

@@ -177,7 +177,6 @@
     
     Kdb4Entry *entry = [[Kdb4Entry alloc] init];
     entry.parent = parent;
-    
     entry.element = [GDataXMLNode elementWithName:@"Entry"];
     [((Kdb4Group*)parent).element addChild:entry.element];
     

@@ -43,7 +43,7 @@ int closeCallback(void *context) {
 - (Kdb4Tree*)parse:(InputStream*)inputStream {
     GDataXMLDocument *document = [[GDataXMLDocument alloc] initWithReadIO:readCallback closeIO:closeCallback context:inputStream options:0 error:nil];
     if (document == nil) {
-        @throw [[NSException alloc] initWithName:@"ParseError" reason:@"Failed to parse database" userInfo:nil];
+        @throw [NSException exceptionWithName:@"ParseError" reason:@"Failed to parse database" userInfo:nil];
     }
     
     // Get the root document element
@@ -54,12 +54,12 @@ int closeCallback(void *context) {
     
     GDataXMLElement *root = [rootElement elementForName:@"Root"];
     if (root == nil) {
-        @throw [[NSException alloc] initWithName:@"ParseError" reason:@"Failed to parse database" userInfo:nil];
+        @throw [NSException exceptionWithName:@"ParseError" reason:@"Failed to parse database" userInfo:nil];
     }
     
     GDataXMLElement *element = [root elementForName:@"Group"];
     if (element == nil) {
-        @throw [[NSException alloc] initWithName:@"ParseError" reason:@"Failed to parse database" userInfo:nil];
+        @throw [NSException exceptionWithName:@"ParseError" reason:@"Failed to parse database" userInfo:nil];
     }
     
     Kdb4Tree *tree = [[Kdb4Tree alloc] initWithDocument:document];

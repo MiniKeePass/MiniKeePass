@@ -183,7 +183,6 @@
     
     [tree release];
     [rootGroup release];
-    [parentGroup release];
 }
 
 @end

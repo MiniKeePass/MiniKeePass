@@ -55,7 +55,6 @@
 
 @synthesize uuid;
 @synthesize binaryDesc;
-@synthesize binarySize;
 @synthesize binary;
 
 - (void)dealloc {
@@ -66,7 +65,7 @@
 }
 
 - (BOOL)isMeta {
-    if (binarySize == 0) {
+    if (!binary || binary.length == 0) {
         return NO;
     }
     if (!notes || ![notes length]) {
