@@ -19,12 +19,14 @@
 @synthesize lastModificationTime;
 @synthesize lastAccessTime;
 @synthesize expiryTime;
+@synthesize canAddEntries;
 
 - (id)init {
     self = [super init];
     if (self) {
         groups = [[NSMutableArray alloc] initWithCapacity:8];
         entries = [[NSMutableArray alloc] initWithCapacity:16];
+        canAddEntries = YES;
     }
     return self;
 }

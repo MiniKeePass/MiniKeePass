@@ -22,6 +22,8 @@
     NSDate *lastModificationTime;
     NSDate *lastAccessTime;
     NSDate *expiryTime;
+    
+    BOOL canAddEntries;
 }
 
 @property(nonatomic, assign) KdbGroup *parent;
@@ -35,6 +37,8 @@
 @property(nonatomic, retain) NSDate *lastModificationTime;
 @property(nonatomic, retain) NSDate *lastAccessTime;
 @property(nonatomic, retain) NSDate *expiryTime;
+
+@property(nonatomic, assign) BOOL canAddEntries;
 
 - (void)addGroup:(KdbGroup*)group;
 - (void)deleteGroup:(KdbGroup*)group;

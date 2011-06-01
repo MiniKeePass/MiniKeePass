@@ -271,6 +271,7 @@
     Kdb3Group *root = [[Kdb3Group alloc] init];
     root.name = @"$ROOT$";
     root.parent = nil;
+    root.canAddEntries = NO;
     tree.root = root;
     
     // Find the parent for every group

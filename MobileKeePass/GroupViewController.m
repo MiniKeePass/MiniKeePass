@@ -68,7 +68,11 @@
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView {
-    return 2;
+    NSInteger sections = 1;
+    if ([group.entries count] > 0) {
+        sections++;
+    }
+    return sections;
 }
 
 - (NSString*)tableView:(UITableView*)tableView titleForHeaderInSection:(NSInteger)section {
@@ -149,7 +153,13 @@
 }
 
 - (void)addPressed {
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"Add" delegate:nil cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Group", @"Entry", nil];
+    UIActionSheet *actionSheet;
+    if (group.canAddEntries) {
+        actionSheet = [[UIActionSheet alloc] initWithTitle:@"Add" delegate:nil cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Group", @"Entry", nil];
+    } else {
+        actionSheet = [[UIActionSheet alloc] initWithTitle:@"Add" delegate:nil cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Group", nil];
+    }
+    
     actionSheet.delegate = self;
     [appDelegate showActionSheet:actionSheet];
     [actionSheet release];    
@@ -168,7 +178,8 @@
         
         // Notify the table of the new row
         NSUInteger index = [group.groups count] - 1;
-        [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:index inSection:GROUPS_SECTION]] withRowAnimation:UITableViewRowAnimationRight];
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:GROUPS_SECTION];
+        [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationRight];
     } else if (buttonIndex == 1) {
         // Create and add an entry
         KdbEntry *e = [databaseDocument.kdbTree createEntry:group];
@@ -187,8 +198,13 @@
         NSUInteger index = [group.entries count] - 1;
         NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:ENTRIES_SECTION];
         
-        // Notify the table of the new row
-        [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationRight];
+        if (index == 0) {
+            // Notify the table of the new section
+            [self.tableView insertSections:[NSIndexSet indexSetWithIndex:ENTRIES_SECTION] withRowAnimation:UITableViewRowAnimationRight];
+        } else {
+            // Notify the table of the new row
+            [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationRight];
+        }
         
         // Select the row
         [self.tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionTop];
