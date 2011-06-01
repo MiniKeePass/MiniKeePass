@@ -178,6 +178,11 @@
     id<KdbWriter> writer = [[Kdb3Writer alloc] init];
     [writer newFile:path withPassword:@"test"];
     [writer release];
+    
+    [files addObject:@"newfile.kdb"];
+    
+    NSUInteger index = [files count] - 1;
+    [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationRight];
 }
 
 @end
