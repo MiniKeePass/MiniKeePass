@@ -18,6 +18,10 @@
 #import "GroupViewController.h"
 #import "EntryViewController.h"
 
+#define GROUPS_SECTION  0
+#define ENTRIES_SECTION 1
+
+
 @implementation GroupViewController
 
 - (void)viewDidLoad {
@@ -63,16 +67,30 @@
     [self.tableView reloadData];
 }
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
+- (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView {
+    return 2;
+}
+
+- (NSString*)tableView:(UITableView*)tableView titleForHeaderInSection:(NSInteger)section {
+    switch (section) {
+        case GROUPS_SECTION:
+            return @"Groups";
+        case ENTRIES_SECTION:
+            return @"Entries";
+    }
+    
+    return nil;
 }
 
 - (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section {
-    if (group == nil) {
-        return 0;
+    switch (section) {
+        case GROUPS_SECTION:
+            return [group.groups count];
+        case ENTRIES_SECTION:
+            return [group.entries count];
     }
     
-    return [group.groups count] + [group.entries count];
+    return 0;
 }
 
 - (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath {
@@ -87,13 +105,12 @@
     appDelegate = (MobileKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
     
     // Configure the cell.
-    int numChildren = [group.groups count];
-    if (indexPath.row < numChildren) {
+    if (indexPath.section == GROUPS_SECTION) {
         KdbGroup *g = [group.groups objectAtIndex:indexPath.row];
         cell.textLabel.text = g.name;
         cell.imageView.image = [appDelegate loadImage:g.image];
-    } else {
-        KdbEntry *e = [group.entries objectAtIndex:(indexPath.row - numChildren)];
+    } else if (indexPath.section == ENTRIES_SECTION) {
+        KdbEntry *e = [group.entries objectAtIndex:indexPath.row];
         cell.textLabel.text = e.title;
         cell.imageView.image = [appDelegate loadImage:e.image];
     }
@@ -102,8 +119,7 @@
 }
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath {
-    int numChildren = [group.groups count];
-    if (indexPath.row < numChildren) {
+    if (indexPath.section == GROUPS_SECTION) {
         KdbGroup *g = [group.groups objectAtIndex:indexPath.row];
         
         GroupViewController *groupViewController = [[GroupViewController alloc] initWithStyle:UITableViewStylePlain];
@@ -111,8 +127,8 @@
         groupViewController.title = g.name;
         [self.navigationController pushViewController:groupViewController animated:YES];
         [groupViewController release];
-    } else {
-        KdbEntry *e = [group.entries objectAtIndex:(indexPath.row - numChildren)];
+    } else if (indexPath.section == ENTRIES_SECTION) {
+        KdbEntry *e = [group.entries objectAtIndex:indexPath.row];
         
         EntryViewController *entryViewController = [[EntryViewController alloc] initWithStyle:UITableViewStyleGrouped];
         entryViewController.entry = e;
@@ -150,7 +166,9 @@
         databaseDocument.dirty = YES;
         [databaseDocument save];
         
-        [self.tableView reloadData];
+        // Notify the table of the new row
+        NSUInteger index = [group.groups count] - 1;
+        [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:index inSection:GROUPS_SECTION]] withRowAnimation:UITableViewRowAnimationRight];
     } else if (buttonIndex == 1) {
         // Create and add an entry
         KdbEntry *e = [databaseDocument.kdbTree createEntry:group];
@@ -166,7 +184,14 @@
         [self.navigationController pushViewController:entryViewController animated:YES];
         [entryViewController release];
         
-        [self.tableView reloadData];
+        NSUInteger index = [group.entries count] - 1;
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:ENTRIES_SECTION];
+        
+        // Notify the table of the new row
+        [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationRight];
+        
+        // Select the row
+        [self.tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionTop];
     }
 }
 
