@@ -25,6 +25,26 @@
     [super dealloc];
 }
 
+- (void)removeGroup:(KdbGroup*)group {
+    if (group.parent != nil) {
+        GDataXMLElement *root = ((Kdb4Group*)group.parent).element;
+        [root removeChild:((Kdb4Group*)group).element];
+        group.parent = nil;
+    }
+    
+    [super removeGroup:group];
+}
+
+- (void)removeEntry:(KdbEntry*)entry {
+    if (entry.parent != nil) {
+        GDataXMLElement *root = ((Kdb4Group*)entry.parent).element;
+        [root removeChild:((Kdb4Group*)entry).element];
+        entry.parent = nil;
+    }
+    
+    [super removeEntry:entry];
+}
+
 @end
 
 
