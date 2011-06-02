@@ -261,11 +261,11 @@
 }
 
 - (Kdb3Tree*)buildTree:(NSArray*)groups levels:(NSArray*)levels entries:(NSArray*)entries {
-    uint32_t level = [[levels objectAtIndex:0] unsignedIntValue];
-    if (level != 0) {
-        @throw [NSException exceptionWithName:@"InvalidData" reason:@"InvalidTree" userInfo:nil];
-    }
-    
+    uint16_t level1;
+    uint16_t level2;
+    int i;
+    int j;
+
     Kdb3Tree *tree = [[Kdb3Tree alloc] init];
     
     Kdb3Group *root = [[Kdb3Group alloc] init];
@@ -275,23 +275,20 @@
     tree.root = root;
     
     // Find the parent for every group
-    for (int i = 0; i < [groups count]; i++) {
+    for (i = 0; i < [groups count]; i++) {
         Kdb3Group *group = [groups objectAtIndex:i];
-        level = [[levels objectAtIndex:i] unsignedIntValue];
+        level1 = [[levels objectAtIndex:i] unsignedIntValue];
         
-        if (level == 0) {
+        if (level1 == 0) {
             [root addGroup:group];
             continue;
         }
         
-        uint32_t level2;
-        int j;
-        
         // The first item with a lower level is the parent
         for (j = i - 1; j >= 0; j--) {
             level2 = [[levels objectAtIndex:j] unsignedIntValue];
-            if (level2 < level) {
-                if (level - level2 != 1) {
+            if (level2 < level1) {
+                if (level1 - level2 != 1) {
                     @throw [NSException exceptionWithName:@"InvalidData" reason:@"InvalidTree" userInfo:nil];
                 } else {
                     break;
