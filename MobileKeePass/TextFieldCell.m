@@ -87,15 +87,16 @@
     // Scroll to the top
     UITableView *tableView = (UITableView*)self.superview;
     [tableView setContentOffset:CGPointMake(0.0, 0.0) animated:YES];
+    
+    tapGesture.enabled = NO;
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)field {
-    // Clear all the extra gesture recognizers
-    for (UIGestureRecognizer *gestureRecognizer in field.gestureRecognizers) {
-        if (gestureRecognizer != tapGesture) {
-            [field removeGestureRecognizer:gestureRecognizer];
-        }
-    }
+    // Ensure our gesture recgonizer is on top
+    [field removeGestureRecognizer:tapGesture];
+    [field addGestureRecognizer:tapGesture];
+    
+    tapGesture.enabled = YES;
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField*)field {
