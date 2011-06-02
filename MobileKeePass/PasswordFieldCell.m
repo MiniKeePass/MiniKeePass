@@ -23,9 +23,6 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
-        textField.autocorrectionType = UITextAutocorrectionTypeNo;
-        textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
-        
         NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
         textField.secureTextEntry = [userDefaults boolForKey:@"hidePasswords"];
         
@@ -38,6 +35,8 @@
     [super textFieldDidBeginEditing:field];
     
     textField.secureTextEntry = NO;
+    textField.autocorrectionType = UITextAutocorrectionTypeNo;
+    textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
     textField.returnKeyType = UIReturnKeyDone;
 }
 
