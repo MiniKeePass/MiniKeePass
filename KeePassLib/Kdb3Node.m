@@ -38,7 +38,7 @@
     }
 }
 
-- (void)deleteEntry:(KdbEntry*)entry {
+- (void)removeEntry:(KdbEntry*)entry {
     entry.parent = nil;
     
     if ([(Kdb3Entry*)entry isMeta]) {

@@ -41,10 +41,10 @@
 @property(nonatomic, assign) BOOL canAddEntries;
 
 - (void)addGroup:(KdbGroup*)group;
-- (void)deleteGroup:(KdbGroup*)group;
+- (void)removeGroup:(KdbGroup*)group;
 
 - (void)addEntry:(KdbEntry*)entry;
-- (void)deleteEntry:(KdbEntry*)entry;
+- (void)removeEntry:(KdbEntry*)entry;
 
 @end
 

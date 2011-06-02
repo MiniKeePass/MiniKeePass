@@ -47,7 +47,7 @@
     [groups addObject:group];
 }
 
-- (void)deleteGroup:(KdbGroup*)group {
+- (void)removeGroup:(KdbGroup*)group {
     group.parent = nil;
     [groups removeObject:group];
 }
@@ -57,7 +57,7 @@
     [entries addObject:entry];
 }
 
-- (void)deleteEntry:(KdbEntry*)entry {
+- (void)removeEntry:(KdbEntry*)entry {
     entry.parent = nil;
     [entries removeObject:entry];
 }
