@@ -68,19 +68,22 @@
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView {
-    NSInteger sections = 1;
-    if ([group.entries count] > 0) {
-        sections++;
-    }
-    return sections;
+    return 2;
 }
 
 - (NSString*)tableView:(UITableView*)tableView titleForHeaderInSection:(NSInteger)section {
     switch (section) {
         case GROUPS_SECTION:
-            return @"Groups";
+            if ([group.groups count] > 0) {
+                return @"Groups";
+            }
+            break;
+            
         case ENTRIES_SECTION:
-            return @"Entries";
+            if ([group.entries count] > 0) {
+                return @"Entries";
+            }
+            break;
     }
     
     return nil;
@@ -178,8 +181,15 @@
         
         // Notify the table of the new row
         NSUInteger index = [group.groups count] - 1;
-        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:GROUPS_SECTION];
-        [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationRight];
+        if (index == 0) {
+            // Reload the section if it's the first item
+            NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:GROUPS_SECTION];
+            [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationLeft];
+        } else {
+            // Insert the new row
+            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:GROUPS_SECTION];
+            [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationRight];
+        }
     } else if (buttonIndex == 1) {
         // Create and add an entry
         KdbEntry *e = [databaseDocument.kdbTree createEntry:group];
@@ -195,14 +205,15 @@
         [self.navigationController pushViewController:entryViewController animated:YES];
         [entryViewController release];
         
+        // Notify the table of the new row
         NSUInteger index = [group.entries count] - 1;
         NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:ENTRIES_SECTION];
-        
         if (index == 0) {
-            // Notify the table of the new section
-            [self.tableView insertSections:[NSIndexSet indexSetWithIndex:ENTRIES_SECTION] withRowAnimation:UITableViewRowAnimationRight];
+            // Reload the section if it's the first item
+            NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:ENTRIES_SECTION];
+            [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationLeft];
         } else {
-            // Notify the table of the new row
+            // Insert the new row
             [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationRight];
         }
         
