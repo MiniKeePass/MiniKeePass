@@ -145,6 +145,35 @@
     }
 }
 
+- (void)tableView:(UITableView*)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath*)indexPath {
+    NSUInteger rows = 0;
+    
+    // Update the model
+    if (indexPath.section == GROUPS_SECTION) {
+        KdbGroup *g = [group.groups objectAtIndex:indexPath.row];
+        [group removeGroup:g];
+        rows = [group.groups count];
+    } else if (indexPath.section == ENTRIES_SECTION) {
+        KdbEntry *e = [group.entries objectAtIndex:indexPath.row];
+        [group removeEntry:e];
+        rows = [group.entries count];
+    }
+    
+    // Save the database
+    DatabaseDocument *databaseDocument = appDelegate.databaseDocument;
+    databaseDocument.dirty = YES;
+    [databaseDocument save];
+
+    if (rows == 0) {
+        // Reload the section if there are no more rows
+        NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:indexPath.section];
+        [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationFade];
+    } else {
+        // Delete the row
+        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+    }
+}
+
 - (void)exportFilePressed {
     BOOL didShow = [appDelegate.databaseDocument.documentInteractionController presentOpenInMenuFromRect:CGRectZero inView:self.view.window animated:YES];
     if (!didShow) {
