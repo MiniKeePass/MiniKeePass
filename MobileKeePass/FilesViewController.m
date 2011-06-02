@@ -24,7 +24,7 @@
 
 @synthesize selectedFile;
 
--(void)viewDidLoad {
+- (void)viewDidLoad {
     MobileKeePassAppDelegate *appDelegate = (MobileKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
     
     UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"tab_gear"] style:UIBarButtonItemStylePlain target:appDelegate action:@selector(showSettingsView)];
@@ -138,35 +138,36 @@
     [[DatabaseManager sharedInstance] openDatabaseDocument:[files objectAtIndex:indexPath.row] animated:YES];
 }
 
-- (void)tableView:(UITableView*)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        NSString *filename = [files objectAtIndex:indexPath.row];
-
-        // Retrieve the Document directory
-        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-        NSString *documentsDirectory = [paths objectAtIndex:0];
-        NSString *path = [documentsDirectory stringByAppendingPathComponent:filename];
-        
-        // Get the application delegate
-        MobileKeePassAppDelegate *appDelegate = (MobileKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
-        
-        // Close the current database if we're deleting it's file
-        if ([path isEqualToString:appDelegate.databaseDocument.filename]) {
-            [appDelegate closeDatabase];
-        }
-        
-        // Delete the file
-        NSFileManager *fileManager = [[NSFileManager alloc] init];
-        [fileManager removeItemAtPath:path error:nil];
-        [fileManager release];
-        
-        // Remove the file from the array
-        [files removeObject:filename];
-        
-        // Update the table
-        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+- (void)tableView:(UITableView*)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath*)indexPath {
+    if (editingStyle != UITableViewCellEditingStyleDelete) {
+        return;
     }
+    
+    NSString *filename = [files objectAtIndex:indexPath.row];
+    
+    // Retrieve the Document directory
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString *path = [documentsDirectory stringByAppendingPathComponent:filename];
+    
+    // Get the application delegate
+    MobileKeePassAppDelegate *appDelegate = (MobileKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
+    
+    // Close the current database if we're deleting it's file
+    if ([path isEqualToString:appDelegate.databaseDocument.filename]) {
+        [appDelegate closeDatabase];
+    }
+    
+    // Delete the file
+    NSFileManager *fileManager = [[NSFileManager alloc] init];
+    [fileManager removeItemAtPath:path error:nil];
+    [fileManager release];
+    
+    // Remove the file from the array
+    [files removeObject:filename];
+    
+    // Update the table
+    [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
 }
 
 - (void)addPressed {
