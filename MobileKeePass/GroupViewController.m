@@ -169,6 +169,10 @@
 }
 
 - (void)actionSheet:(UIActionSheet*)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == actionSheet.cancelButtonIndex) {
+        return;
+    }
+    
     DatabaseDocument *databaseDocument = appDelegate.databaseDocument;
     if (buttonIndex == 0) {
         // Create and add a group
