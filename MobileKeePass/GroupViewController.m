@@ -146,9 +146,12 @@
 }
 
 - (void)tableView:(UITableView*)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath*)indexPath {
-    NSUInteger rows = 0;
+    if (editingStyle != UITableViewCellEditingStyleDelete) {
+        return;
+    }
     
     // Update the model
+    NSUInteger rows = 0;
     if (indexPath.section == GROUPS_SECTION) {
         KdbGroup *g = [group.groups objectAtIndex:indexPath.row];
         [group removeGroup:g];
