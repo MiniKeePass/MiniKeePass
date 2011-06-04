@@ -22,6 +22,7 @@
 @interface GroupViewController : UITableViewController <UIActionSheetDelegate, UISearchDisplayDelegate> {
     UISearchDisplayController *searchDisplayController;
     MobileKeePassAppDelegate *appDelegate;
+    NSMutableArray *results;
     KdbGroup *group;
 }
 
