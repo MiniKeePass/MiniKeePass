@@ -8,9 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		523232A8136F128300692CEA /* DatabaseDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 523232A5136F128300692CEA /* DatabaseDocument.m */; };
-		523232A9136F128300692CEA /* PasswordEntryController.m in Sources */ = {isa = PBXBuildFile; fileRef = 523232A7136F128300692CEA /* PasswordEntryController.m */; };
 		523FBD6413736834004575FB /* icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 523FBD6213736834004575FB /* icon@2x.png */; };
 		523FBD7D1373C05E004575FB /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 523FBD7C1373C05E004575FB /* icon.png */; };
+		524326331399D19000FA3090 /* StringEntryController.m in Sources */ = {isa = PBXBuildFile; fileRef = 524326321399D19000FA3090 /* StringEntryController.m */; };
 		52644C93137088E800A58D92 /* PinViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52644C92137088E800A58D92 /* PinViewController.m */; };
 		52644C971370915400A58D92 /* box.png in Resources */ = {isa = PBXBuildFile; fileRef = 52644C951370915400A58D92 /* box.png */; };
 		52644C981370915400A58D92 /* box@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52644C961370915400A58D92 /* box@2x.png */; };
@@ -226,10 +226,10 @@
 /* Begin PBXFileReference section */
 		523232A4136F128300692CEA /* DatabaseDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DatabaseDocument.h; sourceTree = "<group>"; };
 		523232A5136F128300692CEA /* DatabaseDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DatabaseDocument.m; sourceTree = "<group>"; };
-		523232A6136F128300692CEA /* PasswordEntryController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasswordEntryController.h; sourceTree = "<group>"; };
-		523232A7136F128300692CEA /* PasswordEntryController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PasswordEntryController.m; sourceTree = "<group>"; };
 		523FBD6213736834004575FB /* icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon@2x.png"; sourceTree = "<group>"; };
 		523FBD7C1373C05E004575FB /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
+		524326311399D19000FA3090 /* StringEntryController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StringEntryController.h; sourceTree = "<group>"; };
+		524326321399D19000FA3090 /* StringEntryController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StringEntryController.m; sourceTree = "<group>"; };
 		52644C91137088E800A58D92 /* PinViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PinViewController.h; sourceTree = "<group>"; };
 		52644C92137088E800A58D92 /* PinViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PinViewController.m; sourceTree = "<group>"; };
 		52644C951370915400A58D92 /* box.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = box.png; sourceTree = "<group>"; };
@@ -891,8 +891,6 @@
 				6872F029137746D0008E55B9 /* FilesViewController.m */,
 				68D59039136CB7820064CEE5 /* GroupViewController.h */,
 				68D5903A136CB7820064CEE5 /* GroupViewController.m */,
-				523232A6136F128300692CEA /* PasswordEntryController.h */,
-				523232A7136F128300692CEA /* PasswordEntryController.m */,
 				52644C991370954700A58D92 /* PinTextField.h */,
 				52644C9A1370954700A58D92 /* PinTextField.m */,
 				52644C91137088E800A58D92 /* PinViewController.h */,
@@ -903,6 +901,8 @@
 				688F3FB41377805C0049808C /* SelectionListViewController.m */,
 				52F42CF213747BE10074E5D5 /* SettingsViewController.h */,
 				52F42CF313747BE10074E5D5 /* SettingsViewController.m */,
+				524326311399D19000FA3090 /* StringEntryController.h */,
+				524326321399D19000FA3090 /* StringEntryController.m */,
 				525B6515137062F7001883BB /* Cells */,
 				68D59010136CB5CB0064CEE5 /* Supporting Files */,
 			);
@@ -1206,7 +1206,6 @@
 				689EB6A0136DB4BF00C8DA1E /* TextFieldCell.m in Sources */,
 				689EB6A3136DC24C00C8DA1E /* EntryViewController.m in Sources */,
 				523232A8136F128300692CEA /* DatabaseDocument.m in Sources */,
-				523232A9136F128300692CEA /* PasswordEntryController.m in Sources */,
 				6813262E136F7BA7004F4864 /* UrlFieldCell.m in Sources */,
 				68132639136F8B79004F4864 /* PasswordFieldCell.m in Sources */,
 				52644C93137088E800A58D92 /* PinViewController.m in Sources */,
@@ -1253,6 +1252,7 @@
 				68DEB786138BDFFC00FC1F09 /* GZipInputStream.m in Sources */,
 				688DCC57138DE2E400082FA3 /* GZipOutputStream.m in Sources */,
 				68C7C323138E7558001F3229 /* Kdb4Persist.m in Sources */,
+				524326331399D19000FA3090 /* StringEntryController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

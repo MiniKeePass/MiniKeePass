@@ -17,22 +17,33 @@
 
 #import <UIKit/UIKit.h>
 
-@protocol PasswordEntryControllerDelegate;
+@protocol StringEntryControllerDelegate;
 
-@interface PasswordEntryController : UITableViewController <UITextFieldDelegate> {
+@interface StringEntryController : UITableViewController <UITextFieldDelegate> {
     UITextField *textField;
     UIButton *okButton;
     UIButton *cancelButton;
     UILabel *statusLabel;
-    id<PasswordEntryControllerDelegate> delegate;
+
+    NSString *entryTitle;
+    BOOL secureTextEntry;
+    NSString *placeholderText;
+    NSString *string;
+
+    id<StringEntryControllerDelegate> delegate;
 }
 
 @property (nonatomic, retain) UILabel *statusLabel;
-@property (nonatomic, retain) id<PasswordEntryControllerDelegate> delegate;
+@property (nonatomic, copy) NSString *entryTitle;
+@property (nonatomic, assign) BOOL secureTextEntry;
+@property (nonatomic, copy) NSString *placeholderText;
+@property (nonatomic, copy) NSString *string;
+
+@property (nonatomic, retain) id<StringEntryControllerDelegate> delegate;
 
 @end
 
-@protocol PasswordEntryControllerDelegate <NSObject>
-- (BOOL)passwordEntryController:(PasswordEntryController*)controller passwordEntered:(NSString*)password;
-- (void)passwordEntryControllerCancelButtonPressed:(PasswordEntryController*)controller;
+@protocol StringEntryControllerDelegate <NSObject>
+- (void)stringEntryController:(StringEntryController*)controller stringEntered:(NSString*)string;
+- (void)stringEntryControllerCancelButtonPressed:(StringEntryController*)controller;
 @end

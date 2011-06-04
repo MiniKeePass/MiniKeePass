@@ -18,7 +18,7 @@
 #import "DatabaseManager.h"
 #import "MobileKeePassAppDelegate.h"
 #import "SFHFKeychainUtils.h"
-#import "PasswordEntryController.h"
+#import "StringEntryController.h"
 
 @implementation DatabaseManager
 
@@ -81,10 +81,13 @@ static DatabaseManager *sharedInstance;
     // Prompt the user for the password if we haven't loaded the database yet
     if (!databaseLoaded) {
         // Prompt the user for a password
-        PasswordEntryController *passwordEntryController = [[PasswordEntryController alloc] init];
-        passwordEntryController.delegate = self;
-        [appDelegate.window.rootViewController presentModalViewController:passwordEntryController animated:animated];
-        [passwordEntryController release];
+        StringEntryController *stringEntryController = [[StringEntryController alloc] init];
+        stringEntryController.delegate = self;
+        stringEntryController.secureTextEntry = YES;
+        stringEntryController.placeholderText = @"Password";
+        stringEntryController.entryTitle = @"Database Password";
+        [appDelegate.window.rootViewController presentModalViewController:stringEntryController animated:animated];
+        [stringEntryController release];
     }
 }
 
@@ -96,7 +99,7 @@ static DatabaseManager *sharedInstance;
     [databaseDocument release];
 }
 
-- (BOOL)passwordEntryController:(PasswordEntryController*)controller passwordEntered:(NSString*)password {
+- (void)stringEntryController:(StringEntryController*)controller stringEntered:(NSString*)string {
     BOOL shouldDismiss = YES;
     
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
@@ -107,13 +110,13 @@ static DatabaseManager *sharedInstance;
     DatabaseDocument *dd = [[DatabaseDocument alloc] init];
     @try {
         // Open the database
-        [dd open:path password:password];
+        [dd open:path password:string];
         
         // Store the password in the keychain
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
         if ([userDefaults boolForKey:@"rememberPasswordsEnabled"]) {
             NSError *error;
-            [SFHFKeychainUtils storeUsername:selectedFilename andPassword:password forServiceName:@"net.fizzawizza.MobileKeePass.passwords" updateExisting:YES error:&error];
+            [SFHFKeychainUtils storeUsername:selectedFilename andPassword:string forServiceName:@"net.fizzawizza.MobileKeePass.passwords" updateExisting:YES error:&error];
         }
         
         // Load the database after a short delay so the push animation is visible
@@ -124,10 +127,12 @@ static DatabaseManager *sharedInstance;
         [dd release];
     }
     
-    return shouldDismiss;
+    if (shouldDismiss) {
+        [controller dismissModalViewControllerAnimated:YES];
+    }
 }
 
-- (void)passwordEntryControllerCancelButtonPressed:(PasswordEntryController *)controller {
+- (void)stringEntryControllerCancelButtonPressed:(StringEntryController *)controller {
     [controller dismissModalViewControllerAnimated:YES];
 }
 

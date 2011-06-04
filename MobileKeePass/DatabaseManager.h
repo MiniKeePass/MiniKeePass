@@ -16,9 +16,9 @@
  */
 
 #import <Foundation/Foundation.h>
-#import "PasswordEntryController.h"
+#import "StringEntryController.h"
 
-@interface DatabaseManager : NSObject <PasswordEntryControllerDelegate> {
+@interface DatabaseManager : NSObject <StringEntryControllerDelegate> {
     NSString *selectedFilename;
     BOOL animated;
 }

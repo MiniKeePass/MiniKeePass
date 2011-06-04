@@ -15,16 +15,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#import "PasswordEntryController.h"
+#import "StringEntryController.h"
 
 #define SPACER 12
 #define LABEL_FIELD_HEIGHT 21
 #define BUTTON_HEIGHT 37
 #define BUTTON_WIDTH (147 - SPACER / 2)
 
-@implementation PasswordEntryController
+@implementation StringEntryController
 
 @synthesize statusLabel;
+@synthesize entryTitle;
+@synthesize secureTextEntry;
+@synthesize placeholderText;
+@synthesize string;
 @synthesize delegate;
 
 -(id)initWithStyle:(UITableViewStyle)style {
@@ -40,11 +44,21 @@
     self.tableView.scrollEnabled = NO;
         
     textField = [[UITextField alloc] init];
-    textField.secureTextEntry = YES;
-    textField.placeholder = @"Password";
     textField.delegate = self;
     textField.returnKeyType = UIReturnKeyDone;
     textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+    textField.secureTextEntry = secureTextEntry;
+    textField.text = string;
+    
+    if (placeholderText != nil) {
+        textField.placeholder = placeholderText;
+    } else {
+        textField.placeholder = @"Title";
+    }
+
+    if (entryTitle == nil) {
+        entryTitle = @"Title";
+    }
     
     okButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     okButton.frame = CGRectMake(9, y, BUTTON_WIDTH, BUTTON_HEIGHT);
@@ -88,7 +102,7 @@
 }
 
 - (NSString *)tableView:(UITableView*)tableView titleForHeaderInSection:(NSInteger)section {
-    return @"Database password";
+    return entryTitle;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView {
@@ -116,20 +130,14 @@
 }
 
 - (void)okPressed:(id)sender {
-    BOOL shouldDismiss = YES;
-    
-    if ([delegate respondsToSelector:@selector(passwordEntryController:passwordEntered:)]) {
-        shouldDismiss = [delegate passwordEntryController:self passwordEntered:textField.text];
-    }
-    
-    if (shouldDismiss) {
-        [self dismissModalViewControllerAnimated:YES];
+    if ([delegate respondsToSelector:@selector(stringEntryController:stringEntered:)]) {
+        [delegate stringEntryController:self stringEntered:textField.text];
     }
 }
 
 - (void)cancelPressed:(id)sender {
-    if ([delegate respondsToSelector:@selector(passwordEntryControllerCancelButtonPressed:)]) {
-        [delegate passwordEntryControllerCancelButtonPressed:self];
+    if ([delegate respondsToSelector:@selector(stringEntryControllerCancelButtonPressed:)]) {
+        [delegate stringEntryControllerCancelButtonPressed:self];
     }
 }
 
