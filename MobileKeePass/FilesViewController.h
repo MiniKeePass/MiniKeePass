@@ -17,9 +17,13 @@
 
 #import <Foundation/Foundation.h>
 #import "FilesHelpView.h"
+#import "StringEntryController.h"
 
-@interface FilesViewController : UITableViewController {
+@class MobileKeePassAppDelegate;
+
+@interface FilesViewController : UITableViewController <StringEntryControllerDelegate> {
     FilesHelpView *filesHelpView;
+    MobileKeePassAppDelegate *appDelegate;
     
     NSMutableArray *files;
     NSString *selectedFile;

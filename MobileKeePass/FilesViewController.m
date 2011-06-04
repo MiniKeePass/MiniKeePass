@@ -15,8 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#import "FilesViewController.h"
 #import "MobileKeePassAppDelegate.h"
+#import "FilesViewController.h"
 #import "DatabaseManager.h"
 #import "Kdb3Writer.h"
 
@@ -25,7 +25,7 @@
 @synthesize selectedFile;
 
 - (void)viewDidLoad {
-    MobileKeePassAppDelegate *appDelegate = (MobileKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
+    appDelegate = (MobileKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
     
     UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"tab_gear"] style:UIBarButtonItemStylePlain target:appDelegate action:@selector(showSettingsView)];
     UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addPressed)];
@@ -33,6 +33,7 @@
     
     self.toolbarItems = [NSArray arrayWithObjects:settingsButton, spacer, addButton, nil];
     self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    self.tableView.allowsSelectionDuringEditing = YES;
     
     [settingsButton release];
     [addButton release];
@@ -134,8 +135,21 @@
 }
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Load the database
-    [[DatabaseManager sharedInstance] openDatabaseDocument:[files objectAtIndex:indexPath.row] animated:YES];
+    if (self.editing == NO) {
+        // Load the database
+        [[DatabaseManager sharedInstance] openDatabaseDocument:[files objectAtIndex:indexPath.row] animated:YES];
+    } else {
+        StringEntryController *stringEntryController = [[StringEntryController alloc] initWithStyle:UITableViewStyleGrouped];
+        stringEntryController.delegate = self;
+        stringEntryController.entryTitle = @"Filename";
+        stringEntryController.placeholderText = @"Name";
+
+        NSString *filename = [files objectAtIndex:indexPath.row];
+        stringEntryController.string = [filename stringByDeletingPathExtension];
+        
+        [appDelegate.window.rootViewController presentModalViewController:stringEntryController animated:YES];
+        [stringEntryController release];
+    }
 }
 
 - (void)tableView:(UITableView*)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath*)indexPath {
@@ -149,10 +163,7 @@
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
     NSString *path = [documentsDirectory stringByAppendingPathComponent:filename];
-    
-    // Get the application delegate
-    MobileKeePassAppDelegate *appDelegate = (MobileKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
-    
+
     // Close the current database if we're deleting it's file
     if ([path isEqualToString:appDelegate.databaseDocument.filename]) {
         [appDelegate closeDatabase];
@@ -184,6 +195,42 @@
     
     NSUInteger index = [files count] - 1;
     [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationRight];
+}
+
+- (void)stringEntryController:(StringEntryController*)controller stringEntered:(NSString*)string {
+    if (string == nil || [string isEqualToString:@""]) {
+        return;
+    }
+    
+    NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+    NSString *oldFilename = [files objectAtIndex:indexPath.row];
+    NSString *newFilename = [string stringByAppendingPathExtension:[oldFilename pathExtension]];
+
+    // Get the full path of where we're going to move the file
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    
+    NSString *oldPath = [documentsDirectory stringByAppendingPathComponent:oldFilename];
+    NSString *newPath = [documentsDirectory stringByAppendingPathComponent:newFilename];
+
+    NSURL *oldUrl = [NSURL fileURLWithPath:oldPath];
+    NSURL *newUrl = [NSURL fileURLWithPath:newPath];
+    
+    // Move input file into documents directory
+    NSFileManager *fileManager = [[NSFileManager alloc] init];
+    [fileManager moveItemAtURL:oldUrl toURL:newUrl error:nil];
+    [fileManager release];
+    
+    UITableViewCell *selectedCell = [self.tableView cellForRowAtIndexPath:indexPath];
+    selectedCell.textLabel.text = newFilename;
+    
+    [files replaceObjectAtIndex:indexPath.row withObject:newFilename];
+    
+    [appDelegate.window.rootViewController dismissModalViewControllerAnimated:YES];
+}
+
+- (void)stringEntryControllerCancelButtonPressed:(StringEntryController*)controller {
+    [appDelegate.window.rootViewController dismissModalViewControllerAnimated:YES];
 }
 
 @end
