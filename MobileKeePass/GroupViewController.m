@@ -26,6 +26,17 @@
 
 - (void)viewDidLoad {
     appDelegate = (MobileKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
+
+    UISearchBar *searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
+    searchBar.placeholder = [NSString stringWithFormat:@"Search %@", self.title];
+    searchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:searchBar contentsController:self];
+    [searchBar release];
+
+    searchDisplayController.searchResultsDataSource = self;
+    searchDisplayController.searchResultsDelegate = self;
+    searchDisplayController.delegate = self;
+
+    self.tableView.tableHeaderView = searchDisplayController.searchBar;
     
     UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"tab_gear"] style:UIBarButtonItemStylePlain target:appDelegate action:@selector(showSettingsView)];
     UIBarButtonItem *actionButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(exportFilePressed)];
@@ -50,10 +61,18 @@
         [self.tableView selectRowAtIndexPath:selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
     }
     
+    CGFloat barHeight = searchDisplayController.searchBar.frame.size.height;    
+    if (self.tableView.contentOffset.y < barHeight) {
+        self.tableView.contentOffset = CGPointMake(0, barHeight);        
+    }
+    
+    searchDisplayController.searchBar.placeholder = [NSString stringWithFormat:@"Search %@", self.title];
+
     [super viewWillAppear:animated];
 }
 
 - (void)dealloc {
+    [searchDisplayController release];
     [group release];
     [super dealloc];
 }

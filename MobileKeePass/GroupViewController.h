@@ -15,11 +15,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 #import "MobileKeePassAppDelegate.h"
 #import "KdbLib.h"
 
-@interface GroupViewController : UITableViewController <UIActionSheetDelegate> {
+@interface GroupViewController : UITableViewController <UIActionSheetDelegate, UISearchDisplayDelegate> {
+    UISearchDisplayController *searchDisplayController;
     MobileKeePassAppDelegate *appDelegate;
     KdbGroup *group;
 }
