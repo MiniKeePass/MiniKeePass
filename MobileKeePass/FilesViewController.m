@@ -199,6 +199,7 @@
 
 - (void)stringEntryController:(StringEntryController*)controller stringEntered:(NSString*)string {
     if (string == nil || [string isEqualToString:@""]) {
+        controller.statusLabel.text = @"Filename Invalid";
         return;
     }
     
