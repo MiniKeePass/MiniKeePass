@@ -26,16 +26,17 @@
 
 - (void)viewDidLoad {
     appDelegate = (MobileKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
-
+    
     UISearchBar *searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
     searchBar.placeholder = [NSString stringWithFormat:@"Search %@", self.title];
+    
     searchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:searchBar contentsController:self];
-    [searchBar release];
-
     searchDisplayController.searchResultsDataSource = self;
     searchDisplayController.searchResultsDelegate = self;
     searchDisplayController.delegate = self;
-
+    
+    [searchBar release];
+    
     self.tableView.tableHeaderView = searchDisplayController.searchBar;
     
     UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"tab_gear"] style:UIBarButtonItemStylePlain target:appDelegate action:@selector(showSettingsView)];
@@ -63,13 +64,13 @@
         [self.tableView selectRowAtIndexPath:selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
     }
     
-    CGFloat barHeight = searchDisplayController.searchBar.frame.size.height;    
+    CGFloat barHeight = searchDisplayController.searchBar.frame.size.height;
     if (self.tableView.contentOffset.y < barHeight) {
-        self.tableView.contentOffset = CGPointMake(0, barHeight);        
+        self.tableView.contentOffset = CGPointMake(0, barHeight);
     }
     
     searchDisplayController.searchBar.placeholder = [NSString stringWithFormat:@"Search %@", self.title];
-
+    
     [super viewWillAppear:animated];
 }
 
@@ -94,7 +95,7 @@
     [self.tableView reloadData];
 }
 
--(void)searchDisplayControllerWillEndSearch:(UISearchDisplayController *)controller {
+- (void)searchDisplayControllerWillEndSearch:(UISearchDisplayController *)controller {
     [self.tableView reloadData];
 }
 
@@ -102,7 +103,6 @@
     [results removeAllObjects];
     
     DatabaseDocument *databaseDocument = appDelegate.databaseDocument;
-    
     if (databaseDocument != nil) {
         // Perform the search
         [databaseDocument searchGroup:group searchText:searchString results:results];
@@ -112,7 +112,7 @@
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView {
-    //Handle search results
+    // Handle search results
     if (searchDisplayController.active) {
         return 1;
     } 
@@ -121,7 +121,7 @@
 }
 
 - (NSString*)tableView:(UITableView*)tableView titleForHeaderInSection:(NSInteger)section {
-    //Handle search results
+    // Handle search results
     if (searchDisplayController.active) {
         return nil;
     }
@@ -144,7 +144,7 @@
 }
 
 - (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section {
-    //Handle search results
+    // Handle search results
     if (searchDisplayController.active) {
         return [results count];
     }
@@ -170,33 +170,31 @@
     
     appDelegate = (MobileKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
     
-    //Handle search results
+    // Configure the cell
     if (searchDisplayController.active) {
-        // Configure the cell.
+        // Handle search results
         KdbEntry *e = [results objectAtIndex:indexPath.row];
         cell.textLabel.text = e.title;
         cell.imageView.image = [appDelegate loadImage:e.image];
-        
-        return cell;
-    }
-    
-    // Configure the cell.
-    if (indexPath.section == GROUPS_SECTION) {
-        KdbGroup *g = [group.groups objectAtIndex:indexPath.row];
-        cell.textLabel.text = g.name;
-        cell.imageView.image = [appDelegate loadImage:g.image];
-    } else if (indexPath.section == ENTRIES_SECTION) {
-        KdbEntry *e = [group.entries objectAtIndex:indexPath.row];
-        cell.textLabel.text = e.title;
-        cell.imageView.image = [appDelegate loadImage:e.image];
+    } else {
+        // Child group/entry
+        if (indexPath.section == GROUPS_SECTION) {
+            KdbGroup *g = [group.groups objectAtIndex:indexPath.row];
+            cell.textLabel.text = g.name;
+            cell.imageView.image = [appDelegate loadImage:g.image];
+        } else if (indexPath.section == ENTRIES_SECTION) {
+            KdbEntry *e = [group.entries objectAtIndex:indexPath.row];
+            cell.textLabel.text = e.title;
+            cell.imageView.image = [appDelegate loadImage:e.image];
+        }
     }
     
     return cell;
 }
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath {
-    //Handle search results
     if (searchDisplayController.active) {
+        // Handle search results
         KdbEntry *e = [results objectAtIndex:indexPath.row];
         
         EntryViewController *entryViewController = [[EntryViewController alloc] initWithStyle:UITableViewStyleGrouped];
@@ -204,25 +202,24 @@
         entryViewController.title = e.title;
         [self.navigationController pushViewController:entryViewController animated:YES];
         [entryViewController release];
-        return;
-    }
-    
-    if (indexPath.section == GROUPS_SECTION) {
-        KdbGroup *g = [group.groups objectAtIndex:indexPath.row];
-        
-        GroupViewController *groupViewController = [[GroupViewController alloc] initWithStyle:UITableViewStylePlain];
-        groupViewController.group = g;
-        groupViewController.title = g.name;
-        [self.navigationController pushViewController:groupViewController animated:YES];
-        [groupViewController release];
-    } else if (indexPath.section == ENTRIES_SECTION) {
-        KdbEntry *e = [group.entries objectAtIndex:indexPath.row];
-        
-        EntryViewController *entryViewController = [[EntryViewController alloc] initWithStyle:UITableViewStyleGrouped];
-        entryViewController.entry = e;
-        entryViewController.title = e.title;
-        [self.navigationController pushViewController:entryViewController animated:YES];
-        [entryViewController release];
+    } else {
+        if (indexPath.section == GROUPS_SECTION) {
+            KdbGroup *g = [group.groups objectAtIndex:indexPath.row];
+            
+            GroupViewController *groupViewController = [[GroupViewController alloc] initWithStyle:UITableViewStylePlain];
+            groupViewController.group = g;
+            groupViewController.title = g.name;
+            [self.navigationController pushViewController:groupViewController animated:YES];
+            [groupViewController release];
+        } else if (indexPath.section == ENTRIES_SECTION) {
+            KdbEntry *e = [group.entries objectAtIndex:indexPath.row];
+            
+            EntryViewController *entryViewController = [[EntryViewController alloc] initWithStyle:UITableViewStyleGrouped];
+            entryViewController.entry = e;
+            entryViewController.title = e.title;
+            [self.navigationController pushViewController:entryViewController animated:YES];
+            [entryViewController release];
+        }
     }
 }
 

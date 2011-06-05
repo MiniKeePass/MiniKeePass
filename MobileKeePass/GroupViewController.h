@@ -20,8 +20,8 @@
 #import "KdbLib.h"
 
 @interface GroupViewController : UITableViewController <UIActionSheetDelegate, UISearchDisplayDelegate> {
-    UISearchDisplayController *searchDisplayController;
     MobileKeePassAppDelegate *appDelegate;
+    UISearchDisplayController *searchDisplayController;
     NSMutableArray *results;
     KdbGroup *group;
 }
