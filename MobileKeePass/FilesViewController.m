@@ -206,20 +206,17 @@
     NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
     NSString *oldFilename = [files objectAtIndex:indexPath.row];
     NSString *newFilename = [string stringByAppendingPathExtension:[oldFilename pathExtension]];
-
+    
     // Get the full path of where we're going to move the file
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
     
     NSString *oldPath = [documentsDirectory stringByAppendingPathComponent:oldFilename];
     NSString *newPath = [documentsDirectory stringByAppendingPathComponent:newFilename];
-
-    NSURL *oldUrl = [NSURL fileURLWithPath:oldPath];
-    NSURL *newUrl = [NSURL fileURLWithPath:newPath];
     
     // Move input file into documents directory
     NSFileManager *fileManager = [[NSFileManager alloc] init];
-    [fileManager moveItemAtURL:oldUrl toURL:newUrl error:nil];
+    [fileManager moveItemAtPath:oldPath toPath:newPath error:nil];
     [fileManager release];
     
     UITableViewCell *selectedCell = [self.tableView cellForRowAtIndexPath:indexPath];
