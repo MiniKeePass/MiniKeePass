@@ -212,7 +212,7 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
 
 - (UIImage*)loadImage:(int)index {
     if (images[index] == nil) {
-        images[index] = [[UIImage imageNamed:[NSString stringWithFormat:@"%d.png", index]] retain];
+        images[index] = [[UIImage imageNamed:[NSString stringWithFormat:@"%d", index]] retain];
     }
     
     return images[index];
