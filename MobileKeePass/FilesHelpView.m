@@ -27,7 +27,7 @@
         // Initialization code
         self.backgroundColor = [UIColor whiteColor];
         
-        UIImage *image = [UIImage imageNamed:@"background.png"];
+        UIImage *image = [UIImage imageNamed:@"background"];
         
         CGFloat y = 16;
         UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
