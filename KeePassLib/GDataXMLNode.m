@@ -1194,7 +1194,7 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
 - (GDataXMLElement *)elementForName:(NSString *)name {
     NSArray *array = [self elementsForName:name];
     if ([array count] == 0) {
-        return 0;
+        return nil;
     }
     
     return [array objectAtIndex:0];
@@ -1203,7 +1203,7 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
 - (GDataXMLElement *)elementForLocalName:(NSString *)localName URI:(NSString *)URI {
     NSArray *array = [self elementsForLocalName:localName URI:URI];
     if ([array count] == 0) {
-        return 0;
+        return nil;
     }
     
     return [array objectAtIndex:0];
