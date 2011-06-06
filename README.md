@@ -22,5 +22,10 @@ Credit
 MobileKeePass
 Copyright 2011 Jason Rush and John Flanagan. All rights reserved.
 
+Nuvola Icons
+Copyright (c)  2003-2004  David Vignoni. All rights reserved.
+Released under GNU Lesser General Public License (LGPL)
+http://www.gnu.org/licenses/lgpl-2.1.html
+
 KeePass Database Library
-Copyright 2009 Qiang Yu. All rights reserved.
+Copyright 2010 Qiang Yu. All rights reserved.
