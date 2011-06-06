@@ -20,9 +20,9 @@
 #import "Base64.h"
 
 @interface Kdb4Parser (PrivateMethods)
-- (void)decodeProtected:(GDataXMLElement*)root;
-- (Kdb4Group*)parseGroup:(GDataXMLElement*)root;
-- (Kdb4Entry*)parseEntry:(GDataXMLElement*)root;
+- (void)decodeProtected:(DDXMLElement*)root;
+- (Kdb4Group*)parseGroup:(DDXMLElement*)root;
+- (Kdb4Entry*)parseEntry:(DDXMLElement*)root;
 @end
 
 @implementation Kdb4Parser
@@ -50,23 +50,23 @@ int closeCallback(void *context) {
 }
 
 - (Kdb4Tree*)parse:(InputStream*)inputStream {
-    GDataXMLDocument *document = [[GDataXMLDocument alloc] initWithReadIO:readCallback closeIO:closeCallback context:inputStream options:0 error:nil];
+    DDXMLDocument *document = [[DDXMLDocument alloc] initWithReadIO:readCallback closeIO:closeCallback context:inputStream options:0 error:nil];
     if (document == nil) {
         @throw [NSException exceptionWithName:@"ParseError" reason:@"Failed to parse database" userInfo:nil];
     }
     
     // Get the root document element
-    GDataXMLElement *rootElement = [document rootElement];
+    DDXMLElement *rootElement = [document rootElement];
     
     // Decode all the protected entries
     [self decodeProtected:rootElement];
     
-    GDataXMLElement *root = [rootElement elementForName:@"Root"];
+    DDXMLElement *root = [rootElement elementForName:@"Root"];
     if (root == nil) {
         @throw [NSException exceptionWithName:@"ParseError" reason:@"Failed to parse database" userInfo:nil];
     }
     
-    GDataXMLElement *element = [root elementForName:@"Group"];
+    DDXMLElement *element = [root elementForName:@"Group"];
     if (element == nil) {
         @throw [NSException exceptionWithName:@"ParseError" reason:@"Failed to parse database" userInfo:nil];
     }
@@ -79,8 +79,8 @@ int closeCallback(void *context) {
     return [tree autorelease];
 }
 
-- (void)decodeProtected:(GDataXMLElement*)root {
-    GDataXMLNode *protectedAttribute = [root attributeForName:@"Protected"];
+- (void)decodeProtected:(DDXMLElement*)root {
+    DDXMLNode *protectedAttribute = [root attributeForName:@"Protected"];
     if ([[protectedAttribute stringValue] isEqual:@"True"]) {
         NSString *str = [root stringValue];
         
@@ -95,30 +95,30 @@ int closeCallback(void *context) {
         [unprotected release];
     }
     
-    for (GDataXMLNode *node in [root children]) {
-        if ([node kind] == GDataXMLElementKind) {
-            [self decodeProtected:(GDataXMLElement*)node];
+    for (DDXMLNode *node in [root children]) {
+        if ([node kind] == DDXMLElementKind) {
+            [self decodeProtected:(DDXMLElement*)node];
         }
     }
 }
 
-- (Kdb4Group*)parseGroup:(GDataXMLElement*)root {
+- (Kdb4Group*)parseGroup:(DDXMLElement*)root {
     Kdb4Group *group = [[[Kdb4Group alloc] initWithElement:root] autorelease];
     
-    GDataXMLElement *element = [root elementForName:@"IconID"];
+    DDXMLElement *element = [root elementForName:@"IconID"];
     group.image = element.stringValue.intValue;
     
     element = [root elementForName:@"Name"];
     group.name =  element.stringValue;
     
-    for (GDataXMLElement *element in [root elementsForName:@"Entry"]) {
+    for (DDXMLElement *element in [root elementsForName:@"Entry"]) {
         Kdb4Entry *entry = [self parseEntry:element];
         entry.parent = group;
         
         [group addEntry:entry];
     }
     
-    for (GDataXMLElement *element in [root elementsForName:@"Group"]) {
+    for (DDXMLElement *element in [root elementsForName:@"Group"]) {
         Kdb4Group *subGroup = [self parseGroup:element];
         subGroup.parent = group;
         
@@ -128,15 +128,15 @@ int closeCallback(void *context) {
     return group;
 }
 
-- (Kdb4Entry*)parseEntry:(GDataXMLElement*)root {
+- (Kdb4Entry*)parseEntry:(DDXMLElement*)root {
     Kdb4Entry *entry = [[[Kdb4Entry alloc] initWithElement:root] autorelease];
     
     entry.image = [[[root elementForName:@"IconID"] stringValue] intValue];
     
-    for (GDataXMLElement *element in [root elementsForName:@"String"]) {
+    for (DDXMLElement *element in [root elementsForName:@"String"]) {
         NSString *key = [[element elementForName:@"Key"] stringValue];
 
-        GDataXMLElement *valueElement = [element elementForName:@"Value"];
+        DDXMLElement *valueElement = [element elementForName:@"Value"];
         NSString *value = [valueElement stringValue];
         
         if ([key isEqualToString:@"Title"]) {

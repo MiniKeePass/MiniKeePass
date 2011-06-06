@@ -24,6 +24,11 @@
 		6805EBD513764A5F00340C02 /* LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = 6805EBD413764A5F00340C02 /* LICENSE.txt */; };
 		6813262E136F7BA7004F4864 /* UrlFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6813262D136F7BA7004F4864 /* UrlFieldCell.m */; };
 		68132639136F8B79004F4864 /* PasswordFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68132638136F8B79004F4864 /* PasswordFieldCell.m */; };
+		6819310A139CF88C00A0F290 /* DDXMLElementAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 681930FD139CF88C00A0F290 /* DDXMLElementAdditions.m */; };
+		6819310B139CF88C00A0F290 /* NSString+DDXML.m in Sources */ = {isa = PBXBuildFile; fileRef = 68193100139CF88C00A0F290 /* NSString+DDXML.m */; };
+		6819310C139CF88C00A0F290 /* DDXMLDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 68193103139CF88C00A0F290 /* DDXMLDocument.m */; };
+		6819310D139CF88C00A0F290 /* DDXMLElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 68193105139CF88C00A0F290 /* DDXMLElement.m */; };
+		6819310E139CF88C00A0F290 /* DDXMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 68193107139CF88C00A0F290 /* DDXMLNode.m */; };
 		685985F41377412E0004414C /* FilesHelpView.m in Sources */ = {isa = PBXBuildFile; fileRef = 685985F31377412E0004414C /* FilesHelpView.m */; };
 		6872F02A137746D0008E55B9 /* FilesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6872F029137746D0008E55B9 /* FilesViewController.m */; };
 		687366EC1373979A0053CCA3 /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 687366EB1373979A0053CCA3 /* SFHFKeychainUtils.m */; };
@@ -78,7 +83,6 @@
 		688DCC57138DE2E400082FA3 /* GZipOutputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 688DCC56138DE2E400082FA3 /* GZipOutputStream.m */; };
 		688E68F5136F761500004216 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 688E68F4136F761500004216 /* Settings.bundle */; };
 		688F3FB51377805C0049808C /* SelectionListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 688F3FB41377805C0049808C /* SelectionListViewController.m */; };
-		6891056C13874D4300106245 /* GDataXMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 6891056B13874D4300106245 /* GDataXMLNode.m */; };
 		6893568A1389711B00BB263D /* AesOutputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 689356891389711B00BB263D /* AesOutputStream.m */; };
 		689356BD13898D8B00BB263D /* InputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 689356BC13898D8B00BB263D /* InputStream.m */; };
 		689356C013898E6C00BB263D /* DataInputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 689356BF13898E6C00BB263D /* DataInputStream.m */; };
@@ -318,6 +322,18 @@
 		6813262D136F7BA7004F4864 /* UrlFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UrlFieldCell.m; sourceTree = "<group>"; };
 		68132637136F8B79004F4864 /* PasswordFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasswordFieldCell.h; sourceTree = "<group>"; };
 		68132638136F8B79004F4864 /* PasswordFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PasswordFieldCell.m; sourceTree = "<group>"; };
+		681930FC139CF88C00A0F290 /* DDXMLElementAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDXMLElementAdditions.h; sourceTree = "<group>"; };
+		681930FD139CF88C00A0F290 /* DDXMLElementAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDXMLElementAdditions.m; sourceTree = "<group>"; };
+		681930FF139CF88C00A0F290 /* NSString+DDXML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+DDXML.h"; sourceTree = "<group>"; };
+		68193100139CF88C00A0F290 /* NSString+DDXML.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+DDXML.m"; sourceTree = "<group>"; };
+		68193101139CF88C00A0F290 /* DDXML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDXML.h; sourceTree = "<group>"; };
+		68193102139CF88C00A0F290 /* DDXMLDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDXMLDocument.h; sourceTree = "<group>"; };
+		68193103139CF88C00A0F290 /* DDXMLDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDXMLDocument.m; sourceTree = "<group>"; };
+		68193104139CF88C00A0F290 /* DDXMLElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDXMLElement.h; sourceTree = "<group>"; };
+		68193105139CF88C00A0F290 /* DDXMLElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDXMLElement.m; sourceTree = "<group>"; };
+		68193106139CF88C00A0F290 /* DDXMLNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDXMLNode.h; sourceTree = "<group>"; };
+		68193107139CF88C00A0F290 /* DDXMLNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDXMLNode.m; sourceTree = "<group>"; };
+		68193109139CF88C00A0F290 /* DDXMLPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDXMLPrivate.h; sourceTree = "<group>"; };
 		685985F21377412D0004414C /* FilesHelpView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilesHelpView.h; sourceTree = "<group>"; };
 		685985F31377412E0004414C /* FilesHelpView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilesHelpView.m; sourceTree = "<group>"; };
 		6872F028137746D0008E55B9 /* FilesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilesViewController.h; sourceTree = "<group>"; };
@@ -381,8 +397,6 @@
 		688E68F4136F761500004216 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		688F3FB31377805C0049808C /* SelectionListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectionListViewController.h; sourceTree = "<group>"; };
 		688F3FB41377805C0049808C /* SelectionListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectionListViewController.m; sourceTree = "<group>"; };
-		6891056A13874D4200106245 /* GDataXMLNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GDataXMLNode.h; sourceTree = "<group>"; };
-		6891056B13874D4300106245 /* GDataXMLNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GDataXMLNode.m; sourceTree = "<group>"; };
 		689356881389711B00BB263D /* AesOutputStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AesOutputStream.h; sourceTree = "<group>"; };
 		689356891389711B00BB263D /* AesOutputStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AesOutputStream.m; sourceTree = "<group>"; };
 		689356BB13898D8B00BB263D /* InputStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InputStream.h; sourceTree = "<group>"; };
@@ -681,6 +695,49 @@
 			name = Cells;
 			sourceTree = "<group>";
 		};
+		681930FA139CF88C00A0F290 /* KissXML */ = {
+			isa = PBXGroup;
+			children = (
+				681930FB139CF88C00A0F290 /* Additions */,
+				681930FE139CF88C00A0F290 /* Categories */,
+				68193101139CF88C00A0F290 /* DDXML.h */,
+				68193102139CF88C00A0F290 /* DDXMLDocument.h */,
+				68193103139CF88C00A0F290 /* DDXMLDocument.m */,
+				68193104139CF88C00A0F290 /* DDXMLElement.h */,
+				68193105139CF88C00A0F290 /* DDXMLElement.m */,
+				68193106139CF88C00A0F290 /* DDXMLNode.h */,
+				68193107139CF88C00A0F290 /* DDXMLNode.m */,
+				68193108139CF88C00A0F290 /* Private */,
+			);
+			path = KissXML;
+			sourceTree = "<group>";
+		};
+		681930FB139CF88C00A0F290 /* Additions */ = {
+			isa = PBXGroup;
+			children = (
+				681930FC139CF88C00A0F290 /* DDXMLElementAdditions.h */,
+				681930FD139CF88C00A0F290 /* DDXMLElementAdditions.m */,
+			);
+			path = Additions;
+			sourceTree = "<group>";
+		};
+		681930FE139CF88C00A0F290 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				681930FF139CF88C00A0F290 /* NSString+DDXML.h */,
+				68193100139CF88C00A0F290 /* NSString+DDXML.m */,
+			);
+			path = Categories;
+			sourceTree = "<group>";
+		};
+		68193108139CF88C00A0F290 /* Private */ = {
+			isa = PBXGroup;
+			children = (
+				68193109139CF88C00A0F290 /* DDXMLPrivate.h */,
+			);
+			path = Private;
+			sourceTree = "<group>";
+		};
 		687366E91373979A0053CCA3 /* Security */ = {
 			isa = PBXGroup;
 			children = (
@@ -861,8 +918,6 @@
 			children = (
 				689675501379DCE5006BC268 /* Base64.h */,
 				689675511379DCE5006BC268 /* Base64.m */,
-				6891056A13874D4200106245 /* GDataXMLNode.h */,
-				6891056B13874D4300106245 /* GDataXMLNode.m */,
 				689675611379DCE5006BC268 /* Kdb.h */,
 				68A9D33B1388759A00AE9AD6 /* Kdb.m */,
 				689675781379DCE5006BC268 /* KdbLib.h */,
@@ -1049,6 +1104,7 @@
 				6805EBD1137648B800340C02 /* README.md */,
 				68D5900F136CB5CB0064CEE5 /* MobileKeePass */,
 				689675461379DCE5006BC268 /* KeePassLib */,
+				681930FA139CF88C00A0F290 /* KissXML */,
 				687366E91373979A0053CCA3 /* Security */,
 				689356D413899C5E00BB263D /* Test */,
 				68D5903C136CB8300064CEE5 /* Resources */,
@@ -1511,7 +1567,6 @@
 				68C6BDEE137F10CF0013373A /* SwitchCell.m in Sources */,
 				68964206137F2549001B87A4 /* ChoiceCell.m in Sources */,
 				688231DC138046FC0046B00D /* SearchViewController.m in Sources */,
-				6891056C13874D4300106245 /* GDataXMLNode.m in Sources */,
 				68A9D33C1388759B00AE9AD6 /* Kdb.m in Sources */,
 				52E791F4138894EE001FD104 /* TitleFieldCell.m in Sources */,
 				689764AE1388AA4B006BC0A6 /* Kdb4Writer.m in Sources */,
@@ -1529,6 +1584,11 @@
 				688DCC57138DE2E400082FA3 /* GZipOutputStream.m in Sources */,
 				68C7C323138E7558001F3229 /* Kdb4Persist.m in Sources */,
 				524326331399D19000FA3090 /* StringEntryController.m in Sources */,
+				6819310A139CF88C00A0F290 /* DDXMLElementAdditions.m in Sources */,
+				6819310B139CF88C00A0F290 /* NSString+DDXML.m in Sources */,
+				6819310C139CF88C00A0F290 /* DDXMLDocument.m in Sources */,
+				6819310D139CF88C00A0F290 /* DDXMLElement.m in Sources */,
+				6819310E139CF88C00A0F290 /* DDXMLNode.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

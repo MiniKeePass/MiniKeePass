@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "Kdb.h"
-#import "GDataXMLNode.h"
+#import "DDXML.h"
 
 #define KDB4_PRE_SIG1 (0x9AA2D903)
 #define KDB4_PRE_SIG2 (0xB54BFB66)
@@ -39,33 +39,33 @@
 #define CSR_COUNT       3
 
 @interface Kdb4Group : KdbGroup {
-    GDataXMLElement *element;
+    DDXMLElement *element;
 }
 
-@property(nonatomic, retain) GDataXMLElement *element;
+@property(nonatomic, retain) DDXMLElement *element;
 
-- (id)initWithElement:(GDataXMLElement*)e;
+- (id)initWithElement:(DDXMLElement*)e;
 
 @end
 
 
 @interface Kdb4Entry : KdbEntry {
-    GDataXMLElement *element;
+    DDXMLElement *element;
 }
 
-@property(nonatomic, retain) GDataXMLElement *element;
+@property(nonatomic, retain) DDXMLElement *element;
 
-- (id)initWithElement:(GDataXMLElement*)e;
+- (id)initWithElement:(DDXMLElement*)e;
 
 @end
 
 
 @interface Kdb4Tree : KdbTree {
-    GDataXMLDocument *document;
+    DDXMLDocument *document;
 }
 
-@property(nonatomic, retain) GDataXMLDocument *document;
+@property(nonatomic, retain) DDXMLDocument *document;
 
-- (id)initWithDocument:(GDataXMLDocument*)doc;
+- (id)initWithDocument:(DDXMLDocument*)doc;
 
 @end

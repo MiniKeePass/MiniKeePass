@@ -12,7 +12,7 @@
 
 @synthesize element;
 
-- (id)initWithElement:(GDataXMLElement*)e {
+- (id)initWithElement:(DDXMLElement*)e {
     self = [super init];
     if(self) {
         self.element = e;
@@ -27,7 +27,7 @@
 
 - (void)removeGroup:(KdbGroup*)group {
     if (group.parent != nil) {
-        GDataXMLElement *root = ((Kdb4Group*)group.parent).element;
+        DDXMLElement *root = ((Kdb4Group*)group.parent).element;
         [root removeChild:((Kdb4Group*)group).element];
         group.parent = nil;
     }
@@ -37,7 +37,7 @@
 
 - (void)removeEntry:(KdbEntry*)entry {
     if (entry.parent != nil) {
-        GDataXMLElement *root = ((Kdb4Group*)entry.parent).element;
+        DDXMLElement *root = ((Kdb4Group*)entry.parent).element;
         [root removeChild:((Kdb4Group*)entry).element];
         entry.parent = nil;
     }
@@ -52,7 +52,7 @@
 
 @synthesize element;
 
-- (id)initWithElement:(GDataXMLElement*)e {
+- (id)initWithElement:(DDXMLElement*)e {
     self = [super init];
     if(self) {
         self.element = e;
@@ -72,7 +72,7 @@
 
 @synthesize document;
 
-- (id)initWithDocument:(GDataXMLDocument*)doc {
+- (id)initWithDocument:(DDXMLDocument*)doc {
     self = [super init];
     if(self) {
         self.document = doc;
@@ -85,49 +85,49 @@
     [super dealloc];
 }
 
-- (GDataXMLElement*)createTimesElement {
-    GDataXMLElement *element;
+- (DDXMLElement*)createTimesElement {
+    DDXMLElement *element;
     
-    GDataXMLElement *rootElement = [GDataXMLNode elementWithName:@"Times"];
+    DDXMLElement *rootElement = [DDXMLElement elementWithName:@"Times"];
     
     NSString *currentTime = @"CHANGE_ME";
     
-    element = [GDataXMLNode elementWithName:@"LastModificationTime" stringValue:currentTime];
+    element = [DDXMLElement elementWithName:@"LastModificationTime" stringValue:currentTime];
     [rootElement addChild:element];
     
-    element = [GDataXMLNode elementWithName:@"CreationTime" stringValue:currentTime];
+    element = [DDXMLElement elementWithName:@"CreationTime" stringValue:currentTime];
     [rootElement addChild:element];
     
-    element = [GDataXMLNode elementWithName:@"LastAccessTime" stringValue:currentTime];
+    element = [DDXMLElement elementWithName:@"LastAccessTime" stringValue:currentTime];
     [rootElement addChild:element];
     
-    element = [GDataXMLNode elementWithName:@"ExpiryTime" stringValue:currentTime];
+    element = [DDXMLElement elementWithName:@"ExpiryTime" stringValue:currentTime];
     [rootElement addChild:element];
     
-    element = [GDataXMLNode elementWithName:@"Expires" stringValue:@"False"];
+    element = [DDXMLElement elementWithName:@"Expires" stringValue:@"False"];
     [rootElement addChild:element];
     
-    element = [GDataXMLNode elementWithName:@"UsageCount" stringValue:@"0"];
+    element = [DDXMLElement elementWithName:@"UsageCount" stringValue:@"0"];
     [rootElement addChild:element];
     
-    element = [GDataXMLNode elementWithName:@"LocationChanged" stringValue:currentTime];
+    element = [DDXMLElement elementWithName:@"LocationChanged" stringValue:currentTime];
     [rootElement addChild:element];
     
     return rootElement;
 }
 
 
-- (GDataXMLElement*)createAutoTypeElement {
-    GDataXMLElement *element;
+- (DDXMLElement*)createAutoTypeElement {
+    DDXMLElement *element;
     
-    GDataXMLElement *rootElement = [GDataXMLNode elementWithName:@"AutoType"];
+    DDXMLElement *rootElement = [DDXMLElement elementWithName:@"AutoType"];
     
-    GDataXMLElement *associationElement = [GDataXMLNode elementWithName:@"Association"];
+    DDXMLElement *associationElement = [DDXMLElement elementWithName:@"Association"];
     
-    element = [GDataXMLNode elementWithName:@"Window" stringValue:@"Target Window"];
+    element = [DDXMLElement elementWithName:@"Window" stringValue:@"Target Window"];
     [associationElement addChild:element];
     
-    element = [GDataXMLNode elementWithName:@"KeystrokeSequence" stringValue:@"{USERNAME}{TAB}{PASSWORD}{TAB}{ENTER}"];
+    element = [DDXMLElement elementWithName:@"KeystrokeSequence" stringValue:@"{USERNAME}{TAB}{PASSWORD}{TAB}{ENTER}"];
     [associationElement addChild:element];
     
     [rootElement addChild:associationElement];
@@ -135,17 +135,17 @@
     return rootElement;
 }
 
-- (GDataXMLElement*)createStringElement:(NSString*)key value:(NSString*)value protected:(BOOL)protected {
-    GDataXMLElement *element;
+- (DDXMLElement*)createStringElement:(NSString*)key value:(NSString*)value protected:(BOOL)protected {
+    DDXMLElement *element;
     
-    GDataXMLElement *rootElement = [GDataXMLNode elementWithName:@"String"];
+    DDXMLElement *rootElement = [DDXMLElement elementWithName:@"String"];
     
-    element = [GDataXMLNode elementWithName:@"Key" stringValue:key];
+    element = [DDXMLElement elementWithName:@"Key" stringValue:key];
     [rootElement addChild:element];
     
-    element = [GDataXMLNode elementWithName:@"Value" stringValue:value];
+    element = [DDXMLElement elementWithName:@"Value" stringValue:value];
     if (protected) {
-        [element addAttribute:[GDataXMLNode attributeWithName:@"Protected" stringValue:@"True"]];
+        [element addAttribute:[DDXMLElement attributeWithName:@"Protected" stringValue:@"True"]];
     }
     [rootElement addChild:element];
     
@@ -153,41 +153,41 @@
 }
 
 - (KdbGroup*)createGroup:(KdbGroup*)parent {
-    GDataXMLElement *element;
+    DDXMLElement *element;
     
     Kdb4Group *group = [[Kdb4Group alloc] init];
     group.parent = parent;
     
-    group.element = [GDataXMLNode elementWithName:@"Group"];
+    group.element = [DDXMLElement elementWithName:@"Group"];
     
-    element = [GDataXMLNode elementWithName:@"UUID" stringValue:@""];
+    element = [DDXMLElement elementWithName:@"UUID" stringValue:@""];
     [group.element addChild:element];
     
-    element = [GDataXMLNode elementWithName:@"Name" stringValue:@""];
+    element = [DDXMLElement elementWithName:@"Name" stringValue:@""];
     [group.element addChild:element];
     
-    element = [GDataXMLNode elementWithName:@"Notes" stringValue:@""];
+    element = [DDXMLElement elementWithName:@"Notes" stringValue:@""];
     [group.element addChild:element];
     
-    element = [GDataXMLNode elementWithName:@"IconID" stringValue:@"0"];
+    element = [DDXMLElement elementWithName:@"IconID" stringValue:@"0"];
     [group.element addChild:element];
     
     element = [self createTimesElement];
     [group.element addChild:element];
     
-    element = [GDataXMLNode elementWithName:@"IsExpanded" stringValue:@"True"];
+    element = [DDXMLElement elementWithName:@"IsExpanded" stringValue:@"True"];
     [group.element addChild:element];
 
-    element = [GDataXMLNode elementWithName:@"DefaultAutoTypeSequence"];
+    element = [DDXMLElement elementWithName:@"DefaultAutoTypeSequence"];
     [group.element addChild:element];
     
-    element = [GDataXMLNode elementWithName:@"EnableAutoType" stringValue:@"null"];
+    element = [DDXMLElement elementWithName:@"EnableAutoType" stringValue:@"null"];
     [group.element addChild:element];
     
-    element = [GDataXMLNode elementWithName:@"EnableSearching" stringValue:@"null"];
+    element = [DDXMLElement elementWithName:@"EnableSearching" stringValue:@"null"];
     [group.element addChild:element];
     
-    element = [GDataXMLNode elementWithName:@"LastTopVisibleEntry" stringValue:@""];
+    element = [DDXMLElement elementWithName:@"LastTopVisibleEntry" stringValue:@""];
     [group.element addChild:element];
     
     // Add the root element to the parent group's element
@@ -197,28 +197,28 @@
 }
 
 - (KdbEntry*)createEntry:(KdbGroup*)parent {
-    GDataXMLElement *element;
+    DDXMLElement *element;
     
     Kdb4Entry *entry = [[Kdb4Entry alloc] init];
     entry.parent = parent;
-    entry.element = [GDataXMLNode elementWithName:@"Entry"];
+    entry.element = [DDXMLElement elementWithName:@"Entry"];
     
-    element = [GDataXMLNode elementWithName:@"UUID" stringValue:@""];
+    element = [DDXMLElement elementWithName:@"UUID" stringValue:@""];
     [entry.element addChild:element];
     
-    element = [GDataXMLNode elementWithName:@"IconID" stringValue:@"0"];
+    element = [DDXMLElement elementWithName:@"IconID" stringValue:@"0"];
     [entry.element addChild:element];
     
-    element = [GDataXMLNode elementWithName:@"ForegroundColor"];
+    element = [DDXMLElement elementWithName:@"ForegroundColor"];
     [entry.element addChild:element];
     
-    element = [GDataXMLNode elementWithName:@"BackgroundColor"];
+    element = [DDXMLElement elementWithName:@"BackgroundColor"];
     [entry.element addChild:element];
     
-    element = [GDataXMLNode elementWithName:@"OverrideURL"];
+    element = [DDXMLElement elementWithName:@"OverrideURL"];
     [entry.element addChild:element];
     
-    element = [GDataXMLNode elementWithName:@"Tags"];
+    element = [DDXMLElement elementWithName:@"Tags"];
     [entry.element addChild:element];
     
     element = [self createTimesElement];
@@ -242,7 +242,7 @@
     element = [self createAutoTypeElement];
     [entry.element addChild:element];
     
-    element = [GDataXMLNode elementWithName:@"History"];
+    element = [DDXMLElement elementWithName:@"History"];
     [entry.element addChild:element];
     
     // Add the root element to the parent group's element
