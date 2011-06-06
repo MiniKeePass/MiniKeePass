@@ -92,33 +92,45 @@
     
     NSString *currentTime = @"CHANGE_ME";
     
-    element = [GDataXMLNode elementWithName:@"LastModificationTime"];
-    [element setStringValue:currentTime];
+    element = [GDataXMLNode elementWithName:@"LastModificationTime" stringValue:currentTime];
     [rootElement addChild:element];
     
-    element = [GDataXMLNode elementWithName:@"CreationTime"];
-    [element setStringValue:currentTime];
+    element = [GDataXMLNode elementWithName:@"CreationTime" stringValue:currentTime];
     [rootElement addChild:element];
     
-    element = [GDataXMLNode elementWithName:@"LastAccessTime"];
-    [element setStringValue:currentTime];
+    element = [GDataXMLNode elementWithName:@"LastAccessTime" stringValue:currentTime];
     [rootElement addChild:element];
     
-    element = [GDataXMLNode elementWithName:@"ExpiryTime"];
-    [element setStringValue:currentTime];
+    element = [GDataXMLNode elementWithName:@"ExpiryTime" stringValue:currentTime];
     [rootElement addChild:element];
     
-    element = [GDataXMLNode elementWithName:@"Expires"];
-    [element setStringValue:@"False"];
+    element = [GDataXMLNode elementWithName:@"Expires" stringValue:@"False"];
     [rootElement addChild:element];
     
-    element = [GDataXMLNode elementWithName:@"UsageCount"];
-    [element setStringValue:@"0"];
+    element = [GDataXMLNode elementWithName:@"UsageCount" stringValue:@"0"];
     [rootElement addChild:element];
     
-    element = [GDataXMLNode elementWithName:@"LocationChanged"];
-    [element setStringValue:currentTime];
+    element = [GDataXMLNode elementWithName:@"LocationChanged" stringValue:currentTime];
     [rootElement addChild:element];
+    
+    return rootElement;
+}
+
+
+- (GDataXMLElement*)createAutoTypeElement {
+    GDataXMLElement *element;
+    
+    GDataXMLElement *rootElement = [GDataXMLNode elementWithName:@"AutoType"];
+    
+    GDataXMLElement *associationElement = [GDataXMLNode elementWithName:@"Association"];
+    
+    element = [GDataXMLNode elementWithName:@"Window" stringValue:@"Target Window"];
+    [associationElement addChild:element];
+    
+    element = [GDataXMLNode elementWithName:@"KeystrokeSequence" stringValue:@"{USERNAME}{TAB}{PASSWORD}{TAB}{ENTER}"];
+    [associationElement addChild:element];
+    
+    [rootElement addChild:associationElement];
     
     return rootElement;
 }
@@ -128,16 +140,13 @@
     
     GDataXMLElement *rootElement = [GDataXMLNode elementWithName:@"String"];
     
-    element = [GDataXMLNode elementWithName:@"Key"];
-    [element setStringValue:key];
+    element = [GDataXMLNode elementWithName:@"Key" stringValue:key];
     [rootElement addChild:element];
     
-    element = [GDataXMLNode elementWithName:@"Value"];
+    element = [GDataXMLNode elementWithName:@"Value" stringValue:value];
     if (protected) {
         [element addAttribute:[GDataXMLNode attributeWithName:@"Protected" stringValue:@"True"]];
     }
-    [element setStringValue:value];
-    
     [rootElement addChild:element];
     
     return rootElement;
@@ -150,44 +159,39 @@
     group.parent = parent;
     
     group.element = [GDataXMLNode elementWithName:@"Group"];
-    [((Kdb4Group*)parent).element addChild:group.element];
     
-    element = [GDataXMLNode elementWithName:@"UUID"];
-    [element setStringValue:@"CHANGE_ME"];
+    element = [GDataXMLNode elementWithName:@"UUID" stringValue:@""];
     [group.element addChild:element];
     
-    element = [GDataXMLNode elementWithName:@"Name"];
-    [element setStringValue:@"CHANGE_ME"];
+    element = [GDataXMLNode elementWithName:@"Name" stringValue:@""];
     [group.element addChild:element];
     
-    element = [GDataXMLNode elementWithName:@"Notes"];
+    element = [GDataXMLNode elementWithName:@"Notes" stringValue:@""];
     [group.element addChild:element];
     
-    element = [GDataXMLNode elementWithName:@"IconID"];
-    [element setStringValue:@"0"];
+    element = [GDataXMLNode elementWithName:@"IconID" stringValue:@"0"];
     [group.element addChild:element];
     
     element = [self createTimesElement];
     [group.element addChild:element];
     
-    element = [GDataXMLNode elementWithName:@"IsExpanded"];
-    [element setStringValue:@"True"];
+    element = [GDataXMLNode elementWithName:@"IsExpanded" stringValue:@"True"];
     [group.element addChild:element];
 
     element = [GDataXMLNode elementWithName:@"DefaultAutoTypeSequence"];
     [group.element addChild:element];
     
-    element = [GDataXMLNode elementWithName:@"EnableAutoType"];
-    [element setStringValue:@"null"];
+    element = [GDataXMLNode elementWithName:@"EnableAutoType" stringValue:@"null"];
     [group.element addChild:element];
     
-    element = [GDataXMLNode elementWithName:@"EnableSearching"];
-    [element setStringValue:@"null"];
+    element = [GDataXMLNode elementWithName:@"EnableSearching" stringValue:@"null"];
     [group.element addChild:element];
     
-    element = [GDataXMLNode elementWithName:@"LastTopVisibleEntry"];
-    [element setStringValue:@"CHANGE_ME"];
+    element = [GDataXMLNode elementWithName:@"LastTopVisibleEntry" stringValue:@""];
     [group.element addChild:element];
+    
+    // Add the root element to the parent group's element
+    [((Kdb4Group*)parent).element addChild:group.element];
     
     return [group autorelease];
 }
@@ -198,14 +202,11 @@
     Kdb4Entry *entry = [[Kdb4Entry alloc] init];
     entry.parent = parent;
     entry.element = [GDataXMLNode elementWithName:@"Entry"];
-    [((Kdb4Group*)parent).element addChild:entry.element];
     
-    element = [GDataXMLNode elementWithName:@"UUID"];
-    [element setStringValue:@"CHANGE_ME"];
+    element = [GDataXMLNode elementWithName:@"UUID" stringValue:@""];
     [entry.element addChild:element];
     
-    element = [GDataXMLNode elementWithName:@"IconID"];
-    [element setStringValue:@"0"];
+    element = [GDataXMLNode elementWithName:@"IconID" stringValue:@"0"];
     [entry.element addChild:element];
     
     element = [GDataXMLNode elementWithName:@"ForegroundColor"];
@@ -223,27 +224,29 @@
     element = [self createTimesElement];
     [entry.element addChild:element];
     
-    element = [self createStringElement:@"Notes" value:@"CHANGE_ME" protected:NO];
+    element = [self createStringElement:@"Notes" value:@"" protected:NO];
     [entry.element addChild:element];
     
-    element = [self createStringElement:@"Password" value:@"CHANGE_ME" protected:NO];
+    element = [self createStringElement:@"Password" value:@"" protected:NO];
     [entry.element addChild:element];
     
-    element = [self createStringElement:@"Title" value:@"CHANGE_ME" protected:NO];
+    element = [self createStringElement:@"Title" value:@"" protected:NO];
     [entry.element addChild:element];
     
-    element = [self createStringElement:@"URL" value:@"CHANGE_ME" protected:NO];
+    element = [self createStringElement:@"URL" value:@"" protected:NO];
     [entry.element addChild:element];
     
-    element = [self createStringElement:@"UserName" value:@"CHANGE_ME" protected:NO];
+    element = [self createStringElement:@"UserName" value:@"" protected:NO];
     [entry.element addChild:element];
     
-    // FIXME Implement the autotype element
-    //element = [GDataXMLNode elementWithName:@"AutoType"];
-    //[entry.element addChild:element];
+    element = [self createAutoTypeElement];
+    [entry.element addChild:element];
     
     element = [GDataXMLNode elementWithName:@"History"];
     [entry.element addChild:element];
+    
+    // Add the root element to the parent group's element
+    [((Kdb4Group*)parent).element addChild:entry.element];
     
     return [entry autorelease];
 }
