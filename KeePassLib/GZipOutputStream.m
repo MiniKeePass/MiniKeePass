@@ -31,7 +31,7 @@
         zstream.avail_out = 0;
         zstream.next_in = Z_NULL;
         zstream.next_out = Z_NULL;
-        if (deflateInit(&zstream, Z_DEFAULT_COMPRESSION) != Z_OK) {
+        if (deflateInit2(&zstream, Z_DEFAULT_COMPRESSION, Z_DEFLATED, 15 + 16, 8, Z_DEFAULT_STRATEGY) != Z_OK) {
             @throw [NSException exceptionWithName:@"IOException" reason:@"Failed to initialize zlib" userInfo:nil];
         }
     }
