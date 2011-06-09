@@ -24,6 +24,7 @@
     Kdb4Tree *tree;
     OutputStream *outputStream;
     id<RandomStream> randomStream;
+    NSDateFormatter *dateFormatter;
 }
 
 - (id)initWithTree:(Kdb4Tree*)tree outputStream:(OutputStream*)stream randomStream:(id<RandomStream>)cryptoRandomStream;

@@ -31,12 +31,17 @@
     self = [super init];
     if (self) {
         randomStream = [cryptoRandomStream retain];
+        
+        dateFormatter = [[NSDateFormatter alloc] init];
+        dateFormatter.timeZone = [NSTimeZone timeZoneWithName:@"GMT"];
+        dateFormatter.dateFormat = @"yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'";
     }
     return self;
 }
 
 - (void)dealloc {
     [randomStream release];
+    [dateFormatter release];
     [super dealloc];
 }
 
@@ -111,6 +116,20 @@ int closeCallback(void *context) {
     element = [root elementForName:@"Name"];
     group.name =  element.stringValue;
     
+    DDXMLElement *timesElement = [root elementForName:@"Times"];
+    
+    NSString *str = [[timesElement elementForName:@"CreationTime"] stringValue];
+    group.creationTime = [dateFormatter dateFromString:str];
+    
+    str = [[timesElement elementForName:@"LastModificationTime"] stringValue];
+    group.lastModificationTime = [dateFormatter dateFromString:str];
+    
+    str = [[timesElement elementForName:@"LastAccessTime"] stringValue];
+    group.lastAccessTime = [dateFormatter dateFromString:str];
+    
+    str = [[timesElement elementForName:@"ExpiryTime"] stringValue];
+    group.expiryTime = [dateFormatter dateFromString:str];
+    
     for (DDXMLElement *element in [root elementsForName:@"Entry"]) {
         Kdb4Entry *entry = [self parseEntry:element];
         entry.parent = group;
@@ -132,6 +151,20 @@ int closeCallback(void *context) {
     Kdb4Entry *entry = [[[Kdb4Entry alloc] initWithElement:root] autorelease];
     
     entry.image = [[[root elementForName:@"IconID"] stringValue] intValue];
+    
+    DDXMLElement *timesElement = [root elementForName:@"Times"];
+    
+    NSString *str = [[timesElement elementForName:@"CreationTime"] stringValue];
+    entry.creationTime = [dateFormatter dateFromString:str];
+    
+    str = [[timesElement elementForName:@"LastModificationTime"] stringValue];
+    entry.lastModificationTime = [dateFormatter dateFromString:str];
+    
+    str = [[timesElement elementForName:@"LastAccessTime"] stringValue];
+    entry.lastAccessTime = [dateFormatter dateFromString:str];
+    
+    str = [[timesElement elementForName:@"ExpiryTime"] stringValue];
+    entry.expiryTime = [dateFormatter dateFromString:str];
     
     for (DDXMLElement *element in [root elementsForName:@"String"]) {
         NSString *key = [[element elementForName:@"Key"] stringValue];

@@ -63,7 +63,7 @@
 }
 
 - (NSString*)description {
-    return [NSString stringWithFormat:@"KdbGroup [image=%d, name=%@]", image, name];
+    return [NSString stringWithFormat:@"KdbGroup [image=%d, name=%@, creationTime=%@, lastModificationTime=%@, lastAccessTime=%@, expiryTime=%@]", image, name, creationTime, lastModificationTime, lastAccessTime, expiryTime];
 }
 
 @end
@@ -97,7 +97,7 @@
 }
 
 - (NSString*)description {
-    return [NSString stringWithFormat:@"KdbEntry [image=%d, title=%@, username=%@, password=%@, url=%@, notes=%@]", image, title, username, password, url, notes];
+    return [NSString stringWithFormat:@"KdbEntry [image=%d, title=%@, username=%@, password=%@, url=%@, notes=%@, creationTime=%@, lastModificationTime=%@, lastAccessTime=%@, expiryTime=%@]", image, title, username, password, url, notes, creationTime, lastModificationTime, lastAccessTime, expiryTime];
 }
 
 @end

@@ -22,6 +22,7 @@
 
 @interface Kdb4Parser : NSObject {
     id<RandomStream> randomStream;
+    NSDateFormatter *dateFormatter;
 }
 
 - (id)initWithRandomStream:(id<RandomStream>)cryptoRandomStream;

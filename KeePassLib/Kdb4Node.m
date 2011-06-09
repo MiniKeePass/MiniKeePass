@@ -90,7 +90,13 @@
     
     DDXMLElement *rootElement = [DDXMLElement elementWithName:@"Times"];
     
-    NSString *currentTime = @"CHANGE_ME";
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    dateFormatter.timeZone = [NSTimeZone timeZoneWithName:@"GMT"];
+    dateFormatter.dateFormat = @"yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'";
+    
+    NSString *currentTime = [dateFormatter stringFromDate:[NSDate date]];
+    
+    [dateFormatter release];
     
     element = [DDXMLElement elementWithName:@"LastModificationTime" stringValue:currentTime];
     [rootElement addChild:element];
