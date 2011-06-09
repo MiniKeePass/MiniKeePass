@@ -17,9 +17,10 @@
 
 #import <UIKit/UIKit.h>
 #import "MobileKeePassAppDelegate.h"
+#import "TextEntryController.h"
 #import "KdbLib.h"
 
-@interface GroupViewController : UITableViewController <UIActionSheetDelegate, UISearchDisplayDelegate> {
+@interface GroupViewController : UITableViewController <UIActionSheetDelegate, UISearchDisplayDelegate, TextEntryControllerDelegate> {
     MobileKeePassAppDelegate *appDelegate;
     UISearchDisplayController *searchDisplayController;
     NSMutableArray *results;

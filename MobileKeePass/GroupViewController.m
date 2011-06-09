@@ -180,6 +180,7 @@
 }
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath {
+    NSLog(@"dsr");
     if (tableView == self.searchDisplayController.searchResultsTableView) {
         // Handle search results
         KdbEntry *e = [results objectAtIndex:indexPath.row];
@@ -190,22 +191,35 @@
         [self.navigationController pushViewController:entryViewController animated:YES];
         [entryViewController release];
     } else {
-        if (indexPath.section == GROUPS_SECTION) {
+        if (self.editing == NO) {
+            if (indexPath.section == GROUPS_SECTION) {
+                KdbGroup *g = [group.groups objectAtIndex:indexPath.row];
+                
+                GroupViewController *groupViewController = [[GroupViewController alloc] initWithStyle:UITableViewStylePlain];
+                groupViewController.group = g;
+                groupViewController.title = g.name;
+                [self.navigationController pushViewController:groupViewController animated:YES];
+                [groupViewController release];
+            } else if (indexPath.section == ENTRIES_SECTION) {
+                KdbEntry *e = [group.entries objectAtIndex:indexPath.row];
+                
+                EntryViewController *entryViewController = [[EntryViewController alloc] initWithStyle:UITableViewStyleGrouped];
+                entryViewController.entry = e;
+                entryViewController.title = e.title;
+                [self.navigationController pushViewController:entryViewController animated:YES];
+                [entryViewController release];
+            }
+        } else {
+            TextEntryController *textEntryController = [[TextEntryController alloc] initWithStyle:UITableViewStyleGrouped];
+            textEntryController.delegate = self;
+            textEntryController.entryTitle = @"Group";
+            textEntryController.placeholderText = @"Name";
+            
             KdbGroup *g = [group.groups objectAtIndex:indexPath.row];
+            textEntryController.string = g.name;
             
-            GroupViewController *groupViewController = [[GroupViewController alloc] initWithStyle:UITableViewStylePlain];
-            groupViewController.group = g;
-            groupViewController.title = g.name;
-            [self.navigationController pushViewController:groupViewController animated:YES];
-            [groupViewController release];
-        } else if (indexPath.section == ENTRIES_SECTION) {
-            KdbEntry *e = [group.entries objectAtIndex:indexPath.row];
-            
-            EntryViewController *entryViewController = [[EntryViewController alloc] initWithStyle:UITableViewStyleGrouped];
-            entryViewController.entry = e;
-            entryViewController.title = e.title;
-            [self.navigationController pushViewController:entryViewController animated:YES];
-            [entryViewController release];
+            [appDelegate.window.rootViewController presentModalViewController:textEntryController animated:YES];
+            [textEntryController release];
         }
     }
 }
@@ -240,6 +254,28 @@
         // Delete the row
         [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
     }
+}
+
+- (void)textEntryController:(TextEntryController*)controller textEntered:(NSString*)string {
+    if (string == nil || [string isEqualToString:@""]) {
+        controller.statusLabel.text = @"Group name is invalid";
+        return;
+    }
+    
+    NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+    
+    // Update the group
+    KdbGroup *g = [group.groups objectAtIndex:indexPath.row];
+    g.name = string;
+    
+    // Reload the table row
+    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:YES];
+    
+    [appDelegate.window.rootViewController dismissModalViewControllerAnimated:YES];
+}
+
+- (void)textEntryControllerCancelButtonPressed:(TextEntryController*)controller {
+    [appDelegate.window.rootViewController dismissModalViewControllerAnimated:YES];
 }
 
 - (void)exportFilePressed {
