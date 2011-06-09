@@ -27,13 +27,14 @@
 - (void)viewDidLoad {
     appDelegate = (MobileKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
     
+    self.tableView.allowsSelectionDuringEditing = YES;
+    
     UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"tab_gear"] style:UIBarButtonItemStylePlain target:appDelegate action:@selector(showSettingsView)];
     UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addPressed)];
     UIBarButtonItem *spacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     
     self.toolbarItems = [NSArray arrayWithObjects:settingsButton, spacer, addButton, nil];
     self.navigationItem.rightBarButtonItem = self.editButtonItem;
-    self.tableView.allowsSelectionDuringEditing = YES;
     
     [settingsButton release];
     [addButton release];
@@ -211,7 +212,7 @@
     [files replaceObjectAtIndex:indexPath.row withObject:newFilename];
     
     // Reload the table row
-    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:YES];
+    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
     
     [appDelegate.window.rootViewController dismissModalViewControllerAnimated:YES];
 }
