@@ -17,11 +17,11 @@
 
 #import <Foundation/Foundation.h>
 #import "FilesHelpView.h"
-#import "StringEntryController.h"
+#import "TextEntryController.h"
 
 @class MobileKeePassAppDelegate;
 
-@interface FilesViewController : UITableViewController <StringEntryControllerDelegate> {
+@interface FilesViewController : UITableViewController <TextEntryControllerDelegate> {
     FilesHelpView *filesHelpView;
     MobileKeePassAppDelegate *appDelegate;
     

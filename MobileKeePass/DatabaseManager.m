@@ -18,7 +18,7 @@
 #import "DatabaseManager.h"
 #import "MobileKeePassAppDelegate.h"
 #import "SFHFKeychainUtils.h"
-#import "StringEntryController.h"
+#import "TextEntryController.h"
 
 @implementation DatabaseManager
 
@@ -81,13 +81,13 @@ static DatabaseManager *sharedInstance;
     // Prompt the user for the password if we haven't loaded the database yet
     if (!databaseLoaded) {
         // Prompt the user for a password
-        StringEntryController *stringEntryController = [[StringEntryController alloc] init];
-        stringEntryController.delegate = self;
-        stringEntryController.secureTextEntry = YES;
-        stringEntryController.placeholderText = @"Password";
-        stringEntryController.entryTitle = @"Database Password";
-        [appDelegate.window.rootViewController presentModalViewController:stringEntryController animated:animated];
-        [stringEntryController release];
+        TextEntryController *textEntryController = [[TextEntryController alloc] init];
+        textEntryController.delegate = self;
+        textEntryController.secureTextEntry = YES;
+        textEntryController.placeholderText = @"Password";
+        textEntryController.entryTitle = @"Database Password";
+        [appDelegate.window.rootViewController presentModalViewController:textEntryController animated:animated];
+        [textEntryController release];
     }
 }
 
@@ -99,7 +99,7 @@ static DatabaseManager *sharedInstance;
     [databaseDocument release];
 }
 
-- (void)stringEntryController:(StringEntryController*)controller stringEntered:(NSString*)string {
+- (void)textEntryController:(TextEntryController*)controller textEntered:(NSString*)string {
     BOOL shouldDismiss = YES;
     
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
@@ -132,7 +132,7 @@ static DatabaseManager *sharedInstance;
     }
 }
 
-- (void)stringEntryControllerCancelButtonPressed:(StringEntryController *)controller {
+- (void)textEntryControllerCancelButtonPressed:(TextEntryController *)controller {
     [controller dismissModalViewControllerAnimated:YES];
 }
 

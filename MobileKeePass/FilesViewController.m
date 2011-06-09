@@ -139,16 +139,16 @@
         // Load the database
         [[DatabaseManager sharedInstance] openDatabaseDocument:[files objectAtIndex:indexPath.row] animated:YES];
     } else {
-        StringEntryController *stringEntryController = [[StringEntryController alloc] initWithStyle:UITableViewStyleGrouped];
-        stringEntryController.delegate = self;
-        stringEntryController.entryTitle = @"Filename";
-        stringEntryController.placeholderText = @"Name";
+        TextEntryController *textEntryController = [[TextEntryController alloc] initWithStyle:UITableViewStyleGrouped];
+        textEntryController.delegate = self;
+        textEntryController.entryTitle = @"Filename";
+        textEntryController.placeholderText = @"Name";
 
         NSString *filename = [files objectAtIndex:indexPath.row];
-        stringEntryController.string = [filename stringByDeletingPathExtension];
+        textEntryController.string = [filename stringByDeletingPathExtension];
         
-        [appDelegate.window.rootViewController presentModalViewController:stringEntryController animated:YES];
-        [stringEntryController release];
+        [appDelegate.window.rootViewController presentModalViewController:textEntryController animated:YES];
+        [textEntryController release];
     }
 }
 
@@ -197,7 +197,7 @@
     [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationRight];
 }
 
-- (void)stringEntryController:(StringEntryController*)controller stringEntered:(NSString*)string {
+- (void)textEntryController:(TextEntryController*)controller textEntered:(NSString*)string {
     if (string == nil || [string isEqualToString:@""]) {
         controller.statusLabel.text = @"Filename Invalid";
         return;
@@ -227,7 +227,7 @@
     [appDelegate.window.rootViewController dismissModalViewControllerAnimated:YES];
 }
 
-- (void)stringEntryControllerCancelButtonPressed:(StringEntryController*)controller {
+- (void)textEntryControllerCancelButtonPressed:(TextEntryController*)controller {
     [appDelegate.window.rootViewController dismissModalViewControllerAnimated:YES];
 }
 

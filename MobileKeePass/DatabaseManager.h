@@ -16,9 +16,9 @@
  */
 
 #import <Foundation/Foundation.h>
-#import "StringEntryController.h"
+#import "TextEntryController.h"
 
-@interface DatabaseManager : NSObject <StringEntryControllerDelegate> {
+@interface DatabaseManager : NSObject <TextEntryControllerDelegate> {
     NSString *selectedFilename;
     BOOL animated;
 }

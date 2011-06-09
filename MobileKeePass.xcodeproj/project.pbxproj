@@ -10,7 +10,7 @@
 		523232A8136F128300692CEA /* DatabaseDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 523232A5136F128300692CEA /* DatabaseDocument.m */; };
 		523FBD6413736834004575FB /* icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 523FBD6213736834004575FB /* icon@2x.png */; };
 		523FBD7D1373C05E004575FB /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 523FBD7C1373C05E004575FB /* icon.png */; };
-		524326331399D19000FA3090 /* StringEntryController.m in Sources */ = {isa = PBXBuildFile; fileRef = 524326321399D19000FA3090 /* StringEntryController.m */; };
+		524326331399D19000FA3090 /* TextEntryController.m in Sources */ = {isa = PBXBuildFile; fileRef = 524326321399D19000FA3090 /* TextEntryController.m */; };
 		52644C93137088E800A58D92 /* PinViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52644C92137088E800A58D92 /* PinViewController.m */; };
 		52644C971370915400A58D92 /* box.png in Resources */ = {isa = PBXBuildFile; fileRef = 52644C951370915400A58D92 /* box.png */; };
 		52644C981370915400A58D92 /* box@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52644C961370915400A58D92 /* box@2x.png */; };
@@ -301,8 +301,8 @@
 		523232A5136F128300692CEA /* DatabaseDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DatabaseDocument.m; sourceTree = "<group>"; };
 		523FBD6213736834004575FB /* icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon@2x.png"; sourceTree = "<group>"; };
 		523FBD7C1373C05E004575FB /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
-		524326311399D19000FA3090 /* StringEntryController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StringEntryController.h; sourceTree = "<group>"; };
-		524326321399D19000FA3090 /* StringEntryController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StringEntryController.m; sourceTree = "<group>"; };
+		524326311399D19000FA3090 /* TextEntryController.h */ = {isa = PBXFileReference; fileEncoding = 4; path = TextEntryController.h; sourceTree = "<group>"; };
+		524326321399D19000FA3090 /* TextEntryController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextEntryController.m; sourceTree = "<group>"; };
 		52644C91137088E800A58D92 /* PinViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PinViewController.h; sourceTree = "<group>"; };
 		52644C92137088E800A58D92 /* PinViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PinViewController.m; sourceTree = "<group>"; };
 		52644C951370915400A58D92 /* box.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = box.png; sourceTree = "<group>"; };
@@ -1164,8 +1164,8 @@
 				688F3FB41377805C0049808C /* SelectionListViewController.m */,
 				52F42CF213747BE10074E5D5 /* SettingsViewController.h */,
 				52F42CF313747BE10074E5D5 /* SettingsViewController.m */,
-				524326311399D19000FA3090 /* StringEntryController.h */,
-				524326321399D19000FA3090 /* StringEntryController.m */,
+				524326311399D19000FA3090 /* TextEntryController.h */,
+				524326321399D19000FA3090 /* TextEntryController.m */,
 				525B6515137062F7001883BB /* Cells */,
 				68D59010136CB5CB0064CEE5 /* Supporting Files */,
 			);
@@ -1583,7 +1583,7 @@
 				68DEB786138BDFFC00FC1F09 /* GZipInputStream.m in Sources */,
 				688DCC57138DE2E400082FA3 /* GZipOutputStream.m in Sources */,
 				68C7C323138E7558001F3229 /* Kdb4Persist.m in Sources */,
-				524326331399D19000FA3090 /* StringEntryController.m in Sources */,
+				524326331399D19000FA3090 /* TextEntryController.m in Sources */,
 				6819310A139CF88C00A0F290 /* DDXMLElementAdditions.m in Sources */,
 				6819310B139CF88C00A0F290 /* NSString+DDXML.m in Sources */,
 				6819310C139CF88C00A0F290 /* DDXMLDocument.m in Sources */,
