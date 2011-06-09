@@ -170,9 +170,8 @@
     }
     
     // Delete the file
-    NSFileManager *fileManager = [[NSFileManager alloc] init];
+    NSFileManager *fileManager = [NSFileManager defaultManager];
     [fileManager removeItemAtPath:path error:nil];
-    [fileManager release];
     
     // Remove the file from the array
     [files removeObject:filename];
@@ -214,10 +213,15 @@
     NSString *oldPath = [documentsDirectory stringByAppendingPathComponent:oldFilename];
     NSString *newPath = [documentsDirectory stringByAppendingPathComponent:newFilename];
     
+    // Check if the file already exists
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    if ([fileManager fileExistsAtPath:newPath]) {
+        controller.statusLabel.text = @"A file already exists with this name";
+        return;
+    }
+    
     // Move input file into documents directory
-    NSFileManager *fileManager = [[NSFileManager alloc] init];
     [fileManager moveItemAtPath:oldPath toPath:newPath error:nil];
-    [fileManager release];
     
     UITableViewCell *selectedCell = [self.tableView cellForRowAtIndexPath:indexPath];
     selectedCell.textLabel.text = newFilename;
