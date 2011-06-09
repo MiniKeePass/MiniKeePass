@@ -143,11 +143,10 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
     NSURL *newUrl = [NSURL fileURLWithPath:path];
     
     // Move input file into documents directory
-    NSFileManager *fileManager = [[NSFileManager alloc] init];
+    NSFileManager *fileManager = [NSFileManager defaultManager];
     [fileManager removeItemAtURL:newUrl error:nil];
     [fileManager moveItemAtURL:url toURL:newUrl error:nil];
     [fileManager removeItemAtPath:[documentsDirectory stringByAppendingPathComponent:@"Inbox"] error:nil];
-    [fileManager release];
     
     // Store the filename to open
     [fileToOpen release];
