@@ -26,6 +26,8 @@
 - (void)viewDidLoad {
     appDelegate = (MobileKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
     
+    self.tableView.allowsSelectionDuringEditing = YES;
+    
     UISearchBar *searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
     searchBar.placeholder = [NSString stringWithFormat:@"Search %@", self.title];
     
@@ -180,7 +182,6 @@
 }
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath {
-    NSLog(@"dsr");
     if (tableView == self.searchDisplayController.searchResultsTableView) {
         // Handle search results
         KdbEntry *e = [results objectAtIndex:indexPath.row];
@@ -268,8 +269,12 @@
     KdbGroup *g = [group.groups objectAtIndex:indexPath.row];
     g.name = string;
     
+    // Save the document
+    appDelegate.databaseDocument.dirty = YES;
+    [appDelegate.databaseDocument save];
+    
     // Reload the table row
-    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:YES];
+    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
     
     [appDelegate.window.rootViewController dismissModalViewControllerAnimated:YES];
 }
