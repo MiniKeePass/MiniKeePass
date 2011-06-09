@@ -21,7 +21,6 @@
 #define GROUPS_SECTION  0
 #define ENTRIES_SECTION 1
 
-
 @implementation GroupViewController
 
 - (void)viewDidLoad {
@@ -30,14 +29,14 @@
     UISearchBar *searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
     searchBar.placeholder = [NSString stringWithFormat:@"Search %@", self.title];
     
+    self.tableView.tableHeaderView = searchBar;
+    
     searchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:searchBar contentsController:self];
     searchDisplayController.searchResultsDataSource = self;
     searchDisplayController.searchResultsDelegate = self;
     searchDisplayController.delegate = self;
     
     [searchBar release];
-    
-    self.tableView.tableHeaderView = searchDisplayController.searchBar;
     
     UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"tab_gear"] style:UIBarButtonItemStylePlain target:appDelegate action:@selector(showSettingsView)];
     UIBarButtonItem *actionButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(exportFilePressed)];
@@ -64,12 +63,12 @@
         [self.tableView selectRowAtIndexPath:selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
     }
     
-    CGFloat barHeight = searchDisplayController.searchBar.frame.size.height;
-    if (self.tableView.contentOffset.y < barHeight) {
-        self.tableView.contentOffset = CGPointMake(0, barHeight);
-    }
-    
     searchDisplayController.searchBar.placeholder = [NSString stringWithFormat:@"Search %@", self.title];
+    
+    CGFloat searchBarHeight = searchDisplayController.searchBar.frame.size.height;
+    if (self.tableView.contentOffset.y < searchBarHeight) {
+        self.tableView.contentOffset = CGPointMake(0, searchBarHeight);
+    }
     
     [super viewWillAppear:animated];
 }
@@ -90,15 +89,6 @@
     [self.tableView reloadData];
 }
 
-- (void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController *)controller {
-    [results removeAllObjects];
-    [self.tableView reloadData];
-}
-
-- (void)searchDisplayControllerWillEndSearch:(UISearchDisplayController *)controller {
-    [self.tableView reloadData];
-}
-
 - (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString {
     [results removeAllObjects];
     
@@ -112,17 +102,15 @@
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView {
-    // Handle search results
-    if (searchDisplayController.active) {
+    if (tableView == self.searchDisplayController.searchResultsTableView) {
         return 1;
-    } 
-    
-    return 2;
+    } else {
+        return 2;
+    }
 }
 
 - (NSString*)tableView:(UITableView*)tableView titleForHeaderInSection:(NSInteger)section {
-    // Handle search results
-    if (searchDisplayController.active) {
+    if (tableView == self.searchDisplayController.searchResultsTableView) {
         return nil;
     }
     
@@ -144,19 +132,18 @@
 }
 
 - (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section {
-    // Handle search results
-    if (searchDisplayController.active) {
+    if (tableView == self.searchDisplayController.searchResultsTableView) {
         return [results count];
-    }
-    
-    switch (section) {
-        case GROUPS_SECTION:
-            return [group.groups count];
-        case ENTRIES_SECTION:
-            return [group.entries count];
-    }
-    
-    return 0;
+    } else {
+        switch (section) {
+            case GROUPS_SECTION:
+                return [group.groups count];
+            case ENTRIES_SECTION:
+                return [group.entries count];
+        }
+        
+        return 0;
+    } 
 }
 
 - (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath {
@@ -171,7 +158,7 @@
     appDelegate = (MobileKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
     
     // Configure the cell
-    if (searchDisplayController.active) {
+    if (tableView == self.searchDisplayController.searchResultsTableView) {
         // Handle search results
         KdbEntry *e = [results objectAtIndex:indexPath.row];
         cell.textLabel.text = e.title;
@@ -193,7 +180,7 @@
 }
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath {
-    if (searchDisplayController.active) {
+    if (tableView == self.searchDisplayController.searchResultsTableView) {
         // Handle search results
         KdbEntry *e = [results objectAtIndex:indexPath.row];
         
