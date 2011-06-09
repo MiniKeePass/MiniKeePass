@@ -180,25 +180,9 @@
     [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
 }
 
-- (void)addPressed {
-    // Retrieve the Document directory
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
-    NSString *path = [documentsDirectory stringByAppendingPathComponent:@"newfile.kdb"];
-    
-    id<KdbWriter> writer = [[Kdb3Writer alloc] init];
-    [writer newFile:path withPassword:@"test"];
-    [writer release];
-    
-    [files addObject:@"newfile.kdb"];
-    
-    NSUInteger index = [files count] - 1;
-    [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationRight];
-}
-
 - (void)textEntryController:(TextEntryController*)controller textEntered:(NSString*)string {
     if (string == nil || [string isEqualToString:@""]) {
-        controller.statusLabel.text = @"Filename Invalid";
+        controller.statusLabel.text = @"Filename is invalid";
         return;
     }
     
@@ -223,16 +207,33 @@
     // Move input file into documents directory
     [fileManager moveItemAtPath:oldPath toPath:newPath error:nil];
     
-    UITableViewCell *selectedCell = [self.tableView cellForRowAtIndexPath:indexPath];
-    selectedCell.textLabel.text = newFilename;
-    
+    // Update the filename in the files list
     [files replaceObjectAtIndex:indexPath.row withObject:newFilename];
+    
+    // Reload the table row
+    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:YES];
     
     [appDelegate.window.rootViewController dismissModalViewControllerAnimated:YES];
 }
 
 - (void)textEntryControllerCancelButtonPressed:(TextEntryController*)controller {
     [appDelegate.window.rootViewController dismissModalViewControllerAnimated:YES];
+}
+
+- (void)addPressed {
+    // Retrieve the Document directory
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString *path = [documentsDirectory stringByAppendingPathComponent:@"newfile.kdb"];
+    
+    id<KdbWriter> writer = [[Kdb3Writer alloc] init];
+    [writer newFile:path withPassword:@"test"];
+    [writer release];
+    
+    [files addObject:@"newfile.kdb"];
+    
+    NSUInteger index = [files count] - 1;
+    [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationRight];
 }
 
 @end
