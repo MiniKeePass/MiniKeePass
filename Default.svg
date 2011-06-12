@@ -14,7 +14,7 @@
    height="960"
    id="svg7955"
    version="1.1"
-   inkscape:version="0.48.1 "
+   inkscape:version="0.48.1 r9760"
    sodipodi:docname="Default.svg"
    inkscape:export-filename="C:\Users\jarush\Desktop\Default.png"
    inkscape:export-xdpi="45"
@@ -387,17 +387,17 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.77395833"
-     inkscape:cx="320"
-     inkscape:cy="480"
+     inkscape:cx="526.72948"
+     inkscape:cy="428.31763"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
      showborder="false"
-     inkscape:window-width="1280"
-     inkscape:window-height="962"
-     inkscape:window-x="-8"
-     inkscape:window-y="-8"
-     inkscape:window-maximized="1"
+     inkscape:window-width="1226"
+     inkscape:window-height="756"
+     inkscape:window-x="54"
+     inkscape:window-y="0"
+     inkscape:window-maximized="0"
      fit-margin-top="0"
      fit-margin-left="0"
      fit-margin-right="0"
@@ -410,7 +410,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -452,7 +452,7 @@
          id="tspan8835"
          x="319.06836"
          y="755.56012"
-         style="font-size:72px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:Arial;-inkscape-font-specification:Arial Bold">Mobile</tspan><tspan
+         style="font-size:72px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:Arial;-inkscape-font-specification:Arial Bold">Mini</tspan><tspan
          sodipodi:role="line"
          x="319.06836"
          y="827.56012"
