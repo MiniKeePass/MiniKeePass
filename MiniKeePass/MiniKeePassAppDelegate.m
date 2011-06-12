@@ -192,10 +192,10 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
     [userDefaults setBool:NO forKey:@"pinEnabled"];
     
     // Delete the PIN from the keychain
-    [SFHFKeychainUtils deleteItemForUsername:@"PIN" andServiceName:@"net.fizzawizza.MiniKeePass.pin" error:nil];
+    [SFHFKeychainUtils deleteItemForUsername:@"PIN" andServiceName:@"com.jflan.MiniKeePass.pin" error:nil];
     
     // Delete all database passwords from the keychain
-    [SFHFKeychainUtils deleteAllItemForServiceName:@"net.fizzawizza.MiniKeePass.passwords" error:nil];
+    [SFHFKeychainUtils deleteAllItemForServiceName:@"com.jflan.MiniKeePass.passwords" error:nil];
     
     // Get the files in the Documents directory
     NSFileManager *fileManager = [NSFileManager defaultManager];
@@ -218,7 +218,7 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
 }
 
 - (void)pinViewController:(PinViewController *)controller pinEntered:(NSString *)pin {
-    NSString *validPin = [SFHFKeychainUtils getPasswordForUsername:@"PIN" andServiceName:@"net.fizzawizza.MiniKeePass.pin" error:nil];
+    NSString *validPin = [SFHFKeychainUtils getPasswordForUsername:@"PIN" andServiceName:@"com.jflan.MiniKeePass.pin" error:nil];
     if (validPin == nil) {
         // Delete all data
         [self deleteAllData];
