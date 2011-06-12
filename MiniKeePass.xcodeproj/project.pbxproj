@@ -255,7 +255,6 @@
 		689D045713A42C82005EBD36 /* PasswordFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D043713A42C81005EBD36 /* PasswordFieldCell.m */; };
 		689D045813A42C82005EBD36 /* PinTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D043913A42C81005EBD36 /* PinTextField.m */; };
 		689D045913A42C82005EBD36 /* PinViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D043B13A42C82005EBD36 /* PinViewController.m */; };
-		689D045A13A42C82005EBD36 /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D043D13A42C82005EBD36 /* SearchViewController.m */; };
 		689D045B13A42C82005EBD36 /* SelectionListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D043F13A42C82005EBD36 /* SelectionListViewController.m */; };
 		689D045C13A42C82005EBD36 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D044113A42C82005EBD36 /* SettingsViewController.m */; };
 		689D045D13A42C82005EBD36 /* SwitchCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D044313A42C82005EBD36 /* SwitchCell.m */; };
@@ -644,8 +643,6 @@
 		689D043913A42C81005EBD36 /* PinTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PinTextField.m; sourceTree = "<group>"; };
 		689D043A13A42C81005EBD36 /* PinViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PinViewController.h; sourceTree = "<group>"; };
 		689D043B13A42C82005EBD36 /* PinViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PinViewController.m; sourceTree = "<group>"; };
-		689D043C13A42C82005EBD36 /* SearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchViewController.h; sourceTree = "<group>"; };
-		689D043D13A42C82005EBD36 /* SearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchViewController.m; sourceTree = "<group>"; };
 		689D043E13A42C82005EBD36 /* SelectionListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectionListViewController.h; sourceTree = "<group>"; };
 		689D043F13A42C82005EBD36 /* SelectionListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectionListViewController.m; sourceTree = "<group>"; };
 		689D044013A42C82005EBD36 /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
@@ -1155,8 +1152,6 @@
 				689D043913A42C81005EBD36 /* PinTextField.m */,
 				689D043A13A42C81005EBD36 /* PinViewController.h */,
 				689D043B13A42C82005EBD36 /* PinViewController.m */,
-				689D043C13A42C82005EBD36 /* SearchViewController.h */,
-				689D043D13A42C82005EBD36 /* SearchViewController.m */,
 				689D043E13A42C82005EBD36 /* SelectionListViewController.h */,
 				689D043F13A42C82005EBD36 /* SelectionListViewController.m */,
 				689D044013A42C82005EBD36 /* SettingsViewController.h */,
@@ -1559,7 +1554,6 @@
 				689D045713A42C82005EBD36 /* PasswordFieldCell.m in Sources */,
 				689D045813A42C82005EBD36 /* PinTextField.m in Sources */,
 				689D045913A42C82005EBD36 /* PinViewController.m in Sources */,
-				689D045A13A42C82005EBD36 /* SearchViewController.m in Sources */,
 				689D045B13A42C82005EBD36 /* SelectionListViewController.m in Sources */,
 				689D045C13A42C82005EBD36 /* SettingsViewController.m in Sources */,
 				689D045D13A42C82005EBD36 /* SwitchCell.m in Sources */,
