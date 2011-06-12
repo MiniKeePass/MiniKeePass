@@ -17,7 +17,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface NewKdbViewController : UITableViewController {
+@interface NewKdbViewController : UITableViewController <UITextFieldDelegate> {
     UITextField *nameTextField;
     UITextField *passwordTextField;
     UISegmentedControl *versionSegmentedControl;
