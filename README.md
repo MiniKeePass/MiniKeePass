@@ -1,5 +1,5 @@
-MobileKeePass
-=============
+MiniKeePass
+===========
 
 License
 -------
@@ -19,7 +19,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 Credit
 ------
-MobileKeePass
+MiniKeePass
 Copyright 2011 Jason Rush and John Flanagan. All rights reserved.
 
 Nuvola Icons

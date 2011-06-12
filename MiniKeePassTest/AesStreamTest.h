@@ -15,19 +15,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#import <Foundation/Foundation.h>
-#import "OutputStream.h"
+#import <SenTestingKit/SenTestingKit.h>
 
-@interface HashedOutputStream : OutputStream {
-    OutputStream *outputStream;
-    
-    uint32_t blockIndex;
-    
-    uint8_t *buffer;
-    uint32_t bufferOffset;
-    uint32_t bufferLength;
+@interface AesStreamTest : SenTestCase {
+    NSString *password;
+    NSData *encryptionIv;
+    NSData *masterSeed;
+    NSData *transformSeed;
+    uint32_t rounds;
+    NSData *key;
 }
 
-- (id)initWithOutputStream:(OutputStream*)stream blockSize:(uint32_t)blockSize;
+- (void)testAesStream;
 
 @end

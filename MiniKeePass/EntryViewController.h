@@ -16,18 +16,26 @@
  */
 
 #import <Foundation/Foundation.h>
-#import "OutputStream.h"
+#import "TextFieldCell.h"
+#import "TitleFieldCell.h"
+#import "UrlFieldCell.h"
+#import "TextViewCell.h"
+#import "PasswordFieldCell.h"
+#import "KdbLib.h"
+#import "MiniKeePassAppDelegate.h"
 
-@interface HashedOutputStream : OutputStream {
-    OutputStream *outputStream;
-    
-    uint32_t blockIndex;
-    
-    uint8_t *buffer;
-    uint32_t bufferOffset;
-    uint32_t bufferLength;
+@interface EntryViewController : UITableViewController <UITextFieldDelegate, UITextViewDelegate, UIActionSheetDelegate> {
+    MiniKeePassAppDelegate *appDelegate;
+    TitleFieldCell *titleCell;
+    TextFieldCell *usernameCell;
+    PasswordFieldCell *passwordCell;
+    UrlFieldCell *urlCell;
+    TextViewCell *commentsCell;
+    CGFloat originalHeight;
+
+    KdbEntry *entry;
 }
 
-- (id)initWithOutputStream:(OutputStream*)stream blockSize:(uint32_t)blockSize;
+@property (nonatomic, retain) KdbEntry *entry;
 
 @end

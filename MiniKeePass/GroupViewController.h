@@ -15,19 +15,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#import <Foundation/Foundation.h>
-#import "OutputStream.h"
+#import <UIKit/UIKit.h>
+#import "MiniKeePassAppDelegate.h"
+#import "TextEntryController.h"
+#import "KdbLib.h"
 
-@interface HashedOutputStream : OutputStream {
-    OutputStream *outputStream;
-    
-    uint32_t blockIndex;
-    
-    uint8_t *buffer;
-    uint32_t bufferOffset;
-    uint32_t bufferLength;
+@interface GroupViewController : UITableViewController <UIActionSheetDelegate, UISearchDisplayDelegate, TextEntryControllerDelegate> {
+    MiniKeePassAppDelegate *appDelegate;
+    UISearchDisplayController *searchDisplayController;
+    NSMutableArray *results;
+    KdbGroup *group;
 }
 
-- (id)initWithOutputStream:(OutputStream*)stream blockSize:(uint32_t)blockSize;
+@property (nonatomic, assign) KdbGroup *group;
 
 @end

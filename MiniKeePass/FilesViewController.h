@@ -16,18 +16,19 @@
  */
 
 #import <Foundation/Foundation.h>
-#import "OutputStream.h"
+#import "FilesHelpView.h"
+#import "TextEntryController.h"
 
-@interface HashedOutputStream : OutputStream {
-    OutputStream *outputStream;
+@class MiniKeePassAppDelegate;
+
+@interface FilesViewController : UITableViewController <TextEntryControllerDelegate> {
+    FilesHelpView *filesHelpView;
+    MiniKeePassAppDelegate *appDelegate;
     
-    uint32_t blockIndex;
-    
-    uint8_t *buffer;
-    uint32_t bufferOffset;
-    uint32_t bufferLength;
+    NSMutableArray *files;
+    NSString *selectedFile;
 }
 
-- (id)initWithOutputStream:(OutputStream*)stream blockSize:(uint32_t)blockSize;
+@property (nonatomic, copy) NSString* selectedFile;
 
 @end
