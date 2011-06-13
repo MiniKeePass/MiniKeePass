@@ -162,14 +162,14 @@
 }
 
 - (void)okPressed:(id)sender {
-    if ([delegate respondsToSelector:@selector(newKdbViewControllerOkPressed:)]) {
-        [delegate newKdbViewControllerOkPressed:self];
+    if ([delegate respondsToSelector:@selector(newKdbViewController:buttonIndex:)]) {
+        [delegate newKdbViewController:self buttonIndex:ButtonIndexOk];
     }
 }
 
 - (void)cancelPressed:(id)sender {
-    if ([delegate respondsToSelector:@selector(newKdbViewControllerCancelPressed:)]) {
-        [delegate newKdbViewControllerCancelPressed:self];
+    if ([delegate respondsToSelector:@selector(newKdbViewController:buttonIndex:)]) {
+        [delegate newKdbViewController:self buttonIndex:ButtonIndexCancel];
     }
 }
 

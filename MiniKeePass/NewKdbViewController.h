@@ -38,7 +38,11 @@
 
 @end
 
+typedef enum {
+    ButtonIndexCancel,
+    ButtonIndexOk
+} ButtonIndex;
+
 @protocol NewKdbViewControllerDelegate <NSObject>
-- (void)newKdbViewControllerOkPressed:(NewKdbViewController*)controller;
-- (void)newKdbViewControllerCancelPressed:(NewKdbViewController*)controller;
+- (void)newKdbViewController:(NewKdbViewController*)controller buttonIndex:(ButtonIndex)buttonIndex;
 @end

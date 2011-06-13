@@ -229,31 +229,47 @@
     [newKdbViewController release];
 }
 
-- (void)newKdbViewControllerOkPressed:(NewKdbViewController *)controller {
-    NSString *name = controller.nameTextField.text;
-    NSString *password1 = controller.passwordTextField1.text;
-    NSString *password2 = controller.passwordTextField2.text;
+- (void)newKdbViewController:(NewKdbViewController *)controller buttonIndex:(ButtonIndex)buttonIndex {
+    if (buttonIndex == ButtonIndexOk) {
+        NSString *name = controller.nameTextField.text;
+        if (name == nil || [name isEqualToString:@""]) {
+            controller.statusLabel.text = @"Database name is invalid";
+            return;
+        }
+        
+        // Check the passwords
+        NSString *password1 = controller.passwordTextField1.text;
+        NSString *password2 = controller.passwordTextField2.text;
+        if (![password1 isEqualToString:password2]) {
+            controller.statusLabel.text = @"Passwords do not match";
+            return;
+        }
+        
+        NSString *filename = [name stringByAppendingPathExtension:@"kdb"];
+        
+        // Retrieve the Document directory
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *documentsDirectory = [paths objectAtIndex:0];
+        NSString *path = [documentsDirectory stringByAppendingPathComponent:filename];
+        
+        // Check if the file already exists
+        NSFileManager *fileManager = [NSFileManager defaultManager];
+        if ([fileManager fileExistsAtPath:path]) {
+            controller.statusLabel.text = @"A file already exists with this name";
+            return;
+        }
+        
+        // Create the new database
+        id<KdbWriter> writer = [[Kdb3Writer alloc] init];
+        [writer newFile:path withPassword:password1];
+        [writer release];
+        
+        [files addObject:filename];
+        
+        NSUInteger index = [files count] - 1;
+        [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationRight];
+    }
     
-    NSString *filename = [name stringByAppendingPathExtension:@"kdb"];
-    
-    // Retrieve the Document directory
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
-    NSString *path = [documentsDirectory stringByAppendingPathComponent:filename];
-    
-    id<KdbWriter> writer = [[Kdb3Writer alloc] init];
-    [writer newFile:path withPassword:password1];
-    [writer release];
-    
-    [files addObject:filename];
-    
-    NSUInteger index = [files count] - 1;
-    [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationRight];
-    
-    [appDelegate.window.rootViewController dismissModalViewControllerAnimated:YES];
-}
-
-- (void)newKdbViewControllerCancelPressed:(NewKdbViewController *)controller {
     [appDelegate.window.rootViewController dismissModalViewControllerAnimated:YES];
 }
 
