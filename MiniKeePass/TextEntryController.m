@@ -16,7 +16,6 @@
  */
 
 #import "TextEntryController.h"
-#import <QuartzCore/QuartzCore.h>
 
 #define SPACER 12
 #define LABEL_FIELD_HEIGHT 21
