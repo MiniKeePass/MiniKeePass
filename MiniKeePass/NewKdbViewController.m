@@ -24,47 +24,91 @@
 
 @implementation NewKdbViewController
 
+@synthesize nameTextField;
+@synthesize passwordTextField1;
+@synthesize passwordTextField2;
+@synthesize versionSegmentedControl;
 @synthesize statusLabel;
+@synthesize delegate;
 
--(id)initWithStyle:(UITableViewStyle)style {
-    return [super initWithStyle:UITableViewStyleGrouped];
+- (id)initWithStyle:(UITableViewStyle)style {
+    self = [super initWithStyle:UITableViewStyleGrouped];
+    if (self) {
+        self.tableView.delegate = self;
+        self.tableView.scrollEnabled = NO;
+        
+        nameTextField = [[UITextField alloc] init];
+        nameTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
+        nameTextField.placeholder = @"Name";
+        
+        passwordTextField1 = [[UITextField alloc] init];
+        passwordTextField1.clearButtonMode = UITextFieldViewModeWhileEditing;
+        passwordTextField1.placeholder = @"Password";
+        passwordTextField1.secureTextEntry = YES;
+        passwordTextField1.autocapitalizationType = UITextAutocapitalizationTypeNone;
+        passwordTextField1.autocorrectionType = UITextAutocorrectionTypeNo;
+        
+        passwordTextField2 = [[UITextField alloc] init];
+        passwordTextField2.clearButtonMode = UITextFieldViewModeWhileEditing;
+        passwordTextField2.placeholder = @"Confirm Password";
+        passwordTextField2.secureTextEntry = YES;
+        passwordTextField2.autocapitalizationType = UITextAutocapitalizationTypeNone;
+        passwordTextField2.autocorrectionType = UITextAutocorrectionTypeNo;
+        
+        footerView = [[UIView alloc] init];
+        
+        UIButton *okButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        okButton.frame = CGRectMake(9, SPACER, BUTTON_WIDTH, BUTTON_HEIGHT);
+        [okButton setTitle:@"OK" forState:UIControlStateNormal];
+        [okButton addTarget:self action:@selector(okPressed:) forControlEvents:UIControlEventTouchUpInside];
+        [footerView addSubview:okButton];
+        
+        UIButton *cancelButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        cancelButton.frame = CGRectMake(9 + BUTTON_WIDTH + SPACER, SPACER, BUTTON_WIDTH, BUTTON_HEIGHT);
+        [cancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
+        [cancelButton addTarget:self action:@selector(cancelPressed:) forControlEvents:UIControlEventTouchUpInside];
+        [footerView addSubview:cancelButton];
+        
+        statusLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, SPACER + BUTTON_HEIGHT + SPACER, 300, LABEL_FIELD_HEIGHT)];
+        statusLabel.textColor = [UIColor redColor];
+        statusLabel.backgroundColor = [UIColor clearColor];
+        statusLabel.textAlignment = UITextAlignmentCenter;
+        [footerView addSubview:statusLabel];
+    }
+    return self;
 }
 
 - (void)viewDidLoad {
-    int y = 150;
+    [super viewDidLoad];
     
-    self.tableView.delegate = self;
+    NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+    [notificationCenter addObserver:self selector:@selector(applicationWillResignActive:) name:UIApplicationWillResignActiveNotification object:nil];
+}
+
+- (void)viewDidUnload {
+    [super viewDidUnload];
     
-    nameTextField = [[UITextField alloc] init];
-    nameTextField.delegate = self;
-    nameTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
-    nameTextField.placeholder = @"Name";
-    
-    passwordTextField = [[UITextField alloc] init];
-    passwordTextField.delegate = self;
-    passwordTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
-    passwordTextField.placeholder = @"Password";
-    passwordTextField.secureTextEntry = YES;
-    passwordTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
-    passwordTextField.autocorrectionType = UITextAutocorrectionTypeNo;
-    
-    okButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    okButton.frame = CGRectMake(9, y, BUTTON_WIDTH, BUTTON_HEIGHT);
-    [okButton setTitle:@"OK" forState:UIControlStateNormal];
-    [okButton addTarget:self action:@selector(okPressed:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:okButton];
-    
-    cancelButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    cancelButton.frame = CGRectMake(17 + BUTTON_WIDTH + SPACER, y, BUTTON_WIDTH, BUTTON_HEIGHT);
-    [cancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
-    [cancelButton addTarget:self action:@selector(cancelPressed:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:cancelButton];
-    y += BUTTON_HEIGHT + SPACER;
-    
-    statusLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, y, 280, LABEL_FIELD_HEIGHT)];
-    statusLabel.textColor = [UIColor redColor];
-    statusLabel.backgroundColor = [UIColor clearColor];
-    [self.view addSubview:statusLabel];    
+    NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+    [notificationCenter removeObserver:self name:UIApplicationWillResignActiveNotification object:nil];
+}
+
+- (void)dealloc {
+    [nameTextField release];
+    [passwordTextField1 release];
+    [passwordTextField2 release];
+    [footerView release];
+    [statusLabel release];
+    [super dealloc];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [nameTextField becomeFirstResponder];
+}
+
+- (void)applicationWillResignActive:(id)sender {
+    [nameTextField resignFirstResponder];
+    [passwordTextField1 resignFirstResponder];
+    [passwordTextField2 resignFirstResponder];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView {
@@ -72,7 +116,61 @@
 }
 
 - (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section {
-    return 2;
+    return 3;
+}
+
+- (NSString *)tableView:(UITableView*)tableView titleForHeaderInSection:(NSInteger)section {
+    return @"New Database";
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+    return SPACER + BUTTON_HEIGHT + SPACER + LABEL_FIELD_HEIGHT + SPACER;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
+    return footerView;
+}
+
+- (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath {
+    UITableViewCell *cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil] autorelease];
+    cell.selectionStyle = UITableViewCellEditingStyleNone;
+    
+    CGRect frame = cell.frame;
+    frame.size.width -= 40;
+    frame.size.height -= 22;
+    frame.origin.x = 20;
+    frame.origin.y = 11;
+    
+    switch (indexPath.row) {
+        case 0:
+            nameTextField.frame = frame;
+            [cell addSubview:nameTextField];
+            break;
+            
+        case 1:
+            passwordTextField1.frame = frame;
+            [cell addSubview:passwordTextField1];
+            break;
+            
+        case 2:
+            passwordTextField2.frame = frame;
+            [cell addSubview:passwordTextField2];
+            break;
+    }
+    
+    return cell;
+}
+
+- (void)okPressed:(id)sender {
+    if ([delegate respondsToSelector:@selector(newKdbViewControllerOkPressed:)]) {
+        [delegate newKdbViewControllerOkPressed:self];
+    }
+}
+
+- (void)cancelPressed:(id)sender {
+    if ([delegate respondsToSelector:@selector(newKdbViewControllerCancelPressed:)]) {
+        [delegate newKdbViewControllerCancelPressed:self];
+    }
 }
 
 @end

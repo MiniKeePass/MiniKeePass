@@ -18,10 +18,11 @@
 #import <Foundation/Foundation.h>
 #import "FilesHelpView.h"
 #import "TextEntryController.h"
+#import "NewKdbViewController.h"
 
 @class MiniKeePassAppDelegate;
 
-@interface FilesViewController : UITableViewController <TextEntryControllerDelegate> {
+@interface FilesViewController : UITableViewController <TextEntryControllerDelegate, NewKdbViewControllerDelegate> {
     FilesHelpView *filesHelpView;
     MiniKeePassAppDelegate *appDelegate;
     

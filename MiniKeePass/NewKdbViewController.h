@@ -17,15 +17,28 @@
 
 #import <UIKit/UIKit.h>
 
-@interface NewKdbViewController : UITableViewController <UITextFieldDelegate> {
+@protocol NewKdbViewControllerDelegate;
+
+@interface NewKdbViewController : UITableViewController {
     UITextField *nameTextField;
-    UITextField *passwordTextField;
+    UITextField *passwordTextField1;
+    UITextField *passwordTextField2;
     UISegmentedControl *versionSegmentedControl;
-    UIButton *okButton;
-    UIButton *cancelButton;
+    UIView *footerView;
     UILabel *statusLabel;
+    id<NewKdbViewControllerDelegate> delegate;
 }
 
-@property (nonatomic, retain) UILabel *statusLabel;
+@property (nonatomic, readonly) UITextField *nameTextField;
+@property (nonatomic, readonly) UITextField *passwordTextField1;
+@property (nonatomic, readonly) UITextField *passwordTextField2;
+@property (nonatomic, readonly) UISegmentedControl *versionSegmentedControl;
+@property (nonatomic, readonly) UILabel *statusLabel;
+@property (nonatomic, retain) id<NewKdbViewControllerDelegate> delegate;
 
+@end
+
+@protocol NewKdbViewControllerDelegate <NSObject>
+- (void)newKdbViewControllerOkPressed:(NewKdbViewController*)controller;
+- (void)newKdbViewControllerCancelPressed:(NewKdbViewController*)controller;
 @end

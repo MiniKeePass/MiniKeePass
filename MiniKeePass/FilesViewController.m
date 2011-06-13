@@ -18,6 +18,7 @@
 #import "MiniKeePassAppDelegate.h"
 #import "FilesViewController.h"
 #import "DatabaseManager.h"
+#import "NewKdbViewController.h"
 #import "Kdb3Writer.h"
 
 @implementation FilesViewController
@@ -222,19 +223,38 @@
 }
 
 - (void)addPressed {
+    NewKdbViewController *newKdbViewController = [[NewKdbViewController alloc] initWithStyle:UITableViewStyleGrouped];
+    newKdbViewController.delegate = self;
+    [appDelegate.window.rootViewController presentModalViewController:newKdbViewController animated:YES];
+    [newKdbViewController release];
+}
+
+- (void)newKdbViewControllerOkPressed:(NewKdbViewController *)controller {
+    NSString *name = controller.nameTextField.text;
+    NSString *password1 = controller.passwordTextField1.text;
+    NSString *password2 = controller.passwordTextField2.text;
+    
+    NSString *filename = [name stringByAppendingPathExtension:@"kdb"];
+    
     // Retrieve the Document directory
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
-    NSString *path = [documentsDirectory stringByAppendingPathComponent:@"newfile.kdb"];
+    NSString *path = [documentsDirectory stringByAppendingPathComponent:filename];
     
     id<KdbWriter> writer = [[Kdb3Writer alloc] init];
-    [writer newFile:path withPassword:@"test"];
+    [writer newFile:path withPassword:password1];
     [writer release];
     
-    [files addObject:@"newfile.kdb"];
+    [files addObject:filename];
     
     NSUInteger index = [files count] - 1;
     [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationRight];
+    
+    [appDelegate.window.rootViewController dismissModalViewControllerAnimated:YES];
+}
+
+- (void)newKdbViewControllerCancelPressed:(NewKdbViewController *)controller {
+    [appDelegate.window.rootViewController dismissModalViewControllerAnimated:YES];
 }
 
 @end
