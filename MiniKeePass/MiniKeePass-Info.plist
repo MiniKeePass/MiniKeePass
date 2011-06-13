@@ -22,7 +22,7 @@
 			<string>Owner</string>
 			<key>LSItemContentTypes</key>
 			<array>
-				<string>net.fizzawizza.MiniKeePass.kdb</string>
+				<string>com.jflan.MiniKeePass.kdb</string>
 			</array>
 		</dict>
 	</array>
@@ -36,7 +36,7 @@
 		<string>icon@2x.png</string>
 	</array>
 	<key>CFBundleIdentifier</key>
-	<string>net.fizzawizza.${PRODUCT_NAME:rfc1034identifier}</string>
+	<string>com.jflan.${PRODUCT_NAME:rfc1034identifier}</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -72,7 +72,7 @@
 			<key>UTTypeDescription</key>
 			<string>KeePass Database</string>
 			<key>UTTypeIdentifier</key>
-			<string>net.fizzawizza.MiniKeePass.kdb</string>
+			<string>com.jflan.MiniKeePass.kdb</string>
 			<key>UTTypeTagSpecification</key>
 			<dict>
 				<key>public.filename-extension</key>

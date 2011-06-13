@@ -1767,6 +1767,7 @@
 				689D000813A42740005EBD36 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		689D000913A42740005EBD36 /* Build configuration list for PBXNativeTarget "MiniKeePassTests" */ = {
 			isa = XCConfigurationList;
@@ -1775,6 +1776,7 @@
 				689D000B13A42740005EBD36 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		689DFFCF13A4273F005EBD36 /* Build configuration list for PBXProject "MiniKeePass" */ = {
 			isa = XCConfigurationList;

@@ -51,7 +51,7 @@ static DatabaseManager *sharedInstance;
     self.animated = newAnimated;
     
     // Load the password from the keychain
-    NSString *password = [SFHFKeychainUtils getPasswordForUsername:selectedFilename andServiceName:@"net.fizzawizza.MiniKeePass.passwords" error:nil];
+    NSString *password = [SFHFKeychainUtils getPasswordForUsername:selectedFilename andServiceName:@"com.jflan.MiniKeePass.passwords" error:nil];
     
     // Get the application delegate
     MiniKeePassAppDelegate *appDelegate = (MiniKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
@@ -116,7 +116,7 @@ static DatabaseManager *sharedInstance;
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
         if ([userDefaults boolForKey:@"rememberPasswordsEnabled"]) {
             NSError *error;
-            [SFHFKeychainUtils storeUsername:selectedFilename andPassword:string forServiceName:@"net.fizzawizza.MiniKeePass.passwords" updateExisting:YES error:&error];
+            [SFHFKeychainUtils storeUsername:selectedFilename andPassword:string forServiceName:@"com.jflan.MiniKeePass.passwords" updateExisting:YES error:&error];
         }
         
         // Load the database after a short delay so the push animation is visible

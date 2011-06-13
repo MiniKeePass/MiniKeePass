@@ -243,7 +243,7 @@ enum {
         [pinViewController release];
     } else {
         // Delete the PIN and disable the PIN enabled setting
-        [SFHFKeychainUtils deleteItemForUsername:@"PIN" andServiceName:@"net.fizzawizza.MiniKeePass.pin" error:nil];
+        [SFHFKeychainUtils deleteItemForUsername:@"PIN" andServiceName:@"com.jflan.MiniKeePass.pin" error:nil];
         [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"pinEnabled"];
         
         // Update which controls are enabled
@@ -264,7 +264,7 @@ enum {
     [[NSUserDefaults standardUserDefaults] setBool:rememberPasswordsEnabledCell.switchControl.on forKey:@"rememberPasswordsEnabled"];
     
     // Delete all database passwords from the keychain
-    [SFHFKeychainUtils deleteAllItemForServiceName:@"net.fizzawizza.MiniKeePass.passwords" error:nil];
+    [SFHFKeychainUtils deleteAllItemForServiceName:@"com.jflan.MiniKeePass.passwords" error:nil];
 }
 
 - (void)toggleHidePasswords:(id)sender {
@@ -285,7 +285,7 @@ enum {
         tempPin = nil;
         
         // Set the PIN and enable the PIN enabled setting
-        [SFHFKeychainUtils storeUsername:@"PIN" andPassword:pin forServiceName:@"net.fizzawizza.MiniKeePass.pin" updateExisting:YES error:nil];
+        [SFHFKeychainUtils storeUsername:@"PIN" andPassword:pin forServiceName:@"com.jflan.MiniKeePass.pin" updateExisting:YES error:nil];
         [[NSUserDefaults standardUserDefaults] setBool:pinEnabledCell.switchControl.on forKey:@"pinEnabled"];
         
         // Update which controls are enabled
