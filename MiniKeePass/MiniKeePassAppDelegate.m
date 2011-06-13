@@ -18,7 +18,6 @@
 #import <AudioToolbox/AudioToolbox.h>
 #import "MiniKeePassAppDelegate.h"
 #import "GroupViewController.h"
-#import "SearchViewController.h"
 #import "SettingsViewController.h"
 #import "EntryViewController.h"
 #import "DatabaseManager.h"

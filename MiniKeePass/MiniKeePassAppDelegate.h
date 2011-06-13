@@ -17,7 +17,6 @@
 
 #import <UIKit/UIKit.h>
 #import "FilesViewController.h"
-#import "SearchViewController.h"
 #import "PinViewController.h"
 #import "DatabaseDocument.h"
 
