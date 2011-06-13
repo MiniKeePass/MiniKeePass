@@ -20,25 +20,18 @@
 @protocol TextEntryControllerDelegate;
 
 @interface TextEntryController : UITableViewController <UITextFieldDelegate> {
+    NSString *pageTitle;
+    
     UITextField *textField;
-    UIButton *okButton;
-    UIButton *cancelButton;
+    UIView *footerView;
     UILabel *statusLabel;
-
-    NSString *entryTitle;
-    BOOL secureTextEntry;
-    NSString *placeholderText;
-    NSString *string;
-
+    
     id<TextEntryControllerDelegate> delegate;
 }
 
-@property (nonatomic, retain) UILabel *statusLabel;
-@property (nonatomic, copy) NSString *entryTitle;
-@property (nonatomic, assign) BOOL secureTextEntry;
-@property (nonatomic, copy) NSString *placeholderText;
-@property (nonatomic, copy) NSString *string;
-
+@property (nonatomic, copy) NSString *pageTitle;
+@property (nonatomic, readonly) UILabel *statusLabel;
+@property (nonatomic, readonly) UITextField *textField;
 @property (nonatomic, retain) id<TextEntryControllerDelegate> delegate;
 
 @end

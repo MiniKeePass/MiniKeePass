@@ -211,13 +211,13 @@
                 [entryViewController release];
             }
         } else {
-            TextEntryController *textEntryController = [[TextEntryController alloc] initWithStyle:UITableViewStyleGrouped];
-            textEntryController.delegate = self;
-            textEntryController.entryTitle = @"Group";
-            textEntryController.placeholderText = @"Name";
-            
             KdbGroup *g = [group.groups objectAtIndex:indexPath.row];
-            textEntryController.string = g.name;
+            
+            TextEntryController *textEntryController = [[TextEntryController alloc] initWithStyle:UITableViewStyleGrouped];
+            textEntryController.pageTitle = @"Group";
+            textEntryController.delegate = self;
+            textEntryController.textField.placeholder = @"Name";
+            textEntryController.textField.text = g.name;
             
             [appDelegate.window.rootViewController presentModalViewController:textEntryController animated:YES];
             [textEntryController release];

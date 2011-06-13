@@ -82,10 +82,10 @@ static DatabaseManager *sharedInstance;
     if (!databaseLoaded) {
         // Prompt the user for a password
         TextEntryController *textEntryController = [[TextEntryController alloc] init];
+        textEntryController.pageTitle = @"Database Password";
         textEntryController.delegate = self;
-        textEntryController.secureTextEntry = YES;
-        textEntryController.placeholderText = @"Password";
-        textEntryController.entryTitle = @"Database Password";
+        textEntryController.textField.secureTextEntry = YES;
+        textEntryController.textField.placeholder = @"Password";
         [appDelegate.window.rootViewController presentModalViewController:textEntryController animated:animated];
         [textEntryController release];
     }

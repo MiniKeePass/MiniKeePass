@@ -16,74 +16,71 @@
  */
 
 #import "TextEntryController.h"
+#import <QuartzCore/QuartzCore.h>
 
 #define SPACER 12
 #define LABEL_FIELD_HEIGHT 21
 #define BUTTON_HEIGHT 37
-#define BUTTON_WIDTH (147 - SPACER / 2)
+#define BUTTON_WIDTH 145
 
 @implementation TextEntryController
 
+@synthesize pageTitle;
 @synthesize statusLabel;
-@synthesize entryTitle;
-@synthesize secureTextEntry;
-@synthesize placeholderText;
-@synthesize string;
+@synthesize textField;
 @synthesize delegate;
 
 -(id)initWithStyle:(UITableViewStyle)style {
-    return [super initWithStyle:UITableViewStyleGrouped];
+    self = [super initWithStyle:UITableViewStyleGrouped];
+    if (self) {
+        self.tableView.delegate = self;
+        self.tableView.scrollEnabled = NO;
+        
+        textField = [[UITextField alloc] init];
+        textField.delegate = self;
+        textField.returnKeyType = UIReturnKeyDone;
+        textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+        
+        footerView = [[UIView alloc] init];
+        
+        UIButton *okButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        okButton.frame = CGRectMake(9, SPACER, BUTTON_WIDTH, BUTTON_HEIGHT);
+        [okButton setTitle:@"OK" forState:UIControlStateNormal];
+        [okButton addTarget:self action:@selector(okPressed:) forControlEvents:UIControlEventTouchUpInside];
+        [footerView addSubview:okButton];
+        
+        UIButton *cancelButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        cancelButton.frame = CGRectMake(9 + BUTTON_WIDTH + SPACER, SPACER, BUTTON_WIDTH, BUTTON_HEIGHT);
+        [cancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
+        [cancelButton addTarget:self action:@selector(cancelPressed:) forControlEvents:UIControlEventTouchUpInside];
+        [footerView addSubview:cancelButton];
+        
+        statusLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, SPACER + BUTTON_HEIGHT + SPACER, 300, LABEL_FIELD_HEIGHT)];
+        statusLabel.textColor = [UIColor redColor];
+        statusLabel.backgroundColor = [UIColor clearColor];
+        statusLabel.textAlignment = UITextAlignmentCenter;
+        [footerView addSubview:statusLabel];
+    }
+    return self;
 }
 
 - (void)viewDidLoad {
-    int y = 100;
-    
     [super viewDidLoad];
-    
-    self.tableView.delegate = self;
-    self.tableView.scrollEnabled = NO;
-        
-    textField = [[UITextField alloc] init];
-    textField.delegate = self;
-    textField.returnKeyType = UIReturnKeyDone;
-    textField.clearButtonMode = UITextFieldViewModeWhileEditing;
-    textField.secureTextEntry = secureTextEntry;
-    textField.text = string;
-    
-    if (placeholderText != nil) {
-        textField.placeholder = placeholderText;
-    } else {
-        textField.placeholder = @"Title";
-    }
-
-    if (entryTitle == nil) {
-        entryTitle = @"Title";
-    }
-    
-    okButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    okButton.frame = CGRectMake(9, y, BUTTON_WIDTH, BUTTON_HEIGHT);
-    [okButton setTitle:@"OK" forState:UIControlStateNormal];
-    [okButton addTarget:self action:@selector(okPressed:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:okButton];
-    
-    cancelButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    cancelButton.frame = CGRectMake(17 + BUTTON_WIDTH + SPACER, y, BUTTON_WIDTH, BUTTON_HEIGHT);
-    [cancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
-    [cancelButton addTarget:self action:@selector(cancelPressed:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:cancelButton];
-    y += BUTTON_HEIGHT + SPACER;
-    
-    statusLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, y, 280, LABEL_FIELD_HEIGHT)];
-    statusLabel.textColor = [UIColor redColor];
-    statusLabel.backgroundColor = [UIColor clearColor];
-    [self.view addSubview:statusLabel];
     
     NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
     [notificationCenter addObserver:self selector:@selector(applicationWillResignActive:) name:UIApplicationWillResignActiveNotification object:nil];
 }
 
+- (void)viewDidUnload {
+    [super viewDidUnload];
+    
+    NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+    [notificationCenter removeObserver:self name:UIApplicationWillResignActiveNotification object:nil];
+}
+
 - (void)dealloc {
     [textField release];
+    [footerView release];
     [statusLabel release];
     [delegate release];
     [super dealloc];
@@ -97,14 +94,6 @@
     [textField resignFirstResponder];
 }
 
-- (CGFloat)tableView:(UITableView*)tableView heightForRowAtIndexPath:(NSIndexPath*)indexPath {
-    return 37;
-}
-
-- (NSString *)tableView:(UITableView*)tableView titleForHeaderInSection:(NSInteger)section {
-    return entryTitle;
-}
-
 - (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView {
     return 1;    
 }
@@ -113,15 +102,27 @@
     return 1;
 }
 
+- (NSString *)tableView:(UITableView*)tableView titleForHeaderInSection:(NSInteger)section {
+    return pageTitle;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+    return SPACER + BUTTON_HEIGHT + SPACER + LABEL_FIELD_HEIGHT + SPACER;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
+    return footerView;
+}
+
 - (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath {
     UITableViewCell *cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil] autorelease];
     cell.selectionStyle = UITableViewCellEditingStyleNone;
     
     CGRect frame = cell.frame;
     frame.size.width -= 40;
-    frame.size.height -= 23;
+    frame.size.height -= 22;
     frame.origin.x = 20;
-    frame.origin.y = 8;
+    frame.origin.y = 11;
     
     textField.frame = frame;
     [cell addSubview:textField];

@@ -141,12 +141,12 @@
         [[DatabaseManager sharedInstance] openDatabaseDocument:[files objectAtIndex:indexPath.row] animated:YES];
     } else {
         TextEntryController *textEntryController = [[TextEntryController alloc] initWithStyle:UITableViewStyleGrouped];
+        textEntryController.pageTitle = @"Filename";
         textEntryController.delegate = self;
-        textEntryController.entryTitle = @"Filename";
-        textEntryController.placeholderText = @"Name";
-
+        textEntryController.textField.placeholder = @"Name";
+        
         NSString *filename = [files objectAtIndex:indexPath.row];
-        textEntryController.string = [filename stringByDeletingPathExtension];
+        textEntryController.textField.text = [filename stringByDeletingPathExtension];
         
         [appDelegate.window.rootViewController presentModalViewController:textEntryController animated:YES];
         [textEntryController release];
