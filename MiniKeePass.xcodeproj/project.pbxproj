@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		68915A0B13A6F6C200A408B0 /* InfoBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 68915A0A13A6F6C200A408B0 /* InfoBar.m */; };
 		689D000D13A42765005EBD36 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 689D000C13A42765005EBD36 /* AudioToolbox.framework */; };
 		689D000F13A42777005EBD36 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 689D000E13A42776005EBD36 /* Security.framework */; };
 		689D001113A4277E005EBD36 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 689D001013A4277E005EBD36 /* libxml2.dylib */; };
@@ -330,6 +331,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		68915A0913A6F6C200A408B0 /* InfoBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfoBar.h; sourceTree = "<group>"; };
+		68915A0A13A6F6C200A408B0 /* InfoBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfoBar.m; sourceTree = "<group>"; };
 		689D000C13A42765005EBD36 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		689D000E13A42776005EBD36 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		689D001013A4277E005EBD36 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
@@ -1144,6 +1147,8 @@
 				689D042F13A42C81005EBD36 /* FilesViewController.m */,
 				689D043013A42C81005EBD36 /* GroupViewController.h */,
 				689D043113A42C81005EBD36 /* GroupViewController.m */,
+				68915A0913A6F6C200A408B0 /* InfoBar.h */,
+				68915A0A13A6F6C200A408B0 /* InfoBar.m */,
 				689D043213A42C81005EBD36 /* MiniKeePassAppDelegate.h */,
 				689D043313A42C81005EBD36 /* MiniKeePassAppDelegate.m */,
 				689D043413A42C81005EBD36 /* NewKdbViewController.h */,
@@ -1562,6 +1567,7 @@
 				689D046013A42C82005EBD36 /* TextViewCell.m in Sources */,
 				689D046113A42C82005EBD36 /* TitleFieldCell.m in Sources */,
 				689D046213A42C82005EBD36 /* UrlFieldCell.m in Sources */,
+				68915A0B13A6F6C200A408B0 /* InfoBar.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

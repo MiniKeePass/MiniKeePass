@@ -16,6 +16,7 @@
  */
 
 #import <UIKit/UIKit.h>
+#import "InfoBar.h"
 
 @protocol NewKdbViewControllerDelegate;
 
@@ -25,7 +26,7 @@
     UITextField *passwordTextField2;
     UISegmentedControl *versionSegmentedControl;
     UIView *footerView;
-    UILabel *statusLabel;
+    InfoBar *infoBar;
     id<NewKdbViewControllerDelegate> delegate;
 }
 
@@ -33,8 +34,9 @@
 @property (nonatomic, readonly) UITextField *passwordTextField1;
 @property (nonatomic, readonly) UITextField *passwordTextField2;
 @property (nonatomic, readonly) UISegmentedControl *versionSegmentedControl;
-@property (nonatomic, readonly) UILabel *statusLabel;
 @property (nonatomic, retain) id<NewKdbViewControllerDelegate> delegate;
+
+- (void)showMessage:(NSString*)message;
 
 @end
 

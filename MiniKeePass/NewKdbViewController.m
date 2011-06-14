@@ -16,6 +16,7 @@
  */
 
 #import "NewKdbViewController.h"
+#import "InfoBar.h"
 
 #define SPACER 12
 #define LABEL_FIELD_HEIGHT 21
@@ -28,7 +29,6 @@
 @synthesize passwordTextField1;
 @synthesize passwordTextField2;
 @synthesize versionSegmentedControl;
-@synthesize statusLabel;
 @synthesize delegate;
 
 - (id)initWithStyle:(UITableViewStyle)style {
@@ -69,11 +69,8 @@
         [cancelButton addTarget:self action:@selector(cancelPressed:) forControlEvents:UIControlEventTouchUpInside];
         [footerView addSubview:cancelButton];
         
-        statusLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, SPACER + BUTTON_HEIGHT + SPACER, 300, LABEL_FIELD_HEIGHT)];
-        statusLabel.textColor = [UIColor redColor];
-        statusLabel.backgroundColor = [UIColor clearColor];
-        statusLabel.textAlignment = UITextAlignmentCenter;
-        [footerView addSubview:statusLabel];
+        infoBar = [[InfoBar alloc] initWithFrame:CGRectMake(0, 0, 320, 20)];
+        [self.view addSubview:infoBar];
     }
     return self;
 }
@@ -97,7 +94,7 @@
     [passwordTextField1 release];
     [passwordTextField2 release];
     [footerView release];
-    [statusLabel release];
+    [infoBar release];
     [super dealloc];
 }
 
@@ -171,6 +168,12 @@
     if ([delegate respondsToSelector:@selector(newKdbViewController:buttonIndex:)]) {
         [delegate newKdbViewController:self buttonIndex:ButtonIndexCancel];
     }
+}
+
+- (void)showMessage:(NSString*)message {
+    [self.view bringSubviewToFront:infoBar];
+    infoBar.label.text = message;
+    [infoBar showBar];
 }
 
 @end

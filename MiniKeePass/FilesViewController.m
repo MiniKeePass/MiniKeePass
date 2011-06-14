@@ -233,7 +233,7 @@
     if (buttonIndex == ButtonIndexOk) {
         NSString *name = controller.nameTextField.text;
         if (name == nil || [name isEqualToString:@""]) {
-            controller.statusLabel.text = @"Database name is invalid";
+            [controller showMessage:@"Database name is required"];
             return;
         }
         
@@ -241,7 +241,11 @@
         NSString *password1 = controller.passwordTextField1.text;
         NSString *password2 = controller.passwordTextField2.text;
         if (![password1 isEqualToString:password2]) {
-            controller.statusLabel.text = @"Passwords do not match";
+            [controller showMessage:@"Passwords do not match"];
+            return;
+        }
+        if (password1 == nil || [password1 isEqualToString:@""]) {
+            [controller showMessage:@"Password is required"];
             return;
         }
         
@@ -255,7 +259,7 @@
         // Check if the file already exists
         NSFileManager *fileManager = [NSFileManager defaultManager];
         if ([fileManager fileExistsAtPath:path]) {
-            controller.statusLabel.text = @"A file already exists with this name";
+            [controller showMessage:@"A file already exists with this name"];
             return;
         }
         
