@@ -82,11 +82,16 @@ static DatabaseManager *sharedInstance;
     if (!databaseLoaded) {
         // Prompt the user for a password
         TextEntryController *textEntryController = [[TextEntryController alloc] init];
-        textEntryController.pageTitle = @"Database Password";
-        textEntryController.delegate = self;
+        textEntryController.title = @"Password";
+        textEntryController.textEntryDelegate = self;
         textEntryController.textField.secureTextEntry = YES;
         textEntryController.textField.placeholder = @"Password";
-        [appDelegate.window.rootViewController presentModalViewController:textEntryController animated:animated];
+        
+        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:textEntryController];
+        
+        [appDelegate.window.rootViewController presentModalViewController:navigationController animated:animated];
+        
+        [navigationController release];
         [textEntryController release];
     }
 }
@@ -123,7 +128,7 @@ static DatabaseManager *sharedInstance;
         [self performSelector:@selector(loadDatabaseDocument:) withObject:dd afterDelay:0.01];
     } @catch (NSException *exception) {
         shouldDismiss = NO;
-        controller.statusLabel.text = exception.reason;
+        [controller showErrorMessage:exception.reason];
         [dd release];
     }
     

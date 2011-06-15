@@ -16,23 +16,17 @@
  */
 
 #import <UIKit/UIKit.h>
+#import "FormViewController.h"
 
 @protocol TextEntryControllerDelegate;
 
-@interface TextEntryController : UITableViewController <UITextFieldDelegate> {
-    NSString *pageTitle;
-    
+@interface TextEntryController : FormViewController <FormViewControllerDelegate, UITextFieldDelegate> {
     UITextField *textField;
-    UIView *footerView;
-    UILabel *statusLabel;
-    
-    id<TextEntryControllerDelegate> delegate;
+    id<TextEntryControllerDelegate> textEntryDelegate;
 }
 
-@property (nonatomic, copy) NSString *pageTitle;
-@property (nonatomic, readonly) UILabel *statusLabel;
 @property (nonatomic, readonly) UITextField *textField;
-@property (nonatomic, retain) id<TextEntryControllerDelegate> delegate;
+@property (nonatomic, retain) id<TextEntryControllerDelegate> textEntryDelegate;
 
 @end
 

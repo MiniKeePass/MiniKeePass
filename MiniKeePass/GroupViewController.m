@@ -214,12 +214,16 @@
             KdbGroup *g = [group.groups objectAtIndex:indexPath.row];
             
             TextEntryController *textEntryController = [[TextEntryController alloc] initWithStyle:UITableViewStyleGrouped];
-            textEntryController.pageTitle = @"Group";
-            textEntryController.delegate = self;
+            textEntryController.title = @"Group";
+            textEntryController.textEntryDelegate = self;
             textEntryController.textField.placeholder = @"Name";
             textEntryController.textField.text = g.name;
             
-            [appDelegate.window.rootViewController presentModalViewController:textEntryController animated:YES];
+            UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:textEntryController];
+            
+            [appDelegate.window.rootViewController presentModalViewController:navigationController animated:YES];
+            
+            [navigationController release];
             [textEntryController release];
         }
     }
@@ -259,7 +263,7 @@
 
 - (void)textEntryController:(TextEntryController*)controller textEntered:(NSString*)string {
     if (string == nil || [string isEqualToString:@""]) {
-        controller.statusLabel.text = @"Group name is invalid";
+        [controller showErrorMessage:@"Group name is invalid"];
         return;
     }
     

@@ -142,14 +142,18 @@
         [[DatabaseManager sharedInstance] openDatabaseDocument:[files objectAtIndex:indexPath.row] animated:YES];
     } else {
         TextEntryController *textEntryController = [[TextEntryController alloc] initWithStyle:UITableViewStyleGrouped];
-        textEntryController.pageTitle = @"Filename";
-        textEntryController.delegate = self;
+        textEntryController.title = @"Filename";
+        textEntryController.textEntryDelegate = self;
         textEntryController.textField.placeholder = @"Name";
         
         NSString *filename = [files objectAtIndex:indexPath.row];
         textEntryController.textField.text = [filename stringByDeletingPathExtension];
         
-        [appDelegate.window.rootViewController presentModalViewController:textEntryController animated:YES];
+        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:textEntryController];
+        
+        [appDelegate.window.rootViewController presentModalViewController:navigationController animated:YES];
+        
+        [navigationController release];
         [textEntryController release];
     }
 }
@@ -184,7 +188,7 @@
 
 - (void)textEntryController:(TextEntryController *)controller textEntered:(NSString *)string {
     if (string == nil || [string isEqualToString:@""]) {
-        controller.statusLabel.text = @"Filename is invalid";
+        [controller showErrorMessage:@"Filename is invalid"];
         return;
     }
     
@@ -202,7 +206,7 @@
     // Check if the file already exists
     NSFileManager *fileManager = [NSFileManager defaultManager];
     if ([fileManager fileExistsAtPath:newPath]) {
-        controller.statusLabel.text = @"A file already exists with this name";
+        [controller showErrorMessage:@"A file already exists with this name"];
         return;
     }
     
