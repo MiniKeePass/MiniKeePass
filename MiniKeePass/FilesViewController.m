@@ -26,7 +26,7 @@
 @synthesize selectedFile;
 
 - (void)viewDidLoad {
-    appDelegate = (MiniKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
+    appDelegate = (MiniKeePassAppDelegate *)[[UIApplication sharedApplication] delegate];
     
     self.tableView.allowsSelectionDuringEditing = YES;
     
@@ -109,7 +109,7 @@
     return 1;
 }
 
-- (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section {
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     int n = [files count];
     
     // Show the help view if there are no files
@@ -122,7 +122,7 @@
     return n;
 }
 
-- (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *CellIdentifier = @"Cell";
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
@@ -136,7 +136,7 @@
     return cell;
 }
 
-- (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (self.editing == NO) {
         // Load the database
         [[DatabaseManager sharedInstance] openDatabaseDocument:[files objectAtIndex:indexPath.row] animated:YES];
@@ -154,7 +154,7 @@
     }
 }
 
-- (void)tableView:(UITableView*)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath*)indexPath {
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle != UITableViewCellEditingStyleDelete) {
         return;
     }
@@ -182,7 +182,7 @@
     [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
 }
 
-- (void)textEntryController:(TextEntryController*)controller textEntered:(NSString*)string {
+- (void)textEntryController:(TextEntryController *)controller textEntered:(NSString *)string {
     if (string == nil || [string isEqualToString:@""]) {
         controller.statusLabel.text = @"Filename is invalid";
         return;
@@ -218,14 +218,19 @@
     [appDelegate.window.rootViewController dismissModalViewControllerAnimated:YES];
 }
 
-- (void)textEntryControllerCancelButtonPressed:(TextEntryController*)controller {
+- (void)textEntryControllerCancelButtonPressed:(TextEntryController *)controller {
     [appDelegate.window.rootViewController dismissModalViewControllerAnimated:YES];
 }
 
 - (void)addPressed {
     NewKdbViewController *newKdbViewController = [[NewKdbViewController alloc] initWithStyle:UITableViewStyleGrouped];
     newKdbViewController.delegate = self;
-    [appDelegate.window.rootViewController presentModalViewController:newKdbViewController animated:YES];
+    
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:newKdbViewController];
+    
+    [appDelegate.window.rootViewController presentModalViewController:navigationController animated:YES];
+    
+    [navigationController release];
     [newKdbViewController release];
 }
 

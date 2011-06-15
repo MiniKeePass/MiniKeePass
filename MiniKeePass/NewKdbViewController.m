@@ -18,10 +18,10 @@
 #import "NewKdbViewController.h"
 #import "InfoBar.h"
 
-#define SPACER 12
-#define LABEL_FIELD_HEIGHT 21
-#define BUTTON_HEIGHT 37
-#define BUTTON_WIDTH (147 - SPACER / 2)
+#define VSPACER 12
+#define HSPACER 9
+#define BUTTON_WIDTH (320 - 2 * HSPACER)
+#define BUTTON_HEIGHT 32
 
 @implementation NewKdbViewController
 
@@ -34,8 +34,10 @@
 - (id)initWithStyle:(UITableViewStyle)style {
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
-        self.tableView.delegate = self;
+        self.title = @"New Database";
+        
         self.tableView.scrollEnabled = NO;
+        self.tableView.delegate = self;
         
         nameTextField = [[UITextField alloc] init];
         nameTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
@@ -57,17 +59,18 @@
         
         footerView = [[UIView alloc] init];
         
-        UIButton *okButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        okButton.frame = CGRectMake(9, SPACER, BUTTON_WIDTH, BUTTON_HEIGHT);
-        [okButton setTitle:@"OK" forState:UIControlStateNormal];
-        [okButton addTarget:self action:@selector(okPressed:) forControlEvents:UIControlEventTouchUpInside];
-        [footerView addSubview:okButton];
+        versionSegmentedControl = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObjects:@"Version 1.x", @"Version 2.x", nil]];
+        versionSegmentedControl.selectedSegmentIndex = 0;
+        versionSegmentedControl.frame = CGRectMake(HSPACER, VSPACER, BUTTON_WIDTH, BUTTON_HEIGHT);
+        [footerView addSubview:versionSegmentedControl];
         
-        UIButton *cancelButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        cancelButton.frame = CGRectMake(9 + BUTTON_WIDTH + SPACER, SPACER, BUTTON_WIDTH, BUTTON_HEIGHT);
-        [cancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
-        [cancelButton addTarget:self action:@selector(cancelPressed:) forControlEvents:UIControlEventTouchUpInside];
-        [footerView addSubview:cancelButton];
+        UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(okPressed:)];
+        self.navigationItem.rightBarButtonItem = doneButton;
+        [doneButton release];
+        
+        UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelPressed:)];
+        self.navigationItem.leftBarButtonItem = cancelButton;
+        [cancelButton release];
         
         infoBar = [[InfoBar alloc] initWithFrame:CGRectMake(0, 0, 320, 20)];
         [self.view addSubview:infoBar];
@@ -94,6 +97,7 @@
     [passwordTextField1 release];
     [passwordTextField2 release];
     [footerView release];
+    [versionSegmentedControl release];
     [infoBar release];
     [super dealloc];
 }
@@ -112,23 +116,19 @@
     return 1;    
 }
 
-- (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section {
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return 3;
 }
 
-- (NSString *)tableView:(UITableView*)tableView titleForHeaderInSection:(NSInteger)section {
-    return @"New Database";
-}
-
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    return SPACER + BUTTON_HEIGHT + SPACER + LABEL_FIELD_HEIGHT + SPACER;
+    return VSPACER + BUTTON_HEIGHT + VSPACER;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
     return footerView;
 }
 
-- (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath {
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil] autorelease];
     cell.selectionStyle = UITableViewCellEditingStyleNone;
     
@@ -170,7 +170,7 @@
     }
 }
 
-- (void)showMessage:(NSString*)message {
+- (void)showMessage:(NSString *)message {
     [self.view bringSubviewToFront:infoBar];
     infoBar.label.text = message;
     [infoBar showBar];

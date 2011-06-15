@@ -24,8 +24,8 @@
     UITextField *nameTextField;
     UITextField *passwordTextField1;
     UITextField *passwordTextField2;
-    UISegmentedControl *versionSegmentedControl;
     UIView *footerView;
+    UISegmentedControl *versionSegmentedControl;
     InfoBar *infoBar;
     id<NewKdbViewControllerDelegate> delegate;
 }
@@ -46,5 +46,5 @@ typedef enum {
 } ButtonIndex;
 
 @protocol NewKdbViewControllerDelegate <NSObject>
-- (void)newKdbViewController:(NewKdbViewController*)controller buttonIndex:(ButtonIndex)buttonIndex;
+- (void)newKdbViewController:(NewKdbViewController *)controller buttonIndex:(ButtonIndex)buttonIndex;
 @end
