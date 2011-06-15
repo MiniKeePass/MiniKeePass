@@ -17,6 +17,8 @@
 
 #import "InfoBar.h"
 
+#define AUTO_HIDE_INTERVAL 4.0
+
 @implementation InfoBar
 
 @synthesize label;
@@ -50,9 +52,14 @@
         [UIView animateWithDuration:0.5 delay:0 options:UIViewAnimationOptionCurveEaseOut
                          animations: ^{
                              self.frame = CGRectMake(self.frame.origin.x, 0, self.frame.size.width, self.frame.size.height);
-						 } completion:NULL];
+						 }
+                         completion:Nil];
         hidden = NO;
     }
+    
+    autoHideCount++;
+    
+    [self performSelector:@selector(autoHide) withObject:Nil afterDelay:AUTO_HIDE_INTERVAL];
 }
 
 - (void)hideBar {
@@ -60,8 +67,14 @@
         [UIView animateWithDuration:0.5 delay:0 options:UIViewAnimationOptionCurveEaseOut
                          animations: ^{
                              self.frame = CGRectMake(self.frame.origin.x, -self.frame.size.height, self.frame.size.width, self.frame.size.height);
-						 } completion:NULL];
+						 } completion:Nil];
         hidden = YES;
+    }
+}
+
+- (void)autoHide {
+    if (--autoHideCount == 0) {
+        [self hideBar];
     }
 }
 

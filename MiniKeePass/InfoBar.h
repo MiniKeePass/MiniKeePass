@@ -20,6 +20,7 @@
 @interface InfoBar : UIView {
     UILabel *label;
     BOOL hidden;
+    NSUInteger autoHideCount;
 }
 
 @property (nonatomic, readonly) UILabel *label;
