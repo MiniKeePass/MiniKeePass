@@ -20,6 +20,7 @@
 #import "DatabaseManager.h"
 #import "NewKdbViewController.h"
 #import "Kdb3Writer.h"
+#import "Kdb4Writer.h"
 
 @implementation FilesViewController
 
@@ -274,8 +275,15 @@
             return;
         }
         
+        // Create the KdbWriter for the requested version
+        id<KdbWriter> writer;
+        if (viewController.versionSegmentedControl.selectedSegmentIndex == 0) {
+            writer = [[Kdb3Writer alloc] init];
+        } else {
+            writer = [[Kdb4Writer alloc] init];
+        }
+
         // Create the new database
-        id<KdbWriter> writer = [[Kdb3Writer alloc] init];
         [writer newFile:path withPassword:password1];
         [writer release];
         
