@@ -22,7 +22,7 @@
 
 @class MiniKeePassAppDelegate;
 
-@interface FilesViewController : UITableViewController <TextEntryControllerDelegate, NewKdbViewControllerDelegate> {
+@interface FilesViewController : UITableViewController <TextEntryControllerDelegate, FormViewControllerDelegate> {
     FilesHelpView *filesHelpView;
     MiniKeePassAppDelegate *appDelegate;
     

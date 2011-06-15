@@ -16,19 +16,28 @@
  */
 
 #import <UIKit/UIKit.h>
-#import "FormViewController.h"
+#import "InfoBar.h"
 
-@interface NewKdbViewController : FormViewController {
-    UITextField *nameTextField;
-    UITextField *passwordTextField1;
-    UITextField *passwordTextField2;
-    UIView *footerView;
-    UISegmentedControl *versionSegmentedControl;
+@protocol FormViewControllerDelegate;
+
+@interface FormViewController : UITableViewController {
+    NSArray *controls;
+    InfoBar *infoBar;
+    id<FormViewControllerDelegate> delegate;
 }
 
-@property (nonatomic, readonly) UITextField *nameTextField;
-@property (nonatomic, readonly) UITextField *passwordTextField1;
-@property (nonatomic, readonly) UITextField *passwordTextField2;
-@property (nonatomic, readonly) UISegmentedControl *versionSegmentedControl;
+@property (nonatomic, retain) NSArray *controls;
+@property (nonatomic, retain) id<FormViewControllerDelegate> delegate;
 
+- (void)showErrorMessage:(NSString*)message;
+
+@end
+
+typedef enum {
+    FormViewControllerButtonCancel,
+    FormViewControllerButtonOk
+} FormViewControllerButton;
+
+@protocol FormViewControllerDelegate <NSObject>
+- (void)formViewController:(FormViewController *)controller button:(FormViewControllerButton)button;
 @end

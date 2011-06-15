@@ -318,6 +318,7 @@
 		689DFFF513A42740005EBD36 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 689DFFDB13A4273F005EBD36 /* Foundation.framework */; };
 		689DFFF613A42740005EBD36 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 689DFFDD13A4273F005EBD36 /* CoreGraphics.framework */; };
 		689DFFFE13A42740005EBD36 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 689DFFFC13A42740005EBD36 /* InfoPlist.strings */; };
+		68A3E1AF13A8C9D1006881CA /* FormViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68A3E1AE13A8C9D1006881CA /* FormViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -678,6 +679,8 @@
 		689DFFFB13A42740005EBD36 /* MiniKeePassTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "MiniKeePassTests-Info.plist"; sourceTree = "<group>"; };
 		689DFFFD13A42740005EBD36 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		689DFFFF13A42740005EBD36 /* MiniKeePassTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MiniKeePassTests-Prefix.pch"; sourceTree = "<group>"; };
+		68A3E1AD13A8C9D1006881CA /* FormViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FormViewController.h; sourceTree = "<group>"; };
+		68A3E1AE13A8C9D1006881CA /* FormViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FormViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1145,6 +1148,8 @@
 				689D042D13A42C81005EBD36 /* FilesHelpView.m */,
 				689D042E13A42C81005EBD36 /* FilesViewController.h */,
 				689D042F13A42C81005EBD36 /* FilesViewController.m */,
+				68A3E1AD13A8C9D1006881CA /* FormViewController.h */,
+				68A3E1AE13A8C9D1006881CA /* FormViewController.m */,
 				689D043013A42C81005EBD36 /* GroupViewController.h */,
 				689D043113A42C81005EBD36 /* GroupViewController.m */,
 				68915A0913A6F6C200A408B0 /* InfoBar.h */,
@@ -1568,6 +1573,7 @@
 				689D046113A42C82005EBD36 /* TitleFieldCell.m in Sources */,
 				689D046213A42C82005EBD36 /* UrlFieldCell.m in Sources */,
 				68915A0B13A6F6C200A408B0 /* InfoBar.m in Sources */,
+				68A3E1AF13A8C9D1006881CA /* FormViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

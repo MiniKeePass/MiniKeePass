@@ -16,7 +16,6 @@
  */
 
 #import "NewKdbViewController.h"
-#import "InfoBar.h"
 
 #define VSPACER 12
 #define HSPACER 9
@@ -29,15 +28,11 @@
 @synthesize passwordTextField1;
 @synthesize passwordTextField2;
 @synthesize versionSegmentedControl;
-@synthesize delegate;
 
 - (id)initWithStyle:(UITableViewStyle)style {
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
         self.title = @"New Database";
-        
-        self.tableView.scrollEnabled = NO;
-        self.tableView.delegate = self;
         
         nameTextField = [[UITextField alloc] init];
         nameTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
@@ -64,32 +59,9 @@
         versionSegmentedControl.frame = CGRectMake(HSPACER, VSPACER, BUTTON_WIDTH, BUTTON_HEIGHT);
         [footerView addSubview:versionSegmentedControl];
         
-        UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(okPressed:)];
-        self.navigationItem.rightBarButtonItem = doneButton;
-        [doneButton release];
-        
-        UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelPressed:)];
-        self.navigationItem.leftBarButtonItem = cancelButton;
-        [cancelButton release];
-        
-        infoBar = [[InfoBar alloc] initWithFrame:CGRectMake(0, 0, 320, 20)];
-        [self.view addSubview:infoBar];
+        self.controls = [NSArray arrayWithObjects:nameTextField, passwordTextField1, passwordTextField2, nil];
     }
     return self;
-}
-
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    
-    NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
-    [notificationCenter addObserver:self selector:@selector(applicationWillResignActive:) name:UIApplicationWillResignActiveNotification object:nil];
-}
-
-- (void)viewDidUnload {
-    [super viewDidUnload];
-    
-    NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
-    [notificationCenter removeObserver:self name:UIApplicationWillResignActiveNotification object:nil];
 }
 
 - (void)dealloc {
@@ -98,26 +70,7 @@
     [passwordTextField2 release];
     [footerView release];
     [versionSegmentedControl release];
-    [infoBar release];
     [super dealloc];
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-    [nameTextField becomeFirstResponder];
-}
-
-- (void)applicationWillResignActive:(id)sender {
-    [nameTextField resignFirstResponder];
-    [passwordTextField1 resignFirstResponder];
-    [passwordTextField2 resignFirstResponder];
-}
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView {
-    return 1;    
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 3;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
@@ -126,54 +79,6 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
     return footerView;
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil] autorelease];
-    cell.selectionStyle = UITableViewCellEditingStyleNone;
-    
-    CGRect frame = cell.frame;
-    frame.size.width -= 40;
-    frame.size.height -= 22;
-    frame.origin.x = 20;
-    frame.origin.y = 11;
-    
-    switch (indexPath.row) {
-        case 0:
-            nameTextField.frame = frame;
-            [cell addSubview:nameTextField];
-            break;
-            
-        case 1:
-            passwordTextField1.frame = frame;
-            [cell addSubview:passwordTextField1];
-            break;
-            
-        case 2:
-            passwordTextField2.frame = frame;
-            [cell addSubview:passwordTextField2];
-            break;
-    }
-    
-    return cell;
-}
-
-- (void)okPressed:(id)sender {
-    if ([delegate respondsToSelector:@selector(newKdbViewController:buttonIndex:)]) {
-        [delegate newKdbViewController:self buttonIndex:ButtonIndexOk];
-    }
-}
-
-- (void)cancelPressed:(id)sender {
-    if ([delegate respondsToSelector:@selector(newKdbViewController:buttonIndex:)]) {
-        [delegate newKdbViewController:self buttonIndex:ButtonIndexCancel];
-    }
-}
-
-- (void)showMessage:(NSString *)message {
-    [self.view bringSubviewToFront:infoBar];
-    infoBar.label.text = message;
-    [infoBar showBar];
 }
 
 @end

@@ -234,23 +234,25 @@
     [newKdbViewController release];
 }
 
-- (void)newKdbViewController:(NewKdbViewController *)controller buttonIndex:(ButtonIndex)buttonIndex {
-    if (buttonIndex == ButtonIndexOk) {
-        NSString *name = controller.nameTextField.text;
+- (void)formViewController:(FormViewController *)controller button:(FormViewControllerButton)button {
+    if (button == FormViewControllerButtonOk) {
+        NewKdbViewController *viewController = (NewKdbViewController*)controller;
+        
+        NSString *name = viewController.nameTextField.text;
         if (name == nil || [name isEqualToString:@""]) {
-            [controller showMessage:@"Database name is required"];
+            [viewController showErrorMessage:@"Database name is required"];
             return;
         }
         
         // Check the passwords
-        NSString *password1 = controller.passwordTextField1.text;
-        NSString *password2 = controller.passwordTextField2.text;
+        NSString *password1 = viewController.passwordTextField1.text;
+        NSString *password2 = viewController.passwordTextField2.text;
         if (![password1 isEqualToString:password2]) {
-            [controller showMessage:@"Passwords do not match"];
+            [viewController showErrorMessage:@"Passwords do not match"];
             return;
         }
         if (password1 == nil || [password1 isEqualToString:@""]) {
-            [controller showMessage:@"Password is required"];
+            [viewController showErrorMessage:@"Password is required"];
             return;
         }
         
@@ -264,7 +266,7 @@
         // Check if the file already exists
         NSFileManager *fileManager = [NSFileManager defaultManager];
         if ([fileManager fileExistsAtPath:path]) {
-            [controller showMessage:@"A file already exists with this name"];
+            [viewController showErrorMessage:@"A file already exists with this name"];
             return;
         }
         
