@@ -264,7 +264,13 @@
             return;
         }
         
-        NSString *filename = [name stringByAppendingPathExtension:@"kdb"];
+        // Append the correct file extension
+        NSString *filename;
+        if (viewController.versionSegmentedControl.selectedSegmentIndex == 0) {
+             filename = [name stringByAppendingPathExtension:@"kdb"];
+        } else {
+            filename = [name stringByAppendingPathExtension:@"kdbx"];
+        }
         
         // Retrieve the Document directory
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
