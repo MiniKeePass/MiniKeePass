@@ -216,7 +216,8 @@
             KdbGroup *g = [group.groups objectAtIndex:indexPath.row];
             
             TextEntryController *textEntryController = [[TextEntryController alloc] initWithStyle:UITableViewStyleGrouped];
-            textEntryController.title = @"Group";
+            textEntryController.title = @"Rename";
+            textEntryController.headerTitle = @"Group Name";
             textEntryController.textEntryDelegate = self;
             textEntryController.textField.placeholder = @"Name";
             textEntryController.textField.text = g.name;

@@ -144,7 +144,9 @@
         [[DatabaseManager sharedInstance] openDatabaseDocument:[files objectAtIndex:indexPath.row] animated:YES];
     } else {
         TextEntryController *textEntryController = [[TextEntryController alloc] initWithStyle:UITableViewStyleGrouped];
-        textEntryController.title = @"Filename";
+        textEntryController.title = @"Rename";
+        textEntryController.headerTitle = @"Database Name";
+        textEntryController.footerTitle = @"Enter a new name for the password database.  The correct file extension will automatically be appended.";
         textEntryController.textEntryDelegate = self;
         textEntryController.textField.placeholder = @"Name";
         

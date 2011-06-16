@@ -83,6 +83,8 @@ static DatabaseManager *sharedInstance;
         // Prompt the user for a password
         TextEntryController *textEntryController = [[TextEntryController alloc] init];
         textEntryController.title = @"Password";
+        textEntryController.headerTitle = @"Password";
+        textEntryController.footerTitle = [NSString stringWithFormat:@"Enter the password for the %@ database.", filename];
         textEntryController.textEntryDelegate = self;
         textEntryController.textField.secureTextEntry = YES;
         textEntryController.textField.placeholder = @"Password";
