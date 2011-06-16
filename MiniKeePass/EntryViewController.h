@@ -24,7 +24,7 @@
 #import "KdbLib.h"
 #import "MiniKeePassAppDelegate.h"
 
-@interface EntryViewController : UITableViewController <UITextFieldDelegate, UITextViewDelegate, UIActionSheetDelegate> {
+@interface EntryViewController : UITableViewController <UITextFieldDelegate, UITextViewDelegate> {
     MiniKeePassAppDelegate *appDelegate;
     TitleFieldCell *titleCell;
     TextFieldCell *usernameCell;
@@ -32,10 +32,13 @@
     UrlFieldCell *urlCell;
     TextViewCell *commentsCell;
     CGFloat originalHeight;
+    BOOL canceled;
 
     KdbEntry *entry;
 }
 
 @property (nonatomic, retain) KdbEntry *entry;
+
+- (BOOL)isDirty;
 
 @end

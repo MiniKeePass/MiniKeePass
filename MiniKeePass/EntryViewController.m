@@ -27,9 +27,9 @@
     self.tableView.delaysContentTouches = YES;
     
     // Replace the back button with our own so we can ask if they are sure
-    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:self action:@selector(backPressed:)];
-    self.navigationItem.leftBarButtonItem = backButton;
-    [backButton release];    
+    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:self action:@selector(cancelPressed)];
+    self.navigationItem.rightBarButtonItem = cancelButton;
+    [cancelButton release];    
     
     titleCell = [[TitleFieldCell alloc] init];
     titleCell.textLabel.text = @"Title";
@@ -54,8 +54,21 @@
     [tapGesture release];
 }
 
+- (void)dealloc {
+    [titleCell release];
+    [usernameCell release];
+    [passwordCell release];
+    [urlCell release];
+    [commentsCell release];
+    [entry release];
+    [super dealloc];
+}
+
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+
+    // Mark the view as not being canceled
+    canceled = NO;
     
     // Add listeners to the keyboard
     NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
@@ -75,6 +88,21 @@
     originalHeight = self.view.frame.size.height;
 }
 
+- (void)viewWillDisappear:(BOOL)animated {
+    if (!canceled && [self isDirty]) {
+        entry.title = titleCell.textField.text;
+        entry.username = usernameCell.textField.text;
+        entry.password = passwordCell.textField.text;
+        entry.url = urlCell.textField.text;
+        entry.notes = commentsCell.textView.text;
+        
+        appDelegate.databaseDocument.dirty = YES;
+        
+        // Save the database document
+        [appDelegate.databaseDocument save];
+    }
+}
+
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
     
@@ -91,14 +119,9 @@
     [commentsCell.textView resignFirstResponder];
 }
 
-- (void)dealloc {
-    [titleCell release];
-    [usernameCell release];
-    [passwordCell release];
-    [urlCell release];
-    [commentsCell release];
-    [entry release];
-    [super dealloc];
+- (void)cancelPressed {
+    canceled = YES;
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 BOOL stringsEqual(NSString *str1, NSString *str2) {
@@ -115,46 +138,12 @@ BOOL stringsEqual(NSString *str1, NSString *str2) {
         stringsEqual(entry.notes, commentsCell.textView.text));
 }
 
-- (void)save {
-    entry.title = titleCell.textField.text;
-    entry.username = usernameCell.textField.text;
-    entry.password = passwordCell.textField.text;
-    entry.url = urlCell.textField.text;
-    entry.notes = commentsCell.textView.text;
-    
-    appDelegate.databaseDocument.dirty = YES;
-    
-    // Save the database document
-    [appDelegate.databaseDocument save];
-}
-
-- (void)backPressed:(id)sender {
-    if ([self isDirty]) {
-        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"Save Changes?" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Discard" otherButtonTitles:@"Save", nil];
-
-        [appDelegate showActionSheet:actionSheet];
-        [actionSheet release];
-    } else {
-        [self.navigationController popViewControllerAnimated:YES];
-    }
-}
-
 - (void)tapPressed {
     [titleCell.textField resignFirstResponder];
     [usernameCell.textField resignFirstResponder];
     [passwordCell.textField resignFirstResponder];
     [urlCell.textField resignFirstResponder];
     [commentsCell.textView resignFirstResponder];
-}
-
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (buttonIndex != actionSheet.cancelButtonIndex) {
-        if (buttonIndex != actionSheet.destructiveButtonIndex) {
-            [self save];
-        }
-    
-        [self.navigationController popViewControllerAnimated:YES];
-    }
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
