@@ -19,6 +19,7 @@
 #import "FilesViewController.h"
 #import "DatabaseManager.h"
 #import "NewKdbViewController.h"
+#import "SFHFKeychainUtils.h"
 #import "Kdb3Writer.h"
 #import "Kdb4Writer.h"
 
@@ -287,6 +288,14 @@
         [writer newFile:path withPassword:password1];
         [writer release];
         
+        // Store the password in the keychain
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        if ([userDefaults boolForKey:@"rememberPasswordsEnabled"]) {
+            NSError *error;
+            [SFHFKeychainUtils storeUsername:filename andPassword:password1 forServiceName:@"com.jflan.MiniKeePass.passwords" updateExisting:YES error:&error];
+        }
+        
+        // Add the file to the list of files
         [files addObject:filename];
         
         NSUInteger index = [files count] - 1;
