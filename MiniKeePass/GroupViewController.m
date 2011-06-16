@@ -24,7 +24,7 @@
 @implementation GroupViewController
 
 - (void)viewDidLoad {
-    appDelegate = (MiniKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
+    appDelegate = (MiniKeePassAppDelegate *)[[UIApplication sharedApplication] delegate];
     
     self.tableView.allowsSelectionDuringEditing = YES;
     
@@ -82,11 +82,11 @@
     [super dealloc];
 }
 
-- (KdbGroup*)group {
+- (KdbGroup *)group {
     return group;
 }
 
-- (void)setGroup:(KdbGroup*)newGroup {
+- (void)setGroup:(KdbGroup *)newGroup {
     group = [newGroup retain];
     [self.tableView reloadData];
 }
@@ -103,7 +103,7 @@
     return YES;
 }
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView {
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     if (tableView == self.searchDisplayController.searchResultsTableView) {
         return 1;
     } else {
@@ -111,7 +111,7 @@
     }
 }
 
-- (NSString*)tableView:(UITableView*)tableView titleForHeaderInSection:(NSInteger)section {
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     if (tableView == self.searchDisplayController.searchResultsTableView) {
         return nil;
     }
@@ -133,7 +133,7 @@
     return nil;
 }
 
-- (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section {
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if (tableView == self.searchDisplayController.searchResultsTableView) {
         return [results count];
     } else {
@@ -148,7 +148,7 @@
     } 
 }
 
-- (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath {
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *CellIdentifier = @"Cell";
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
@@ -157,7 +157,7 @@
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     
-    appDelegate = (MiniKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
+    appDelegate = (MiniKeePassAppDelegate *)[[UIApplication sharedApplication] delegate];
     
     // Configure the cell
     if (tableView == self.searchDisplayController.searchResultsTableView) {
@@ -165,6 +165,7 @@
         KdbEntry *e = [results objectAtIndex:indexPath.row];
         cell.textLabel.text = e.title;
         cell.imageView.image = [appDelegate loadImage:e.image];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
     } else {
         // Child group/entry
         if (indexPath.section == GROUPS_SECTION) {
@@ -175,13 +176,14 @@
             KdbEntry *e = [group.entries objectAtIndex:indexPath.row];
             cell.textLabel.text = e.title;
             cell.imageView.image = [appDelegate loadImage:e.image];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
     }
     
     return cell;
 }
 
-- (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath {
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (tableView == self.searchDisplayController.searchResultsTableView) {
         // Handle search results
         KdbEntry *e = [results objectAtIndex:indexPath.row];
@@ -210,7 +212,7 @@
                 [self.navigationController pushViewController:entryViewController animated:YES];
                 [entryViewController release];
             }
-        } else {
+        } else if (indexPath.section == GROUPS_SECTION) {
             KdbGroup *g = [group.groups objectAtIndex:indexPath.row];
             
             TextEntryController *textEntryController = [[TextEntryController alloc] initWithStyle:UITableViewStyleGrouped];
@@ -229,7 +231,7 @@
     }
 }
 
-- (void)tableView:(UITableView*)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath*)indexPath {
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle != UITableViewCellEditingStyleDelete) {
         return;
     }
@@ -261,7 +263,7 @@
     }
 }
 
-- (void)textEntryController:(TextEntryController*)controller textEntered:(NSString*)string {
+- (void)textEntryController:(TextEntryController *)controller textEntered:(NSString *)string {
     if (string == nil || [string isEqualToString:@""]) {
         [controller showErrorMessage:@"Group name is invalid"];
         return;
@@ -283,7 +285,7 @@
     [appDelegate.window.rootViewController dismissModalViewControllerAnimated:YES];
 }
 
-- (void)textEntryControllerCancelButtonPressed:(TextEntryController*)controller {
+- (void)textEntryControllerCancelButtonPressed:(TextEntryController *)controller {
     [appDelegate.window.rootViewController dismissModalViewControllerAnimated:YES];
 }
 
@@ -310,7 +312,7 @@
     [actionSheet release];    
 }
 
-- (void)actionSheet:(UIActionSheet*)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (buttonIndex == actionSheet.cancelButtonIndex) {
         return;
     }
