@@ -19,18 +19,18 @@ typedef NSUInteger DDXMLDocumentContentKind;
 //- (id)initWithContentsOfURL:(NSURL *)url options:(NSUInteger)mask error:(NSError **)error;
 - (id)initWithData:(NSData *)data options:(NSUInteger)mask error:(NSError **)error;
 - (id)initWithReadIO:(xmlInputReadCallback)ioread closeIO:(xmlInputCloseCallback)ioclose context:(void*)ioctx options:(NSUInteger)mask error:(NSError **)error;
-//- (id)initWithRootElement:(DDXMLElement *)element;
+- (id)initWithRootElement:(DDXMLElement *)element;
 
 //+ (Class)replacementClassForClass:(Class)cls;
 
 //- (void)setCharacterEncoding:(NSString *)encoding; //primitive
 //- (NSString *)characterEncoding; //primitive
 
-//- (void)setVersion:(NSString *)version;
-//- (NSString *)version;
+- (void)setVersion:(NSString *)version;
+- (NSString *)version;
 
-//- (void)setStandalone:(BOOL)standalone;
-//- (BOOL)isStandalone;
+- (void)setStandalone:(BOOL)standalone;
+- (BOOL)isStandalone;
 
 //- (void)setDocumentContentKind:(DDXMLDocumentContentKind)kind;
 //- (DDXMLDocumentContentKind)documentContentKind;
@@ -41,7 +41,7 @@ typedef NSUInteger DDXMLDocumentContentKind;
 //- (void)setDTD:(DDXMLDTD *)documentTypeDeclaration;
 //- (DDXMLDTD *)DTD;
 
-//- (void)setRootElement:(DDXMLNode *)root;
+- (void)setRootElement:(DDXMLNode *)root;
 - (DDXMLElement *)rootElement;
 
 //- (void)insertChild:(DDXMLNode *)child atIndex:(NSUInteger)index;

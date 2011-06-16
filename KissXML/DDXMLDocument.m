@@ -104,6 +104,38 @@
 	return [self initWithDocPrimitive:doc freeOnDealloc:YES];
 }
 
+- (id)initWithRootElement:(DDXMLElement *)element {
+    xmlDocPtr doc = xmlNewDoc(BAD_CAST "1.0");
+    if (self = [self initWithDocPrimitive:doc freeOnDealloc:YES]) {
+        if (element) {
+            [self setRootElement:element];
+        }
+    }
+    
+    return self;
+}
+
+- (void)setVersion:(NSString *)version {
+    xmlDocPtr doc = (xmlDocPtr)genericPtr;
+    xmlFree((xmlChar *)doc->version);
+    doc->version = xmlStrdup([version xmlChar]);
+}
+
+- (NSString *)version {
+    xmlDocPtr doc = (xmlDocPtr)genericPtr;
+    return [NSString stringWithUTF8String:((const char*)doc->version)];
+}
+
+- (void)setStandalone:(BOOL)standalone {
+    xmlDocPtr doc = (xmlDocPtr)genericPtr;
+    doc->standalone = standalone;
+}
+
+- (BOOL)isStandalone {
+    xmlDocPtr doc = (xmlDocPtr)genericPtr;
+    return doc->standalone;
+}
+
 /**
  * Returns the root element of the receiver.
 **/
@@ -119,6 +151,11 @@
 		return [DDXMLElement nodeWithElementPrimitive:rootNode freeOnDealloc:NO];
 	else
 		return nil;
+}
+
+- (void)setRootElement:(DDXMLNode *)root {
+    xmlDocPtr doc = (xmlDocPtr)genericPtr;
+    xmlDocSetRootElement(doc, (xmlNodePtr)root->genericPtr);
 }
 
 - (NSData *)XMLData
