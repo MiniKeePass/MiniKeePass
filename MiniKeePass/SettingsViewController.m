@@ -154,8 +154,24 @@ enum {
     return nil;
 }
 
+- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
+    switch (section) {
+        case SECTION_PIN:
+            return @"Prevent unauthorized access to MiniKeePass with a PIN.";
+            
+        case SECTION_DELETE_ON_FAILURE:
+            return @"Delete all files and passwords after too many failed attempts.";
+            
+        case SECTION_REMEMBER_PASSWORDS:
+            return @"Stores remembered database passwords in the phone's secure keychain.";
+            
+        case SECTION_HIDE_PASSWORDS:
+            return @"Hides passwords when viewing a password entry.";
+    }
+    return nil;
+}
+
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
     switch (indexPath.section) {
         case SECTION_PIN:
             switch (indexPath.row) {
