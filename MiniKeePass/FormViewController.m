@@ -61,7 +61,7 @@
     [super dealloc];
 }
 
-- (void)viewDidAppear:(BOOL)animated {
+- (void)viewWillAppear:(BOOL)animated {
     UITextField *textField = [controls objectAtIndex:0];
     [textField becomeFirstResponder];
 }
