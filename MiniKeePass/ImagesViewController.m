@@ -101,7 +101,7 @@
     NSUInteger index = row * IMAGES_PER_ROW + col;
     [self setSelectedImage:index];
     
-    if ([delegate respondsToSelector:@selector(imageViewController:imageSelected:)]) {
+    if ([delegate respondsToSelector:@selector(imagesViewController:imageSelected:)]) {
         [delegate imagesViewController:self imageSelected:index];
     }
 }
