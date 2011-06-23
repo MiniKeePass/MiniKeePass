@@ -17,10 +17,10 @@
 
 #import <UIKit/UIKit.h>
 #import "MiniKeePassAppDelegate.h"
-#import "TextEntryController.h"
+#import "EditGroupViewController.h"
 #import "KdbLib.h"
 
-@interface GroupViewController : UITableViewController <UIActionSheetDelegate, UISearchDisplayDelegate, TextEntryControllerDelegate> {
+@interface GroupViewController : UITableViewController <UIActionSheetDelegate, UISearchDisplayDelegate, FormViewControllerDelegate> {
     MiniKeePassAppDelegate *appDelegate;
     UISearchDisplayController *searchDisplayController;
     NSMutableArray *results;

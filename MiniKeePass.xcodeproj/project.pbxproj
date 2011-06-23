@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6876F67813B2D8F500A05C7A /* ImagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6876F67713B2D8F400A05C7A /* ImagesViewController.m */; };
+		6876F67B13B2F2DB00A05C7A /* checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = 6876F67913B2F2DB00A05C7A /* checkmark.png */; };
+		6876F67C13B2F2DB00A05C7A /* checkmark@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6876F67A13B2F2DB00A05C7A /* checkmark@2x.png */; };
 		68915A0B13A6F6C200A408B0 /* InfoBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 68915A0A13A6F6C200A408B0 /* InfoBar.m */; };
 		689D000D13A42765005EBD36 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 689D000C13A42765005EBD36 /* AudioToolbox.framework */; };
 		689D000F13A42777005EBD36 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 689D000E13A42776005EBD36 /* Security.framework */; };
@@ -319,6 +322,7 @@
 		689DFFF613A42740005EBD36 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 689DFFDD13A4273F005EBD36 /* CoreGraphics.framework */; };
 		689DFFFE13A42740005EBD36 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 689DFFFC13A42740005EBD36 /* InfoPlist.strings */; };
 		68A3E1AF13A8C9D1006881CA /* FormViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68A3E1AE13A8C9D1006881CA /* FormViewController.m */; };
+		68CFB1E213B357EE00333B38 /* EditGroupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68CFB1E113B357EE00333B38 /* EditGroupViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -332,6 +336,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		6876F67613B2D8F400A05C7A /* ImagesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImagesViewController.h; sourceTree = "<group>"; };
+		6876F67713B2D8F400A05C7A /* ImagesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImagesViewController.m; sourceTree = "<group>"; };
+		6876F67913B2F2DB00A05C7A /* checkmark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = checkmark.png; sourceTree = "<group>"; };
+		6876F67A13B2F2DB00A05C7A /* checkmark@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "checkmark@2x.png"; sourceTree = "<group>"; };
 		68915A0913A6F6C200A408B0 /* InfoBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfoBar.h; sourceTree = "<group>"; };
 		68915A0A13A6F6C200A408B0 /* InfoBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfoBar.m; sourceTree = "<group>"; };
 		689D000C13A42765005EBD36 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
@@ -681,6 +689,8 @@
 		689DFFFF13A42740005EBD36 /* MiniKeePassTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MiniKeePassTests-Prefix.pch"; sourceTree = "<group>"; };
 		68A3E1AD13A8C9D1006881CA /* FormViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FormViewController.h; sourceTree = "<group>"; };
 		68A3E1AE13A8C9D1006881CA /* FormViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FormViewController.m; sourceTree = "<group>"; };
+		68CFB1E013B357EE00333B38 /* EditGroupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditGroupViewController.h; sourceTree = "<group>"; };
+		68CFB1E113B357EE00333B38 /* EditGroupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditGroupViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -871,6 +881,8 @@
 				689D02A713A42B63005EBD36 /* background@2x.png */,
 				689D02A813A42B63005EBD36 /* box.png */,
 				689D02A913A42B63005EBD36 /* box@2x.png */,
+				6876F67913B2F2DB00A05C7A /* checkmark.png */,
+				6876F67A13B2F2DB00A05C7A /* checkmark@2x.png */,
 				689D02AA13A42B63005EBD36 /* tab_files.png */,
 				689D02AB13A42B63005EBD36 /* tab_files@2x.png */,
 				689D02AC13A42B63005EBD36 /* tab_gear.png */,
@@ -1142,6 +1154,8 @@
 				689D042713A42C81005EBD36 /* DatabaseDocument.m */,
 				689D042813A42C81005EBD36 /* DatabaseManager.h */,
 				689D042913A42C81005EBD36 /* DatabaseManager.m */,
+				68CFB1E013B357EE00333B38 /* EditGroupViewController.h */,
+				68CFB1E113B357EE00333B38 /* EditGroupViewController.m */,
 				689D042A13A42C81005EBD36 /* EntryViewController.h */,
 				689D042B13A42C81005EBD36 /* EntryViewController.m */,
 				689D042C13A42C81005EBD36 /* FilesHelpView.h */,
@@ -1152,6 +1166,8 @@
 				68A3E1AE13A8C9D1006881CA /* FormViewController.m */,
 				689D043013A42C81005EBD36 /* GroupViewController.h */,
 				689D043113A42C81005EBD36 /* GroupViewController.m */,
+				6876F67613B2D8F400A05C7A /* ImagesViewController.h */,
+				6876F67713B2D8F400A05C7A /* ImagesViewController.m */,
 				68915A0913A6F6C200A408B0 /* InfoBar.h */,
 				68915A0A13A6F6C200A408B0 /* InfoBar.m */,
 				689D043213A42C81005EBD36 /* MiniKeePassAppDelegate.h */,
@@ -1480,6 +1496,8 @@
 				689D041013A42B63005EBD36 /* sample.2.13.kdbx in Resources */,
 				689D041113A42B63005EBD36 /* sample.2.14.kdbx in Resources */,
 				689D041213A42B63005EBD36 /* sample.2.15.kdbx in Resources */,
+				6876F67B13B2F2DB00A05C7A /* checkmark.png in Resources */,
+				6876F67C13B2F2DB00A05C7A /* checkmark@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1574,6 +1592,8 @@
 				689D046213A42C82005EBD36 /* UrlFieldCell.m in Sources */,
 				68915A0B13A6F6C200A408B0 /* InfoBar.m in Sources */,
 				68A3E1AF13A8C9D1006881CA /* FormViewController.m in Sources */,
+				6876F67813B2D8F500A05C7A /* ImagesViewController.m in Sources */,
+				68CFB1E213B357EE00333B38 /* EditGroupViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -6,11 +6,18 @@
 //  Copyright 2011 Self. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
+#import "FormViewController.h"
+#import "ImagesViewController.h"
 
-
-@interface EditGroupViewController : FormViewController {
-    
+@interface EditGroupViewController : FormViewController <ImagesViewControllerDelegate> {
+    UITextField *nameTextField;
+    UIButton *imageButton;
+    NSUInteger selectedImageIndex;
 }
+
+@property (nonatomic, readonly) UITextField *nameTextField;
+@property (nonatomic, readonly) UIButton *imageButton;
+@property (nonatomic, assign) NSUInteger selectedImageIndex;
 
 @end

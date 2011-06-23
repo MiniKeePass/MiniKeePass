@@ -17,6 +17,7 @@
 
 #import "GroupViewController.h"
 #import "EntryViewController.h"
+#import "EditGroupViewController.h"
 
 #define GROUPS_SECTION  0
 #define ENTRIES_SECTION 1
@@ -215,19 +216,17 @@
         } else if (indexPath.section == GROUPS_SECTION) {
             KdbGroup *g = [group.groups objectAtIndex:indexPath.row];
             
-            TextEntryController *textEntryController = [[TextEntryController alloc] initWithStyle:UITableViewStyleGrouped];
-            textEntryController.title = @"Rename";
-            textEntryController.headerTitle = @"Group Name";
-            textEntryController.textEntryDelegate = self;
-            textEntryController.textField.placeholder = @"Name";
-            textEntryController.textField.text = g.name;
+            EditGroupViewController *editGroupViewController = [[EditGroupViewController alloc] initWithStyle:UITableViewStyleGrouped];
+            editGroupViewController.delegate = self;
+            editGroupViewController.nameTextField.text = g.name;
+            [editGroupViewController setSelectedImageIndex:g.image];
             
-            UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:textEntryController];
+            UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:editGroupViewController];
             
             [appDelegate.window.rootViewController presentModalViewController:navigationController animated:YES];
             
             [navigationController release];
-            [textEntryController release];
+            [editGroupViewController release];
         }
     }
 }
@@ -264,24 +263,30 @@
     }
 }
 
-- (void)textEntryController:(TextEntryController *)controller textEntered:(NSString *)string {
-    if (string == nil || [string isEqualToString:@""]) {
-        [controller showErrorMessage:@"Group name is invalid"];
-        return;
+- (void)formViewController:(FormViewController *)controller button:(FormViewControllerButton)button {
+    EditGroupViewController *editGroupViewController = (EditGroupViewController*)controller;
+    
+    if (button == FormViewControllerButtonOk) {
+        NSString *groupName = editGroupViewController.nameTextField.text;
+        if (groupName == nil || [groupName isEqualToString:@""]) {
+            [controller showErrorMessage:@"Group name is invalid"];
+            return;
+        }
+        
+        NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+        
+        // Update the group
+        KdbGroup *g = [group.groups objectAtIndex:indexPath.row];
+        g.name = groupName;
+        g.image = editGroupViewController.selectedImageIndex;
+        
+        // Save the document
+        appDelegate.databaseDocument.dirty = YES;
+        [appDelegate.databaseDocument save];
+        
+        // Reload the table row
+        [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
     }
-    
-    NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-    
-    // Update the group
-    KdbGroup *g = [group.groups objectAtIndex:indexPath.row];
-    g.name = string;
-    
-    // Save the document
-    appDelegate.databaseDocument.dirty = YES;
-    [appDelegate.databaseDocument save];
-    
-    // Reload the table row
-    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
     
     [appDelegate.window.rootViewController dismissModalViewControllerAnimated:YES];
 }
