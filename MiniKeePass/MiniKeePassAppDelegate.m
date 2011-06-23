@@ -34,7 +34,7 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Initialize the images array
     int i;
-    for (i = 0; i < 70; i++) {
+    for (i = 0; i < NUM_IMAGES; i++) {
         images[i] = nil;
     }
     
@@ -51,7 +51,7 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
     
     NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
     [userDefaults registerDefaults:defaultsDict];
-        
+    
     // Create the files view
     FilesViewController *filesViewController = [[FilesViewController alloc] initWithStyle:UITableViewStylePlain];
     navigationController = [[UINavigationController alloc] initWithRootViewController:filesViewController];
@@ -69,7 +69,7 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
 
 - (void)dealloc {
     int i;
-    for (i = 0; i < 70; i++) {
+    for (i = 0; i < NUM_IMAGES; i++) {
         [images[i] release];
     }
     [databaseDocument release];
@@ -208,7 +208,11 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
     }
 }
 
-- (UIImage*)loadImage:(int)index {
+- (UIImage*)loadImage:(NSUInteger)index {
+    if (index >= NUM_IMAGES) {
+        return nil;
+    }
+    
     if (images[index] == nil) {
         images[index] = [[UIImage imageNamed:[NSString stringWithFormat:@"%d", index]] retain];
     }

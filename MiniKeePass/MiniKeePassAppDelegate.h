@@ -20,6 +20,8 @@
 #import "PinViewController.h"
 #import "DatabaseDocument.h"
 
+#define NUM_IMAGES 69
+
 @interface MiniKeePassAppDelegate : NSObject <UIApplicationDelegate, PinViewControllerDelegate, UIActionSheetDelegate> {
     UIWindow *window;
     UINavigationController *navigationController;
@@ -29,7 +31,7 @@
     DatabaseDocument *databaseDocument;
     NSString *fileToOpen;
     
-    UIImage *images[70];
+    UIImage *images[NUM_IMAGES];
 }
 
 @property (nonatomic, readonly) UIWindow *window;
@@ -37,7 +39,7 @@
 
 - (void)closeDatabase;
 - (void)deleteAllData;
-- (UIImage*)loadImage:(int)index;
+- (UIImage*)loadImage:(NSUInteger)index;
 - (void)showSettingsView;
 - (void)dismissSettingsView;
 - (void)showActionSheet:(UIActionSheet*)actionSheet;
