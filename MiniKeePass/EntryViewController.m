@@ -20,13 +20,13 @@
 @implementation EntryViewController
 
 @synthesize entry;
+@synthesize isNewEntry;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
     self.tableView.delaysContentTouches = YES;
     
-    // Replace the back button with our own so we can ask if they are sure
     UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:self action:@selector(cancelPressed)];
     self.navigationItem.rightBarButtonItem = cancelButton;
     [cancelButton release];    
@@ -80,6 +80,22 @@
     passwordCell.textField.text = entry.password;
     urlCell.textField.text = entry.url;
     commentsCell.textView.text = entry.notes;
+    
+    if (isNewEntry) {
+        titleCell.textField.delegate = self;
+        titleCell.textField.returnKeyType = UIReturnKeyNext;
+
+        usernameCell.textField.delegate = self;
+        usernameCell.textField.returnKeyType = UIReturnKeyNext;
+
+        passwordCell.textField.delegate = self;
+        passwordCell.textField.returnKeyType = UIReturnKeyNext;
+
+        urlCell.textField.delegate = self;
+        urlCell.textField.returnKeyType = UIReturnKeyDone;
+
+        [titleCell.textField becomeFirstResponder];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -144,6 +160,21 @@ BOOL stringsEqual(NSString *str1, NSString *str2) {
     [passwordCell.textField resignFirstResponder];
     [urlCell.textField resignFirstResponder];
     [commentsCell.textView resignFirstResponder];
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    if (isNewEntry) {
+        if (textField == titleCell.textField) {
+            [usernameCell.textField becomeFirstResponder];
+        } else if (textField == usernameCell.textField) {
+            [passwordCell.textField becomeFirstResponder];
+        } else if (textField == passwordCell.textField) {
+            [urlCell.textField becomeFirstResponder];
+        } else if (textField == urlCell.textField) {
+            [urlCell.textField resignFirstResponder];
+        }
+    }
+    return NO;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {

@@ -33,11 +33,13 @@
     TextViewCell *commentsCell;
     CGFloat originalHeight;
     BOOL canceled;
+    BOOL isNewEntry;
 
     KdbEntry *entry;
 }
 
 @property (nonatomic, retain) KdbEntry *entry;
+@property (nonatomic) BOOL isNewEntry;
 
 - (BOOL)isDirty;
 

@@ -356,6 +356,7 @@
         EntryViewController *entryViewController = [[EntryViewController alloc] initWithStyle:UITableViewStyleGrouped];
         entryViewController.entry = e;
         entryViewController.title = e.title;
+        entryViewController.isNewEntry = YES;
         [self.navigationController pushViewController:entryViewController animated:YES];
         [entryViewController release];
         
