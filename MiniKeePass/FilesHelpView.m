@@ -50,7 +50,7 @@
         
         UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
         button.frame = CGRectMake(0, y, 320, 20);
-        [button setTitle:@"Sync with iTunes" forState:UIControlStateNormal];
+        [button setTitle:@"Import from iTunes" forState:UIControlStateNormal];
         [button setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
         [button setTitleColor:[UIColor redColor] forState:UIControlStateHighlighted];
         [button addTarget:self action:@selector(iTunesPressed:) forControlEvents:UIControlEventTouchUpInside];
@@ -60,7 +60,7 @@
         
         button = [UIButton buttonWithType:UIButtonTypeCustom];
         button.frame = CGRectMake(0, y, 320, 20);
-        [button setTitle:@"Sync with Dropbox" forState:UIControlStateNormal];
+        [button setTitle:@"Import from Dropbox" forState:UIControlStateNormal];
         [button setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
         [button setTitleColor:[UIColor redColor] forState:UIControlStateHighlighted];
         [button addTarget:self action:@selector(dropboxPressed:) forControlEvents:UIControlEventTouchUpInside];
