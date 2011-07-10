@@ -46,8 +46,6 @@
     CGRect rect = self.contentView.frame;
     CGSize size = CGSizeMake(24, 24);
     
-    NSLog(@"w: %f  h: %f", size.width, size.height);
-    
     CGFloat x = rect.origin.x + rect.size.width - size.width - 10;
     CGFloat y = rect.origin.y + rect.size.height / 2.0 - size.height / 2.0;
     
