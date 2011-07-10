@@ -26,28 +26,39 @@
     [super viewDidLoad];
     
     self.tableView.delaysContentTouches = YES;
-    
+
     UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:self action:@selector(cancelPressed)];
     self.navigationItem.rightBarButtonItem = cancelButton;
     [cancelButton release];    
     
+    appDelegate = (MiniKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
+    
     titleCell = [[TitleFieldCell alloc] init];
     titleCell.textLabel.text = @"Title";
+    titleCell.textField.delegate = self;
+    titleCell.textField.returnKeyType = UIReturnKeyNext;
+    
+    imageButtonCell = [[ImageButtonCell alloc] initWithLabel:@"Image"];
+    [imageButtonCell.imageButton addTarget:self action:@selector(imageButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     
     usernameCell = [[TextFieldCell alloc] init];
     usernameCell.textLabel.text = @"Username";
     usernameCell.textField.autocorrectionType = UITextAutocorrectionTypeNo;
     usernameCell.textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    usernameCell.textField.delegate = self;
+    usernameCell.textField.returnKeyType = UIReturnKeyNext;
     
     passwordCell = [[PasswordFieldCell alloc] init];
     passwordCell.textLabel.text = @"Password";
+    passwordCell.textField.delegate = self;
+    passwordCell.textField.returnKeyType = UIReturnKeyNext;
     
     urlCell = [[UrlFieldCell alloc] init];
     urlCell.textLabel.text = @"URL";
+    urlCell.textField.delegate = self;
+    urlCell.textField.returnKeyType = UIReturnKeyDone;
     
     commentsCell = [[TextViewCell alloc] init];
-    
-    appDelegate = (MiniKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
     
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapPressed)];
     [self.view addGestureRecognizer:tapGesture];
@@ -66,7 +77,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-
+    
     // Mark the view as not being canceled
     canceled = NO;
     
@@ -76,24 +87,16 @@
     
     // Update the fields
     titleCell.textField.text = entry.title;
+    
+    selectedImageIndex = entry.image;
+    [imageButtonCell.imageButton setImage:[appDelegate loadImage:entry.image] forState:UIControlStateNormal];
+    
     usernameCell.textField.text = entry.username;
     passwordCell.textField.text = entry.password;
     urlCell.textField.text = entry.url;
     commentsCell.textView.text = entry.notes;
     
     if (isNewEntry) {
-        titleCell.textField.delegate = self;
-        titleCell.textField.returnKeyType = UIReturnKeyNext;
-
-        usernameCell.textField.delegate = self;
-        usernameCell.textField.returnKeyType = UIReturnKeyNext;
-
-        passwordCell.textField.delegate = self;
-        passwordCell.textField.returnKeyType = UIReturnKeyNext;
-
-        urlCell.textField.delegate = self;
-        urlCell.textField.returnKeyType = UIReturnKeyDone;
-
         [titleCell.textField becomeFirstResponder];
     }
 }
@@ -127,7 +130,7 @@
 }
 
 - (void)applicationWillResignActive:(id)sender {
-    //resign first responder to prevent password being in sight and UI glitchs
+    // Resign first responder to prevent password being in sight and UI glitchs
     [titleCell.textField resignFirstResponder];
     [usernameCell.textField resignFirstResponder];
     [passwordCell.textField resignFirstResponder];
@@ -148,6 +151,7 @@ BOOL stringsEqual(NSString *str1, NSString *str2) {
 
 - (BOOL)isDirty {
     return !(stringsEqual(entry.title, titleCell.textField.text) &&
+        entry.image == selectedImageIndex &&
         stringsEqual(entry.username, usernameCell.textField.text) &&
         stringsEqual(entry.password, passwordCell.textField.text) &&
         stringsEqual(entry.url, urlCell.textField.text) &&
@@ -163,17 +167,16 @@ BOOL stringsEqual(NSString *str1, NSString *str2) {
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
-    if (isNewEntry) {
-        if (textField == titleCell.textField) {
-            [usernameCell.textField becomeFirstResponder];
-        } else if (textField == usernameCell.textField) {
-            [passwordCell.textField becomeFirstResponder];
-        } else if (textField == passwordCell.textField) {
-            [urlCell.textField becomeFirstResponder];
-        } else if (textField == urlCell.textField) {
-            [urlCell.textField resignFirstResponder];
-        }
+    if (textField == titleCell.textField) {
+        [usernameCell.textField becomeFirstResponder];
+    } else if (textField == usernameCell.textField) {
+        [passwordCell.textField becomeFirstResponder];
+    } else if (textField == passwordCell.textField) {
+        [urlCell.textField becomeFirstResponder];
+    } else if (textField == urlCell.textField) {
+        [urlCell.textField resignFirstResponder];
     }
+    
     return NO;
 }
 
@@ -184,7 +187,7 @@ BOOL stringsEqual(NSString *str1, NSString *str2) {
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     switch (section) {
         case 0:
-            return 4;
+            return 5;
         case 1:
             return 1;
     }
@@ -197,7 +200,7 @@ BOOL stringsEqual(NSString *str1, NSString *str2) {
         case 0:
             return 40;
         case 1:
-            return 144;
+            return 104;
     }
     
     return 40;
@@ -221,10 +224,12 @@ BOOL stringsEqual(NSString *str1, NSString *str2) {
                 case 0:
                     return titleCell;
                 case 1:
-                    return usernameCell;
+                    return imageButtonCell;
                 case 2:
-                    return passwordCell;
+                    return usernameCell;
                 case 3:
+                    return passwordCell;
+                case 4:
                     return urlCell;
             }
         case 1:
@@ -232,6 +237,18 @@ BOOL stringsEqual(NSString *str1, NSString *str2) {
     }
     
     return nil;
+}
+
+- (void)imageButtonPressed {
+    ImagesViewController *imagesViewController = [[ImagesViewController alloc] init];
+    imagesViewController.delegate = self;
+    [imagesViewController setSelectedImage:entry.image];
+    [self.navigationController pushViewController:imagesViewController animated:YES];
+    [imagesViewController release];
+}
+
+- (void)imagesViewController:(ImagesViewController *)controller imageSelected:(NSUInteger)index {
+    selectedImageIndex = index;
 }
 
 @end

@@ -21,16 +21,20 @@
 #import "UrlFieldCell.h"
 #import "TextViewCell.h"
 #import "PasswordFieldCell.h"
+#import "ImageButtonCell.h"
+#import "ImagesViewController.h"
 #import "KdbLib.h"
 #import "MiniKeePassAppDelegate.h"
 
-@interface EntryViewController : UITableViewController <UITextFieldDelegate, UITextViewDelegate> {
+@interface EntryViewController : UITableViewController <UITextFieldDelegate, UITextViewDelegate, ImagesViewControllerDelegate> {
     MiniKeePassAppDelegate *appDelegate;
     TitleFieldCell *titleCell;
+    ImageButtonCell *imageButtonCell;
     TextFieldCell *usernameCell;
     PasswordFieldCell *passwordCell;
     UrlFieldCell *urlCell;
     TextViewCell *commentsCell;
+    NSUInteger selectedImageIndex;
     CGFloat originalHeight;
     BOOL canceled;
     BOOL isNewEntry;
