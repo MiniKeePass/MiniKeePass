@@ -328,10 +328,25 @@
         // Create and add a group
         KdbGroup *g = [databaseDocument.kdbTree createGroup:group];
         g.name = @"New Group";
+        g.image = group.image;
         [group addGroup:g];
         
         databaseDocument.dirty = YES;
         [databaseDocument save];
+
+/*
+        EditGroupViewController *editGroupViewController = [[EditGroupViewController alloc] initWithStyle:UITableViewStyleGrouped];
+        editGroupViewController.delegate = self;
+        editGroupViewController.nameTextField.text = g.name;
+        [editGroupViewController setSelectedImageIndex:g.image];
+        
+        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:editGroupViewController];
+        
+        [appDelegate.window.rootViewController presentModalViewController:navigationController animated:YES];
+        
+        [navigationController release];
+        [editGroupViewController release];
+*/
         
         // Notify the table of the new row
         NSUInteger index = [group.groups count] - 1;
@@ -348,6 +363,7 @@
         // Create and add an entry
         KdbEntry *e = [databaseDocument.kdbTree createEntry:group];
         e.title = @"New Entry";
+        e.image = group.image;
         [group addEntry:e];
         
         databaseDocument.dirty = YES;
