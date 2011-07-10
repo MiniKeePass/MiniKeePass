@@ -1,10 +1,19 @@
-//
-//  EditGroupViewController.m
-//  MiniKeePass
-//
-//  Created by Jason Rush on 6/23/11.
-//  Copyright 2011 Self. All rights reserved.
-//
+/*
+ * Copyright 2011 Jason Rush and John Flanagan. All rights reserved.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 #import "EditGroupViewController.h"
 #import "MiniKeePassAppDelegate.h"
@@ -12,7 +21,6 @@
 @implementation EditGroupViewController
 
 @synthesize nameTextField;
-@synthesize imageButton;
 
 - (id)initWithStyle:(UITableViewStyle)style {
     self = [super initWithStyle:UITableViewStyleGrouped];
@@ -24,10 +32,10 @@
         nameTextField.returnKeyType = UIReturnKeyDone;
         nameTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
         
-        imageButton = [[UIButton alloc] init];
-        [imageButton addTarget:self action:@selector(imageButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+        imageButtonCell = [[ImageButtonCell alloc] initWithLabel:@"Image"];
+        [imageButtonCell.imageButton addTarget:self action:@selector(imageButtonPressed) forControlEvents:UIControlEventTouchUpInside];
         
-        self.controls = [NSArray arrayWithObjects:nameTextField, imageButton, nil];
+        self.controls = [NSArray arrayWithObjects:nameTextField, imageButtonCell, nil];
     }
     return self;
 }
@@ -45,7 +53,7 @@
     selectedImageIndex = index;
     
     MiniKeePassAppDelegate *appDelegate = (MiniKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
-    [imageButton setImage:[appDelegate loadImage:index] forState:UIControlStateNormal];
+    [imageButtonCell.imageButton setImage:[appDelegate loadImage:index] forState:UIControlStateNormal];
 }
 
 - (void)imageButtonPressed {
