@@ -101,18 +101,24 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil] autorelease];
-    cell.selectionStyle = UITableViewCellEditingStyleNone;
+    UITableViewCell *cell;
     
-    CGRect frame = cell.frame;
-    frame.size.width -= 40;
-    frame.size.height -= 22;
-    frame.origin.x = 20;
-    frame.origin.y = 11;
-    
-    UITextField *textField = [controls objectAtIndex:indexPath.row];
-    textField.frame = frame;
-    [cell addSubview:textField];
+    UIView *view = [controls objectAtIndex:indexPath.row];
+    if ([view isKindOfClass:[UITableViewCell class]]) {
+        cell = (UITableViewCell*)view;
+    } else {
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil] autorelease];
+        cell.selectionStyle = UITableViewCellEditingStyleNone;
+        
+        CGRect frame = cell.frame;
+        frame.size.width -= 40;
+        frame.size.height -= 22;
+        frame.origin.x = 20;
+        frame.origin.y = 11;
+        
+        view.frame = frame;
+        [cell addSubview:view];
+    }
     
     return cell;
 }
