@@ -19,54 +19,60 @@
 
 @implementation EntryViewController
 
-@synthesize entry;
 @synthesize isNewEntry;
+@synthesize entry;
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    
-    self.tableView.delaysContentTouches = YES;
-
-    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:self action:@selector(cancelPressed)];
-    self.navigationItem.rightBarButtonItem = cancelButton;
-    [cancelButton release];    
-    
-    appDelegate = (MiniKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
-    
-    titleCell = [[TitleFieldCell alloc] init];
-    titleCell.textLabel.text = @"Title";
-    titleCell.textField.delegate = self;
-    titleCell.textField.returnKeyType = UIReturnKeyNext;
-    
-    imageButtonCell = [[ImageButtonCell alloc] initWithLabel:@"Image"];
-    [imageButtonCell.imageButton addTarget:self action:@selector(imageButtonPressed) forControlEvents:UIControlEventTouchUpInside];
-    
-    usernameCell = [[TextFieldCell alloc] init];
-    usernameCell.textLabel.text = @"Username";
-    usernameCell.textField.autocorrectionType = UITextAutocorrectionTypeNo;
-    usernameCell.textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
-    usernameCell.textField.delegate = self;
-    usernameCell.textField.returnKeyType = UIReturnKeyNext;
-    
-    passwordCell = [[PasswordFieldCell alloc] init];
-    passwordCell.textLabel.text = @"Password";
-    passwordCell.textField.delegate = self;
-    passwordCell.textField.returnKeyType = UIReturnKeyNext;
-    
-    urlCell = [[UrlFieldCell alloc] init];
-    urlCell.textLabel.text = @"URL";
-    urlCell.textField.delegate = self;
-    urlCell.textField.returnKeyType = UIReturnKeyDone;
-    
-    commentsCell = [[TextViewCell alloc] init];
-    
-    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapPressed)];
-    [self.view addGestureRecognizer:tapGesture];
-    [tapGesture release];
+- (id)initWithStyle:(UITableViewStyle)style {
+    self = [super initWithStyle:style];
+    if (self) {
+        self.tableView.delaysContentTouches = YES;
+        
+        UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:self action:@selector(cancelPressed)];
+        self.navigationItem.rightBarButtonItem = cancelButton;
+        [cancelButton release];    
+        
+        appDelegate = (MiniKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
+        
+        titleCell = [[TitleFieldCell alloc] init];
+        titleCell.textLabel.text = @"Title";
+        titleCell.textField.delegate = self;
+        titleCell.textField.returnKeyType = UIReturnKeyNext;
+        
+        imageButtonCell = [[ImageButtonCell alloc] initWithLabel:@"Image"];
+        imageButtonCell.imageButton.exclusiveTouch = YES;
+        imageButtonCell.imageButton.userInteractionEnabled = YES;
+        [imageButtonCell.imageButton addTarget:self action:@selector(imageButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+        
+        usernameCell = [[TextFieldCell alloc] init];
+        usernameCell.textLabel.text = @"Username";
+        usernameCell.textField.autocorrectionType = UITextAutocorrectionTypeNo;
+        usernameCell.textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+        usernameCell.textField.delegate = self;
+        usernameCell.textField.returnKeyType = UIReturnKeyNext;
+        
+        passwordCell = [[PasswordFieldCell alloc] init];
+        passwordCell.textLabel.text = @"Password";
+        passwordCell.textField.delegate = self;
+        passwordCell.textField.returnKeyType = UIReturnKeyNext;
+        
+        urlCell = [[UrlFieldCell alloc] init];
+        urlCell.textLabel.text = @"URL";
+        urlCell.textField.delegate = self;
+        urlCell.textField.returnKeyType = UIReturnKeyDone;
+        
+        commentsCell = [[TextViewCell alloc] init];
+        
+         // FIXME This breaks button pushes
+         UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapPressed)];
+         [self.view addGestureRecognizer:tapGesture];
+         [tapGesture release];
+    }
+    return self;
 }
 
 - (void)dealloc {
     [titleCell release];
+    [imageButtonCell release];
     [usernameCell release];
     [passwordCell release];
     [urlCell release];
@@ -84,18 +90,7 @@
     // Add listeners to the keyboard
     NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
     [notificationCenter addObserver:self selector:@selector(applicationWillResignActive:) name:UIApplicationWillResignActiveNotification object:nil];
-    
-    // Update the fields
-    titleCell.textField.text = entry.title;
-    
-    selectedImageIndex = entry.image;
-    [imageButtonCell.imageButton setImage:[appDelegate loadImage:entry.image] forState:UIControlStateNormal];
-    
-    usernameCell.textField.text = entry.username;
-    passwordCell.textField.text = entry.password;
-    urlCell.textField.text = entry.url;
-    commentsCell.textView.text = entry.notes;
-    
+        
     if (isNewEntry) {
         [titleCell.textField becomeFirstResponder];
     }
@@ -127,6 +122,24 @@
     
     // Remove listeners from the keyboard
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)setEntry:(KdbEntry *)e {
+    [entry release];
+    
+    entry = [e retain];
+    
+    // Update the fields
+    titleCell.textField.text = entry.title;
+    [self setSelectedImageIndex:entry.image];
+    usernameCell.textField.text = entry.username;
+    passwordCell.textField.text = entry.password;
+    urlCell.textField.text = entry.url;
+    commentsCell.textView.text = entry.notes;
+}
+
+- (KdbEntry *)entry {
+    return entry;
 }
 
 - (void)applicationWillResignActive:(id)sender {
@@ -239,6 +252,16 @@ BOOL stringsEqual(NSString *str1, NSString *str2) {
     return nil;
 }
 
+- (NSUInteger)selectedImageIndex {
+    return selectedImageIndex;
+}
+
+- (void)setSelectedImageIndex:(NSUInteger)index {
+    selectedImageIndex = index;
+    
+    [imageButtonCell.imageButton setImage:[appDelegate loadImage:index] forState:UIControlStateNormal];
+}
+
 - (void)imageButtonPressed {
     ImagesViewController *imagesViewController = [[ImagesViewController alloc] init];
     imagesViewController.delegate = self;
@@ -248,7 +271,7 @@ BOOL stringsEqual(NSString *str1, NSString *str2) {
 }
 
 - (void)imagesViewController:(ImagesViewController *)controller imageSelected:(NSUInteger)index {
-    selectedImageIndex = index;
+    [self setSelectedImageIndex:index];
 }
 
 @end

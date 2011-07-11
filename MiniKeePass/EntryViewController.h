@@ -34,15 +34,17 @@
     PasswordFieldCell *passwordCell;
     UrlFieldCell *urlCell;
     TextViewCell *commentsCell;
+    
     NSUInteger selectedImageIndex;
     CGFloat originalHeight;
     BOOL canceled;
-    BOOL isNewEntry;
-
+    
     KdbEntry *entry;
+    BOOL isNewEntry;
 }
 
-@property (nonatomic, retain) KdbEntry *entry;
+@property (nonatomic, assign) NSUInteger selectedImageIndex;
+@property (nonatomic, assign) KdbEntry *entry;
 @property (nonatomic) BOOL isNewEntry;
 
 - (BOOL)isDirty;
