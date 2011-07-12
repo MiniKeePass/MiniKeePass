@@ -344,7 +344,6 @@
         databaseDocument.dirty = YES;
         [databaseDocument save];
 
-/*
         EditGroupViewController *editGroupViewController = [[EditGroupViewController alloc] initWithStyle:UITableViewStyleGrouped];
         editGroupViewController.delegate = self;
         editGroupViewController.nameTextField.text = g.name;
@@ -356,19 +355,21 @@
         
         [navigationController release];
         [editGroupViewController release];
-*/
         
         // Notify the table of the new row
         NSUInteger index = [group.groups count] - 1;
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:GROUPS_SECTION];
         if (index == 0) {
             // Reload the section if it's the first item
             NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:GROUPS_SECTION];
             [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationLeft];
         } else {
             // Insert the new row
-            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:GROUPS_SECTION];
             [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationRight];
         }
+        
+        // Select the row
+        [self.tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionTop];
     } else if (buttonIndex == 1) {
         // Create and add an entry
         KdbEntry *e = [databaseDocument.kdbTree createEntry:group];
