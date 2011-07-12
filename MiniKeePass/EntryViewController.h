@@ -26,7 +26,7 @@
 #import "KdbLib.h"
 #import "MiniKeePassAppDelegate.h"
 
-@interface EntryViewController : UITableViewController <UITextFieldDelegate, UITextViewDelegate, ImagesViewControllerDelegate> {
+@interface EntryViewController : UITableViewController <UITextFieldDelegate, UITextViewDelegate, UIGestureRecognizerDelegate, ImagesViewControllerDelegate> {
     MiniKeePassAppDelegate *appDelegate;
     TitleFieldCell *titleCell;
     ImageButtonCell *imageButtonCell;

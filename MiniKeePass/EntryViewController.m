@@ -39,8 +39,6 @@
         titleCell.textField.returnKeyType = UIReturnKeyNext;
         
         imageButtonCell = [[ImageButtonCell alloc] initWithLabel:@"Image"];
-        imageButtonCell.imageButton.exclusiveTouch = YES;
-        imageButtonCell.imageButton.userInteractionEnabled = YES;
         [imageButtonCell.imageButton addTarget:self action:@selector(imageButtonPressed) forControlEvents:UIControlEventTouchUpInside];
         
         usernameCell = [[TextFieldCell alloc] init];
@@ -62,8 +60,8 @@
         
         commentsCell = [[TextViewCell alloc] init];
         
-         // FIXME This breaks button pushes
          UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapPressed)];
+        tapGesture.delegate = self;
          [self.view addGestureRecognizer:tapGesture];
          [tapGesture release];
     }
@@ -169,6 +167,13 @@ BOOL stringsEqual(NSString *str1, NSString *str2) {
         stringsEqual(entry.password, passwordCell.textField.text) &&
         stringsEqual(entry.url, urlCell.textField.text) &&
         stringsEqual(entry.notes, commentsCell.textView.text));
+}
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
+    if ([touch.view isKindOfClass:[UIControl class]]) {
+        return NO;
+    }
+    return YES;
 }
 
 - (void)tapPressed {
