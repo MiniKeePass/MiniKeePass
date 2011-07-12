@@ -146,7 +146,19 @@
         }
         
         return 0;
-    } 
+    }
+}
+
+- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (tableView.editing) {
+        if (indexPath.section == GROUPS_SECTION) {
+            return indexPath;
+        }
+    } else {
+        return indexPath;
+    }
+    
+    return nil;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -166,7 +178,6 @@
         KdbEntry *e = [results objectAtIndex:indexPath.row];
         cell.textLabel.text = e.title;
         cell.imageView.image = [appDelegate loadImage:e.image];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
     } else {
         // Child group/entry
         if (indexPath.section == GROUPS_SECTION) {
@@ -177,7 +188,6 @@
             KdbEntry *e = [group.entries objectAtIndex:indexPath.row];
             cell.textLabel.text = e.title;
             cell.imageView.image = [appDelegate loadImage:e.image];
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
     }
     
