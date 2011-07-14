@@ -26,7 +26,7 @@
 #import "KdbLib.h"
 #import "MiniKeePassAppDelegate.h"
 
-@interface EntryViewController : UITableViewController <UITextFieldDelegate, UITextViewDelegate, ImagesViewControllerDelegate> {
+@interface EntryViewController : UITableViewController <UITextFieldDelegate, UITextViewDelegate, UIGestureRecognizerDelegate, ImagesViewControllerDelegate> {
     MiniKeePassAppDelegate *appDelegate;
     TitleFieldCell *titleCell;
     ImageButtonCell *imageButtonCell;
@@ -34,15 +34,17 @@
     PasswordFieldCell *passwordCell;
     UrlFieldCell *urlCell;
     TextViewCell *commentsCell;
+    
     NSUInteger selectedImageIndex;
     CGFloat originalHeight;
     BOOL canceled;
-    BOOL isNewEntry;
-
+    
     KdbEntry *entry;
+    BOOL isNewEntry;
 }
 
-@property (nonatomic, retain) KdbEntry *entry;
+@property (nonatomic, assign) NSUInteger selectedImageIndex;
+@property (nonatomic, assign) KdbEntry *entry;
 @property (nonatomic) BOOL isNewEntry;
 
 - (BOOL)isDirty;

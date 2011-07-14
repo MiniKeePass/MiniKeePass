@@ -29,8 +29,9 @@
         
         self.textLabel.text = labelText;
         
-        imageButton = [[UIButton alloc] init];
-        [self addSubview:imageButton];
+        imageButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 24, 24)];
+        
+        self.accessoryView = imageButton;
     }
     return self;
 }
@@ -38,18 +39,6 @@
 - (void)dealloc {
     [imageButton release];
     [super dealloc];
-}
-
-- (void)layoutSubviews {
-    [super layoutSubviews];
-    
-    CGRect rect = self.contentView.frame;
-    CGSize size = CGSizeMake(24, 24);
-    
-    CGFloat x = rect.origin.x + rect.size.width - size.width - 10;
-    CGFloat y = rect.origin.y + rect.size.height / 2.0 - size.height / 2.0;
-    
-    imageButton.frame = CGRectMake(x, y, size.width, size.height);
 }
 
 @end
