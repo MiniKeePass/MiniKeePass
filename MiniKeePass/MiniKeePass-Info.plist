@@ -36,7 +36,7 @@
 		<string>icon@2x.png</string>
 	</array>
 	<key>CFBundleIdentifier</key>
-	<string>com.jflan.${PRODUCT_NAME:rfc1034identifier}</string>
+	<string>com.jflan.minikeepass</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
