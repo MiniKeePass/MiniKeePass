@@ -1681,6 +1681,62 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		5200281913D7D95900B77DD8 /* Distribution */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: John Flanagan";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: John Flanagan";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = /usr/include/libxml2;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				PROVISIONING_PROFILE = "EEAA67EE-F308-4220-9A96-56B37CC8621E";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "EEAA67EE-F308-4220-9A96-56B37CC8621E";
+				SDKROOT = iphoneos;
+			};
+			name = Distribution;
+		};
+		5200281A13D7D95900B77DD8 /* Distribution */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "MiniKeePass/MiniKeePass-Prefix.pch";
+				INFOPLIST_FILE = "MiniKeePass/MiniKeePass-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				VALIDATE_PRODUCT = YES;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Distribution;
+		};
+		5200281B13D7D95900B77DD8 /* Distribution */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/MiniKeePass.app/MiniKeePass";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "MiniKeePassTests/MiniKeePassTests-Prefix.pch";
+				INFOPLIST_FILE = "MiniKeePassTests/MiniKeePassTests-Info.plist";
+				OTHER_LDFLAGS = (
+					"-framework",
+					SenTestingKit,
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Distribution;
+		};
 		689D000413A42740005EBD36 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1797,6 +1853,7 @@
 			buildConfigurations = (
 				689D000713A42740005EBD36 /* Debug */,
 				689D000813A42740005EBD36 /* Release */,
+				5200281A13D7D95900B77DD8 /* Distribution */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -1806,6 +1863,7 @@
 			buildConfigurations = (
 				689D000A13A42740005EBD36 /* Debug */,
 				689D000B13A42740005EBD36 /* Release */,
+				5200281B13D7D95900B77DD8 /* Distribution */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -1815,6 +1873,7 @@
 			buildConfigurations = (
 				689D000413A42740005EBD36 /* Debug */,
 				689D000513A42740005EBD36 /* Release */,
+				5200281913D7D95900B77DD8 /* Distribution */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
