@@ -21,6 +21,7 @@
 @implementation TextFieldCell
 
 @synthesize textField;
+@synthesize textFieldCellDelegate;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
@@ -33,7 +34,7 @@
         textField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
         textField.textColor = [UIColor colorWithRed:.285 green:.376 blue:.541 alpha:1];
         textField.font = [UIFont systemFontOfSize:16];
-        textField.returnKeyType = UIReturnKeyDone;
+        textField.returnKeyType = UIReturnKeyNext;
         [self addSubview:textField];
         
         tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapPressed)];
@@ -47,6 +48,7 @@
 - (void)dealloc {
     [textField release];
     [tapGesture release];
+    [textFieldCellDelegate release];
     [super dealloc];
 }
 
@@ -65,7 +67,7 @@
     [actionSheet release];
 }
 
-- (void)actionSheet:(UIActionSheet*)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     switch (buttonIndex) {
         case 0: {
             UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
@@ -99,11 +101,12 @@
     tapGesture.enabled = YES;
 }
 
-- (BOOL)textFieldShouldReturn:(UITextField*)field {
-    // Hide the keyboard
-    [field resignFirstResponder];
+- (BOOL)textFieldShouldReturn:(UITextField *)field {
+    if ([textFieldCellDelegate respondsToSelector:@selector(textFieldCellWillReturn:)]) {
+        [textFieldCellDelegate textFieldCellWillReturn:self];
+    }
     
-    return YES;
+    return NO;
 }
 
 @end

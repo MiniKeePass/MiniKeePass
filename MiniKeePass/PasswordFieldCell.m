@@ -25,8 +25,6 @@
         // Initialization code
         NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
         textField.secureTextEntry = [userDefaults boolForKey:@"hidePasswords"];
-        
-        textField.returnKeyType = UIReturnKeyDone;
     }
     return self;
 }
@@ -37,7 +35,7 @@
     textField.secureTextEntry = NO;
     textField.autocorrectionType = UITextAutocorrectionTypeNo;
     textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
-    textField.returnKeyType = UIReturnKeyDone;
+    textField.returnKeyType = UIReturnKeyNext;
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)field {

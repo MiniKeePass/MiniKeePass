@@ -18,12 +18,20 @@
 #import "MiniKeePassAppDelegate.h"
 #import <UIKit/UIKit.h>
 
+@protocol TextFieldCellDelegate;
+
 @interface TextFieldCell : UITableViewCell <UITextFieldDelegate, UIActionSheetDelegate> {
     MiniKeePassAppDelegate *appDelegate;
     UITextField *textField;
     UIGestureRecognizer *tapGesture;
+    id<TextFieldCellDelegate> textFieldCellDelegate;
 }
 
 @property (nonatomic, retain) UITextField *textField;
+@property (nonatomic, retain) id<TextFieldCellDelegate> textFieldCellDelegate;
 
+@end
+
+@protocol TextFieldCellDelegate <NSObject>
+- (void)textFieldCellWillReturn:(TextFieldCell*)textFieldCell;
 @end

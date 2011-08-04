@@ -35,8 +35,7 @@
         
         titleCell = [[TitleFieldCell alloc] init];
         titleCell.textLabel.text = @"Title";
-        titleCell.textField.delegate = self;
-        titleCell.textField.returnKeyType = UIReturnKeyNext;
+        titleCell.textFieldCellDelegate = self;
         
         imageButtonCell = [[ImageButtonCell alloc] initWithLabel:@"Image"];
         [imageButtonCell.imageButton addTarget:self action:@selector(imageButtonPressed) forControlEvents:UIControlEventTouchUpInside];
@@ -45,17 +44,15 @@
         usernameCell.textLabel.text = @"Username";
         usernameCell.textField.autocorrectionType = UITextAutocorrectionTypeNo;
         usernameCell.textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
-        usernameCell.textField.delegate = self;
-        usernameCell.textField.returnKeyType = UIReturnKeyNext;
+        usernameCell.textFieldCellDelegate = self;
         
         passwordCell = [[PasswordFieldCell alloc] init];
         passwordCell.textLabel.text = @"Password";
-        passwordCell.textField.delegate = self;
-        passwordCell.textField.returnKeyType = UIReturnKeyNext;
+        passwordCell.textFieldCellDelegate = self;
         
         urlCell = [[UrlFieldCell alloc] init];
         urlCell.textLabel.text = @"URL";
-        urlCell.textField.delegate = self;
+        urlCell.textFieldCellDelegate = self;
         urlCell.textField.returnKeyType = UIReturnKeyDone;
         
         commentsCell = [[TextViewCell alloc] init];
@@ -184,18 +181,16 @@ BOOL stringsEqual(NSString *str1, NSString *str2) {
     [commentsCell.textView resignFirstResponder];
 }
 
-- (BOOL)textFieldShouldReturn:(UITextField *)textField {
-    if (textField == titleCell.textField) {
+- (void)textFieldCellWillReturn:(TextFieldCell *)textFieldCell {
+    if (textFieldCell == titleCell) {
         [usernameCell.textField becomeFirstResponder];
-    } else if (textField == usernameCell.textField) {
+    } else if (textFieldCell == usernameCell) {
         [passwordCell.textField becomeFirstResponder];
-    } else if (textField == passwordCell.textField) {
+    } else if (textFieldCell == passwordCell) {
         [urlCell.textField becomeFirstResponder];
-    } else if (textField == urlCell.textField) {
+    } else if (textFieldCell == urlCell) {
         [urlCell.textField resignFirstResponder];
     }
-    
-    return NO;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
