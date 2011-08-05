@@ -35,7 +35,7 @@
         [self addSubview:imageView];
         [imageView release];
         
-        y += imageView.frame.size.height + 16;
+        y += imageView.frame.size.height + 10;
         
         UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, y, 320, 40)];
         label.backgroundColor = [UIColor clearColor];
@@ -46,7 +46,7 @@
         [self addSubview:label];
         [label release];
         
-        y += label.frame.size.height + 16;
+        y += label.frame.size.height + 10;
         
         UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
         button.frame = CGRectMake(0, y, 320, 20);
@@ -56,7 +56,7 @@
         [button addTarget:self action:@selector(iTunesPressed:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:button];
         
-        y += button.frame.size.height + 16;
+        y += button.frame.size.height + 10;
         
         button = [UIButton buttonWithType:UIButtonTypeCustom];
         button.frame = CGRectMake(0, y, 320, 20);
@@ -64,6 +64,16 @@
         [button setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
         [button setTitleColor:[UIColor redColor] forState:UIControlStateHighlighted];
         [button addTarget:self action:@selector(dropboxPressed:) forControlEvents:UIControlEventTouchUpInside];
+        [self addSubview:button];
+        
+        y += button.frame.size.height + 10;
+        
+        button = [UIButton buttonWithType:UIButtonTypeCustom];
+        button.frame = CGRectMake(0, y, 320, 20);
+        [button setTitle:@"Create New" forState:UIControlStateNormal];
+        [button setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+        [button setTitleColor:[UIColor redColor] forState:UIControlStateHighlighted];
+        [button addTarget:self action:@selector(newPressed:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:button];
     }
     return self;
@@ -96,6 +106,10 @@
 
 - (void)dropboxPressed:(id)sender {
     [self pushWebView:@"dropbox"];
+}
+
+- (void)newPressed:(id)sender {
+    [self pushWebView:@"new"];
 }
 
 @end
