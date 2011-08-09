@@ -8,8 +8,9 @@
 
 #import <Foundation/Foundation.h>
 #import "Kdb.h"
+#import "KdbPassword.h"
 #import "InputStream.h"
 
 @protocol KdbReader<NSObject>
-- (KdbTree*)load:(InputStream*)inputStream withPassword:(NSString*)password;
+- (KdbTree*)load:(InputStream*)inputStream withPassword:(KdbPassword*)kdbPassword;
 @end

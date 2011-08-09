@@ -7,12 +7,13 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "KdbReader.h"
+#import "Kdb.h"
+#import "KdbPassword.h"
 
 @interface KdbReaderFactory : NSObject {
 
 }
 
-+ (KdbTree*)load:(NSString*)filename withPassword:(NSString*)password;
++ (KdbTree*)load:(NSString*)filename withPassword:(KdbPassword*)kdbPassword;
 
 @end

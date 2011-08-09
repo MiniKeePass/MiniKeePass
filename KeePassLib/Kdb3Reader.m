@@ -80,13 +80,13 @@
     rounds = CFSwapInt32LittleToHost(rounds);
 }
 
-- (KdbTree*)load:(InputStream*)inputStream withPassword:(NSString*)password {
+- (KdbTree*)load:(InputStream*)inputStream withPassword:(KdbPassword*)kdbPassword {
     Kdb3Tree *tree;
     
     // Read the header
     [self readHeader:inputStream];
     
-    NSData *key = [KdbPassword createFinalKey32ForPasssword:password encoding:NSWindowsCP1252StringEncoding kdbVersion:3 masterSeed:masterSeed transformSeed:transformSeed rounds:rounds];
+    NSData *key = [kdbPassword createFinalKeyForVersion:3 masterSeed:masterSeed transformSeed:transformSeed rounds:rounds];
     AesInputStream *aesInputStream = [[AesInputStream alloc] initWithInputStream:inputStream key:key iv:encryptionIv];
 
     Kdb3Parser *parser = [[Kdb3Parser alloc]init];

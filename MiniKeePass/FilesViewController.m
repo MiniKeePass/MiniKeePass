@@ -291,10 +291,15 @@
         } else {
             writer = [[Kdb4Writer alloc] init];
         }
-
+        
+        // Create the KdbPassword
+        KdbPassword *kdbPassword = [[KdbPassword alloc] initWithPassword:password1 encoding:NSUTF8StringEncoding];
+        
         // Create the new database
-        [writer newFile:path withPassword:password1];
+        [writer newFile:path withPassword:kdbPassword];
         [writer release];
+        
+        [kdbPassword release];
         
         // Store the password in the keychain
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];

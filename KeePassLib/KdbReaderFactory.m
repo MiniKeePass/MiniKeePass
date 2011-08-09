@@ -13,7 +13,7 @@
 
 @implementation KdbReaderFactory
 
-+ (KdbTree*)load:(NSString*)filename withPassword:(NSString*)password {
++ (KdbTree*)load:(NSString*)filename withPassword:(KdbPassword*)kdbPassword {
     DataInputStream *inputStream = [[DataInputStream alloc] initWithData:[NSData dataWithContentsOfFile:filename]];
     uint32_t sig1 = [inputStream readInt32];
     sig1 = CFSwapInt32LittleToHost(sig1);
@@ -30,7 +30,7 @@
         @throw [NSException exceptionWithName:@"IOException" reason:@"Invalid file signature" userInfo:nil];
     }
     
-    KdbTree *tree = [reader load:inputStream withPassword:password];
+    KdbTree *tree = [reader load:inputStream withPassword:kdbPassword];
     [reader release];
     
     [inputStream release];

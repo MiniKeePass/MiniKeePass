@@ -9,6 +9,7 @@
 #import "Kdb3Writer.h"
 #import "Kdb3Node.h"
 #import "Kdb3Persist.h"
+#import "KdbPassword.h"
 #import "DataOutputStream.h"
 #import "AesOutputStream.h"
 #import "Sha256OutputStream.h"
@@ -96,14 +97,14 @@
 /**
  * Persist a tree into a file, using the specified password
  */
-- (void)persist:(Kdb3Tree*)tree file:(NSString*)filename withPassword:(NSString*)password {
+- (void)persist:(Kdb3Tree*)tree file:(NSString*)filename withPassword:(KdbPassword*)kdbPassword {
     DataOutputStream *dataOutputStream = [[DataOutputStream alloc] init];
     
     // Write the header
     [self writeHeader:dataOutputStream withRoot:(Kdb3Group*)tree.root];
     
     // Create the encryption output stream
-    NSData *key = [KdbPassword createFinalKey32ForPasssword:password encoding:NSWindowsCP1252StringEncoding kdbVersion:3 masterSeed:masterSeed transformSeed:transformSeed rounds:rounds];
+    NSData *key = [kdbPassword createFinalKeyForVersion:3 masterSeed:masterSeed transformSeed:transformSeed rounds:rounds];
     AesOutputStream *aesOutputStream = [[AesOutputStream alloc] initWithOutputStream:dataOutputStream key:key iv:encryptionIv];
     
     // Wrap the AES output stream in a SHA256 output stream to calculate a hash
@@ -137,7 +138,7 @@
     }
 }
 
-- (void)newFile:(NSString*)fileName withPassword:(NSString*)password {
+- (void)newFile:(NSString*)fileName withPassword:(KdbPassword*)kdbPassword {
     Kdb3Tree *tree = [[Kdb3Tree alloc] init];
     
     Kdb3Group *rootGroup = [[Kdb3Group alloc] init];
@@ -174,7 +175,7 @@
     group.image = 37;
     [parentGroup addGroup:group];
     
-    [self persist:tree file:fileName withPassword:password];
+    [self persist:tree file:fileName withPassword:kdbPassword];
     
     [tree release];
     [rootGroup release];

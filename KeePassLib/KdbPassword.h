@@ -9,8 +9,13 @@
 #import <Foundation/Foundation.h>
 
 @interface KdbPassword : NSObject {
+    NSData *masterKey;
 }
 
-+ (NSData*)createFinalKey32ForPasssword:(NSString*)password encoding:(NSStringEncoding)encoding kdbVersion:(uint8_t)version masterSeed:(NSData*)masterSeed transformSeed:(NSData*)transformSeed rounds:(uint64_t)rounds;
+- (id)initWithPassword:(NSString*)password encoding:(NSStringEncoding)encoding;
+- (id)initWithKeyfile:(NSString*)filename;
+- (id)initWithPassword:(NSString*)password encoding:(NSStringEncoding)encoding keyfile:(NSString*)filename;
+
+- (NSData*)createFinalKeyForVersion:(uint8_t)version masterSeed:(NSData*)masterSeed transformSeed:(NSData*)transformSeed rounds:(uint64_t)rounds;
 
 @end

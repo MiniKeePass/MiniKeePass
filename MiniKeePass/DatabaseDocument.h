@@ -21,7 +21,7 @@
 @interface DatabaseDocument : NSObject {
     KdbTree *kdbTree;
     NSString *filename;
-    NSString *password;
+    KdbPassword *kdbPassword;
     BOOL dirty;
     UIDocumentInteractionController *documentInteractionController;
 }

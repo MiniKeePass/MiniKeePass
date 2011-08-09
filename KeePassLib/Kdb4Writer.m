@@ -18,6 +18,7 @@
 #import "Kdb4Writer.h"
 #import "Kdb4Node.h"
 #import "Kdb4Persist.h"
+#import "KdbPassword.h"
 #import "DataOutputStream.h"
 #import "AesOutputStream.h"
 #import "HashedOutputStream.h"
@@ -57,7 +58,7 @@
     [super dealloc];
 }
 
-- (void)persist:(Kdb4Tree*)tree file:(NSString*)filename withPassword:(NSString*)password {
+- (void)persist:(Kdb4Tree*)tree file:(NSString*)filename withPassword:(KdbPassword*)kdbPassword {
     // Configure the output stream
     DataOutputStream *outputStream = [[[DataOutputStream alloc] init] autorelease];
     
@@ -65,7 +66,7 @@
     [self writeHeader:outputStream];
     
     // Create the encryption output stream
-    NSData *key = [KdbPassword createFinalKey32ForPasssword:password encoding:NSUTF8StringEncoding kdbVersion:4 masterSeed:masterSeed transformSeed:transformSeed rounds:rounds];
+    NSData *key = [kdbPassword createFinalKeyForVersion:4 masterSeed:masterSeed transformSeed:transformSeed rounds:rounds];
     AesOutputStream *aesOutputStream = [[[AesOutputStream alloc] initWithOutputStream:outputStream key:key iv:encryptionIv] autorelease];
     
     // Write the stream start bytes
@@ -144,7 +145,7 @@
     [self writeHeaderField:outputStream headerId:HEADER_EOH data:buffer length:4];
 }
 
-- (void)newFile:(NSString*)fileName withPassword:(NSString*)password {
+- (void)newFile:(NSString*)fileName withPassword:(KdbPassword*)kdbPassword {
     DDXMLElement *docRoot = [DDXMLNode elementWithName:@"KeePassFile"];
     
     DDXMLElement *rootElement = [DDXMLElement elementWithName:@"Root"];
@@ -184,7 +185,7 @@
     group.image = 37;
     [parentGroup addGroup:group];
     
-    [self persist:tree file:fileName withPassword:password];
+    [self persist:tree file:fileName withPassword:kdbPassword];
     
     [tree release];
 }

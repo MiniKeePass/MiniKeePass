@@ -17,11 +17,12 @@
 
 #import <Foundation/Foundation.h>
 #import "Kdb.h"
+#import "KdbPassword.h"
 
 @interface KdbWriterFactory : NSObject {
     
 }
 
-+ (void)persist:(KdbTree*)tree file:(NSString*)filename withPassword:(NSString*)password;
++ (void)persist:(KdbTree*)tree file:(NSString*)filename withPassword:(KdbPassword*)kdbPassword;
 
 @end

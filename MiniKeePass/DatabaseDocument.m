@@ -28,7 +28,7 @@
     if (self) {
         kdbTree = nil;
         filename = nil;
-        password = nil;
+        kdbPassword = nil;
         dirty = NO;
     }
     return self;
@@ -38,7 +38,7 @@
 - (void)dealloc {
     [kdbTree release];
     [filename release];
-    [password release];
+    [kdbPassword release];
     [documentInteractionController release];
     [super dealloc];
 }
@@ -51,22 +51,22 @@
     return documentInteractionController;
 }
 
-- (void)open:(NSString *)newFilename password:(NSString *)newPassword {
+- (void)open:(NSString *)newFilename password:(NSString *)password {
     [kdbTree release];
     [filename release];
-    [password release];
+    [kdbPassword release];
     
     filename = [newFilename retain];
-    password = [newPassword retain];
+    kdbPassword = [[KdbPassword alloc] initWithPassword:password encoding:NSUTF8StringEncoding];
     dirty = NO;
     
-    self.kdbTree = [KdbReaderFactory load:filename withPassword:password];
+    self.kdbTree = [KdbReaderFactory load:filename withPassword:kdbPassword];
 }
 
 - (void)save {
     if (dirty) {
         dirty = NO;
-        [KdbWriterFactory persist:kdbTree file:filename withPassword:password];
+        [KdbWriterFactory persist:kdbTree file:filename withPassword:kdbPassword];
     }
 }
 

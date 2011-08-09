@@ -17,7 +17,6 @@
 
 #import <Foundation/Foundation.h>
 #import "KdbWriter.h"
-#import "KdbPassword.h"
 #import "Kdb4Node.h"
 
 @interface Kdb4Writer : NSObject<KdbWriter> {

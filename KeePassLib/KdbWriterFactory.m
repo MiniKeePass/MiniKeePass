@@ -21,7 +21,7 @@
 
 @implementation KdbWriterFactory
 
-+ (void)persist:(KdbTree*)tree file:(NSString*)filename withPassword:(NSString*)password {
++ (void)persist:(KdbTree*)tree file:(NSString*)filename withPassword:(KdbPassword*)kdbPassword {
     id<KdbWriter> writer;
     
     if ([tree isKindOfClass:[Kdb3Tree class]]) {
@@ -32,7 +32,7 @@
         @throw [NSException exceptionWithName:@"IllegalArgument" reason:@"IllegalArgument" userInfo:nil];
     }
     
-    [writer persist:tree file:filename withPassword:password];
+    [writer persist:tree file:filename withPassword:kdbPassword];
     [writer release];
 }
 
