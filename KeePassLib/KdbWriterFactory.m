@@ -29,7 +29,7 @@
     } else if ([tree isKindOfClass:[Kdb4Tree class]]) {
         writer = [[Kdb4Writer alloc] init];
     } else {
-        @throw [NSException exceptionWithName:@"IllegalArgument" reason:@"IllegalArgument" userInfo:nil];
+        @throw [NSException exceptionWithName:@"IllegalArgument" reason:@"KdbTree is not of a known type" userInfo:nil];
     }
     
     [writer persist:tree file:filename withPassword:kdbPassword];
