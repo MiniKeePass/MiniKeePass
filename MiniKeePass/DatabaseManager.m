@@ -65,7 +65,7 @@ static DatabaseManager *sharedInstance;
         // Load the database
         DatabaseDocument *dd = [[DatabaseDocument alloc] init];
         @try {
-            [dd open:path password:password];
+            [dd open:path password:password keyfile:nil];
             
             databaseLoaded = YES;
             
@@ -117,7 +117,7 @@ static DatabaseManager *sharedInstance;
     DatabaseDocument *dd = [[DatabaseDocument alloc] init];
     @try {
         // Open the database
-        [dd open:path password:string];
+        [dd open:path password:string keyfile:nil];
         
         // Store the password in the keychain
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
