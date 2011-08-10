@@ -113,11 +113,22 @@ static DatabaseManager *sharedInstance;
     NSString *documentsDirectory = [paths objectAtIndex:0];
     NSString *path = [documentsDirectory stringByAppendingPathComponent:selectedFilename];
     
+    // FIXME this is test code to load a keyfile
+    NSString *keyfile = [[path stringByDeletingPathExtension] stringByAppendingPathExtension:@"key"];
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    if (![fileManager fileExistsAtPath:keyfile]) {
+        keyfile = nil;
+    } else {
+        if ([string isEqualToString:@""]) {
+            string = nil;
+        }
+    }
+    
     // Load the database
     DatabaseDocument *dd = [[DatabaseDocument alloc] init];
     @try {
         // Open the database
-        [dd open:path password:string keyfile:nil];
+        [dd open:path password:string keyfile:keyfile];
         
         // Store the password in the keychain
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
