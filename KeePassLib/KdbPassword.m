@@ -61,7 +61,7 @@ int hex2dec(char c);
         
         // Get the file hash
         NSData *fileKey = [self loadKeyfile:filename];
-        if (masterKey == nil) {
+        if (fileKey == nil) {
             @throw [NSException exceptionWithName:@"IOException" reason:@"Failed to load keyfile" userInfo:nil];
         }
         
@@ -179,7 +179,11 @@ int hex2dec(char c);
     CC_SHA256_CTX ctx;
     CC_SHA256_Init(&ctx);
     
-    while ((data = [fh readDataOfLength:2048]) != nil) {
+    while (TRUE) {
+        data = [fh readDataOfLength:2048];
+        if (data.length == 0) {
+            break;
+        }
         CC_SHA256_Update(&ctx, data.bytes, data.length);
     }
     
