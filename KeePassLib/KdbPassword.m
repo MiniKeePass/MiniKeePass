@@ -12,9 +12,10 @@
 #import "KdbPassword.h"
 
 @interface KdbPassword (PrivateMethods)
-- (NSData*)loadKeyfile:(NSString*)filename;
-- (NSData*)loadHexKeyfile:(NSFileHandle*)fh;
-- (NSData*)loadHashKeyfile:(NSFileHandle*)fh;
+- (NSData*)loadKeyFile:(NSString*)filename;
+- (NSData*)loadBinKeyFile32:(NSFileHandle*)fh;
+- (NSData*)loadHexKeyFile64:(NSFileHandle*)fh;
+- (NSData*)loadHashKeyFile:(NSFileHandle*)fh;
 @end
 
 int hex2dec(char c);
@@ -41,7 +42,7 @@ int hex2dec(char c);
     self = [super init];
     if (self) {
         // Get the file hash
-        masterKey = [self loadKeyfile:filename];
+        masterKey = [self loadKeyFile:filename];
         if (masterKey == nil) {
             @throw [NSException exceptionWithName:@"IOException" reason:@"Failed to load keyfile" userInfo:nil];
         }
@@ -60,7 +61,7 @@ int hex2dec(char c);
         CC_SHA256(pass.bytes, pass.length, passwordKey);
         
         // Get the file hash
-        NSData *fileKey = [self loadKeyfile:filename];
+        NSData *fileKey = [self loadKeyFile:filename];
         if (fileKey == nil) {
             @throw [NSException exceptionWithName:@"IOException" reason:@"Failed to load keyfile" userInfo:nil];
         }
@@ -113,7 +114,7 @@ int hex2dec(char c);
     return [NSData dataWithBytes:finalKey length:32];
 }
 
-- (NSData*)loadKeyfile:(NSString*)filename {
+- (NSData*)loadKeyFile:(NSString*)filename {
     NSData *keyFile = nil;
     
     // Open the keyfile
@@ -128,26 +129,33 @@ int hex2dec(char c);
     
     if (fileSize == 32) {
         // Load the binary key directly from the file
-        keyFile = [fh readDataOfLength:32];
+        keyFile = [self loadBinKeyFile32:fh];
     } else if (fileSize == 64) {
         // Try and load the hex encoded key from the file
-        keyFile = [self loadHexKeyfile:fh];
-        if (keyFile == nil) {
-            // The hex encoded file failed to load, so try and hash the file
-            [fh seekToFileOffset:0];
-            keyFile = [self loadHashKeyfile:fh];
-        }
-    } else {
-        // Hash the contents of the file to create a key
-        keyFile = [self loadHashKeyfile:fh];
+        keyFile = [self loadHexKeyFile64:fh];
+    }
+    
+    if (keyFile == nil) {
+        // The hex encoded file failed to load, so try and hash the file
+        [fh seekToFileOffset:0];
+        keyFile = [self loadHashKeyFile:fh];
     }
     
     [fh closeFile];
-    
+    if (keyFile == nil) {
+        // The hex encoded file failed to load, so try and hash the file
+        [fh seekToFileOffset:0];
+        keyFile = [self loadHashKeyFile:fh];
+    }
+ 
     return keyFile;
 }
 
-- (NSData*)loadHexKeyfile:(NSFileHandle*)fh {
+- (NSData*)loadBinKeyFile32:(NSFileHandle *)fh {
+    return [fh readDataOfLength:32];
+}
+
+- (NSData*)loadHexKeyFile64:(NSFileHandle *)fh {
     uint8_t keyFile[32];
     int value1;
     int value2;
@@ -172,7 +180,7 @@ int hex2dec(char c);
     return [NSData dataWithBytes:keyFile length:32];
 }
 
-- (NSData*)loadHashKeyfile:(NSFileHandle*)fh {
+- (NSData*)loadHashKeyFile:(NSFileHandle*)fh {
     uint8_t keyFile[32];
     NSData *data;
     
