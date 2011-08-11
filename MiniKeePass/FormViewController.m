@@ -108,7 +108,7 @@
         cell = (UITableViewCell*)view;
     } else {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil] autorelease];
-        cell.selectionStyle = UITableViewCellEditingStyleNone;
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
         CGRect frame = cell.frame;
         frame.size.width -= 40;
