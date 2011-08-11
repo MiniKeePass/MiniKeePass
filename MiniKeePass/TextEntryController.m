@@ -20,8 +20,6 @@
 @implementation TextEntryController
 
 @synthesize textField;
-@synthesize headerTitle;
-@synthesize footerTitle;
 @synthesize textEntryDelegate;
 
 - (id)initWithStyle:(UITableViewStyle)style {
@@ -43,14 +41,6 @@
     [textField release];
     [textEntryDelegate release];
     [super dealloc];
-}
-
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    return headerTitle;
-}
-
-- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
-    return footerTitle;
 }
 
 - (void)formViewController:(FormViewController *)controller button:(FormViewControllerButton)button {

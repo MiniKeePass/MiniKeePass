@@ -20,6 +20,8 @@
 @implementation FormViewController
 
 @synthesize controls;
+@synthesize headerTitle;
+@synthesize footerTitle;
 @synthesize delegate;
 
 - (id)initWithStyle:(UITableViewStyle)style {
@@ -27,6 +29,9 @@
     if (self) {
         self.tableView.scrollEnabled = NO;
         self.tableView.delegate = self;
+        
+        headerTitle = nil;
+        footerTitle = nil;
         
         UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(okPressed:)];
         self.navigationItem.rightBarButtonItem = doneButton;
@@ -58,6 +63,8 @@
 
 - (void)dealloc {
     [infoBar release];
+    [headerTitle release];
+    [footerTitle release];
     [super dealloc];
 }
 
@@ -98,6 +105,14 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return [controls count];
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    return headerTitle;
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
+    return footerTitle;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {

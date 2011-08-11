@@ -22,14 +22,10 @@
 
 @interface TextEntryController : FormViewController <FormViewControllerDelegate, UITextFieldDelegate> {
     UITextField *textField;
-    NSString *headerTitle;
-    NSString *footerTitle;
     id<TextEntryControllerDelegate> textEntryDelegate;
 }
 
 @property (nonatomic, readonly) UITextField *textField;
-@property (nonatomic, copy) NSString *headerTitle;
-@property (nonatomic, copy) NSString *footerTitle;
 @property (nonatomic, retain) id<TextEntryControllerDelegate> textEntryDelegate;
 
 @end
