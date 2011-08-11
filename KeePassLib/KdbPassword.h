@@ -10,6 +10,7 @@
 
 @interface KdbPassword : NSObject {
     NSData *masterKey;
+    BOOL needsAdditionalHash;
 }
 
 - (id)initWithPassword:(NSString*)password encoding:(NSStringEncoding)encoding;

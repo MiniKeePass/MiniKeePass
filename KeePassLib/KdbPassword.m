@@ -10,9 +10,12 @@
 #import <CommonCrypto/CommonCryptor.h>
 
 #import "KdbPassword.h"
+#import "DDXML.h"
+#import "Base64.h"
 
 @interface KdbPassword (PrivateMethods)
 - (NSData*)loadKeyFile:(NSString*)filename;
+- (NSData*)loadXmlKeyFile:(NSString*)filename;
 - (NSData*)loadBinKeyFile32:(NSFileHandle*)fh;
 - (NSData*)loadHexKeyFile64:(NSFileHandle*)fh;
 - (NSData*)loadHashKeyFile:(NSFileHandle*)fh;
@@ -29,11 +32,13 @@ int hex2dec(char c);
         NSData *pass = [password dataUsingEncoding:encoding];
         
         // Hash the password
-        uint8_t passwordKey[32];
-        CC_SHA256(pass.bytes, pass.length, passwordKey);
+        uint8_t key[32];
+        CC_SHA256(pass.bytes, pass.length, key);
         
         // Create the master key
-        masterKey = [[NSData alloc] initWithBytes:passwordKey length:32];
+        masterKey = [[NSData alloc] initWithBytes:key length:32];
+        
+        needsAdditionalHash = TRUE;
     }
     return self;
 }
@@ -41,11 +46,13 @@ int hex2dec(char c);
 - (id)initWithKeyfile:(NSString*)filename {
     self = [super init];
     if (self) {
-        // Get the file hash
+        // Get the file key
         masterKey = [self loadKeyFile:filename];
         if (masterKey == nil) {
             @throw [NSException exceptionWithName:@"IOException" reason:@"Failed to load keyfile" userInfo:nil];
         }
+        
+        needsAdditionalHash = TRUE;
     }
     return self;
 }
@@ -60,7 +67,7 @@ int hex2dec(char c);
         uint8_t passwordKey[32];
         CC_SHA256(pass.bytes, pass.length, passwordKey);
         
-        // Get the file hash
+        // Get the file key
         NSData *fileKey = [self loadKeyFile:filename];
         if (fileKey == nil) {
             @throw [NSException exceptionWithName:@"IOException" reason:@"Failed to load keyfile" userInfo:nil];
@@ -75,6 +82,8 @@ int hex2dec(char c);
         CC_SHA256_Final(key, &ctx);
         
         masterKey = [[NSData alloc] initWithBytes:key length:32];
+        
+        needsAdditionalHash = FALSE;
     }
     return self;
 }
@@ -84,10 +93,11 @@ int hex2dec(char c);
     
     memcpy(keyHash, masterKey.bytes, masterKey.length);
     
-    if (version == 4) {
+    // Perform an additional hash if it's version 4 and required
+    if (version == 4 && needsAdditionalHash) {
         CC_SHA256(keyHash, 32, keyHash);
     }
-    
+
     // Step 1 transform the key
     CCCryptorRef cryptorRef;
     CCCryptorCreate(kCCEncrypt, kCCAlgorithmAES128, kCCOptionECBMode, transformSeed.bytes, kCCKeySizeAES256, nil, &cryptorRef);
@@ -115,7 +125,12 @@ int hex2dec(char c);
 }
 
 - (NSData*)loadKeyFile:(NSString*)filename {
-    NSData *keyFile = nil;
+    // Try and load a 2.x XML keyfile first
+    @try {
+        return [self loadXmlKeyFile:filename];
+    } @catch (NSException *e) {
+        // Ignore the exception and try and load the file through a different mechanism
+    }
     
     // Open the keyfile
     NSFileHandle *fh = [NSFileHandle fileHandleForReadingAtPath:filename];
@@ -127,6 +142,7 @@ int hex2dec(char c);
     unsigned long long fileSize = [fh seekToEndOfFile];
     [fh seekToFileOffset:0];
     
+    NSData *keyFile = nil;
     if (fileSize == 32) {
         // Load the binary key directly from the file
         keyFile = [self loadBinKeyFile32:fh];
@@ -149,6 +165,38 @@ int hex2dec(char c);
     }
  
     return keyFile;
+}
+
+- (NSData*)loadXmlKeyFile:(NSString*)filename {
+    NSString *xmlString = [NSString stringWithContentsOfFile:filename encoding:NSUTF8StringEncoding error:nil];
+    if (xmlString == nil) {
+        @throw [NSException exceptionWithName:@"IOException" reason:@"Failed to open keyfile" userInfo:nil];
+    }
+    
+    DDXMLDocument *document = [[DDXMLDocument alloc] initWithXMLString:xmlString options:0 error:nil];
+    if (document == nil) {
+        @throw [NSException exceptionWithName:@"ParseError" reason:@"Failed to parse keyfile" userInfo:nil];
+    }
+    
+    // Get the root document element
+    DDXMLElement *rootElement = [document rootElement];
+    
+    DDXMLElement *keyElement = [rootElement elementForName:@"Key"];
+    if (keyElement == nil) {
+        @throw [NSException exceptionWithName:@"ParseError" reason:@"Failed to parse keyfile" userInfo:nil];
+    }
+    
+    DDXMLElement *dataElement = [keyElement elementForName:@"Data"];
+    if (dataElement == nil) {
+        @throw [NSException exceptionWithName:@"ParseError" reason:@"Failed to parse keyfile" userInfo:nil];
+    }
+    
+    NSString *dataString = [dataElement stringValue];
+    if (dataString == nil) {
+        @throw [NSException exceptionWithName:@"ParseError" reason:@"Failed to parse keyfile" userInfo:nil];
+    }
+    
+    return [Base64 decode:[dataString dataUsingEncoding:NSASCIIStringEncoding]];
 }
 
 - (NSData*)loadBinKeyFile32:(NSFileHandle *)fh {
