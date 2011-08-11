@@ -52,7 +52,7 @@
     return documentInteractionController;
 }
 
-- (void)open:(NSString*)newFilename password:(NSString*)password keyfile:(NSString*)keyfile {
+- (void)open:(NSString*)newFilename password:(NSString*)password keyFile:(NSString*)keyFile {
     [kdbTree release];
     [filename release];
     [kdbPassword release];
@@ -60,12 +60,12 @@
     filename = [newFilename retain];
     dirty = NO;
 
-    if (password != nil && keyfile != nil) {
-        kdbPassword = [[KdbPassword alloc] initWithPassword:password encoding:NSUTF8StringEncoding keyfile:keyfile];
+    if (password != nil && keyFile != nil) {
+        kdbPassword = [[KdbPassword alloc] initWithPassword:password encoding:NSUTF8StringEncoding keyfile:keyFile];
     } else if (password != nil) {
         kdbPassword = [[KdbPassword alloc] initWithPassword:password encoding:NSUTF8StringEncoding];
-    } else if (keyfile != nil) {
-        kdbPassword = [[KdbPassword alloc] initWithKeyfile:keyfile];
+    } else if (keyFile != nil) {
+        kdbPassword = [[KdbPassword alloc] initWithKeyfile:keyFile];
     } else {
         @throw [NSException exceptionWithName:@"IllegalArgument" reason:@"No password or keyfile specified" userInfo:nil];
     }
