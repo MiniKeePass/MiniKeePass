@@ -325,6 +325,7 @@
 		689DFFFE13A42740005EBD36 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 689DFFFC13A42740005EBD36 /* InfoPlist.strings */; };
 		68A3E1AF13A8C9D1006881CA /* FormViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68A3E1AE13A8C9D1006881CA /* FormViewController.m */; };
 		68CFB1E213B357EE00333B38 /* EditGroupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68CFB1E113B357EE00333B38 /* EditGroupViewController.m */; };
+		68D991E613F3EAAE00F6ED1F /* PasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68D991E513F3EAAE00F6ED1F /* PasswordViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -696,6 +697,8 @@
 		68A3E1AE13A8C9D1006881CA /* FormViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FormViewController.m; sourceTree = "<group>"; };
 		68CFB1E013B357EE00333B38 /* EditGroupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditGroupViewController.h; sourceTree = "<group>"; };
 		68CFB1E113B357EE00333B38 /* EditGroupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditGroupViewController.m; sourceTree = "<group>"; };
+		68D991E413F3EAAE00F6ED1F /* PasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasswordViewController.h; sourceTree = "<group>"; };
+		68D991E513F3EAAE00F6ED1F /* PasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PasswordViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1182,6 +1185,8 @@
 				689D043313A42C81005EBD36 /* MiniKeePassAppDelegate.m */,
 				689D043413A42C81005EBD36 /* NewKdbViewController.h */,
 				689D043513A42C81005EBD36 /* NewKdbViewController.m */,
+				68D991E413F3EAAE00F6ED1F /* PasswordViewController.h */,
+				68D991E513F3EAAE00F6ED1F /* PasswordViewController.m */,
 				689D043813A42C81005EBD36 /* PinTextField.h */,
 				689D043913A42C81005EBD36 /* PinTextField.m */,
 				689D043A13A42C81005EBD36 /* PinViewController.h */,
@@ -1604,6 +1609,7 @@
 				6876F67813B2D8F500A05C7A /* ImagesViewController.m in Sources */,
 				68CFB1E213B357EE00333B38 /* EditGroupViewController.m in Sources */,
 				68406ACD13CA42F200A5849C /* ImageButtonCell.m in Sources */,
+				68D991E613F3EAAE00F6ED1F /* PasswordViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
