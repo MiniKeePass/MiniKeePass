@@ -101,7 +101,7 @@
     [self.tableView reloadData];
 
     if (selectedIndexPath != nil) {
-        [self.tableView selectRowAtIndexPath:selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];        
+        [self.tableView selectRowAtIndexPath:selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
     }
     
     [super viewWillAppear:animated];
