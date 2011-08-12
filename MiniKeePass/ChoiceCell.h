@@ -20,14 +20,16 @@
 
 @interface ChoiceCell : UITableViewCell {
     NSString *prefix;
+    NSInteger selectedIndex;
     NSArray *choices;
 }
 
 @property (nonatomic, copy) NSString *prefix;
+@property (nonatomic, assign) NSInteger selectedIndex;
 @property (nonatomic, retain) NSArray *choices;
 
 - (id)initWithLabel:(NSString*)labelText choices:(NSArray*)newChoices selectedIndex:(NSInteger)selectedIndex;
 - (void)setEnabled:(BOOL)enabled;
-- (void)setSelectedIndex:(NSInteger)selectedIndex;
+- (NSString*)getSelectedItem;
 
 @end

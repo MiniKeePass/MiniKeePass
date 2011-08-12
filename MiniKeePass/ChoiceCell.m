@@ -22,7 +22,7 @@
 @synthesize prefix;
 @synthesize choices;
 
-- (id)initWithLabel:(NSString*)labelText choices:(NSArray*)newChoices selectedIndex:(NSInteger)selectedIndex {
+- (id)initWithLabel:(NSString*)labelText choices:(NSArray*)newChoices selectedIndex:(NSInteger)selectedIdx {
     self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
     if (self) {
         // Initialization code
@@ -31,7 +31,7 @@
         
         self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         
-        [self setSelectedIndex:selectedIndex];
+        [self setSelectedIndex:selectedIdx];
     }
     return self;
 }
@@ -47,8 +47,17 @@
     self.textLabel.enabled = enabled;
 }
 
-- (void)setSelectedIndex:(NSInteger)selectedIndex {
+- (NSInteger)selectedIndex {
+    return selectedIndex;
+}
+
+- (void)setSelectedIndex:(NSInteger)selectedIdx {
+    selectedIndex = selectedIdx;
     self.textLabel.text = [NSString stringWithFormat:@"%@: %@", prefix, [choices objectAtIndex:selectedIndex]];
+}
+
+- (NSString *)getSelectedItem {
+    return [choices objectAtIndex:selectedIndex];
 }
 
 @end
