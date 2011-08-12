@@ -87,15 +87,12 @@ static DatabaseManager *sharedInstance;
         // Create a defult keyfile name from the database name
         NSString *keyFile = [[filename stringByDeletingPathExtension] stringByAppendingPathExtension:@"key"];
         
-        // Get the absolute path to the keyfile
-        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-        NSString *documentsDirectory = [paths objectAtIndex:0];
-        NSString *path = [documentsDirectory stringByAppendingPathComponent:keyFile];
-
-        // Set the keyfile if it exists
-        NSFileManager *fileManager = [NSFileManager defaultManager];
-        if ([fileManager fileExistsAtPath:path]) {
-            passwordViewController.keyFileTextField.text = keyFile;
+        // Select the keyfile if it's in the list
+        NSInteger index = [passwordViewController.keyFileCell.choices indexOfObject:keyFile];
+        if (index != NSNotFound) {
+            passwordViewController.keyFileCell.selectedIndex = index;
+        } else {
+            passwordViewController.keyFileCell.selectedIndex = 0;
         }
         
         UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:passwordViewController];
@@ -132,8 +129,8 @@ static DatabaseManager *sharedInstance;
         }
         
         // Get the keyfile
-        NSString *keyFile = passwordViewController.keyFileTextField.text;
-        if ([keyFile isEqualToString:@""]) {
+        NSString *keyFile = [passwordViewController.keyFileCell getSelectedItem];
+        if ([keyFile isEqualToString:@"None"]) {
             keyFile = nil;
         }
         

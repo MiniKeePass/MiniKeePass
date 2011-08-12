@@ -17,14 +17,15 @@
 
 #import <UIKit/UIKit.h>
 #import "FormViewController.h"
+#import "ChoiceCell.h"
 
-@interface PasswordViewController : FormViewController {
+@interface PasswordViewController : FormViewController <SelectionListViewControllerDelegate> {
     UITextField *passwordTextField;
-    UITextField *keyFileTextField;
+    ChoiceCell *keyFileCell;
 }
 
 @property (nonatomic, readonly) UITextField *passwordTextField;
-@property (nonatomic, readonly) UITextField *keyFileTextField;
+@property (nonatomic, readonly) ChoiceCell *keyFileCell;
 
 - (id)initWithFilename:(NSString*)filename;
 

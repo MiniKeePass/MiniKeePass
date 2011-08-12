@@ -8,10 +8,12 @@
 
 #import "PasswordViewController.h"
 
+#define ROW_KEY_FILE 1
+
 @implementation PasswordViewController
 
 @synthesize passwordTextField;
-@synthesize keyFileTextField;
+@synthesize keyFileCell;
 
 - (id)initWithFilename:(NSString*)filename {
     self = [super initWithStyle:UITableViewStyleGrouped];
@@ -26,20 +28,52 @@
         passwordTextField.returnKeyType = UIReturnKeyDone;
         passwordTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
         
-        keyFileTextField = [[UITextField alloc] init];
-        keyFileTextField.placeholder = @"Keyfile";
-        keyFileTextField.returnKeyType = UIReturnKeyDone;
-        keyFileTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
+        // Create an array to hold the possible keyfile choices
+        NSMutableArray *keyFileChoices = [NSMutableArray arrayWithObject:@"None"];
         
-        self.controls = [NSArray arrayWithObjects:passwordTextField, keyFileTextField, nil];
+        // Get the documents directory
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *documentsDirectory = [paths objectAtIndex:0];
+        
+        // Get the list of key files in the documents directory
+        NSArray *dirContents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:documentsDirectory error:nil];
+        NSArray *files = [dirContents filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"!(self ENDSWITH '.kdb') && !(self ENDSWITH '.kdbx') && !(self BEGINSWITH '.')"]];
+        [keyFileChoices addObjectsFromArray:files];
+        
+        keyFileCell = [[ChoiceCell alloc] initWithLabel:@"Key File" choices:keyFileChoices selectedIndex:0];
+        
+        self.controls = [NSArray arrayWithObjects:passwordTextField, keyFileCell, nil];
     }
     return self;
 }
 
 - (void)dealloc {
     [passwordTextField release];
-    [keyFileTextField release];
+    [keyFileCell release];
     [super dealloc];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.row == ROW_KEY_FILE) {
+        SelectionListViewController *selectionListViewController = [[SelectionListViewController alloc] initWithStyle:UITableViewStyleGrouped];
+        selectionListViewController.title = @"Key File";
+        selectionListViewController.items = keyFileCell.choices;
+        selectionListViewController.selectedIndex = keyFileCell.selectedIndex;
+        selectionListViewController.delegate = self;
+        [self.navigationController pushViewController:selectionListViewController animated:YES];
+        [selectionListViewController release];
+    }
+}
+
+- (void)selectionListViewController:(SelectionListViewController *)controller selectedIndex:(NSInteger)selectedIndex withReference:(id<NSObject>)reference {
+    // Update the cell text
+    [keyFileCell setSelectedIndex:selectedIndex];
 }
 
 @end
