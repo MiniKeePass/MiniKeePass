@@ -57,7 +57,7 @@ static DatabaseManager *sharedInstance;
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
     
-    // Load the password from the keychain
+    // Load the password and keyfile from the keychain
     NSString *password = [SFHFKeychainUtils getPasswordForUsername:selectedFilename andServiceName:@"com.jflan.MiniKeePass.passwords" error:nil];
     NSString *keyFile = [SFHFKeychainUtils getPasswordForUsername:selectedFilename andServiceName:@"com.jflan.MiniKeePass.keyfiles" error:nil];
     
