@@ -183,6 +183,10 @@
     NSFileManager *fileManager = [NSFileManager defaultManager];
     [fileManager removeItemAtPath:path error:nil];
     
+    // Delete the keychain entries for the old filename
+    [SFHFKeychainUtils deleteItemForUsername:filename andServiceName:@"com.jflan.MiniKeePass.passwords" error:nil];
+    [SFHFKeychainUtils deleteItemForUsername:filename andServiceName:@"com.jflan.MiniKeePass.keychains" error:nil];
+    
     // Remove the file from the array
     [files removeObject:filename];
     
@@ -197,7 +201,7 @@
     }
     
     NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-    NSString *oldFilename = [files objectAtIndex:indexPath.row];
+    NSString *oldFilename = [[files objectAtIndex:indexPath.row] retain];
     NSString *newFilename = [string stringByAppendingPathExtension:[oldFilename pathExtension]];
     
     // Get the full path of where we're going to move the file
@@ -219,6 +223,20 @@
     
     // Update the filename in the files list
     [files replaceObjectAtIndex:indexPath.row withObject:newFilename];
+    
+    // Load the password and keyfile from the keychain under the old filename
+    NSString *password = [SFHFKeychainUtils getPasswordForUsername:oldFilename andServiceName:@"com.jflan.MiniKeePass.passwords" error:nil];
+    NSString *keyFile = [SFHFKeychainUtils getPasswordForUsername:oldFilename andServiceName:@"com.jflan.MiniKeePass.keyfiles" error:nil];
+    
+    // Store the password and keyfile into the keychain under the new filename
+    [SFHFKeychainUtils storeUsername:newFilename andPassword:password forServiceName:@"com.jflan.MiniKeePass.passwords" updateExisting:YES error:nil];
+    [SFHFKeychainUtils storeUsername:newFilename andPassword:keyFile forServiceName:@"com.jflan.MiniKeePass.keyfiles" updateExisting:YES error:nil];
+    
+    // Delete the keychain entries for the old filename
+    [SFHFKeychainUtils deleteItemForUsername:oldFilename andServiceName:@"com.jflan.MiniKeePass.passwords" error:nil];
+    [SFHFKeychainUtils deleteItemForUsername:oldFilename andServiceName:@"com.jflan.MiniKeePass.keychains" error:nil];
+    
+    [oldFilename release];
     
     // Reload the table row
     [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
