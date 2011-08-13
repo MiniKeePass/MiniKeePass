@@ -281,6 +281,7 @@ enum {
     
     // Delete all database passwords from the keychain
     [SFHFKeychainUtils deleteAllItemForServiceName:@"com.jflan.MiniKeePass.passwords" error:nil];
+    [SFHFKeychainUtils deleteAllItemForServiceName:@"com.jflan.MiniKeePass.keyfiles" error:nil];
 }
 
 - (void)toggleHidePasswords:(id)sender {

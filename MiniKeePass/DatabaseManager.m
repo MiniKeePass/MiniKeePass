@@ -50,22 +50,32 @@ static DatabaseManager *sharedInstance;
     self.selectedFilename = filename;
     self.animated = newAnimated;
     
-    // Load the password from the keychain
-    NSString *password = [SFHFKeychainUtils getPasswordForUsername:selectedFilename andServiceName:@"com.jflan.MiniKeePass.passwords" error:nil];
-    
     // Get the application delegate
     MiniKeePassAppDelegate *appDelegate = (MiniKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
     
+    // Get the documents directory
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    
+    // Load the password from the keychain
+    NSString *password = [SFHFKeychainUtils getPasswordForUsername:selectedFilename andServiceName:@"com.jflan.MiniKeePass.passwords" error:nil];
+    NSString *keyFile = [SFHFKeychainUtils getPasswordForUsername:selectedFilename andServiceName:@"com.jflan.MiniKeePass.keyfiles" error:nil];
+    
     // Try and load the database with the cached password from the keychain
-    if (password != nil) {
-        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-        NSString *documentsDirectory = [paths objectAtIndex:0];
+    if (password != nil || keyFile != nil) {
+        // Get the absolute path to the database
         NSString *path = [documentsDirectory stringByAppendingPathComponent:selectedFilename];
-
+        
+        // Get the absolute path to the keyfile
+        NSString *keyFilePath = nil;
+        if (keyFile != nil) {
+            keyFilePath = [documentsDirectory stringByAppendingPathComponent:keyFile];
+        }
+        
         // Load the database
         DatabaseDocument *dd = [[DatabaseDocument alloc] init];
         @try {
-            [dd open:path password:password keyFile:nil];
+            [dd open:path password:password keyFile:keyFilePath];
             
             databaseLoaded = YES;
             
@@ -85,7 +95,7 @@ static DatabaseManager *sharedInstance;
         passwordViewController.delegate = self;
         
         // Create a defult keyfile name from the database name
-        NSString *keyFile = [[filename stringByDeletingPathExtension] stringByAppendingPathExtension:@"key"];
+        keyFile = [[filename stringByDeletingPathExtension] stringByAppendingPathExtension:@"key"];
         
         // Select the keyfile if it's in the list
         NSInteger index = [passwordViewController.keyFileCell.choices indexOfObject:keyFile];
@@ -134,24 +144,26 @@ static DatabaseManager *sharedInstance;
             keyFile = nil;
         }
         
+        // Get the absolute path to the keyfile
+        NSString *keyFilePath = nil;
         if (keyFile != nil) {
-            // Get the absolute path to the keyfile
             NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
             NSString *documentsDirectory = [paths objectAtIndex:0];
-            keyFile = [documentsDirectory stringByAppendingPathComponent:keyFile];
+            keyFilePath = [documentsDirectory stringByAppendingPathComponent:keyFile];
         }
         
         // Load the database
         DatabaseDocument *dd = [[DatabaseDocument alloc] init];
         @try {
             // Open the database
-            [dd open:path password:password keyFile:keyFile];
+            [dd open:path password:password keyFile:keyFilePath];
             
             // Store the password in the keychain
             NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
             if ([userDefaults boolForKey:@"rememberPasswordsEnabled"]) {
                 NSError *error;
                 [SFHFKeychainUtils storeUsername:selectedFilename andPassword:password forServiceName:@"com.jflan.MiniKeePass.passwords" updateExisting:YES error:&error];
+                [SFHFKeychainUtils storeUsername:selectedFilename andPassword:keyFile forServiceName:@"com.jflan.MiniKeePass.keyfiles" updateExisting:YES error:&error];
             }
             
             // Load the database after a short delay so the push animation is visible

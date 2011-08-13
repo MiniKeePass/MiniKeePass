@@ -195,6 +195,7 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
     
     // Delete all database passwords from the keychain
     [SFHFKeychainUtils deleteAllItemForServiceName:@"com.jflan.MiniKeePass.passwords" error:nil];
+    [SFHFKeychainUtils deleteAllItemForServiceName:@"com.jflan.MiniKeePass.keyfiles" error:nil];
     
     // Get the files in the Documents directory
     NSFileManager *fileManager = [NSFileManager defaultManager];
