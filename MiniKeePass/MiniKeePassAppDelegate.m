@@ -30,6 +30,7 @@
 
 static NSInteger pinLockTimeoutValues[] = {0, 30, 60, 120, 300};
 static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
+static NSInteger clearClipboardTimeoutValues[] = {30, 60, 120, 180};
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Initialize the images array
@@ -63,6 +64,10 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
     window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     window.rootViewController = navigationController;
     [window makeKeyAndVisible];
+    
+    // Add a pasteboard notification listener
+    NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+    [notificationCenter addObserver:self selector:@selector(handlePasteboardNotification:) name:UIPasteboardChangedNotification object:nil];
     
     return YES;
 }
@@ -219,6 +224,45 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
     }
     
     return images[index];
+}
+
+- (void)handlePasteboardNotification:(NSNotification*)notification {
+    // Check if the clipboard has any contents
+    UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
+    if (pasteboard.string == nil || [pasteboard.string isEqualToString:@""]) {
+        return;
+    }
+    
+    // Check if the clearing the clipboard is enabled
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    if ([userDefaults boolForKey:@"clearClipboardEnabled"]) {
+        // Get the "version" of the pasteboard contents
+        NSInteger pasteboardVersion = pasteboard.changeCount;
+
+        // Get the clear clipboard timeout (in seconds)
+        NSInteger clearClipboardTimeout = clearClipboardTimeoutValues[[userDefaults integerForKey:@"clearClipboardTimeout"]];
+        
+        // Initiate a background task
+        UIApplication *application = [UIApplication sharedApplication];
+        UIBackgroundTaskIdentifier bgTask = [application beginBackgroundTaskWithExpirationHandler:^{
+            // End the background task
+            [application endBackgroundTask:bgTask];
+        }];
+        
+        // Start the long-running task and return immediately.
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            // Sleep until it's time to clean the clipboard
+            [NSThread sleepForTimeInterval:clearClipboardTimeout];
+            
+            // Clear the clipboard if it hasn't changed
+            if (pasteboardVersion == pasteboard.changeCount) {
+                pasteboard.string = @"";
+            }
+            
+            // End the background task
+            [application endBackgroundTask:bgTask];
+        });
+    }
 }
 
 - (void)pinViewController:(PinViewController *)controller pinEntered:(NSString *)pin {

@@ -28,6 +28,8 @@
     ChoiceCell *deleteOnFailureAttemptsCell;
     SwitchCell *rememberPasswordsEnabledCell;
     SwitchCell *hidePasswordsCell;
+    SwitchCell *clearClipboardEnabledCell;
+    ChoiceCell *clearClipboardTimeoutCell;
     
     NSString *tempPin;
 }
