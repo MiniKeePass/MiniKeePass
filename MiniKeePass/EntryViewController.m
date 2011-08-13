@@ -100,6 +100,7 @@
 - (void)viewWillDisappear:(BOOL)animated {
     if (!canceled && [self isDirty]) {
         entry.title = titleCell.textField.text;
+        entry.image = selectedImageIndex;
         entry.username = usernameCell.textField.text;
         entry.password = passwordCell.textField.text;
         entry.url = urlCell.textField.text;
