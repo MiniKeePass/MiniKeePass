@@ -47,7 +47,7 @@ int hex2dec(char c);
     self = [super init];
     if (self) {
         // Get the file key
-        masterKey = [self loadKeyFile:filename];
+        masterKey = [[self loadKeyFile:filename] retain];
         if (masterKey == nil) {
             @throw [NSException exceptionWithName:@"IOException" reason:@"Failed to load keyfile" userInfo:nil];
         }
