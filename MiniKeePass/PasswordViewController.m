@@ -27,6 +27,7 @@
         passwordTextField.secureTextEntry = YES;
         passwordTextField.returnKeyType = UIReturnKeyDone;
         passwordTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
+        passwordTextField.delegate = self;
         
         // Create an array to hold the possible keyfile choices
         NSMutableArray *keyFileChoices = [NSMutableArray arrayWithObject:@"None"];
@@ -43,6 +44,7 @@
         keyFileCell = [[ChoiceCell alloc] initWithLabel:@"Key File" choices:keyFileChoices selectedIndex:0];
         
         self.controls = [NSArray arrayWithObjects:passwordTextField, keyFileCell, nil];
+        self.navigationItem.rightBarButtonItem = nil;
     }
     return self;
 }
@@ -74,6 +76,13 @@
 - (void)selectionListViewController:(SelectionListViewController *)controller selectedIndex:(NSInteger)selectedIndex withReference:(id<NSObject>)reference {
     // Update the cell text
     [keyFileCell setSelectedIndex:selectedIndex];
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    if ([delegate respondsToSelector:@selector(formViewController:button:)]) {
+        [delegate formViewController:self button:FormViewControllerButtonOk];
+    }
+    return YES;
 }
 
 @end
