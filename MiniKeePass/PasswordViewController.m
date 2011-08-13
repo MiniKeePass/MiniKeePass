@@ -20,7 +20,7 @@
     if (self) {
         self.title = @"Password";
         self.headerTitle = @"Password";
-        self.footerTitle = [NSString stringWithFormat:@"Enter the password for the %@ database.", filename];
+        self.footerTitle = [NSString stringWithFormat:@"Enter the password and/or select the keyfile for the %@ database.", filename];
         
         passwordTextField = [[UITextField alloc] init];
         passwordTextField.placeholder = @"Password";
