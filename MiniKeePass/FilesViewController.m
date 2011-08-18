@@ -215,6 +215,7 @@
     NSFileManager *fileManager = [NSFileManager defaultManager];
     if ([fileManager fileExistsAtPath:newPath]) {
         [controller showErrorMessage:@"A file already exists with this name"];
+        [oldFilename release];
         return;
     }
     

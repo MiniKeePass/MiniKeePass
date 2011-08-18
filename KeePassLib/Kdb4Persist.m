@@ -134,13 +134,15 @@
     DDXMLNode *protectedAttribute = [root attributeForName:@"Protected"];
     if ([[protectedAttribute stringValue] isEqual:@"True"]) {
         NSString *str = [root stringValue];
-        NSMutableData *data = [[str dataUsingEncoding:NSUTF8StringEncoding] mutableCopy];
+        NSMutableData *mutableData = [[str dataUsingEncoding:NSUTF8StringEncoding] mutableCopy];
         
         // Unprotect the password
-        [randomStream xor:data];
+        [randomStream xor:mutableData];
         
         // Base64 encode the string
-        data = [Base64 encode:data];
+        NSData *data = [Base64 encode:mutableData];
+        
+        [mutableData release];
         
         NSString *protected = [[NSString alloc] initWithBytes:data.bytes length:data.length encoding:NSUTF8StringEncoding];
         [root setStringValue:protected];

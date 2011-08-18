@@ -183,18 +183,23 @@ int hex2dec(char c);
     
     DDXMLElement *keyElement = [rootElement elementForName:@"Key"];
     if (keyElement == nil) {
+        [document release];
         @throw [NSException exceptionWithName:@"ParseError" reason:@"Failed to parse keyfile" userInfo:nil];
     }
     
     DDXMLElement *dataElement = [keyElement elementForName:@"Data"];
     if (dataElement == nil) {
+        [document release];
         @throw [NSException exceptionWithName:@"ParseError" reason:@"Failed to parse keyfile" userInfo:nil];
     }
     
     NSString *dataString = [dataElement stringValue];
     if (dataString == nil) {
+        [document release];
         @throw [NSException exceptionWithName:@"ParseError" reason:@"Failed to parse keyfile" userInfo:nil];
     }
+    
+    [document release];
     
     return [Base64 decode:[dataString dataUsingEncoding:NSASCIIStringEncoding]];
 }
