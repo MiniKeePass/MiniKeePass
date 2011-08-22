@@ -27,6 +27,7 @@
 
 @synthesize window;
 @synthesize databaseDocument;
+@synthesize backgroundSupported;
 
 static NSInteger pinLockTimeoutValues[] = {0, 30, 60, 120, 300};
 static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
@@ -49,6 +50,7 @@ static NSInteger clearClipboardTimeoutValues[] = {30, 60, 120, 180};
     [defaultsDict setValue:[NSNumber numberWithInt:1] forKey:@"deleteOnFailureAttempts"];
     [defaultsDict setValue:[NSNumber numberWithBool:YES] forKey:@"rememberPasswordsEnabled"];
     [defaultsDict setValue:[NSNumber numberWithBool:YES] forKey:@"hidePasswords"];
+    [defaultsDict setValue:[NSNumber numberWithBool:NO] forKey:@"clearClipboardEnabled"];
     
     NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
     [userDefaults registerDefaults:defaultsDict];
@@ -65,9 +67,18 @@ static NSInteger clearClipboardTimeoutValues[] = {30, 60, 120, 180};
     window.rootViewController = navigationController;
     [window makeKeyAndVisible];
     
-    // Add a pasteboard notification listener
+    // Check if backgrounding is supported
+    backgroundSupported = FALSE;
+    UIDevice* device = [UIDevice currentDevice];
+    if ([device respondsToSelector:@selector(isMultitaskingSupported)]) {
+        backgroundSupported = device.multitaskingSupported;
+    }
+    
+    // Add a pasteboard notification listener is backgrounding is supported
+    if (backgroundSupported) {
     NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
-    [notificationCenter addObserver:self selector:@selector(handlePasteboardNotification:) name:UIPasteboardChangedNotification object:nil];
+        [notificationCenter addObserver:self selector:@selector(handlePasteboardNotification:) name:UIPasteboardChangedNotification object:nil];
+    }
     
     return YES;
 }

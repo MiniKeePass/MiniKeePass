@@ -32,10 +32,13 @@
     NSString *fileToOpen;
     
     UIImage *images[NUM_IMAGES];
+    
+    BOOL backgroundSupported;
 }
 
 @property (nonatomic, readonly) UIWindow *window;
 @property (nonatomic, retain) DatabaseDocument *databaseDocument;
+@property (nonatomic, readonly) BOOL backgroundSupported;
 
 - (void)closeDatabase;
 - (void)deleteAllData;
