@@ -1288,6 +1288,7 @@
 		689DFFCC13A4273F005EBD36 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastUpgradeCheck = 0410;
 				ORGANIZATIONNAME = Self;
 			};
 			buildConfigurationList = 689DFFCF13A4273F005EBD36 /* Build configuration list for PBXProject "MiniKeePass" */;

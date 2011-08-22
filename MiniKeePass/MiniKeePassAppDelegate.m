@@ -163,9 +163,13 @@ static NSInteger clearClipboardTimeoutValues[] = {30, 60, 120, 180};
     [fileManager moveItemAtURL:url toURL:newUrl error:nil];
     [fileManager removeItemAtPath:[documentsDirectory stringByAppendingPathComponent:@"Inbox"] error:nil];
     
-    // Store the filename to open
+    // Store the filename to open if it's a database
     [fileToOpen release];
-    fileToOpen = [filename copy];
+    if ([filename hasSuffix:@".kdb"] || [filename hasSuffix:@".kdbx"]) {
+        fileToOpen = [filename copy];
+    } else {
+        fileToOpen = nil;
+    }
     
     return YES;
 }
