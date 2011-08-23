@@ -132,10 +132,12 @@ enum {
             if ([databaseFiles count] != 0) {
                 return @"Databases";
             }
+            break;
         case SECTION_KEYFILE:
             if ([keyFiles count] != 0) {
                 return @"Key Files";
             }
+            break;
     }
     
     return nil;
