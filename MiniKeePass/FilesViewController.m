@@ -224,7 +224,7 @@
     NSString *filename;
     switch (indexPath.section) {
         case 0:
-            filename = [databaseFiles objectAtIndex:indexPath.row];
+            filename = [[databaseFiles objectAtIndex:indexPath.row] copy];
             [databaseFiles removeObject:filename];
 
             // Delete the keychain entries for the old filename
@@ -232,7 +232,7 @@
             [SFHFKeychainUtils deleteItemForUsername:filename andServiceName:@"com.jflan.MiniKeePass.keychains" error:nil];
             break;
         case 1:
-            filename = [keyFiles objectAtIndex:indexPath.row];
+            filename = [[keyFiles objectAtIndex:indexPath.row] copy];
             [keyFiles removeObject:filename];
             break;
         default:
@@ -256,6 +256,8 @@
     // Update the table
     [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
     [tableView reloadSections:[NSIndexSet indexSetWithIndex:indexPath.section] withRowAnimation:UITableViewRowAnimationNone];
+    
+    [filename release];
 }
 
 - (void)textEntryController:(TextEntryController *)controller textEntered:(NSString *)string {
