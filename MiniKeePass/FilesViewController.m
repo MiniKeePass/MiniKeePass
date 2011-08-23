@@ -86,6 +86,20 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+    [self updateFiles];
+    
+    NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
+
+    [self.tableView reloadData];
+
+    if (selectedIndexPath != nil) {
+        [self.tableView selectRowAtIndexPath:selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+    }
+    
+    [super viewWillAppear:animated];
+}
+
+- (void)updateFiles {
     [databaseFiles release];
     [keyFiles release];
     
@@ -99,18 +113,7 @@
     NSArray *keyFilenames = [dirContents filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"!((self ENDSWITH '.kdb') OR (self ENDSWITH '.kdbx'))"]];
     
     databaseFiles = [[NSMutableArray arrayWithArray:databaseFilenames] retain];
-    keyFiles = [[NSMutableArray arrayWithArray:keyFilenames] retain];
-    
-    
-    NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
-
-    [self.tableView reloadData];
-
-    if (selectedIndexPath != nil) {
-        [self.tableView selectRowAtIndexPath:selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
-    }
-    
-    [super viewWillAppear:animated];
+    keyFiles = [[NSMutableArray arrayWithArray:keyFilenames] retain];    
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {

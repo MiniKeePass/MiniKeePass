@@ -169,6 +169,9 @@ static NSInteger clearClipboardTimeoutValues[] = {30, 60, 120, 180};
         fileToOpen = [filename copy];
     } else {
         fileToOpen = nil;
+        FilesViewController *fileView = [[navigationController viewControllers] objectAtIndex:0];
+        [fileView updateFiles];
+        [fileView.tableView reloadData];
     }
     
     return YES;

@@ -31,6 +31,8 @@
     NSString *selectedFile;
 }
 
+- (void)updateFiles;
+
 @property (nonatomic, copy) NSString* selectedFile;
 
 @end
