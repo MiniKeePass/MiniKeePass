@@ -23,6 +23,12 @@
 #import "Kdb3Writer.h"
 #import "Kdb4Writer.h"
 
+enum {
+    SECTION_DATABASE,
+    SECTION_KEYFILE,
+    SECTION_NUMBER
+};
+
 @implementation FilesViewController
 
 @synthesize selectedFile;
@@ -117,37 +123,38 @@
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 2;
+    return SECTION_NUMBER;
 }
 
--(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     switch (section) {
-        case 0:
-            return @"Databases";
-        case 1:
-            if ([keyFiles count] == 0) {
-                return nil;
-            } else {
+        case SECTION_DATABASE:
+            if ([databaseFiles count] != 0) {
+                return @"Databases";
+            }
+        case SECTION_KEYFILE:
+            if ([keyFiles count] != 0) {
                 return @"Key Files";
             }
-        default:
-            return nil;
     }
+    
+    return nil;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     int databaseCount = [databaseFiles count];
     int keyCount = [keyFiles count];
     
-    int n = 0;
+    int n;
     switch (section) {
-        case 0:
+        case SECTION_DATABASE:
             n = databaseCount;
             break;
-        case 1:
+        case SECTION_KEYFILE:
             n = keyCount;
             break;
         default:
+            n = 0;
             break;
     }
     
@@ -171,12 +178,12 @@
     
     // Configure the cell
     switch (indexPath.section) {
-        case 0:
+        case SECTION_DATABASE:
             cell.textLabel.text = [databaseFiles objectAtIndex:indexPath.row];
             cell.textLabel.textColor = [UIColor blackColor];
             cell.selectionStyle = UITableViewCellSelectionStyleBlue;
             break;
-        case 1:
+        case SECTION_KEYFILE:
             cell.textLabel.text = [keyFiles objectAtIndex:indexPath.row];
             cell.textLabel.textColor = [UIColor grayColor];
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -188,8 +195,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     switch (indexPath.section) {
-        //Database file section
-        case 0:
+        // Database file section
+        case SECTION_KEYFILE:
             if (self.editing == NO) {
                 // Load the database
                 [[DatabaseManager sharedInstance] openDatabaseDocument:[databaseFiles objectAtIndex:indexPath.row] animated:YES];
@@ -224,7 +231,7 @@
 
     NSString *filename;
     switch (indexPath.section) {
-        case 0:
+        case SECTION_DATABASE:
             filename = [[databaseFiles objectAtIndex:indexPath.row] copy];
             [databaseFiles removeObject:filename];
 
@@ -232,7 +239,7 @@
             [SFHFKeychainUtils deleteItemForUsername:filename andServiceName:@"com.jflan.MiniKeePass.passwords" error:nil];
             [SFHFKeychainUtils deleteItemForUsername:filename andServiceName:@"com.jflan.MiniKeePass.keychains" error:nil];
             break;
-        case 1:
+        case SECTION_KEYFILE:
             filename = [[keyFiles objectAtIndex:indexPath.row] copy];
             [keyFiles removeObject:filename];
             break;
@@ -397,8 +404,17 @@
         // Add the file to the list of files
         [databaseFiles addObject:filename];
         
+        // Notify the table of the new row
         NSUInteger index = [databaseFiles count] - 1;
-        [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationRight];
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:SECTION_DATABASE];
+        if (index == 0) {
+            // Reload the section if it's the first item
+            NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:SECTION_DATABASE];
+            [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationRight];
+        } else {
+            // Insert the new row
+            [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationRight];
+        }
     }
     
     [appDelegate.window.rootViewController dismissModalViewControllerAnimated:YES];
