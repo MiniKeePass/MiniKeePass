@@ -119,13 +119,13 @@
     
     switch (section) {
         case GROUPS_SECTION:
-            if ([group.groups count] > 0) {
+            if ([group.groups count] != 0) {
                 return @"Groups";
             }
             break;
             
         case ENTRIES_SECTION:
-            if ([group.entries count] > 0) {
+            if ([group.entries count] != 0) {
                 return @"Entries";
             }
             break;
