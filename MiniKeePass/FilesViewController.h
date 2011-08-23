@@ -26,7 +26,8 @@
     FilesHelpView *filesHelpView;
     MiniKeePassAppDelegate *appDelegate;
     
-    NSMutableArray *files;
+    NSMutableArray *databaseFiles;
+    NSMutableArray *keyFiles;
     NSString *selectedFile;
 }
 
