@@ -198,7 +198,7 @@ enum {
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     switch (indexPath.section) {
         // Database file section
-        case SECTION_KEYFILE:
+        case SECTION_DATABASE:
             if (self.editing == NO) {
                 // Load the database
                 [[DatabaseManager sharedInstance] openDatabaseDocument:[databaseFiles objectAtIndex:indexPath.row] animated:YES];
