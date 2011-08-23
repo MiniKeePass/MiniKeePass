@@ -6,8 +6,9 @@
 //  Copyright 2010 Qiang Yu. All rights reserved.
 //
 
-#import <CommonCrypto/CommonDigest.h>
 #import "Salsa20RandomStream.h"
+#import <CommonCrypto/CommonDigest.h>
+#import <Security/Security.h>
 
 static uint32_t SIGMA[4] = {0x61707865, 0x3320646E, 0x79622D32, 0x6B206574};
 
@@ -20,6 +21,14 @@ static uint32_t SIGMA[4] = {0x61707865, 0x3320646E, 0x79622D32, 0x6B206574};
 @end
 
 @implementation Salsa20RandomStream
+
+- (id)init {
+    uint8_t buffer[256];
+    
+    SecRandomCopyBytes(kSecRandomDefault, sizeof(buffer), buffer);
+    
+    return [self init:[NSData dataWithBytes:buffer length:sizeof(buffer)]];
+}
 
 - (id)init:(NSData*)key {
     self = [super init];
@@ -129,18 +138,18 @@ static uint32_t SIGMA[4] = {0x61707865, 0x3320646E, 0x79622D32, 0x6B206574};
     }
 }
 
-- (void)xor:(NSMutableData*)data {
-    uint8_t *bytes = (uint8_t*)data.mutableBytes;
-    NSUInteger length = data.length;
+- (uint8_t)getByte {
+    uint8_t value;
     
-    for (int i = 0; i < length; i++) {
-        if (_index == 0) {
-            [self updateState];
-        }
-
-        bytes[i] ^= _keyStream[_index];
-        _index = (_index + 1) & 0x3F;
+    if (_index == 0) {
+        [self updateState];
     }
+    
+    value = _keyStream[_index];
+    
+    _index = (_index + 1) & 0x3F;
+    
+    return value;
 }
 
 @end

@@ -26,7 +26,7 @@
 
 @implementation Kdb4Persist
 
-- (id)initWithTree:(Kdb4Tree*)t outputStream:(OutputStream*)stream randomStream:(id<RandomStream>)cryptoRandomStream {
+- (id)initWithTree:(Kdb4Tree*)t outputStream:(OutputStream*)stream randomStream:(RandomStream*)cryptoRandomStream {
     self = [super init];
     if (self) {
         tree = [t retain];

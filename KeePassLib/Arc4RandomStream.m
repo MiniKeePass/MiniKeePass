@@ -7,12 +7,21 @@
 //
 
 #import "Arc4RandomStream.h"
+#import <Security/Security.h>
 
 @interface Arc4RandomStream (PrivateMethods)
 - (void)updateState;
 @end
 
 @implementation Arc4RandomStream
+
+- (id)init {
+    uint8_t buffer[256];
+    
+    SecRandomCopyBytes(kSecRandomDefault, sizeof(buffer), buffer);
+    
+    return [self init:[NSData dataWithBytes:buffer length:sizeof(buffer)]];
+}
 
 - (id)init:(NSData*)key {
     self = [super init];
@@ -72,18 +81,18 @@
     }
 }
 
-- (void)xor:(NSMutableData*)data {
-    uint8_t *bytes = (uint8_t*)data.mutableBytes;
-    NSUInteger length = data.length;
+- (uint8_t)getByte {
+    uint8_t value;
     
-    for (int i = 0; i < length; i++) {
-        if (_index == 0) {
-            [self updateState];
-        }
-        
-        bytes[i] ^= _buffer[_index];
-        _index = (_index + 1) & ARC_BUFFER_SIZE;
+    if (_index == 0) {
+        [self updateState];
     }
+    
+    value = _buffer[_index];
+
+    _index = (_index + 1) & ARC_BUFFER_SIZE;
+    
+    return value;
 }
 
 @end

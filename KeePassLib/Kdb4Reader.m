@@ -63,7 +63,7 @@
     }
     
     // Create the CRS Algorithm
-    id<RandomStream> randomStream = nil;
+    RandomStream *randomStream = nil;
     if (randomStreamID == CSR_SALSA20) {
         randomStream = [[[Salsa20RandomStream alloc] init:protectedStreamKey] autorelease];
     } else if (randomStreamID == CSR_ARC4VARIANT) {

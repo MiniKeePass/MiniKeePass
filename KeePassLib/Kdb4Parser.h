@@ -21,11 +21,11 @@
 #import "InputStream.h"
 
 @interface Kdb4Parser : NSObject {
-    id<RandomStream> randomStream;
+    RandomStream *randomStream;
     NSDateFormatter *dateFormatter;
 }
 
-- (id)initWithRandomStream:(id<RandomStream>)cryptoRandomStream;
+- (id)initWithRandomStream:(RandomStream*)cryptoRandomStream;
 - (Kdb4Tree*)parse:(InputStream*)inputStream;
 
 @end

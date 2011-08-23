@@ -79,7 +79,7 @@
     GZipOutputStream *gzipOutputStream = [[[GZipOutputStream alloc] initWithOutputStream:hashedOutputStream] autorelease];
     
     // Create the random stream
-    id<RandomStream> randomStream = [[[Salsa20RandomStream alloc] init:protectedStreamKey] autorelease];
+    RandomStream *randomStream = [[[Salsa20RandomStream alloc] init:protectedStreamKey] autorelease];
     
     // Serialize the XML
     Kdb4Persist *persist = [[[Kdb4Persist alloc] initWithTree:tree outputStream:gzipOutputStream randomStream:randomStream] autorelease];

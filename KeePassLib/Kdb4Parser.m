@@ -27,7 +27,7 @@
 
 @implementation Kdb4Parser
 
-- (id)initWithRandomStream:(id<RandomStream>)cryptoRandomStream {
+- (id)initWithRandomStream:(RandomStream*)cryptoRandomStream {
     self = [super init];
     if (self) {
         randomStream = [cryptoRandomStream retain];

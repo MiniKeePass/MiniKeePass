@@ -11,7 +11,7 @@
 
 #define ARC_BUFFER_SIZE 0x3FF
 
-@interface Arc4RandomStream : NSObject<RandomStream> {
+@interface Arc4RandomStream : RandomStream {
     uint8_t _state[256];
     uint32_t _i;
     uint32_t _j;
@@ -20,6 +20,7 @@
     uint32_t _index;
 }
 
+- (id)init;
 - (id)init:(NSData*)key;
 
 @end
