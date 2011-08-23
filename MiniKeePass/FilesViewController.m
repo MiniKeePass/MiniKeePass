@@ -136,22 +136,23 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    int n;
+    int databaseCount = [databaseFiles count];
+    int keyCount = [keyFiles count];
     
+    int n = 0;
     switch (section) {
         case 0:
-            return [databaseFiles count];
+            n = databaseCount;
             break;
         case 1:
-            return [keyFiles count];
+            n = keyCount;
             break;
         default:
-            n = 0;
             break;
     }
     
     // Show the help view if there are no files
-    if ([databaseFiles count] == 0) {
+    if (databaseCount == 0 && keyCount == 0) {
         [self displayHelpPage];
     } else {
         [self hideHelpPage];
