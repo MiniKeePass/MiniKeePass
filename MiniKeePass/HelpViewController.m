@@ -27,8 +27,9 @@ typedef struct {
 help_topic_t help_topics[] = {
     {@"iTunes Import/Export", @"itunes"},
     {@"Dropbox Import/Export", @"dropbox"},
-    {@"Safari/Email Import", @"uidic"},
-    {@"Create New Database", @"createdb"}
+    {@"Safari/Email Import", @"safariemail"},
+    {@"Create New Database", @"createdb"},
+    {@"Key Files", @"keyfiles"}
 };
 
 - (id)init {
@@ -59,8 +60,11 @@ help_topic_t help_topics[] = {
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Get the URL of the respurce
+    // Get the title and resource of the selected help page
+    NSString *title = help_topics[indexPath.row].title;
     NSString *resource = help_topics[indexPath.row].resource;
+    
+    // Get the URL of the respurce
     NSString *path = [[NSBundle mainBundle] pathForResource:resource ofType:@"html"];
     NSURL *url = [NSURL fileURLWithPath:path];
     
@@ -70,6 +74,7 @@ help_topic_t help_topics[] = {
     [webView loadRequest:[NSURLRequest requestWithURL:url]];
     
     UIViewController *viewController = [[UIViewController alloc] init];
+    viewController.title = title;
     viewController.view = webView;
     [webView release];
     
