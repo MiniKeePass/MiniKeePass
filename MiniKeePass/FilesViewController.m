@@ -66,20 +66,19 @@ enum {
 }
 
 - (void)dealloc {
-    [filesHelpView release];
+    [filesInfoView release];
     [databaseFiles release];
     [keyFiles release];
     [selectedFile release];
     [super dealloc];
 }
 
-- (void)displayHelpPage {
-    if (filesHelpView == nil) {
-        filesHelpView = [[FilesHelpView alloc] initWithFrame:self.view.frame];
-        filesHelpView.navigationController = self.navigationController;
+- (void)displayInfoPage {
+    if (filesInfoView == nil) {
+        filesInfoView = [[FilesInfoView alloc] initWithFrame:self.view.frame];
     }
     
-    [self.view addSubview:filesHelpView];
+    [self.view addSubview:filesInfoView];
     
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.scrollEnabled = NO;
@@ -87,9 +86,9 @@ enum {
     self.navigationItem.rightBarButtonItem = nil;
 }
 
-- (void)hideHelpPage {
-    if (filesHelpView != nil) {
-        [filesHelpView removeFromSuperview];
+- (void)hideInfoPage {
+    if (filesInfoView != nil) {
+        [filesInfoView removeFromSuperview];
     }
     
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
@@ -169,9 +168,9 @@ enum {
     
     // Show the help view if there are no files
     if (databaseCount == 0 && keyCount == 0) {
-        [self displayHelpPage];
+        [self displayInfoPage];
     } else {
-        [self hideHelpPage];
+        [self hideInfoPage];
     }
     
     return n;
