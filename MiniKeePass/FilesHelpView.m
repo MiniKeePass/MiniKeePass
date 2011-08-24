@@ -16,6 +16,7 @@
  */
 
 #import "FilesHelpView.h"
+#import "HelpViewController.h"
 
 @implementation FilesHelpView
 
@@ -29,13 +30,13 @@
         
         UIImage *image = [UIImage imageNamed:@"background"];
         
-        CGFloat y = 16;
+        CGFloat y = 32;
         UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
         imageView.frame = CGRectMake(160 - image.size.width / 2.0, y, image.size.width, image.size.height);
         [self addSubview:imageView];
         [imageView release];
         
-        y += imageView.frame.size.height + 10;
+        y += imageView.frame.size.height + 32;
         
         UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, y, 320, 40)];
         label.backgroundColor = [UIColor clearColor];
@@ -45,36 +46,6 @@
         label.text = @"You do not have any KeePass files available for MiniKeePass to open.";
         [self addSubview:label];
         [label release];
-        
-        y += label.frame.size.height + 10;
-        
-        UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-        button.frame = CGRectMake(0, y, 320, 20);
-        [button setTitle:@"Import from iTunes" forState:UIControlStateNormal];
-        [button setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
-        [button setTitleColor:[UIColor redColor] forState:UIControlStateHighlighted];
-        [button addTarget:self action:@selector(iTunesPressed:) forControlEvents:UIControlEventTouchUpInside];
-        [self addSubview:button];
-        
-        y += button.frame.size.height + 10;
-        
-        button = [UIButton buttonWithType:UIButtonTypeCustom];
-        button.frame = CGRectMake(0, y, 320, 20);
-        [button setTitle:@"Import from Dropbox" forState:UIControlStateNormal];
-        [button setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
-        [button setTitleColor:[UIColor redColor] forState:UIControlStateHighlighted];
-        [button addTarget:self action:@selector(dropboxPressed:) forControlEvents:UIControlEventTouchUpInside];
-        [self addSubview:button];
-        
-        y += button.frame.size.height + 10;
-        
-        button = [UIButton buttonWithType:UIButtonTypeCustom];
-        button.frame = CGRectMake(0, y, 320, 20);
-        [button setTitle:@"Create New" forState:UIControlStateNormal];
-        [button setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
-        [button setTitleColor:[UIColor redColor] forState:UIControlStateHighlighted];
-        [button addTarget:self action:@selector(newPressed:) forControlEvents:UIControlEventTouchUpInside];
-        [self addSubview:button];
     }
     return self;
 }
@@ -85,31 +56,11 @@
 }
 
 - (void)pushWebView:(NSString*)resource {
-    UIWebView *webView = [[UIWebView alloc] init];
-	webView.backgroundColor = [UIColor whiteColor];
+    HelpViewController *helpViewController = [[HelpViewController alloc] init];
     
-    NSURL *url = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:resource ofType:@"html"]];
-    [webView loadRequest:[NSURLRequest requestWithURL:url]];
+    [self.navigationController pushViewController:helpViewController animated:YES];
     
-    UIViewController *viewController = [[UIViewController alloc] init];
-    viewController.view = webView;
-    [webView release];
-    
-    [self.navigationController pushViewController:viewController animated:YES];
-    
-    [viewController release];
-}
-
-- (void)iTunesPressed:(id)sender {
-    [self pushWebView:@"itunes"];
-}
-
-- (void)dropboxPressed:(id)sender {
-    [self pushWebView:@"dropbox"];
-}
-
-- (void)newPressed:(id)sender {
-    [self pushWebView:@"new"];
+    [helpViewController release];
 }
 
 @end

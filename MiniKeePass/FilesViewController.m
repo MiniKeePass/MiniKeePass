@@ -17,6 +17,7 @@
 
 #import "MiniKeePassAppDelegate.h"
 #import "FilesViewController.h"
+#import "HelpViewController.h"
 #import "DatabaseManager.h"
 #import "NewKdbViewController.h"
 #import "SFHFKeychainUtils.h"
@@ -39,10 +40,11 @@ enum {
     self.tableView.allowsSelectionDuringEditing = YES;
     
     UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"tab_gear"] style:UIBarButtonItemStylePlain target:appDelegate action:@selector(showSettingsView)];
+    UIBarButtonItem *helpButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSearch target:self action:@selector(helpPressed)];
     UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addPressed)];
     UIBarButtonItem *spacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     
-    self.toolbarItems = [NSArray arrayWithObjects:settingsButton, spacer, addButton, nil];
+    self.toolbarItems = [NSArray arrayWithObjects:settingsButton, spacer, helpButton, spacer, addButton, nil];
     self.navigationItem.rightBarButtonItem = self.editButtonItem;
     
     [settingsButton release];
@@ -335,6 +337,14 @@ enum {
     
     [navigationController release];
     [newKdbViewController release];
+}
+
+- (void)helpPressed {
+    HelpViewController *helpViewController = [[HelpViewController alloc] init];
+    
+    [self.navigationController pushViewController:helpViewController animated:YES];
+    
+    [helpViewController release];
 }
 
 - (void)formViewController:(FormViewController *)controller button:(FormViewControllerButton)button {
