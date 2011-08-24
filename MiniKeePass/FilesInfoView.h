@@ -15,24 +15,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#import <Foundation/Foundation.h>
-#import "FilesInfoView.h"
-#import "TextEntryController.h"
-#import "NewKdbViewController.h"
+#import <UIKit/UIKit.h>
 
-@class MiniKeePassAppDelegate;
-
-@interface FilesViewController : UITableViewController <TextEntryControllerDelegate, FormViewControllerDelegate> {
-    FilesInfoView *filesInfoView;
-    MiniKeePassAppDelegate *appDelegate;
-    
-    NSMutableArray *databaseFiles;
-    NSMutableArray *keyFiles;
-    NSString *selectedFile;
+@interface FilesInfoView : UIView {
 }
-
-- (void)updateFiles;
-
-@property (nonatomic, copy) NSString* selectedFile;
 
 @end
