@@ -17,10 +17,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface FilesHelpView : UIView {
-    UINavigationController *navigationController;
+@interface FilesInfoView : UIView {
 }
-
-@property (nonatomic, retain) UINavigationController *navigationController;
 
 @end

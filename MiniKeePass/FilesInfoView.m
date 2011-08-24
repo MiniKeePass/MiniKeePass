@@ -15,12 +15,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#import "FilesHelpView.h"
-#import "HelpViewController.h"
+#import "FilesInfoView.h"
 
-@implementation FilesHelpView
-
-@synthesize navigationController;
+@implementation FilesInfoView
 
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
@@ -52,16 +49,7 @@
 }
 
 - (void)dealloc {
-    [navigationController release];
     [super dealloc];
-}
-
-- (void)pushWebView:(NSString*)resource {
-    HelpViewController *helpViewController = [[HelpViewController alloc] init];
-    
-    [self.navigationController pushViewController:helpViewController animated:YES];
-    
-    [helpViewController release];
 }
 
 @end
