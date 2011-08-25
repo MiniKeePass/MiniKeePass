@@ -37,16 +37,34 @@
         lengthSlider.value = 10;
         
         lowerCaseSwitchCell = [[SwitchCell alloc] initWithLabel:@"Lower Case"];
+        lowerCaseSwitchCell.switchControl.on = YES;
+        
         upperCaseSwitchCell = [[SwitchCell alloc] initWithLabel:@"Upper Case"];
+        upperCaseSwitchCell.switchControl.on = YES;
+        
         digitsSwitchCell = [[SwitchCell alloc] initWithLabel:@"Digits"];
+        digitsSwitchCell.switchControl.on = YES;
+        
         specialSwitchCell = [[SwitchCell alloc] initWithLabel:@"Special"];
+        
         bracketsSwitchCell = [[SwitchCell alloc] initWithLabel:@"Brackets"];
         
         passwordTextField = [[UITextField alloc] init];
         
-        self.controls = [NSArray arrayWithObjects:lengthSlider, lowerCaseSwitchCell, upperCaseSwitchCell, digitsSwitchCell, specialSwitchCell, bracketsSwitchCell, nil];
+        self.controls = [NSArray arrayWithObjects:lengthSlider, lowerCaseSwitchCell, upperCaseSwitchCell, digitsSwitchCell, specialSwitchCell, bracketsSwitchCell, passwordTextField, nil];
     }
     return self;
+}
+
+- (void)dealloc {
+    [lengthSlider release];
+    [lowerCaseSwitchCell release];
+    [upperCaseSwitchCell release];
+    [digitsSwitchCell release];
+    [specialSwitchCell release];
+    [bracketsSwitchCell release];
+    [passwordTextField release];
+    [super dealloc];
 }
 
 - (void)generate {
