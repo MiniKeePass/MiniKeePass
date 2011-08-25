@@ -16,6 +16,7 @@
  */
 
 #import "EntryViewController.h"
+#import "PasswordGeneratorViewController.h"
 
 @implementation EntryViewController
 
@@ -49,6 +50,7 @@
         passwordCell = [[PasswordFieldCell alloc] init];
         passwordCell.textLabel.text = @"Password";
         passwordCell.textFieldCellDelegate = self;
+        [passwordCell.accessoryButton addTarget:self action:@selector(generatePasswordPressed) forControlEvents:UIControlEventTouchUpInside];
         
         urlCell = [[UrlFieldCell alloc] init];
         urlCell.textLabel.text = @"URL";
@@ -273,6 +275,29 @@ BOOL stringsEqual(NSString *str1, NSString *str2) {
 
 - (void)imagesViewController:(ImagesViewController *)controller imageSelected:(NSUInteger)index {
     [self setSelectedImageIndex:index];
+}
+
+- (void)generatePasswordPressed {
+    PasswordGeneratorViewController *passwordGeneratorViewController = [[PasswordGeneratorViewController alloc] init];
+    passwordGeneratorViewController.delegate = self;
+    
+    [self.navigationController pushViewController:passwordGeneratorViewController animated:YES];
+    
+    [passwordGeneratorViewController release];
+}
+
+- (void)formViewController:(FormViewController *)controller button:(FormViewControllerButton)button {
+    PasswordGeneratorViewController *passwordGeneratorViewController = (PasswordGeneratorViewController*)controller;
+    BOOL shouldDismiss = YES;
+    
+    // Check if the OK button was pressed
+    if (button == FormViewControllerButtonOk) {
+        // TODO
+    }
+    
+    if (shouldDismiss) {
+        [passwordGeneratorViewController dismissModalViewControllerAnimated:YES];
+    }
 }
 
 @end

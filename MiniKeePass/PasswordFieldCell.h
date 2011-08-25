@@ -18,6 +18,9 @@
 #import "TextFieldCell.h"
 
 @interface PasswordFieldCell : TextFieldCell {
+    UIButton *accessoryButton;
 }
+
+@property (nonatomic, retain) UIButton *accessoryButton;
 
 @end

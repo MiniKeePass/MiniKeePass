@@ -19,12 +19,22 @@
 
 @implementation PasswordFieldCell
 
+@synthesize accessoryButton;
+
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
         NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
         textField.secureTextEntry = [userDefaults boolForKey:@"hidePasswords"];
+        
+        UIImage *image = [UIImage imageNamed:@"safe"];
+        
+        accessoryButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        accessoryButton.frame = CGRectMake(0.0, 0.0, image.size.width, image.size.height);
+        [accessoryButton setImage:image forState:UIControlStateNormal];
+        
+        self.accessoryView = accessoryButton;
     }
     return self;
 }
@@ -36,6 +46,7 @@
     textField.autocorrectionType = UITextAutocorrectionTypeNo;
     textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
     textField.returnKeyType = UIReturnKeyNext;
+    
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)field {
