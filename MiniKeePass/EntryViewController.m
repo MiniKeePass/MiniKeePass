@@ -292,11 +292,13 @@ BOOL stringsEqual(NSString *str1, NSString *str2) {
     
     // Check if the OK button was pressed
     if (button == FormViewControllerButtonOk) {
+        NSString *password = passwordGeneratorViewController.passwordTextField.text;
+        NSLog(@"Password: %@\n", password);
         // TODO
     }
     
     if (shouldDismiss) {
-        [passwordGeneratorViewController dismissModalViewControllerAnimated:YES];
+        [self.navigationController popViewControllerAnimated:YES];
     }
 }
 
