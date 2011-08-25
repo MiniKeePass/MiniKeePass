@@ -29,7 +29,7 @@
 @synthesize databaseDocument;
 @synthesize backgroundSupported;
 
-static NSInteger pinLockTimeoutValues[] = {0, 30, 60, 120, 300};
+static NSInteger timeoutValues[] = {0, 30, 60, 120, 300};
 static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
 static NSInteger clearClipboardTimeoutValues[] = {30, 60, 120, 180};
 
@@ -48,6 +48,8 @@ static NSInteger clearClipboardTimeoutValues[] = {30, 60, 120, 180};
     [defaultsDict setValue:[NSNumber numberWithInt:1] forKey:@"pinLockTimeout"];
     [defaultsDict setValue:[NSNumber numberWithBool:NO] forKey:@"deleteOnFailureEnabled"];
     [defaultsDict setValue:[NSNumber numberWithInt:1] forKey:@"deleteOnFailureAttempts"];
+    [defaultsDict setValue:[NSNumber numberWithBool:NO] forKey:@"closeEnabled"];
+    [defaultsDict setValue:[NSNumber numberWithInt:1] forKey:@"closeTimeout"];
     [defaultsDict setValue:[NSNumber numberWithBool:YES] forKey:@"rememberPasswordsEnabled"];
     [defaultsDict setValue:[NSNumber numberWithBool:YES] forKey:@"hidePasswords"];
     [defaultsDict setValue:[NSNumber numberWithBool:NO] forKey:@"clearClipboardEnabled"];
@@ -115,32 +117,43 @@ static NSInteger clearClipboardTimeoutValues[] = {30, 60, 120, 180};
         [fileToOpen release];
         fileToOpen = nil;
     }
+
+    // Get the time when the application last exited
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSDate *exitTime = [userDefaults valueForKey:@"exitTime"];
+
+    // Check if closing the database is enabled
+    if ([userDefaults boolForKey:@"closeEnabled"] && exitTime != nil) {
+        // Get the lock timeout (in seconds)
+        NSInteger closeTimeout = timeoutValues[[userDefaults integerForKey:@"closeTimeout"]];
+        
+        // Check if it's been longer then lock timeout
+        NSTimeInterval timeInterval = [exitTime timeIntervalSinceNow];
+        if (timeInterval < -closeTimeout) {
+            [self closeDatabase];
+        }
+    }
     
     // Check if the PIN is enabled
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    if ([userDefaults boolForKey:@"pinEnabled"]) {
-        // Get the time when the application last exited
-        NSDate *exitTime = [userDefaults valueForKey:@"exitTime"];
-        if (exitTime != nil) {
-            // Get the lock timeout (in seconds)
-            NSInteger pinLockTimeout = pinLockTimeoutValues[[userDefaults integerForKey:@"pinLockTimeout"]];
+    if ([userDefaults boolForKey:@"pinEnabled"] && exitTime != nil) {
+        // Get the lock timeout (in seconds)
+        NSInteger pinLockTimeout = timeoutValues[[userDefaults integerForKey:@"pinLockTimeout"]];
             
-            // Check if it's been longer then lock timeout
-            NSTimeInterval timeInterval = [exitTime timeIntervalSinceNow];
-            if (timeInterval < -pinLockTimeout) {
-                UIViewController *frontViewController = window.rootViewController;
-                while (frontViewController.modalViewController != nil) {
-                    frontViewController = frontViewController.modalViewController;
-                }
-                
-                // Check if the pin view is already on the screen
-                if (![frontViewController isKindOfClass:[PinViewController class]]) {
-                    // Present the pin view
-                    PinViewController *pinViewController = [[PinViewController alloc] init];
-                    pinViewController.delegate = self;
-                    [frontViewController presentModalViewController:pinViewController animated:YES];
-                    [pinViewController release];            
-                }
+        // Check if it's been longer then lock timeout
+        NSTimeInterval timeInterval = [exitTime timeIntervalSinceNow];
+        if (timeInterval < -pinLockTimeout) {
+            UIViewController *frontViewController = window.rootViewController;
+            while (frontViewController.modalViewController != nil) {
+                frontViewController = frontViewController.modalViewController;
+            }
+            
+            // Check if the pin view is already on the screen
+            if (![frontViewController isKindOfClass:[PinViewController class]]) {
+                // Present the pin view
+                PinViewController *pinViewController = [[PinViewController alloc] init];
+                pinViewController.delegate = self;
+                [frontViewController presentModalViewController:pinViewController animated:YES];
+                [pinViewController release];            
             }
         }
     }

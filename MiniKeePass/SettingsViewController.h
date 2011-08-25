@@ -26,6 +26,8 @@
     ChoiceCell *pinLockTimeoutCell;
     SwitchCell *deleteOnFailureEnabledCell;
     ChoiceCell *deleteOnFailureAttemptsCell;
+    SwitchCell *closeEnabledCell;
+    ChoiceCell *closeTimeoutCell;
     SwitchCell *rememberPasswordsEnabledCell;
     SwitchCell *hidePasswordsCell;
     SwitchCell *clearClipboardEnabledCell;
