@@ -17,6 +17,7 @@
 
 #import <AudioToolbox/AudioToolbox.h>
 #import "MiniKeePassAppDelegate.h"
+#import "SplashScreenViewController.h"
 #import "GroupViewController.h"
 #import "SettingsViewController.h"
 #import "EntryViewController.h"
@@ -103,6 +104,18 @@ static NSInteger clearClipboardTimeoutValues[] = {30, 60, 120, 180};
     [[NSUserDefaults standardUserDefaults] setValue:currentTime forKey:@"exitTime"];
     
     [self dismissActionSheet];
+    
+    UIViewController *frontViewController = window.rootViewController;
+    while (frontViewController.modalViewController != nil) {
+        frontViewController = frontViewController.modalViewController;
+    }
+    
+    // Check a pin view is already covering the screen
+    if (![frontViewController isKindOfClass:[PinViewController class]]) {
+        // Add the spash screen
+        SplashScreenViewController *spashScreen = [[SplashScreenViewController alloc] init];
+        [frontViewController presentModalViewController:spashScreen animated:NO];
+    }
 }
 
 - (void)applicationDidBecomeActive:(UIApplication*)application {
@@ -133,6 +146,11 @@ static NSInteger clearClipboardTimeoutValues[] = {30, 60, 120, 180};
             [self closeDatabase];
         }
     }
+
+    UIViewController *frontViewController = window.rootViewController;
+    while (frontViewController.modalViewController != nil) {
+        frontViewController = frontViewController.modalViewController;
+    }
     
     // Check if the PIN is enabled
     if ([userDefaults boolForKey:@"pinEnabled"] && exitTime != nil) {
@@ -142,20 +160,20 @@ static NSInteger clearClipboardTimeoutValues[] = {30, 60, 120, 180};
         // Check if it's been longer then lock timeout
         NSTimeInterval timeInterval = [exitTime timeIntervalSinceNow];
         if (timeInterval < -pinLockTimeout) {
-            UIViewController *frontViewController = window.rootViewController;
-            while (frontViewController.modalViewController != nil) {
-                frontViewController = frontViewController.modalViewController;
-            }
-            
             // Check if the pin view is already on the screen
             if (![frontViewController isKindOfClass:[PinViewController class]]) {
                 // Present the pin view
                 PinViewController *pinViewController = [[PinViewController alloc] init];
                 pinViewController.delegate = self;
                 [frontViewController presentModalViewController:pinViewController animated:YES];
-                [pinViewController release];            
+                [pinViewController release];
+                frontViewController = pinViewController;
             }
         }
+    }
+    
+    if ([frontViewController isKindOfClass:[SplashScreenViewController class]]) {
+        [frontViewController dismissModalViewControllerAnimated:NO];
     }
 }
 
@@ -344,6 +362,17 @@ static NSInteger clearClipboardTimeoutValues[] = {30, 60, 120, 180};
                 }
             }
         }
+    }
+}
+
+- (void)pinViewControllerDidDisappear {
+    UIViewController *frontViewController = window.rootViewController;
+    while (frontViewController.modalViewController != nil) {
+        frontViewController = frontViewController.modalViewController;
+    }
+    
+    if ([frontViewController isKindOfClass:[SplashScreenViewController class]]) {
+        [frontViewController dismissModalViewControllerAnimated:NO];
     }
 }
 
