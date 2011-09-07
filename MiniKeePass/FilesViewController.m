@@ -122,7 +122,7 @@ enum {
     // Get the list of files in the documents directory
     NSArray *dirContents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:documentsDirectory error:nil];
     NSArray *databaseFilenames = [dirContents filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"(self ENDSWITH '.kdb') OR (self ENDSWITH '.kdbx')"]];
-    NSArray *keyFilenames = [dirContents filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"!((self ENDSWITH '.kdb') OR (self ENDSWITH '.kdbx'))"]];
+    NSArray *keyFilenames = [dirContents filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"!((self ENDSWITH '.kdb') OR (self ENDSWITH '.kdbx') OR (self MATCHES 'Inbox'))"]];
     
     databaseFiles = [[NSMutableArray arrayWithArray:databaseFilenames] retain];
     keyFiles = [[NSMutableArray arrayWithArray:keyFilenames] retain];    
