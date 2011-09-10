@@ -33,6 +33,16 @@
 static NSInteger timeoutValues[] = {0, 30, 60, 120, 300};
 static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
 static NSInteger clearClipboardTimeoutValues[] = {30, 60, 120, 180};
+static NSStringEncoding passwordEncodingValues[] = {
+    NSUTF8StringEncoding,
+    NSUTF16BigEndianStringEncoding,
+    NSUTF16LittleEndianStringEncoding,
+    NSISOLatin1StringEncoding,
+    NSISOLatin2StringEncoding,
+    NSASCIIStringEncoding,
+    NSJapaneseEUCStringEncoding,
+    NSISO2022JPStringEncoding
+};
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Initialize the images array
@@ -53,6 +63,7 @@ static NSInteger clearClipboardTimeoutValues[] = {30, 60, 120, 180};
     [defaultsDict setValue:[NSNumber numberWithInt:1] forKey:@"closeTimeout"];
     [defaultsDict setValue:[NSNumber numberWithBool:YES] forKey:@"rememberPasswordsEnabled"];
     [defaultsDict setValue:[NSNumber numberWithBool:YES] forKey:@"hidePasswords"];
+    [defaultsDict setValue:[NSNumber numberWithInt:0] forKey:@"passwordEncoding"];
     [defaultsDict setValue:[NSNumber numberWithBool:NO] forKey:@"clearClipboardEnabled"];
     
     NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
@@ -269,6 +280,11 @@ static NSInteger clearClipboardTimeoutValues[] = {30, 60, 120, 180};
     for (NSString *file in files) {
         [fileManager removeItemAtPath:[documentsDirectory stringByAppendingPathComponent:file] error:nil];
     }
+}
+
+- (NSStringEncoding)getPasswordEncoding {
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    return passwordEncodingValues[[userDefaults integerForKey:@"passwordEncoding"]];
 }
 
 - (UIImage *)loadImage:(NSUInteger)index {
