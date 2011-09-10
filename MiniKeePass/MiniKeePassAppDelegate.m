@@ -118,7 +118,7 @@ static NSInteger clearClipboardTimeoutValues[] = {30, 60, 120, 180};
     }
 }
 
-- (void)applicationDidBecomeActive:(UIApplication*)application {
+- (void)applicationDidBecomeActive:(UIApplication *)application {
     // Check if we're supposed to open a file
     if (fileToOpen != nil) {
         // Close the current database
@@ -177,7 +177,7 @@ static NSInteger clearClipboardTimeoutValues[] = {30, 60, 120, 180};
     }
 }
 
-- (BOOL)application:(UIApplication*)application openURL:(NSURL*)url sourceApplication:(NSString*)sourceApplication annotation:(id)annotation {
+- (void)openUrl:(NSURL *)url {
     // Get the filename
     NSString *filename = [url lastPathComponent];
     
@@ -204,11 +204,19 @@ static NSInteger clearClipboardTimeoutValues[] = {30, 60, 120, 180};
         [fileView updateFiles];
         [fileView.tableView reloadData];
     }
-    
+}
+
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
+    [self openUrl:url];
     return YES;
 }
 
-- (DatabaseDocument*)databaseDocument {
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+    [self openUrl:url];
+    return YES;
+}
+
+- (DatabaseDocument *)databaseDocument {
     return databaseDocument;
 }
 
@@ -263,7 +271,7 @@ static NSInteger clearClipboardTimeoutValues[] = {30, 60, 120, 180};
     }
 }
 
-- (UIImage*)loadImage:(NSUInteger)index {
+- (UIImage *)loadImage:(NSUInteger)index {
     if (index >= NUM_IMAGES) {
         return nil;
     }
@@ -275,7 +283,7 @@ static NSInteger clearClipboardTimeoutValues[] = {30, 60, 120, 180};
     return images[index];
 }
 
-- (void)handlePasteboardNotification:(NSNotification*)notification {
+- (void)handlePasteboardNotification:(NSNotification *)notification {
     // Check if the clipboard has any contents
     UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
     if (pasteboard.string == nil || [pasteboard.string isEqualToString:@""]) {
@@ -402,7 +410,7 @@ static NSInteger clearClipboardTimeoutValues[] = {30, 60, 120, 180};
     [window.rootViewController dismissModalViewControllerAnimated:YES];
 }
 
-- (void)showActionSheet:(UIActionSheet*)actionSheet {
+- (void)showActionSheet:(UIActionSheet *)actionSheet {
     if (myActionSheet != nil) {
         [myActionSheet dismissWithClickedButtonIndex:myActionSheet.cancelButtonIndex animated:NO];
     }
@@ -415,13 +423,13 @@ static NSInteger clearClipboardTimeoutValues[] = {30, 60, 120, 180};
     [actionSheet release];
 }
 
-- (void)actionSheet:(UIActionSheet*)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     if ([myActionSheetDelegate respondsToSelector:@selector(actionSheet:clickedButtonAtIndex:)]) {
         [myActionSheetDelegate actionSheet:actionSheet clickedButtonAtIndex:buttonIndex];
     }
 }
 
-- (void)actionSheet:(UIActionSheet*)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
+- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
     if ([myActionSheetDelegate respondsToSelector:@selector(actionSheet:didDismissWithButtonIndex:)]) {
         [myActionSheetDelegate actionSheet:actionSheet didDismissWithButtonIndex:buttonIndex];
     }
@@ -430,13 +438,13 @@ static NSInteger clearClipboardTimeoutValues[] = {30, 60, 120, 180};
     myActionSheetDelegate = nil;
 }
 
-- (void)actionSheet:(UIActionSheet*)actionSheet willDismissWithButtonIndex:(NSInteger)buttonIndex {
+- (void)actionSheet:(UIActionSheet *)actionSheet willDismissWithButtonIndex:(NSInteger)buttonIndex {
     if ([myActionSheetDelegate respondsToSelector:@selector(actionSheet:willDismissWithButtonIndex:)]) {
         [myActionSheetDelegate actionSheet:actionSheet willDismissWithButtonIndex:buttonIndex];
     }
 }
 
-- (void)actionSheetCancel:(UIActionSheet*)actionSheet {
+- (void)actionSheetCancel:(UIActionSheet *)actionSheet {
     if ([myActionSheetDelegate respondsToSelector:@selector(actionSheetCancel:)]) {
         [myActionSheetDelegate actionSheetCancel:actionSheet];
     }
