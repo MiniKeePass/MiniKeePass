@@ -28,7 +28,7 @@
         NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
         textField.secureTextEntry = [userDefaults boolForKey:@"hidePasswords"];
         
-        UIImage *image = [UIImage imageNamed:@"safe"];
+        UIImage *image = [UIImage imageNamed:@"gear"];
         
         accessoryButton = [UIButton buttonWithType:UIButtonTypeCustom];
         accessoryButton.frame = CGRectMake(0.0, 0.0, image.size.width, image.size.height);

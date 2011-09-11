@@ -13,8 +13,6 @@
 		6876F67813B2D8F500A05C7A /* ImagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6876F67713B2D8F400A05C7A /* ImagesViewController.m */; };
 		6876F67B13B2F2DB00A05C7A /* checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = 6876F67913B2F2DB00A05C7A /* checkmark.png */; };
 		6876F67C13B2F2DB00A05C7A /* checkmark@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6876F67A13B2F2DB00A05C7A /* checkmark@2x.png */; };
-		688D7D641405DDFF004229F3 /* safe.png in Resources */ = {isa = PBXBuildFile; fileRef = 688D7D621405DDFF004229F3 /* safe.png */; };
-		688D7D651405DDFF004229F3 /* safe@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 688D7D631405DDFF004229F3 /* safe@2x.png */; };
 		68915A0B13A6F6C200A408B0 /* InfoBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 68915A0A13A6F6C200A408B0 /* InfoBar.m */; };
 		689A4D1314046B8200AA897D /* RandomStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 689A4D1214046B8200AA897D /* RandomStream.m */; };
 		689A4D171404759700AA897D /* PasswordGeneratorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 689A4D161404759700AA897D /* PasswordGeneratorViewController.m */; };
@@ -289,6 +287,8 @@
 		68CFB1E213B357EE00333B38 /* EditGroupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68CFB1E113B357EE00333B38 /* EditGroupViewController.m */; };
 		68D991E613F3EAAE00F6ED1F /* PasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68D991E513F3EAAE00F6ED1F /* PasswordViewController.m */; };
 		68DDC3731405160300FC8BD8 /* keyfiles.html in Resources */ = {isa = PBXBuildFile; fileRef = 68DDC3721405160300FC8BD8 /* keyfiles.html */; };
+		68F49A3B141CC41F0039FD2B /* gear.png in Resources */ = {isa = PBXBuildFile; fileRef = 68F49A39141CC41F0039FD2B /* gear.png */; };
+		68F49A3C141CC41F0039FD2B /* gear@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 68F49A3A141CC41F0039FD2B /* gear@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -311,8 +311,6 @@
 		6876F67713B2D8F400A05C7A /* ImagesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImagesViewController.m; sourceTree = "<group>"; };
 		6876F67913B2F2DB00A05C7A /* checkmark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = checkmark.png; sourceTree = "<group>"; };
 		6876F67A13B2F2DB00A05C7A /* checkmark@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "checkmark@2x.png"; sourceTree = "<group>"; };
-		688D7D621405DDFF004229F3 /* safe.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = safe.png; sourceTree = "<group>"; };
-		688D7D631405DDFF004229F3 /* safe@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "safe@2x.png"; sourceTree = "<group>"; };
 		68915A0913A6F6C200A408B0 /* InfoBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfoBar.h; sourceTree = "<group>"; };
 		68915A0A13A6F6C200A408B0 /* InfoBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfoBar.m; sourceTree = "<group>"; };
 		689A4D1214046B8200AA897D /* RandomStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RandomStream.m; sourceTree = "<group>"; };
@@ -667,6 +665,8 @@
 		68D991E413F3EAAE00F6ED1F /* PasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasswordViewController.h; sourceTree = "<group>"; };
 		68D991E513F3EAAE00F6ED1F /* PasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PasswordViewController.m; sourceTree = "<group>"; };
 		68DDC3721405160300FC8BD8 /* keyfiles.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = keyfiles.html; sourceTree = "<group>"; };
+		68F49A39141CC41F0039FD2B /* gear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gear.png; sourceTree = "<group>"; };
+		68F49A3A141CC41F0039FD2B /* gear@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gear@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -862,6 +862,8 @@
 				689D02A913A42B63005EBD36 /* box@2x.png */,
 				6876F67913B2F2DB00A05C7A /* checkmark.png */,
 				6876F67A13B2F2DB00A05C7A /* checkmark@2x.png */,
+				68F49A39141CC41F0039FD2B /* gear.png */,
+				68F49A3A141CC41F0039FD2B /* gear@2x.png */,
 			);
 			path = images;
 			sourceTree = "<group>";
@@ -1045,8 +1047,6 @@
 				689D021713A42B63005EBD36 /* icon.png */,
 				689D021813A42B63005EBD36 /* icon.svg */,
 				689D021913A42B63005EBD36 /* icon@2x.png */,
-				688D7D621405DDFF004229F3 /* safe.png */,
-				688D7D631405DDFF004229F3 /* safe@2x.png */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1443,8 +1443,8 @@
 				52A177BC13EB698E00CEEFCE /* createdb.html in Resources */,
 				68CE37F51404A86600E4A5E1 /* safariemail.html in Resources */,
 				68DDC3731405160300FC8BD8 /* keyfiles.html in Resources */,
-				688D7D641405DDFF004229F3 /* safe.png in Resources */,
-				688D7D651405DDFF004229F3 /* safe@2x.png in Resources */,
+				68F49A3B141CC41F0039FD2B /* gear.png in Resources */,
+				68F49A3C141CC41F0039FD2B /* gear@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
