@@ -120,13 +120,13 @@
     switch (section) {
         case GROUPS_SECTION:
             if ([group.groups count] != 0) {
-                return @"Groups";
+                return NSLocalizedString(@"Groups", nil);
             }
             break;
             
         case ENTRIES_SECTION:
             if ([group.entries count] != 0) {
-                return @"Entries";
+                return NSLocalizedString(@"Entries", nil);
             }
             break;
     }

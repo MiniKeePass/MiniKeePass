@@ -152,12 +152,12 @@ enum {
     switch (section) {
         case SECTION_DATABASE:
             if ([databaseFiles count] != 0) {
-                return @"Databases";
+                return NSLocalizedString(@"Databases", nil);
             }
             break;
         case SECTION_KEYFILE:
             if ([keyFiles count] != 0) {
-                return @"Key Files";
+                return NSLocalizedString(@"Key Files", nil);
             }
             break;
     }

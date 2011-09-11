@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		5253EC0C141669F200629E30 /* SplashScreenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5253EC0B141669F200629E30 /* SplashScreenViewController.m */; };
 		52A177BC13EB698E00CEEFCE /* createdb.html in Resources */ = {isa = PBXBuildFile; fileRef = 52A177BB13EB698E00CEEFCE /* createdb.html */; };
+		680E5C06141C14BB00E7C3FD /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 680E5C05141C14BB00E7C3FD /* Localizable.strings */; };
+		680E5C0A141C14D100E7C3FD /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 680E5C08141C14D000E7C3FD /* Localizable.strings */; };
 		68406ACD13CA42F200A5849C /* ImageButtonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68406ACC13CA42F200A5849C /* ImageButtonCell.m */; };
 		6876F67813B2D8F500A05C7A /* ImagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6876F67713B2D8F400A05C7A /* ImagesViewController.m */; };
 		6876F67B13B2F2DB00A05C7A /* checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = 6876F67913B2F2DB00A05C7A /* checkmark.png */; };
@@ -302,6 +304,8 @@
 		5253EC0A141669F200629E30 /* SplashScreenViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SplashScreenViewController.h; sourceTree = "<group>"; };
 		5253EC0B141669F200629E30 /* SplashScreenViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SplashScreenViewController.m; sourceTree = "<group>"; };
 		52A177BB13EB698E00CEEFCE /* createdb.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = createdb.html; sourceTree = "<group>"; };
+		680E5C05141C14BB00E7C3FD /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
+		680E5C09141C14D100E7C3FD /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
 		68406ACB13CA42F200A5849C /* ImageButtonCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageButtonCell.h; sourceTree = "<group>"; };
 		68406ACC13CA42F200A5849C /* ImageButtonCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageButtonCell.m; sourceTree = "<group>"; };
 		6876F67613B2D8F400A05C7A /* ImagesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImagesViewController.h; sourceTree = "<group>"; };
@@ -694,6 +698,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		680E5C0B141C14FE00E7C3FD /* ja */ = {
+			isa = PBXGroup;
+			children = (
+				680E5C08141C14D000E7C3FD /* Localizable.strings */,
+			);
+			name = ja;
+			sourceTree = "<group>";
+		};
+		680E5C0C141C150400E7C3FD /* en */ = {
+			isa = PBXGroup;
+			children = (
+				680E5C05141C14BB00E7C3FD /* Localizable.strings */,
+			);
+			name = en;
+			sourceTree = "<group>";
+		};
 		689D021313A42B63005EBD36 /* help */ = {
 			isa = PBXGroup;
 			children = (
@@ -1032,6 +1052,8 @@
 			children = (
 				689D021313A42B63005EBD36 /* help */,
 				689D021A13A42B63005EBD36 /* images */,
+				680E5C0C141C150400E7C3FD /* en */,
+				680E5C0B141C14FE00E7C3FD /* ja */,
 				689D021013A42B63005EBD36 /* Default.png */,
 				689D021113A42B63005EBD36 /* Default.svg */,
 				689D021213A42B63005EBD36 /* Default@2x.png */,
@@ -1259,6 +1281,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				ja,
 			);
 			mainGroup = 689DFFCA13A4273F005EBD36;
 			productRefGroup = 689DFFD613A4273F005EBD36 /* Products */;
@@ -1432,6 +1455,8 @@
 				52A177BC13EB698E00CEEFCE /* createdb.html in Resources */,
 				68CE37F51404A86600E4A5E1 /* safariemail.html in Resources */,
 				68DDC3731405160300FC8BD8 /* keyfiles.html in Resources */,
+				680E5C06141C14BB00E7C3FD /* Localizable.strings in Resources */,
+				680E5C0A141C14D100E7C3FD /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1595,6 +1620,14 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		680E5C08141C14D000E7C3FD /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				680E5C09141C14D100E7C3FD /* ja */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
 		689DFFE213A4273F005EBD36 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
