@@ -42,6 +42,7 @@
 
 - (void)closeDatabase;
 - (void)deleteAllData;
+- (NSStringEncoding)getPasswordEncoding;
 - (UIImage*)loadImage:(NSUInteger)index;
 - (void)showSettingsView;
 - (void)dismissSettingsView;

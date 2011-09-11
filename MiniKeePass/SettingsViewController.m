@@ -27,6 +27,7 @@ enum {
     SECTION_CLOSE,
     SECTION_REMEMBER_PASSWORDS,
     SECTION_HIDE_PASSWORDS,
+    SECTION_PASSWORD_ENCODING,
     SECTION_CLEAR_CLIPBOARD,
     SECTION_NUMBER
 };
@@ -57,6 +58,11 @@ enum {
 enum {
     ROW_HIDE_PASSWORDS_ENABLED,
     ROW_HIDE_PASSWORDS_NUMBER
+};
+
+enum {
+    ROW_PASSWORD_ENCODING_VALUE,
+    ROW_PASSWORD_ENCODING_NUMBER
 };
 
 enum {
@@ -92,7 +98,9 @@ enum {
     
     hidePasswordsCell = [[SwitchCell alloc] initWithLabel:@"Hide Passwords"];
     [hidePasswordsCell.switchControl addTarget:self action:@selector(toggleHidePasswords:) forControlEvents:UIControlEventValueChanged];
-    
+
+    passwordEncodingCell = [[ChoiceCell alloc] initWithLabel:@"Encoding" choices:[NSArray arrayWithObjects:@"UTF-8", @"UTF-16 Big Endian", @"UTF-16 Little Endian", @"Latin 1 (ISO/IEC 8859-1)", @"Latin 2 (ISO/IEC 8859-2)", @"7-Bit ASCII", @"Japanese EUC", @"ISO-2022-JP", nil] selectedIndex:0];
+
     clearClipboardEnabledCell = [[SwitchCell alloc] initWithLabel:@"Enabled"];
     [clearClipboardEnabledCell.switchControl addTarget:self action:@selector(toggleClearClipboardEnabled:) forControlEvents:UIControlEventValueChanged];
     
@@ -108,6 +116,7 @@ enum {
     [closeTimeoutCell release];
     [rememberPasswordsEnabledCell release];
     [hidePasswordsCell release];
+    [passwordEncodingCell release];
     [clearClipboardEnabledCell release];
     [clearClipboardTimeoutCell release];
     [super dealloc];
@@ -135,6 +144,8 @@ enum {
     rememberPasswordsEnabledCell.switchControl.on = [userDefaults boolForKey:@"rememberPasswordsEnabled"];
     
     hidePasswordsCell.switchControl.on = [userDefaults boolForKey:@"hidePasswords"];
+    
+    [passwordEncodingCell setSelectedIndex:[userDefaults integerForKey:@"passwordEncoding"]];
     
     clearClipboardEnabledCell.switchControl.on = [userDefaults boolForKey:@"clearClipboardEnabled"];
     [clearClipboardTimeoutCell setSelectedIndex:[userDefaults integerForKey:@"clearClipboardTimeout"]];
@@ -184,6 +195,9 @@ enum {
         case SECTION_HIDE_PASSWORDS:
             return ROW_HIDE_PASSWORDS_NUMBER;
             
+        case SECTION_PASSWORD_ENCODING:
+            return ROW_PASSWORD_ENCODING_NUMBER;
+            
         case SECTION_CLEAR_CLIPBOARD:
             return ROW_CLEAR_CLIPBOARD_NUMBER;
     }
@@ -205,7 +219,10 @@ enum {
             return @"Remember Database Passwords";
             
         case SECTION_HIDE_PASSWORDS:
-            return @"General";
+            return @"Hide Passwords";
+            
+        case SECTION_PASSWORD_ENCODING:
+            return @"Password Encoding";
             
         case SECTION_CLEAR_CLIPBOARD:
             return @"Clear Clipboard on Timeout";
@@ -229,6 +246,9 @@ enum {
             
         case SECTION_HIDE_PASSWORDS:
             return @"Hides passwords when viewing a password entry.";
+            
+        case SECTION_PASSWORD_ENCODING:
+            return @"The string encoding used for passwords when converting them to database keys.";
             
         case SECTION_CLEAR_CLIPBOARD:
             return @"Clear the contents of the clipboard after a given timeout upon performing a copy.";
@@ -279,6 +299,13 @@ enum {
             }
             break;
             
+        case SECTION_PASSWORD_ENCODING:
+            switch (indexPath.row) {
+                case ROW_PASSWORD_ENCODING_VALUE:
+                    return passwordEncodingCell;
+            }
+            break;
+            
         case SECTION_CLEAR_CLIPBOARD:
             switch (indexPath.row) {
                 case ROW_CLEAR_CLIPBOARD_ENABLED:
@@ -320,6 +347,15 @@ enum {
         selectionListViewController.reference = indexPath;
         [self.navigationController pushViewController:selectionListViewController animated:YES];
         [selectionListViewController release];
+    } else if (indexPath.section == SECTION_PASSWORD_ENCODING && indexPath.row == ROW_PASSWORD_ENCODING_VALUE) {
+        SelectionListViewController *selectionListViewController = [[SelectionListViewController alloc] initWithStyle:UITableViewStyleGrouped];
+        selectionListViewController.title = @"Password Encoding";
+        selectionListViewController.items = passwordEncodingCell.choices;
+        selectionListViewController.selectedIndex = [[NSUserDefaults standardUserDefaults] integerForKey:@"passwordEncoding"];
+        selectionListViewController.delegate = self;
+        selectionListViewController.reference = indexPath;
+        [self.navigationController pushViewController:selectionListViewController animated:YES];
+        [selectionListViewController release];
     } else if (indexPath.section == SECTION_CLEAR_CLIPBOARD && indexPath.row == ROW_CLEAR_CLIPBOARD_TIMEOUT && clearClipboardEnabledCell.switchControl.on) {
         SelectionListViewController *selectionListViewController = [[SelectionListViewController alloc] initWithStyle:UITableViewStyleGrouped];
         selectionListViewController.title = @"Clear Clipboard Timeout";
@@ -355,6 +391,13 @@ enum {
         
         // Update the cell text
         [pinLockTimeoutCell setSelectedIndex:selectedIndex];
+    } else if (indexPath.section == SECTION_PASSWORD_ENCODING && indexPath.row == ROW_PASSWORD_ENCODING_VALUE) {
+        // Save the user setting
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        [userDefaults setInteger:selectedIndex forKey:@"passwordEncoding"];
+        
+        // Update the cell text
+        [passwordEncodingCell setSelectedIndex:selectedIndex];
     } else if (indexPath.section == SECTION_CLEAR_CLIPBOARD && indexPath.row == ROW_CLEAR_CLIPBOARD_TIMEOUT) {
         // Save the user setting
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];

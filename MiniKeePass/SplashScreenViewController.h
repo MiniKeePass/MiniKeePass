@@ -16,27 +16,7 @@
  */
 
 #import <UIKit/UIKit.h>
-#import "PinViewController.h"
-#import "ChoiceCell.h"
-#import "SwitchCell.h"
-#import "SelectionListViewController.h"
 
-@interface SettingsViewController : UITableViewController <PinViewControllerDelegate, SelectionListViewControllerDelegate> {
-    SwitchCell *pinEnabledCell;
-    ChoiceCell *pinLockTimeoutCell;
-    SwitchCell *deleteOnFailureEnabledCell;
-    ChoiceCell *deleteOnFailureAttemptsCell;
-    SwitchCell *closeEnabledCell;
-    ChoiceCell *closeTimeoutCell;
-    SwitchCell *rememberPasswordsEnabledCell;
-    SwitchCell *hidePasswordsCell;
-    ChoiceCell *passwordEncodingCell;
-    SwitchCell *clearClipboardEnabledCell;
-    ChoiceCell *clearClipboardTimeoutCell;
-    
-    NSString *tempPin;
-}
-
-- (void)updateEnabledControls;
+@interface SplashScreenViewController : UIViewController
 
 @end

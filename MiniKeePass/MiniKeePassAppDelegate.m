@@ -17,6 +17,7 @@
 
 #import <AudioToolbox/AudioToolbox.h>
 #import "MiniKeePassAppDelegate.h"
+#import "SplashScreenViewController.h"
 #import "GroupViewController.h"
 #import "SettingsViewController.h"
 #import "EntryViewController.h"
@@ -32,6 +33,16 @@
 static NSInteger timeoutValues[] = {0, 30, 60, 120, 300};
 static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
 static NSInteger clearClipboardTimeoutValues[] = {30, 60, 120, 180};
+static NSStringEncoding passwordEncodingValues[] = {
+    NSUTF8StringEncoding,
+    NSUTF16BigEndianStringEncoding,
+    NSUTF16LittleEndianStringEncoding,
+    NSISOLatin1StringEncoding,
+    NSISOLatin2StringEncoding,
+    NSASCIIStringEncoding,
+    NSJapaneseEUCStringEncoding,
+    NSISO2022JPStringEncoding
+};
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Initialize the images array
@@ -52,6 +63,7 @@ static NSInteger clearClipboardTimeoutValues[] = {30, 60, 120, 180};
     [defaultsDict setValue:[NSNumber numberWithInt:1] forKey:@"closeTimeout"];
     [defaultsDict setValue:[NSNumber numberWithBool:YES] forKey:@"rememberPasswordsEnabled"];
     [defaultsDict setValue:[NSNumber numberWithBool:YES] forKey:@"hidePasswords"];
+    [defaultsDict setValue:[NSNumber numberWithInt:0] forKey:@"passwordEncoding"];
     [defaultsDict setValue:[NSNumber numberWithBool:NO] forKey:@"clearClipboardEnabled"];
     
     NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
@@ -103,9 +115,21 @@ static NSInteger clearClipboardTimeoutValues[] = {30, 60, 120, 180};
     [[NSUserDefaults standardUserDefaults] setValue:currentTime forKey:@"exitTime"];
     
     [self dismissActionSheet];
+    
+    UIViewController *frontViewController = window.rootViewController;
+    while (frontViewController.modalViewController != nil) {
+        frontViewController = frontViewController.modalViewController;
+    }
+    
+    // Check a pin view is already covering the screen
+    if (![frontViewController isKindOfClass:[PinViewController class]]) {
+        // Add the spash screen
+        SplashScreenViewController *spashScreen = [[SplashScreenViewController alloc] init];
+        [frontViewController presentModalViewController:spashScreen animated:NO];
+    }
 }
 
-- (void)applicationDidBecomeActive:(UIApplication*)application {
+- (void)applicationDidBecomeActive:(UIApplication *)application {
     // Check if we're supposed to open a file
     if (fileToOpen != nil) {
         // Close the current database
@@ -133,6 +157,11 @@ static NSInteger clearClipboardTimeoutValues[] = {30, 60, 120, 180};
             [self closeDatabase];
         }
     }
+
+    UIViewController *frontViewController = window.rootViewController;
+    while (frontViewController.modalViewController != nil) {
+        frontViewController = frontViewController.modalViewController;
+    }
     
     // Check if the PIN is enabled
     if ([userDefaults boolForKey:@"pinEnabled"] && exitTime != nil) {
@@ -142,24 +171,24 @@ static NSInteger clearClipboardTimeoutValues[] = {30, 60, 120, 180};
         // Check if it's been longer then lock timeout
         NSTimeInterval timeInterval = [exitTime timeIntervalSinceNow];
         if (timeInterval < -pinLockTimeout) {
-            UIViewController *frontViewController = window.rootViewController;
-            while (frontViewController.modalViewController != nil) {
-                frontViewController = frontViewController.modalViewController;
-            }
-            
             // Check if the pin view is already on the screen
             if (![frontViewController isKindOfClass:[PinViewController class]]) {
                 // Present the pin view
                 PinViewController *pinViewController = [[PinViewController alloc] init];
                 pinViewController.delegate = self;
                 [frontViewController presentModalViewController:pinViewController animated:YES];
-                [pinViewController release];            
+                [pinViewController release];
+                frontViewController = pinViewController;
             }
         }
     }
+    
+    if ([frontViewController isKindOfClass:[SplashScreenViewController class]]) {
+        [frontViewController dismissModalViewControllerAnimated:NO];
+    }
 }
 
-- (BOOL)application:(UIApplication*)application openURL:(NSURL*)url sourceApplication:(NSString*)sourceApplication annotation:(id)annotation {
+- (void)openUrl:(NSURL *)url {
     // Get the filename
     NSString *filename = [url lastPathComponent];
     
@@ -186,11 +215,19 @@ static NSInteger clearClipboardTimeoutValues[] = {30, 60, 120, 180};
         [fileView updateFiles];
         [fileView.tableView reloadData];
     }
-    
+}
+
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
+    [self openUrl:url];
     return YES;
 }
 
-- (DatabaseDocument*)databaseDocument {
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+    [self openUrl:url];
+    return YES;
+}
+
+- (DatabaseDocument *)databaseDocument {
     return databaseDocument;
 }
 
@@ -245,7 +282,12 @@ static NSInteger clearClipboardTimeoutValues[] = {30, 60, 120, 180};
     }
 }
 
-- (UIImage*)loadImage:(NSUInteger)index {
+- (NSStringEncoding)getPasswordEncoding {
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    return passwordEncodingValues[[userDefaults integerForKey:@"passwordEncoding"]];
+}
+
+- (UIImage *)loadImage:(NSUInteger)index {
     if (index >= NUM_IMAGES) {
         return nil;
     }
@@ -257,7 +299,7 @@ static NSInteger clearClipboardTimeoutValues[] = {30, 60, 120, 180};
     return images[index];
 }
 
-- (void)handlePasteboardNotification:(NSNotification*)notification {
+- (void)handlePasteboardNotification:(NSNotification *)notification {
     // Check if the clipboard has any contents
     UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
     if (pasteboard.string == nil || [pasteboard.string isEqualToString:@""]) {
@@ -347,6 +389,17 @@ static NSInteger clearClipboardTimeoutValues[] = {30, 60, 120, 180};
     }
 }
 
+- (void)pinViewControllerDidDisappear {
+    UIViewController *frontViewController = window.rootViewController;
+    while (frontViewController.modalViewController != nil) {
+        frontViewController = frontViewController.modalViewController;
+    }
+    
+    if ([frontViewController isKindOfClass:[SplashScreenViewController class]]) {
+        [frontViewController dismissModalViewControllerAnimated:NO];
+    }
+}
+
 - (void)dismissActionSheet {
     if (myActionSheet != nil) {
         [myActionSheet dismissWithClickedButtonIndex:myActionSheet.cancelButtonIndex animated:YES];
@@ -373,7 +426,7 @@ static NSInteger clearClipboardTimeoutValues[] = {30, 60, 120, 180};
     [window.rootViewController dismissModalViewControllerAnimated:YES];
 }
 
-- (void)showActionSheet:(UIActionSheet*)actionSheet {
+- (void)showActionSheet:(UIActionSheet *)actionSheet {
     if (myActionSheet != nil) {
         [myActionSheet dismissWithClickedButtonIndex:myActionSheet.cancelButtonIndex animated:NO];
     }
@@ -386,13 +439,13 @@ static NSInteger clearClipboardTimeoutValues[] = {30, 60, 120, 180};
     [actionSheet release];
 }
 
-- (void)actionSheet:(UIActionSheet*)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     if ([myActionSheetDelegate respondsToSelector:@selector(actionSheet:clickedButtonAtIndex:)]) {
         [myActionSheetDelegate actionSheet:actionSheet clickedButtonAtIndex:buttonIndex];
     }
 }
 
-- (void)actionSheet:(UIActionSheet*)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
+- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
     if ([myActionSheetDelegate respondsToSelector:@selector(actionSheet:didDismissWithButtonIndex:)]) {
         [myActionSheetDelegate actionSheet:actionSheet didDismissWithButtonIndex:buttonIndex];
     }
@@ -401,13 +454,13 @@ static NSInteger clearClipboardTimeoutValues[] = {30, 60, 120, 180};
     myActionSheetDelegate = nil;
 }
 
-- (void)actionSheet:(UIActionSheet*)actionSheet willDismissWithButtonIndex:(NSInteger)buttonIndex {
+- (void)actionSheet:(UIActionSheet *)actionSheet willDismissWithButtonIndex:(NSInteger)buttonIndex {
     if ([myActionSheetDelegate respondsToSelector:@selector(actionSheet:willDismissWithButtonIndex:)]) {
         [myActionSheetDelegate actionSheet:actionSheet willDismissWithButtonIndex:buttonIndex];
     }
 }
 
-- (void)actionSheetCancel:(UIActionSheet*)actionSheet {
+- (void)actionSheetCancel:(UIActionSheet *)actionSheet {
     if ([myActionSheetDelegate respondsToSelector:@selector(actionSheetCancel:)]) {
         [myActionSheetDelegate actionSheetCancel:actionSheet];
     }
