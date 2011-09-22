@@ -20,6 +20,7 @@
 #import "SettingsViewController.h"
 #import "SelectionListViewController.h"
 #import "SFHFKeychainUtils.h"
+#import "DropboxSDK.h"
 
 enum {
     SECTION_PIN,
@@ -27,6 +28,7 @@ enum {
     SECTION_CLOSE,
     SECTION_REMEMBER_PASSWORDS,
     SECTION_HIDE_PASSWORDS,
+    SECTION_DROPBOX,
     SECTION_PASSWORD_ENCODING,
     SECTION_CLEAR_CLIPBOARD,
     SECTION_NUMBER
@@ -58,6 +60,11 @@ enum {
 enum {
     ROW_HIDE_PASSWORDS_ENABLED,
     ROW_HIDE_PASSWORDS_NUMBER
+};
+
+enum {
+    ROW_LINK_DROPBOX_BUTTON,
+    ROW_LINK_DROPBOX_NUMBER
 };
 
 enum {
@@ -98,6 +105,8 @@ enum {
     
     hidePasswordsCell = [[SwitchCell alloc] initWithLabel:@"Hide Passwords"];
     [hidePasswordsCell.switchControl addTarget:self action:@selector(toggleHidePasswords:) forControlEvents:UIControlEventValueChanged];
+    
+    linkDropboxCell = [[ButtonCell alloc] initWithLabel:@"Link"];
 
     passwordEncodingCell = [[ChoiceCell alloc] initWithLabel:@"Encoding" choices:[NSArray arrayWithObjects:@"UTF-8", @"UTF-16 Big Endian", @"UTF-16 Little Endian", @"Latin 1 (ISO/IEC 8859-1)", @"Latin 2 (ISO/IEC 8859-2)", @"7-Bit ASCII", @"Japanese EUC", @"ISO-2022-JP", nil] selectedIndex:0];
 
@@ -116,6 +125,7 @@ enum {
     [closeTimeoutCell release];
     [rememberPasswordsEnabledCell release];
     [hidePasswordsCell release];
+    [linkDropboxCell release];
     [passwordEncodingCell release];
     [clearClipboardEnabledCell release];
     [clearClipboardTimeoutCell release];
@@ -166,6 +176,7 @@ enum {
     [deleteOnFailureEnabledCell setEnabled:pinEnabled];
     [deleteOnFailureAttemptsCell setEnabled:pinEnabled && deleteOnFailureEnabled];
     [closeTimeoutCell setEnabled:closeEnabled];
+    [linkDropboxCell setEnabled:YES]; //FIXME
     [clearClipboardTimeoutCell setEnabled:clearClipboardEnabled];
 }
 
@@ -195,6 +206,9 @@ enum {
         case SECTION_HIDE_PASSWORDS:
             return ROW_HIDE_PASSWORDS_NUMBER;
             
+        case SECTION_DROPBOX:
+            return ROW_LINK_DROPBOX_NUMBER;
+        
         case SECTION_PASSWORD_ENCODING:
             return ROW_PASSWORD_ENCODING_NUMBER;
             
@@ -220,7 +234,10 @@ enum {
             
         case SECTION_HIDE_PASSWORDS:
             return @"Hide Passwords";
-            
+
+        case SECTION_DROPBOX:
+            return @"Dropbox";
+
         case SECTION_PASSWORD_ENCODING:
             return @"Password Encoding";
             
@@ -246,6 +263,9 @@ enum {
             
         case SECTION_HIDE_PASSWORDS:
             return @"Hides passwords when viewing a password entry.";
+
+        case SECTION_DROPBOX:
+            return @"Link with your Dropbox account to keep changes in sync between multiple devices.";
             
         case SECTION_PASSWORD_ENCODING:
             return @"The string encoding used for passwords when converting them to database keys.";
@@ -298,7 +318,14 @@ enum {
                     return hidePasswordsCell;
             }
             break;
-            
+
+        case SECTION_DROPBOX:
+            switch (indexPath.row) {
+                case ROW_LINK_DROPBOX_BUTTON:
+                    return linkDropboxCell;
+            }
+            break;
+
         case SECTION_PASSWORD_ENCODING:
             switch (indexPath.row) {
                 case ROW_PASSWORD_ENCODING_VALUE:
@@ -347,6 +374,9 @@ enum {
         selectionListViewController.reference = indexPath;
         [self.navigationController pushViewController:selectionListViewController animated:YES];
         [selectionListViewController release];
+    } else if (indexPath.section == SECTION_DROPBOX && indexPath.row == ROW_LINK_DROPBOX_BUTTON) {
+        DBLoginController* controller = [[DBLoginController new] autorelease];
+        [controller presentFromController:self];
     } else if (indexPath.section == SECTION_PASSWORD_ENCODING && indexPath.row == ROW_PASSWORD_ENCODING_VALUE) {
         SelectionListViewController *selectionListViewController = [[SelectionListViewController alloc] initWithStyle:UITableViewStyleGrouped];
         selectionListViewController.title = @"Password Encoding";

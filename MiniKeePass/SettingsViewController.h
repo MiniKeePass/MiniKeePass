@@ -19,6 +19,7 @@
 #import "PinViewController.h"
 #import "ChoiceCell.h"
 #import "SwitchCell.h"
+#import "ButtonCell.h"
 #import "SelectionListViewController.h"
 
 @interface SettingsViewController : UITableViewController <PinViewControllerDelegate, SelectionListViewControllerDelegate> {
@@ -30,6 +31,7 @@
     ChoiceCell *closeTimeoutCell;
     SwitchCell *rememberPasswordsEnabledCell;
     SwitchCell *hidePasswordsCell;
+    ButtonCell *linkDropboxCell;
     ChoiceCell *passwordEncodingCell;
     SwitchCell *clearClipboardEnabledCell;
     ChoiceCell *clearClipboardTimeoutCell;
