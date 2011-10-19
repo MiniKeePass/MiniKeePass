@@ -59,8 +59,8 @@ static NSStringEncoding passwordEncodingValues[] = {
     [defaultsDict setValue:[NSNumber numberWithInt:1] forKey:@"pinLockTimeout"];
     [defaultsDict setValue:[NSNumber numberWithBool:NO] forKey:@"deleteOnFailureEnabled"];
     [defaultsDict setValue:[NSNumber numberWithInt:1] forKey:@"deleteOnFailureAttempts"];
-    [defaultsDict setValue:[NSNumber numberWithBool:NO] forKey:@"closeEnabled"];
-    [defaultsDict setValue:[NSNumber numberWithInt:1] forKey:@"closeTimeout"];
+    [defaultsDict setValue:[NSNumber numberWithBool:YES] forKey:@"closeEnabled"];
+    [defaultsDict setValue:[NSNumber numberWithInt:4] forKey:@"closeTimeout"];
     [defaultsDict setValue:[NSNumber numberWithBool:NO] forKey:@"rememberPasswordsEnabled"];
     [defaultsDict setValue:[NSNumber numberWithBool:YES] forKey:@"hidePasswords"];
     [defaultsDict setValue:[NSNumber numberWithInt:0] forKey:@"passwordEncoding"];
