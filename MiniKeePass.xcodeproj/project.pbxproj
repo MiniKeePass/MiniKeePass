@@ -206,7 +206,6 @@
 		689D03EB13A42B63005EBD36 /* DDXMLDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D02FC13A42B63005EBD36 /* DDXMLDocument.m */; };
 		689D03EC13A42B63005EBD36 /* DDXMLElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D02FE13A42B63005EBD36 /* DDXMLElement.m */; };
 		689D03ED13A42B63005EBD36 /* DDXMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D030013A42B63005EBD36 /* DDXMLNode.m */; };
-		689D03EE13A42B63005EBD36 /* LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = 689D030313A42B63005EBD36 /* LICENSE.txt */; };
 		689D041313A42B63005EBD36 /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D032B13A42B63005EBD36 /* SFHFKeychainUtils.m */; };
 		689D044E13A42C82005EBD36 /* ChoiceCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D042513A42C81005EBD36 /* ChoiceCell.m */; };
 		689D044F13A42C82005EBD36 /* DatabaseDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D042713A42C81005EBD36 /* DatabaseDocument.m */; };
@@ -288,6 +287,8 @@
 		68CFB1E213B357EE00333B38 /* EditGroupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68CFB1E113B357EE00333B38 /* EditGroupViewController.m */; };
 		68D991E613F3EAAE00F6ED1F /* PasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68D991E513F3EAAE00F6ED1F /* PasswordViewController.m */; };
 		68DDC3731405160300FC8BD8 /* keyfiles.html in Resources */ = {isa = PBXBuildFile; fileRef = 68DDC3721405160300FC8BD8 /* keyfiles.html */; };
+		68FE79B41428C17F00818EE4 /* gear.png in Resources */ = {isa = PBXBuildFile; fileRef = 68FE79B11428C17F00818EE4 /* gear.png */; };
+		68FE79B61428C17F00818EE4 /* gear@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 68FE79B31428C17F00818EE4 /* gear@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -664,6 +665,9 @@
 		68D991E413F3EAAE00F6ED1F /* PasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasswordViewController.h; sourceTree = "<group>"; };
 		68D991E513F3EAAE00F6ED1F /* PasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PasswordViewController.m; sourceTree = "<group>"; };
 		68DDC3721405160300FC8BD8 /* keyfiles.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = keyfiles.html; sourceTree = "<group>"; };
+		68FE79B11428C17F00818EE4 /* gear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gear.png; sourceTree = "<group>"; };
+		68FE79B21428C17F00818EE4 /* gear.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = gear.svg; sourceTree = "<group>"; };
+		68FE79B31428C17F00818EE4 /* gear@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gear@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -875,6 +879,9 @@
 				689D02A913A42B63005EBD36 /* box@2x.png */,
 				6876F67913B2F2DB00A05C7A /* checkmark.png */,
 				6876F67A13B2F2DB00A05C7A /* checkmark@2x.png */,
+				68FE79B11428C17F00818EE4 /* gear.png */,
+				68FE79B21428C17F00818EE4 /* gear.svg */,
+				68FE79B31428C17F00818EE4 /* gear@2x.png */,
 			);
 			path = images;
 			sourceTree = "<group>";
@@ -1302,9 +1309,6 @@
 				689DFFE413A4273F005EBD36 /* InfoPlist.strings in Resources */,
 				689D032C13A42B63005EBD36 /* Default.png in Resources */,
 				689D032E13A42B63005EBD36 /* Default@2x.png in Resources */,
-				689D032F13A42B63005EBD36 /* dropbox.html in Resources */,
-				689D033013A42B63005EBD36 /* itunes.html in Resources */,
-				689D033113A42B63005EBD36 /* style.css in Resources */,
 				689D033213A42B63005EBD36 /* icon.png in Resources */,
 				689D033413A42B63005EBD36 /* icon@2x.png in Resources */,
 				689D033513A42B63005EBD36 /* 0.png in Resources */,
@@ -1449,14 +1453,18 @@
 				689D03C113A42B63005EBD36 /* background@2x.png in Resources */,
 				689D03C213A42B63005EBD36 /* box.png in Resources */,
 				689D03C313A42B63005EBD36 /* box@2x.png in Resources */,
-				689D03EE13A42B63005EBD36 /* LICENSE.txt in Resources */,
 				6876F67B13B2F2DB00A05C7A /* checkmark.png in Resources */,
 				6876F67C13B2F2DB00A05C7A /* checkmark@2x.png in Resources */,
+				68FE79B41428C17F00818EE4 /* gear.png in Resources */,
+				68FE79B61428C17F00818EE4 /* gear@2x.png in Resources */,
+				689D032F13A42B63005EBD36 /* dropbox.html in Resources */,
+				689D033013A42B63005EBD36 /* itunes.html in Resources */,
 				52A177BC13EB698E00CEEFCE /* createdb.html in Resources */,
 				68CE37F51404A86600E4A5E1 /* safariemail.html in Resources */,
 				68DDC3731405160300FC8BD8 /* keyfiles.html in Resources */,
 				680E5C06141C14BB00E7C3FD /* Localizable.strings in Resources */,
 				680E5C0A141C14D100E7C3FD /* Localizable.strings in Resources */,
+				689D033113A42B63005EBD36 /* style.css in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
