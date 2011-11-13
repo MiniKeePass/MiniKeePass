@@ -440,12 +440,14 @@ enum {
         }
         
         // Add the file to the list of files
-        [databaseFiles addObject:filename];
+        NSUInteger index = [databaseFiles indexOfObject:filename inSortedRange:NSMakeRange(0, [databaseFiles count]) options:NSBinarySearchingInsertionIndex usingComparator:^(id string1, id string2) {
+            return [string1 localizedCaseInsensitiveCompare:string2];
+        }];
+        [databaseFiles insertObject:filename atIndex:index];
         
         // Notify the table of the new row
-        NSUInteger index = [databaseFiles count] - 1;
         NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:SECTION_DATABASE];
-        if (index == 0) {
+        if ([databaseFiles count] == 1) {
             // Reload the section if it's the first item
             NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:SECTION_DATABASE];
             [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationRight];

@@ -339,7 +339,7 @@
         KdbGroup *g = [databaseDocument.kdbTree createGroup:group];
         g.name = NSLocalizedString(@"New Group", nil);
         g.image = group.image;
-        [group addGroup:g];
+        NSUInteger index = [group addGroup:g];
         
         databaseDocument.dirty = YES;
         [databaseDocument save];
@@ -357,9 +357,8 @@
         [editGroupViewController release];
         
         // Notify the table of the new row
-        NSUInteger index = [group.groups count] - 1;
         NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:GROUPS_SECTION];
-        if (index == 0) {
+        if ([group.groups count] == 1) {
             // Reload the section if it's the first item
             NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:GROUPS_SECTION];
             [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationLeft];
@@ -375,7 +374,7 @@
         KdbEntry *e = [databaseDocument.kdbTree createEntry:group];
         e.title = NSLocalizedString(@"New Entry", nil);
         e.image = group.image;
-        [group addEntry:e];
+        NSUInteger index = [group addEntry:e];
         
         databaseDocument.dirty = YES;
         [databaseDocument save];
@@ -388,9 +387,8 @@
         [entryViewController release];
         
         // Notify the table of the new row
-        NSUInteger index = [group.entries count] - 1;
         NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:ENTRIES_SECTION];
-        if (index == 0) {
+        if ([group.entries count] == 1) {
             // Reload the section if it's the first item
             NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:ENTRIES_SECTION];
             [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationLeft];

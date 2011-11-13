@@ -28,14 +28,18 @@
     [super dealloc];
 }
 
-- (void)addEntry:(KdbEntry*)entry {
+- (NSUInteger)addEntry:(KdbEntry*)entry {
+    NSUInteger index = -1;
+    
     entry.parent = self;
     
     if ([(Kdb3Entry*)entry isMeta]) {
         [metaEntries addObject:entry];
     } else {
-        [entries addObject:entry];
+        index = [super addEntry:entry];
     }
+    
+    return index;
 }
 
 - (void)removeEntry:(KdbEntry*)entry {
