@@ -62,8 +62,23 @@
     
     // Reload the cell in case the title was changed by the entry view
     if (selectedIndexPath != nil) {
-        [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:selectedIndexPath] withRowAnimation:UITableViewRowAnimationNone];
-        [self.tableView selectRowAtIndexPath:selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+        // Remove the Group/Entry and reinsert it
+        NSUInteger index;
+        if (selectedIndexPath.section == GROUPS_SECTION) {
+            KdbGroup *g = [group.groups objectAtIndex:selectedIndexPath.row];
+            [group removeGroup:g];
+            index = [group addGroup:g];
+        } else {
+            KdbEntry *e = [group.entries objectAtIndex:selectedIndexPath.row];
+            [group removeEntry:e];
+            index = [group addEntry:e];
+        }
+        
+        // Reload the rows in the section
+        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:selectedIndexPath.section] withRowAnimation:UITableViewRowAnimationNone];
+        
+        // Select the row
+        [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:selectedIndexPath.section] animated:NO scrollPosition:UITableViewScrollPositionNone];
     }
     
     searchDisplayController.searchBar.placeholder = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"Search", nil), self.title];
