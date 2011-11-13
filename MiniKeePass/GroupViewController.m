@@ -30,7 +30,7 @@
     self.tableView.allowsSelectionDuringEditing = YES;
     
     UISearchBar *searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
-    searchBar.placeholder = [NSString stringWithFormat:@"Search %@", self.title];
+    searchBar.placeholder = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"Search", nil), self.title];
     
     self.tableView.tableHeaderView = searchBar;
     
@@ -66,7 +66,7 @@
         [self.tableView selectRowAtIndexPath:selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
     }
     
-    searchDisplayController.searchBar.placeholder = [NSString stringWithFormat:@"Search %@", self.title];
+    searchDisplayController.searchBar.placeholder = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"Search", nil), self.title];
     
     CGFloat searchBarHeight = searchDisplayController.searchBar.frame.size.height;
     if (self.tableView.contentOffset.y < searchBarHeight) {
@@ -279,7 +279,7 @@
     if (button == FormViewControllerButtonOk) {
         NSString *groupName = editGroupViewController.nameTextField.text;
         if (groupName == nil || [groupName isEqualToString:@""]) {
-            [controller showErrorMessage:@"Group name is invalid"];
+            [controller showErrorMessage:NSLocalizedString(@"Group name is invalid", nil)];
             return;
         }
         
@@ -308,8 +308,8 @@
 - (void)exportFilePressed {
     BOOL didShow = [appDelegate.databaseDocument.documentInteractionController presentOpenInMenuFromRect:CGRectZero inView:self.view.window animated:YES];
     if (!didShow) {
-        NSString *prompt = @"There are no applications installed capable of importing KeePass files";
-        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:prompt delegate:nil cancelButtonTitle:@"OK" destructiveButtonTitle:nil otherButtonTitles:nil];
+        NSString *prompt = NSLocalizedString(@"There are no applications installed capable of importing KeePass files", nil);
+        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:prompt delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", nil) destructiveButtonTitle:nil otherButtonTitles:nil];
         [appDelegate showActionSheet:actionSheet];
         [actionSheet release];
     }
@@ -318,9 +318,9 @@
 - (void)addPressed {
     UIActionSheet *actionSheet;
     if (group.canAddEntries) {
-        actionSheet = [[UIActionSheet alloc] initWithTitle:@"Add" delegate:nil cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Group", @"Entry", nil];
+        actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Add", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"Cancel", nil) destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"Group", nil), NSLocalizedString(@"Entry", nil), nil];
     } else {
-        actionSheet = [[UIActionSheet alloc] initWithTitle:@"Add" delegate:nil cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Group", nil];
+        actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Add", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"Cancel", nil) destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"Group", nil), nil];
     }
     
     actionSheet.delegate = self;
@@ -337,7 +337,7 @@
     if (buttonIndex == 0) {
         // Create and add a group
         KdbGroup *g = [databaseDocument.kdbTree createGroup:group];
-        g.name = @"New Group";
+        g.name = NSLocalizedString(@"New Group", nil);
         g.image = group.image;
         [group addGroup:g];
         
@@ -373,7 +373,7 @@
     } else if (buttonIndex == 1) {
         // Create and add an entry
         KdbEntry *e = [databaseDocument.kdbTree createEntry:group];
-        e.title = @"New Entry";
+        e.title = NSLocalizedString(@"New Entry", nil);
         e.image = group.image;
         [group addEntry:e];
         

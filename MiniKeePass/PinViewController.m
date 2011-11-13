@@ -26,7 +26,7 @@
 @synthesize textLabel;
 
 - (id)init {
-    return [self initWithText:@"Enter your PIN to unlock"];
+    return [self initWithText:NSLocalizedString(@"Enter your PIN to unlock", nil)];
 }
 
 - (id)initWithText:(NSString*)text {

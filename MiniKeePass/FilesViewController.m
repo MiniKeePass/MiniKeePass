@@ -60,7 +60,7 @@ enum {
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        self.title = @"Files";
+        self.title = NSLocalizedString(@"Files", nil);
     }
     return self;
 }
@@ -226,11 +226,11 @@ enum {
                 [[DatabaseManager sharedInstance] openDatabaseDocument:[databaseFiles objectAtIndex:indexPath.row] animated:YES];
             } else {
                 TextEntryController *textEntryController = [[TextEntryController alloc] initWithStyle:UITableViewStyleGrouped];
-                textEntryController.title = @"Rename";
-                textEntryController.headerTitle = @"Database Name";
-                textEntryController.footerTitle = @"Enter a new name for the password database.  The correct file extension will automatically be appended.";
+                textEntryController.title = NSLocalizedString(@"Rename", nil);
+                textEntryController.headerTitle = NSLocalizedString(@"Database Name", nil);
+                textEntryController.footerTitle = NSLocalizedString(@"Enter a new name for the password database.  The correct file extension will automatically be appended.", nil);
                 textEntryController.textEntryDelegate = self;
-                textEntryController.textField.placeholder = @"Name";
+                textEntryController.textField.placeholder = NSLocalizedString(@"Name", nil);
                 
                 NSString *filename = [databaseFiles objectAtIndex:indexPath.row];
                 textEntryController.textField.text = [filename stringByDeletingPathExtension];
@@ -294,7 +294,7 @@ enum {
 
 - (void)textEntryController:(TextEntryController *)controller textEntered:(NSString *)string {
     if (string == nil || [string isEqualToString:@""]) {
-        [controller showErrorMessage:@"Filename is invalid"];
+        [controller showErrorMessage:NSLocalizedString(@"Filename is invalid", nil)];
         return;
     }
     
@@ -312,7 +312,7 @@ enum {
     // Check if the file already exists
     NSFileManager *fileManager = [NSFileManager defaultManager];
     if ([fileManager fileExistsAtPath:newPath]) {
-        [controller showErrorMessage:@"A file already exists with this name"];
+        [controller showErrorMessage:NSLocalizedString(@"A file already exists with this name", nil)];
         [oldFilename release];
         return;
     }
@@ -373,7 +373,7 @@ enum {
         
         NSString *name = viewController.nameTextField.text;
         if (name == nil || [name isEqualToString:@""]) {
-            [viewController showErrorMessage:@"Database name is required"];
+            [viewController showErrorMessage:NSLocalizedString(@"Database name is required", nil)];
             return;
         }
         
@@ -381,11 +381,11 @@ enum {
         NSString *password1 = viewController.passwordTextField1.text;
         NSString *password2 = viewController.passwordTextField2.text;
         if (![password1 isEqualToString:password2]) {
-            [viewController showErrorMessage:@"Passwords do not match"];
+            [viewController showErrorMessage:NSLocalizedString(@"Passwords do not match", nil)];
             return;
         }
         if (password1 == nil || [password1 isEqualToString:@""]) {
-            [viewController showErrorMessage:@"Password is required"];
+            [viewController showErrorMessage:NSLocalizedString(@"Password is required", nil)];
             return;
         }
         
@@ -405,7 +405,7 @@ enum {
         // Check if the file already exists
         NSFileManager *fileManager = [NSFileManager defaultManager];
         if ([fileManager fileExistsAtPath:path]) {
-            [viewController showErrorMessage:@"A file already exists with this name"];
+            [viewController showErrorMessage:NSLocalizedString(@"A file already exists with this name", nil)];
             return;
         }
         

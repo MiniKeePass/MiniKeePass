@@ -32,29 +32,29 @@
 - (id)initWithStyle:(UITableViewStyle)style {
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
-        self.title = @"New Database";
+        self.title = NSLocalizedString(@"New Database", nil);
         
         nameTextField = [[UITextField alloc] init];
         nameTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
-        nameTextField.placeholder = @"Name";
+        nameTextField.placeholder = NSLocalizedString(@"Name", nil);
         
         passwordTextField1 = [[UITextField alloc] init];
         passwordTextField1.clearButtonMode = UITextFieldViewModeWhileEditing;
-        passwordTextField1.placeholder = @"Password";
+        passwordTextField1.placeholder = NSLocalizedString(@"Password", nil);
         passwordTextField1.secureTextEntry = YES;
         passwordTextField1.autocapitalizationType = UITextAutocapitalizationTypeNone;
         passwordTextField1.autocorrectionType = UITextAutocorrectionTypeNo;
         
         passwordTextField2 = [[UITextField alloc] init];
         passwordTextField2.clearButtonMode = UITextFieldViewModeWhileEditing;
-        passwordTextField2.placeholder = @"Confirm Password";
+        passwordTextField2.placeholder = NSLocalizedString(@"Confirm Password", nil);
         passwordTextField2.secureTextEntry = YES;
         passwordTextField2.autocapitalizationType = UITextAutocapitalizationTypeNone;
         passwordTextField2.autocorrectionType = UITextAutocorrectionTypeNo;
         
         footerView = [[UIView alloc] init];
         
-        versionSegmentedControl = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObjects:@"Version 1.x", @"Version 2.x", nil]];
+        versionSegmentedControl = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObjects:NSLocalizedString(@"Version 1.x", nil), NSLocalizedString(@"Version 2.x", nil), nil]];
         versionSegmentedControl.selectedSegmentIndex = 0;
         versionSegmentedControl.frame = CGRectMake(HSPACER, VSPACER, BUTTON_WIDTH, BUTTON_HEIGHT);
         [footerView addSubview:versionSegmentedControl];
