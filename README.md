@@ -22,7 +22,7 @@ Credits
 MiniKeePass
 Copyright 2011 Jason Rush and John Flanagan. All rights reserved.
 
-Japanese Transltation - Katherine Lake
+Japanese Translation - Katherine Lake
 
 Nuvola Icons
 Copyright (c)  2003-2004  David Vignoni. All rights reserved.
