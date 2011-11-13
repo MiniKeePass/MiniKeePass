@@ -17,10 +17,12 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-Credit
-------
+Credits
+-------
 MiniKeePass
 Copyright 2011 Jason Rush and John Flanagan. All rights reserved.
+
+Japanese Translation - Katherine Lake
 
 Nuvola Icons
 Copyright (c)  2003-2004  David Vignoni. All rights reserved.
