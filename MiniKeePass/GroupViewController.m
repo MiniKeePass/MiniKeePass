@@ -62,23 +62,26 @@
     
     // Reload the cell in case the title was changed by the entry view
     if (selectedIndexPath != nil) {
-        // Remove the Group/Entry and reinsert it
-        NSUInteger index;
-        if (selectedIndexPath.section == GROUPS_SECTION) {
-            KdbGroup *g = [group.groups objectAtIndex:selectedIndexPath.row];
-            [group removeGroup:g];
-            index = [group addGroup:g];
-        } else {
+        if (selectedIndexPath.section == ENTRIES_SECTION) {
+            // Remove the Entry and reinsert it
             KdbEntry *e = [group.entries objectAtIndex:selectedIndexPath.row];
             [group removeEntry:e];
-            index = [group addEntry:e];
+            NSUInteger index = [group addEntry:e];
+            
+            // Move or update the row
+            if (index != selectedIndexPath.row) {
+                [self.tableView beginUpdates];
+                [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:selectedIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+                selectedIndexPath = [NSIndexPath indexPathForRow:index inSection:ENTRIES_SECTION];
+                [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:selectedIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+                [self.tableView endUpdates];
+            } else {
+                [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:selectedIndexPath] withRowAnimation:UITableViewRowAnimationNone];
+            }
         }
         
-        // Reload the rows in the section
-        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:selectedIndexPath.section] withRowAnimation:UITableViewRowAnimationNone];
-        
-        // Select the row
-        [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:selectedIndexPath.section] animated:NO scrollPosition:UITableViewScrollPositionNone];
+        // Re-select the row
+        [self.tableView selectRowAtIndexPath:selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
     }
     
     searchDisplayController.searchBar.placeholder = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"Search", nil), self.title];
@@ -301,7 +304,7 @@
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
         
         // Update the group
-        KdbGroup *g = [group.groups objectAtIndex:indexPath.row];
+        KdbGroup *g = [[group.groups objectAtIndex:indexPath.row] retain];
         g.name = groupName;
         g.image = editGroupViewController.selectedImageIndex;
         
@@ -309,8 +312,24 @@
         appDelegate.databaseDocument.dirty = YES;
         [appDelegate.databaseDocument save];
         
-        // Reload the table row
-        [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        // Remove the Group and reinsert it
+        [group removeGroup:g];
+        NSUInteger index = [group addGroup:g];
+        [g release];
+        
+        // Move or update the row
+        if (index != indexPath.row) {
+            [self.tableView beginUpdates];
+            [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            indexPath = [NSIndexPath indexPathForRow:index inSection:GROUPS_SECTION];
+            [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            [self.tableView endUpdates];
+        } else {
+            [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
+        }
+        
+        // Re-select the row
+        [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
     }
     
     [appDelegate.window.rootViewController dismissModalViewControllerAnimated:YES];
