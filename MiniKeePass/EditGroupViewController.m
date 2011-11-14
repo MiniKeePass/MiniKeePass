@@ -29,6 +29,7 @@
         
         nameTextField = [[UITextField alloc] init];
         nameTextField.placeholder = NSLocalizedString(@"Name", nil);
+        nameTextField.delegate = self;
         nameTextField.returnKeyType = UIReturnKeyDone;
         nameTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
         
