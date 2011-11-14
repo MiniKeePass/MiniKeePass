@@ -43,7 +43,6 @@
     
     NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
     textField.secureTextEntry = [userDefaults boolForKey:@"hidePasswords"];
-    
     textField.returnKeyType = UIReturnKeyDone;
 }
 

@@ -335,10 +335,6 @@
     [appDelegate.window.rootViewController dismissModalViewControllerAnimated:YES];
 }
 
-- (void)textEntryControllerCancelButtonPressed:(TextEntryController *)controller {
-    [appDelegate.window.rootViewController dismissModalViewControllerAnimated:YES];
-}
-
 - (void)exportFilePressed {
     BOOL didShow = [appDelegate.databaseDocument.documentInteractionController presentOpenInMenuFromRect:CGRectZero inView:self.view.window animated:YES];
     if (!didShow) {
