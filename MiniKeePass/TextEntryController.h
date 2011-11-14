@@ -20,7 +20,7 @@
 
 @protocol TextEntryControllerDelegate;
 
-@interface TextEntryController : FormViewController <FormViewControllerDelegate, UITextFieldDelegate> {
+@interface TextEntryController : FormViewController <FormViewControllerDelegate> {
     UITextField *textField;
     id<TextEntryControllerDelegate> textEntryDelegate;
 }

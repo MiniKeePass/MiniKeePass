@@ -78,11 +78,4 @@
     [keyFileCell setSelectedIndex:selectedIndex];
 }
 
-- (BOOL)textFieldShouldReturn:(UITextField *)textField {
-    if ([delegate respondsToSelector:@selector(formViewController:button:)]) {
-        [delegate formViewController:self button:FormViewControllerButtonOk];
-    }
-    return YES;
-}
-
 @end
