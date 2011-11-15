@@ -63,10 +63,9 @@
     // Reload the cell in case the title was changed by the entry view
     if (selectedIndexPath != nil) {
         if (selectedIndexPath.section == ENTRIES_SECTION) {
-            // Remove the Entry and reinsert it
+            // Move the entry to the correct location
             KdbEntry *e = [group.entries objectAtIndex:selectedIndexPath.row];
-            [group removeEntry:e];
-            NSUInteger index = [group addEntry:e];
+            NSUInteger index = [group moveEntry:e];
             
             // Move or update the row
             if (index != selectedIndexPath.row) {
@@ -312,10 +311,8 @@
         appDelegate.databaseDocument.dirty = YES;
         [appDelegate.databaseDocument save];
         
-        // Remove the Group and reinsert it
-        [group removeGroup:g];
-        NSUInteger index = [group addGroup:g];
-        [g release];
+        // Move the group to the correct location
+        NSUInteger index = [group moveGroup:g];
         
         // Move or update the row
         if (index != indexPath.row) {
