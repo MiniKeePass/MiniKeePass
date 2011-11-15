@@ -138,4 +138,9 @@
     return cell;
 }
 
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    [self okPressed:nil];
+    return YES;
+}
+
 @end

@@ -27,31 +27,31 @@
     if (self) {
         self.tableView.delaysContentTouches = YES;
         
-        UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:self action:@selector(cancelPressed)];
+        UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", nil) style:UIBarButtonItemStylePlain target:self action:@selector(cancelPressed)];
         self.navigationItem.rightBarButtonItem = cancelButton;
         [cancelButton release];    
         
         appDelegate = (MiniKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
         
         titleCell = [[TitleFieldCell alloc] init];
-        titleCell.textLabel.text = @"Title";
+        titleCell.textLabel.text = NSLocalizedString(@"Title", nil);
         titleCell.textFieldCellDelegate = self;
         
-        imageButtonCell = [[ImageButtonCell alloc] initWithLabel:@"Image"];
+        imageButtonCell = [[ImageButtonCell alloc] initWithLabel:NSLocalizedString(@"Image", nil)];
         [imageButtonCell.imageButton addTarget:self action:@selector(imageButtonPressed) forControlEvents:UIControlEventTouchUpInside];
         
         usernameCell = [[TextFieldCell alloc] init];
-        usernameCell.textLabel.text = @"Username";
+        usernameCell.textLabel.text = NSLocalizedString(@"Username", nil);
         usernameCell.textField.autocorrectionType = UITextAutocorrectionTypeNo;
         usernameCell.textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
         usernameCell.textFieldCellDelegate = self;
         
         passwordCell = [[PasswordFieldCell alloc] init];
-        passwordCell.textLabel.text = @"Password";
+        passwordCell.textLabel.text = NSLocalizedString(@"Password", nil);
         passwordCell.textFieldCellDelegate = self;
         
         urlCell = [[UrlFieldCell alloc] init];
-        urlCell.textLabel.text = @"URL";
+        urlCell.textLabel.text = NSLocalizedString(@"URL", nil);
         urlCell.textFieldCellDelegate = self;
         urlCell.textField.returnKeyType = UIReturnKeyDone;
         
@@ -225,7 +225,7 @@ BOOL stringsEqual(NSString *str1, NSString *str2) {
         case 0:
             return nil;
         case 1:
-            return @"Comments";
+            return NSLocalizedString(@"Comments", nil);
     }
     
     return nil;

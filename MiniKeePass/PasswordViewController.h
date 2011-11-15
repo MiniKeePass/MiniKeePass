@@ -19,7 +19,7 @@
 #import "FormViewController.h"
 #import "ChoiceCell.h"
 
-@interface PasswordViewController : FormViewController <SelectionListViewControllerDelegate, UITextFieldDelegate> {
+@interface PasswordViewController : FormViewController <SelectionListViewControllerDelegate> {
     UITextField *passwordTextField;
     ChoiceCell *keyFileCell;
 }

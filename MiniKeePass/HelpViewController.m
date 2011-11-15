@@ -35,7 +35,7 @@ help_topic_t help_topics[] = {
 - (id)init {
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
-        self.title = @"Help";
+        self.title = NSLocalizedString(@"Help", nil);
     }
     return self;
 }

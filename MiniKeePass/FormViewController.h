@@ -20,7 +20,7 @@
 
 @protocol FormViewControllerDelegate;
 
-@interface FormViewController : UITableViewController {
+@interface FormViewController : UITableViewController <UITextFieldDelegate> {
     NSArray *controls;
     NSString *headerTitle;
     NSString *footerTitle;

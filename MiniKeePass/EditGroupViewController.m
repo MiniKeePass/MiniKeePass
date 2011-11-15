@@ -25,14 +25,15 @@
 - (id)initWithStyle:(UITableViewStyle)style {
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
-        self.title = @"Edit Group";
+        self.title = NSLocalizedString(@"Edit Group", nil);
         
         nameTextField = [[UITextField alloc] init];
-        nameTextField.placeholder = @"Name";
+        nameTextField.placeholder = NSLocalizedString(@"Name", nil);
+        nameTextField.delegate = self;
         nameTextField.returnKeyType = UIReturnKeyDone;
         nameTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
         
-        imageButtonCell = [[ImageButtonCell alloc] initWithLabel:@"Image"];
+        imageButtonCell = [[ImageButtonCell alloc] initWithLabel:NSLocalizedString(@"Image", nil)];
         [imageButtonCell.imageButton addTarget:self action:@selector(imageButtonPressed) forControlEvents:UIControlEventTouchUpInside];
         
         self.controls = [NSArray arrayWithObjects:nameTextField, imageButtonCell, nil];

@@ -30,7 +30,7 @@
     self.tableView.allowsSelectionDuringEditing = YES;
     
     UISearchBar *searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
-    searchBar.placeholder = [NSString stringWithFormat:@"Search %@", self.title];
+    searchBar.placeholder = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"Search", nil), self.title];
     
     self.tableView.tableHeaderView = searchBar;
     
@@ -62,11 +62,28 @@
     
     // Reload the cell in case the title was changed by the entry view
     if (selectedIndexPath != nil) {
-        [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:selectedIndexPath] withRowAnimation:UITableViewRowAnimationNone];
+        if (selectedIndexPath.section == ENTRIES_SECTION) {
+            // Move the entry to the correct location
+            KdbEntry *e = [group.entries objectAtIndex:selectedIndexPath.row];
+            NSUInteger index = [group moveEntry:e];
+            
+            // Move or update the row
+            if (index != selectedIndexPath.row) {
+                [self.tableView beginUpdates];
+                [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:selectedIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+                selectedIndexPath = [NSIndexPath indexPathForRow:index inSection:ENTRIES_SECTION];
+                [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:selectedIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+                [self.tableView endUpdates];
+            } else {
+                [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:selectedIndexPath] withRowAnimation:UITableViewRowAnimationNone];
+            }
+        }
+        
+        // Re-select the row
         [self.tableView selectRowAtIndexPath:selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
     }
     
-    searchDisplayController.searchBar.placeholder = [NSString stringWithFormat:@"Search %@", self.title];
+    searchDisplayController.searchBar.placeholder = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"Search", nil), self.title];
     
     CGFloat searchBarHeight = searchDisplayController.searchBar.frame.size.height;
     if (self.tableView.contentOffset.y < searchBarHeight) {
@@ -120,13 +137,13 @@
     switch (section) {
         case GROUPS_SECTION:
             if ([group.groups count] != 0) {
-                return @"Groups";
+                return NSLocalizedString(@"Groups", nil);
             }
             break;
             
         case ENTRIES_SECTION:
             if ([group.entries count] != 0) {
-                return @"Entries";
+                return NSLocalizedString(@"Entries", nil);
             }
             break;
     }
@@ -279,14 +296,14 @@
     if (button == FormViewControllerButtonOk) {
         NSString *groupName = editGroupViewController.nameTextField.text;
         if (groupName == nil || [groupName isEqualToString:@""]) {
-            [controller showErrorMessage:@"Group name is invalid"];
+            [controller showErrorMessage:NSLocalizedString(@"Group name is invalid", nil)];
             return;
         }
         
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
         
         // Update the group
-        KdbGroup *g = [group.groups objectAtIndex:indexPath.row];
+        KdbGroup *g = [[group.groups objectAtIndex:indexPath.row] retain];
         g.name = groupName;
         g.image = editGroupViewController.selectedImageIndex;
         
@@ -294,22 +311,32 @@
         appDelegate.databaseDocument.dirty = YES;
         [appDelegate.databaseDocument save];
         
-        // Reload the table row
-        [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        // Move the group to the correct location
+        NSUInteger index = [group moveGroup:g];
+        
+        // Move or update the row
+        if (index != indexPath.row) {
+            [self.tableView beginUpdates];
+            [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            indexPath = [NSIndexPath indexPathForRow:index inSection:GROUPS_SECTION];
+            [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            [self.tableView endUpdates];
+        } else {
+            [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
+        }
+        
+        // Re-select the row
+        [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
     }
     
-    [appDelegate.window.rootViewController dismissModalViewControllerAnimated:YES];
-}
-
-- (void)textEntryControllerCancelButtonPressed:(TextEntryController *)controller {
     [appDelegate.window.rootViewController dismissModalViewControllerAnimated:YES];
 }
 
 - (void)exportFilePressed {
     BOOL didShow = [appDelegate.databaseDocument.documentInteractionController presentOpenInMenuFromRect:CGRectZero inView:self.view.window animated:YES];
     if (!didShow) {
-        NSString *prompt = @"There are no applications installed capable of importing KeePass files";
-        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:prompt delegate:nil cancelButtonTitle:@"OK" destructiveButtonTitle:nil otherButtonTitles:nil];
+        NSString *prompt = NSLocalizedString(@"There are no applications installed capable of importing KeePass files", nil);
+        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:prompt delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", nil) destructiveButtonTitle:nil otherButtonTitles:nil];
         [appDelegate showActionSheet:actionSheet];
         [actionSheet release];
     }
@@ -318,9 +345,9 @@
 - (void)addPressed {
     UIActionSheet *actionSheet;
     if (group.canAddEntries) {
-        actionSheet = [[UIActionSheet alloc] initWithTitle:@"Add" delegate:nil cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Group", @"Entry", nil];
+        actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Add", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"Cancel", nil) destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"Group", nil), NSLocalizedString(@"Entry", nil), nil];
     } else {
-        actionSheet = [[UIActionSheet alloc] initWithTitle:@"Add" delegate:nil cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Group", nil];
+        actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Add", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"Cancel", nil) destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"Group", nil), nil];
     }
     
     actionSheet.delegate = self;
@@ -337,9 +364,9 @@
     if (buttonIndex == 0) {
         // Create and add a group
         KdbGroup *g = [databaseDocument.kdbTree createGroup:group];
-        g.name = @"New Group";
+        g.name = NSLocalizedString(@"New Group", nil);
         g.image = group.image;
-        [group addGroup:g];
+        NSUInteger index = [group addGroup:g];
         
         databaseDocument.dirty = YES;
         [databaseDocument save];
@@ -357,9 +384,8 @@
         [editGroupViewController release];
         
         // Notify the table of the new row
-        NSUInteger index = [group.groups count] - 1;
         NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:GROUPS_SECTION];
-        if (index == 0) {
+        if ([group.groups count] == 1) {
             // Reload the section if it's the first item
             NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:GROUPS_SECTION];
             [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationLeft];
@@ -373,9 +399,9 @@
     } else if (buttonIndex == 1) {
         // Create and add an entry
         KdbEntry *e = [databaseDocument.kdbTree createEntry:group];
-        e.title = @"New Entry";
+        e.title = NSLocalizedString(@"New Entry", nil);
         e.image = group.image;
-        [group addEntry:e];
+        NSUInteger index = [group addEntry:e];
         
         databaseDocument.dirty = YES;
         [databaseDocument save];
@@ -388,9 +414,8 @@
         [entryViewController release];
         
         // Notify the table of the new row
-        NSUInteger index = [group.entries count] - 1;
         NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:ENTRIES_SECTION];
-        if (index == 0) {
+        if ([group.entries count] == 1) {
             // Reload the section if it's the first item
             NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:ENTRIES_SECTION];
             [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationLeft];
