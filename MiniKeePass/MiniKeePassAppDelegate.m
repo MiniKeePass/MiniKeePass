@@ -363,7 +363,7 @@ static NSStringEncoding passwordEncodingValues[] = {
             
             if (![userDefaults boolForKey:@"deleteOnFailureEnabled"]) {
                 // Update the status message on the PIN view
-                controller.textLabel.text = @"Incorrect PIN";
+                controller.textLabel.text = NSLocalizedString(@"Incorrect PIN", nil);
             } else {
                 // Get the number of failed attempts
                 NSInteger pinFailedAttempts = [userDefaults integerForKey:@"pinFailedAttempts"];
@@ -374,7 +374,7 @@ static NSStringEncoding passwordEncodingValues[] = {
                 
                 // Update the status message on the PIN view
                 NSInteger remainingAttempts = (deleteOnFailureAttempts - pinFailedAttempts);
-                controller.textLabel.text = [NSString stringWithFormat:@"Incorrect PIN\n%d attempt%@ remaining", remainingAttempts, remainingAttempts > 1 ? @"s" : @""];
+                controller.textLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Incorrect PIN\n%d attempt%@ remaining", nil), remainingAttempts, remainingAttempts > 1 ? @"s" : @""];
                 
                 // Check if they have failed too many times
                 if (pinFailedAttempts >= deleteOnFailureAttempts) {

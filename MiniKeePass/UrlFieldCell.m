@@ -32,7 +32,7 @@
 }
 
 - (void)tapPressed {
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Open", @"Copy", @"Edit", nil];
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", nil) destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"Open", nil), NSLocalizedString(@"Copy", nil), NSLocalizedString(@"Edit", nil), nil];
     [appDelegate showActionSheet:actionSheet];
     [actionSheet release];
 }
