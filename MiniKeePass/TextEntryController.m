@@ -55,9 +55,4 @@
     }
 }
 
-- (BOOL)textFieldShouldReturn:(UITextField *)textField {
-    [self formViewController:self button:FormViewControllerButtonOk];
-    return YES;
-}
-
 @end

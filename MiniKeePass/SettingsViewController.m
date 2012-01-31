@@ -88,27 +88,27 @@ enum {
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = @"Settings";
+    self.title = NSLocalizedString(@"Settings", nil);
     
-    pinEnabledCell = [[SwitchCell alloc] initWithLabel:@"Pin Enabled"];
+    pinEnabledCell = [[SwitchCell alloc] initWithLabel:NSLocalizedString(@"PIN Enabled", nil)];
     [pinEnabledCell.switchControl addTarget:self action:@selector(togglePinEnabled:) forControlEvents:UIControlEventValueChanged];
     
-    pinLockTimeoutCell = [[ChoiceCell alloc] initWithLabel:@"Lock Timeout" choices:[NSArray arrayWithObjects:@"Immediately", @"30 Seconds", @"1 Minute", @"2 Minutes", @"5 Minutes", nil] selectedIndex:0];
+    pinLockTimeoutCell = [[ChoiceCell alloc] initWithLabel:NSLocalizedString(@"Lock Timeout", nil) choices:[NSArray arrayWithObjects:NSLocalizedString(@"Immediately", nil), NSLocalizedString(@"30 Seconds", nil), NSLocalizedString(@"1 Minute", nil), NSLocalizedString(@"2 Minutes", nil), NSLocalizedString(@"5 Minutes", nil), nil] selectedIndex:0];
     
-    deleteOnFailureEnabledCell = [[SwitchCell alloc] initWithLabel:@"Enabled"];
+    deleteOnFailureEnabledCell = [[SwitchCell alloc] initWithLabel:NSLocalizedString(@"Enabled", nil)];
     [deleteOnFailureEnabledCell.switchControl addTarget:self action:@selector(toggleDeleteOnFailureEnabled:) forControlEvents:UIControlEventValueChanged];    
     
-    deleteOnFailureAttemptsCell = [[ChoiceCell alloc] initWithLabel:@"Attempts" choices:[NSArray arrayWithObjects:@"3", @"5", @"10", @"15", nil] selectedIndex:0];
+    deleteOnFailureAttemptsCell = [[ChoiceCell alloc] initWithLabel:NSLocalizedString(@"Attempts", nil) choices:[NSArray arrayWithObjects:@"3", @"5", @"10", @"15", nil] selectedIndex:0];
     
-    closeEnabledCell = [[SwitchCell alloc] initWithLabel:@"Close Enabled"];
+    closeEnabledCell = [[SwitchCell alloc] initWithLabel:NSLocalizedString(@"Close Enabled", nil)];
     [closeEnabledCell.switchControl addTarget:self action:@selector(toggleCloseEnabled:) forControlEvents:UIControlEventValueChanged];
     
-    closeTimeoutCell = [[ChoiceCell alloc] initWithLabel:@"Close Timeout" choices:[NSArray arrayWithObjects:@"Immediately", @"30 Seconds", @"1 Minute", @"2 Minutes", @"5 Minutes", nil] selectedIndex:0];
+    closeTimeoutCell = [[ChoiceCell alloc] initWithLabel:NSLocalizedString(@"Close Timeout", nil) choices:[NSArray arrayWithObjects:NSLocalizedString(@"Immediately", nil), NSLocalizedString(@"30 Seconds", nil), NSLocalizedString(@"1 Minute", nil), NSLocalizedString(@"2 Minutes", nil), NSLocalizedString(@"5 Minutes", nil), nil] selectedIndex:0];
     
-    rememberPasswordsEnabledCell = [[SwitchCell alloc] initWithLabel:@"Enabled"];
+    rememberPasswordsEnabledCell = [[SwitchCell alloc] initWithLabel:NSLocalizedString(@"Enabled", nil)];
     [rememberPasswordsEnabledCell.switchControl addTarget:self action:@selector(toggleRememberPasswords:) forControlEvents:UIControlEventValueChanged];
     
-    hidePasswordsCell = [[SwitchCell alloc] initWithLabel:@"Hide Passwords"];
+    hidePasswordsCell = [[SwitchCell alloc] initWithLabel:NSLocalizedString(@"Hide Passwords", nil)];
     [hidePasswordsCell.switchControl addTarget:self action:@selector(toggleHidePasswords:) forControlEvents:UIControlEventValueChanged];
     
     dropboxLinkCell = [[ButtonCell alloc] initWithLabel:@"Link"];
@@ -117,12 +117,12 @@ enum {
     dropboxFolderCell = [[ChoiceCell alloc] initWithLabel:@"Folder" choices:nil selectedIndex:0];
     currentDropboxDirectory = @"/";
     
-    passwordEncodingCell = [[ChoiceCell alloc] initWithLabel:@"Encoding" choices:[NSArray arrayWithObjects:@"UTF-8", @"UTF-16 Big Endian", @"UTF-16 Little Endian", @"Latin 1 (ISO/IEC 8859-1)", @"Latin 2 (ISO/IEC 8859-2)", @"7-Bit ASCII", @"Japanese EUC", @"ISO-2022-JP", nil] selectedIndex:0];
+    passwordEncodingCell = [[ChoiceCell alloc] initWithLabel:NSLocalizedString(@"Encoding", nil) choices:[NSArray arrayWithObjects:NSLocalizedString(@"UTF-8", nil), NSLocalizedString(@"UTF-16 Big Endian", nil), NSLocalizedString(@"UTF-16 Little Endian", nil), NSLocalizedString(@"Latin 1 (ISO/IEC 8859-1)", nil), NSLocalizedString(@"Latin 2 (ISO/IEC 8859-2)", nil), NSLocalizedString(@"7-Bit ASCII", nil), NSLocalizedString(@"Japanese EUC", nil), NSLocalizedString(@"ISO-2022-JP", nil), nil] selectedIndex:0];
 
-    clearClipboardEnabledCell = [[SwitchCell alloc] initWithLabel:@"Enabled"];
+    clearClipboardEnabledCell = [[SwitchCell alloc] initWithLabel:NSLocalizedString(@"Enabled", nil)];
     [clearClipboardEnabledCell.switchControl addTarget:self action:@selector(toggleClearClipboardEnabled:) forControlEvents:UIControlEventValueChanged];
     
-    clearClipboardTimeoutCell = [[ChoiceCell alloc] initWithLabel:@"Clear Timeout" choices:[NSArray arrayWithObjects:@"30 Seconds", @"1 Minute", @"2 Minutes", @"3 Minutes", nil] selectedIndex:0];
+    clearClipboardTimeoutCell = [[ChoiceCell alloc] initWithLabel:NSLocalizedString(@"Clear Timeout", nil) choices:[NSArray arrayWithObjects:NSLocalizedString(@"30 Seconds", nil), NSLocalizedString(@"1 Minute", nil), NSLocalizedString(@"2 Minutes", nil), NSLocalizedString(@"3 Minutes", nil), nil] selectedIndex:0];
 }
 
 - (void)dealloc {
@@ -231,28 +231,28 @@ enum {
 - (NSString*)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     switch (section) {
         case SECTION_PIN:
-            return @"PIN Protection";
+            return NSLocalizedString(@"PIN Protection", nil);
             
         case SECTION_DELETE_ON_FAILURE:
-            return @"Delete All Data on PIN Failure";
+            return NSLocalizedString(@"Delete All Data on PIN Failure", nil);
             
         case SECTION_CLOSE:
-            return @"Close Database on Timeout";
+            return NSLocalizedString(@"Close Database on Timeout", nil);
             
         case SECTION_REMEMBER_PASSWORDS:
-            return @"Remember Database Passwords";
+            return NSLocalizedString(@"Remember Database Passwords", nil);
             
         case SECTION_HIDE_PASSWORDS:
-            return @"Hide Passwords";
+            return NSLocalizedString(@"Hide Passwords", nil);
 
         case SECTION_DROPBOX:
             return @"Dropbox";
-
+            
         case SECTION_PASSWORD_ENCODING:
-            return @"Password Encoding";
+            return NSLocalizedString(@"Password Encoding", nil);
             
         case SECTION_CLEAR_CLIPBOARD:
-            return @"Clear Clipboard on Timeout";
+            return NSLocalizedString(@"Clear Clipboard on Timeout", nil);
     }
     return nil;
 }
@@ -260,28 +260,28 @@ enum {
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
     switch (section) {
         case SECTION_PIN:
-            return @"Prevent unauthorized access to MiniKeePass with a PIN.";
+            return NSLocalizedString(@"Prevent unauthorized access to MiniKeePass with a PIN.", nil);
             
         case SECTION_DELETE_ON_FAILURE:
-            return @"Delete all files and passwords after too many failed attempts.";
+            return NSLocalizedString(@"Delete all files and passwords after too many failed attempts.", nil);
             
         case SECTION_CLOSE:
-            return @"Automatically close an open database after the selected timeout.";
+            return NSLocalizedString(@"Automatically close an open database after the selected timeout.", nil);
             
         case SECTION_REMEMBER_PASSWORDS:
-            return @"Stores remembered database passwords in the devices's secure keychain.";
+            return NSLocalizedString(@"Stores remembered database passwords in the devices's secure keychain.", nil);
             
         case SECTION_HIDE_PASSWORDS:
-            return @"Hides passwords when viewing a password entry.";
+            return NSLocalizedString(@"Hides passwords when viewing a password entry.", nil);
 
         case SECTION_DROPBOX:
             return @"Link with your Dropbox account to keep changes in sync between multiple devices.";
             
         case SECTION_PASSWORD_ENCODING:
-            return @"The string encoding used for passwords when converting them to database keys.";
+            return NSLocalizedString(@"The string encoding used for passwords when converting them to database keys.", nil);
             
         case SECTION_CLEAR_CLIPBOARD:
-            return @"Clear the contents of the clipboard after a given timeout upon performing a copy.";
+            return NSLocalizedString(@"Clear the contents of the clipboard after a given timeout upon performing a copy.", nil);
     }
     return nil;
 }
@@ -368,7 +368,7 @@ enum {
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == SECTION_PIN && indexPath.row == ROW_PIN_LOCK_TIMEOUT && pinEnabledCell.switchControl.on) {
         SelectionListViewController *selectionListViewController = [[SelectionListViewController alloc] initWithStyle:UITableViewStyleGrouped];
-        selectionListViewController.title = @"Lock Timeout";
+        selectionListViewController.title = NSLocalizedString(@"Lock Timeout", nil);
         selectionListViewController.items = pinLockTimeoutCell.choices;
         selectionListViewController.selectedIndex = [[NSUserDefaults standardUserDefaults] integerForKey:@"pinLockTimeout"];
         selectionListViewController.delegate = self;
@@ -377,7 +377,7 @@ enum {
         [selectionListViewController release];
     } else if (indexPath.section == SECTION_DELETE_ON_FAILURE && indexPath.row == ROW_DELETE_ON_FAILURE_ATTEMPTS && deleteOnFailureEnabledCell.switchControl.on) {
         SelectionListViewController *selectionListViewController = [[SelectionListViewController alloc] initWithStyle:UITableViewStyleGrouped];
-        selectionListViewController.title = @"Attempts";
+        selectionListViewController.title = NSLocalizedString(@"Attempts", nil);
         selectionListViewController.items = deleteOnFailureAttemptsCell.choices;
         selectionListViewController.selectedIndex = [[NSUserDefaults standardUserDefaults] integerForKey:@"deleteOnFailureAttempts"];
         selectionListViewController.delegate = self;
@@ -386,7 +386,7 @@ enum {
         [selectionListViewController release];
     } else if (indexPath.section == SECTION_CLOSE && indexPath.row == ROW_CLOSE_TIMEOUT && closeEnabledCell.switchControl.on) {
         SelectionListViewController *selectionListViewController = [[SelectionListViewController alloc] initWithStyle:UITableViewStyleGrouped];
-        selectionListViewController.title = @"Close Timeout";
+        selectionListViewController.title = NSLocalizedString(@"Close Timeout", nil);
         selectionListViewController.items = closeTimeoutCell.choices;
         selectionListViewController.selectedIndex = [[NSUserDefaults standardUserDefaults] integerForKey:@"closeTimeout"];
         selectionListViewController.delegate = self;
@@ -418,7 +418,7 @@ enum {
         }
     } else if (indexPath.section == SECTION_PASSWORD_ENCODING && indexPath.row == ROW_PASSWORD_ENCODING_VALUE) {
         SelectionListViewController *selectionListViewController = [[SelectionListViewController alloc] initWithStyle:UITableViewStyleGrouped];
-        selectionListViewController.title = @"Password Encoding";
+        selectionListViewController.title = NSLocalizedString(@"Password Encoding", nil);
         selectionListViewController.items = passwordEncodingCell.choices;
         selectionListViewController.selectedIndex = [[NSUserDefaults standardUserDefaults] integerForKey:@"passwordEncoding"];
         selectionListViewController.delegate = self;
@@ -427,7 +427,7 @@ enum {
         [selectionListViewController release];
     } else if (indexPath.section == SECTION_CLEAR_CLIPBOARD && indexPath.row == ROW_CLEAR_CLIPBOARD_TIMEOUT && clearClipboardEnabledCell.switchControl.on) {
         SelectionListViewController *selectionListViewController = [[SelectionListViewController alloc] initWithStyle:UITableViewStyleGrouped];
-        selectionListViewController.title = @"Clear Clipboard Timeout";
+        selectionListViewController.title = NSLocalizedString(@"Clear Clipboard Timeout", nil);
         selectionListViewController.items = clearClipboardTimeoutCell.choices;
         selectionListViewController.selectedIndex = [[NSUserDefaults standardUserDefaults] integerForKey:@"clearClipboardTimeout"];
         selectionListViewController.delegate = self;
@@ -479,7 +479,7 @@ enum {
 
 - (void)togglePinEnabled:(id)sender {
     if (pinEnabledCell.switchControl.on) {
-        PinViewController *pinViewController = [[PinViewController alloc] initWithText:@"Set PIN"];
+        PinViewController *pinViewController = [[PinViewController alloc] initWithText:NSLocalizedString(@"Set PIN", nil)];
         pinViewController.delegate = self;
         [self presentModalViewController:pinViewController animated:YES];
         [pinViewController release];
@@ -535,7 +535,7 @@ enum {
     if (tempPin == nil) {
         tempPin = [pin copy];
         
-        controller.textLabel.text = @"Confirm PIN";
+        controller.textLabel.text = NSLocalizedString(@"Confirm PIN", nil);
         
         // Clear the PIN entry for confirmation
         [controller clearEntry];
@@ -557,7 +557,7 @@ enum {
         tempPin = nil;
         
         // Notify the user the PINs they entered did not match
-        controller.textLabel.text = @"PINs did not match. Try again";
+        controller.textLabel.text = NSLocalizedString(@"PINs did not match. Try again", nil);
         AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
         
         // Clear the PIN entry to let them try again

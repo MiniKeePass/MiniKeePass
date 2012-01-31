@@ -60,7 +60,7 @@ enum {
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        self.title = @"Files";
+        self.title = NSLocalizedString(@"Files", nil);
     }
     return self;
 }
@@ -137,7 +137,13 @@ enum {
         }
     }
     
+    // Sort the list of files
+    [files sortUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
+    
+    // Filter the list of files into everything ending with .kdb or .kdbx
     NSArray *databaseFilenames = [files filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"(self ENDSWITH '.kdb') OR (self ENDSWITH '.kdbx')"]];
+    
+    // Filter the list of files into everything not ending with .kdb or .kdbx
     NSArray *keyFilenames = [files filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"!((self ENDSWITH '.kdb') OR (self ENDSWITH '.kdbx'))"]];
     
     databaseFiles = [[NSMutableArray arrayWithArray:databaseFilenames] retain];
@@ -152,12 +158,12 @@ enum {
     switch (section) {
         case SECTION_DATABASE:
             if ([databaseFiles count] != 0) {
-                return @"Databases";
+                return NSLocalizedString(@"Databases", nil);
             }
             break;
         case SECTION_KEYFILE:
             if ([keyFiles count] != 0) {
-                return @"Key Files";
+                return NSLocalizedString(@"Key Files", nil);
             }
             break;
     }
@@ -226,11 +232,11 @@ enum {
                 [[DatabaseManager sharedInstance] openDatabaseDocument:[databaseFiles objectAtIndex:indexPath.row] animated:YES];
             } else {
                 TextEntryController *textEntryController = [[TextEntryController alloc] initWithStyle:UITableViewStyleGrouped];
-                textEntryController.title = @"Rename";
-                textEntryController.headerTitle = @"Database Name";
-                textEntryController.footerTitle = @"Enter a new name for the password database.  The correct file extension will automatically be appended.";
+                textEntryController.title = NSLocalizedString(@"Rename", nil);
+                textEntryController.headerTitle = NSLocalizedString(@"Database Name", nil);
+                textEntryController.footerTitle = NSLocalizedString(@"Enter a new name for the password database.  The correct file extension will automatically be appended.", nil);
                 textEntryController.textEntryDelegate = self;
-                textEntryController.textField.placeholder = @"Name";
+                textEntryController.textField.placeholder = NSLocalizedString(@"Name", nil);
                 
                 NSString *filename = [databaseFiles objectAtIndex:indexPath.row];
                 textEntryController.textField.text = [filename stringByDeletingPathExtension];
@@ -294,7 +300,7 @@ enum {
 
 - (void)textEntryController:(TextEntryController *)controller textEntered:(NSString *)string {
     if (string == nil || [string isEqualToString:@""]) {
-        [controller showErrorMessage:@"Filename is invalid"];
+        [controller showErrorMessage:NSLocalizedString(@"Filename is invalid", nil)];
         return;
     }
     
@@ -312,7 +318,7 @@ enum {
     // Check if the file already exists
     NSFileManager *fileManager = [NSFileManager defaultManager];
     if ([fileManager fileExistsAtPath:newPath]) {
-        [controller showErrorMessage:@"A file already exists with this name"];
+        [controller showErrorMessage:NSLocalizedString(@"A file already exists with this name", nil)];
         [oldFilename release];
         return;
     }
@@ -373,7 +379,7 @@ enum {
         
         NSString *name = viewController.nameTextField.text;
         if (name == nil || [name isEqualToString:@""]) {
-            [viewController showErrorMessage:@"Database name is required"];
+            [viewController showErrorMessage:NSLocalizedString(@"Database name is required", nil)];
             return;
         }
         
@@ -381,11 +387,11 @@ enum {
         NSString *password1 = viewController.passwordTextField1.text;
         NSString *password2 = viewController.passwordTextField2.text;
         if (![password1 isEqualToString:password2]) {
-            [viewController showErrorMessage:@"Passwords do not match"];
+            [viewController showErrorMessage:NSLocalizedString(@"Passwords do not match", nil)];
             return;
         }
         if (password1 == nil || [password1 isEqualToString:@""]) {
-            [viewController showErrorMessage:@"Password is required"];
+            [viewController showErrorMessage:NSLocalizedString(@"Password is required", nil)];
             return;
         }
         
@@ -405,7 +411,7 @@ enum {
         // Check if the file already exists
         NSFileManager *fileManager = [NSFileManager defaultManager];
         if ([fileManager fileExistsAtPath:path]) {
-            [viewController showErrorMessage:@"A file already exists with this name"];
+            [viewController showErrorMessage:NSLocalizedString(@"A file already exists with this name", nil)];
             return;
         }
         
@@ -434,12 +440,14 @@ enum {
         }
         
         // Add the file to the list of files
-        [databaseFiles addObject:filename];
+        NSUInteger index = [databaseFiles indexOfObject:filename inSortedRange:NSMakeRange(0, [databaseFiles count]) options:NSBinarySearchingInsertionIndex usingComparator:^(id string1, id string2) {
+            return [string1 localizedCaseInsensitiveCompare:string2];
+        }];
+        [databaseFiles insertObject:filename atIndex:index];
         
         // Notify the table of the new row
-        NSUInteger index = [databaseFiles count] - 1;
         NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:SECTION_DATABASE];
-        if (index == 0) {
+        if ([databaseFiles count] == 1) {
             // Reload the section if it's the first item
             NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:SECTION_DATABASE];
             [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationRight];
