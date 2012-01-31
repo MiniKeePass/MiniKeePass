@@ -20,7 +20,6 @@
 #import "SettingsViewController.h"
 #import "SelectionListViewController.h"
 #import "SFHFKeychainUtils.h"
-#import "DropboxSDK.h"
 
 enum {
     SECTION_PIN,
@@ -63,8 +62,14 @@ enum {
 };
 
 enum {
-    ROW_LINK_DROPBOX_BUTTON,
-    ROW_LINK_DROPBOX_NUMBER
+    ROW_UNLINKED_DROPBOX_LINK_BUTTON,
+    ROW_UNLINKED_DROPBOX_NUMBER
+};
+
+enum {
+    ROW_LINKED_DROPBOX_FOLDER_BUTTON,
+    ROW_LINKED_DROPBOX_UNLINK_BUTTON,
+    ROW_LINKED_DROPBOX_NUMBER
 };
 
 enum {
@@ -106,8 +111,12 @@ enum {
     hidePasswordsCell = [[SwitchCell alloc] initWithLabel:@"Hide Passwords"];
     [hidePasswordsCell.switchControl addTarget:self action:@selector(toggleHidePasswords:) forControlEvents:UIControlEventValueChanged];
     
-    linkDropboxCell = [[ButtonCell alloc] initWithLabel:@"Link"];
-
+    dropboxLinkCell = [[ButtonCell alloc] initWithLabel:@"Link"];
+    dropboxUnlinkCell = [[ButtonCell alloc] initWithLabel:@"Unink"];
+    
+    dropboxFolderCell = [[ChoiceCell alloc] initWithLabel:@"Folder" choices:nil selectedIndex:0];
+    currentDropboxDirectory = @"/";
+    
     passwordEncodingCell = [[ChoiceCell alloc] initWithLabel:@"Encoding" choices:[NSArray arrayWithObjects:@"UTF-8", @"UTF-16 Big Endian", @"UTF-16 Little Endian", @"Latin 1 (ISO/IEC 8859-1)", @"Latin 2 (ISO/IEC 8859-2)", @"7-Bit ASCII", @"Japanese EUC", @"ISO-2022-JP", nil] selectedIndex:0];
 
     clearClipboardEnabledCell = [[SwitchCell alloc] initWithLabel:@"Enabled"];
@@ -125,7 +134,7 @@ enum {
     [closeTimeoutCell release];
     [rememberPasswordsEnabledCell release];
     [hidePasswordsCell release];
-    [linkDropboxCell release];
+    [dropboxLinkCell release];
     [passwordEncodingCell release];
     [clearClipboardEnabledCell release];
     [clearClipboardTimeoutCell release];
@@ -160,6 +169,8 @@ enum {
     clearClipboardEnabledCell.switchControl.on = [userDefaults boolForKey:@"clearClipboardEnabled"];
     [clearClipboardTimeoutCell setSelectedIndex:[userDefaults integerForKey:@"clearClipboardTimeout"]];
     
+    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:SECTION_DROPBOX] withRowAnimation:UITableViewRowAnimationNone];
+    
     // Update which controls are enabled
     [self updateEnabledControls];
 }
@@ -176,7 +187,6 @@ enum {
     [deleteOnFailureEnabledCell setEnabled:pinEnabled];
     [deleteOnFailureAttemptsCell setEnabled:pinEnabled && deleteOnFailureEnabled];
     [closeTimeoutCell setEnabled:closeEnabled];
-    [linkDropboxCell setEnabled:YES]; //FIXME
     [clearClipboardTimeoutCell setEnabled:clearClipboardEnabled];
 }
 
@@ -207,7 +217,7 @@ enum {
             return ROW_HIDE_PASSWORDS_NUMBER;
             
         case SECTION_DROPBOX:
-            return ROW_LINK_DROPBOX_NUMBER;
+            return [[DBSession sharedSession] isLinked] ? ROW_LINKED_DROPBOX_NUMBER : ROW_UNLINKED_DROPBOX_NUMBER;
         
         case SECTION_PASSWORD_ENCODING:
             return ROW_PASSWORD_ENCODING_NUMBER;
@@ -320,9 +330,18 @@ enum {
             break;
 
         case SECTION_DROPBOX:
+            if ([[DBSession sharedSession] isLinked]) {
             switch (indexPath.row) {
-                case ROW_LINK_DROPBOX_BUTTON:
-                    return linkDropboxCell;
+                case ROW_LINKED_DROPBOX_FOLDER_BUTTON:
+                    return dropboxFolderCell;
+                case ROW_LINKED_DROPBOX_UNLINK_BUTTON:
+                    return dropboxUnlinkCell;
+            }
+            } else {
+                switch (indexPath.row) {
+                    case ROW_UNLINKED_DROPBOX_LINK_BUTTON:
+                        return dropboxLinkCell;
+                }
             }
             break;
 
@@ -374,9 +393,29 @@ enum {
         selectionListViewController.reference = indexPath;
         [self.navigationController pushViewController:selectionListViewController animated:YES];
         [selectionListViewController release];
-    } else if (indexPath.section == SECTION_DROPBOX && indexPath.row == ROW_LINK_DROPBOX_BUTTON) {
-        DBLoginController* controller = [[DBLoginController new] autorelease];
-        [controller presentFromController:self];
+    } else if (indexPath.section == SECTION_DROPBOX) {
+        if ([[DBSession sharedSession] isLinked]) {
+            if (indexPath.row == ROW_LINKED_DROPBOX_FOLDER_BUTTON) {
+                SelectionListViewController *selectionListViewController = [[SelectionListViewController alloc] initWithStyle:UITableViewStyleGrouped];
+                selectionListViewController.title = @"Linked Directory";
+                selectionListViewController.items = dropboxFolderCell.choices;
+                selectionListViewController.selectedIndex = 0;
+                selectionListViewController.delegate = self;
+                selectionListViewController.reference = indexPath;
+                [self.navigationController pushViewController:selectionListViewController animated:YES];
+                [selectionListViewController release];
+            } else {
+                [[DBSession sharedSession] unlinkAll];
+                dropboxLinkCell.selected = NO;
+                [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:SECTION_DROPBOX] withRowAnimation:UITableViewRowAnimationFade];
+            }
+        } else {
+            switch (indexPath.row) {
+                case ROW_UNLINKED_DROPBOX_LINK_BUTTON:
+                    [[DBSession sharedSession] link];
+                    break;
+            }
+        }
     } else if (indexPath.section == SECTION_PASSWORD_ENCODING && indexPath.row == ROW_PASSWORD_ENCODING_VALUE) {
         SelectionListViewController *selectionListViewController = [[SelectionListViewController alloc] initWithStyle:UITableViewStyleGrouped];
         selectionListViewController.title = @"Password Encoding";
@@ -525,5 +564,35 @@ enum {
         [controller clearEntry];
     }
 }
+
+
+- (void)updateDropboxStatus {    
+    if (!restClient) {
+        restClient =
+        [[DBRestClient alloc] initWithSession:[DBSession sharedSession]];
+        restClient.delegate = self;
+    }
+    
+    if ([[DBSession sharedSession] isLinked]) {
+        [restClient loadMetadata:currentDropboxDirectory];
+        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:SECTION_DROPBOX] withRowAnimation:UITableViewRowAnimationNone];
+    }}
+
+- (void)restClient:(DBRestClient *)client loadedMetadata:(DBMetadata *)metadata {
+    if (metadata.isDirectory) {
+        NSMutableArray *directories = [NSMutableArray array];
+        for (DBMetadata *file in metadata.contents) {
+            if (file.isDirectory) {
+                [directories addObject:file.filename];
+            }
+        }
+        dropboxFolderCell.choices = directories;
+    }
+}
+
+- (void)restClient:(DBRestClient *)client loadMetadataFailedWithError:(NSError *)error {
+    NSLog(@"Error loading metadata: %@", error);
+}
+
 
 @end

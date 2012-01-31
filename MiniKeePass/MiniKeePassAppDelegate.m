@@ -23,10 +23,10 @@
 #import "EntryViewController.h"
 #import "DatabaseManager.h"
 #import "SFHFKeychainUtils.h"
-#import "DropboxSDK.h"
+#import <DropboxSDK/DropboxSDK.h>
 
-#define CONSUMER_KEY @"1cml57v07lqm5xu"
-#define CONSUMER_SECRET @"sao1iiuox8urrai"
+#define APP_KEY @"1cml57v07lqm5xu"
+#define APP_SECRET @"sao1iiuox8urrai"
 
 @implementation MiniKeePassAppDelegate
 
@@ -48,9 +48,18 @@ static NSStringEncoding passwordEncodingValues[] = {
     NSISO2022JPStringEncoding
 };
 
+- (UIViewController *) frontmostViewController {
+    UIViewController *frontmostViewController = window.rootViewController;
+    while (frontmostViewController.modalViewController != nil) {
+        frontmostViewController = frontmostViewController.modalViewController;
+    }
+    
+    return frontmostViewController;
+}
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     //Dropbox code
-    DBSession* dbSession = [[DBSession alloc] initWithConsumerKey:CONSUMER_KEY consumerSecret:CONSUMER_SECRET];
+    DBSession* dbSession = [[DBSession alloc] initWithAppKey:APP_KEY appSecret:APP_SECRET root:kDBRootDropbox];
     [DBSession setSharedSession:dbSession];
 
     // Initialize the images array
@@ -226,11 +235,35 @@ static NSStringEncoding passwordEncodingValues[] = {
 }
 
 - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
+    if ([[DBSession sharedSession] handleOpenURL:url]) {
+        if ([[DBSession sharedSession] isLinked]) {
+            NSLog(@"App linked successfully!");
+            // At this point you can start making API calls
+        }
+        return YES;
+    }
+    
     [self openUrl:url];
     return YES;
 }
 
+// FIXME I shouldn't need the DB code in two places
+
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+    if ([[DBSession sharedSession] handleOpenURL:url]) {
+        if ([[DBSession sharedSession] isLinked]) {
+            NSLog(@"App linked successfully!");
+            
+            UIViewController *frontmostViewController = [self frontmostViewController];
+            if ([frontmostViewController isKindOfClass: [SettingsViewController class]]) {
+                SettingsViewController *settingsViewController = (SettingsViewController *) frontmostViewController;
+                [settingsViewController updateDropboxStatus];
+            }
+            
+        }
+        return YES;
+    }
+
     [self openUrl:url];
     return YES;
 }
