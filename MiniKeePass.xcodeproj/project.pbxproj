@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		52491D0C14D8F3FB00F8CBC8 /* de-createdb.html in Resources */ = {isa = PBXBuildFile; fileRef = 52491D0714D8F3FB00F8CBC8 /* de-createdb.html */; };
+		52491D0D14D8F3FB00F8CBC8 /* de-dropbox.html in Resources */ = {isa = PBXBuildFile; fileRef = 52491D0814D8F3FB00F8CBC8 /* de-dropbox.html */; };
+		52491D0E14D8F3FB00F8CBC8 /* de-itunes.html in Resources */ = {isa = PBXBuildFile; fileRef = 52491D0914D8F3FB00F8CBC8 /* de-itunes.html */; };
+		52491D0F14D8F3FB00F8CBC8 /* de-keyfiles.html in Resources */ = {isa = PBXBuildFile; fileRef = 52491D0A14D8F3FB00F8CBC8 /* de-keyfiles.html */; };
+		52491D1014D8F3FB00F8CBC8 /* de-safariemail.html in Resources */ = {isa = PBXBuildFile; fileRef = 52491D0B14D8F3FB00F8CBC8 /* de-safariemail.html */; };
 		5253EC0C141669F200629E30 /* SplashScreenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5253EC0B141669F200629E30 /* SplashScreenViewController.m */; };
 		52A177BC13EB698E00CEEFCE /* createdb.html in Resources */ = {isa = PBXBuildFile; fileRef = 52A177BB13EB698E00CEEFCE /* createdb.html */; };
 		68406ACD13CA42F200A5849C /* ImageButtonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68406ACC13CA42F200A5849C /* ImageButtonCell.m */; };
@@ -303,6 +308,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		52491D0714D8F3FB00F8CBC8 /* de-createdb.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "de-createdb.html"; sourceTree = "<group>"; };
+		52491D0814D8F3FB00F8CBC8 /* de-dropbox.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "de-dropbox.html"; sourceTree = "<group>"; };
+		52491D0914D8F3FB00F8CBC8 /* de-itunes.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "de-itunes.html"; sourceTree = "<group>"; };
+		52491D0A14D8F3FB00F8CBC8 /* de-keyfiles.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "de-keyfiles.html"; sourceTree = "<group>"; };
+		52491D0B14D8F3FB00F8CBC8 /* de-safariemail.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "de-safariemail.html"; sourceTree = "<group>"; };
 		5253EC0A141669F200629E30 /* SplashScreenViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SplashScreenViewController.h; sourceTree = "<group>"; };
 		5253EC0B141669F200629E30 /* SplashScreenViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SplashScreenViewController.m; sourceTree = "<group>"; };
 		529BED9E14D7CD8600618250 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -706,9 +716,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		52491D0614D8F3FB00F8CBC8 /* de */ = {
+			isa = PBXGroup;
+			children = (
+				52491D0714D8F3FB00F8CBC8 /* de-createdb.html */,
+				52491D0814D8F3FB00F8CBC8 /* de-dropbox.html */,
+				52491D0914D8F3FB00F8CBC8 /* de-itunes.html */,
+				52491D0A14D8F3FB00F8CBC8 /* de-keyfiles.html */,
+				52491D0B14D8F3FB00F8CBC8 /* de-safariemail.html */,
+			);
+			path = de;
+			sourceTree = "<group>";
+		};
 		689D021313A42B63005EBD36 /* help */ = {
 			isa = PBXGroup;
 			children = (
+				52491D0614D8F3FB00F8CBC8 /* de */,
 				52A177BB13EB698E00CEEFCE /* createdb.html */,
 				689D021413A42B63005EBD36 /* dropbox.html */,
 				689D021513A42B63005EBD36 /* itunes.html */,
@@ -1452,6 +1475,11 @@
 				689D033113A42B63005EBD36 /* style.css in Resources */,
 				68E08310146F24E3001C4EDF /* Localizable.strings in Resources */,
 				68E08316146F2749001C4EDF /* InfoPlist.strings in Resources */,
+				52491D0C14D8F3FB00F8CBC8 /* de-createdb.html in Resources */,
+				52491D0D14D8F3FB00F8CBC8 /* de-dropbox.html in Resources */,
+				52491D0E14D8F3FB00F8CBC8 /* de-itunes.html in Resources */,
+				52491D0F14D8F3FB00F8CBC8 /* de-keyfiles.html in Resources */,
+				52491D1014D8F3FB00F8CBC8 /* de-safariemail.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
