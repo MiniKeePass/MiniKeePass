@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		52491D1414D9F2BD00F8CBC8 /* DirectoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 52491D1314D9F2BD00F8CBC8 /* DirectoryCell.m */; };
+		52491D1714D9F71F00F8CBC8 /* DirectoryChoiceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52491D1614D9F71F00F8CBC8 /* DirectoryChoiceViewController.m */; };
 		5253EC0C141669F200629E30 /* SplashScreenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5253EC0B141669F200629E30 /* SplashScreenViewController.m */; };
 		5259362814D4E3BE004216F0 /* DropboxSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5259362714D4E3BE004216F0 /* DropboxSDK.framework */; };
 		52892EB0142B8F3000921CD2 /* ButtonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 52892EAF142B8F3000921CD2 /* ButtonCell.m */; };
@@ -305,6 +307,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		52491D1214D9F2BD00F8CBC8 /* DirectoryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DirectoryCell.h; sourceTree = "<group>"; };
+		52491D1314D9F2BD00F8CBC8 /* DirectoryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DirectoryCell.m; sourceTree = "<group>"; };
+		52491D1514D9F71F00F8CBC8 /* DirectoryChoiceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DirectoryChoiceViewController.h; sourceTree = "<group>"; };
+		52491D1614D9F71F00F8CBC8 /* DirectoryChoiceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DirectoryChoiceViewController.m; sourceTree = "<group>"; };
 		5253EC0A141669F200629E30 /* SplashScreenViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SplashScreenViewController.h; sourceTree = "<group>"; };
 		5253EC0B141669F200629E30 /* SplashScreenViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SplashScreenViewController.m; sourceTree = "<group>"; };
 		5259362714D4E3BE004216F0 /* DropboxSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = DropboxSDK.framework; sourceTree = "<group>"; };
@@ -1082,6 +1088,8 @@
 				689D044B13A42C82005EBD36 /* TitleFieldCell.m */,
 				689D044C13A42C82005EBD36 /* UrlFieldCell.h */,
 				689D044D13A42C82005EBD36 /* UrlFieldCell.m */,
+				52491D1214D9F2BD00F8CBC8 /* DirectoryCell.h */,
+				52491D1314D9F2BD00F8CBC8 /* DirectoryCell.m */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -1145,6 +1153,8 @@
 				689D042713A42C81005EBD36 /* DatabaseDocument.m */,
 				689D042813A42C81005EBD36 /* DatabaseManager.h */,
 				689D042913A42C81005EBD36 /* DatabaseManager.m */,
+				52491D1514D9F71F00F8CBC8 /* DirectoryChoiceViewController.h */,
+				52491D1614D9F71F00F8CBC8 /* DirectoryChoiceViewController.m */,
 				68CFB1E013B357EE00333B38 /* EditGroupViewController.h */,
 				68CFB1E113B357EE00333B38 /* EditGroupViewController.m */,
 				689D042A13A42C81005EBD36 /* EntryViewController.h */,
@@ -1562,6 +1572,8 @@
 				68CE37F214049BC900E4A5E1 /* HelpViewController.m in Sources */,
 				5253EC0C141669F200629E30 /* SplashScreenViewController.m in Sources */,
 				52892EB0142B8F3000921CD2 /* ButtonCell.m in Sources */,
+				52491D1414D9F2BD00F8CBC8 /* DirectoryCell.m in Sources */,
+				52491D1714D9F71F00F8CBC8 /* DirectoryChoiceViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
