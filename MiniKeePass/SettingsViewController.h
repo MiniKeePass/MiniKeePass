@@ -39,7 +39,7 @@
     SwitchCell *clearClipboardEnabledCell;
     ChoiceCell *clearClipboardTimeoutCell;
     
-    NSURL *dropboxDirectoryUrl;
+    NSString *dropboxDirectory;
     DBRestClient *restClient;
     
     NSString *tempPin;

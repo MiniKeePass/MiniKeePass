@@ -17,6 +17,8 @@
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
         self.path = directoryPath;
+        NSURL *fileUrl = [NSURL fileURLWithPath:path];
+        self.title = fileUrl.lastPathComponent;
         settingsViewController = settingsView;
         restClient = [[DBRestClient alloc] initWithSession:[DBSession sharedSession]];
         restClient.delegate = self;
@@ -36,7 +38,7 @@
         if (indexPath != nil) {
             NSLog(@"Object at index %d was chosen\n", indexPath.row);
             DBMetadata *directory = [directories objectAtIndex:indexPath.row];
-            [[NSUserDefaults standardUserDefaults] setValue:[NSURL fileURLWithPath:directory.path] forKey:@"dropboxDirectoryUrl"];
+            [[NSUserDefaults standardUserDefaults] setValue:directory.path forKey:@"dropboxDirectory"];
             [self.navigationController popToViewController:settingsViewController animated:YES];
         }
     }

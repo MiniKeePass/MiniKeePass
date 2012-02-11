@@ -172,8 +172,9 @@ enum {
     
     [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:SECTION_DROPBOX] withRowAnimation:UITableViewRowAnimationNone];
     
-    dropboxDirectoryUrl = [userDefaults valueForKey:@"dropboxDirectoryUrl"];
-    dropboxDirectoryCell.textLabel.text = [NSString stringWithFormat:@"Folder: %@", dropboxDirectoryUrl.lastPathComponent];
+    dropboxDirectory = [userDefaults valueForKey:@"dropboxDirectory"];
+    NSURL *fileUrl = [NSURL fileURLWithPath:dropboxDirectory];
+    dropboxDirectoryCell.textLabel.text = [NSString stringWithFormat:@"Folder: %@", fileUrl.lastPathComponent];
     
     // Update which controls are enabled
     [self updateEnabledControls];
@@ -399,12 +400,12 @@ enum {
     } else if (indexPath.section == SECTION_DROPBOX) {
         if ([[DBSession sharedSession] isLinked]) {
             if (indexPath.row == ROW_LINKED_DROPBOX_DIRECTORY_BUTTON) {
-                DirectoryChoiceViewController *directoryChoiceView = [[DirectoryChoiceViewController alloc] initWithSettingsViewController:self andPath:dropboxDirectoryUrl.path];
+                DirectoryChoiceViewController *directoryChoiceView = [[DirectoryChoiceViewController alloc] initWithSettingsViewController:self andPath:dropboxDirectory];
                 [self.navigationController pushViewController:directoryChoiceView animated:YES];
                 [directoryChoiceView release];
             } else {
                 [[DBSession sharedSession] unlinkAll];
-                dropboxLinkCell.selected = NO;
+                [[NSUserDefaults standardUserDefaults] setValue:@"/" forKey:@"dropboxDirectory"];
                 [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:SECTION_DROPBOX] withRowAnimation:UITableViewRowAnimationFade];
             }
         } else {

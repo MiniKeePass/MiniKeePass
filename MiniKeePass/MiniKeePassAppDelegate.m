@@ -82,8 +82,8 @@ static NSStringEncoding passwordEncodingValues[] = {
     [defaultsDict setValue:[NSNumber numberWithBool:YES] forKey:@"hidePasswords"];
     [defaultsDict setValue:[NSNumber numberWithInt:0] forKey:@"passwordEncoding"];
     [defaultsDict setValue:[NSNumber numberWithBool:NO] forKey:@"clearClipboardEnabled"];
-    [defaultsDict setValue:[NSURL fileURLWithPath:@"/"] forKey:@"dropboxDirectoryUrl"];
-    
+    [defaultsDict setValue:@"/" forKey:@"dropboxDirectory"];
+
     NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
     [userDefaults registerDefaults:defaultsDict];
     
