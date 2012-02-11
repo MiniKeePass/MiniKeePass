@@ -9,13 +9,16 @@
 #import <UIKit/UIKit.h>
 #import <DropboxSDK/DropboxSDK.h>
 
+#import "SettingsViewController.h"
+
 @interface DirectoryChoiceViewController : UITableViewController <DBRestClientDelegate> {
     NSString *path;
     NSArray *directories;
     DBRestClient *restClient;
+    SettingsViewController *settingsViewController;
 }
 
-- (id)initWithPath:(NSString*)directoryPath;
+- (id)initWithSettingsViewController:(SettingsViewController*)settingsView andPath:(NSString*)directoryPath;
 
 @property (nonatomic, copy) NSString *path;
 

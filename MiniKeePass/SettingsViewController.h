@@ -39,8 +39,7 @@
     SwitchCell *clearClipboardEnabledCell;
     ChoiceCell *clearClipboardTimeoutCell;
     
-    NSString *dropboxDirectory; // FIXME this will probably end up in the app delegate
-    
+    NSURL *dropboxDirectoryUrl;
     DBRestClient *restClient;
     
     NSString *tempPin;

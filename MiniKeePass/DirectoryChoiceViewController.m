@@ -7,26 +7,39 @@
 //
 
 #import "DirectoryChoiceViewController.h"
+#import "MiniKeePassAppDelegate.h"
 
 @implementation DirectoryChoiceViewController
 
 @synthesize path;
 
-- (id)initWithPath:(NSString*)directoryPath {
+- (id)initWithSettingsViewController:(SettingsViewController*)settingsView andPath:(NSString*)directoryPath {
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
         self.path = directoryPath;
+        settingsViewController = settingsView;
         restClient = [[DBRestClient alloc] initWithSession:[DBSession sharedSession]];
         restClient.delegate = self;
         [restClient loadMetadata:path];
+        
+        UILongPressGestureRecognizer *longPressGestureRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
+        [self.tableView addGestureRecognizer:longPressGestureRecognizer];
+        [longPressGestureRecognizer release];
     }
     
     return self;
 }
 
-- (void)handleLongPress {
-    int index = [self.tableView indexPathForSelectedRow].row ;
-    NSLog(@"Object at index %d was chosen\n", index);
+- (void)handleLongPress:(UIGestureRecognizer*)sender {
+    if (sender.state == UIGestureRecognizerStateBegan) {
+        NSIndexPath* indexPath = [self.tableView indexPathForRowAtPoint:[sender locationInView:self.tableView]];
+        if (indexPath != nil) {
+            NSLog(@"Object at index %d was chosen\n", indexPath.row);
+            DBMetadata *directory = [directories objectAtIndex:indexPath.row];
+            [[NSUserDefaults standardUserDefaults] setValue:[NSURL fileURLWithPath:directory.path] forKey:@"dropboxDirectoryUrl"];
+            [self.navigationController popToViewController:settingsViewController animated:YES];
+        }
+    }
 }
 
 #pragma mark - Table view data source
@@ -46,9 +59,6 @@
     if (cell == nil) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        UILongPressGestureRecognizer *longPressGestureRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress)];
-        [cell addGestureRecognizer:longPressGestureRecognizer];
-        [longPressGestureRecognizer release];
     }
     
     DBMetadata *directory = [directories objectAtIndex:indexPath.row];
@@ -62,7 +72,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     DBMetadata *directory = [directories objectAtIndex:indexPath.row];
     
-    DirectoryChoiceViewController *directoryChoiceView = [[DirectoryChoiceViewController alloc] initWithPath:directory.path];
+    DirectoryChoiceViewController *directoryChoiceView = [[DirectoryChoiceViewController alloc] initWithSettingsViewController:settingsViewController andPath:directory.path];
     [self.navigationController pushViewController:directoryChoiceView animated:YES];
     [directoryChoiceView release];
 }

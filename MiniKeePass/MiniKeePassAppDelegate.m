@@ -82,7 +82,7 @@ static NSStringEncoding passwordEncodingValues[] = {
     [defaultsDict setValue:[NSNumber numberWithBool:YES] forKey:@"hidePasswords"];
     [defaultsDict setValue:[NSNumber numberWithInt:0] forKey:@"passwordEncoding"];
     [defaultsDict setValue:[NSNumber numberWithBool:NO] forKey:@"clearClipboardEnabled"];
-    [defaultsDict setValue:@"/" forKey:@"dropboxDirectory"];
+    [defaultsDict setValue:[NSURL fileURLWithPath:@"/"] forKey:@"dropboxDirectoryUrl"];
     
     NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
     [userDefaults registerDefaults:defaultsDict];
@@ -144,6 +144,7 @@ static NSStringEncoding passwordEncodingValues[] = {
         // Add the spash screen
         SplashScreenViewController *spashScreen = [[SplashScreenViewController alloc] init];
         [frontViewController presentModalViewController:spashScreen animated:NO];
+        [spashScreen release];
     }
 }
 

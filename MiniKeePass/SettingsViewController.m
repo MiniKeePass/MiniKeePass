@@ -172,8 +172,8 @@ enum {
     
     [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:SECTION_DROPBOX] withRowAnimation:UITableViewRowAnimationNone];
     
-    dropboxDirectory = [userDefaults stringForKey:@"dropboxDirectory"];
-    dropboxDirectoryCell.textLabel.text = [NSString stringWithFormat:@"Folder: %@", dropboxDirectory];
+    dropboxDirectoryUrl = [userDefaults valueForKey:@"dropboxDirectoryUrl"];
+    dropboxDirectoryCell.textLabel.text = [NSString stringWithFormat:@"Folder: %@", dropboxDirectoryUrl.lastPathComponent];
     
     // Update which controls are enabled
     [self updateEnabledControls];
@@ -369,38 +369,37 @@ enum {
     return nil;
 }
 
+- (void)pushSelectionViewControllerWithTitle:(NSString*)title items:(NSArray*)items andDefaultsKey:(NSString*)key {
+    SelectionListViewController *selectionListViewController = [[SelectionListViewController alloc] initWithStyle:UITableViewStyleGrouped];
+    selectionListViewController.title = NSLocalizedString(title, nil);
+    selectionListViewController.items = items;
+    selectionListViewController.selectedIndex = [[NSUserDefaults standardUserDefaults] integerForKey:key];
+    selectionListViewController.delegate = self;
+    selectionListViewController.reference = [self.tableView indexPathForSelectedRow];
+    [self.navigationController pushViewController:selectionListViewController animated:YES];
+    [selectionListViewController release];    
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == SECTION_PIN && indexPath.row == ROW_PIN_LOCK_TIMEOUT && pinEnabledCell.switchControl.on) {
-        SelectionListViewController *selectionListViewController = [[SelectionListViewController alloc] initWithStyle:UITableViewStyleGrouped];
-        selectionListViewController.title = NSLocalizedString(@"Lock Timeout", nil);
-        selectionListViewController.items = pinLockTimeoutCell.choices;
-        selectionListViewController.selectedIndex = [[NSUserDefaults standardUserDefaults] integerForKey:@"pinLockTimeout"];
-        selectionListViewController.delegate = self;
-        selectionListViewController.reference = indexPath;
-        [self.navigationController pushViewController:selectionListViewController animated:YES];
-        [selectionListViewController release];
+        [self pushSelectionViewControllerWithTitle:@"Lock Timeout"
+                                             items:pinLockTimeoutCell.choices
+                                    andDefaultsKey:@"pinLockTimeout"];
+        
     } else if (indexPath.section == SECTION_DELETE_ON_FAILURE && indexPath.row == ROW_DELETE_ON_FAILURE_ATTEMPTS && deleteOnFailureEnabledCell.switchControl.on) {
-        SelectionListViewController *selectionListViewController = [[SelectionListViewController alloc] initWithStyle:UITableViewStyleGrouped];
-        selectionListViewController.title = NSLocalizedString(@"Attempts", nil);
-        selectionListViewController.items = deleteOnFailureAttemptsCell.choices;
-        selectionListViewController.selectedIndex = [[NSUserDefaults standardUserDefaults] integerForKey:@"deleteOnFailureAttempts"];
-        selectionListViewController.delegate = self;
-        selectionListViewController.reference = indexPath;
-        [self.navigationController pushViewController:selectionListViewController animated:YES];
-        [selectionListViewController release];
+        [self pushSelectionViewControllerWithTitle:@"Attempts"
+                                             items:deleteOnFailureAttemptsCell.choices
+                                    andDefaultsKey:@"deleteOnFailureAttempts"];
+        
     } else if (indexPath.section == SECTION_CLOSE && indexPath.row == ROW_CLOSE_TIMEOUT && closeEnabledCell.switchControl.on) {
-        SelectionListViewController *selectionListViewController = [[SelectionListViewController alloc] initWithStyle:UITableViewStyleGrouped];
-        selectionListViewController.title = NSLocalizedString(@"Close Timeout", nil);
-        selectionListViewController.items = closeTimeoutCell.choices;
-        selectionListViewController.selectedIndex = [[NSUserDefaults standardUserDefaults] integerForKey:@"closeTimeout"];
-        selectionListViewController.delegate = self;
-        selectionListViewController.reference = indexPath;
-        [self.navigationController pushViewController:selectionListViewController animated:YES];
-        [selectionListViewController release];
+        [self pushSelectionViewControllerWithTitle:@"Close Timeout"
+                                             items:closeTimeoutCell.choices
+                                    andDefaultsKey:@"closeTimeout"];
+
     } else if (indexPath.section == SECTION_DROPBOX) {
         if ([[DBSession sharedSession] isLinked]) {
             if (indexPath.row == ROW_LINKED_DROPBOX_DIRECTORY_BUTTON) {
-                DirectoryChoiceViewController *directoryChoiceView = [[DirectoryChoiceViewController alloc] initWithPath:dropboxDirectory];
+                DirectoryChoiceViewController *directoryChoiceView = [[DirectoryChoiceViewController alloc] initWithSettingsViewController:self andPath:dropboxDirectoryUrl.path];
                 [self.navigationController pushViewController:directoryChoiceView animated:YES];
                 [directoryChoiceView release];
             } else {
@@ -416,23 +415,14 @@ enum {
             }
         }
     } else if (indexPath.section == SECTION_PASSWORD_ENCODING && indexPath.row == ROW_PASSWORD_ENCODING_VALUE) {
-        SelectionListViewController *selectionListViewController = [[SelectionListViewController alloc] initWithStyle:UITableViewStyleGrouped];
-        selectionListViewController.title = NSLocalizedString(@"Password Encoding", nil);
-        selectionListViewController.items = passwordEncodingCell.choices;
-        selectionListViewController.selectedIndex = [[NSUserDefaults standardUserDefaults] integerForKey:@"passwordEncoding"];
-        selectionListViewController.delegate = self;
-        selectionListViewController.reference = indexPath;
-        [self.navigationController pushViewController:selectionListViewController animated:YES];
-        [selectionListViewController release];
+        [self pushSelectionViewControllerWithTitle:@"Password Encoding"
+                                             items:passwordEncodingCell.choices
+                                    andDefaultsKey:@"passwordEncoding"];
+
     } else if (indexPath.section == SECTION_CLEAR_CLIPBOARD && indexPath.row == ROW_CLEAR_CLIPBOARD_TIMEOUT && clearClipboardEnabledCell.switchControl.on) {
-        SelectionListViewController *selectionListViewController = [[SelectionListViewController alloc] initWithStyle:UITableViewStyleGrouped];
-        selectionListViewController.title = NSLocalizedString(@"Clear Clipboard Timeout", nil);
-        selectionListViewController.items = clearClipboardTimeoutCell.choices;
-        selectionListViewController.selectedIndex = [[NSUserDefaults standardUserDefaults] integerForKey:@"clearClipboardTimeout"];
-        selectionListViewController.delegate = self;
-        selectionListViewController.reference = indexPath;
-        [self.navigationController pushViewController:selectionListViewController animated:YES];
-        [selectionListViewController release];
+        [self pushSelectionViewControllerWithTitle:@"Clear Clipboard Timeout"
+                                             items:clearClipboardTimeoutCell.choices
+                                    andDefaultsKey:@"clearClipboardTimeout"];
     }
 }
 
@@ -564,7 +554,6 @@ enum {
     }
 }
 
-
 - (void)updateDropboxStatus {    
     if (!restClient) {
         restClient =
@@ -573,23 +562,8 @@ enum {
     }
     
     if ([[DBSession sharedSession] isLinked]) {
-        [restClient loadMetadata:dropboxDirectory];
-        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:SECTION_DROPBOX] withRowAnimation:UITableViewRowAnimationNone];
-    }}
-
-- (void)restClient:(DBRestClient *)client loadedMetadata:(DBMetadata *)metadata {
-    if (metadata.isDirectory) {
-        NSMutableArray *directories = [NSMutableArray array];
-        for (DBMetadata *file in metadata.contents) {
-            if (file.isDirectory) {
-                [directories addObject:file.filename];
-            }
-        }
+        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:SECTION_DROPBOX] withRowAnimation:UITableViewRowAnimationFade];
     }
-}
-
-- (void)restClient:(DBRestClient *)client loadMetadataFailedWithError:(NSError *)error {
-    NSLog(@"Error loading metadata: %@", error);
 }
 
 
