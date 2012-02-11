@@ -19,6 +19,7 @@
 #import "MiniKeePassAppDelegate.h"
 #import "SettingsViewController.h"
 #import "SelectionListViewController.h"
+#import "DirectoryChoiceViewController.h"
 #import "SFHFKeychainUtils.h"
 
 enum {
@@ -67,7 +68,7 @@ enum {
 };
 
 enum {
-    ROW_LINKED_DROPBOX_FOLDER_BUTTON,
+    ROW_LINKED_DROPBOX_DIRECTORY_BUTTON,
     ROW_LINKED_DROPBOX_UNLINK_BUTTON,
     ROW_LINKED_DROPBOX_NUMBER
 };
@@ -114,8 +115,8 @@ enum {
     dropboxLinkCell = [[ButtonCell alloc] initWithLabel:@"Link"];
     dropboxUnlinkCell = [[ButtonCell alloc] initWithLabel:@"Unink"];
     
-    dropboxFolderCell = [[ChoiceCell alloc] initWithLabel:@"Folder" choices:nil selectedIndex:0];
-    currentDropboxDirectory = @"/";
+    dropboxDirectoryCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+    dropboxDirectoryCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     
     passwordEncodingCell = [[ChoiceCell alloc] initWithLabel:NSLocalizedString(@"Encoding", nil) choices:[NSArray arrayWithObjects:NSLocalizedString(@"UTF-8", nil), NSLocalizedString(@"UTF-16 Big Endian", nil), NSLocalizedString(@"UTF-16 Little Endian", nil), NSLocalizedString(@"Latin 1 (ISO/IEC 8859-1)", nil), NSLocalizedString(@"Latin 2 (ISO/IEC 8859-2)", nil), NSLocalizedString(@"7-Bit ASCII", nil), NSLocalizedString(@"Japanese EUC", nil), NSLocalizedString(@"ISO-2022-JP", nil), nil] selectedIndex:0];
 
@@ -170,6 +171,9 @@ enum {
     [clearClipboardTimeoutCell setSelectedIndex:[userDefaults integerForKey:@"clearClipboardTimeout"]];
     
     [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:SECTION_DROPBOX] withRowAnimation:UITableViewRowAnimationNone];
+    
+    dropboxDirectory = [userDefaults stringForKey:@"dropboxDirectory"];
+    dropboxDirectoryCell.textLabel.text = [NSString stringWithFormat:@"Folder: %@", dropboxDirectory];
     
     // Update which controls are enabled
     [self updateEnabledControls];
@@ -332,8 +336,8 @@ enum {
         case SECTION_DROPBOX:
             if ([[DBSession sharedSession] isLinked]) {
             switch (indexPath.row) {
-                case ROW_LINKED_DROPBOX_FOLDER_BUTTON:
-                    return dropboxFolderCell;
+                case ROW_LINKED_DROPBOX_DIRECTORY_BUTTON:
+                    return dropboxDirectoryCell;
                 case ROW_LINKED_DROPBOX_UNLINK_BUTTON:
                     return dropboxUnlinkCell;
             }
@@ -395,15 +399,10 @@ enum {
         [selectionListViewController release];
     } else if (indexPath.section == SECTION_DROPBOX) {
         if ([[DBSession sharedSession] isLinked]) {
-            if (indexPath.row == ROW_LINKED_DROPBOX_FOLDER_BUTTON) {
-                SelectionListViewController *selectionListViewController = [[SelectionListViewController alloc] initWithStyle:UITableViewStyleGrouped];
-                selectionListViewController.title = @"Linked Directory";
-                selectionListViewController.items = dropboxFolderCell.choices;
-                selectionListViewController.selectedIndex = 0;
-                selectionListViewController.delegate = self;
-                selectionListViewController.reference = indexPath;
-                [self.navigationController pushViewController:selectionListViewController animated:YES];
-                [selectionListViewController release];
+            if (indexPath.row == ROW_LINKED_DROPBOX_DIRECTORY_BUTTON) {
+                DirectoryChoiceViewController *directoryChoiceView = [[DirectoryChoiceViewController alloc] initWithPath:dropboxDirectory];
+                [self.navigationController pushViewController:directoryChoiceView animated:YES];
+                [directoryChoiceView release];
             } else {
                 [[DBSession sharedSession] unlinkAll];
                 dropboxLinkCell.selected = NO;
@@ -574,7 +573,7 @@ enum {
     }
     
     if ([[DBSession sharedSession] isLinked]) {
-        [restClient loadMetadata:currentDropboxDirectory];
+        [restClient loadMetadata:dropboxDirectory];
         [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:SECTION_DROPBOX] withRowAnimation:UITableViewRowAnimationNone];
     }}
 
@@ -586,7 +585,6 @@ enum {
                 [directories addObject:file.filename];
             }
         }
-        dropboxFolderCell.choices = directories;
     }
 }
 

@@ -34,12 +34,12 @@
     SwitchCell *hidePasswordsCell;
     ButtonCell *dropboxLinkCell;
     ButtonCell *dropboxUnlinkCell;
-    ChoiceCell *dropboxFolderCell;
+    UITableViewCell *dropboxDirectoryCell;
     ChoiceCell *passwordEncodingCell;
     SwitchCell *clearClipboardEnabledCell;
     ChoiceCell *clearClipboardTimeoutCell;
     
-    NSString *currentDropboxDirectory; // FIXME this will probably end up in the app delegate
+    NSString *dropboxDirectory; // FIXME this will probably end up in the app delegate
     
     DBRestClient *restClient;
     

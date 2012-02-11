@@ -7,9 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <DropboxSDK/DropboxSDK.h>
 
-@interface DirectoryChoiceViewController : UITableViewController {
+@interface DirectoryChoiceViewController : UITableViewController <DBRestClientDelegate> {
+    NSString *path;
     NSArray *directories;
+    DBRestClient *restClient;
 }
+
+- (id)initWithPath:(NSString*)directoryPath;
+
+@property (nonatomic, copy) NSString *path;
 
 @end
