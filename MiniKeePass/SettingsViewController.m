@@ -115,8 +115,8 @@ enum {
     dropboxLinkCell = [[ButtonCell alloc] initWithLabel:@"Link"];
     dropboxUnlinkCell = [[ButtonCell alloc] initWithLabel:@"Unink"];
     
-    dropboxDirectoryCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
-    dropboxDirectoryCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    dropboxDirectoryCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:nil];
+    dropboxDirectoryCell.textLabel.text = @"Directory:";
     
     passwordEncodingCell = [[ChoiceCell alloc] initWithLabel:NSLocalizedString(@"Encoding", nil) choices:[NSArray arrayWithObjects:NSLocalizedString(@"UTF-8", nil), NSLocalizedString(@"UTF-16 Big Endian", nil), NSLocalizedString(@"UTF-16 Little Endian", nil), NSLocalizedString(@"Latin 1 (ISO/IEC 8859-1)", nil), NSLocalizedString(@"Latin 2 (ISO/IEC 8859-2)", nil), NSLocalizedString(@"7-Bit ASCII", nil), NSLocalizedString(@"Japanese EUC", nil), NSLocalizedString(@"ISO-2022-JP", nil), nil] selectedIndex:0];
 
@@ -174,7 +174,7 @@ enum {
     
     dropboxDirectory = [userDefaults valueForKey:@"dropboxDirectory"];
     NSURL *fileUrl = [NSURL fileURLWithPath:dropboxDirectory];
-    dropboxDirectoryCell.textLabel.text = [NSString stringWithFormat:@"Folder: %@", fileUrl.lastPathComponent];
+    dropboxDirectoryCell.detailTextLabel.text = fileUrl.lastPathComponent;
     
     // Update which controls are enabled
     [self updateEnabledControls];
@@ -400,9 +400,26 @@ enum {
     } else if (indexPath.section == SECTION_DROPBOX) {
         if ([[DBSession sharedSession] isLinked]) {
             if (indexPath.row == ROW_LINKED_DROPBOX_DIRECTORY_BUTTON) {
-                DirectoryChoiceViewController *directoryChoiceView = [[DirectoryChoiceViewController alloc] initWithSettingsViewController:self andPath:dropboxDirectory];
-                [self.navigationController pushViewController:directoryChoiceView animated:YES];
+                DirectoryChoiceViewController *directoryChoiceView = [[DirectoryChoiceViewController alloc] initWithPath:@"/"];
+                NSMutableArray *viewControllers = [NSMutableArray arrayWithObject:directoryChoiceView];
                 [directoryChoiceView release];
+
+                NSURL *fileUrl = [NSURL fileURLWithPath:dropboxDirectory];
+                NSArray *pathComponents = [fileUrl pathComponents];
+                
+                NSMutableString *currentPath = [NSMutableString string];
+                for (int i = 1; i < [pathComponents count]; i++) {
+                    [currentPath appendString:[NSString stringWithFormat:@"/%@", [pathComponents objectAtIndex:i]]];
+                    directoryChoiceView = [[DirectoryChoiceViewController alloc] initWithPath:currentPath];
+                    [viewControllers addObject:directoryChoiceView];
+                    [directoryChoiceView release];
+                }
+                                
+                UINavigationController *navController = [[UINavigationController alloc] init];
+                [navController setViewControllers:viewControllers animated:NO];
+                
+                [self presentModalViewController:navController animated:YES];                
+                [navController release];
             } else {
                 [[DBSession sharedSession] unlinkAll];
                 [[NSUserDefaults standardUserDefaults] setValue:@"/" forKey:@"dropboxDirectory"];
