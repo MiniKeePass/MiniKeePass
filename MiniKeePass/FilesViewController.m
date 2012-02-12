@@ -36,6 +36,10 @@ enum {
 
 - (void)viewDidLoad {
     appDelegate = (MiniKeePassAppDelegate *)[[UIApplication sharedApplication] delegate];
+    sharedSession = [DBSession sharedSession];
+    dropboxFiles = [[NSMutableArray alloc] init]; 
+    restClient = [[DBRestClient alloc] initWithSession:sharedSession];
+    restClient.delegate = self;
     
     self.tableView.allowsSelectionDuringEditing = YES;
     
@@ -52,6 +56,7 @@ enum {
     self.toolbarItems = [NSArray arrayWithObjects:settingsButton, spacer, helpButton, spacer, addButton, nil];
     self.navigationItem.rightBarButtonItem = self.editButtonItem;
     
+    [helpButton release];
     [settingsButton release];
     [addButton release];
     [spacer release];
@@ -68,8 +73,10 @@ enum {
 - (void)dealloc {
     [filesInfoView release];
     [databaseFiles release];
+    [dropboxFiles release];
     [keyFiles release];
     [selectedFile release];
+    [restClient release];
     [super dealloc];
 }
 
@@ -114,6 +121,7 @@ enum {
 - (void)updateFiles {
     [databaseFiles release];
     [keyFiles release];
+    [restClient loadMetadata:[[NSUserDefaults standardUserDefaults] stringForKey:@"dropboxDirectory"]];
     
     // Get the document's directory
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
@@ -145,6 +153,7 @@ enum {
     
     // Filter the list of files into everything not ending with .kdb or .kdbx
     NSArray *keyFilenames = [files filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"!((self ENDSWITH '.kdb') OR (self ENDSWITH '.kdbx'))"]];
+    [files release];
     
     databaseFiles = [[NSMutableArray arrayWithArray:databaseFilenames] retain];
     keyFiles = [[NSMutableArray arrayWithArray:keyFilenames] retain];    
@@ -157,7 +166,7 @@ enum {
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     switch (section) {
         case SECTION_DATABASE:
-            if ([databaseFiles count] != 0) {
+            if ([databaseFiles count] + [dropboxFiles count] != 0) {
                 return NSLocalizedString(@"Databases", nil);
             }
             break;
@@ -172,7 +181,7 @@ enum {
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    int databaseCount = [databaseFiles count];
+    int databaseCount = [databaseFiles count] + [dropboxFiles count];;
     int keyCount = [keyFiles count];
     
     int n;
@@ -206,10 +215,20 @@ enum {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
     }
     
+    int localFiles = [databaseFiles count];
     // Configure the cell
     switch (indexPath.section) {
         case SECTION_DATABASE:
-            cell.textLabel.text = [databaseFiles objectAtIndex:indexPath.row];
+            if (indexPath.row < localFiles) {
+                cell.textLabel.text = [databaseFiles objectAtIndex:indexPath.row];
+                cell.accessoryView = nil;
+            } else {
+                DBMetadata *file = [dropboxFiles objectAtIndex:indexPath.row - localFiles];
+                cell.textLabel.text = file.filename;
+                UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"dropbox"]];
+                cell.accessoryView = imageView;
+                [imageView release];
+            }
             cell.textLabel.textColor = [UIColor blackColor];
             cell.selectionStyle = UITableViewCellSelectionStyleBlue;
             break;
@@ -229,7 +248,13 @@ enum {
         case SECTION_DATABASE:
             if (self.editing == NO) {
                 // Load the database
-                [[DatabaseManager sharedInstance] openDatabaseDocument:[databaseFiles objectAtIndex:indexPath.row] animated:YES];
+                int localFiles = [databaseFiles count];
+                if (indexPath.row < localFiles) {
+                    [[DatabaseManager sharedInstance] openDatabaseDocument:[databaseFiles objectAtIndex:indexPath.row] animated:YES];
+                } else {
+                    // TODO load the dropbox file
+                    [tableView cellForRowAtIndexPath:indexPath].selected = NO;
+                }
             } else {
                 TextEntryController *textEntryController = [[TextEntryController alloc] initWithStyle:UITableViewStyleGrouped];
                 textEntryController.title = NSLocalizedString(@"Rename", nil);
@@ -458,6 +483,18 @@ enum {
     }
     
     [appDelegate.window.rootViewController dismissModalViewControllerAnimated:YES];
+}
+
+- (void) restClient:(DBRestClient *)client loadedMetadata:(DBMetadata *)metadata {
+    [dropboxFiles removeAllObjects];
+    for (DBMetadata *file in [metadata contents]) {
+        NSURL *fileUrl = [NSURL fileURLWithPath:file.path];
+        NSString *extension = fileUrl.pathExtension;
+        if ([extension isEqualToString:@"kdb"] || [extension isEqualToString:@"kdbx"]) {
+            [dropboxFiles addObject:file];
+        }
+    }
+    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
 }
 
 @end
