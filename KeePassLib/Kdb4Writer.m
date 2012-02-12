@@ -153,6 +153,7 @@
     
     DDXMLDocument *document = [[DDXMLDocument alloc] initWithRootElement:docRoot];
     Kdb4Tree *tree = [[Kdb4Tree alloc] initWithDocument:document];
+    [document release];
     
     KdbGroup *parentGroup = [tree createGroup:nil];
     parentGroup.name = @"General";

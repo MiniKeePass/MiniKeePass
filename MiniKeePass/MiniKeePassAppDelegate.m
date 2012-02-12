@@ -359,6 +359,7 @@ static NSStringEncoding passwordEncodingValues[] = {
         NSInteger clearClipboardTimeout = clearClipboardTimeoutValues[[userDefaults integerForKey:@"clearClipboardTimeout"]];
         
         // Initiate a background task
+        // FIXME there's a bug here that bgTask is being passed into the block being used to create bgTask
         UIApplication *application = [UIApplication sharedApplication];
         UIBackgroundTaskIdentifier bgTask = [application beginBackgroundTaskWithExpirationHandler:^{
             // End the background task
