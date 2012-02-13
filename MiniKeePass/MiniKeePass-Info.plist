@@ -64,12 +64,15 @@
 	<string>1.1.4</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
-	<key>CFBundleURLTypes</key>
-	<array/>
 	<key>CFBundleVersion</key>
 	<string>1.1.4</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Menlo.ttc</string>
+		<string>Monaco.dfont</string>
+	</array>
 	<key>UIFileSharingEnabled</key>
 	<true/>
 	<key>UIPrerenderedIcon</key>
@@ -118,7 +121,5 @@
 			</dict>
 		</dict>
 	</array>
-	<key>UTImportedTypeDeclarations</key>
-	<array/>
 </dict>
 </plist>

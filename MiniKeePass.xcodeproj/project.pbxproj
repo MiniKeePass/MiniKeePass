@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		523DCF2114E8E35F004A4C4F /* Monaco.dfont in Resources */ = {isa = PBXBuildFile; fileRef = 523DCF2014E8E35F004A4C4F /* Monaco.dfont */; };
 		52491D0C14D8F3FB00F8CBC8 /* de-createdb.html in Resources */ = {isa = PBXBuildFile; fileRef = 52491D0714D8F3FB00F8CBC8 /* de-createdb.html */; };
 		52491D0D14D8F3FB00F8CBC8 /* de-dropbox.html in Resources */ = {isa = PBXBuildFile; fileRef = 52491D0814D8F3FB00F8CBC8 /* de-dropbox.html */; };
 		52491D0E14D8F3FB00F8CBC8 /* de-itunes.html in Resources */ = {isa = PBXBuildFile; fileRef = 52491D0914D8F3FB00F8CBC8 /* de-itunes.html */; };
@@ -308,6 +309,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		523DCF2014E8E35F004A4C4F /* Monaco.dfont */ = {isa = PBXFileReference; lastKnownFileType = file; path = Monaco.dfont; sourceTree = "<group>"; };
 		52491D0714D8F3FB00F8CBC8 /* de-createdb.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "de-createdb.html"; sourceTree = "<group>"; };
 		52491D0814D8F3FB00F8CBC8 /* de-dropbox.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "de-dropbox.html"; sourceTree = "<group>"; };
 		52491D0914D8F3FB00F8CBC8 /* de-itunes.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "de-itunes.html"; sourceTree = "<group>"; };
@@ -1068,6 +1070,7 @@
 		689D041413A42B85005EBD36 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				523DCF2014E8E35F004A4C4F /* Monaco.dfont */,
 				689D021313A42B63005EBD36 /* help */,
 				689D021A13A42B63005EBD36 /* images */,
 				689D021113A42B63005EBD36 /* Default.svg */,
@@ -1289,7 +1292,7 @@
 		689DFFCC13A4273F005EBD36 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0410;
+				LastUpgradeCheck = 0420;
 				ORGANIZATIONNAME = Self;
 			};
 			buildConfigurationList = 689DFFCF13A4273F005EBD36 /* Build configuration list for PBXProject "MiniKeePass" */;
@@ -1480,6 +1483,7 @@
 				52491D0E14D8F3FB00F8CBC8 /* de-itunes.html in Resources */,
 				52491D0F14D8F3FB00F8CBC8 /* de-keyfiles.html in Resources */,
 				52491D1014D8F3FB00F8CBC8 /* de-safariemail.html in Resources */,
+				523DCF2114E8E35F004A4C4F /* Monaco.dfont in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1704,6 +1708,7 @@
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MiniKeePass/MiniKeePass-Prefix.pch";
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = "MiniKeePass/MiniKeePass-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1723,6 +1728,7 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MiniKeePassTests/MiniKeePassTests-Prefix.pch";
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = "MiniKeePassTests/MiniKeePassTests-Info.plist";
 				OTHER_LDFLAGS = (
 					"-framework",
@@ -1776,6 +1782,7 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MiniKeePass/MiniKeePass-Prefix.pch";
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = "MiniKeePass/MiniKeePass-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1790,6 +1797,7 @@
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MiniKeePass/MiniKeePass-Prefix.pch";
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = "MiniKeePass/MiniKeePass-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1809,6 +1817,7 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MiniKeePassTests/MiniKeePassTests-Prefix.pch";
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = "MiniKeePassTests/MiniKeePassTests-Info.plist";
 				OTHER_LDFLAGS = (
 					"-framework",
@@ -1831,6 +1840,7 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MiniKeePassTests/MiniKeePassTests-Prefix.pch";
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = "MiniKeePassTests/MiniKeePassTests-Info.plist";
 				OTHER_LDFLAGS = (
 					"-framework",
