@@ -285,6 +285,8 @@
 		689DFFF613A42740005EBD36 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 689DFFDD13A4273F005EBD36 /* CoreGraphics.framework */; };
 		689DFFFE13A42740005EBD36 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 689DFFFC13A42740005EBD36 /* InfoPlist.strings */; };
 		68A3E1AF13A8C9D1006881CA /* FormViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68A3E1AE13A8C9D1006881CA /* FormViewController.m */; };
+		68CA21C814EA90D00046A7C5 /* FileInputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 68CA21C714EA90D00046A7C5 /* FileInputStream.m */; };
+		68CA21C914EA90D00046A7C5 /* FileInputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 68CA21C714EA90D00046A7C5 /* FileInputStream.m */; };
 		68CE37F214049BC900E4A5E1 /* HelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68CE37F114049BC900E4A5E1 /* HelpViewController.m */; };
 		68CE37F51404A86600E4A5E1 /* safariemail.html in Resources */ = {isa = PBXBuildFile; fileRef = 68CE37F41404A86600E4A5E1 /* safariemail.html */; };
 		68CFB1E213B357EE00333B38 /* EditGroupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68CFB1E113B357EE00333B38 /* EditGroupViewController.m */; };
@@ -669,6 +671,8 @@
 		689DFFFF13A42740005EBD36 /* MiniKeePassTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MiniKeePassTests-Prefix.pch"; sourceTree = "<group>"; };
 		68A3E1AD13A8C9D1006881CA /* FormViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FormViewController.h; sourceTree = "<group>"; };
 		68A3E1AE13A8C9D1006881CA /* FormViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FormViewController.m; sourceTree = "<group>"; };
+		68CA21C614EA90D00046A7C5 /* FileInputStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileInputStream.h; sourceTree = "<group>"; };
+		68CA21C714EA90D00046A7C5 /* FileInputStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileInputStream.m; sourceTree = "<group>"; };
 		68CE37F014049BC900E4A5E1 /* HelpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelpViewController.h; sourceTree = "<group>"; };
 		68CE37F114049BC900E4A5E1 /* HelpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelpViewController.m; sourceTree = "<group>"; };
 		68CE37F41404A86600E4A5E1 /* safariemail.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = safariemail.html; sourceTree = "<group>"; };
@@ -914,6 +918,8 @@
 				689D02BA13A42B63005EBD36 /* DataInputStream.m */,
 				689D02BB13A42B63005EBD36 /* DataOutputStream.h */,
 				689D02BC13A42B63005EBD36 /* DataOutputStream.m */,
+				68CA21C614EA90D00046A7C5 /* FileInputStream.h */,
+				68CA21C714EA90D00046A7C5 /* FileInputStream.m */,
 				689D02BD13A42B63005EBD36 /* GZipInputStream.h */,
 				689D02BE13A42B63005EBD36 /* GZipInputStream.m */,
 				689D02BF13A42B63005EBD36 /* GZipOutputStream.h */,
@@ -1587,6 +1593,7 @@
 				689A4D1314046B8200AA897D /* RandomStream.m in Sources */,
 				68CE37F214049BC900E4A5E1 /* HelpViewController.m in Sources */,
 				5253EC0C141669F200629E30 /* SplashScreenViewController.m in Sources */,
+				68CA21C814EA90D00046A7C5 /* FileInputStream.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1635,6 +1642,7 @@
 				689D04B713A431C6005EBD36 /* GZipStreamTest.m in Sources */,
 				689D04B913A431C6005EBD36 /* HashedStreamTest.m in Sources */,
 				689D04BB13A431C6005EBD36 /* Sha256StreamTest.m in Sources */,
+				68CA21C914EA90D00046A7C5 /* FileInputStream.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
