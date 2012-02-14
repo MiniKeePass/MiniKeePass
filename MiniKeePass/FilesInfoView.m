@@ -41,7 +41,7 @@
         label.numberOfLines = 0;
         label.lineBreakMode = UILineBreakModeWordWrap;
         label.textColor = [UIColor grayColor];
-        label.text = @"You do not have any KeePass files available for MiniKeePass to open.";
+        label.text = NSLocalizedString(@"You do not have any KeePass files available for MiniKeePass to open.", nil);
         [self addSubview:label];
         [label release];
     }

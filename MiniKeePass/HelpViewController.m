@@ -54,7 +54,7 @@ help_topic_t help_topics[] = {
     }
     
     // Configure the cell
-    cell.textLabel.text = help_topics[indexPath.row].title;
+    cell.textLabel.text = NSLocalizedString(help_topics[indexPath.row].title, nil);
     
     return cell;
 }
@@ -64,8 +64,15 @@ help_topic_t help_topics[] = {
     NSString *title = help_topics[indexPath.row].title;
     NSString *resource = help_topics[indexPath.row].resource;
     
+    NSString *language = [[NSLocale preferredLanguages] objectAtIndex:0];
+    NSString *localizedResource = [NSString stringWithFormat:@"%@-%@", language, resource];
+
+    NSString *path = [[NSBundle mainBundle] pathForResource:localizedResource ofType:@"html"];
+    if(![[NSFileManager defaultManager] fileExistsAtPath:path]) {
+        path = [[NSBundle mainBundle] pathForResource:resource ofType:@"html"];
+    }
+    
     // Get the URL of the respurce
-    NSString *path = [[NSBundle mainBundle] pathForResource:resource ofType:@"html"];
     NSURL *url = [NSURL fileURLWithPath:path];
     
     // Create a web view to display the help page
@@ -74,7 +81,7 @@ help_topic_t help_topics[] = {
     [webView loadRequest:[NSURLRequest requestWithURL:url]];
     
     UIViewController *viewController = [[UIViewController alloc] init];
-    viewController.title = title;
+    viewController.title = NSLocalizedString(title, nil);
     viewController.view = webView;
     [webView release];
     
