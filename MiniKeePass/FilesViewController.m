@@ -147,7 +147,9 @@ enum {
     NSArray *keyFilenames = [files filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"!((self ENDSWITH '.kdb') OR (self ENDSWITH '.kdbx'))"]];
     
     databaseFiles = [[NSMutableArray arrayWithArray:databaseFilenames] retain];
-    keyFiles = [[NSMutableArray arrayWithArray:keyFilenames] retain];    
+    keyFiles = [[NSMutableArray arrayWithArray:keyFilenames] retain];
+    
+    [files release];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
