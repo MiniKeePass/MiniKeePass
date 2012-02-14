@@ -16,104 +16,183 @@
  */
 
 #import "PasswordGeneratorViewController.h"
+#import "NumberSelectionViewController.h"
 #import "Salsa20RandomStream.h"
 
 #define CHARSET_LOWER_CASE @"abcdefghijklmnopqrstuvwxyz"
 #define CHARSET_UPPER_CASE @"ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 #define CHARSET_DIGITS     @"0123456789"
+#define CHARSET_MINUS      @"-"
+#define CHARSET_UNDERLINE  @"_"
+#define CHARSET_SPACE      @" "
 #define CHARSET_SPECIAL    @"!@#$%^&*_-+=?"
 #define CHARSET_BRACKETS   @"(){}[]<>"
 
-@implementation PasswordGeneratorViewController
+enum {
+    SECTION_SETTINGS,
+    SECTION_PASSWORD,
+    SECTION_NUMBER
+};
 
-@synthesize passwordTextField;
+enum {
+    ROW_SETTINGS_LENGTH,
+    ROW_SETTINGS_CHARSET,
+    ROW_SETTINGS_NUMBER
+};
+
+enum {
+    ROW_PASSWORD_VALUE,
+    ROW_PASSWORD_NUMBER
+};
+
+@implementation PasswordGeneratorViewController
 
 - (id)init {
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
-        UIPickerView *lengthPickerView = [[UIPickerView alloc] init];
-        lengthPickerView.delegate = self;
-        lengthPickerView.dataSource = self;
-        lengthPickerView.showsSelectionIndicator = YES;
-        
-        lengthCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:nil];
-        lengthCell.textLabel.text = @"Character Sets";
-        lengthCell.detailTextLabel.text = @"Upper, Lower, Digits, Minus, Underline, Space, Special, Brackets";
+        self.title = @"Generator";
+        self.tableView.delaysContentTouches = YES;
+
+        lengthCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:nil];
+        lengthCell.textLabel.text = @"Length";
+        lengthCell.detailTextLabel.text = @"10"; // FIXME
         lengthCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         
-        lowerCaseSwitchCell = [[SwitchCell alloc] initWithLabel:@"Lower Case"];
-        lowerCaseSwitchCell.switchControl.on = YES;
+        characterSetsViewController = [[CharacterSetsViewController alloc] init];
+
+        characterSetsCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:nil];
+        characterSetsCell.textLabel.text = @"Character Sets";
+        characterSetsCell.detailTextLabel.text = @" ";
+        characterSetsCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         
-        upperCaseSwitchCell = [[SwitchCell alloc] initWithLabel:@"Upper Case"];
-        upperCaseSwitchCell.switchControl.on = YES;
+        UIImage *image = [UIImage imageNamed:@"gear"];
         
-        digitsSwitchCell = [[SwitchCell alloc] initWithLabel:@"Digits"];
-        digitsSwitchCell.switchControl.on = YES;
+        UIButton *regenerateButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        regenerateButton.frame = CGRectMake(0.0, 0.0, image.size.width, image.size.height);
+        [regenerateButton setImage:image forState:UIControlStateNormal];
+        [regenerateButton addTarget:self action:@selector(generatePassword) forControlEvents:UIControlEventTouchUpInside];
         
-        specialSwitchCell = [[SwitchCell alloc] initWithLabel:@"Special"];
-        
-        bracketsSwitchCell = [[SwitchCell alloc] initWithLabel:@"Brackets"];
-        
-        passwordTextField = [[UITextField alloc] init];
-        
-        self.controls = [NSArray arrayWithObjects:lengthCell, lowerCaseSwitchCell, upperCaseSwitchCell, digitsSwitchCell, specialSwitchCell, bracketsSwitchCell, passwordTextField, nil];
+        passwordCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+        passwordCell.textLabel.text = @" "; // FIXME Why do I have to pass a space in?
+        passwordCell.accessoryView = regenerateButton;
     }
     return self;
 }
 
 - (void)dealloc {
     [lengthCell release];
-    [lowerCaseSwitchCell release];
-    [upperCaseSwitchCell release];
-    [digitsSwitchCell release];
-    [specialSwitchCell release];
-    [bracketsSwitchCell release];
-    [passwordTextField release];
+    [characterSetsViewController release];
+    [characterSetsCell release];
+    [passwordCell release];
     [super dealloc];
 }
 
-- (void)generate {
+- (void)viewWillAppear:(BOOL)animated {
+    characterSetsCell.detailTextLabel.text = [characterSetsViewController getDescription];
+}
+
+- (NSString *)getPassword {
+    return passwordCell.textLabel.text;
+}
+
+- (void)generatePassword {
     NSMutableString *charSet = [NSMutableString string];
-    if (lowerCaseSwitchCell.switchControl.on) {
-        [charSet appendString:CHARSET_LOWER_CASE];
-    }
-    if (upperCaseSwitchCell.switchControl.on) {
+    
+    if ([characterSetsViewController isUpperCase]) {
         [charSet appendString:CHARSET_UPPER_CASE];
     }
-    if (digitsSwitchCell.switchControl.on) {
+    if ([characterSetsViewController isLowerCase]) {
+        [charSet appendString:CHARSET_LOWER_CASE];
+    }
+    if ([characterSetsViewController isDigits]) {
         [charSet appendString:CHARSET_DIGITS];
     }
-    if (specialSwitchCell.switchControl.on) {
-        [charSet appendString:CHARSET_SPECIAL];
+    if ([characterSetsViewController isMinus]) {
+        [charSet appendString:CHARSET_MINUS];
     }
-    if (bracketsSwitchCell.switchControl.on) {
-        [charSet appendString:CHARSET_BRACKETS];
+    if ([characterSetsViewController isUnderline]) {
+        [charSet appendString:CHARSET_UNDERLINE];
+    }
+    if ([characterSetsViewController isSpace]) {
+        [charSet appendString:CHARSET_SPACE];
+    }
+    if ([characterSetsViewController isSpecial]) {
+        [charSet appendString:CHARSET_SPECIAL];
     }
     
     RandomStream *cryptoRandomStream = [[Salsa20RandomStream alloc] init];
     
     NSInteger length = [lengthCell.detailTextLabel.text integerValue];
+    
     NSMutableString *password = [NSMutableString string];
     for (NSUInteger i = 0; i < length; i++) {
         NSUInteger idx = [cryptoRandomStream getInt] % [charSet length];
-        [password appendString:[charSet substringWithRange:NSMakeRange(idx, 1)]];
+	        [password appendString:[charSet substringWithRange:NSMakeRange(idx, 1)]];
     }
     
     [cryptoRandomStream release];
     
-    passwordTextField.text = password;
+    passwordCell.textLabel.text = password;
 }
 
-- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView {
-    return 1;
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return SECTION_NUMBER;
 }
 
-- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
-    return 99;
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    switch (section) {
+        case SECTION_SETTINGS:
+            return ROW_SETTINGS_NUMBER;
+            
+        case SECTION_PASSWORD:
+            return ROW_PASSWORD_NUMBER;
+    }
+    return 0;
 }
 
-- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
-    return [[NSNumber numberWithInteger:row] stringValue];
+- (NSString*)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    switch (section) {
+        case SECTION_SETTINGS:
+            return NSLocalizedString(@"Settings", nil);
+            
+        case SECTION_PASSWORD:
+            return NSLocalizedString(@"Password", nil);
+    }
+    return nil;
+}
+
+- (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    switch (indexPath.section) {
+        case SECTION_SETTINGS:
+            switch (indexPath.row) {
+                case ROW_SETTINGS_LENGTH:
+                    return lengthCell;
+                case ROW_SETTINGS_CHARSET:
+                    return characterSetsCell;
+            }
+            break;
+            
+        case SECTION_PASSWORD:
+            switch (indexPath.row) {
+                case ROW_PASSWORD_VALUE:
+                    return passwordCell;
+            }
+            break;
+    }
+    
+    return nil;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == SECTION_SETTINGS && indexPath.row == ROW_SETTINGS_LENGTH) {
+        NumberSelectionViewController *numberSelectionViewController = [[NumberSelectionViewController alloc] initWithMinValue:1 maxValue:25];
+        numberSelectionViewController.title = NSLocalizedString(@"Length", nil);
+        numberSelectionViewController.selectedValue = 1; // FIXME
+        [self.navigationController pushViewController:numberSelectionViewController animated:YES];
+        [numberSelectionViewController release];
+    } else if (indexPath.section == SECTION_SETTINGS && indexPath.row == ROW_SETTINGS_CHARSET) {
+        [self.navigationController pushViewController:characterSetsViewController animated:YES];
+    }
 }
 
 @end

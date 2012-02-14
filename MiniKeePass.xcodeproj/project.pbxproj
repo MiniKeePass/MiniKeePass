@@ -297,6 +297,8 @@
 		68E08316146F2749001C4EDF /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 68E08314146F2749001C4EDF /* InfoPlist.strings */; };
 		68E0831D146F2D50001C4EDF /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 68E08314146F2749001C4EDF /* InfoPlist.strings */; };
 		68E0831E146F2D56001C4EDF /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 68E0830E146F24E3001C4EDF /* Localizable.strings */; };
+		68F19D1F14EB3A9C00B772CB /* CharacterSetsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F19D1E14EB3A9C00B772CB /* CharacterSetsViewController.m */; };
+		68F19D2214EB545400B772CB /* NumberSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F19D2114EB545400B772CB /* NumberSelectionViewController.m */; };
 		68FE79B41428C17F00818EE4 /* gear.png in Resources */ = {isa = PBXBuildFile; fileRef = 68FE79B11428C17F00818EE4 /* gear.png */; };
 		68FE79B61428C17F00818EE4 /* gear@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 68FE79B31428C17F00818EE4 /* gear@2x.png */; };
 /* End PBXBuildFile section */
@@ -688,6 +690,10 @@
 		68E08315146F2749001C4EDF /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		68E08318146F2C8B001C4EDF /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
 		68E0831C146F2D37001C4EDF /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		68F19D1D14EB3A9C00B772CB /* CharacterSetsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CharacterSetsViewController.h; sourceTree = "<group>"; };
+		68F19D1E14EB3A9C00B772CB /* CharacterSetsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CharacterSetsViewController.m; sourceTree = "<group>"; };
+		68F19D2014EB545300B772CB /* NumberSelectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; path = NumberSelectionViewController.h; sourceTree = "<group>"; };
+		68F19D2114EB545400B772CB /* NumberSelectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberSelectionViewController.m; sourceTree = "<group>"; };
 		68FE79B11428C17F00818EE4 /* gear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gear.png; sourceTree = "<group>"; };
 		68FE79B21428C17F00818EE4 /* gear.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = gear.svg; sourceTree = "<group>"; };
 		68FE79B31428C17F00818EE4 /* gear@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gear@2x.png"; sourceTree = "<group>"; };
@@ -1197,8 +1203,6 @@
 				5253EC0B141669F200629E30 /* SplashScreenViewController.m */,
 				689D043413A42C81005EBD36 /* NewKdbViewController.h */,
 				689D043513A42C81005EBD36 /* NewKdbViewController.m */,
-				689A4D151404759700AA897D /* PasswordGeneratorViewController.h */,
-				689A4D161404759700AA897D /* PasswordGeneratorViewController.m */,
 				68D991E413F3EAAE00F6ED1F /* PasswordViewController.h */,
 				68D991E513F3EAAE00F6ED1F /* PasswordViewController.m */,
 				689D043813A42C81005EBD36 /* PinTextField.h */,
@@ -1212,6 +1216,7 @@
 				689D044413A42C82005EBD36 /* TextEntryController.h */,
 				689D044513A42C82005EBD36 /* TextEntryController.m */,
 				689D046313A42CA8005EBD36 /* Cells */,
+				68F19D1B14EB3A3900B772CB /* Password Generator */,
 				689DFFE013A4273F005EBD36 /* Supporting Files */,
 			);
 			path = MiniKeePass;
@@ -1256,6 +1261,19 @@
 				689DFFFF13A42740005EBD36 /* MiniKeePassTests-Prefix.pch */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		68F19D1B14EB3A3900B772CB /* Password Generator */ = {
+			isa = PBXGroup;
+			children = (
+				68F19D1D14EB3A9C00B772CB /* CharacterSetsViewController.h */,
+				68F19D1E14EB3A9C00B772CB /* CharacterSetsViewController.m */,
+				689A4D151404759700AA897D /* PasswordGeneratorViewController.h */,
+				689A4D161404759700AA897D /* PasswordGeneratorViewController.m */,
+				68F19D2014EB545300B772CB /* NumberSelectionViewController.h */,
+				68F19D2114EB545400B772CB /* NumberSelectionViewController.m */,
+			);
+			name = "Password Generator";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1600,6 +1618,8 @@
 				68CE37F214049BC900E4A5E1 /* HelpViewController.m in Sources */,
 				5253EC0C141669F200629E30 /* SplashScreenViewController.m in Sources */,
 				68CA21C814EA90D00046A7C5 /* FileInputStream.m in Sources */,
+				68F19D1F14EB3A9C00B772CB /* CharacterSetsViewController.m in Sources */,
+				68F19D2214EB545400B772CB /* NumberSelectionViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

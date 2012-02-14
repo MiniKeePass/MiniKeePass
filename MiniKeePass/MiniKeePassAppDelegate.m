@@ -65,6 +65,14 @@ static NSStringEncoding passwordEncodingValues[] = {
     [defaultsDict setValue:[NSNumber numberWithBool:YES] forKey:@"hidePasswords"];
     [defaultsDict setValue:[NSNumber numberWithInt:0] forKey:@"passwordEncoding"];
     [defaultsDict setValue:[NSNumber numberWithBool:NO] forKey:@"clearClipboardEnabled"];
+    [defaultsDict setValue:[NSNumber numberWithBool:YES] forKey:@"pwGenUpperCase"];
+    [defaultsDict setValue:[NSNumber numberWithBool:YES] forKey:@"pwGenLowerCase"];
+    [defaultsDict setValue:[NSNumber numberWithBool:YES] forKey:@"pwGenDigits"];
+    [defaultsDict setValue:[NSNumber numberWithBool:NO] forKey:@"pwGenMinus"];
+    [defaultsDict setValue:[NSNumber numberWithBool:NO] forKey:@"pwGenUnderline"];
+    [defaultsDict setValue:[NSNumber numberWithBool:NO] forKey:@"pwGenSpace"];
+    [defaultsDict setValue:[NSNumber numberWithBool:NO] forKey:@"pwGenSpecial"];
+    [defaultsDict setValue:[NSNumber numberWithBool:NO] forKey:@"pwGenBrackets"];
     
     NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
     [userDefaults registerDefaults:defaultsDict];

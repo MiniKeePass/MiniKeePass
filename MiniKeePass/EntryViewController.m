@@ -59,10 +59,10 @@
         
         commentsCell = [[TextViewCell alloc] init];
         
-         UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapPressed)];
+        UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapPressed)];
         tapGesture.delegate = self;
-         [self.view addGestureRecognizer:tapGesture];
-         [tapGesture release];
+        [self.view addGestureRecognizer:tapGesture];
+        [tapGesture release];
     }
     return self;
 }
@@ -279,27 +279,10 @@ BOOL stringsEqual(NSString *str1, NSString *str2) {
 
 - (void)generatePasswordPressed {
     PasswordGeneratorViewController *passwordGeneratorViewController = [[PasswordGeneratorViewController alloc] init];
-    passwordGeneratorViewController.delegate = self;
     
     [self.navigationController pushViewController:passwordGeneratorViewController animated:YES];
     
     [passwordGeneratorViewController release];
-}
-
-- (void)formViewController:(FormViewController *)controller button:(FormViewControllerButton)button {
-    PasswordGeneratorViewController *passwordGeneratorViewController = (PasswordGeneratorViewController*)controller;
-    BOOL shouldDismiss = YES;
-    
-    // Check if the OK button was pressed
-    if (button == FormViewControllerButtonOk) {
-        NSString *password = passwordGeneratorViewController.passwordTextField.text;
-        NSLog(@"Password: %@\n", password);
-        // TODO
-    }
-    
-    if (shouldDismiss) {
-        [self.navigationController popViewControllerAnimated:YES];
-    }
 }
 
 @end

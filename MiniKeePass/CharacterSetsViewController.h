@@ -16,16 +16,28 @@
  */
 
 #import <UIKit/UIKit.h>
-#import "CharacterSetsViewController.h"
+#import "SwitchCell.h"
 
-@interface PasswordGeneratorViewController : UITableViewController {
-    UITableViewCell *lengthCell;
-    CharacterSetsViewController *characterSetsViewController;
-    UITableViewCell *characterSetsCell;
-    UITableViewCell *passwordCell;
+@interface CharacterSetsViewController : UITableViewController {
+    SwitchCell *upperCaseSwitchCell;
+    SwitchCell *lowerCaseSwitchCell;
+    SwitchCell *digitsSwitchCell;
+    SwitchCell *minusSwitchCell;
+    SwitchCell *underlineSwitchCell;
+    SwitchCell *spaceSwitchCell;
+    SwitchCell *specialSwitchCell;
+    SwitchCell *bracketsSwitchCell;
 }
 
 - (id)init;
-- (NSString*)getPassword;
+- (NSString*)getDescription;
+- (BOOL)isUpperCase;
+- (BOOL)isLowerCase;
+- (BOOL)isDigits;
+- (BOOL)isMinus;
+- (BOOL)isUnderline;
+- (BOOL)isSpace;
+- (BOOL)isSpecial;
+- (BOOL)isBrackets;
 
 @end
