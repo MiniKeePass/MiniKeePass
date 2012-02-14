@@ -31,10 +31,15 @@
 - (id)init {
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
-        lengthSlider = [[UISlider alloc] init];
-        lengthSlider.minimumValue = 2;
-        lengthSlider.maximumValue = 30;
-        lengthSlider.value = 10;
+        UIPickerView *lengthPickerView = [[UIPickerView alloc] init];
+        lengthPickerView.delegate = self;
+        lengthPickerView.dataSource = self;
+        lengthPickerView.showsSelectionIndicator = YES;
+        
+        lengthCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:nil];
+        lengthCell.textLabel.text = @"Character Sets";
+        lengthCell.detailTextLabel.text = @"Upper, Lower, Digits, Minus, Underline, Space, Special, Brackets";
+        lengthCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         
         lowerCaseSwitchCell = [[SwitchCell alloc] initWithLabel:@"Lower Case"];
         lowerCaseSwitchCell.switchControl.on = YES;
@@ -51,13 +56,13 @@
         
         passwordTextField = [[UITextField alloc] init];
         
-        self.controls = [NSArray arrayWithObjects:lengthSlider, lowerCaseSwitchCell, upperCaseSwitchCell, digitsSwitchCell, specialSwitchCell, bracketsSwitchCell, passwordTextField, nil];
+        self.controls = [NSArray arrayWithObjects:lengthCell, lowerCaseSwitchCell, upperCaseSwitchCell, digitsSwitchCell, specialSwitchCell, bracketsSwitchCell, passwordTextField, nil];
     }
     return self;
 }
 
 - (void)dealloc {
-    [lengthSlider release];
+    [lengthCell release];
     [lowerCaseSwitchCell release];
     [upperCaseSwitchCell release];
     [digitsSwitchCell release];
@@ -87,7 +92,7 @@
     
     RandomStream *cryptoRandomStream = [[Salsa20RandomStream alloc] init];
     
-    NSUInteger length = lengthSlider.value + 0.5f;
+    NSInteger length = [lengthCell.detailTextLabel.text integerValue];
     NSMutableString *password = [NSMutableString string];
     for (NSUInteger i = 0; i < length; i++) {
         NSUInteger idx = [cryptoRandomStream getInt] % [charSet length];
@@ -97,6 +102,18 @@
     [cryptoRandomStream release];
     
     passwordTextField.text = password;
+}
+
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView {
+    return 1;
+}
+
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
+    return 99;
+}
+
+- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
+    return [[NSNumber numberWithInteger:row] stringValue];
 }
 
 @end

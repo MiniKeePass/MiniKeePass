@@ -17,10 +17,11 @@
 
 #import <Foundation/Foundation.h>
 #import "FormViewController.h"
+#import "TextFieldCell.h"
 #import "SwitchCell.h"
 
-@interface PasswordGeneratorViewController : FormViewController {
-    UISlider *lengthSlider;
+@interface PasswordGeneratorViewController : FormViewController <UIPickerViewDelegate, UIPickerViewDataSource> {
+    UITableViewCell *lengthCell;
     SwitchCell *lowerCaseSwitchCell;
     SwitchCell *upperCaseSwitchCell;
     SwitchCell *digitsSwitchCell;
