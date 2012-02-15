@@ -17,17 +17,7 @@
 
 #import "CharacterSetsViewController.h"
 
-enum {
-    ROW_UPPER_CASE,
-    ROW_LOWER_CASE,
-    ROW_DIGITS,
-    ROW_MINUS,
-    ROW_UNDERLINE,
-    ROW_SPACE,
-    ROW_SPECIAL,
-    ROW_BRACKETS,
-    ROW_NUMBER
-};
+#define NUMBER_CHARACTER_SETS    8
 
 @implementation CharacterSetsViewController
 
@@ -35,32 +25,33 @@ enum {
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
         self.title = @"Character Sets";
-
+        
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        NSInteger charSets = [userDefaults integerForKey:@"pwGenCharSets"];
         
         upperCaseSwitchCell = [[SwitchCell alloc] initWithLabel:@"Upper Case"];
-        upperCaseSwitchCell.switchControl.on = [userDefaults boolForKey:@"pwGenUpperCase"];
+        upperCaseSwitchCell.switchControl.on = charSets & CHARACTER_SET_UPPER_CASE;
         
         lowerCaseSwitchCell = [[SwitchCell alloc] initWithLabel:@"Lower Case"];
-        lowerCaseSwitchCell.switchControl.on = [userDefaults boolForKey:@"pwGenLowerCase"];
+        lowerCaseSwitchCell.switchControl.on = charSets & CHARACTER_SET_LOWER_CASE;
         
         digitsSwitchCell = [[SwitchCell alloc] initWithLabel:@"Digits"];
-        digitsSwitchCell.switchControl.on = [userDefaults boolForKey:@"pwGenDigits"];
+        digitsSwitchCell.switchControl.on = charSets & CHARACTER_SET_DIGITS;
         
         minusSwitchCell = [[SwitchCell alloc] initWithLabel:@"Minus"];
-        minusSwitchCell.switchControl.on = [userDefaults boolForKey:@"pwGenMinus"];
+        minusSwitchCell.switchControl.on = charSets & CHARACTER_SET_MINUS;
         
         underlineSwitchCell = [[SwitchCell alloc] initWithLabel:@"Underline"];
-        underlineSwitchCell.switchControl.on = [userDefaults boolForKey:@"pwGenUnderline"];
+        underlineSwitchCell.switchControl.on = charSets & CHARACTER_SET_UNDERLINE;
         
         spaceSwitchCell = [[SwitchCell alloc] initWithLabel:@"Space"];
-        spaceSwitchCell.switchControl.on = [userDefaults boolForKey:@"pwGenSpace"];
+        spaceSwitchCell.switchControl.on = charSets & CHARACTER_SET_SPACE;
         
         specialSwitchCell = [[SwitchCell alloc] initWithLabel:@"Special"];
-        specialSwitchCell.switchControl.on = [userDefaults boolForKey:@"pwGenSpecial"];
+        specialSwitchCell.switchControl.on = charSets & CHARACTER_SET_SPECIAL;
         
         bracketsSwitchCell = [[SwitchCell alloc] initWithLabel:@"Brackets"];
-        bracketsSwitchCell.switchControl.on = [userDefaults boolForKey:@"pwGenBrackets"];
+        bracketsSwitchCell.switchControl.on = charSets & CHARACTER_SET_BRACKETS;
     }
     return self;
 }
@@ -78,125 +69,36 @@ enum {
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
+    NSInteger charSets = 0;
+    if (upperCaseSwitchCell.switchControl.on) {
+        charSets |= CHARACTER_SET_UPPER_CASE;
+    }
+    if (lowerCaseSwitchCell.switchControl.on) {
+        charSets |= CHARACTER_SET_LOWER_CASE;
+    }
+    if (digitsSwitchCell.switchControl.on) {
+        charSets |= CHARACTER_SET_DIGITS;
+    }
+    if (minusSwitchCell.switchControl.on) {
+        charSets |= CHARACTER_SET_MINUS;
+    }
+    if (underlineSwitchCell.switchControl.on) {
+        charSets |= CHARACTER_SET_UNDERLINE;
+    }
+    if (spaceSwitchCell.switchControl.on) {
+        charSets |= CHARACTER_SET_SPACE;
+    }
+    if (specialSwitchCell.switchControl.on) {
+        charSets |= CHARACTER_SET_SPECIAL;
+    }
+    if (bracketsSwitchCell.switchControl.on) {
+        charSets |= CHARACTER_SET_BRACKETS;
+    }
     
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-
-    [userDefaults setBool:upperCaseSwitchCell.switchControl.on forKey:@"pwGenUpperCase"];
-    [userDefaults setBool:lowerCaseSwitchCell.switchControl.on forKey:@"pwGenLowerCase"];
-    [userDefaults setBool:digitsSwitchCell.switchControl.on forKey:@"pwGenDigits"];
-    [userDefaults setBool:minusSwitchCell.switchControl.on forKey:@"pwGenMinus"];
-    [userDefaults setBool:underlineSwitchCell.switchControl.on forKey:@"pwGenUnderline"];
-    [userDefaults setBool:spaceSwitchCell.switchControl.on forKey:@"pwGenSpace"];
-    [userDefaults setBool:specialSwitchCell.switchControl.on forKey:@"pwGenSpecial"];
-    [userDefaults setBool:bracketsSwitchCell.switchControl.on forKey:@"pwGenBrackets"];
-}
-
-- (NSString *)getDescription {
-    NSMutableString *str = [[NSMutableString alloc] init];
-    BOOL prefix = NO;
+    [userDefaults setInteger:charSets forKey:@"pwGenCharSets"];
     
-    if ([self isUpperCase]) {
-        if (prefix) {
-            [str appendString:@", "];
-        }
-        [str appendString:@"Upper"];
-        prefix = YES;
-    }
-    
-    if ([self isLowerCase]) {
-        if (prefix) {
-            [str appendString:@", "];
-        }
-        [str appendString:@"Lower"];
-        prefix = YES;
-    }
-    
-    if ([self isDigits]) {
-        if (prefix) {
-            [str appendString:@", "];
-        }
-        [str appendString:@"Digits"];
-        prefix = YES;
-    }
-    
-    if ([self isMinus]) {
-        if (prefix) {
-            [str appendString:@", "];
-        }
-        [str appendString:@"Minus"];
-        prefix = YES;
-    }
-    
-    if ([self isUnderline]) {
-        if (prefix) {
-            [str appendString:@", "];
-        }
-        [str appendString:@"Underline"];
-        prefix = YES;
-    }
-    
-    if ([self isSpace]) {
-        if (prefix) {
-            [str appendString:@", "];
-        }
-        [str appendString:@"Space"];
-        prefix = YES;
-    }
-    
-    if ([self isSpecial]) {
-        if (prefix) {
-            [str appendString:@", "];
-        }
-        [str appendString:@"Special"];
-        prefix = YES;
-    }
-    
-    if ([self isBrackets]) {
-        if (prefix) {
-            [str appendString:@", "];
-        }
-        [str appendString:@"Brackets"];
-        prefix = YES;
-    }
-    
-    if ([str length] == 0) {
-        [str appendString:@"None Selected"];
-    }
-    
-    return [str autorelease];
-}
-
-- (BOOL)isUpperCase {
-    return upperCaseSwitchCell.switchControl.on;
-}
-
-- (BOOL)isLowerCase {
-    return lowerCaseSwitchCell.switchControl.on;
-}
-
-- (BOOL)isDigits {
-    return digitsSwitchCell.switchControl.on;
-}
-
-- (BOOL)isMinus {
-    return minusSwitchCell.switchControl.on;
-}
-
-- (BOOL)isUnderline {
-    return underlineSwitchCell.switchControl.on;
-}
-
-- (BOOL)isSpace {
-    return spaceSwitchCell.switchControl.on;
-}
-
-- (BOOL)isSpecial {
-    return specialSwitchCell.switchControl.on;
-}
-
-- (BOOL)isBrackets {
-    return bracketsSwitchCell.switchControl.on;
+    [super viewWillDisappear:animated];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -204,26 +106,26 @@ enum {
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return ROW_NUMBER;
+    return NUMBER_CHARACTER_SETS;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    switch (indexPath.row) {
-        case ROW_UPPER_CASE:
+    switch (1 << indexPath.row) {
+        case CHARACTER_SET_UPPER_CASE:
             return upperCaseSwitchCell;
-        case ROW_LOWER_CASE:
+        case CHARACTER_SET_LOWER_CASE:
             return lowerCaseSwitchCell;
-        case ROW_DIGITS:
+        case CHARACTER_SET_DIGITS:
             return digitsSwitchCell;
-        case ROW_MINUS:
+        case CHARACTER_SET_MINUS:
             return minusSwitchCell;
-        case ROW_UNDERLINE:
+        case CHARACTER_SET_UNDERLINE:
             return underlineSwitchCell;
-        case ROW_SPACE:
+        case CHARACTER_SET_SPACE:
             return spaceSwitchCell;
-        case ROW_SPECIAL:
+        case CHARACTER_SET_SPECIAL:
             return specialSwitchCell;
-        case ROW_BRACKETS:
+        case CHARACTER_SET_BRACKETS:
             return bracketsSwitchCell;
         default:
             break;

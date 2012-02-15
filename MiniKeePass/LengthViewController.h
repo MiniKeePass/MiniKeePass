@@ -16,20 +16,13 @@
  */
 
 #import <UIKit/UIKit.h>
-#import "CharacterSetsViewController.h"
 
-@interface PasswordGeneratorViewController : UITableViewController {
-    UITableViewCell *lengthCell;
-    UITableViewCell *characterSetsCell;
-    UITableViewCell *passwordCell;
-    
-    NSInteger length;
-    NSInteger charSets;
+@interface LengthViewController : UITableViewController {
+    NSInteger minValue;
+    NSInteger maxValue;
+    NSInteger selectedValue;
 }
 
-- (id)init;
-- (void)generatePassword;
-- (NSString *)getPassword;
-- (NSString *)createCharSetsDescription;
+- (id)initWithMinValue:(NSInteger)minimumValue maxValue:(NSInteger)maximumValue;
 
 @end

@@ -21,6 +21,7 @@
 #import "GroupViewController.h"
 #import "SettingsViewController.h"
 #import "EntryViewController.h"
+#import "CharacterSetsViewController.h"
 #import "DatabaseManager.h"
 #import "SFHFKeychainUtils.h"
 
@@ -65,14 +66,8 @@ static NSStringEncoding passwordEncodingValues[] = {
     [defaultsDict setValue:[NSNumber numberWithBool:YES] forKey:@"hidePasswords"];
     [defaultsDict setValue:[NSNumber numberWithInt:0] forKey:@"passwordEncoding"];
     [defaultsDict setValue:[NSNumber numberWithBool:NO] forKey:@"clearClipboardEnabled"];
-    [defaultsDict setValue:[NSNumber numberWithBool:YES] forKey:@"pwGenUpperCase"];
-    [defaultsDict setValue:[NSNumber numberWithBool:YES] forKey:@"pwGenLowerCase"];
-    [defaultsDict setValue:[NSNumber numberWithBool:YES] forKey:@"pwGenDigits"];
-    [defaultsDict setValue:[NSNumber numberWithBool:NO] forKey:@"pwGenMinus"];
-    [defaultsDict setValue:[NSNumber numberWithBool:NO] forKey:@"pwGenUnderline"];
-    [defaultsDict setValue:[NSNumber numberWithBool:NO] forKey:@"pwGenSpace"];
-    [defaultsDict setValue:[NSNumber numberWithBool:NO] forKey:@"pwGenSpecial"];
-    [defaultsDict setValue:[NSNumber numberWithBool:NO] forKey:@"pwGenBrackets"];
+    [defaultsDict setValue:[NSNumber numberWithInt:10] forKey:@"pwGenLength"];
+    [defaultsDict setValue:[NSNumber numberWithInt:CHARACTER_SET_DEFAULT] forKey:@"pwGenCharSets"];
     
     NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
     [userDefaults registerDefaults:defaultsDict];

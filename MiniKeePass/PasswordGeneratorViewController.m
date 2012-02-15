@@ -16,7 +16,7 @@
  */
 
 #import "PasswordGeneratorViewController.h"
-#import "NumberSelectionViewController.h"
+#import "LengthViewController.h"
 #import "Salsa20RandomStream.h"
 
 #define CHARSET_LOWER_CASE @"abcdefghijklmnopqrstuvwxyz"
@@ -55,11 +55,9 @@ enum {
 
         lengthCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:nil];
         lengthCell.textLabel.text = @"Length";
-        lengthCell.detailTextLabel.text = @"10"; // FIXME
+        lengthCell.detailTextLabel.text = @" ";
         lengthCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         
-        characterSetsViewController = [[CharacterSetsViewController alloc] init];
-
         characterSetsCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:nil];
         characterSetsCell.textLabel.text = @"Character Sets";
         characterSetsCell.detailTextLabel.text = @" ";
@@ -81,14 +79,20 @@ enum {
 
 - (void)dealloc {
     [lengthCell release];
-    [characterSetsViewController release];
     [characterSetsCell release];
     [passwordCell release];
     [super dealloc];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    characterSetsCell.detailTextLabel.text = [characterSetsViewController getDescription];
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    length = [userDefaults integerForKey:@"pwGenLength"];
+    charSets = [userDefaults integerForKey:@"pwGenCharSets"];
+    
+    lengthCell.detailTextLabel.text = [[NSNumber numberWithInteger:length] stringValue];
+    characterSetsCell.detailTextLabel.text = [self createCharSetsDescription];
+    
+    [self generatePassword];
 }
 
 - (NSString *)getPassword {
@@ -98,31 +102,29 @@ enum {
 - (void)generatePassword {
     NSMutableString *charSet = [NSMutableString string];
     
-    if ([characterSetsViewController isUpperCase]) {
+    if (charSets & CHARACTER_SET_UPPER_CASE) {
         [charSet appendString:CHARSET_UPPER_CASE];
     }
-    if ([characterSetsViewController isLowerCase]) {
+    if (charSets & CHARACTER_SET_LOWER_CASE) {
         [charSet appendString:CHARSET_LOWER_CASE];
     }
-    if ([characterSetsViewController isDigits]) {
+    if (charSets & CHARACTER_SET_DIGITS) {
         [charSet appendString:CHARSET_DIGITS];
     }
-    if ([characterSetsViewController isMinus]) {
+    if (charSets & CHARACTER_SET_MINUS) {
         [charSet appendString:CHARSET_MINUS];
     }
-    if ([characterSetsViewController isUnderline]) {
+    if (charSets & CHARACTER_SET_UNDERLINE) {
         [charSet appendString:CHARSET_UNDERLINE];
     }
-    if ([characterSetsViewController isSpace]) {
+    if (charSets & CHARACTER_SET_SPACE) {
         [charSet appendString:CHARSET_SPACE];
     }
-    if ([characterSetsViewController isSpecial]) {
+    if (charSets & CHARACTER_SET_SPECIAL) {
         [charSet appendString:CHARSET_SPECIAL];
     }
     
     RandomStream *cryptoRandomStream = [[Salsa20RandomStream alloc] init];
-    
-    NSInteger length = [lengthCell.detailTextLabel.text integerValue];
     
     NSMutableString *password = [NSMutableString string];
     for (NSUInteger i = 0; i < length; i++) {
@@ -133,6 +135,81 @@ enum {
     [cryptoRandomStream release];
     
     passwordCell.textLabel.text = password;
+}
+
+- (NSString *)createCharSetsDescription {
+    NSMutableString *str = [[NSMutableString alloc] init];
+    BOOL prefix = NO;
+    
+    if (charSets & CHARACTER_SET_UPPER_CASE) {
+        if (prefix) {
+            [str appendString:@", "];
+        }
+        [str appendString:@"Upper"];
+        prefix = YES;
+    }
+    
+    if (charSets & CHARACTER_SET_LOWER_CASE) {
+        if (prefix) {
+            [str appendString:@", "];
+        }
+        [str appendString:@"Lower"];
+        prefix = YES;
+    }
+    
+    if (charSets & CHARACTER_SET_DIGITS) {
+        if (prefix) {
+            [str appendString:@", "];
+        }
+        [str appendString:@"Digits"];
+        prefix = YES;
+    }
+    
+    if (charSets & CHARACTER_SET_MINUS) {
+        if (prefix) {
+            [str appendString:@", "];
+        }
+        [str appendString:@"Minus"];
+        prefix = YES;
+    }
+    
+    if (charSets & CHARACTER_SET_UNDERLINE) {
+        if (prefix) {
+            [str appendString:@", "];
+        }
+        [str appendString:@"Underline"];
+        prefix = YES;
+    }
+    
+    if (charSets & CHARACTER_SET_SPACE) {
+        if (prefix) {
+            [str appendString:@", "];
+        }
+        [str appendString:@"Space"];
+        prefix = YES;
+    }
+    
+    if (charSets & CHARACTER_SET_SPECIAL) {
+        if (prefix) {
+            [str appendString:@", "];
+        }
+        [str appendString:@"Special"];
+        prefix = YES;
+    }
+    
+    if (charSets & CHARACTER_SET_BRACKETS) {
+        if (prefix) {
+            [str appendString:@", "];
+        }
+        [str appendString:@"Brackets"];
+        prefix = YES;
+    }
+    
+    if ([str length] == 0) {
+        [str appendString:@"None Selected"];
+    }
+    
+    return [str autorelease];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -185,13 +262,13 @@ enum {
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == SECTION_SETTINGS && indexPath.row == ROW_SETTINGS_LENGTH) {
-        NumberSelectionViewController *numberSelectionViewController = [[NumberSelectionViewController alloc] initWithMinValue:1 maxValue:25];
-        numberSelectionViewController.title = NSLocalizedString(@"Length", nil);
-        numberSelectionViewController.selectedValue = 1; // FIXME
-        [self.navigationController pushViewController:numberSelectionViewController animated:YES];
-        [numberSelectionViewController release];
+        LengthViewController *lengthViewController = [[LengthViewController alloc] initWithMinValue:1 maxValue:25];
+        [self.navigationController pushViewController:lengthViewController animated:YES];
+        [lengthViewController release];
     } else if (indexPath.section == SECTION_SETTINGS && indexPath.row == ROW_SETTINGS_CHARSET) {
-        [self.navigationController pushViewController:characterSetsViewController animated:YES];
+        CharacterSetsViewController *characterSetViewController = [[CharacterSetsViewController alloc] init];
+        [self.navigationController pushViewController:characterSetViewController animated:YES];
+        [characterSetViewController release];
     }
 }
 

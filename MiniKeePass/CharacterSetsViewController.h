@@ -18,6 +18,17 @@
 #import <UIKit/UIKit.h>
 #import "SwitchCell.h"
 
+#define CHARACTER_SET_UPPER_CASE (1 << 0)
+#define CHARACTER_SET_LOWER_CASE (1 << 1)
+#define CHARACTER_SET_DIGITS     (1 << 2)
+#define CHARACTER_SET_MINUS      (1 << 3)
+#define CHARACTER_SET_UNDERLINE  (1 << 4)
+#define CHARACTER_SET_SPACE      (1 << 5)
+#define CHARACTER_SET_SPECIAL    (1 << 6)
+#define CHARACTER_SET_BRACKETS   (1 << 7)
+
+#define CHARACTER_SET_DEFAULT    (CHARACTER_SET_UPPER_CASE | CHARACTER_SET_LOWER_CASE | CHARACTER_SET_DIGITS)
+
 @interface CharacterSetsViewController : UITableViewController {
     SwitchCell *upperCaseSwitchCell;
     SwitchCell *lowerCaseSwitchCell;
@@ -30,14 +41,5 @@
 }
 
 - (id)init;
-- (NSString*)getDescription;
-- (BOOL)isUpperCase;
-- (BOOL)isLowerCase;
-- (BOOL)isDigits;
-- (BOOL)isMinus;
-- (BOOL)isUnderline;
-- (BOOL)isSpace;
-- (BOOL)isSpecial;
-- (BOOL)isBrackets;
 
 @end
