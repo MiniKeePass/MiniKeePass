@@ -15,6 +15,8 @@
 		52491D1014D8F3FB00F8CBC8 /* de-safariemail.html in Resources */ = {isa = PBXBuildFile; fileRef = 52491D0B14D8F3FB00F8CBC8 /* de-safariemail.html */; };
 		5253EC0C141669F200629E30 /* SplashScreenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5253EC0B141669F200629E30 /* SplashScreenViewController.m */; };
 		52A177BC13EB698E00CEEFCE /* createdb.html in Resources */ = {isa = PBXBuildFile; fileRef = 52A177BB13EB698E00CEEFCE /* createdb.html */; };
+		6802F9C614EC9C1D00ACD4C1 /* wrench.png in Resources */ = {isa = PBXBuildFile; fileRef = 6802F9C314EC9C1D00ACD4C1 /* wrench.png */; };
+		6802F9C814EC9C1D00ACD4C1 /* wrench@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6802F9C514EC9C1D00ACD4C1 /* wrench@2x.png */; };
 		68406ACD13CA42F200A5849C /* ImageButtonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68406ACC13CA42F200A5849C /* ImageButtonCell.m */; };
 		6876F67813B2D8F500A05C7A /* ImagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6876F67713B2D8F400A05C7A /* ImagesViewController.m */; };
 		6876F67B13B2F2DB00A05C7A /* checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = 6876F67913B2F2DB00A05C7A /* checkmark.png */; };
@@ -325,6 +327,9 @@
 		529BED9E14D7CD8600618250 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		529BED9F14D7CD9700618250 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		52A177BB13EB698E00CEEFCE /* createdb.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = createdb.html; sourceTree = "<group>"; };
+		6802F9C314EC9C1D00ACD4C1 /* wrench.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wrench.png; sourceTree = "<group>"; };
+		6802F9C414EC9C1D00ACD4C1 /* wrench.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = wrench.svg; sourceTree = "<group>"; };
+		6802F9C514EC9C1D00ACD4C1 /* wrench@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "wrench@2x.png"; sourceTree = "<group>"; };
 		68406ACB13CA42F200A5849C /* ImageButtonCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageButtonCell.h; sourceTree = "<group>"; };
 		68406ACC13CA42F200A5849C /* ImageButtonCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageButtonCell.m; sourceTree = "<group>"; };
 		6876F67613B2D8F400A05C7A /* ImagesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImagesViewController.h; sourceTree = "<group>"; };
@@ -908,6 +913,9 @@
 				68FE79B21428C17F00818EE4 /* gear.svg */,
 				68FE79B11428C17F00818EE4 /* gear.png */,
 				68FE79B31428C17F00818EE4 /* gear@2x.png */,
+				6802F9C414EC9C1D00ACD4C1 /* wrench.svg */,
+				6802F9C314EC9C1D00ACD4C1 /* wrench.png */,
+				6802F9C514EC9C1D00ACD4C1 /* wrench@2x.png */,
 			);
 			path = images;
 			sourceTree = "<group>";
@@ -1513,6 +1521,8 @@
 				52491D0F14D8F3FB00F8CBC8 /* de-keyfiles.html in Resources */,
 				52491D1014D8F3FB00F8CBC8 /* de-safariemail.html in Resources */,
 				523DCF2114E8E35F004A4C4F /* Monaco.dfont in Resources */,
+				6802F9C614EC9C1D00ACD4C1 /* wrench.png in Resources */,
+				6802F9C814EC9C1D00ACD4C1 /* wrench@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

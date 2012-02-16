@@ -29,7 +29,7 @@
         textField.secureTextEntry = [userDefaults boolForKey:@"hidePasswords"];
         textField.font = [UIFont fontWithName:@"Monaco" size:16];
         
-        UIImage *image = [UIImage imageNamed:@"gear"];
+        UIImage *image = [UIImage imageNamed:@"wrench"];
         
         accessoryButton = [UIButton buttonWithType:UIButtonTypeCustom];
         accessoryButton.frame = CGRectMake(0.0, 0.0, image.size.width, image.size.height);
