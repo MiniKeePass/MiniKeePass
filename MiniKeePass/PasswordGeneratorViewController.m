@@ -80,6 +80,7 @@ enum {
         passwordCell.textLabel.text = @" "; // FIXME Why do I have to pass a space in?
         passwordCell.textLabel.font = [UIFont fontWithName:@"Monaco" size:16];
         passwordCell.accessoryView = regenerateButton;
+        passwordCell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     return self;
 }
