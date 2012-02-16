@@ -47,11 +47,17 @@ enum {
 
 @implementation PasswordGeneratorViewController
 
+@synthesize delegate;
+
 - (id)init {
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
         self.title = @"Generator";
         self.tableView.delaysContentTouches = YES;
+        
+        UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", nil) style:UIBarButtonItemStylePlain target:self action:@selector(cancelPressed)];
+        self.navigationItem.rightBarButtonItem = cancelButton;
+        [cancelButton release];
 
         lengthCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:nil];
         lengthCell.textLabel.text = @"Length";
@@ -72,6 +78,7 @@ enum {
         
         passwordCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
         passwordCell.textLabel.text = @" "; // FIXME Why do I have to pass a space in?
+        passwordCell.textLabel.font = [UIFont fontWithName:@"Monaco" size:16];
         passwordCell.accessoryView = regenerateButton;
     }
     return self;
@@ -85,6 +92,9 @@ enum {
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+    // Mark the view as not being canceled
+    canceled = NO;
+    
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     length = [userDefaults integerForKey:@"pwGenLength"];
     charSets = [userDefaults integerForKey:@"pwGenCharSets"];
@@ -93,6 +103,19 @@ enum {
     characterSetsCell.detailTextLabel.text = [self createCharSetsDescription];
     
     [self generatePassword];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    if (!canceled) {
+        if ([delegate respondsToSelector:@selector(passwordGeneratorViewController:password:)]) {
+            [delegate passwordGeneratorViewController:self password:passwordCell.textLabel.text];
+        }
+    }
+}
+
+- (void)cancelPressed {
+    canceled = YES;
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (NSString *)getPassword {

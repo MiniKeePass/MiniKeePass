@@ -25,8 +25,9 @@
 #import "ImagesViewController.h"
 #import "KdbLib.h"
 #import "MiniKeePassAppDelegate.h"
+#import "PasswordGeneratorViewController.h"
 
-@interface EntryViewController : UITableViewController <UIGestureRecognizerDelegate, ImagesViewControllerDelegate, TextFieldCellDelegate> {
+@interface EntryViewController : UITableViewController <UIGestureRecognizerDelegate, ImagesViewControllerDelegate, TextFieldCellDelegate, PasswordGeneratorDelegate> {
     MiniKeePassAppDelegate *appDelegate;
     TitleFieldCell *titleCell;
     ImageButtonCell *imageButtonCell;

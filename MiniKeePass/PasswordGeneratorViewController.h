@@ -18,18 +18,29 @@
 #import <UIKit/UIKit.h>
 #import "CharacterSetsViewController.h"
 
+@protocol PasswordGeneratorDelegate;
+
 @interface PasswordGeneratorViewController : UITableViewController {
     UITableViewCell *lengthCell;
     UITableViewCell *characterSetsCell;
     UITableViewCell *passwordCell;
     
+    BOOL canceled;
+    id<PasswordGeneratorDelegate> delegate;
+    
     NSInteger length;
     NSInteger charSets;
 }
+
+@property (nonatomic, retain) id<PasswordGeneratorDelegate> delegate;
 
 - (id)init;
 - (void)generatePassword;
 - (NSString *)getPassword;
 - (NSString *)createCharSetsDescription;
 
+@end
+
+@protocol PasswordGeneratorDelegate <NSObject>
+- (void)passwordGeneratorViewController:(PasswordGeneratorViewController*)controller password:(NSString*)password;
 @end

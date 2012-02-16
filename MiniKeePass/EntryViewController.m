@@ -16,7 +16,6 @@
  */
 
 #import "EntryViewController.h"
-#import "PasswordGeneratorViewController.h"
 
 @implementation EntryViewController
 
@@ -30,7 +29,7 @@
         
         UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", nil) style:UIBarButtonItemStylePlain target:self action:@selector(cancelPressed)];
         self.navigationItem.rightBarButtonItem = cancelButton;
-        [cancelButton release];    
+        [cancelButton release];
         
         appDelegate = (MiniKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
         
@@ -279,10 +278,15 @@ BOOL stringsEqual(NSString *str1, NSString *str2) {
 
 - (void)generatePasswordPressed {
     PasswordGeneratorViewController *passwordGeneratorViewController = [[PasswordGeneratorViewController alloc] init];
+    passwordGeneratorViewController.delegate = self;
     
     [self.navigationController pushViewController:passwordGeneratorViewController animated:YES];
     
     [passwordGeneratorViewController release];
+}
+
+- (void)passwordGeneratorViewController:(PasswordGeneratorViewController *)controller password:(NSString *)password {
+    passwordCell.textField.text = password;
 }
 
 @end
