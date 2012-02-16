@@ -69,7 +69,7 @@ enum {
         characterSetsCell.detailTextLabel.text = @" ";
         characterSetsCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         
-        UIImage *image = [UIImage imageNamed:@"gear"];
+        UIImage *image = [UIImage imageNamed:@"reload"];
         
         UIButton *regenerateButton = [UIButton buttonWithType:UIButtonTypeCustom];
         regenerateButton.frame = CGRectMake(0.0, 0.0, image.size.width, image.size.height);

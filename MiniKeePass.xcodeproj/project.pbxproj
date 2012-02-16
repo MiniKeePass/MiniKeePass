@@ -288,6 +288,8 @@
 		689DFFF613A42740005EBD36 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 689DFFDD13A4273F005EBD36 /* CoreGraphics.framework */; };
 		689DFFFE13A42740005EBD36 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 689DFFFC13A42740005EBD36 /* InfoPlist.strings */; };
 		68A3E1AF13A8C9D1006881CA /* FormViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68A3E1AE13A8C9D1006881CA /* FormViewController.m */; };
+		68B0A70314ECBC1E005CFE31 /* reload.png in Resources */ = {isa = PBXBuildFile; fileRef = 68B0A70014ECBC1E005CFE31 /* reload.png */; };
+		68B0A70514ECBC1E005CFE31 /* reload@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 68B0A70214ECBC1E005CFE31 /* reload@2x.png */; };
 		68CA21C814EA90D00046A7C5 /* FileInputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 68CA21C714EA90D00046A7C5 /* FileInputStream.m */; };
 		68CA21C914EA90D00046A7C5 /* FileInputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 68CA21C714EA90D00046A7C5 /* FileInputStream.m */; };
 		68CE37F214049BC900E4A5E1 /* HelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68CE37F114049BC900E4A5E1 /* HelpViewController.m */; };
@@ -681,6 +683,9 @@
 		689DFFFF13A42740005EBD36 /* MiniKeePassTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MiniKeePassTests-Prefix.pch"; sourceTree = "<group>"; };
 		68A3E1AD13A8C9D1006881CA /* FormViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FormViewController.h; sourceTree = "<group>"; };
 		68A3E1AE13A8C9D1006881CA /* FormViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FormViewController.m; sourceTree = "<group>"; };
+		68B0A70014ECBC1E005CFE31 /* reload.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = reload.png; sourceTree = "<group>"; };
+		68B0A70114ECBC1E005CFE31 /* reload.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = reload.svg; sourceTree = "<group>"; };
+		68B0A70214ECBC1E005CFE31 /* reload@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "reload@2x.png"; sourceTree = "<group>"; };
 		68CA21C614EA90D00046A7C5 /* FileInputStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileInputStream.h; sourceTree = "<group>"; };
 		68CA21C714EA90D00046A7C5 /* FileInputStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileInputStream.m; sourceTree = "<group>"; };
 		68CE37F014049BC900E4A5E1 /* HelpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelpViewController.h; sourceTree = "<group>"; };
@@ -913,6 +918,9 @@
 				68FE79B21428C17F00818EE4 /* gear.svg */,
 				68FE79B11428C17F00818EE4 /* gear.png */,
 				68FE79B31428C17F00818EE4 /* gear@2x.png */,
+				68B0A70114ECBC1E005CFE31 /* reload.svg */,
+				68B0A70014ECBC1E005CFE31 /* reload.png */,
+				68B0A70214ECBC1E005CFE31 /* reload@2x.png */,
 				6802F9C414EC9C1D00ACD4C1 /* wrench.svg */,
 				6802F9C314EC9C1D00ACD4C1 /* wrench.png */,
 				6802F9C514EC9C1D00ACD4C1 /* wrench@2x.png */,
@@ -1523,6 +1531,8 @@
 				523DCF2114E8E35F004A4C4F /* Monaco.dfont in Resources */,
 				6802F9C614EC9C1D00ACD4C1 /* wrench.png in Resources */,
 				6802F9C814EC9C1D00ACD4C1 /* wrench@2x.png in Resources */,
+				68B0A70314ECBC1E005CFE31 /* reload.png in Resources */,
+				68B0A70514ECBC1E005CFE31 /* reload@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
