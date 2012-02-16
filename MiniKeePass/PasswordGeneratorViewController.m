@@ -92,6 +92,8 @@ enum {
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
     // Mark the view as not being canceled
     canceled = NO;
     
