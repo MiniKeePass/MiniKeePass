@@ -16,7 +16,6 @@
  */
 
 #import "PasswordGeneratorViewController.h"
-#import "LengthViewController.h"
 #import "Salsa20RandomStream.h"
 
 #define CHARSET_LOWER_CASE @"abcdefghijklmnopqrstuvwxyz"
@@ -59,10 +58,8 @@ enum {
         self.navigationItem.rightBarButtonItem = cancelButton;
         [cancelButton release];
 
-        lengthCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:nil];
-        lengthCell.textLabel.text = @"Length";
-        lengthCell.detailTextLabel.text = @" ";
-        lengthCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        lengthCell = [[LengthCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:nil];
+        lengthCell.delegate = self;
         
         characterSetsCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:nil];
         characterSetsCell.textLabel.text = @"Character Sets";
@@ -102,7 +99,7 @@ enum {
     length = [userDefaults integerForKey:@"pwGenLength"];
     charSets = [userDefaults integerForKey:@"pwGenCharSets"];
     
-    lengthCell.detailTextLabel.text = [[NSNumber numberWithInteger:length] stringValue];
+    [lengthCell setLength:length];
     characterSetsCell.detailTextLabel.text = [self createCharSetsDescription];
     
     [self generatePassword];
@@ -148,6 +145,11 @@ enum {
     }
     if (charSets & CHARACTER_SET_SPECIAL) {
         [charSet appendString:CHARSET_SPECIAL];
+    }
+    
+    if ([charSet length] == 0) {
+        passwordCell.textLabel.text = @"";
+        return;
     }
     
     RandomStream *cryptoRandomStream = [[Salsa20RandomStream alloc] init];
@@ -287,15 +289,20 @@ enum {
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section == SECTION_SETTINGS && indexPath.row == ROW_SETTINGS_LENGTH) {
-        LengthViewController *lengthViewController = [[LengthViewController alloc] initWithMinValue:1 maxValue:25];
-        [self.navigationController pushViewController:lengthViewController animated:YES];
-        [lengthViewController release];
-    } else if (indexPath.section == SECTION_SETTINGS && indexPath.row == ROW_SETTINGS_CHARSET) {
+    if (indexPath.section == SECTION_SETTINGS && indexPath.row == ROW_SETTINGS_CHARSET) {
         CharacterSetsViewController *characterSetViewController = [[CharacterSetsViewController alloc] init];
         [self.navigationController pushViewController:characterSetViewController animated:YES];
         [characterSetViewController release];
     }
+}
+
+-(void)lengthCell:(LengthCell *)lengthCell length:(NSInteger)len {
+    length = len;
+    
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults setInteger:length forKey:@"pwGenLength"];
+    
+    [self generatePassword];
 }
 
 @end
