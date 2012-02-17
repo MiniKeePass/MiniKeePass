@@ -32,7 +32,7 @@
 @synthesize backgroundSupported;
 
 static NSInteger timeoutValues[] = {0, 30, 60, 120, 300};
-static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
+static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10, 15};
 static NSInteger clearClipboardTimeoutValues[] = {30, 60, 120, 180};
 static NSStringEncoding passwordEncodingValues[] = {
     NSUTF8StringEncoding,
