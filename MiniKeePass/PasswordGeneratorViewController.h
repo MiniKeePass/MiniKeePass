@@ -26,7 +26,6 @@
     UITableViewCell *characterSetsCell;
     UITableViewCell *passwordCell;
     
-    BOOL canceled;
     id<PasswordGeneratorDelegate> delegate;
     
     NSInteger length;

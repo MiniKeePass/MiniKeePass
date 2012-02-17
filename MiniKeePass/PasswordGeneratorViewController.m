@@ -54,8 +54,12 @@ enum {
         self.title = @"Generator";
         self.tableView.delaysContentTouches = YES;
         
+        UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(donePressed)];
+        self.navigationItem.rightBarButtonItem = doneButton;
+        [doneButton release];
+
         UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", nil) style:UIBarButtonItemStylePlain target:self action:@selector(cancelPressed)];
-        self.navigationItem.rightBarButtonItem = cancelButton;
+        self.navigationItem.leftBarButtonItem = cancelButton;
         [cancelButton release];
 
         lengthCell = [[LengthCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:nil];
@@ -74,7 +78,7 @@ enum {
         [regenerateButton addTarget:self action:@selector(generatePassword) forControlEvents:UIControlEventTouchUpInside];
         
         passwordCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
-        passwordCell.textLabel.text = @" "; // FIXME Why do I have to pass a space in?
+        passwordCell.textLabel.text = @" ";
         passwordCell.textLabel.font = [UIFont fontWithName:@"Monaco" size:16];
         passwordCell.accessoryView = regenerateButton;
         passwordCell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -92,9 +96,6 @@ enum {
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    // Mark the view as not being canceled
-    canceled = NO;
-    
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     length = [userDefaults integerForKey:@"pwGenLength"];
     charSets = [userDefaults integerForKey:@"pwGenCharSets"];
@@ -105,17 +106,16 @@ enum {
     [self generatePassword];
 }
 
-- (void)viewWillDisappear:(BOOL)animated {
-    if (!canceled) {
-        if ([delegate respondsToSelector:@selector(passwordGeneratorViewController:password:)]) {
-            [delegate passwordGeneratorViewController:self password:passwordCell.textLabel.text];
-        }
+- (void)donePressed {
+    if ([delegate respondsToSelector:@selector(passwordGeneratorViewController:password:)]) {
+        [delegate passwordGeneratorViewController:self password:passwordCell.textLabel.text];
     }
+    
+    [self dismissModalViewControllerAnimated:YES];
 }
 
 - (void)cancelPressed {
-    canceled = YES;
-    [self.navigationController popViewControllerAnimated:YES];
+    [self dismissModalViewControllerAnimated:YES];
 }
 
 - (NSString *)getPassword {

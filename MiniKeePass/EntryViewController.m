@@ -280,8 +280,11 @@ BOOL stringsEqual(NSString *str1, NSString *str2) {
     PasswordGeneratorViewController *passwordGeneratorViewController = [[PasswordGeneratorViewController alloc] init];
     passwordGeneratorViewController.delegate = self;
     
-    [self.navigationController pushViewController:passwordGeneratorViewController animated:YES];
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:passwordGeneratorViewController];
     
+    [self presentModalViewController:navigationController animated:YES];
+
+    [navigationController release];
     [passwordGeneratorViewController release];
 }
 
