@@ -22,7 +22,7 @@ Credits
 MiniKeePass
 Copyright 2011 Jason Rush and John Flanagan. All rights reserved.
 
-German Translation - Florian Holzapfel
+German Translation - Florian Holzapfel<br />
 Japanese Translation - Katherine Lake
 
 Nuvola Icons
