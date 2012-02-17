@@ -10,11 +10,12 @@
 #import "Kdb3Reader.h"
 #import "Kdb4Reader.h"
 #import "DataInputStream.h"
+#import "FileInputStream.h"
 
 @implementation KdbReaderFactory
 
 + (KdbTree*)load:(NSString*)filename withPassword:(KdbPassword*)kdbPassword {
-    DataInputStream *inputStream = [[DataInputStream alloc] initWithData:[NSData dataWithContentsOfFile:filename]];
+    FileInputStream *inputStream = [[FileInputStream alloc] initWithFilename:filename];
     uint32_t sig1 = [inputStream readInt32];
     sig1 = CFSwapInt32LittleToHost(sig1);
     

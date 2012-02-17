@@ -9,6 +9,12 @@
 /* Begin PBXBuildFile section */
 		52491D1414D9F2BD00F8CBC8 /* DirectoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 52491D1314D9F2BD00F8CBC8 /* DirectoryCell.m */; };
 		52491D1714D9F71F00F8CBC8 /* DirectoryChoiceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52491D1614D9F71F00F8CBC8 /* DirectoryChoiceViewController.m */; };
+		523DCF2114E8E35F004A4C4F /* Monaco.dfont in Resources */ = {isa = PBXBuildFile; fileRef = 523DCF2014E8E35F004A4C4F /* Monaco.dfont */; };
+		52491D0C14D8F3FB00F8CBC8 /* de-createdb.html in Resources */ = {isa = PBXBuildFile; fileRef = 52491D0714D8F3FB00F8CBC8 /* de-createdb.html */; };
+		52491D0D14D8F3FB00F8CBC8 /* de-dropbox.html in Resources */ = {isa = PBXBuildFile; fileRef = 52491D0814D8F3FB00F8CBC8 /* de-dropbox.html */; };
+		52491D0E14D8F3FB00F8CBC8 /* de-itunes.html in Resources */ = {isa = PBXBuildFile; fileRef = 52491D0914D8F3FB00F8CBC8 /* de-itunes.html */; };
+		52491D0F14D8F3FB00F8CBC8 /* de-keyfiles.html in Resources */ = {isa = PBXBuildFile; fileRef = 52491D0A14D8F3FB00F8CBC8 /* de-keyfiles.html */; };
+		52491D1014D8F3FB00F8CBC8 /* de-safariemail.html in Resources */ = {isa = PBXBuildFile; fileRef = 52491D0B14D8F3FB00F8CBC8 /* de-safariemail.html */; };
 		5253EC0C141669F200629E30 /* SplashScreenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5253EC0B141669F200629E30 /* SplashScreenViewController.m */; };
 		5259362814D4E3BE004216F0 /* DropboxSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5259362714D4E3BE004216F0 /* DropboxSDK.framework */; };
 		52892EB0142B8F3000921CD2 /* ButtonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 52892EAF142B8F3000921CD2 /* ButtonCell.m */; };
@@ -284,6 +290,8 @@
 		689DFFF613A42740005EBD36 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 689DFFDD13A4273F005EBD36 /* CoreGraphics.framework */; };
 		689DFFFE13A42740005EBD36 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 689DFFFC13A42740005EBD36 /* InfoPlist.strings */; };
 		68A3E1AF13A8C9D1006881CA /* FormViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68A3E1AE13A8C9D1006881CA /* FormViewController.m */; };
+		68CA21C814EA90D00046A7C5 /* FileInputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 68CA21C714EA90D00046A7C5 /* FileInputStream.m */; };
+		68CA21C914EA90D00046A7C5 /* FileInputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 68CA21C714EA90D00046A7C5 /* FileInputStream.m */; };
 		68CE37F214049BC900E4A5E1 /* HelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68CE37F114049BC900E4A5E1 /* HelpViewController.m */; };
 		68CE37F51404A86600E4A5E1 /* safariemail.html in Resources */ = {isa = PBXBuildFile; fileRef = 68CE37F41404A86600E4A5E1 /* safariemail.html */; };
 		68CFB1E213B357EE00333B38 /* EditGroupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68CFB1E113B357EE00333B38 /* EditGroupViewController.m */; };
@@ -317,6 +325,16 @@
 		5259362714D4E3BE004216F0 /* DropboxSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = DropboxSDK.framework; sourceTree = "<group>"; };
 		52892EAE142B8F3000921CD2 /* ButtonCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ButtonCell.h; sourceTree = "<group>"; };
 		52892EAF142B8F3000921CD2 /* ButtonCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ButtonCell.m; sourceTree = "<group>"; };
+		523DCF2014E8E35F004A4C4F /* Monaco.dfont */ = {isa = PBXFileReference; lastKnownFileType = file; path = Monaco.dfont; sourceTree = "<group>"; };
+		52491D0714D8F3FB00F8CBC8 /* de-createdb.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "de-createdb.html"; sourceTree = "<group>"; };
+		52491D0814D8F3FB00F8CBC8 /* de-dropbox.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "de-dropbox.html"; sourceTree = "<group>"; };
+		52491D0914D8F3FB00F8CBC8 /* de-itunes.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "de-itunes.html"; sourceTree = "<group>"; };
+		52491D0A14D8F3FB00F8CBC8 /* de-keyfiles.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "de-keyfiles.html"; sourceTree = "<group>"; };
+		52491D0B14D8F3FB00F8CBC8 /* de-safariemail.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "de-safariemail.html"; sourceTree = "<group>"; };
+		5253EC0A141669F200629E30 /* SplashScreenViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SplashScreenViewController.h; sourceTree = "<group>"; };
+		5253EC0B141669F200629E30 /* SplashScreenViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SplashScreenViewController.m; sourceTree = "<group>"; };
+		529BED9E14D7CD8600618250 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		529BED9F14D7CD9700618250 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		52A177BB13EB698E00CEEFCE /* createdb.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = createdb.html; sourceTree = "<group>"; };
 		52F5A5D214E77E7000811C3A /* dropbox.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = dropbox.png; path = images/dropbox.png; sourceTree = "<group>"; };
 		68406ACB13CA42F200A5849C /* ImageButtonCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageButtonCell.h; sourceTree = "<group>"; };
@@ -668,6 +686,8 @@
 		689DFFFF13A42740005EBD36 /* MiniKeePassTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MiniKeePassTests-Prefix.pch"; sourceTree = "<group>"; };
 		68A3E1AD13A8C9D1006881CA /* FormViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FormViewController.h; sourceTree = "<group>"; };
 		68A3E1AE13A8C9D1006881CA /* FormViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FormViewController.m; sourceTree = "<group>"; };
+		68CA21C614EA90D00046A7C5 /* FileInputStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileInputStream.h; sourceTree = "<group>"; };
+		68CA21C714EA90D00046A7C5 /* FileInputStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileInputStream.m; sourceTree = "<group>"; };
 		68CE37F014049BC900E4A5E1 /* HelpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelpViewController.h; sourceTree = "<group>"; };
 		68CE37F114049BC900E4A5E1 /* HelpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelpViewController.m; sourceTree = "<group>"; };
 		68CE37F41404A86600E4A5E1 /* safariemail.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = safariemail.html; sourceTree = "<group>"; };
@@ -718,9 +738,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		52491D0614D8F3FB00F8CBC8 /* de */ = {
+			isa = PBXGroup;
+			children = (
+				52491D0714D8F3FB00F8CBC8 /* de-createdb.html */,
+				52491D0814D8F3FB00F8CBC8 /* de-dropbox.html */,
+				52491D0914D8F3FB00F8CBC8 /* de-itunes.html */,
+				52491D0A14D8F3FB00F8CBC8 /* de-keyfiles.html */,
+				52491D0B14D8F3FB00F8CBC8 /* de-safariemail.html */,
+			);
+			path = de;
+			sourceTree = "<group>";
+		};
 		689D021313A42B63005EBD36 /* help */ = {
 			isa = PBXGroup;
 			children = (
+				52491D0614D8F3FB00F8CBC8 /* de */,
 				52A177BB13EB698E00CEEFCE /* createdb.html */,
 				689D021413A42B63005EBD36 /* dropbox.html */,
 				689D021513A42B63005EBD36 /* itunes.html */,
@@ -901,6 +934,8 @@
 				689D02BA13A42B63005EBD36 /* DataInputStream.m */,
 				689D02BB13A42B63005EBD36 /* DataOutputStream.h */,
 				689D02BC13A42B63005EBD36 /* DataOutputStream.m */,
+				68CA21C614EA90D00046A7C5 /* FileInputStream.h */,
+				68CA21C714EA90D00046A7C5 /* FileInputStream.m */,
 				689D02BD13A42B63005EBD36 /* GZipInputStream.h */,
 				689D02BE13A42B63005EBD36 /* GZipInputStream.m */,
 				689D02BF13A42B63005EBD36 /* GZipOutputStream.h */,
@@ -1057,6 +1092,7 @@
 		689D041413A42B85005EBD36 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				523DCF2014E8E35F004A4C4F /* Monaco.dfont */,
 				689D021313A42B63005EBD36 /* help */,
 				689D021A13A42B63005EBD36 /* images */,
 				689D021113A42B63005EBD36 /* Default.svg */,
@@ -1296,6 +1332,7 @@
 			knownRegions = (
 				en,
 				ja,
+				de,
 			);
 			mainGroup = 689DFFCA13A4273F005EBD36;
 			productRefGroup = 689DFFD613A4273F005EBD36 /* Products */;
@@ -1472,6 +1509,12 @@
 				68E08310146F24E3001C4EDF /* Localizable.strings in Resources */,
 				68E08316146F2749001C4EDF /* InfoPlist.strings in Resources */,
 				52F5A5D314E77E7000811C3A /* dropbox.png in Resources */,
+				52491D0C14D8F3FB00F8CBC8 /* de-createdb.html in Resources */,
+				52491D0D14D8F3FB00F8CBC8 /* de-dropbox.html in Resources */,
+				52491D0E14D8F3FB00F8CBC8 /* de-itunes.html in Resources */,
+				52491D0F14D8F3FB00F8CBC8 /* de-keyfiles.html in Resources */,
+				52491D1014D8F3FB00F8CBC8 /* de-safariemail.html in Resources */,
+				523DCF2114E8E35F004A4C4F /* Monaco.dfont in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1578,6 +1621,7 @@
 				52892EB0142B8F3000921CD2 /* ButtonCell.m in Sources */,
 				52491D1414D9F2BD00F8CBC8 /* DirectoryCell.m in Sources */,
 				52491D1714D9F71F00F8CBC8 /* DirectoryChoiceViewController.m in Sources */,
+				68CA21C814EA90D00046A7C5 /* FileInputStream.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1626,6 +1670,7 @@
 				689D04B713A431C6005EBD36 /* GZipStreamTest.m in Sources */,
 				689D04B913A431C6005EBD36 /* HashedStreamTest.m in Sources */,
 				689D04BB13A431C6005EBD36 /* Sha256StreamTest.m in Sources */,
+				68CA21C914EA90D00046A7C5 /* FileInputStream.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1653,6 +1698,7 @@
 			children = (
 				68E0830F146F24E3001C4EDF /* en */,
 				68E08318146F2C8B001C4EDF /* ja */,
+				529BED9F14D7CD9700618250 /* de */,
 			);
 			name = Localizable.strings;
 			path = ..;
@@ -1663,6 +1709,7 @@
 			children = (
 				68E08315146F2749001C4EDF /* en */,
 				68E0831C146F2D37001C4EDF /* ja */,
+				529BED9E14D7CD8600618250 /* de */,
 			);
 			name = InfoPlist.strings;
 			path = ..;
@@ -1703,7 +1750,7 @@
 				GCC_PREFIX_HEADER = "MiniKeePass/MiniKeePass-Prefix.pch";
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = "MiniKeePass/MiniKeePass-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				VALIDATE_PRODUCT = YES;
 				WRAPPER_EXTENSION = app;
@@ -1739,7 +1786,7 @@
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_OPTIMIZATION_LEVEL = s;
 				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
@@ -1781,7 +1828,7 @@
 				GCC_PREFIX_HEADER = "MiniKeePass/MiniKeePass-Prefix.pch";
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = "MiniKeePass/MiniKeePass-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -1800,7 +1847,7 @@
 				GCC_PREFIX_HEADER = "MiniKeePass/MiniKeePass-Prefix.pch";
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = "MiniKeePass/MiniKeePass-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				VALIDATE_PRODUCT = YES;
 				WRAPPER_EXTENSION = app;

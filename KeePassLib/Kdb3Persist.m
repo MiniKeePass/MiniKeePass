@@ -116,6 +116,7 @@
 - (void)writeEntry:(Kdb3Entry*)entry {
     uint8_t buffer[16];
     uint32_t tmp32;
+    const char *tmpStr;
     
     [entry.uuid getBytes:buffer length:16];
     [self appendField:1 size:16 bytes:buffer];
@@ -126,30 +127,35 @@
     tmp32 = CFSwapInt32HostToLittle(entry.image);
     [self appendField:3 size:4 bytes:&tmp32];
     
+    tmpStr = "";
     if (![Utils emptyString:entry.title]) {
-        const char *tmp = [entry.title cStringUsingEncoding:NSUTF8StringEncoding];
-        [self appendField:4 size:strlen(tmp) + 1 bytes:tmp];
+        tmpStr = [entry.title cStringUsingEncoding:NSUTF8StringEncoding];
     }
+    [self appendField:4 size:strlen(tmpStr) + 1 bytes:tmpStr];
     
+    tmpStr = "";
     if (![Utils emptyString:entry.url]) {
-        const char *tmp = [entry.url cStringUsingEncoding:NSUTF8StringEncoding];
-        [self appendField:5 size:strlen(tmp) + 1 bytes:tmp];
+        tmpStr = [entry.url cStringUsingEncoding:NSUTF8StringEncoding];
     }
+    [self appendField:5 size:strlen(tmpStr) + 1 bytes:tmpStr];
     
+    tmpStr = "";
     if (![Utils emptyString:entry.username]) {
-        const char *tmp = [entry.username cStringUsingEncoding:NSUTF8StringEncoding];
-        [self appendField:6 size:strlen(tmp) + 1 bytes:tmp];
+        tmpStr = [entry.username cStringUsingEncoding:NSUTF8StringEncoding];
     }
+    [self appendField:6 size:strlen(tmpStr) + 1 bytes:tmpStr];
     
+    tmpStr = "";
     if (![Utils emptyString:entry.password]) {
-        const char *tmp = [entry.password cStringUsingEncoding:NSUTF8StringEncoding];
-        [self appendField:7 size:strlen(tmp) + 1 bytes:tmp];
+        tmpStr = [entry.password cStringUsingEncoding:NSUTF8StringEncoding];
     }
+    [self appendField:7 size:strlen(tmpStr) + 1 bytes:tmpStr];
     
+    tmpStr = "";
     if (![Utils emptyString:entry.notes]) {
-        const char *tmp = [entry.notes cStringUsingEncoding:NSUTF8StringEncoding];
-        [self appendField:8 size:strlen(tmp) + 1 bytes:tmp];
+        tmpStr = [entry.notes cStringUsingEncoding:NSUTF8StringEncoding];
     }
+    [self appendField:8 size:strlen(tmpStr) + 1 bytes:tmpStr];
     
     [Kdb3Date toPacked:entry.creationTime bytes:buffer];
     [self appendField:9 size:5 bytes:buffer];
@@ -163,13 +169,16 @@
     [Kdb3Date toPacked:entry.expiryTime bytes:buffer];
     [self appendField:12 size:5 bytes:buffer];
     
+    tmpStr = "";
     if (![Utils emptyString:entry.binaryDesc]) {
-        const char * tmp = [entry.binaryDesc cStringUsingEncoding:NSUTF8StringEncoding];
-        [self appendField:13 size:strlen(tmp)+1 bytes:(void *)tmp];
+        tmpStr = [entry.binaryDesc cStringUsingEncoding:NSUTF8StringEncoding];
     }
+    [self appendField:13 size:strlen(tmpStr)+1 bytes:tmpStr];
     
     if (entry.binary && entry.binary.length) {
         [self appendField:14 size:entry.binary.length bytes:entry.binary.bytes];
+    } else {
+        [self appendField:14 size:0 bytes:nil];
     }
     
     [self appendField:0xFFFF size:0 bytes:nil];

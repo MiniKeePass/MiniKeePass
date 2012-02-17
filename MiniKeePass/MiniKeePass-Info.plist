@@ -77,6 +77,11 @@
 	<string>1.1.4</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Menlo.ttc</string>
+		<string>Monaco.dfont</string>
+	</array>
 	<key>UIFileSharingEnabled</key>
 	<true/>
 	<key>UIPrerenderedIcon</key>
