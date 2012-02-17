@@ -29,7 +29,7 @@
         
         UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", nil) style:UIBarButtonItemStylePlain target:self action:@selector(cancelPressed)];
         self.navigationItem.rightBarButtonItem = cancelButton;
-        [cancelButton release];    
+        [cancelButton release];
         
         appDelegate = (MiniKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
         
@@ -49,6 +49,7 @@
         passwordCell = [[PasswordFieldCell alloc] init];
         passwordCell.textLabel.text = NSLocalizedString(@"Password", nil);
         passwordCell.textFieldCellDelegate = self;
+        [passwordCell.accessoryButton addTarget:self action:@selector(generatePasswordPressed) forControlEvents:UIControlEventTouchUpInside];
         
         urlCell = [[UrlFieldCell alloc] init];
         urlCell.textLabel.text = NSLocalizedString(@"URL", nil);
@@ -57,10 +58,10 @@
         
         commentsCell = [[TextViewCell alloc] init];
         
-         UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapPressed)];
+        UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapPressed)];
         tapGesture.delegate = self;
-         [self.view addGestureRecognizer:tapGesture];
-         [tapGesture release];
+        [self.view addGestureRecognizer:tapGesture];
+        [tapGesture release];
     }
     return self;
 }
@@ -273,6 +274,22 @@ BOOL stringsEqual(NSString *str1, NSString *str2) {
 
 - (void)imagesViewController:(ImagesViewController *)controller imageSelected:(NSUInteger)index {
     [self setSelectedImageIndex:index];
+}
+
+- (void)generatePasswordPressed {
+    PasswordGeneratorViewController *passwordGeneratorViewController = [[PasswordGeneratorViewController alloc] init];
+    passwordGeneratorViewController.delegate = self;
+    
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:passwordGeneratorViewController];
+    
+    [self presentModalViewController:navigationController animated:YES];
+
+    [navigationController release];
+    [passwordGeneratorViewController release];
+}
+
+- (void)passwordGeneratorViewController:(PasswordGeneratorViewController *)controller password:(NSString *)password {
+    passwordCell.textField.text = password;
 }
 
 @end

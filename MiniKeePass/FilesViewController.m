@@ -157,8 +157,6 @@ enum {
     
     databaseFiles = [[NSMutableArray arrayWithArray:databaseFilenames] retain];
     keyFiles = [[NSMutableArray arrayWithArray:keyFilenames] retain];
-    
-    [files release];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
