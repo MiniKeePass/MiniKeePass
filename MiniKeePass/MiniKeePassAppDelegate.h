@@ -22,7 +22,7 @@
 
 #define NUM_IMAGES 69
 
-@interface MiniKeePassAppDelegate : NSObject <UIApplicationDelegate, PinViewControllerDelegate, UIActionSheetDelegate> {
+@interface MiniKeePassAppDelegate : NSObject <UIApplicationDelegate, UIActionSheetDelegate> {
     UIWindow *window;
     UINavigationController *navigationController;
     UIActionSheet* myActionSheet;
