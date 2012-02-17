@@ -118,6 +118,11 @@
         [databaseDocument searchGroup:group searchText:searchString results:results];
     }
     
+    // Sort the results
+    [results sortUsingComparator:^(id a, id b) {
+        return [((KdbEntry*)a).title localizedCompare:((KdbEntry*)b).title];
+    }];
+    
     return YES;
 }
 
