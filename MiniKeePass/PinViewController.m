@@ -16,7 +16,6 @@
  */
 
 #import <AudioToolbox/AudioToolbox.h>
-#import "SplashScreenViewController.h"
 #import "PinViewController.h"
 #import "PinTextField.h"
 
@@ -102,12 +101,14 @@
 }
 
 - (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
     if ([delegate respondsToSelector:@selector(pinViewControllerDidAppear:)]) {
         [delegate pinViewControllerDidAppear:animated];
     }
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
     if ([delegate respondsToSelector:@selector(pinViewControllerDidDisappear:)]) {
         [delegate pinViewControllerDidDisappear:animated];
     }
@@ -151,16 +152,6 @@
 
 - (void)clearEntry {
     textField.text = @"";
-}
-
-- (void)dismissModalViewControllerAnimated:(BOOL)animated {
-    UIViewController *parentViewController = self.parentViewController;
-    
-    if ([parentViewController isKindOfClass:[SplashScreenViewController class]]) {
-        [parentViewController.parentViewController dismissModalViewControllerAnimated:YES];
-    } else {
-        [super dismissModalViewControllerAnimated:YES];
-    }
 }
 
 @end
