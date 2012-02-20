@@ -15,7 +15,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#import <AudioToolbox/AudioToolbox.h>
 #import "MiniKeePassAppDelegate.h"
 #import "SplashScreenViewController.h"
 #import "GroupViewController.h"
@@ -27,11 +26,11 @@
 @implementation MiniKeePassAppDelegate
 
 @synthesize window;
+@synthesize locked;
 @synthesize databaseDocument;
 @synthesize backgroundSupported;
 
-static NSInteger timeoutValues[] = {0, 30, 60, 120, 300};
-static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10};
+static NSInteger closeTimeoutValues[] = {0, 30, 60, 120, 300};
 static NSInteger clearClipboardTimeoutValues[] = {30, 60, 120, 180};
 static NSStringEncoding passwordEncodingValues[] = {
     NSUTF8StringEncoding,
@@ -81,6 +80,8 @@ static NSStringEncoding passwordEncodingValues[] = {
     window.rootViewController = navigationController;
     [window makeKeyAndVisible];
     
+    pinWindow = [[PinWindow alloc] init];
+    
     // Check if backgrounding is supported
     backgroundSupported = FALSE;
     UIDevice* device = [UIDevice currentDevice];
@@ -111,6 +112,10 @@ static NSStringEncoding passwordEncodingValues[] = {
 
 - (void)applicationWillResignActive:(UIApplication *)application {    
     [self dismissActionSheet];
+    if (!self.locked) {
+        NSDate *currentTime = [NSDate date];
+        [[NSUserDefaults standardUserDefaults] setValue:currentTime forKey:@"exitTime"];
+    }
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
@@ -133,7 +138,7 @@ static NSStringEncoding passwordEncodingValues[] = {
     // Check if closing the database is enabled
     if ([userDefaults boolForKey:@"closeEnabled"] && exitTime != nil) {
         // Get the lock timeout (in seconds)
-        NSInteger closeTimeout = timeoutValues[[userDefaults integerForKey:@"closeTimeout"]];
+        NSInteger closeTimeout = closeTimeoutValues[[userDefaults integerForKey:@"closeTimeout"]];
         
         // Check if it's been longer then lock timeout
         NSTimeInterval timeInterval = [exitTime timeIntervalSinceNow];

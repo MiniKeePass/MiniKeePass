@@ -22,6 +22,7 @@
 @interface PinWindow : UIWindow <PinViewControllerDelegate> {
     PinViewController *pinViewController;
     SplashScreenViewController *splashScreenViewController;
+    MiniKeePassAppDelegate *appDelegate;
 }
 
 @end

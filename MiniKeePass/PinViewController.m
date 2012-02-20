@@ -101,6 +101,18 @@
     [textField becomeFirstResponder];
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+    if ([delegate respondsToSelector:@selector(pinViewControllerDidAppear:)]) {
+        [delegate pinViewControllerDidAppear:animated];
+    }
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+    if ([delegate respondsToSelector:@selector(pinViewControllerDidDisappear:)]) {
+        [delegate pinViewControllerDidDisappear:animated];
+    }
+}
+
 - (void)viewDidUnload {
     [super viewDidUnload];
     

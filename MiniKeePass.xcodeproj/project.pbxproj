@@ -323,7 +323,7 @@
 		529BED9E14D7CD8600618250 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		529BED9F14D7CD9700618250 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		52A177BB13EB698E00CEEFCE /* createdb.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = createdb.html; sourceTree = "<group>"; };
-		52A7E1A714EDF1CB0041F950 /* PinWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; path = PinWindow.h; sourceTree = "<group>"; };
+		52A7E1A714EDF1CB0041F950 /* PinWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PinWindow.h; sourceTree = "<group>"; };
 		52A7E1A814EDF1CB0041F950 /* PinWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PinWindow.m; sourceTree = "<group>"; };
 		68406ACB13CA42F200A5849C /* ImageButtonCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageButtonCell.h; sourceTree = "<group>"; };
 		68406ACC13CA42F200A5849C /* ImageButtonCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageButtonCell.m; sourceTree = "<group>"; };
@@ -1193,8 +1193,6 @@
 				68915A0A13A6F6C200A408B0 /* InfoBar.m */,
 				689D043213A42C81005EBD36 /* MiniKeePassAppDelegate.h */,
 				689D043313A42C81005EBD36 /* MiniKeePassAppDelegate.m */,
-				52A7E1A714EDF1CB0041F950 /* PinWindow.h */,
-				52A7E1A814EDF1CB0041F950 /* PinWindow.m */,
 				5253EC0A141669F200629E30 /* SplashScreenViewController.h */,
 				5253EC0B141669F200629E30 /* SplashScreenViewController.m */,
 				689D043413A42C81005EBD36 /* NewKdbViewController.h */,
@@ -1205,6 +1203,8 @@
 				689D043913A42C81005EBD36 /* PinTextField.m */,
 				689D043A13A42C81005EBD36 /* PinViewController.h */,
 				689D043B13A42C82005EBD36 /* PinViewController.m */,
+				52A7E1A714EDF1CB0041F950 /* PinWindow.h */,
+				52A7E1A814EDF1CB0041F950 /* PinWindow.m */,
 				689D043E13A42C82005EBD36 /* SelectionListViewController.h */,
 				689D043F13A42C82005EBD36 /* SelectionListViewController.m */,
 				689D044013A42C82005EBD36 /* SettingsViewController.h */,
