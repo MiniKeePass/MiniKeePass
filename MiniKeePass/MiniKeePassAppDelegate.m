@@ -16,7 +16,6 @@
  */
 
 #import "MiniKeePassAppDelegate.h"
-#import "SplashScreenViewController.h"
 #import "GroupViewController.h"
 #import "SettingsViewController.h"
 #import "EntryViewController.h"

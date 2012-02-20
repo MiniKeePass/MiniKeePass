@@ -13,7 +13,6 @@
 		52491D0E14D8F3FB00F8CBC8 /* de-itunes.html in Resources */ = {isa = PBXBuildFile; fileRef = 52491D0914D8F3FB00F8CBC8 /* de-itunes.html */; };
 		52491D0F14D8F3FB00F8CBC8 /* de-keyfiles.html in Resources */ = {isa = PBXBuildFile; fileRef = 52491D0A14D8F3FB00F8CBC8 /* de-keyfiles.html */; };
 		52491D1014D8F3FB00F8CBC8 /* de-safariemail.html in Resources */ = {isa = PBXBuildFile; fileRef = 52491D0B14D8F3FB00F8CBC8 /* de-safariemail.html */; };
-		5253EC0C141669F200629E30 /* SplashScreenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5253EC0B141669F200629E30 /* SplashScreenViewController.m */; };
 		52A177BC13EB698E00CEEFCE /* createdb.html in Resources */ = {isa = PBXBuildFile; fileRef = 52A177BB13EB698E00CEEFCE /* createdb.html */; };
 		52A7E1A914EDF1CB0041F950 /* PinWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 52A7E1A814EDF1CB0041F950 /* PinWindow.m */; };
 		68406ACD13CA42F200A5849C /* ImageButtonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68406ACC13CA42F200A5849C /* ImageButtonCell.m */; };
@@ -318,8 +317,6 @@
 		52491D0914D8F3FB00F8CBC8 /* de-itunes.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "de-itunes.html"; sourceTree = "<group>"; };
 		52491D0A14D8F3FB00F8CBC8 /* de-keyfiles.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "de-keyfiles.html"; sourceTree = "<group>"; };
 		52491D0B14D8F3FB00F8CBC8 /* de-safariemail.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "de-safariemail.html"; sourceTree = "<group>"; };
-		5253EC0A141669F200629E30 /* SplashScreenViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SplashScreenViewController.h; sourceTree = "<group>"; };
-		5253EC0B141669F200629E30 /* SplashScreenViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SplashScreenViewController.m; sourceTree = "<group>"; };
 		529BED9E14D7CD8600618250 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		529BED9F14D7CD9700618250 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		52A177BB13EB698E00CEEFCE /* createdb.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = createdb.html; sourceTree = "<group>"; };
@@ -725,6 +722,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		52370CB314F2CDC3003DC64C /* Lock Screen */ = {
+			isa = PBXGroup;
+			children = (
+				689D043813A42C81005EBD36 /* PinTextField.h */,
+				689D043913A42C81005EBD36 /* PinTextField.m */,
+				689D043A13A42C81005EBD36 /* PinViewController.h */,
+				689D043B13A42C82005EBD36 /* PinViewController.m */,
+				52A7E1A714EDF1CB0041F950 /* PinWindow.h */,
+				52A7E1A814EDF1CB0041F950 /* PinWindow.m */,
+			);
+			name = "Lock Screen";
+			sourceTree = "<group>";
+		};
 		52491D0614D8F3FB00F8CBC8 /* de */ = {
 			isa = PBXGroup;
 			children = (
@@ -1193,18 +1203,10 @@
 				68915A0A13A6F6C200A408B0 /* InfoBar.m */,
 				689D043213A42C81005EBD36 /* MiniKeePassAppDelegate.h */,
 				689D043313A42C81005EBD36 /* MiniKeePassAppDelegate.m */,
-				5253EC0A141669F200629E30 /* SplashScreenViewController.h */,
-				5253EC0B141669F200629E30 /* SplashScreenViewController.m */,
 				689D043413A42C81005EBD36 /* NewKdbViewController.h */,
 				689D043513A42C81005EBD36 /* NewKdbViewController.m */,
 				68D991E413F3EAAE00F6ED1F /* PasswordViewController.h */,
 				68D991E513F3EAAE00F6ED1F /* PasswordViewController.m */,
-				689D043813A42C81005EBD36 /* PinTextField.h */,
-				689D043913A42C81005EBD36 /* PinTextField.m */,
-				689D043A13A42C81005EBD36 /* PinViewController.h */,
-				689D043B13A42C82005EBD36 /* PinViewController.m */,
-				52A7E1A714EDF1CB0041F950 /* PinWindow.h */,
-				52A7E1A814EDF1CB0041F950 /* PinWindow.m */,
 				689D043E13A42C82005EBD36 /* SelectionListViewController.h */,
 				689D043F13A42C82005EBD36 /* SelectionListViewController.m */,
 				689D044013A42C82005EBD36 /* SettingsViewController.h */,
@@ -1212,6 +1214,7 @@
 				689D044413A42C82005EBD36 /* TextEntryController.h */,
 				689D044513A42C82005EBD36 /* TextEntryController.m */,
 				689D046313A42CA8005EBD36 /* Cells */,
+				52370CB314F2CDC3003DC64C /* Lock Screen */,
 				689DFFE013A4273F005EBD36 /* Supporting Files */,
 			);
 			path = MiniKeePass;
@@ -1303,7 +1306,7 @@
 		689DFFCC13A4273F005EBD36 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0420;
+				LastUpgradeCheck = 0430;
 				ORGANIZATIONNAME = Self;
 			};
 			buildConfigurationList = 689DFFCF13A4273F005EBD36 /* Build configuration list for PBXProject "MiniKeePass" */;
@@ -1597,7 +1600,6 @@
 				68D991E613F3EAAE00F6ED1F /* PasswordViewController.m in Sources */,
 				689A4D1314046B8200AA897D /* RandomStream.m in Sources */,
 				68CE37F214049BC900E4A5E1 /* HelpViewController.m in Sources */,
-				5253EC0C141669F200629E30 /* SplashScreenViewController.m in Sources */,
 				68CA21C814EA90D00046A7C5 /* FileInputStream.m in Sources */,
 				52A7E1A914EDF1CB0041F950 /* PinWindow.m in Sources */,
 			);

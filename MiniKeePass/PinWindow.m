@@ -20,68 +20,97 @@
 #import "SFHFKeychainUtils.h"
 #import "PinWindow.h"
 
+#define DURATION 0.25
+
+enum {
+    UNLOCKED = 0,
+    LOCKED = 1
+};
+
 @implementation PinWindow
 
 static NSInteger timeoutValues[] = {0, 30, 60, 120, 300};
 static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10, 15};
 
-
 - (id)init {
-    self = [self initWithFrame:[[UIScreen mainScreen] bounds]];
+    self = [self initWithFrame:[[UIScreen mainScreen] applicationFrame]];
     return self;
 }
 
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
+        self.windowLevel = UIWindowLevelAlert; // FIXME
+        
         pinViewController = [[PinViewController alloc] init];
         pinViewController.delegate = self;
-        splashScreenViewController = [[SplashScreenViewController alloc] init];
-        self.rootViewController = splashScreenViewController;
+        
+        pinViewController.view.frame = [[UIScreen mainScreen] bounds];
+        
+        visibleFrame = pinViewController.view.frame;
+        offScreenFrame = CGRectOffset(visibleFrame, 0, visibleFrame.size.height);
+        
+        self.rootViewController = pinViewController;
+        self.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Default"]];
         
         appDelegate = (MiniKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
         
         NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
-        [notificationCenter addObserver:self selector:@selector(applicationWillResignActive:) name:UIApplicationWillResignActiveNotification object:nil];
-        [notificationCenter addObserver:self selector:@selector(applicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
+        [notificationCenter addObserver:self 
+                               selector:@selector(applicationWillResignActive:)
+                                   name:UIApplicationWillResignActiveNotification
+                                 object:nil];
+        [notificationCenter addObserver:self 
+                               selector:@selector(applicationDidBecomeActive:)
+                                   name:UIApplicationDidBecomeActiveNotification
+                                 object:nil];
     }
     return self;
 }
 
 - (void)dealloc {
     [pinViewController release];
-    [splashScreenViewController release];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
     [super dealloc];
 }
 
 - (void)show {
-    if (splashScreenViewController.view.hidden) {
-        splashScreenViewController.view.hidden = NO;
-    }
-    
-    if (!self.isKeyWindow) {
-        [self makeKeyAndVisible];
-    }
-}
-
-- (void)lock {
-    [self show];
-    if (splashScreenViewController.modalViewController == nil) {
-        [splashScreenViewController presentModalViewController:pinViewController animated:YES];
-    }
-    appDelegate.locked = YES;
+    self.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Default"]];
+    self.hidden = NO;
 }
 
 - (void)hide {
-    if (splashScreenViewController.modalViewController != nil ) {
-        splashScreenViewController.view.hidden = YES;
-        [splashScreenViewController dismissModalViewControllerAnimated:YES];
-    } else {
-        appDelegate.locked = NO;
-        self.hidden = YES;
+    self.hidden = YES;
+}
+
+- (void)lock {
+    appDelegate.locked = YES;
+        
+    [self show];
+    
+    [UIView animateWithDuration:DURATION animations:^{pinViewController.view.frame = visibleFrame; [pinViewController becomeFirstResponder];}];
+}
+
+- (BOOL)unlockAnimationDidStop:(NSString *)animationID finished:(NSNumber *)finished context:(void *)context {
+    NSLog(@"animation finished");
+    if (context == UNLOCKED) {
+        NSLog(@"UNLOCKED");
+        [pinViewController clearEntry];
+        [self hide];
     }
+    return YES;
+}
+
+- (void)unlock {
+    NSLog(@"unlock called");
+    appDelegate.locked = NO;
+    
+    self.backgroundColor = [UIColor clearColor]; 
+    
+    [UIView animateWithDuration:DURATION
+                     animations:^{pinViewController.view.frame = offScreenFrame; [pinViewController resignFirstResponder];}
+                     completion:^(BOOL finished){[pinViewController clearEntry]; [self hide];}];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
@@ -103,19 +132,19 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10, 15};
         if (timeInterval < -pinLockTimeout) {
             [self lock];
         } else {
-            [self hide];
+            [self unlock];
         }
     } else {
-        [self hide];
+        [self unlock];
     }
 }
 
-- (void)pinViewControllerDidAppear:(BOOL)animated {
-    NSLog(@"junk");
-}
-
 - (void)pinViewControllerDidDisappear:(BOOL)animated {
+    NSLog(@"pinViewControllerDidDisappera called");
+
+    NSLog(@"pinViewControllerDidDisappera: calling hide");
     [self hide];
+    NSLog(@"pinViewControllerDidDisappera: called hide");
 }
 
 - (void)pinViewController:(PinViewController *)controller pinEntered:(NSString *)pin {
@@ -125,7 +154,7 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10, 15};
         [appDelegate deleteAllData];
         
         // Hide spashscreen
-        [self hide];
+        [self unlock];
     } else {
         NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
         
@@ -135,7 +164,7 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10, 15};
             [userDefaults setInteger:0 forKey:@"pinFailedAttempts"];
             
             // Dismiss the pin view
-            [self hide];
+            [self unlock];
         } else {
             // Vibrate to signify they are a bad user
             AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
@@ -162,7 +191,7 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10, 15};
                     [appDelegate deleteAllData];
                     
                     // Dismiss the pin view
-                    [self hide];
+                    [self unlock];
                 }
             }
         }

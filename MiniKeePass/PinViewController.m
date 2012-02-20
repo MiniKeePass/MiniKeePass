@@ -91,11 +91,7 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    textField.text = @"";
-    
-    for (PinTextField *pinTextField in pinTextFields) {
-        pinTextField.label.text = @"";
-    }
+    [self clearEntry];
     
     [textField becomeFirstResponder];
 }
@@ -150,8 +146,28 @@
     }
 }
 
+- (BOOL)becomeFirstResponder {
+    BOOL val = [super becomeFirstResponder];
+    
+    [textField becomeFirstResponder];
+    
+    return val;
+}
+
+- (BOOL)resignFirstResponder {
+    BOOL val = [super resignFirstResponder];
+    
+    [textField resignFirstResponder];
+    
+    return val;
+}
+
 - (void)clearEntry {
     textField.text = @"";
+    
+    for (PinTextField *pinTextField in pinTextFields) {
+        pinTextField.label.text = @"";
+    }
 }
 
 @end
