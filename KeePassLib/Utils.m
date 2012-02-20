@@ -21,7 +21,7 @@
     uint32_t i;
     
     for (i = 0; i < n; i++) {
-        *ptr++ = arc4random(); // FIXME TODO
+        *ptr++ = arc4random();
     }
     
     return [NSData dataWithBytes:buffer length:length];

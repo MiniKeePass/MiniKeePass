@@ -16,22 +16,31 @@
  */
 
 #import <UIKit/UIKit.h>
+#import "LengthCell.h"
+#import "CharacterSetsViewController.h"
 
-@protocol ImagesViewControllerDelegate;
+@protocol PasswordGeneratorDelegate;
 
-@interface ImagesViewController : UIViewController {
-    UIView *imagesView;
-    NSMutableArray *imageViews;
-    UIImageView *selectedImageView;
-    id<ImagesViewControllerDelegate> delegate;
+@interface PasswordGeneratorViewController : UITableViewController <LengthCellDelegate> {
+    LengthCell *lengthCell;
+    UITableViewCell *characterSetsCell;
+    UITableViewCell *passwordCell;
+    
+    id<PasswordGeneratorDelegate> delegate;
+    
+    NSInteger length;
+    NSInteger charSets;
 }
 
-@property (nonatomic, retain) id<ImagesViewControllerDelegate> delegate;
+@property (nonatomic, retain) id<PasswordGeneratorDelegate> delegate;
 
-- (void)setSelectedImage:(NSUInteger)index;
+- (id)init;
+- (void)generatePassword;
+- (NSString *)getPassword;
+- (NSString *)createCharSetsDescription;
 
 @end
 
-@protocol ImagesViewControllerDelegate <NSObject>
-- (void)imagesViewController:(ImagesViewController*)controller imageSelected:(NSUInteger)index;
+@protocol PasswordGeneratorDelegate <NSObject>
+- (void)passwordGeneratorViewController:(PasswordGeneratorViewController*)controller password:(NSString*)password;
 @end

@@ -15,12 +15,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#import "TextFieldCell.h"
+#import <UIKit/UIKit.h>
 
-@interface PasswordFieldCell : TextFieldCell {
-    UIButton *accessoryButton;
+@protocol LengthCellDelegate;
+
+@interface LengthCell : UITableViewCell <UIPickerViewDelegate, UIPickerViewDataSource> {
+    UIPickerView *pickerView;
+    id<LengthCellDelegate> delegate;
 }
 
-@property (nonatomic, retain) UIButton *accessoryButton;
+@property (nonatomic, retain) id<LengthCellDelegate> delegate;
+@property (nonatomic, retain) UIView *inputView;
+@property (nonatomic, retain) UIView *inputAccessoryView;
+
+- (void)setLength:(NSInteger)length;
 
 @end
+
+@protocol LengthCellDelegate <NSObject>
+- (void)lengthCell:(LengthCell*)lengthCell length:(NSInteger)length;
+@end
+
