@@ -22,7 +22,7 @@
 - (id)init {
     self = [super init];
     
-    if(self != nil) {
+    if (self != nil) {
         self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Default"]];
     }
     
