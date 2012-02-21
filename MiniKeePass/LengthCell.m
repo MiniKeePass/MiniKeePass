@@ -37,10 +37,13 @@
         pickerView.dataSource = self;
         self.inputView = pickerView;
         
-        UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 320, 40)];
+        UIToolbar *toolbar = [[UIToolbar alloc] init];
         toolbar.barStyle = UIBarStyleBlackTranslucent;
+        [toolbar sizeToFit];
+
         UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
         UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(resignFirstResponder)];
+
         toolbar.items = [NSArray arrayWithObjects:flexibleSpace, doneButton, nil];
         self.inputAccessoryView = toolbar;
         [toolbar release];
