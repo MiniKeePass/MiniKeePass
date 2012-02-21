@@ -22,11 +22,6 @@
 
 #define DURATION 0.25
 
-enum {
-    UNLOCKED = 0,
-    LOCKED = 1
-};
-
 @implementation PinWindow
 
 static NSInteger timeoutValues[] = {0, 30, 60, 120, 300};
@@ -40,15 +35,14 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10, 15};
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        self.windowLevel = UIWindowLevelAlert; // FIXME
+        self.windowLevel = UIWindowLevelAlert;
+        
+        visibleFrame = [[UIScreen mainScreen] bounds];
+        offScreenFrame = CGRectOffset(visibleFrame, 0, visibleFrame.size.height);
         
         pinViewController = [[PinViewController alloc] init];
         pinViewController.delegate = self;
-        
-        pinViewController.view.frame = [[UIScreen mainScreen] bounds];
-        
-        visibleFrame = pinViewController.view.frame;
-        offScreenFrame = CGRectOffset(visibleFrame, 0, visibleFrame.size.height);
+        pinViewController.view.frame = visibleFrame;
         
         self.rootViewController = pinViewController;
         self.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Default"]];
@@ -69,9 +63,9 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10, 15};
 }
 
 - (void)dealloc {
-    [pinViewController release];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
+    [pinViewController release];
     [super dealloc];
 }
 
@@ -86,31 +80,29 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10, 15};
 
 - (void)lock {
     appDelegate.locked = YES;
-        
+    
     [self show];
     
-    [UIView animateWithDuration:DURATION animations:^{pinViewController.view.frame = visibleFrame; [pinViewController becomeFirstResponder];}];
-}
-
-- (BOOL)unlockAnimationDidStop:(NSString *)animationID finished:(NSNumber *)finished context:(void *)context {
-    NSLog(@"animation finished");
-    if (context == UNLOCKED) {
-        NSLog(@"UNLOCKED");
-        [pinViewController clearEntry];
-        [self hide];
-    }
-    return YES;
+    [UIView animateWithDuration:DURATION animations:^{
+        pinViewController.view.frame = visibleFrame;
+        [pinViewController becomeFirstResponder];
+    }];
 }
 
 - (void)unlock {
-    NSLog(@"unlock called");
     appDelegate.locked = NO;
     
     self.backgroundColor = [UIColor clearColor]; 
     
     [UIView animateWithDuration:DURATION
-                     animations:^{pinViewController.view.frame = offScreenFrame; [pinViewController resignFirstResponder];}
-                     completion:^(BOOL finished){[pinViewController clearEntry]; [self hide];}];
+                     animations:^{
+                         pinViewController.view.frame = offScreenFrame;
+                         [pinViewController resignFirstResponder];
+                     }
+                     completion:^(BOOL finished){
+                         [pinViewController clearEntry];
+                         [self hide];
+                     }];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
@@ -137,14 +129,6 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10, 15};
     } else {
         [self unlock];
     }
-}
-
-- (void)pinViewControllerDidDisappear:(BOOL)animated {
-    NSLog(@"pinViewControllerDidDisappera called");
-
-    NSLog(@"pinViewControllerDidDisappera: calling hide");
-    [self hide];
-    NSLog(@"pinViewControllerDidDisappera: called hide");
 }
 
 - (void)pinViewController:(PinViewController *)controller pinEntered:(NSString *)pin {

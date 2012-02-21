@@ -36,7 +36,4 @@
 
 @protocol PinViewControllerDelegate <NSObject>
 - (void)pinViewController:(PinViewController*)controller pinEntered:(NSString*)pin;
-@optional
-- (void)pinViewControllerDidDisappear:(BOOL)animated;
-- (void)pinViewControllerDidAppear:(BOOL)animated;
 @end
