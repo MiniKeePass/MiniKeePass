@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5235D58314F8160900B0C991 /* splash.png in Resources */ = {isa = PBXBuildFile; fileRef = 5235D58214F8160900B0C991 /* splash.png */; };
+		5235D58514F8176300B0C991 /* splash@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5235D58414F8176300B0C991 /* splash@2x.png */; };
 		523DCF2114E8E35F004A4C4F /* Monaco.dfont in Resources */ = {isa = PBXBuildFile; fileRef = 523DCF2014E8E35F004A4C4F /* Monaco.dfont */; };
 		52491D0C14D8F3FB00F8CBC8 /* de-createdb.html in Resources */ = {isa = PBXBuildFile; fileRef = 52491D0714D8F3FB00F8CBC8 /* de-createdb.html */; };
 		52491D0D14D8F3FB00F8CBC8 /* de-dropbox.html in Resources */ = {isa = PBXBuildFile; fileRef = 52491D0814D8F3FB00F8CBC8 /* de-dropbox.html */; };
@@ -318,6 +320,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		5235D58214F8160900B0C991 /* splash.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = splash.png; sourceTree = "<group>"; };
+		5235D58414F8176300B0C991 /* splash@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "splash@2x.png"; sourceTree = "<group>"; };
 		523DCF2014E8E35F004A4C4F /* Monaco.dfont */ = {isa = PBXFileReference; lastKnownFileType = file; path = Monaco.dfont; sourceTree = "<group>"; };
 		52491D0714D8F3FB00F8CBC8 /* de-createdb.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "de-createdb.html"; sourceTree = "<group>"; };
 		52491D0814D8F3FB00F8CBC8 /* de-dropbox.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "de-dropbox.html"; sourceTree = "<group>"; };
@@ -1123,6 +1127,8 @@
 				689D021813A42B63005EBD36 /* icon.svg */,
 				689D021713A42B63005EBD36 /* icon.png */,
 				689D021913A42B63005EBD36 /* icon@2x.png */,
+				5235D58214F8160900B0C991 /* splash.png */,
+				5235D58414F8176300B0C991 /* splash@2x.png */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1541,6 +1547,8 @@
 				6802F9C814EC9C1D00ACD4C1 /* wrench@2x.png in Resources */,
 				68B0A70314ECBC1E005CFE31 /* reload.png in Resources */,
 				68B0A70514ECBC1E005CFE31 /* reload@2x.png in Resources */,
+				5235D58314F8160900B0C991 /* splash.png in Resources */,
+				5235D58514F8176300B0C991 /* splash@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1748,17 +1756,17 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				CODE_SIGN_IDENTITY = "iPhone Distribution: John Flanagan";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: John Flanagan";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_VERSION = "";
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
-				PROVISIONING_PROFILE = "EEAA67EE-F308-4220-9A96-56B37CC8621E";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "EEAA67EE-F308-4220-9A96-56B37CC8621E";
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 			};
 			name = Distribution;
@@ -1767,6 +1775,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MiniKeePass/MiniKeePass-Prefix.pch";
@@ -1774,6 +1784,8 @@
 				INFOPLIST_FILE = "MiniKeePass/MiniKeePass-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				VALIDATE_PRODUCT = YES;
 				WRAPPER_EXTENSION = app;
 			};
@@ -1806,16 +1818,19 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_OPTIMIZATION_LEVEL = s;
 				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_VERSION = "";
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -1824,14 +1839,17 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_VERSION = "";
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 			};
 			name = Release;
@@ -1840,6 +1858,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -1848,6 +1867,7 @@
 				INFOPLIST_FILE = "MiniKeePass/MiniKeePass-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1856,6 +1876,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MiniKeePass/MiniKeePass-Prefix.pch";
@@ -1863,6 +1884,7 @@
 				INFOPLIST_FILE = "MiniKeePass/MiniKeePass-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				VALIDATE_PRODUCT = YES;
 				WRAPPER_EXTENSION = app;
 			};

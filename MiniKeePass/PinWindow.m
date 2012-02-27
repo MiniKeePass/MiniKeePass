@@ -16,11 +16,12 @@
  */
 
 #import <AudioToolbox/AudioToolbox.h>
+#import <QuartzCore/QuartzCore.h>
 #import "MiniKeePassAppDelegate.h"
 #import "SFHFKeychainUtils.h"
 #import "PinWindow.h"
 
-#define DURATION 0.25
+#define DURATION 2
 
 @implementation PinWindow
 
@@ -37,15 +38,20 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10, 15};
     if (self) {
         self.windowLevel = UIWindowLevelAlert;
         
-        visibleFrame = [[UIScreen mainScreen] bounds];
-        offScreenFrame = CGRectOffset(visibleFrame, 0, visibleFrame.size.height);
+        CGRect appFrame = [[UIScreen mainScreen] applicationFrame];
+        
+        visibleFrame = CGRectZero;
+        offScreenFrame = CGRectOffset(visibleFrame, 0, -95 - appFrame.origin.y);
         
         pinViewController = [[PinViewController alloc] init];
         pinViewController.delegate = self;
-        pinViewController.view.frame = visibleFrame;
+        pinViewController.view.frame = offScreenFrame;
         
-        self.rootViewController = pinViewController;
-        self.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Default"]];
+        NSLog(@"init pin: %f, %f", pinViewController.view.frame.origin.x, pinViewController.view.frame.origin.y);
+        NSLog(@"init offset: %f, %f", offScreenFrame.origin.x, offScreenFrame.origin.y);
+
+        self.rootViewController = pinViewController;                
+        self.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"splash"]];
         
         appDelegate = (MiniKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
         
@@ -70,6 +76,7 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10, 15};
 }
 
 - (void)show {
+    NSLog(@"show");
     self.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Default"]];
     self.hidden = NO;
 }
@@ -79,17 +86,28 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10, 15};
 }
 
 - (void)lock {
+    NSLog(@"lock");
     appDelegate.locked = YES;
-    
+
+    pinViewController.textLabel.text = NSLocalizedString(@"Enter your PIN to unlock", nil);
     [self show];
     
+    if (pinViewController.view.frame.origin.y != visibleFrame.origin.y) {
+        pinViewController.view.frame = offScreenFrame;
+    }
+
+    NSLog(@"lock offset: %f, %f", offScreenFrame.origin.x, offScreenFrame.origin.y);
+    NSLog(@"lock pin: %f, %f", pinViewController.view.frame.origin.x, pinViewController.view.frame.origin.y);
+    
     [UIView animateWithDuration:DURATION animations:^{
+        NSLog(@"animation pin: %f, %f", pinViewController.view.frame.origin.x, pinViewController.view.frame.origin.y);
         pinViewController.view.frame = visibleFrame;
         [pinViewController becomeFirstResponder];
     }];
 }
 
 - (void)unlock {
+    NSLog(@"unlock");    
     appDelegate.locked = NO;
     
     self.backgroundColor = [UIColor clearColor]; 
@@ -106,10 +124,14 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10, 15};
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
+    NSLog(@"willResignActive");
+    
     [self show];
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
+    NSLog(@"didBecomeActive");
+    
     // Get the time when the application last exited
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSDate *exitTime = [userDefaults valueForKey:@"exitTime"];
@@ -120,8 +142,8 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10, 15};
         NSInteger pinLockTimeout = timeoutValues[[userDefaults integerForKey:@"pinLockTimeout"]];
         
         // Check if it's been longer then lock timeout
-        NSTimeInterval timeInterval = [exitTime timeIntervalSinceNow];
-        if (timeInterval < -pinLockTimeout) {
+        NSTimeInterval timeInterval = -[exitTime timeIntervalSinceNow];
+        if (timeInterval > pinLockTimeout) {
             [self lock];
         } else {
             [self unlock];
