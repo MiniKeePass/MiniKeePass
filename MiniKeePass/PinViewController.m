@@ -33,22 +33,6 @@
     if (self) {
         self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
         
-        UIImage *logo = [UIImage imageNamed:@"temp"];
-        UIView *logoView = [[UIView alloc] initWithFrame:CGRectMake(0, 70, logo.size.width, logo.size.height)];
-        logoView.backgroundColor = [UIColor colorWithPatternImage:logo];
-//        [self.view addSubview:logoView];
-        [logoView release];
-
-//        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 95, 320, 53)];
-//        label.text = @"MiniKeePass";
-//        
-//        label.backgroundColor = [UIColor clearColor];
-//        label.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:35];
-//        label.textAlignment = UITextAlignmentCenter;        
-//        
-//        [self.view addSubview:label];
-//        [label release];
-        
         textField = [[UITextField alloc] initWithFrame:CGRectMake(320, 240, 0, 0)];
         textField.delegate = self;
         textField.hidden = YES;
@@ -58,7 +42,7 @@
         [self.view addSubview:textField];
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textDidChange:) name:UITextFieldTextDidChangeNotification object:textField];
-        
+
         UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 240, 96)];
         [toolbar setBarStyle:UIBarStyleBlackTranslucent];
         
@@ -76,14 +60,13 @@
       
         pinTextFields = [[NSArray arrayWithObjects:pinTextField1, pinTextField2, pinTextField3, pinTextField4, nil] retain];
         
-        
-        textField.inputAccessoryView = toolbar;
-        [toolbar release];
-        
         [pinTextField1 release];
         [pinTextField2 release];
         [pinTextField3 release];
         [pinTextField4 release];
+        
+        textField.inputAccessoryView = toolbar;
+        [toolbar release];
         
         textLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 320, 95)];
         textLabel.backgroundColor = [UIColor clearColor];
@@ -115,8 +98,6 @@
     [super viewWillAppear:animated];
     
     [self clearEntry];
-    
-    [textField becomeFirstResponder];
 }
 
 - (void)viewDidUnload {
@@ -156,19 +137,15 @@
 }
 
 - (BOOL)becomeFirstResponder {
-    BOOL val = [super becomeFirstResponder];
+    [super becomeFirstResponder];
     
-    [textField becomeFirstResponder];
-    
-    return val;
+    return [textField becomeFirstResponder];
 }
 
 - (BOOL)resignFirstResponder {
-    BOOL val = [super resignFirstResponder];
+    [super resignFirstResponder];
     
-    [textField resignFirstResponder];
-    
-    return val;
+    return [textField resignFirstResponder];
 }
 
 - (void)clearEntry {

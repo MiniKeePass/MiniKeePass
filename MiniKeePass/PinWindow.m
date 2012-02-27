@@ -21,7 +21,7 @@
 #import "SFHFKeychainUtils.h"
 #import "PinWindow.h"
 
-#define DURATION 2
+#define DURATION 0.3
 
 @implementation PinWindow
 
@@ -29,37 +29,22 @@ static NSInteger timeoutValues[] = {0, 30, 60, 120, 300};
 static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10, 15};
 
 - (id)init {
-    self = [self initWithFrame:[[UIScreen mainScreen] applicationFrame]];
-    return self;
-}
-
-- (id)initWithFrame:(CGRect)frame {
-    self = [super initWithFrame:frame];
+    self = [super init];
     if (self) {
-        self.windowLevel = UIWindowLevelAlert;
-        
-        CGRect appFrame = [[UIScreen mainScreen] applicationFrame];
-        
+
         visibleFrame = CGRectZero;
-        offScreenFrame = CGRectOffset(visibleFrame, 0, -95 - appFrame.origin.y);
+        offScreenFrame = CGRectOffset(visibleFrame, 0, -95);
         
         pinViewController = [[PinViewController alloc] init];
         pinViewController.delegate = self;
         pinViewController.view.frame = offScreenFrame;
+        [self.view addSubview:pinViewController.view];
         
-        NSLog(@"init pin: %f, %f", pinViewController.view.frame.origin.x, pinViewController.view.frame.origin.y);
-        NSLog(@"init offset: %f, %f", offScreenFrame.origin.x, offScreenFrame.origin.y);
-
-        self.rootViewController = pinViewController;                
-        self.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"splash"]];
+        self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"splash"]];
         
         appDelegate = (MiniKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
         
         NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
-        [notificationCenter addObserver:self 
-                               selector:@selector(applicationWillResignActive:)
-                                   name:UIApplicationWillResignActiveNotification
-                                 object:nil];
         [notificationCenter addObserver:self 
                                selector:@selector(applicationDidBecomeActive:)
                                    name:UIApplicationDidBecomeActiveNotification
@@ -75,14 +60,22 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10, 15};
     [super dealloc];
 }
 
+- (UIViewController *)frontMostViewController {
+    UIViewController *frontViewController = appDelegate.window.rootViewController;
+    while (frontViewController.modalViewController != nil) {
+        frontViewController = frontViewController.modalViewController;
+    }
+    return frontViewController;
+}
+
 - (void)show {
     NSLog(@"show");
-    self.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Default"]];
-    self.hidden = NO;
+    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"splash"]];
+    [[self frontMostViewController] presentModalViewController:self animated:NO];
 }
 
 - (void)hide {
-    self.hidden = YES;
+    [self dismissModalViewControllerAnimated:NO];
 }
 
 - (void)lock {
@@ -90,19 +83,12 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10, 15};
     appDelegate.locked = YES;
 
     pinViewController.textLabel.text = NSLocalizedString(@"Enter your PIN to unlock", nil);
-    [self show];
     
-    if (pinViewController.view.frame.origin.y != visibleFrame.origin.y) {
-        pinViewController.view.frame = offScreenFrame;
-    }
-
-    NSLog(@"lock offset: %f, %f", offScreenFrame.origin.x, offScreenFrame.origin.y);
     NSLog(@"lock pin: %f, %f", pinViewController.view.frame.origin.x, pinViewController.view.frame.origin.y);
     
+    [pinViewController becomeFirstResponder];
     [UIView animateWithDuration:DURATION animations:^{
-        NSLog(@"animation pin: %f, %f", pinViewController.view.frame.origin.x, pinViewController.view.frame.origin.y);
         pinViewController.view.frame = visibleFrame;
-        [pinViewController becomeFirstResponder];
     }];
 }
 
@@ -110,23 +96,14 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10, 15};
     NSLog(@"unlock");    
     appDelegate.locked = NO;
     
-    self.backgroundColor = [UIColor clearColor]; 
-    
     [UIView animateWithDuration:DURATION
                      animations:^{
                          pinViewController.view.frame = offScreenFrame;
                          [pinViewController resignFirstResponder];
                      }
                      completion:^(BOOL finished){
-                         [pinViewController clearEntry];
                          [self hide];
                      }];
-}
-
-- (void)applicationWillResignActive:(UIApplication *)application {
-    NSLog(@"willResignActive");
-    
-    [self show];
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {

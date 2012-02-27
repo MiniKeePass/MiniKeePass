@@ -18,11 +18,13 @@
 #import <UIKit/UIKit.h>
 #import "PinViewController.h"
 
-@interface PinWindow : UIWindow <PinViewControllerDelegate> {
+@interface PinWindow : UIViewController <PinViewControllerDelegate> {
     PinViewController *pinViewController;
     MiniKeePassAppDelegate *appDelegate;
     CGRect visibleFrame;
     CGRect offScreenFrame;
 }
+
+- (void)show;
 
 @end

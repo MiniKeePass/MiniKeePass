@@ -22,6 +22,7 @@
 #import "CharacterSetsViewController.h"
 #import "DatabaseManager.h"
 #import "SFHFKeychainUtils.h"
+#import "PinWindow.h"
 
 @implementation MiniKeePassAppDelegate
 
@@ -82,8 +83,6 @@ static NSStringEncoding passwordEncodingValues[] = {
     window.rootViewController = navigationController;
     [window makeKeyAndVisible];
     
-    pinWindow = [[PinWindow alloc] init];
-    
     // Check if backgrounding is supported
     backgroundSupported = FALSE;
     UIDevice* device = [UIDevice currentDevice];
@@ -96,7 +95,11 @@ static NSStringEncoding passwordEncodingValues[] = {
     NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
         [notificationCenter addObserver:self selector:@selector(handlePasteboardNotification:) name:UIPasteboardChangedNotification object:nil];
     }
-    
+
+    PinWindow *pinWindow = [[PinWindow alloc] init];
+    [pinWindow show];
+    [pinWindow release];
+
     return YES;
 }
 
@@ -117,6 +120,10 @@ static NSStringEncoding passwordEncodingValues[] = {
     if (!self.locked) {
         NSDate *currentTime = [NSDate date];
         [[NSUserDefaults standardUserDefaults] setValue:currentTime forKey:@"exitTime"];
+        
+        PinWindow *pinWindow = [[PinWindow alloc] init];
+        [pinWindow show];
+        [pinWindow release];
     }
 }
 

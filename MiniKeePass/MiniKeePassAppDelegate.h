@@ -18,13 +18,11 @@
 #import <UIKit/UIKit.h>
 #import "FilesViewController.h"
 #import "DatabaseDocument.h"
-#import "PinWindow.h"
 
 #define NUM_IMAGES 69
 
 @interface MiniKeePassAppDelegate : NSObject <UIApplicationDelegate, UIActionSheetDelegate> {
     UIWindow *window;
-    PinWindow *pinWindow;
     UINavigationController *navigationController;
     UIActionSheet* myActionSheet;
     id<UIActionSheetDelegate> myActionSheetDelegate;
