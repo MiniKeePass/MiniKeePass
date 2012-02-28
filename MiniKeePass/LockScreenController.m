@@ -19,11 +19,11 @@
 #import <QuartzCore/QuartzCore.h>
 #import "MiniKeePassAppDelegate.h"
 #import "SFHFKeychainUtils.h"
-#import "PinWindow.h"
+#import "LockScreenController.h"
 
 #define DURATION 0.3
 
-@implementation PinWindow
+@implementation LockScreenController
 
 static NSInteger timeoutValues[] = {0, 30, 60, 120, 300};
 static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10, 15};
@@ -68,8 +68,13 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10, 15};
     return frontViewController;
 }
 
++ (void)present {
+    LockScreenController *pinScreen = [[LockScreenController alloc] init];
+    [pinScreen show];
+    [pinScreen release];
+}
+
 - (void)show {
-    NSLog(@"show");
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"splash"]];
     [[self frontMostViewController] presentModalViewController:self animated:NO];
 }
@@ -79,12 +84,9 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10, 15};
 }
 
 - (void)lock {
-    NSLog(@"lock");
     appDelegate.locked = YES;
 
     pinViewController.textLabel.text = NSLocalizedString(@"Enter your PIN to unlock", nil);
-    
-    NSLog(@"lock pin: %f, %f", pinViewController.view.frame.origin.x, pinViewController.view.frame.origin.y);
     
     [pinViewController becomeFirstResponder];
     [UIView animateWithDuration:DURATION animations:^{
@@ -93,7 +95,6 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10, 15};
 }
 
 - (void)unlock {
-    NSLog(@"unlock");    
     appDelegate.locked = NO;
     
     [UIView animateWithDuration:DURATION
@@ -107,8 +108,6 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10, 15};
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
-    NSLog(@"didBecomeActive");
-    
     // Get the time when the application last exited
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSDate *exitTime = [userDefaults valueForKey:@"exitTime"];

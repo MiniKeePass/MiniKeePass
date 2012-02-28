@@ -22,7 +22,7 @@
 #import "CharacterSetsViewController.h"
 #import "DatabaseManager.h"
 #import "SFHFKeychainUtils.h"
-#import "PinWindow.h"
+#import "LockScreenController.h"
 
 @implementation MiniKeePassAppDelegate
 
@@ -96,9 +96,7 @@ static NSStringEncoding passwordEncodingValues[] = {
         [notificationCenter addObserver:self selector:@selector(handlePasteboardNotification:) name:UIPasteboardChangedNotification object:nil];
     }
 
-    PinWindow *pinWindow = [[PinWindow alloc] init];
-    [pinWindow show];
-    [pinWindow release];
+    [LockScreenController present];
 
     return YES;
 }
@@ -121,9 +119,7 @@ static NSStringEncoding passwordEncodingValues[] = {
         NSDate *currentTime = [NSDate date];
         [[NSUserDefaults standardUserDefaults] setValue:currentTime forKey:@"exitTime"];
         
-        PinWindow *pinWindow = [[PinWindow alloc] init];
-        [pinWindow show];
-        [pinWindow release];
+        [LockScreenController present];
     }
 }
 

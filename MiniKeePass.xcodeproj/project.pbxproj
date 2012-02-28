@@ -16,7 +16,7 @@
 		52491D0F14D8F3FB00F8CBC8 /* de-keyfiles.html in Resources */ = {isa = PBXBuildFile; fileRef = 52491D0A14D8F3FB00F8CBC8 /* de-keyfiles.html */; };
 		52491D1014D8F3FB00F8CBC8 /* de-safariemail.html in Resources */ = {isa = PBXBuildFile; fileRef = 52491D0B14D8F3FB00F8CBC8 /* de-safariemail.html */; };
 		52A177BC13EB698E00CEEFCE /* createdb.html in Resources */ = {isa = PBXBuildFile; fileRef = 52A177BB13EB698E00CEEFCE /* createdb.html */; };
-		52A7E1A914EDF1CB0041F950 /* PinWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 52A7E1A814EDF1CB0041F950 /* PinWindow.m */; };
+		52A7E1A914EDF1CB0041F950 /* LockScreenController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52A7E1A814EDF1CB0041F950 /* LockScreenController.m */; };
 		6802F9C614EC9C1D00ACD4C1 /* wrench.png in Resources */ = {isa = PBXBuildFile; fileRef = 6802F9C314EC9C1D00ACD4C1 /* wrench.png */; };
 		6802F9C814EC9C1D00ACD4C1 /* wrench@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6802F9C514EC9C1D00ACD4C1 /* wrench@2x.png */; };
 		68406ACD13CA42F200A5849C /* ImageButtonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68406ACC13CA42F200A5849C /* ImageButtonCell.m */; };
@@ -331,8 +331,8 @@
 		529BED9E14D7CD8600618250 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		529BED9F14D7CD9700618250 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		52A177BB13EB698E00CEEFCE /* createdb.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = createdb.html; sourceTree = "<group>"; };
-		52A7E1A714EDF1CB0041F950 /* PinWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PinWindow.h; sourceTree = "<group>"; };
-		52A7E1A814EDF1CB0041F950 /* PinWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PinWindow.m; sourceTree = "<group>"; };
+		52A7E1A714EDF1CB0041F950 /* LockScreenController.h */ = {isa = PBXFileReference; fileEncoding = 4; path = LockScreenController.h; sourceTree = "<group>"; };
+		52A7E1A814EDF1CB0041F950 /* LockScreenController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LockScreenController.m; sourceTree = "<group>"; };
 		6802F9C314EC9C1D00ACD4C1 /* wrench.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wrench.png; sourceTree = "<group>"; };
 		6802F9C414EC9C1D00ACD4C1 /* wrench.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = wrench.svg; sourceTree = "<group>"; };
 		6802F9C514EC9C1D00ACD4C1 /* wrench@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "wrench@2x.png"; sourceTree = "<group>"; };
@@ -752,8 +752,8 @@
 				689D043913A42C81005EBD36 /* PinTextField.m */,
 				689D043A13A42C81005EBD36 /* PinViewController.h */,
 				689D043B13A42C82005EBD36 /* PinViewController.m */,
-				52A7E1A714EDF1CB0041F950 /* PinWindow.h */,
-				52A7E1A814EDF1CB0041F950 /* PinWindow.m */,
+				52A7E1A714EDF1CB0041F950 /* LockScreenController.h */,
+				52A7E1A814EDF1CB0041F950 /* LockScreenController.m */,
 			);
 			name = "Lock Screen";
 			sourceTree = "<group>";
@@ -1653,7 +1653,7 @@
 				689A4D171404759700AA897D /* PasswordGeneratorViewController.m in Sources */,
 				68CE37F214049BC900E4A5E1 /* HelpViewController.m in Sources */,
 				68CA21C814EA90D00046A7C5 /* FileInputStream.m in Sources */,
-				52A7E1A914EDF1CB0041F950 /* PinWindow.m in Sources */,
+				52A7E1A914EDF1CB0041F950 /* LockScreenController.m in Sources */,
 				68F19D1F14EB3A9C00B772CB /* CharacterSetsViewController.m in Sources */,
 				68CE868F14EDF4C300D34A61 /* LengthCell.m in Sources */,
 			);
