@@ -37,6 +37,8 @@
         nameTextField = [[UITextField alloc] init];
         nameTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
         nameTextField.placeholder = NSLocalizedString(@"Name", nil);
+        nameTextField.returnKeyType = UIReturnKeyNext;
+        nameTextField.delegate = self;
         
         passwordTextField1 = [[UITextField alloc] init];
         passwordTextField1.clearButtonMode = UITextFieldViewModeWhileEditing;
@@ -44,6 +46,8 @@
         passwordTextField1.secureTextEntry = YES;
         passwordTextField1.autocapitalizationType = UITextAutocapitalizationTypeNone;
         passwordTextField1.autocorrectionType = UITextAutocorrectionTypeNo;
+        passwordTextField1.returnKeyType = UIReturnKeyNext;
+        passwordTextField1.delegate = self;
         
         passwordTextField2 = [[UITextField alloc] init];
         passwordTextField2.clearButtonMode = UITextFieldViewModeWhileEditing;
@@ -51,6 +55,8 @@
         passwordTextField2.secureTextEntry = YES;
         passwordTextField2.autocapitalizationType = UITextAutocapitalizationTypeNone;
         passwordTextField2.autocorrectionType = UITextAutocorrectionTypeNo;
+        passwordTextField2.returnKeyType = UIReturnKeyDone;
+        passwordTextField2.delegate = self;
         
         footerView = [[UIView alloc] init];
         
@@ -71,6 +77,18 @@
     [footerView release];
     [versionSegmentedControl release];
     [super dealloc];
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    if (textField == nameTextField) {
+        [passwordTextField1 becomeFirstResponder];
+    } else if (textField == passwordTextField1) {
+        [passwordTextField2 becomeFirstResponder];
+    } else if (textField == passwordTextField2) {
+        [self okPressed:nil];
+    }
+    
+    return YES;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {

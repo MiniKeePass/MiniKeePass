@@ -37,6 +37,7 @@
 @property (nonatomic, retain) id<FormViewControllerDelegate> delegate;
 
 - (void)showErrorMessage:(NSString*)message;
+- (void)okPressed:(id)sender;
 
 @end
 
