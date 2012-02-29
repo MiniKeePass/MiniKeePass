@@ -411,6 +411,7 @@ enum {
 - (void)togglePinEnabled:(id)sender {
     if (pinEnabledCell.switchControl.on) {
         PinViewController *pinViewController = [[PinViewController alloc] initWithText:NSLocalizedString(@"Set PIN", nil)];
+        [pinViewController becomeFirstResponder];
         pinViewController.delegate = self;
         [self presentModalViewController:pinViewController animated:YES];
         [pinViewController release];
