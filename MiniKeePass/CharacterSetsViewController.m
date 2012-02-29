@@ -24,33 +24,33 @@
 - (id)init {
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
-        self.title = @"Character Sets";
+        self.title = NSLocalizedString(@"Character Sets", nil);
         
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
         NSInteger charSets = [userDefaults integerForKey:@"pwGenCharSets"];
         
-        upperCaseSwitchCell = [[SwitchCell alloc] initWithLabel:@"Upper Case"];
+        upperCaseSwitchCell = [[SwitchCell alloc] initWithLabel:NSLocalizedString(@"Upper Case", nil)];
         upperCaseSwitchCell.switchControl.on = charSets & CHARACTER_SET_UPPER_CASE;
         
-        lowerCaseSwitchCell = [[SwitchCell alloc] initWithLabel:@"Lower Case"];
+        lowerCaseSwitchCell = [[SwitchCell alloc] initWithLabel:NSLocalizedString(@"Lower Case", nil)];
         lowerCaseSwitchCell.switchControl.on = charSets & CHARACTER_SET_LOWER_CASE;
         
-        digitsSwitchCell = [[SwitchCell alloc] initWithLabel:@"Digits"];
+        digitsSwitchCell = [[SwitchCell alloc] initWithLabel:NSLocalizedString(@"Digits", nil)];
         digitsSwitchCell.switchControl.on = charSets & CHARACTER_SET_DIGITS;
         
-        minusSwitchCell = [[SwitchCell alloc] initWithLabel:@"Minus"];
+        minusSwitchCell = [[SwitchCell alloc] initWithLabel:NSLocalizedString(@"Minus", nil)];
         minusSwitchCell.switchControl.on = charSets & CHARACTER_SET_MINUS;
         
-        underlineSwitchCell = [[SwitchCell alloc] initWithLabel:@"Underline"];
+        underlineSwitchCell = [[SwitchCell alloc] initWithLabel:NSLocalizedString(@"Underline", nil)];
         underlineSwitchCell.switchControl.on = charSets & CHARACTER_SET_UNDERLINE;
         
-        spaceSwitchCell = [[SwitchCell alloc] initWithLabel:@"Space"];
+        spaceSwitchCell = [[SwitchCell alloc] initWithLabel:NSLocalizedString(@"Space", nil)];
         spaceSwitchCell.switchControl.on = charSets & CHARACTER_SET_SPACE;
         
-        specialSwitchCell = [[SwitchCell alloc] initWithLabel:@"Special"];
+        specialSwitchCell = [[SwitchCell alloc] initWithLabel:NSLocalizedString(@"Special", nil)];
         specialSwitchCell.switchControl.on = charSets & CHARACTER_SET_SPECIAL;
         
-        bracketsSwitchCell = [[SwitchCell alloc] initWithLabel:@"Brackets"];
+        bracketsSwitchCell = [[SwitchCell alloc] initWithLabel:NSLocalizedString(@"Brackets", nil)];
         bracketsSwitchCell.switchControl.on = charSets & CHARACTER_SET_BRACKETS;
     }
     return self;

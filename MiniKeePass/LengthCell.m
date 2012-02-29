@@ -28,7 +28,7 @@
     if (self) {
         // Initialization code
         self.selectionStyle = UITableViewCellSelectionStyleNone;
-        self.textLabel.text = @"Length";
+        self.textLabel.text = NSLocalizedString(@"Length", nil);
         self.detailTextLabel.text = @" ";
         
         pickerView = [[UIPickerView alloc] init];
