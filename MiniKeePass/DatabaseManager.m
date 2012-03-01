@@ -140,7 +140,7 @@ static DatabaseManager *sharedInstance;
         
         // Get the keyfile
         NSString *keyFile = [passwordViewController.keyFileCell getSelectedItem];
-        if ([keyFile isEqualToString:@"None"]) {
+        if ([keyFile isEqualToString:NSLocalizedString(@"None", nil)]) {
             keyFile = nil;
         }
         
