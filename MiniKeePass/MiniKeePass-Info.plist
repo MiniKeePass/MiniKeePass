@@ -61,17 +61,16 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.1.4</string>
+	<string>1.2</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>1.1.4</string>
+	<string>1.2</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UIAppFonts</key>
 	<array>
-		<string>Menlo.ttc</string>
-		<string>Monaco.dfont</string>
+		<string>Andale Mono.ttf</string>
 	</array>
 	<key>UIFileSharingEnabled</key>
 	<true/>

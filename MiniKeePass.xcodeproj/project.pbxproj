@@ -9,12 +9,13 @@
 /* Begin PBXBuildFile section */
 		5235D58314F8160900B0C991 /* splash.png in Resources */ = {isa = PBXBuildFile; fileRef = 5235D58214F8160900B0C991 /* splash.png */; };
 		5235D58514F8176300B0C991 /* splash@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5235D58414F8176300B0C991 /* splash@2x.png */; };
-		523DCF2114E8E35F004A4C4F /* Monaco.dfont in Resources */ = {isa = PBXBuildFile; fileRef = 523DCF2014E8E35F004A4C4F /* Monaco.dfont */; };
 		52491D0C14D8F3FB00F8CBC8 /* de-createdb.html in Resources */ = {isa = PBXBuildFile; fileRef = 52491D0714D8F3FB00F8CBC8 /* de-createdb.html */; };
 		52491D0D14D8F3FB00F8CBC8 /* de-dropbox.html in Resources */ = {isa = PBXBuildFile; fileRef = 52491D0814D8F3FB00F8CBC8 /* de-dropbox.html */; };
 		52491D0E14D8F3FB00F8CBC8 /* de-itunes.html in Resources */ = {isa = PBXBuildFile; fileRef = 52491D0914D8F3FB00F8CBC8 /* de-itunes.html */; };
 		52491D0F14D8F3FB00F8CBC8 /* de-keyfiles.html in Resources */ = {isa = PBXBuildFile; fileRef = 52491D0A14D8F3FB00F8CBC8 /* de-keyfiles.html */; };
 		52491D1014D8F3FB00F8CBC8 /* de-safariemail.html in Resources */ = {isa = PBXBuildFile; fileRef = 52491D0B14D8F3FB00F8CBC8 /* de-safariemail.html */; };
+		529708AE14FEEFD3003547FB /* Andale Mono.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 529708AD14FEEFD3003547FB /* Andale Mono.ttf */; };
+		529708B014FEF149003547FB /* Andale Mono.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 529708AD14FEEFD3003547FB /* Andale Mono.ttf */; };
 		52A177BC13EB698E00CEEFCE /* createdb.html in Resources */ = {isa = PBXBuildFile; fileRef = 52A177BB13EB698E00CEEFCE /* createdb.html */; };
 		52A7E1A914EDF1CB0041F950 /* LockScreenController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52A7E1A814EDF1CB0041F950 /* LockScreenController.m */; };
 		6802F9C614EC9C1D00ACD4C1 /* wrench.png in Resources */ = {isa = PBXBuildFile; fileRef = 6802F9C314EC9C1D00ACD4C1 /* wrench.png */; };
@@ -322,16 +323,16 @@
 /* Begin PBXFileReference section */
 		5235D58214F8160900B0C991 /* splash.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = splash.png; sourceTree = "<group>"; };
 		5235D58414F8176300B0C991 /* splash@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "splash@2x.png"; sourceTree = "<group>"; };
-		523DCF2014E8E35F004A4C4F /* Monaco.dfont */ = {isa = PBXFileReference; lastKnownFileType = file; path = Monaco.dfont; sourceTree = "<group>"; };
 		52491D0714D8F3FB00F8CBC8 /* de-createdb.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "de-createdb.html"; sourceTree = "<group>"; };
 		52491D0814D8F3FB00F8CBC8 /* de-dropbox.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "de-dropbox.html"; sourceTree = "<group>"; };
 		52491D0914D8F3FB00F8CBC8 /* de-itunes.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "de-itunes.html"; sourceTree = "<group>"; };
 		52491D0A14D8F3FB00F8CBC8 /* de-keyfiles.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "de-keyfiles.html"; sourceTree = "<group>"; };
 		52491D0B14D8F3FB00F8CBC8 /* de-safariemail.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "de-safariemail.html"; sourceTree = "<group>"; };
+		529708AD14FEEFD3003547FB /* Andale Mono.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Andale Mono.ttf"; sourceTree = "<group>"; };
 		529BED9E14D7CD8600618250 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		529BED9F14D7CD9700618250 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		52A177BB13EB698E00CEEFCE /* createdb.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = createdb.html; sourceTree = "<group>"; };
-		52A7E1A714EDF1CB0041F950 /* LockScreenController.h */ = {isa = PBXFileReference; fileEncoding = 4; path = LockScreenController.h; sourceTree = "<group>"; };
+		52A7E1A714EDF1CB0041F950 /* LockScreenController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LockScreenController.h; sourceTree = "<group>"; };
 		52A7E1A814EDF1CB0041F950 /* LockScreenController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LockScreenController.m; sourceTree = "<group>"; };
 		6802F9C314EC9C1D00ACD4C1 /* wrench.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wrench.png; sourceTree = "<group>"; };
 		6802F9C414EC9C1D00ACD4C1 /* wrench.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = wrench.svg; sourceTree = "<group>"; };
@@ -1118,7 +1119,7 @@
 		689D041413A42B85005EBD36 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				523DCF2014E8E35F004A4C4F /* Monaco.dfont */,
+				529708AD14FEEFD3003547FB /* Andale Mono.ttf */,
 				689D021313A42B63005EBD36 /* help */,
 				689D021A13A42B63005EBD36 /* images */,
 				689D021113A42B63005EBD36 /* Default.svg */,
@@ -1379,6 +1380,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				529708B014FEF149003547FB /* Andale Mono.ttf in Resources */,
 				689D032C13A42B63005EBD36 /* Default.png in Resources */,
 				689D032E13A42B63005EBD36 /* Default@2x.png in Resources */,
 				689D033213A42B63005EBD36 /* icon.png in Resources */,
@@ -1542,7 +1544,6 @@
 				52491D0E14D8F3FB00F8CBC8 /* de-itunes.html in Resources */,
 				52491D0F14D8F3FB00F8CBC8 /* de-keyfiles.html in Resources */,
 				52491D1014D8F3FB00F8CBC8 /* de-safariemail.html in Resources */,
-				523DCF2114E8E35F004A4C4F /* Monaco.dfont in Resources */,
 				6802F9C614EC9C1D00ACD4C1 /* wrench.png in Resources */,
 				6802F9C814EC9C1D00ACD4C1 /* wrench@2x.png in Resources */,
 				68B0A70314ECBC1E005CFE31 /* reload.png in Resources */,
@@ -1559,6 +1560,7 @@
 				689DFFFE13A42740005EBD36 /* InfoPlist.strings in Resources */,
 				68E0831D146F2D50001C4EDF /* InfoPlist.strings in Resources */,
 				68E0831E146F2D56001C4EDF /* Localizable.strings in Resources */,
+				529708AE14FEEFD3003547FB /* Andale Mono.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

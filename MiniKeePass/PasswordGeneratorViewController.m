@@ -24,7 +24,7 @@
 #define CHARSET_MINUS      @"-"
 #define CHARSET_UNDERLINE  @"_"
 #define CHARSET_SPACE      @" "
-#define CHARSET_SPECIAL    @"!@#$%^&*_-+=?"
+#define CHARSET_SPECIAL    @"!\"#$%&'*+,./:;=?@\\^`"
 #define CHARSET_BRACKETS   @"(){}[]<>"
 
 enum {
@@ -79,7 +79,7 @@ enum {
         
         passwordCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
         passwordCell.textLabel.text = @" ";
-        passwordCell.textLabel.font = [UIFont fontWithName:@"Monaco" size:16];
+        passwordCell.textLabel.font = [UIFont fontWithName:@"Andale Mono" size:16];
         passwordCell.accessoryView = regenerateButton;
         passwordCell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
@@ -145,6 +145,9 @@ enum {
     }
     if (charSets & CHARACTER_SET_SPECIAL) {
         [charSet appendString:CHARSET_SPECIAL];
+    }
+    if (charSets & CHARACTER_SET_BRACKETS) {
+        [charSet appendString:CHARSET_BRACKETS];
     }
     
     if ([charSet length] == 0) {

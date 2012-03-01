@@ -27,7 +27,7 @@
         // Initialization code
         NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
         textField.secureTextEntry = [userDefaults boolForKey:@"hidePasswords"];
-        textField.font = [UIFont fontWithName:@"Monaco" size:16];
+        textField.font = [UIFont fontWithName:@"Andale Mono" size:16];
         
         UIImage *image = [UIImage imageNamed:@"wrench"];
         
