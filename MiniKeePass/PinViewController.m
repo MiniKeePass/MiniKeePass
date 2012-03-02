@@ -46,16 +46,16 @@
         UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 240, 96)];
         [toolbar setBarStyle:UIBarStyleBlackTranslucent];
         
-        PinTextField *pinTextField1 = [[PinTextField alloc] initWithFrame:CGRectMake(23, 22, 61, 53)];
+        PinTextField *pinTextField1 = [[PinTextField alloc] initWithFrame:CGRectMake(23, 22, 61, 52)];
         [toolbar addSubview:pinTextField1];
         
-        PinTextField *pinTextField2 = [[PinTextField alloc] initWithFrame:CGRectMake(94, 21, 61, 53)];
+        PinTextField *pinTextField2 = [[PinTextField alloc] initWithFrame:CGRectMake(94, 22, 61, 52)];
         [toolbar addSubview:pinTextField2];
       
-        PinTextField *pinTextField3 = [[PinTextField alloc] initWithFrame:CGRectMake(165, 21, 61, 53)];
+        PinTextField *pinTextField3 = [[PinTextField alloc] initWithFrame:CGRectMake(165, 22, 61, 52)];
         [toolbar addSubview:pinTextField3];
       
-        PinTextField *pinTextField4 = [[PinTextField alloc] initWithFrame:CGRectMake(236, 21, 61, 53)];
+        PinTextField *pinTextField4 = [[PinTextField alloc] initWithFrame:CGRectMake(236, 22, 61, 52)];
         [toolbar addSubview:pinTextField4];
       
         pinTextFields = [[NSArray arrayWithObjects:pinTextField1, pinTextField2, pinTextField3, pinTextField4, nil] retain];

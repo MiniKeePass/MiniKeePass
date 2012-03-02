@@ -17,7 +17,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface PinTextField : UIImageView {
+@interface PinTextField : UIView {
     UILabel *label;
 }
 

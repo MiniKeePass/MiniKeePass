@@ -24,13 +24,11 @@
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        self.image = [UIImage imageNamed:@"box"];
-        
         CGFloat w = frame.size.width;
-        CGFloat h = frame.size.height - 4;
+        CGFloat h = frame.size.height;
         
         label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, w, h)];
-        label.backgroundColor = [UIColor clearColor];
+        label.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"box"]];
         label.textAlignment = UITextAlignmentCenter;
         label.font = [UIFont systemFontOfSize:32.0f];
         [self addSubview:label];
