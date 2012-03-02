@@ -81,6 +81,7 @@
         [topBar addSubview:textLabel];
         
         [self.view addSubview:topBar];
+        [topBar release];
     }
     
     return self;

@@ -28,6 +28,7 @@
     } else if (sig1 == KDB4_SIG1 && sig2 == KDB4_SIG2) {
         reader = [[Kdb4Reader alloc] init];
     } else {
+        [inputStream release];
         @throw [NSException exceptionWithName:@"IOException" reason:@"Invalid file signature" userInfo:nil];
     }
     

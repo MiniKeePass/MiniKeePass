@@ -308,7 +308,7 @@
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
         
         // Update the group
-        KdbGroup *g = [[group.groups objectAtIndex:indexPath.row] retain];
+        KdbGroup *g = [group.groups objectAtIndex:indexPath.row];
         g.name = groupName;
         g.image = editGroupViewController.selectedImageIndex;
         

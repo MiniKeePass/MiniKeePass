@@ -53,6 +53,7 @@ enum {
     self.navigationItem.rightBarButtonItem = self.editButtonItem;
     
     [settingsButton release];
+    [helpButton release];
     [addButton release];
     [spacer release];
 }

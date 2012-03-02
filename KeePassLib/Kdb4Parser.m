@@ -68,11 +68,13 @@ int closeCallback(void *context) {
     
     DDXMLElement *root = [rootElement elementForName:@"Root"];
     if (root == nil) {
+        [document release];
         @throw [NSException exceptionWithName:@"ParseError" reason:@"Failed to parse database" userInfo:nil];
     }
     
     DDXMLElement *element = [root elementForName:@"Group"];
     if (element == nil) {
+        [document release];
         @throw [NSException exceptionWithName:@"ParseError" reason:@"Failed to parse database" userInfo:nil];
     }
     
