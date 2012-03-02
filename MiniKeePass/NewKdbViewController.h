@@ -18,7 +18,7 @@
 #import <UIKit/UIKit.h>
 #import "FormViewController.h"
 
-@interface NewKdbViewController : FormViewController {
+@interface NewKdbViewController : FormViewController <UITextFieldDelegate> {
     UITextField *nameTextField;
     UITextField *passwordTextField1;
     UITextField *passwordTextField2;

@@ -24,7 +24,7 @@
 #define CHARSET_MINUS      @"-"
 #define CHARSET_UNDERLINE  @"_"
 #define CHARSET_SPACE      @" "
-#define CHARSET_SPECIAL    @"!@#$%^&*_-+=?"
+#define CHARSET_SPECIAL    @"!\"#$%&'*+,./:;=?@\\^`"
 #define CHARSET_BRACKETS   @"(){}[]<>"
 
 enum {
@@ -51,7 +51,7 @@ enum {
 - (id)init {
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
-        self.title = @"Generator";
+        self.title = NSLocalizedString(@"Generator", nil);
         self.tableView.delaysContentTouches = YES;
         
         UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(donePressed)];
@@ -66,7 +66,7 @@ enum {
         lengthCell.delegate = self;
         
         characterSetsCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:nil];
-        characterSetsCell.textLabel.text = @"Character Sets";
+        characterSetsCell.textLabel.text = NSLocalizedString(@"Character Sets", nil);
         characterSetsCell.detailTextLabel.text = @" ";
         characterSetsCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         
@@ -79,7 +79,7 @@ enum {
         
         passwordCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
         passwordCell.textLabel.text = @" ";
-        passwordCell.textLabel.font = [UIFont fontWithName:@"Monaco" size:16];
+        passwordCell.textLabel.font = [UIFont fontWithName:@"Andale Mono" size:16];
         passwordCell.accessoryView = regenerateButton;
         passwordCell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
@@ -146,6 +146,9 @@ enum {
     if (charSets & CHARACTER_SET_SPECIAL) {
         [charSet appendString:CHARSET_SPECIAL];
     }
+    if (charSets & CHARACTER_SET_BRACKETS) {
+        [charSet appendString:CHARSET_BRACKETS];
+    }
     
     if ([charSet length] == 0) {
         passwordCell.textLabel.text = @"";
@@ -173,7 +176,7 @@ enum {
         if (prefix) {
             [str appendString:@", "];
         }
-        [str appendString:@"Upper"];
+        [str appendString:NSLocalizedString(@"Upper", nil)];
         prefix = YES;
     }
     
@@ -181,7 +184,7 @@ enum {
         if (prefix) {
             [str appendString:@", "];
         }
-        [str appendString:@"Lower"];
+        [str appendString:NSLocalizedString(@"Lower", nil)];
         prefix = YES;
     }
     
@@ -189,7 +192,7 @@ enum {
         if (prefix) {
             [str appendString:@", "];
         }
-        [str appendString:@"Digits"];
+        [str appendString:NSLocalizedString(@"Digits", nil)];
         prefix = YES;
     }
     
@@ -197,7 +200,7 @@ enum {
         if (prefix) {
             [str appendString:@", "];
         }
-        [str appendString:@"Minus"];
+        [str appendString:NSLocalizedString(@"Minus", nil)];
         prefix = YES;
     }
     
@@ -205,7 +208,7 @@ enum {
         if (prefix) {
             [str appendString:@", "];
         }
-        [str appendString:@"Underline"];
+        [str appendString:NSLocalizedString(@"Underline", nil)];
         prefix = YES;
     }
     
@@ -213,7 +216,7 @@ enum {
         if (prefix) {
             [str appendString:@", "];
         }
-        [str appendString:@"Space"];
+        [str appendString:NSLocalizedString(@"Space", nil)];
         prefix = YES;
     }
     
@@ -221,7 +224,7 @@ enum {
         if (prefix) {
             [str appendString:@", "];
         }
-        [str appendString:@"Special"];
+        [str appendString:NSLocalizedString(@"Special", nil)];
         prefix = YES;
     }
     
@@ -229,12 +232,12 @@ enum {
         if (prefix) {
             [str appendString:@", "];
         }
-        [str appendString:@"Brackets"];
+        [str appendString:NSLocalizedString(@"Brackets", nil)];
         prefix = YES;
     }
     
     if ([str length] == 0) {
-        [str appendString:@"None Selected"];
+        [str appendString:NSLocalizedString(@"None Selected", nil)];
     }
     
     return [str autorelease];

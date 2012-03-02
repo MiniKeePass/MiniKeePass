@@ -16,7 +16,15 @@
  */
 
 #import <UIKit/UIKit.h>
+#import "PinViewController.h"
 
-@interface SplashScreenViewController : UIViewController
+@interface LockScreenController : UIViewController <PinViewControllerDelegate> {
+    PinViewController *pinViewController;
+    MiniKeePassAppDelegate *appDelegate;
+    CGRect visibleFrame;
+    CGRect offScreenFrame;
+}
+
++ (void)present;
 
 @end

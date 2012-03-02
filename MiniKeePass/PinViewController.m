@@ -16,7 +16,6 @@
  */
 
 #import <AudioToolbox/AudioToolbox.h>
-#import "SplashScreenViewController.h"
 #import "PinViewController.h"
 #import "PinTextField.h"
 
@@ -34,35 +33,31 @@
     if (self) {
         self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
         
-        UIImage *icon = [UIImage imageNamed:@"icon"];
-        UIView *iconView = [[UIView alloc] initWithFrame:CGRectMake(131, 20, icon.size.width, icon.size.height)];
-        iconView.backgroundColor = [UIColor colorWithPatternImage:icon];
-        [self.view addSubview:iconView];
-        [iconView release];
-        
         textField = [[UITextField alloc] initWithFrame:CGRectMake(320, 240, 0, 0)];
         textField.delegate = self;
         textField.hidden = YES;
         textField.secureTextEntry = YES;
         textField.keyboardType = UIKeyboardTypeNumberPad;
         textField.keyboardAppearance = UIKeyboardAppearanceAlert;
-        
         [self.view addSubview:textField];
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textDidChange:) name:UITextFieldTextDidChangeNotification object:textField];
+
+        UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 240, 96)];
+        [toolbar setBarStyle:UIBarStyleBlackTranslucent];
         
-        PinTextField *pinTextField1 = [[PinTextField alloc] initWithFrame:CGRectMake(26, 100, 61, 53)];
-        [self.view addSubview:pinTextField1];
+        PinTextField *pinTextField1 = [[PinTextField alloc] initWithFrame:CGRectMake(23, 22, 61, 53)];
+        [toolbar addSubview:pinTextField1];
         
-        PinTextField *pinTextField2 = [[PinTextField alloc] initWithFrame:CGRectMake(95, 100, 61, 52)];
-        [self.view addSubview:pinTextField2];
-        
-        PinTextField *pinTextField3 = [[PinTextField alloc] initWithFrame:CGRectMake(164, 100, 61, 53)];
-        [self.view addSubview:pinTextField3];
-        
-        PinTextField *pinTextField4 = [[PinTextField alloc] initWithFrame:CGRectMake(233, 100, 61, 54)];
-        [self.view addSubview:pinTextField4];
-        
+        PinTextField *pinTextField2 = [[PinTextField alloc] initWithFrame:CGRectMake(94, 21, 61, 53)];
+        [toolbar addSubview:pinTextField2];
+      
+        PinTextField *pinTextField3 = [[PinTextField alloc] initWithFrame:CGRectMake(165, 21, 61, 53)];
+        [toolbar addSubview:pinTextField3];
+      
+        PinTextField *pinTextField4 = [[PinTextField alloc] initWithFrame:CGRectMake(236, 21, 61, 53)];
+        [toolbar addSubview:pinTextField4];
+      
         pinTextFields = [[NSArray arrayWithObjects:pinTextField1, pinTextField2, pinTextField3, pinTextField4, nil] retain];
         
         [pinTextField1 release];
@@ -70,12 +65,22 @@
         [pinTextField3 release];
         [pinTextField4 release];
         
-        textLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 165, 320, 40)];
+        textField.inputAccessoryView = toolbar;
+        [toolbar release];
+        
+        textLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 320, 95)];
         textLabel.backgroundColor = [UIColor clearColor];
+        textLabel.textColor = [UIColor whiteColor];
+        textLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:25];
         textLabel.numberOfLines = 0;
         textLabel.textAlignment = UITextAlignmentCenter;
         textLabel.text = text;
-        [self.view addSubview:textLabel];
+        
+        UIToolbar *topBar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 320, 95)];
+        topBar.barStyle = UIBarStyleBlackTranslucent;
+        [topBar addSubview:textLabel];
+        
+        [self.view addSubview:topBar];
     }
     
     return self;
@@ -92,13 +97,7 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    textField.text = @"";
-    
-    for (PinTextField *pinTextField in pinTextFields) {
-        pinTextField.label.text = @"";
-    }
-    
-    [textField becomeFirstResponder];
+    [self clearEntry];
 }
 
 - (void)viewDidUnload {
@@ -137,17 +136,23 @@
     }
 }
 
-- (void)clearEntry {
-    textField.text = @"";
+- (BOOL)becomeFirstResponder {
+    [super becomeFirstResponder];
+    
+    return [textField becomeFirstResponder];
 }
 
-- (void)dismissModalViewControllerAnimated:(BOOL)animated {
-    UIViewController *parentViewController = self.parentViewController;
+- (BOOL)resignFirstResponder {
+    [super resignFirstResponder];
     
-    if ([parentViewController isKindOfClass:[SplashScreenViewController class]]) {
-        [parentViewController.parentViewController dismissModalViewControllerAnimated:YES];
-    } else {
-        [super dismissModalViewControllerAnimated:YES];
+    return [textField resignFirstResponder];
+}
+
+- (void)clearEntry {
+    textField.text = @"";
+    
+    for (PinTextField *pinTextField in pinTextFields) {
+        pinTextField.label.text = @"";
     }
 }
 

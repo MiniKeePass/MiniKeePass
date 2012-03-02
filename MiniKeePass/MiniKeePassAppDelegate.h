@@ -17,12 +17,11 @@
 
 #import <UIKit/UIKit.h>
 #import "FilesViewController.h"
-#import "PinViewController.h"
 #import "DatabaseDocument.h"
 
 #define NUM_IMAGES 69
 
-@interface MiniKeePassAppDelegate : NSObject <UIApplicationDelegate, PinViewControllerDelegate, UIActionSheetDelegate> {
+@interface MiniKeePassAppDelegate : NSObject <UIApplicationDelegate, UIActionSheetDelegate> {
     UIWindow *window;
     UINavigationController *navigationController;
     UIActionSheet* myActionSheet;
@@ -33,11 +32,13 @@
     
     UIImage *images[NUM_IMAGES];
     
+    BOOL locked;
     BOOL backgroundSupported;
 }
 
 @property (nonatomic, retain) UIWindow *window;
 @property (nonatomic, retain) DatabaseDocument *databaseDocument;
+@property (nonatomic, assign) BOOL locked;
 @property (nonatomic, readonly) BOOL backgroundSupported;
 @property (nonatomic, readonly) UIViewController *frontmostViewController;
 
