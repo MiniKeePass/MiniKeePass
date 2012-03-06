@@ -44,10 +44,10 @@ enum {
     self.tableView.allowsSelectionDuringEditing = YES;
     
     UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"gear"] style:UIBarButtonItemStylePlain target:appDelegate action:@selector(showSettingsView)];
+    settingsButton.imageInsets = UIEdgeInsetsMake(2, 0, -2, 0);
     
-    UIButton *infoButton = [UIButton buttonWithType:UIButtonTypeInfoLight];
-    [infoButton addTarget:self action:@selector(helpPressed) forControlEvents:UIControlEventTouchUpInside];
-    UIBarButtonItem *helpButton = [[UIBarButtonItem alloc] initWithCustomView:infoButton];
+    UIBarButtonItem *helpButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"info"] style:UIBarButtonItemStylePlain target:self action:@selector(helpPressed)];
+    helpButton.imageInsets = UIEdgeInsetsMake(2, 0, -2, 0);
     
     UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addPressed)];
     
@@ -56,8 +56,8 @@ enum {
     self.toolbarItems = [NSArray arrayWithObjects:settingsButton, spacer, helpButton, spacer, addButton, nil];
     self.navigationItem.rightBarButtonItem = self.editButtonItem;
     
-    [helpButton release];
     [settingsButton release];
+    [helpButton release];
     [addButton release];
     [spacer release];
 }

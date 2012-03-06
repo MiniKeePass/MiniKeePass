@@ -22,6 +22,9 @@
 		52F5A5D314E77E7000811C3A /* dropbox.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F5A5D214E77E7000811C3A /* dropbox.png */; };
 		529708AE14FEEFD3003547FB /* Andale Mono.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 529708AD14FEEFD3003547FB /* Andale Mono.ttf */; };
 		52A177BC13EB698E00CEEFCE /* createdb.html in Resources */ = {isa = PBXBuildFile; fileRef = 52A177BB13EB698E00CEEFCE /* createdb.html */; };
+		52709AB9150141D9008AB6C9 /* info.png in Resources */ = {isa = PBXBuildFile; fileRef = 52709AB7150141D9008AB6C9 /* info.png */; };
+		52709ABA150141D9008AB6C9 /* info@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52709AB8150141D9008AB6C9 /* info@2x.png */; };
+		52A177BC13EB698E00CEEFCE /* createdb.html in Resources */ = {isa = PBXBuildFile; fileRef = 52A177BB13EB698E00CEEFCE /* createdb.html */; };
 		52A7E1A914EDF1CB0041F950 /* LockScreenController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52A7E1A814EDF1CB0041F950 /* LockScreenController.m */; };
 		6802F9C614EC9C1D00ACD4C1 /* wrench.png in Resources */ = {isa = PBXBuildFile; fileRef = 6802F9C314EC9C1D00ACD4C1 /* wrench.png */; };
 		6802F9C814EC9C1D00ACD4C1 /* wrench@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6802F9C514EC9C1D00ACD4C1 /* wrench@2x.png */; };
@@ -340,6 +343,8 @@
 		52491D0914D8F3FB00F8CBC8 /* de-itunes.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "de-itunes.html"; sourceTree = "<group>"; };
 		52491D0A14D8F3FB00F8CBC8 /* de-keyfiles.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "de-keyfiles.html"; sourceTree = "<group>"; };
 		52491D0B14D8F3FB00F8CBC8 /* de-safariemail.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "de-safariemail.html"; sourceTree = "<group>"; };
+		52709AB7150141D9008AB6C9 /* info.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = info.png; sourceTree = "<group>"; };
+		52709AB8150141D9008AB6C9 /* info@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "info@2x.png"; sourceTree = "<group>"; };
 		529708AD14FEEFD3003547FB /* Andale Mono.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Andale Mono.ttf"; sourceTree = "<group>"; };
 		529BED9E14D7CD8600618250 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		529BED9F14D7CD9700618250 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -802,6 +807,8 @@
 		689D021A13A42B63005EBD36 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				52709AB7150141D9008AB6C9 /* info.png */,
+				52709AB8150141D9008AB6C9 /* info@2x.png */,
 				689D021B13A42B63005EBD36 /* 0.png */,
 				689D021C13A42B63005EBD36 /* 0@2x.png */,
 				689D021D13A42B63005EBD36 /* 1.png */,
@@ -1573,6 +1580,8 @@
 				68B0A70514ECBC1E005CFE31 /* reload@2x.png in Resources */,
 				5235D58314F8160900B0C991 /* splash.png in Resources */,
 				5235D58514F8176300B0C991 /* splash@2x.png in Resources */,
+				52709AB9150141D9008AB6C9 /* info.png in Resources */,
+				52709ABA150141D9008AB6C9 /* info@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

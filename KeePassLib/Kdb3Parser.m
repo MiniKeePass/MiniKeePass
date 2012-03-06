@@ -55,6 +55,7 @@
             switch (fieldType) {
                 case 0x0000:
                     if (fieldSize != 0) {
+                        [group release];
                         @throw [NSException exceptionWithName:@"IOException" reason:@"Invalid field size" userInfo:nil];
                     }
                     break;
@@ -107,11 +108,13 @@
                 
                 case 0xFFFF:
                     if (fieldSize != 0) {
+                        [group release];
                         @throw [NSException exceptionWithName:@"IOException" reason:@"Invalid field size" userInfo:nil];
                     }
                     break;
                 
                 default:
+                    [group release];
                     @throw [NSException exceptionWithName:@"IOException" reason:@"Invalid field type" userInfo:nil];
             }
             
@@ -146,15 +149,18 @@
             switch (fieldType) {
                 case 0x0000:
                     if (fieldSize != 0) {
+                        [entry release];
                         @throw [NSException exceptionWithName:@"IOException" reason:@"Invalid field size" userInfo:nil];
                     }
                     break;
                     
                 case 0x0001:
                     if (fieldSize != 16) {
+                        [entry release];
                         @throw [NSException exceptionWithName:@"IOException" reason:@"Invalid field size" userInfo:nil];
                     }
                     if ([inputStream read:buffer length:fieldSize] != fieldSize) {
+                        [entry release];
                         @throw [NSException exceptionWithName:@"IOException" reason:@"Failed to read UUID" userInfo:nil];
                     }
                     entry.uuid = [[[UUID alloc] initWithBytes:buffer] autorelease];
@@ -192,6 +198,7 @@
                 
                 case 0x0009:
                     if (fieldSize != 5) {
+                        [entry release];
                         @throw [NSException exceptionWithName:@"IOException" reason:@"Invalid field size" userInfo:nil];
                     }
                     [inputStream read:buffer length:fieldSize];
@@ -200,6 +207,7 @@
                 
                 case 0x000A:
                     if (fieldSize != 5) {
+                        [entry release];
                         @throw [NSException exceptionWithName:@"IOException" reason:@"Invalid field size" userInfo:nil];
                     }
                     [inputStream read:buffer length:fieldSize];
@@ -208,6 +216,7 @@
                 
                 case 0x000B:
                     if (fieldSize != 5) {
+                        [entry release];
                         @throw [NSException exceptionWithName:@"IOException" reason:@"Invalid field size" userInfo:nil];
                     }
                     [inputStream read:buffer length:fieldSize];
@@ -216,6 +225,7 @@
                 
                 case 0x000C:
                     if (fieldSize != 5) {
+                        [entry release];
                         @throw [NSException exceptionWithName:@"IOException" reason:@"Invalid field size" userInfo:nil];
                     }
                     [inputStream read:buffer length:fieldSize];
@@ -234,11 +244,13 @@
                     
                 case 0xFFFF:
                     if (fieldSize != 0) {
+                        [entry release];
                         @throw [NSException exceptionWithName:@"IOException" reason:@"Invalid field size" userInfo:nil];
                     }
                     break;
                 
                 default:
+                    [entry release];
                     @throw [NSException exceptionWithName:@"IOException" reason:@"Invalid field type" userInfo:nil];
             }
             
@@ -289,12 +301,16 @@
             level2 = [[levels objectAtIndex:j] unsignedIntValue];
             if (level2 < level1) {
                 if (level1 - level2 != 1) {
+                    [tree release];
+                    [root release];
                     @throw [NSException exceptionWithName:@"InvalidData" reason:@"InvalidTree" userInfo:nil];
                 } else {
                     break;
                 }
             }
             if (j == 0) {
+                [tree release];
+                [root release];
                 @throw [NSException exceptionWithName:@"InvalidData" reason:@"InvalidTree" userInfo:nil];
             }
         }

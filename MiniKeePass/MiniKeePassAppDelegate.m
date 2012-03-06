@@ -24,6 +24,7 @@
 #import "LockScreenController.h"
 #import "DatabaseManager.h"
 #import "SFHFKeychainUtils.h"
+#import "LockScreenController.h"
 
 #define APP_KEY @"1cml57v07lqm5xu"
 #define APP_SECRET @"sao1iiuox8urrai"

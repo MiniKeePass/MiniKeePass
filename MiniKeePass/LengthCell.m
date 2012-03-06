@@ -45,6 +45,9 @@
         UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(resignFirstResponder)];
 
         toolbar.items = [NSArray arrayWithObjects:flexibleSpace, doneButton, nil];
+        [flexibleSpace release];
+        [doneButton release];
+        
         self.inputAccessoryView = toolbar;
         [toolbar release];
     }
