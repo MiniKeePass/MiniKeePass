@@ -124,9 +124,17 @@ enum {
     [clearClipboardEnabledCell.switchControl addTarget:self action:@selector(toggleClearClipboardEnabled:) forControlEvents:UIControlEventValueChanged];
     
     clearClipboardTimeoutCell = [[ChoiceCell alloc] initWithLabel:NSLocalizedString(@"Clear Timeout", nil) choices:[NSArray arrayWithObjects:NSLocalizedString(@"30 Seconds", nil), NSLocalizedString(@"1 Minute", nil), NSLocalizedString(@"2 Minutes", nil), NSLocalizedString(@"3 Minutes", nil), nil] selectedIndex:0];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
+}
+
+- (void)applicationDidBecomeActive:(id)sender {
+    [self updateDropboxStatus];
 }
 
 - (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
     [pinEnabledCell release];
     [pinLockTimeoutCell release];
     [deleteOnFailureEnabledCell release];

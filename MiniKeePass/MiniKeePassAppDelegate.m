@@ -208,7 +208,6 @@ static NSStringEncoding passwordEncodingValues[] = {
     if ([[DBSession sharedSession] handleOpenURL:url]) {
         if ([[DBSession sharedSession] isLinked]) {
             NSLog(@"App linked successfully!");
-            // At this point you can start making API calls
         }
         return YES;
     }
@@ -223,13 +222,6 @@ static NSStringEncoding passwordEncodingValues[] = {
     if ([[DBSession sharedSession] handleOpenURL:url]) {
         if ([[DBSession sharedSession] isLinked]) {
             NSLog(@"App linked successfully!");
-            
-            UIViewController *frontmostViewController = [self frontmostViewController];
-            if ([frontmostViewController isKindOfClass: [SettingsViewController class]]) {
-                SettingsViewController *settingsViewController = (SettingsViewController *) frontmostViewController;
-                [settingsViewController updateDropboxStatus];
-            }
-            
         }
         return YES;
     }
