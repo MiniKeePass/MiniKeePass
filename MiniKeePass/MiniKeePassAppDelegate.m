@@ -63,6 +63,7 @@ static NSStringEncoding passwordEncodingValues[] = {
     [defaultsDict setValue:[NSNumber numberWithInt:4] forKey:@"closeTimeout"];
     [defaultsDict setValue:[NSNumber numberWithBool:NO] forKey:@"rememberPasswordsEnabled"];
     [defaultsDict setValue:[NSNumber numberWithBool:YES] forKey:@"hidePasswords"];
+    [defaultsDict setValue:[NSNumber numberWithBool:YES] forKey:@"sortAlphabetically"];
     [defaultsDict setValue:[NSNumber numberWithInt:0] forKey:@"passwordEncoding"];
     [defaultsDict setValue:[NSNumber numberWithBool:NO] forKey:@"clearClipboardEnabled"];
     [defaultsDict setValue:[NSNumber numberWithInt:10] forKey:@"pwGenLength"];

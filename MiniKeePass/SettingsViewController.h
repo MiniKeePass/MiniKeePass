@@ -30,6 +30,7 @@
     ChoiceCell *closeTimeoutCell;
     SwitchCell *rememberPasswordsEnabledCell;
     SwitchCell *hidePasswordsCell;
+    SwitchCell *sortingEnabledCell;
     ChoiceCell *passwordEncodingCell;
     SwitchCell *clearClipboardEnabledCell;
     ChoiceCell *clearClipboardTimeoutCell;

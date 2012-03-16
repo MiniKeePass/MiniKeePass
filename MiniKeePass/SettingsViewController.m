@@ -27,6 +27,7 @@ enum {
     SECTION_CLOSE,
     SECTION_REMEMBER_PASSWORDS,
     SECTION_HIDE_PASSWORDS,
+    SECTION_SORTING,
     SECTION_PASSWORD_ENCODING,
     SECTION_CLEAR_CLIPBOARD,
     SECTION_NUMBER
@@ -58,6 +59,11 @@ enum {
 enum {
     ROW_HIDE_PASSWORDS_ENABLED,
     ROW_HIDE_PASSWORDS_NUMBER
+};
+
+enum {
+    ROW_SORTING_ENABLED,
+    ROW_SORTING_NUMBER
 };
 
 enum {
@@ -98,6 +104,9 @@ enum {
     
     hidePasswordsCell = [[SwitchCell alloc] initWithLabel:NSLocalizedString(@"Hide Passwords", nil)];
     [hidePasswordsCell.switchControl addTarget:self action:@selector(toggleHidePasswords:) forControlEvents:UIControlEventValueChanged];
+    
+    sortingEnabledCell = [[SwitchCell alloc] initWithLabel:NSLocalizedString(@"Enabled", nil)];
+    [sortingEnabledCell.switchControl addTarget:self action:@selector(toggleSortingEnabled:) forControlEvents:UIControlEventValueChanged];
 
     passwordEncodingCell = [[ChoiceCell alloc] initWithLabel:NSLocalizedString(@"Encoding", nil) choices:[NSArray arrayWithObjects:NSLocalizedString(@"UTF-8", nil), NSLocalizedString(@"UTF-16 Big Endian", nil), NSLocalizedString(@"UTF-16 Little Endian", nil), NSLocalizedString(@"Latin 1 (ISO/IEC 8859-1)", nil), NSLocalizedString(@"Latin 2 (ISO/IEC 8859-2)", nil), NSLocalizedString(@"7-Bit ASCII", nil), NSLocalizedString(@"Japanese EUC", nil), NSLocalizedString(@"ISO-2022-JP", nil), nil] selectedIndex:0];
 
@@ -105,7 +114,6 @@ enum {
     [clearClipboardEnabledCell.switchControl addTarget:self action:@selector(toggleClearClipboardEnabled:) forControlEvents:UIControlEventValueChanged];
     
     clearClipboardTimeoutCell = [[ChoiceCell alloc] initWithLabel:NSLocalizedString(@"Clear Timeout", nil) choices:[NSArray arrayWithObjects:NSLocalizedString(@"30 Seconds", nil), NSLocalizedString(@"1 Minute", nil), NSLocalizedString(@"2 Minutes", nil), NSLocalizedString(@"3 Minutes", nil), nil] selectedIndex:0];
-    
 
     // Add version number to table view footer
     UIView *tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 40)];
@@ -175,6 +183,8 @@ enum {
     
     hidePasswordsCell.switchControl.on = [userDefaults boolForKey:@"hidePasswords"];
     
+    sortingEnabledCell.switchControl.on = [userDefaults boolForKey:@"sortAlphabetically"];
+    
     [passwordEncodingCell setSelectedIndex:[userDefaults integerForKey:@"passwordEncoding"]];
     
     clearClipboardEnabledCell.switchControl.on = [userDefaults boolForKey:@"clearClipboardEnabled"];
@@ -225,6 +235,9 @@ enum {
         case SECTION_HIDE_PASSWORDS:
             return ROW_HIDE_PASSWORDS_NUMBER;
             
+        case SECTION_SORTING:
+            return ROW_SORTING_NUMBER;
+            
         case SECTION_PASSWORD_ENCODING:
             return ROW_PASSWORD_ENCODING_NUMBER;
             
@@ -251,6 +264,9 @@ enum {
         case SECTION_HIDE_PASSWORDS:
             return NSLocalizedString(@"Hide Passwords", nil);
             
+        case SECTION_SORTING:
+            return NSLocalizedString(@"Sorting", nil);
+            
         case SECTION_PASSWORD_ENCODING:
             return NSLocalizedString(@"Password Encoding", nil);
             
@@ -276,6 +292,9 @@ enum {
             
         case SECTION_HIDE_PASSWORDS:
             return NSLocalizedString(@"Hides passwords when viewing a password entry.", nil);
+            
+        case SECTION_SORTING:
+            return NSLocalizedString(@"Sort Groups and Entries Alphabetically", nil);
             
         case SECTION_PASSWORD_ENCODING:
             return NSLocalizedString(@"The string encoding used for passwords when converting them to database keys.", nil);
@@ -326,6 +345,13 @@ enum {
             switch (indexPath.row) {
                 case ROW_HIDE_PASSWORDS_ENABLED:
                     return hidePasswordsCell;
+            }
+            break;
+            
+        case SECTION_SORTING:
+            switch (indexPath.row) {
+                case ROW_SORTING_ENABLED:
+                    return sortingEnabledCell;
             }
             break;
             
@@ -483,6 +509,11 @@ enum {
 - (void)toggleHidePasswords:(id)sender {
     // Update the setting
     [[NSUserDefaults standardUserDefaults] setBool:hidePasswordsCell.switchControl.on forKey:@"hidePasswords"];
+}
+
+- (void)toggleSortingEnabled:(id)sender {
+    // Update the setting
+    [[NSUserDefaults standardUserDefaults] setBool:sortingEnabledCell.switchControl.on forKey:@"sortAlphabetically"];
 }
 
 - (void)toggleClearClipboardEnabled:(id)sender {
