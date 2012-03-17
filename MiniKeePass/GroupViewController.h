@@ -32,6 +32,6 @@
     NSComparisonResult (^entryComparator) (id obj1, id obj2);
 }
 
-@property (assign, setter = setGroup:) KdbGroup *group;
+@property (nonatomic, assign) KdbGroup *group;
 
 @end
