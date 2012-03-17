@@ -82,7 +82,7 @@
     NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
     
     // Reload the cell in case the title was changed by the entry view
-    if (sortingEnabled && selectedIndexPath != nil) {
+    if (selectedIndexPath != nil) {
         NSMutableArray *array;
         switch (selectedIndexPath.section) {
             case ENTRIES_SECTION:
@@ -366,24 +366,22 @@
         appDelegate.databaseDocument.dirty = YES;
         [appDelegate.databaseDocument save];
         
-        if (sortingEnabled) {
-            // Move the group to the correct location
-            NSUInteger index = [self updatePositionOfObject:g inArray:groupsArray];
-            
-            // Move or update the row
-            if (index != indexPath.row) {
-                [self.tableView beginUpdates];
-                [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-                indexPath = [NSIndexPath indexPathForRow:index inSection:GROUPS_SECTION];
-                [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-                [self.tableView endUpdates];
-            } else {
-                [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
-            }
-            
-            // Re-select the row
-            [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+        // Move the group to the correct location
+        NSUInteger index = [self updatePositionOfObject:g inArray:groupsArray];
+        
+        // Move or update the row
+        if (index != indexPath.row) {
+            [self.tableView beginUpdates];
+            [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            indexPath = [NSIndexPath indexPathForRow:index inSection:GROUPS_SECTION];
+            [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            [self.tableView endUpdates];
+        } else {
+            [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
         }
+        
+        // Re-select the row
+        [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
     }
     
     [appDelegate.window.rootViewController dismissModalViewControllerAnimated:YES];
