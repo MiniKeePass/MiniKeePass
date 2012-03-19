@@ -30,7 +30,7 @@
         self.textLabel.text = labelText;
         
         switchControl = [[UISwitch alloc] init];
-        [self addSubview:switchControl];
+        self.accessoryView = switchControl;
     }
     return self;
 }
@@ -38,18 +38,6 @@
 - (void)dealloc {
     [switchControl release];
     [super dealloc];
-}
-
-- (void)layoutSubviews {
-    [super layoutSubviews];
-    
-    CGRect rect = self.contentView.frame;
-    CGSize size = self.switchControl.frame.size;
-    
-    CGFloat x = rect.origin.x + rect.size.width - size.width - 10;
-    CGFloat y = rect.origin.y + rect.size.height / 2.0 - size.height / 2.0;
-    
-    switchControl.frame = CGRectMake(x, y, 0, 0);
 }
 
 - (void)setEnabled:(BOOL)enabled {

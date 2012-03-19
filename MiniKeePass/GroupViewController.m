@@ -22,6 +22,8 @@
 #define GROUPS_SECTION  0
 #define ENTRIES_SECTION 1
 
+#define SORTED_INSERTION_FAILED NSUIntegerMax
+
 @implementation GroupViewController
 
 - (void)viewDidLoad {
@@ -56,28 +58,52 @@
     [spacer release];
     
     results = [[NSMutableArray alloc] init];
+    
+    groupComparator = ^(id obj1, id obj2) {
+        NSString *string1 = ((KdbGroup*)obj1).name;
+        NSString *string2 = ((KdbGroup*)obj2).name;
+        return [string1 localizedCaseInsensitiveCompare:string2];
+    };
+    
+    entryComparator = ^(id obj1, id obj2) {
+        NSString *string1 = ((KdbEntry*)obj1).title;
+        NSString *string2 = ((KdbEntry*)obj2).title;
+        return [string1 localizedCaseInsensitiveCompare:string2];
+    };
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+    if( sortingEnabled != [[NSUserDefaults standardUserDefaults] boolForKey:@"sortAlphabetically"]) {
+        sortingEnabled = [[NSUserDefaults standardUserDefaults] boolForKey:@"sortAlphabetically"];
+        [self updateLocalArrays];
+        [self.tableView reloadData];
+    }
+    
     NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
     
     // Reload the cell in case the title was changed by the entry view
     if (selectedIndexPath != nil) {
-        if (selectedIndexPath.section == ENTRIES_SECTION) {
-            // Move the entry to the correct location
-            KdbEntry *e = [group.entries objectAtIndex:selectedIndexPath.row];
-            NSUInteger index = [group moveEntry:e];
+        NSMutableArray *array;
+        switch (selectedIndexPath.section) {
+            case ENTRIES_SECTION:
+                array = enteriesArray;
+                break;
+            case GROUPS_SECTION:
+                array = groupsArray;
+                break;
+        }
+
+        NSUInteger index = [self updatePositionOfObjectAtIndex:selectedIndexPath.row inArray:array];
             
-            // Move or update the row
-            if (index != selectedIndexPath.row) {
-                [self.tableView beginUpdates];
-                [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:selectedIndexPath] withRowAnimation:UITableViewRowAnimationFade];
-                selectedIndexPath = [NSIndexPath indexPathForRow:index inSection:ENTRIES_SECTION];
-                [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:selectedIndexPath] withRowAnimation:UITableViewRowAnimationFade];
-                [self.tableView endUpdates];
-            } else {
-                [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:selectedIndexPath] withRowAnimation:UITableViewRowAnimationNone];
-            }
+        // Move or update the row
+        if (index != selectedIndexPath.row) {
+            [self.tableView beginUpdates];
+            [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:selectedIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+            selectedIndexPath = [NSIndexPath indexPathForRow:index inSection:selectedIndexPath.section];
+            [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:selectedIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+            [self.tableView endUpdates];
+        } else {
+            [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:selectedIndexPath] withRowAnimation:UITableViewRowAnimationNone];
         }
         
         // Re-select the row
@@ -96,6 +122,8 @@
 
 - (void)dealloc {
     [searchDisplayController release];
+    [groupsArray release];
+    [enteriesArray release];
     [results release];
     [group release];
     [super dealloc];
@@ -106,8 +134,27 @@
 }
 
 - (void)setGroup:(KdbGroup *)newGroup {
-    group = [newGroup retain];
-    [self.tableView reloadData];
+    if (group != newGroup) {
+        [group release];
+        group = [newGroup retain];
+        
+        [self updateLocalArrays];
+                
+        [self.tableView reloadData];
+    }
+}
+
+- (void) updateLocalArrays {
+    [groupsArray release];
+    [enteriesArray release];
+    
+    groupsArray = [[NSMutableArray alloc] initWithArray:group.groups];
+    enteriesArray = [[NSMutableArray alloc] initWithArray:group.entries];
+    
+    if (sortingEnabled) {
+        [groupsArray sortUsingComparator:groupComparator];
+        [enteriesArray sortUsingComparator:entryComparator];
+    }
 }
 
 - (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString {
@@ -142,13 +189,13 @@
     
     switch (section) {
         case GROUPS_SECTION:
-            if ([group.groups count] != 0) {
+            if ([groupsArray count] != 0) {
                 return NSLocalizedString(@"Groups", nil);
             }
             break;
             
         case ENTRIES_SECTION:
-            if ([group.entries count] != 0) {
+            if ([enteriesArray count] != 0) {
                 return NSLocalizedString(@"Entries", nil);
             }
             break;
@@ -163,9 +210,9 @@
     } else {
         switch (section) {
             case GROUPS_SECTION:
-                return [group.groups count];
+                return [groupsArray count];
             case ENTRIES_SECTION:
-                return [group.entries count];
+                return [enteriesArray count];
         }
         
         return 0;
@@ -204,11 +251,11 @@
     } else {
         // Child group/entry
         if (indexPath.section == GROUPS_SECTION) {
-            KdbGroup *g = [group.groups objectAtIndex:indexPath.row];
+            KdbGroup *g = [groupsArray objectAtIndex:indexPath.row];
             cell.textLabel.text = g.name;
             cell.imageView.image = [appDelegate loadImage:g.image];
         } else if (indexPath.section == ENTRIES_SECTION) {
-            KdbEntry *e = [group.entries objectAtIndex:indexPath.row];
+            KdbEntry *e = [enteriesArray objectAtIndex:indexPath.row];
             cell.textLabel.text = e.title;
             cell.imageView.image = [appDelegate loadImage:e.image];
         }
@@ -230,7 +277,7 @@
     } else {
         if (self.editing == NO) {
             if (indexPath.section == GROUPS_SECTION) {
-                KdbGroup *g = [group.groups objectAtIndex:indexPath.row];
+                KdbGroup *g = [groupsArray objectAtIndex:indexPath.row];
                 
                 GroupViewController *groupViewController = [[GroupViewController alloc] initWithStyle:UITableViewStylePlain];
                 groupViewController.group = g;
@@ -238,7 +285,7 @@
                 [self.navigationController pushViewController:groupViewController animated:YES];
                 [groupViewController release];
             } else if (indexPath.section == ENTRIES_SECTION) {
-                KdbEntry *e = [group.entries objectAtIndex:indexPath.row];
+                KdbEntry *e = [enteriesArray objectAtIndex:indexPath.row];
                 
                 EntryViewController *entryViewController = [[EntryViewController alloc] initWithStyle:UITableViewStyleGrouped];
                 entryViewController.entry = e;
@@ -247,7 +294,7 @@
                 [entryViewController release];
             }
         } else if (indexPath.section == GROUPS_SECTION) {
-            KdbGroup *g = [group.groups objectAtIndex:indexPath.row];
+            KdbGroup *g = [groupsArray objectAtIndex:indexPath.row];
             
             EditGroupViewController *editGroupViewController = [[EditGroupViewController alloc] initWithStyle:UITableViewStyleGrouped];
             editGroupViewController.delegate = self;
@@ -272,13 +319,15 @@
     // Update the model
     NSUInteger rows = 0;
     if (indexPath.section == GROUPS_SECTION) {
-        KdbGroup *g = [group.groups objectAtIndex:indexPath.row];
+        KdbGroup *g = [groupsArray objectAtIndex:indexPath.row];
         [group removeGroup:g];
-        rows = [group.groups count];
+        [groupsArray removeObject:g];
+        rows = [groupsArray count];
     } else if (indexPath.section == ENTRIES_SECTION) {
-        KdbEntry *e = [group.entries objectAtIndex:indexPath.row];
+        KdbEntry *e = [enteriesArray objectAtIndex:indexPath.row];
         [group removeEntry:e];
-        rows = [group.entries count];
+        [enteriesArray removeObject:e];
+        rows = [enteriesArray count];
     }
     
     // Save the database
@@ -309,7 +358,7 @@
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
         
         // Update the group
-        KdbGroup *g = [group.groups objectAtIndex:indexPath.row];
+        KdbGroup *g = [groupsArray objectAtIndex:indexPath.row];
         g.name = groupName;
         g.image = editGroupViewController.selectedImageIndex;
         
@@ -318,7 +367,7 @@
         [appDelegate.databaseDocument save];
         
         // Move the group to the correct location
-        NSUInteger index = [group moveGroup:g];
+        NSUInteger index = [self updatePositionOfObject:g inArray:groupsArray];
         
         // Move or update the row
         if (index != indexPath.row) {
@@ -372,7 +421,8 @@
         KdbGroup *g = [databaseDocument.kdbTree createGroup:group];
         g.name = NSLocalizedString(@"New Group", nil);
         g.image = group.image;
-        NSUInteger index = [group addGroup:g];
+        [group addGroup:g];
+        NSUInteger index = [self addObject:g toArray:groupsArray];
         
         databaseDocument.dirty = YES;
         [databaseDocument save];
@@ -391,7 +441,7 @@
         
         // Notify the table of the new row
         NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:GROUPS_SECTION];
-        if ([group.groups count] == 1) {
+        if ([groupsArray count] == 1) {
             // Reload the section if it's the first item
             NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:GROUPS_SECTION];
             [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationLeft];
@@ -407,8 +457,8 @@
         KdbEntry *e = [databaseDocument.kdbTree createEntry:group];
         e.title = NSLocalizedString(@"New Entry", nil);
         e.image = group.image;
-        NSUInteger index = [group addEntry:e];
-        
+        [group addEntry:e];
+        NSUInteger index = [self addObject:e toArray:enteriesArray];
         databaseDocument.dirty = YES;
         [databaseDocument save];
         
@@ -421,7 +471,7 @@
         
         // Notify the table of the new row
         NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:ENTRIES_SECTION];
-        if ([group.entries count] == 1) {
+        if ([enteriesArray count] == 1) {
             // Reload the section if it's the first item
             NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:ENTRIES_SECTION];
             [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationLeft];
@@ -433,6 +483,55 @@
         // Select the row
         [self.tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionTop];
     }
+}
+
+- (NSUInteger) addObject:object toArray:array {
+    NSUInteger index;
+    if (sortingEnabled) {
+        NSComparisonResult (^comparator) (id obj1, id obj2);
+        if ([object isKindOfClass:[KdbGroup class]]) {
+            // Object is a KdbGroup, use groupComparator
+            comparator = groupComparator;
+            
+        } else if ([object isKindOfClass:[KdbEntry class]]) {
+            // Object is a KdbEntry, use entryComparator
+            comparator = entryComparator;
+            
+        } else {
+            // This should be an error some how
+            return SORTED_INSERTION_FAILED;
+        }
+        
+        index = [array indexOfObject:object inSortedRange:NSMakeRange(0, [array count]) options:NSBinarySearchingInsertionIndex usingComparator:comparator];
+    } else {
+        index = [array count];
+    }
+    
+    [array insertObject:object atIndex:index];
+    return index;
+}
+
+- (NSUInteger)updatePositionOfObjectAtIndex:(NSUInteger)index inArray:(NSMutableArray *)array {
+    if (!sortingEnabled) {
+        return index;
+    }
+    
+    id object = [[array objectAtIndex:index] retain];
+    [array removeObjectAtIndex:index];
+
+    NSUInteger newIndex = [self addObject:object toArray:array];    
+    
+    if (newIndex == SORTED_INSERTION_FAILED) {
+        newIndex = index;
+        [array insertObject:object atIndex:index];
+    }
+    
+    [object release];    
+    return newIndex;
+}
+
+- (NSUInteger) updatePositionOfObject:object inArray:array {
+    return [self updatePositionOfObjectAtIndex:[array indexOfObject:object] inArray:array];
 }
 
 @end

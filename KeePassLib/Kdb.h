@@ -40,13 +40,11 @@
 
 @property(nonatomic, assign) BOOL canAddEntries;
 
-- (NSUInteger)addGroup:(KdbGroup*)group;
+- (void)addGroup:(KdbGroup*)group;
 - (void)removeGroup:(KdbGroup*)group;
-- (NSUInteger)moveGroup:(KdbGroup*)group;
 
-- (NSUInteger)addEntry:(KdbEntry*)entry;
+- (void)addEntry:(KdbEntry*)entry;
 - (void)removeEntry:(KdbEntry*)entry;
-- (NSUInteger)moveEntry:(KdbEntry*)entry;
 
 @end
 

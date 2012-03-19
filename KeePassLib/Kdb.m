@@ -42,20 +42,9 @@
     [super dealloc];
 }
 
-- (NSUInteger)addGroup:(KdbGroup*)group {
+- (void)addGroup:(KdbGroup*)group {
     group.parent = self;
-    
-    // Get the index where the group should be inserted to maintain sorted order
-    NSUInteger index = [groups indexOfObject:group inSortedRange:NSMakeRange(0, [groups count]) options:NSBinarySearchingInsertionIndex usingComparator:^(id obj1, id obj2) {
-        NSString *string1 = ((KdbGroup*)obj1).name;
-        NSString *string2 = ((KdbGroup*)obj2).name;
-        return [string1 localizedCaseInsensitiveCompare:string2];
-    }];
-    
-    // Insert the group to the list of groups
-    [groups insertObject:group atIndex:index];
-    
-    return index;
+    [groups addObject:group];
 }
 
 - (void)removeGroup:(KdbGroup*)group {
@@ -63,59 +52,14 @@
     [groups removeObject:group];
 }
 
-- (NSUInteger)moveGroup:(KdbGroup*)group {
-    // Remove the group from the list of groups
-    [groups removeObject:group];
-    
-    // Get the index where the group should be inserted to maintain sorted order
-    NSUInteger index = [groups indexOfObject:group inSortedRange:NSMakeRange(0, [groups count]) options:NSBinarySearchingInsertionIndex usingComparator:^(id obj1, id obj2) {
-        NSString *string1 = ((KdbGroup*)obj1).name;
-        NSString *string2 = ((KdbGroup*)obj2).name;
-        return [string1 localizedCaseInsensitiveCompare:string2];
-    }];
-    
-    // Insert the group to the list of groups
-    [groups insertObject:group atIndex:index];
-    
-    return index;    
-}
-
-- (NSUInteger)addEntry:(KdbEntry*)entry {
+- (void)addEntry:(KdbEntry*)entry {
     entry.parent = self;
-    
-    // Get the index where the entry should be inserted to maintain sorted order
-    NSUInteger index = [entries indexOfObject:entry inSortedRange:NSMakeRange(0, [entries count]) options:NSBinarySearchingInsertionIndex usingComparator:^(id obj1, id obj2) {
-        NSString *string1 = ((KdbEntry*)obj1).title;
-        NSString *string2 = ((KdbEntry*)obj2).title;
-        return [string1 localizedCaseInsensitiveCompare:string2];
-    }];
-    
-    // Insert the entry to the list of entries
-    [entries insertObject:entry atIndex:index];
-    
-    return index;
+    [entries addObject:entry];
 }
 
 - (void)removeEntry:(KdbEntry*)entry {
     entry.parent = nil;
     [entries removeObject:entry];
-}
-
-- (NSUInteger)moveEntry:(KdbEntry*)entry {
-    // Remove the entry from the list of entries
-    [entries removeObject:entry];
-    
-    // Get the index where the entry should be inserted to maintain sorted order
-    NSUInteger index = [entries indexOfObject:entry inSortedRange:NSMakeRange(0, [entries count]) options:NSBinarySearchingInsertionIndex usingComparator:^(id obj1, id obj2) {
-        NSString *string1 = ((KdbEntry*)obj1).title;
-        NSString *string2 = ((KdbEntry*)obj2).title;
-        return [string1 localizedCaseInsensitiveCompare:string2];
-    }];
-    
-    // Insert the entry to the list of entries
-    [entries insertObject:entry atIndex:index];
-    
-    return index;
 }
 
 - (NSString*)description {

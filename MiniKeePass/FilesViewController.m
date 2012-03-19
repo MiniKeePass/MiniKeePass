@@ -149,10 +149,10 @@ enum {
     [files sortUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
     
     // Filter the list of files into everything ending with .kdb or .kdbx
-    NSArray *databaseFilenames = [files filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"(self ENDSWITH '.kdb') OR (self ENDSWITH '.kdbx')"]];
+    NSArray *databaseFilenames = [files filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"(self ENDSWITH[c] '.kdb') OR (self ENDSWITH[c] '.kdbx')"]];
     
     // Filter the list of files into everything not ending with .kdb or .kdbx
-    NSArray *keyFilenames = [files filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"!((self ENDSWITH '.kdb') OR (self ENDSWITH '.kdbx'))"]];
+    NSArray *keyFilenames = [files filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"!((self ENDSWITH[c] '.kdb') OR (self ENDSWITH[c] '.kdbx'))"]];
     [files release];
     
     databaseFiles = [[NSMutableArray arrayWithArray:databaseFilenames] retain];
