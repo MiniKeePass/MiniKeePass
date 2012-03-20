@@ -25,6 +25,7 @@
     UISearchDisplayController *searchDisplayController;
     NSMutableArray *results;
     KdbGroup *group;
+    NSString *pushedKdbTitle;
     BOOL sortingEnabled;
     NSMutableArray *groupsArray;
     NSMutableArray *enteriesArray;
