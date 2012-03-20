@@ -24,6 +24,13 @@
 
 #define SORTED_INSERTION_FAILED NSUIntegerMax
 
+@interface GroupViewController (PrivateMethods)
+- (void) updateLocalArrays;
+- (NSUInteger) addObject:object toArray:array;
+- (NSUInteger)updatePositionOfObjectAtIndex:(NSUInteger)index inArray:(NSMutableArray *)array;
+- (NSUInteger) updatePositionOfObject:object inArray:array;
+@end
+
 @implementation GroupViewController
 
 - (void)viewDidLoad {
@@ -144,7 +151,7 @@
     }
 }
 
-- (void) updateLocalArrays {
+- (void)updateLocalArrays {
     [groupsArray release];
     [enteriesArray release];
     
@@ -518,7 +525,7 @@
     
     id object = [[array objectAtIndex:index] retain];
     [array removeObjectAtIndex:index];
-
+    
     NSUInteger newIndex = [self addObject:object toArray:array];    
     
     if (newIndex == SORTED_INSERTION_FAILED) {
