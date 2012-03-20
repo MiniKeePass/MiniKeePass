@@ -98,6 +98,9 @@
             case GROUPS_SECTION:
                 array = groupsArray;
                 break;
+            default:
+                @throw [NSException exceptionWithName:@"RuntimeException" reason:@"Invalid Section" userInfo:nil];
+                break;
         }
 
         NSUInteger index = [self updatePositionOfObjectAtIndex:selectedIndexPath.row inArray:array];
