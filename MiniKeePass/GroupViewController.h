@@ -25,6 +25,11 @@
     UISearchDisplayController *searchDisplayController;
     NSMutableArray *results;
     KdbGroup *group;
+    BOOL sortingEnabled;
+    NSMutableArray *groupsArray;
+    NSMutableArray *enteriesArray;
+    NSComparisonResult (^groupComparator) (id obj1, id obj2);
+    NSComparisonResult (^entryComparator) (id obj1, id obj2);
 }
 
 @property (nonatomic, assign) KdbGroup *group;

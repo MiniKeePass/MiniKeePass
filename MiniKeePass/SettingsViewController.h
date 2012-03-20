@@ -35,6 +35,7 @@
     ButtonCell *dropboxLinkCell;
     ButtonCell *dropboxUnlinkCell;
     UITableViewCell *dropboxDirectoryCell;
+    SwitchCell *sortingEnabledCell;
     ChoiceCell *passwordEncodingCell;
     SwitchCell *clearClipboardEnabledCell;
     ChoiceCell *clearClipboardTimeoutCell;
