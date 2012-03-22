@@ -307,6 +307,9 @@ enum {
         case SECTION_SORTING:
             return NSLocalizedString(@"Sorting", nil);
             
+        case SECTION_SORTING:
+            return NSLocalizedString(@"Sorting", nil);
+            
         case SECTION_PASSWORD_ENCODING:
             return NSLocalizedString(@"Password Encoding", nil);
             
@@ -335,6 +338,9 @@ enum {
 
         case SECTION_DROPBOX:
             return @"Link with your Dropbox account to keep changes in sync between multiple devices.";
+            
+        case SECTION_SORTING:
+            return NSLocalizedString(@"Sort Groups and Entries Alphabetically", nil);
             
         case SECTION_SORTING:
             return NSLocalizedString(@"Sort Groups and Entries Alphabetically", nil);
@@ -407,6 +413,13 @@ enum {
             }
             break;
 
+        case SECTION_SORTING:
+            switch (indexPath.row) {
+                case ROW_SORTING_ENABLED:
+                    return sortingEnabledCell;
+            }
+            break;
+            
         case SECTION_SORTING:
             switch (indexPath.row) {
                 case ROW_SORTING_ENABLED:
