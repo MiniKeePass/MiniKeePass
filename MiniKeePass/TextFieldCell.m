@@ -61,10 +61,14 @@
 }
 
 - (void)tapPressed {
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", nil) destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"Copy", nil), NSLocalizedString(@"Edit", nil), nil];
-    
-    [appDelegate showActionSheet:actionSheet];
-    [actionSheet release];
+    if (self.textField.text == nil || [self.textField.text isEqualToString:@""]) {
+        [textField becomeFirstResponder];
+    } else {
+        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", nil) destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"Copy", nil), NSLocalizedString(@"Edit", nil), nil];
+        
+        [appDelegate showActionSheet:actionSheet];
+        [actionSheet release];
+    }
 }
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
