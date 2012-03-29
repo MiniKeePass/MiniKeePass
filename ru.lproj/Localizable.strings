@@ -1,0 +1,152 @@
+/*
+ * Copyright 2011 Jason Rush and John Flanagan. All rights reserved.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+ // Russian translator: Roman Azarenko aka BasicXP <basicxp@ubuntu.com>
+ 
+"Files" = "Файлы";
+"Databases" = "Базы данных";
+"Key File" = "Файл ключа";
+"Key Files" = "Файлы ключей";
+"Groups" = "Группы";
+"Entries" = "Записи";
+"Group" = "Группа";
+"Entry" = "Запись";
+"New Database" = "Новая база данных";
+"New Group" = "Новая группа";
+"New Entry" = "Новая запись";
+"Edit Group" = "Изменить группу";
+"Title" = "Название";
+"Image" = "Значок";
+"Username" = "Логин";
+"Password" = "Пароль";
+"Confirm Password" = "Подтв. пароль";
+"URL" = "URL";
+"Comments" = "Комментарий";
+"OK" = "ОК";
+"Cancel" = "Отмена";
+"Edit" = "Изменить";
+"Copy" = "Копировать";
+"Add" = "Добавить";
+"Search" = "Поиск";
+"Help" = "Справка";
+"Version 1.x" = "Версия 1.x";
+"Version 2.x" = "Версия 2.x";
+"None" = "Нет";
+"Name" = "Имя";
+"Rename" = "Переименовать";
+"Database Name" = "Имя базы данных";
+
+// General Messages
+"Enter your PIN to unlock" = "Введите PIN-код для разблокировки";
+"Enter the password and/or select the keyfile for the %@ database." = "Введите пароль и/или выберите файл ключа для базы данных %@.";
+"Enter a new name for the password database.  The correct file extension will automatically be appended." = "Введите новое имя для базы данных.  Правильное расширение файла будет автоматически добавлено.";
+
+// Error Messages
+"Group name is invalid" = "Имя группы недействительно";
+"Database name is required" = "Имя базы данных необходимо";
+"Passwords do not match" = "Пароли не совпадают";
+"Password is required" = "Пароль необходим";
+"Incorrect PIN" = "Неправильный PIN";
+
+/*
+This phrase should be adjusted for Russian 3-form plural endings.
+
+FOR THE WORD ПОПЫТ__:
+For singular and plural numbers, ending on 1: "попытка"
+For plural numbers ending on 2,3,4: "попытки"
+For plural numbers ending on 0,5,6,7,8,9: "попыток"
+
+FOR THE WORD ОСТАЛОСЬ:
+For singular and plural numbers, ending on 1: "осталась"
+For other plural numbers: "осталось"
+*/
+"Incorrect PIN\n%d attempt%@ remaining" = "Неправильный PIN\nОсталось %d попыт%@";
+
+"Filename is invalid" = "Имя файла недействительно";
+"A file already exists with this name" = "Файл с этим именем уже существует";
+"There are no applications installed capable of importing KeePass files" = "Нет установленных приложений, способных импортировать файлы KeePass";
+"You do not have any KeePass files available for MiniKeePass to open." = "У вас нет доступных к открытию файлов KeePass.";
+
+// Settings Page
+"Settings" = "Настройки";
+"PIN Enabled" = "PIN-код включен";
+"Lock Timeout" = "Тайм-аут блокировки";
+"Immediately" = "Мгновенно";
+"30 Seconds" = "30 секунд";
+"1 Minute" = "1 минута";
+"2 Minutes" = "2 минуты";
+"3 Minutes" = "3 минуты";
+"5 Minutes" = "5 минут";
+"Enabled" = "Включено";
+"Attempts" = "Попытки";
+"Close Enabled" = "Закрытие включено"; // Not sure on this one, will test after translation released
+"Close Timeout" = "Тайм-аут закрытия";
+"Hide Passwords" = "Скрывать пароли";
+"Sorting" = "Сортировка";
+"Sort Groups and Entries Alphabetically" = "Сортировать группы и записи в алфавитном порядке";
+"Encoding" = "Кодировка";
+"UTF-8" = "UTF-8";
+"UTF-16 Big Endian" = "UTF-16 Big Endian";
+"UTF-16 Little Endian" = "UTF-16 Little Endian";
+"Latin 1 (ISO/IEC 8859-1)" = "Latin 1 (ISO/IEC 8859-1)";
+"Latin 2 (ISO/IEC 8859-2)" = "Latin 2 (ISO/IEC 8859-2)";
+"7-Bit ASCII" = "7-бит ASCII";
+"Japanese EUC" = "Japanese EUC";
+"ISO-2022-JP" = "ISO-2022-JP";
+"PIN Protection" = "Защита PIN-кодом";
+"Delete All Data on PIN Failure" = "Удалить все данные при вводе неправильного PIN-кода";
+"Close Database on Timeout" = "Закрыть базу данных по истечении времени";
+"Remember Database Passwords" = "Запонимать пароли от баз данных";
+"Hide Passwords" = "Скрывать пароли";
+"Password Encoding" = "Кодировка паролей";
+"Clear Clipboard on Timeout" = "Очищать буфер обмена по истечении времени";
+"Clear Timeout" = "Тайм-аут очистки";
+"Prevent unauthorized access to MiniKeePass with a PIN." = "Предотвратить неавторизованный доступ к MiniKeePass с помощью PIN-кода.";
+"Delete all files and passwords after too many failed attempts." = "Удалить все файлы и пароли после многочисленных неудачных попыток.";
+"Automatically close an open database after the selected timeout." = "Автоматически закрывать открытую базу данных после выбранного тайм-аута.";
+"Stores remembered database passwords in the devices's secure keychain." = "Сохраняет пароли от баз данных в безопасной связке ключей устройства.";
+"Hides passwords when viewing a password entry." = "Скрывает пароли при просмотре записи.";
+"The string encoding used for passwords when converting them to database keys." = "Кодировка текста, используемая для паролей при их конвертации в ключи базы данных.";
+"Clear the contents of the clipboard after a given timeout upon performing a copy." = "Очищать содержимое буфера обмена после данного тайм-аута при копировании.";
+"Close Timeout" = "Тайм-аут закрытия";
+"Clear Clipboard Timeout" = "Тайм-аут очистки буфера обмена";
+"Set PIN" = "Установите PIN-код";
+"Confirm PIN" = "Подтвердите PIN-код";
+"PINs did not match. Try again" = "PIN-коды не совпадают. Попробуйте снова";
+
+// Help Titles
+"iTunes Import/Export" = "Импорт/экспорт iTunes";
+"Dropbox Import/Export" = "Импорт/экспорт Dropbox";
+"Safari/Email Import" = "Импорт из Safari/Mail";
+"Create New Database" = "Создание новой базы данных";
+"Key Files" = "Файлы ключей";
+
+// Password Generator
+"Generator" = "Генератор";
+"Length" = "Длина";
+"Character Sets" = "Наборы символов";
+"Upper Case" = "Верхний регистр";
+"Lower Case" = "Нижний регистр";
+"Upper" = "Верхний";
+"Lower" = "Нижний";
+"Digits" = "Цифры";
+"Minus" = "Минус";
+"Underline" = "Подчёркивание";
+"Space" = "Пробел";
+"Special" = "Специальные";
+"Brackets" = "Скобки";
+"None Selected" = "Ничего не выбрано";
