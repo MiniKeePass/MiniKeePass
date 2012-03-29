@@ -235,6 +235,7 @@ enum {
         case SECTION_KEYFILE:
             cell.textLabel.text = [keyFiles objectAtIndex:indexPath.row];
             cell.textLabel.textColor = [UIColor grayColor];
+            cell.accessoryView = nil;
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             break;
     }

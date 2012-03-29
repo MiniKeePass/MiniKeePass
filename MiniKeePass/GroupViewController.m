@@ -24,6 +24,13 @@
 
 #define SORTED_INSERTION_FAILED NSUIntegerMax
 
+@interface GroupViewController (PrivateMethods)
+- (void) updateLocalArrays;
+- (NSUInteger) addObject:object toArray:array;
+- (NSUInteger)updatePositionOfObjectAtIndex:(NSUInteger)index inArray:(NSMutableArray *)array;
+- (NSUInteger) updatePositionOfObject:object inArray:array;
+@end
+
 @implementation GroupViewController
 
 - (void)viewDidLoad {
@@ -73,7 +80,7 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    if( sortingEnabled != [[NSUserDefaults standardUserDefaults] boolForKey:@"sortAlphabetically"]) {
+    if (sortingEnabled != [[NSUserDefaults standardUserDefaults] boolForKey:@"sortAlphabetically"]) {
         sortingEnabled = [[NSUserDefaults standardUserDefaults] boolForKey:@"sortAlphabetically"];
         [self updateLocalArrays];
         [self.tableView reloadData];
@@ -84,30 +91,40 @@
     // Reload the cell in case the title was changed by the entry view
     if (selectedIndexPath != nil) {
         NSMutableArray *array;
+        NSString *newKdbTitle;
+        
         switch (selectedIndexPath.section) {
             case ENTRIES_SECTION:
+                newKdbTitle = [((KdbEntry *)[enteriesArray objectAtIndex:selectedIndexPath.row]).title copy];
                 array = enteriesArray;
                 break;
             case GROUPS_SECTION:
+                newKdbTitle = [((KdbGroup *)[groupsArray objectAtIndex:selectedIndexPath.row]).name copy];
                 array = groupsArray;
+                break;
+            default:
+                @throw [NSException exceptionWithName:@"RuntimeException" reason:@"Invalid Section" userInfo:nil];
                 break;
         }
 
-        NSUInteger index = [self updatePositionOfObjectAtIndex:selectedIndexPath.row inArray:array];
+        if ([newKdbTitle localizedCaseInsensitiveCompare:pushedKdbTitle] != 0) {        
+            NSUInteger index = [self updatePositionOfObjectAtIndex:selectedIndexPath.row inArray:array];
+                
+            // Move or update the row
+            if (index != selectedIndexPath.row) {
+                [self.tableView beginUpdates];
+                [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:selectedIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+                selectedIndexPath = [NSIndexPath indexPathForRow:index inSection:selectedIndexPath.section];
+                [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:selectedIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+                [self.tableView endUpdates];
+            } else {
+                [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:selectedIndexPath] withRowAnimation:UITableViewRowAnimationNone];
+            }
             
-        // Move or update the row
-        if (index != selectedIndexPath.row) {
-            [self.tableView beginUpdates];
-            [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:selectedIndexPath] withRowAnimation:UITableViewRowAnimationFade];
-            selectedIndexPath = [NSIndexPath indexPathForRow:index inSection:selectedIndexPath.section];
-            [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:selectedIndexPath] withRowAnimation:UITableViewRowAnimationFade];
-            [self.tableView endUpdates];
-        } else {
-            [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:selectedIndexPath] withRowAnimation:UITableViewRowAnimationNone];
+            // Re-select the row
+            [self.tableView selectRowAtIndexPath:selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
         }
-        
-        // Re-select the row
-        [self.tableView selectRowAtIndexPath:selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+        [newKdbTitle release];
     }
     
     searchDisplayController.searchBar.placeholder = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"Search", nil), self.title];
@@ -124,6 +141,7 @@
     [searchDisplayController release];
     [groupsArray release];
     [enteriesArray release];
+    [pushedKdbTitle release];
     [results release];
     [group release];
     [super dealloc];
@@ -144,7 +162,7 @@
     }
 }
 
-- (void) updateLocalArrays {
+- (void)updateLocalArrays {
     [groupsArray release];
     [enteriesArray release];
     
@@ -282,6 +300,10 @@
                 GroupViewController *groupViewController = [[GroupViewController alloc] initWithStyle:UITableViewStylePlain];
                 groupViewController.group = g;
                 groupViewController.title = g.name;
+
+                [pushedKdbTitle release];
+                pushedKdbTitle = [g.name copy];
+
                 [self.navigationController pushViewController:groupViewController animated:YES];
                 [groupViewController release];
             } else if (indexPath.section == ENTRIES_SECTION) {
@@ -290,6 +312,10 @@
                 EntryViewController *entryViewController = [[EntryViewController alloc] initWithStyle:UITableViewStyleGrouped];
                 entryViewController.entry = e;
                 entryViewController.title = e.title;
+                
+                [pushedKdbTitle release];
+                pushedKdbTitle = [e.title copy];
+
                 [self.navigationController pushViewController:entryViewController animated:YES];
                 [entryViewController release];
             }
@@ -300,6 +326,9 @@
             editGroupViewController.delegate = self;
             editGroupViewController.nameTextField.text = g.name;
             [editGroupViewController setSelectedImageIndex:g.image];
+
+            [pushedKdbTitle release];
+            pushedKdbTitle = [g.name copy];
             
             UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:editGroupViewController];
             
@@ -365,23 +394,6 @@
         // Save the document
         appDelegate.databaseDocument.dirty = YES;
         [appDelegate.databaseDocument save];
-        
-        // Move the group to the correct location
-        NSUInteger index = [self updatePositionOfObject:g inArray:groupsArray];
-        
-        // Move or update the row
-        if (index != indexPath.row) {
-            [self.tableView beginUpdates];
-            [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-            indexPath = [NSIndexPath indexPathForRow:index inSection:GROUPS_SECTION];
-            [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-            [self.tableView endUpdates];
-        } else {
-            [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
-        }
-        
-        // Re-select the row
-        [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
     }
     
     [appDelegate.window.rootViewController dismissModalViewControllerAnimated:YES];
@@ -518,7 +530,7 @@
     
     id object = [[array objectAtIndex:index] retain];
     [array removeObjectAtIndex:index];
-
+    
     NSUInteger newIndex = [self addObject:object toArray:array];    
     
     if (newIndex == SORTED_INSERTION_FAILED) {

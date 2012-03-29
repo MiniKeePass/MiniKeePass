@@ -88,6 +88,11 @@ int hex2dec(char c);
     return self;
 }
 
+- (void)dealloc {
+    [masterKey release];
+    [super dealloc];
+}
+
 - (NSData*)createFinalKeyForVersion:(uint8_t)version masterSeed:(NSData*)masterSeed transformSeed:(NSData*)transformSeed rounds:(uint64_t)rounds {
     uint8_t keyHash[32];
     

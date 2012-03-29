@@ -67,7 +67,6 @@ enum {
         
         characterSetsCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:nil];
         characterSetsCell.textLabel.text = NSLocalizedString(@"Character Sets", nil);
-        characterSetsCell.detailTextLabel.text = @" ";
         characterSetsCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         
         UIImage *image = [UIImage imageNamed:@"reload"];
@@ -78,7 +77,6 @@ enum {
         [regenerateButton addTarget:self action:@selector(generatePassword) forControlEvents:UIControlEventTouchUpInside];
         
         passwordCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
-        passwordCell.textLabel.text = @" ";
         passwordCell.textLabel.font = [UIFont fontWithName:@"Andale Mono" size:16];
         passwordCell.accessoryView = regenerateButton;
         passwordCell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -166,6 +164,7 @@ enum {
     [cryptoRandomStream release];
     
     passwordCell.textLabel.text = password;
+    [passwordCell setNeedsLayout];
 }
 
 - (NSString *)createCharSetsDescription {

@@ -307,6 +307,9 @@ enum {
         case SECTION_SORTING:
             return NSLocalizedString(@"Sorting", nil);
             
+        case SECTION_SORTING:
+            return NSLocalizedString(@"Sorting", nil);
+            
         case SECTION_PASSWORD_ENCODING:
             return NSLocalizedString(@"Password Encoding", nil);
             
@@ -335,6 +338,9 @@ enum {
 
         case SECTION_DROPBOX:
             return @"Link with your Dropbox account to keep changes in sync between multiple devices.";
+            
+        case SECTION_SORTING:
+            return NSLocalizedString(@"Sort Groups and Entries Alphabetically", nil);
             
         case SECTION_SORTING:
             return NSLocalizedString(@"Sort Groups and Entries Alphabetically", nil);
@@ -393,12 +399,12 @@ enum {
 
         case SECTION_DROPBOX:
             if ([[DBSession sharedSession] isLinked]) {
-            switch (indexPath.row) {
-                case ROW_LINKED_DROPBOX_DIRECTORY_BUTTON:
-                    return dropboxDirectoryCell;
-                case ROW_LINKED_DROPBOX_UNLINK_BUTTON:
-                    return dropboxUnlinkCell;
-            }
+                switch (indexPath.row) {
+                    case ROW_LINKED_DROPBOX_DIRECTORY_BUTTON:
+                        return dropboxDirectoryCell;
+                    case ROW_LINKED_DROPBOX_UNLINK_BUTTON:
+                        return dropboxUnlinkCell;
+                }
             } else {
                 switch (indexPath.row) {
                     case ROW_UNLINKED_DROPBOX_LINK_BUTTON:
@@ -406,7 +412,7 @@ enum {
                 }
             }
             break;
-            
+
         case SECTION_SORTING:
             switch (indexPath.row) {
                 case ROW_SORTING_ENABLED:

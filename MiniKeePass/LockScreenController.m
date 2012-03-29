@@ -68,15 +68,15 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10, 15};
     return frontViewController;
 }
 
+- (void)show {
+    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"splash"]];
+    [[self frontMostViewController] presentModalViewController:self animated:NO];
+}
+
 + (void)present {
     LockScreenController *pinScreen = [[LockScreenController alloc] init];
     [pinScreen show];
     [pinScreen release];
-}
-
-- (void)show {
-    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"splash"]];
-    [[self frontMostViewController] presentModalViewController:self animated:NO];
 }
 
 - (void)hide {
