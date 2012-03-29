@@ -61,21 +61,20 @@
 "Passwords do not match" = "Пароли не совпадают";
 "Password is required" = "Пароль необходим";
 "Incorrect PIN" = "Неправильный PIN";
-
-/*
-This phrase should be adjusted for Russian 3-form plural endings.
-
-FOR THE WORD ПОПЫТ__:
-For singular and plural numbers, ending on 1: "попытка"
-For plural numbers ending on 2,3,4: "попытки"
-For plural numbers ending on 0,5,6,7,8,9: "попыток"
-
-FOR THE WORD ОСТАЛОСЬ:
-For singular and plural numbers, ending on 1: "осталась"
-For other plural numbers: "осталось"
-*/
-"Incorrect PIN\n%d attempt%@ remaining" = "Неправильный PIN\nОсталось %d попыт%@";
-
+"Incorrect PIN\n1 attempt remaining" = "Неправильный PIN\nОсталась 1 попытка";
+"Incorrect PIN\n2 attempts remaining" = "Неправильный PIN\nОсталось 2 попытки";
+"Incorrect PIN\n3 attempts remaining" = "Неправильный PIN\nОсталось 3 попытки";
+"Incorrect PIN\n4 attempts remaining" = "Неправильный PIN\nОсталось 4 попытки";
+"Incorrect PIN\n5 attempts remaining" = "Неправильный PIN\nОсталось 5 попыток";
+"Incorrect PIN\n6 attempts remaining" = "Неправильный PIN\nОсталось 6 попыток";
+"Incorrect PIN\n7 attempts remaining" = "Неправильный PIN\nОсталось 7 попыток";
+"Incorrect PIN\n8 attempts remaining" = "Неправильный PIN\nОсталось 8 попыток";
+"Incorrect PIN\n9 attempts remaining" = "Неправильный PIN\nОсталось 9 попыток";
+"Incorrect PIN\n10 attempts remaining" = "Неправильный PIN\nОсталось 10 попыток";
+"Incorrect PIN\n11 attempts remaining" = "Неправильный PIN\nОсталась 11 попытка";
+"Incorrect PIN\n12 attempts remaining" = "Неправильный PIN\nОсталось 12 попытки";
+"Incorrect PIN\n13 attempts remaining" = "Неправильный PIN\nОсталось 13 попытки";
+"Incorrect PIN\n14 attempts remaining" = "Неправильный PIN\nОсталось 14 попытки";
 "Filename is invalid" = "Имя файла недействительно";
 "A file already exists with this name" = "Файл с этим именем уже существует";
 "There are no applications installed capable of importing KeePass files" = "Нет установленных приложений, способных импортировать файлы KeePass";

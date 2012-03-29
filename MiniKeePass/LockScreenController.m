@@ -165,7 +165,54 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10, 15};
                 
                 // Update the status message on the PIN view
                 NSInteger remainingAttempts = (deleteOnFailureAttempts - pinFailedAttempts);
-                controller.textLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Incorrect PIN\n%d attempt%@ remaining", nil), remainingAttempts, remainingAttempts > 1 ? @"s" : @""];
+                
+                NSString *attemptsRemainingString;
+                switch (remainingAttempts) {
+                    case 1:
+                        attemptsRemainingString = @"Incorrect PIN\n1 attempt remaining";
+                        break;
+                    case 2:
+                        attemptsRemainingString = @"Incorrect PIN\n2 attempts remaining";
+                        break;
+                    case 3:
+                        attemptsRemainingString = @"Incorrect PIN\n3 attempts remaining";
+                        break;
+                    case 4:
+                        attemptsRemainingString = @"Incorrect PIN\n4 attempts remaining";
+                        break;
+                    case 5:
+                        attemptsRemainingString = @"Incorrect PIN\n5 attempts remaining";
+                        break;
+                    case 6:
+                        attemptsRemainingString = @"Incorrect PIN\n6 attempts remaining";
+                        break;
+                    case 7:
+                        attemptsRemainingString = @"Incorrect PIN\n7 attempts remaining";
+                        break;
+                    case 8:
+                        attemptsRemainingString = @"Incorrect PIN\n8 attempts remaining";
+                        break;
+                    case 9:
+                        attemptsRemainingString = @"Incorrect PIN\n9 attempts remaining";
+                        break;
+                    case 10:
+                        attemptsRemainingString = @"Incorrect PIN\n10 attempts remaining";
+                        break;
+                    case 11:
+                        attemptsRemainingString = @"Incorrect PIN\n11 attempts remaining";
+                        break;
+                    case 12:
+                        attemptsRemainingString = @"Incorrect PIN\n12 attempts remaining";
+                        break;
+                    case 13:
+                        attemptsRemainingString = @"Incorrect PIN\n13 attempts remaining";
+                        break;
+                    case 14:
+                        attemptsRemainingString = @"Incorrect PIN\n14 attempts remaining";
+                        break;
+                }
+                
+                controller.textLabel.text = NSLocalizedString(attemptsRemainingString, nil);
                 
                 // Check if they have failed too many times
                 if (pinFailedAttempts >= deleteOnFailureAttempts) {
