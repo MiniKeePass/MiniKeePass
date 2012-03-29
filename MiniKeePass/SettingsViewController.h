@@ -16,12 +16,14 @@
  */
 
 #import <UIKit/UIKit.h>
+#import <DropboxSDK/DropboxSDK.h>
 #import "PinViewController.h"
 #import "ChoiceCell.h"
 #import "SwitchCell.h"
+#import "ButtonCell.h"
 #import "SelectionListViewController.h"
 
-@interface SettingsViewController : UITableViewController <PinViewControllerDelegate, SelectionListViewControllerDelegate> {
+@interface SettingsViewController : UITableViewController <PinViewControllerDelegate, SelectionListViewControllerDelegate, DBRestClientDelegate> {
     SwitchCell *pinEnabledCell;
     ChoiceCell *pinLockTimeoutCell;
     SwitchCell *deleteOnFailureEnabledCell;
@@ -30,14 +32,21 @@
     ChoiceCell *closeTimeoutCell;
     SwitchCell *rememberPasswordsEnabledCell;
     SwitchCell *hidePasswordsCell;
+    ButtonCell *dropboxLinkCell;
+    ButtonCell *dropboxUnlinkCell;
+    UITableViewCell *dropboxDirectoryCell;
     SwitchCell *sortingEnabledCell;
     ChoiceCell *passwordEncodingCell;
     SwitchCell *clearClipboardEnabledCell;
     ChoiceCell *clearClipboardTimeoutCell;
     
+    NSString *dropboxDirectory;
+    DBRestClient *restClient;
+    
     NSString *tempPin;
 }
 
 - (void)updateEnabledControls;
+- (void)updateDropboxStatus;
 
 @end

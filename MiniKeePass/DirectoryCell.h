@@ -15,29 +15,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#import <Foundation/Foundation.h>
-#import <DropboxSDK/DropboxSDK.h>
-#import "FilesInfoView.h"
-#import "TextEntryController.h"
-#import "NewKdbViewController.h"
+#import <UIKit/UIKit.h>
 
-@class MiniKeePassAppDelegate;
+@protocol DirectoryCellDelegate;
 
-@interface FilesViewController : UITableViewController <TextEntryControllerDelegate, FormViewControllerDelegate, DBRestClientDelegate> {
-    FilesInfoView *filesInfoView;
-    MiniKeePassAppDelegate *appDelegate;
-    
-    NSMutableArray *databaseFiles;
-    NSMutableArray *keyFiles;
-    NSMutableArray *dropboxFiles;
-    NSString *selectedFile;
-    
-    DBSession *sharedSession;
-    DBRestClient *restClient;
+@interface DirectoryCell : UITableViewCell {
+    NSString *directoryName;
 }
 
-- (void)updateFiles;
+@property (nonatomic, copy) NSString *directoryName;
+@property (nonatomic, retain) id<DirectoryCellDelegate> delegate;
 
-@property (nonatomic, copy) NSString* selectedFile;
+@end
 
+@protocol DirectoryCellDelegate <NSObject>
+- (void)directoryCell:(DirectoryCell*)directoryCell wasChosenWithPath:(NSString*)path;
 @end

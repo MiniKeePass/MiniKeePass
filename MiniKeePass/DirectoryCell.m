@@ -15,29 +15,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#import <Foundation/Foundation.h>
-#import <DropboxSDK/DropboxSDK.h>
-#import "FilesInfoView.h"
-#import "TextEntryController.h"
-#import "NewKdbViewController.h"
+#import "DirectoryCell.h"
 
-@class MiniKeePassAppDelegate;
+@implementation DirectoryCell
 
-@interface FilesViewController : UITableViewController <TextEntryControllerDelegate, FormViewControllerDelegate, DBRestClientDelegate> {
-    FilesInfoView *filesInfoView;
-    MiniKeePassAppDelegate *appDelegate;
-    
-    NSMutableArray *databaseFiles;
-    NSMutableArray *keyFiles;
-    NSMutableArray *dropboxFiles;
-    NSString *selectedFile;
-    
-    DBSession *sharedSession;
-    DBRestClient *restClient;
+@synthesize directoryName;
+@synthesize delegate;
+
+- (id)initWithDirectory:(NSString*)directory {
+    self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+    if (self) {
+        // Initialization code
+        self.directoryName = directory;
+        
+        self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    }
+    return self;
 }
 
-- (void)updateFiles;
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
+{
+    [super setSelected:selected animated:animated];
 
-@property (nonatomic, copy) NSString* selectedFile;
+    // Configure the view for the selected state
+}
 
 @end

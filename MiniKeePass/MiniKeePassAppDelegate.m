@@ -15,14 +15,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#import <DropboxSDK/DropboxSDK.h>
 #import "MiniKeePassAppDelegate.h"
 #import "GroupViewController.h"
 #import "SettingsViewController.h"
 #import "EntryViewController.h"
 #import "CharacterSetsViewController.h"
+#import "LockScreenController.h"
 #import "DatabaseManager.h"
 #import "SFHFKeychainUtils.h"
 #import "LockScreenController.h"
+
+#define APP_KEY @"1cml57v07lqm5xu"
+#define APP_SECRET @"sao1iiuox8urrai"
 
 @implementation MiniKeePassAppDelegate
 
@@ -44,7 +49,20 @@ static NSStringEncoding passwordEncodingValues[] = {
     NSISO2022JPStringEncoding
 };
 
+- (UIViewController *) frontmostViewController {
+    UIViewController *frontmostViewController = window.rootViewController;
+    while (frontmostViewController.modalViewController != nil) {
+        frontmostViewController = frontmostViewController.modalViewController;
+    }
+    
+    return frontmostViewController;
+}
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    //Dropbox code
+    DBSession* dbSession = [[DBSession alloc] initWithAppKey:APP_KEY appSecret:APP_SECRET root:kDBRootDropbox];
+    [DBSession setSharedSession:dbSession];
+
     // Initialize the images array
     int i;
     for (i = 0; i < NUM_IMAGES; i++) {
@@ -66,6 +84,7 @@ static NSStringEncoding passwordEncodingValues[] = {
     [defaultsDict setValue:[NSNumber numberWithBool:YES] forKey:@"sortAlphabetically"];
     [defaultsDict setValue:[NSNumber numberWithInt:0] forKey:@"passwordEncoding"];
     [defaultsDict setValue:[NSNumber numberWithBool:NO] forKey:@"clearClipboardEnabled"];
+    [defaultsDict setValue:@"/" forKey:@"dropboxDirectory"];
     [defaultsDict setValue:[NSNumber numberWithInt:10] forKey:@"pwGenLength"];
     [defaultsDict setValue:[NSNumber numberWithInt:CHARACTER_SET_DEFAULT] forKey:@"pwGenCharSets"];
     
@@ -187,11 +206,27 @@ static NSStringEncoding passwordEncodingValues[] = {
 }
 
 - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
+    if ([[DBSession sharedSession] handleOpenURL:url]) {
+        if ([[DBSession sharedSession] isLinked]) {
+            NSLog(@"App linked successfully!");
+        }
+        return YES;
+    }
+    
     [self openUrl:url];
     return YES;
 }
 
+// FIXME I shouldn't need the DB code in two places
+
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+    if ([[DBSession sharedSession] handleOpenURL:url]) {
+        if ([[DBSession sharedSession] isLinked]) {
+            NSLog(@"App linked successfully!");
+        }
+        return YES;
+    }
+
     [self openUrl:url];
     return YES;
 }
@@ -285,6 +320,7 @@ static NSStringEncoding passwordEncodingValues[] = {
         NSInteger clearClipboardTimeout = clearClipboardTimeoutValues[[userDefaults integerForKey:@"clearClipboardTimeout"]];
         
         // Initiate a background task
+        // FIXME there's a bug here that bgTask is being passed into the block being used to create bgTask
         UIApplication *application = [UIApplication sharedApplication];
         UIBackgroundTaskIdentifier bgTask = [application beginBackgroundTaskWithExpirationHandler:^{
             // End the background task

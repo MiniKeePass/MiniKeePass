@@ -15,29 +15,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#import <Foundation/Foundation.h>
-#import <DropboxSDK/DropboxSDK.h>
-#import "FilesInfoView.h"
-#import "TextEntryController.h"
-#import "NewKdbViewController.h"
+#import "ButtonCell.h"
 
-@class MiniKeePassAppDelegate;
+@implementation ButtonCell
 
-@interface FilesViewController : UITableViewController <TextEntryControllerDelegate, FormViewControllerDelegate, DBRestClientDelegate> {
-    FilesInfoView *filesInfoView;
-    MiniKeePassAppDelegate *appDelegate;
-    
-    NSMutableArray *databaseFiles;
-    NSMutableArray *keyFiles;
-    NSMutableArray *dropboxFiles;
-    NSString *selectedFile;
-    
-    DBSession *sharedSession;
-    DBRestClient *restClient;
+- (id)initWithLabel:(NSString*)labelText {
+    self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+    if (self) {
+        // Initialization code
+        self.selectionStyle = UITableViewCellSelectionStyleNone;
+        
+        self.textLabel.text = labelText;
+        self.textLabel.textAlignment = UITextAlignmentCenter;
+    }
+    return self;
 }
 
-- (void)updateFiles;
+- (void)dealloc {
+    [super dealloc];
+}
 
-@property (nonatomic, copy) NSString* selectedFile;
+- (void)setEnabled:(BOOL)enabled {
+    self.selectionStyle = enabled ? UITableViewCellSelectionStyleBlue : UITableViewCellSelectionStyleNone;
+    self.textLabel.enabled = enabled;
+}
 
 @end

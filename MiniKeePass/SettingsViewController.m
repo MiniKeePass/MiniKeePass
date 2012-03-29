@@ -19,6 +19,7 @@
 #import "MiniKeePassAppDelegate.h"
 #import "SettingsViewController.h"
 #import "SelectionListViewController.h"
+#import "DirectoryChoiceViewController.h"
 #import "SFHFKeychainUtils.h"
 
 enum {
@@ -27,6 +28,7 @@ enum {
     SECTION_CLOSE,
     SECTION_REMEMBER_PASSWORDS,
     SECTION_HIDE_PASSWORDS,
+    SECTION_DROPBOX,
     SECTION_SORTING,
     SECTION_PASSWORD_ENCODING,
     SECTION_CLEAR_CLIPBOARD,
@@ -59,6 +61,17 @@ enum {
 enum {
     ROW_HIDE_PASSWORDS_ENABLED,
     ROW_HIDE_PASSWORDS_NUMBER
+};
+
+enum {
+    ROW_UNLINKED_DROPBOX_LINK_BUTTON,
+    ROW_UNLINKED_DROPBOX_NUMBER
+};
+
+enum {
+    ROW_LINKED_DROPBOX_DIRECTORY_BUTTON,
+    ROW_LINKED_DROPBOX_UNLINK_BUTTON,
+    ROW_LINKED_DROPBOX_NUMBER
 };
 
 enum {
@@ -105,6 +118,12 @@ enum {
     hidePasswordsCell = [[SwitchCell alloc] initWithLabel:NSLocalizedString(@"Hide Passwords", nil)];
     [hidePasswordsCell.switchControl addTarget:self action:@selector(toggleHidePasswords:) forControlEvents:UIControlEventValueChanged];
     
+    dropboxLinkCell = [[ButtonCell alloc] initWithLabel:@"Link"];
+    dropboxUnlinkCell = [[ButtonCell alloc] initWithLabel:@"Unink"];
+    
+    dropboxDirectoryCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:nil];
+    dropboxDirectoryCell.textLabel.text = @"Directory:";
+    
     sortingEnabledCell = [[SwitchCell alloc] initWithLabel:NSLocalizedString(@"Enabled", nil)];
     [sortingEnabledCell.switchControl addTarget:self action:@selector(toggleSortingEnabled:) forControlEvents:UIControlEventValueChanged];
 
@@ -143,9 +162,17 @@ enum {
     
     self.tableView.tableFooterView = tableFooterView;
     [tableFooterView release];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
+}
+
+- (void)applicationDidBecomeActive:(id)sender {
+    [self updateDropboxStatus];
 }
 
 - (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
     [pinEnabledCell release];
     [pinLockTimeoutCell release];
     [deleteOnFailureEnabledCell release];
@@ -154,6 +181,7 @@ enum {
     [closeTimeoutCell release];
     [rememberPasswordsEnabledCell release];
     [hidePasswordsCell release];
+    [dropboxLinkCell release];
     [passwordEncodingCell release];
     [clearClipboardEnabledCell release];
     [clearClipboardTimeoutCell release];
@@ -189,6 +217,12 @@ enum {
     
     clearClipboardEnabledCell.switchControl.on = [userDefaults boolForKey:@"clearClipboardEnabled"];
     [clearClipboardTimeoutCell setSelectedIndex:[userDefaults integerForKey:@"clearClipboardTimeout"]];
+    
+    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:SECTION_DROPBOX] withRowAnimation:UITableViewRowAnimationNone];
+    
+    dropboxDirectory = [userDefaults valueForKey:@"dropboxDirectory"];
+    NSURL *fileUrl = [NSURL fileURLWithPath:dropboxDirectory];
+    dropboxDirectoryCell.detailTextLabel.text = fileUrl.lastPathComponent;
     
     // Update which controls are enabled
     [self updateEnabledControls];
@@ -235,6 +269,9 @@ enum {
         case SECTION_HIDE_PASSWORDS:
             return ROW_HIDE_PASSWORDS_NUMBER;
             
+        case SECTION_DROPBOX:
+            return [[DBSession sharedSession] isLinked] ? ROW_LINKED_DROPBOX_NUMBER : ROW_UNLINKED_DROPBOX_NUMBER;
+        
         case SECTION_SORTING:
             return ROW_SORTING_NUMBER;
             
@@ -263,6 +300,12 @@ enum {
             
         case SECTION_HIDE_PASSWORDS:
             return NSLocalizedString(@"Hide Passwords", nil);
+
+        case SECTION_DROPBOX:
+            return @"Dropbox";
+            
+        case SECTION_SORTING:
+            return NSLocalizedString(@"Sorting", nil);
             
         case SECTION_SORTING:
             return NSLocalizedString(@"Sorting", nil);
@@ -292,6 +335,12 @@ enum {
             
         case SECTION_HIDE_PASSWORDS:
             return NSLocalizedString(@"Hides passwords when viewing a password entry.", nil);
+
+        case SECTION_DROPBOX:
+            return @"Link with your Dropbox account to keep changes in sync between multiple devices.";
+            
+        case SECTION_SORTING:
+            return NSLocalizedString(@"Sort Groups and Entries Alphabetically", nil);
             
         case SECTION_SORTING:
             return NSLocalizedString(@"Sort Groups and Entries Alphabetically", nil);
@@ -347,6 +396,29 @@ enum {
                     return hidePasswordsCell;
             }
             break;
+
+        case SECTION_DROPBOX:
+            if ([[DBSession sharedSession] isLinked]) {
+                switch (indexPath.row) {
+                    case ROW_LINKED_DROPBOX_DIRECTORY_BUTTON:
+                        return dropboxDirectoryCell;
+                    case ROW_LINKED_DROPBOX_UNLINK_BUTTON:
+                        return dropboxUnlinkCell;
+                }
+            } else {
+                switch (indexPath.row) {
+                    case ROW_UNLINKED_DROPBOX_LINK_BUTTON:
+                        return dropboxLinkCell;
+                }
+            }
+            break;
+
+        case SECTION_SORTING:
+            switch (indexPath.row) {
+                case ROW_SORTING_ENABLED:
+                    return sortingEnabledCell;
+            }
+            break;
             
         case SECTION_SORTING:
             switch (indexPath.row) {
@@ -375,52 +447,77 @@ enum {
     return nil;
 }
 
+- (void)pushSelectionViewControllerWithTitle:(NSString*)title items:(NSArray*)items andDefaultsKey:(NSString*)key {
+    SelectionListViewController *selectionListViewController = [[SelectionListViewController alloc] initWithStyle:UITableViewStyleGrouped];
+    selectionListViewController.title = NSLocalizedString(title, nil);
+    selectionListViewController.items = items;
+    selectionListViewController.selectedIndex = [[NSUserDefaults standardUserDefaults] integerForKey:key];
+    selectionListViewController.delegate = self;
+    selectionListViewController.reference = [self.tableView indexPathForSelectedRow];
+    [self.navigationController pushViewController:selectionListViewController animated:YES];
+    [selectionListViewController release];    
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == SECTION_PIN && indexPath.row == ROW_PIN_LOCK_TIMEOUT && pinEnabledCell.switchControl.on) {
-        SelectionListViewController *selectionListViewController = [[SelectionListViewController alloc] initWithStyle:UITableViewStyleGrouped];
-        selectionListViewController.title = NSLocalizedString(@"Lock Timeout", nil);
-        selectionListViewController.items = pinLockTimeoutCell.choices;
-        selectionListViewController.selectedIndex = [[NSUserDefaults standardUserDefaults] integerForKey:@"pinLockTimeout"];
-        selectionListViewController.delegate = self;
-        selectionListViewController.reference = indexPath;
-        [self.navigationController pushViewController:selectionListViewController animated:YES];
-        [selectionListViewController release];
+        [self pushSelectionViewControllerWithTitle:@"Lock Timeout"
+                                             items:pinLockTimeoutCell.choices
+                                    andDefaultsKey:@"pinLockTimeout"];
+        
     } else if (indexPath.section == SECTION_DELETE_ON_FAILURE && indexPath.row == ROW_DELETE_ON_FAILURE_ATTEMPTS && deleteOnFailureEnabledCell.switchControl.on) {
-        SelectionListViewController *selectionListViewController = [[SelectionListViewController alloc] initWithStyle:UITableViewStyleGrouped];
-        selectionListViewController.title = NSLocalizedString(@"Attempts", nil);
-        selectionListViewController.items = deleteOnFailureAttemptsCell.choices;
-        selectionListViewController.selectedIndex = [[NSUserDefaults standardUserDefaults] integerForKey:@"deleteOnFailureAttempts"];
-        selectionListViewController.delegate = self;
-        selectionListViewController.reference = indexPath;
-        [self.navigationController pushViewController:selectionListViewController animated:YES];
-        [selectionListViewController release];
+        [self pushSelectionViewControllerWithTitle:@"Attempts"
+                                             items:deleteOnFailureAttemptsCell.choices
+                                    andDefaultsKey:@"deleteOnFailureAttempts"];
+        
     } else if (indexPath.section == SECTION_CLOSE && indexPath.row == ROW_CLOSE_TIMEOUT && closeEnabledCell.switchControl.on) {
-        SelectionListViewController *selectionListViewController = [[SelectionListViewController alloc] initWithStyle:UITableViewStyleGrouped];
-        selectionListViewController.title = NSLocalizedString(@"Close Timeout", nil);
-        selectionListViewController.items = closeTimeoutCell.choices;
-        selectionListViewController.selectedIndex = [[NSUserDefaults standardUserDefaults] integerForKey:@"closeTimeout"];
-        selectionListViewController.delegate = self;
-        selectionListViewController.reference = indexPath;
-        [self.navigationController pushViewController:selectionListViewController animated:YES];
-        [selectionListViewController release];
+        [self pushSelectionViewControllerWithTitle:@"Close Timeout"
+                                             items:closeTimeoutCell.choices
+                                    andDefaultsKey:@"closeTimeout"];
+
+    } else if (indexPath.section == SECTION_DROPBOX) {
+        if ([[DBSession sharedSession] isLinked]) {
+            if (indexPath.row == ROW_LINKED_DROPBOX_DIRECTORY_BUTTON) {
+                DirectoryChoiceViewController *directoryChoiceView = [[DirectoryChoiceViewController alloc] initWithPath:@"/"];
+                NSMutableArray *viewControllers = [NSMutableArray arrayWithObject:directoryChoiceView];
+                [directoryChoiceView release];
+
+                NSURL *fileUrl = [NSURL fileURLWithPath:dropboxDirectory];
+                NSArray *pathComponents = [fileUrl pathComponents];
+                
+                NSMutableString *currentPath = [NSMutableString string];
+                for (int i = 1; i < [pathComponents count]; i++) {
+                    [currentPath appendString:[NSString stringWithFormat:@"/%@", [pathComponents objectAtIndex:i]]];
+                    directoryChoiceView = [[DirectoryChoiceViewController alloc] initWithPath:currentPath];
+                    [viewControllers addObject:directoryChoiceView];
+                    [directoryChoiceView release];
+                }
+                                
+                UINavigationController *navController = [[UINavigationController alloc] init];
+                [navController setViewControllers:viewControllers animated:NO];
+                
+                [self presentModalViewController:navController animated:YES];                
+                [navController release];
+            } else {
+                [[DBSession sharedSession] unlinkAll];
+                [[NSUserDefaults standardUserDefaults] setValue:@"/" forKey:@"dropboxDirectory"];
+                [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:SECTION_DROPBOX] withRowAnimation:UITableViewRowAnimationFade];
+            }
+        } else {
+            switch (indexPath.row) {
+                case ROW_UNLINKED_DROPBOX_LINK_BUTTON:
+                    [[DBSession sharedSession] link];
+                    break;
+            }
+        }
     } else if (indexPath.section == SECTION_PASSWORD_ENCODING && indexPath.row == ROW_PASSWORD_ENCODING_VALUE) {
-        SelectionListViewController *selectionListViewController = [[SelectionListViewController alloc] initWithStyle:UITableViewStyleGrouped];
-        selectionListViewController.title = NSLocalizedString(@"Password Encoding", nil);
-        selectionListViewController.items = passwordEncodingCell.choices;
-        selectionListViewController.selectedIndex = [[NSUserDefaults standardUserDefaults] integerForKey:@"passwordEncoding"];
-        selectionListViewController.delegate = self;
-        selectionListViewController.reference = indexPath;
-        [self.navigationController pushViewController:selectionListViewController animated:YES];
-        [selectionListViewController release];
+        [self pushSelectionViewControllerWithTitle:@"Password Encoding"
+                                             items:passwordEncodingCell.choices
+                                    andDefaultsKey:@"passwordEncoding"];
+
     } else if (indexPath.section == SECTION_CLEAR_CLIPBOARD && indexPath.row == ROW_CLEAR_CLIPBOARD_TIMEOUT && clearClipboardEnabledCell.switchControl.on) {
-        SelectionListViewController *selectionListViewController = [[SelectionListViewController alloc] initWithStyle:UITableViewStyleGrouped];
-        selectionListViewController.title = NSLocalizedString(@"Clear Clipboard Timeout", nil);
-        selectionListViewController.items = clearClipboardTimeoutCell.choices;
-        selectionListViewController.selectedIndex = [[NSUserDefaults standardUserDefaults] integerForKey:@"clearClipboardTimeout"];
-        selectionListViewController.delegate = self;
-        selectionListViewController.reference = indexPath;
-        [self.navigationController pushViewController:selectionListViewController animated:YES];
-        [selectionListViewController release];
+        [self pushSelectionViewControllerWithTitle:@"Clear Clipboard Timeout"
+                                             items:clearClipboardTimeoutCell.choices
+                                    andDefaultsKey:@"clearClipboardTimeout"];
     }
 }
 
@@ -557,5 +654,18 @@ enum {
         [controller clearEntry];
     }
 }
+
+- (void)updateDropboxStatus {    
+    if (!restClient) {
+        restClient =
+        [[DBRestClient alloc] initWithSession:[DBSession sharedSession]];
+        restClient.delegate = self;
+    }
+    
+    if ([[DBSession sharedSession] isLinked]) {
+        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:SECTION_DROPBOX] withRowAnimation:UITableViewRowAnimationFade];
+    }
+}
+
 
 @end
