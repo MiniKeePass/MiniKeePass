@@ -24,7 +24,8 @@ Copyright 2011 Jason Rush and John Flanagan. All rights reserved.
 
 German Translation - Florian Holzapfel<br />
 Japanese Translation - Katherine Lake<br />
-Russian Translation - Roman Azarenko
+Russian Translation - Roman Azarenko<br />
+Italian Translation - Emanuele Di Vita
 
 Nuvola Icons
 Copyright (c)  2003-2004  David Vignoni. All rights reserved.
