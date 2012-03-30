@@ -35,6 +35,7 @@
         textField.textColor = [UIColor colorWithRed:.285 green:.376 blue:.541 alpha:1];
         textField.font = [UIFont systemFontOfSize:16];
         textField.returnKeyType = UIReturnKeyNext;
+        textField.clearButtonMode = UITextFieldViewModeWhileEditing;
         [self addSubview:textField];
         
         tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapPressed)];

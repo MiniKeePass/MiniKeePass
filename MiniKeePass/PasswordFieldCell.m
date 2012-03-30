@@ -28,6 +28,7 @@
         NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
         textField.secureTextEntry = [userDefaults boolForKey:@"hidePasswords"];
         textField.font = [UIFont fontWithName:@"Andale Mono" size:16];
+        textField.clearButtonMode = UITextFieldViewModeNever;
         
         UIImage *image = [UIImage imageNamed:@"wrench"];
         
