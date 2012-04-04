@@ -19,14 +19,17 @@
 #import "FormViewController.h"
 #import "ImagesViewController.h"
 #import "ImageButtonCell.h"
+#import "TextFieldCell.h"
 
 @interface EditGroupViewController : FormViewController <ImagesViewControllerDelegate> {
     UITextField *nameTextField;
+    TextFieldCell *nameCell;
     ImageButtonCell *imageButtonCell;
     NSUInteger selectedImageIndex;
 }
 
 @property (nonatomic, readonly) UITextField *nameTextField;
+@property (nonatomic, readonly) TextFieldCell *nameCell;
 @property (nonatomic, assign) NSUInteger selectedImageIndex;
 
 @end

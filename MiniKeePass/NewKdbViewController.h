@@ -17,11 +17,16 @@
 
 #import <UIKit/UIKit.h>
 #import "FormViewController.h"
+//#import "TextFieldCell.h" // <-- For some reason, this prevents
+                            //     TextFieldCell from compiling! WTF!?
 
 @interface NewKdbViewController : FormViewController <UITextFieldDelegate> {
     UITextField *nameTextField;
     UITextField *passwordTextField1;
     UITextField *passwordTextField2;
+    UITableViewCell *nameCell;
+    UITableViewCell *passwordCell1;
+    UITableViewCell *passwordCell2;
     UIView *footerView;
     UISegmentedControl *versionSegmentedControl;
 }
@@ -29,6 +34,9 @@
 @property (nonatomic, readonly) UITextField *nameTextField;
 @property (nonatomic, readonly) UITextField *passwordTextField1;
 @property (nonatomic, readonly) UITextField *passwordTextField2;
+@property (nonatomic, readonly) UITableViewCell *nameCell;
+@property (nonatomic, readonly) UITableViewCell *passwordCell1;
+@property (nonatomic, readonly) UITableViewCell *passwordCell2;
 @property (nonatomic, readonly) UISegmentedControl *versionSegmentedControl;
 
 @end

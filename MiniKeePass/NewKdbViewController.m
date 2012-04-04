@@ -16,6 +16,7 @@
  */
 
 #import "NewKdbViewController.h"
+#import "TextFieldCell.h"
 
 #define VSPACER 12
 #define HSPACER 9
@@ -27,6 +28,9 @@
 @synthesize nameTextField;
 @synthesize passwordTextField1;
 @synthesize passwordTextField2;
+@synthesize nameCell;
+@synthesize passwordCell1;
+@synthesize passwordCell2;
 @synthesize versionSegmentedControl;
 
 - (id)initWithStyle:(UITableViewStyle)style {
@@ -34,24 +38,33 @@
     if (self) {
         self.title = NSLocalizedString(@"New Database", nil);
         
-        nameTextField = [[UITextField alloc] init];
+        //nameTextField = [[UITextField alloc] init];
+        nameCell = [[TextFieldCell alloc] init];
+        nameCell.textLabel.text = NSLocalizedString(@"Name", nil);
+        nameTextField = [nameCell textField];
         nameTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
-        nameTextField.placeholder = NSLocalizedString(@"Name", nil);
+        //nameTextField.placeholder = NSLocalizedString(@"Name", nil);
         nameTextField.returnKeyType = UIReturnKeyNext;
         nameTextField.delegate = self;
         
-        passwordTextField1 = [[UITextField alloc] init];
+        //passwordTextField1 = [[UITextField alloc] init];
+        passwordCell1 = [[TextFieldCell alloc] init];
+        passwordCell1.textLabel.text = NSLocalizedString(@"Password", nil);
+        passwordTextField1 = [passwordCell1 textField];
         passwordTextField1.clearButtonMode = UITextFieldViewModeWhileEditing;
-        passwordTextField1.placeholder = NSLocalizedString(@"Password", nil);
+        //passwordTextField1.placeholder = NSLocalizedString(@"Password", nil);
         passwordTextField1.secureTextEntry = YES;
         passwordTextField1.autocapitalizationType = UITextAutocapitalizationTypeNone;
         passwordTextField1.autocorrectionType = UITextAutocorrectionTypeNo;
         passwordTextField1.returnKeyType = UIReturnKeyNext;
         passwordTextField1.delegate = self;
         
-        passwordTextField2 = [[UITextField alloc] init];
+        //passwordTextField2 = [[UITextField alloc] init];
+        passwordCell2 = [[TextFieldCell alloc] init];
+        passwordCell2.textLabel.text = NSLocalizedString(@"Confirm", nil);
+        passwordTextField2 = [passwordCell2 textField];
         passwordTextField2.clearButtonMode = UITextFieldViewModeWhileEditing;
-        passwordTextField2.placeholder = NSLocalizedString(@"Confirm Password", nil);
+        //passwordTextField2.placeholder = NSLocalizedString(@"Confirm Password", nil);
         passwordTextField2.secureTextEntry = YES;
         passwordTextField2.autocapitalizationType = UITextAutocapitalizationTypeNone;
         passwordTextField2.autocorrectionType = UITextAutocorrectionTypeNo;
@@ -65,15 +78,20 @@
         versionSegmentedControl.frame = CGRectMake(HSPACER, VSPACER, BUTTON_WIDTH, BUTTON_HEIGHT);
         [footerView addSubview:versionSegmentedControl];
         
-        self.controls = [NSArray arrayWithObjects:nameTextField, passwordTextField1, passwordTextField2, nil];
+        //self.controls = [NSArray arrayWithObjects:nameTextField, passwordTextField1, passwordTextField2, nil];
+        self.controls = [NSArray arrayWithObjects:nameCell, passwordCell1, passwordCell2, nil];
+        [nameTextField becomeFirstResponder];
     }
     return self;
 }
 
 - (void)dealloc {
-    [nameTextField release];
-    [passwordTextField1 release];
-    [passwordTextField2 release];
+    //[nameTextField release];
+    //[passwordTextField1 release];
+    //[passwordTextField2 release];
+    [nameCell release];
+    [passwordCell1 release];
+    [passwordCell2 release];
     [footerView release];
     [versionSegmentedControl release];
     [super dealloc];

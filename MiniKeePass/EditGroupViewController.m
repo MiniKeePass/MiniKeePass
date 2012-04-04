@@ -21,14 +21,18 @@
 @implementation EditGroupViewController
 
 @synthesize nameTextField;
+@synthesize nameCell;
 
 - (id)initWithStyle:(UITableViewStyle)style {
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
         self.title = NSLocalizedString(@"Edit Group", nil);
         
-        nameTextField = [[UITextField alloc] init];
-        nameTextField.placeholder = NSLocalizedString(@"Name", nil);
+        //nameTextField = [[UITextField alloc] init];
+        nameCell = [[TextFieldCell alloc] init];
+        nameCell.textLabel.text = NSLocalizedString(@"Name", nil);
+        nameTextField = [nameCell textField];
+        //nameTextField.placeholder = NSLocalizedString(@"Name", nil);
         nameTextField.delegate = self;
         nameTextField.returnKeyType = UIReturnKeyDone;
         nameTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
@@ -36,13 +40,16 @@
         imageButtonCell = [[ImageButtonCell alloc] initWithLabel:NSLocalizedString(@"Image", nil)];
         [imageButtonCell.imageButton addTarget:self action:@selector(imageButtonPressed) forControlEvents:UIControlEventTouchUpInside];
         
-        self.controls = [NSArray arrayWithObjects:nameTextField, imageButtonCell, nil];
+        //self.controls = [NSArray arrayWithObjects:nameTextField, imageButtonCell, nil];
+        self.controls = [NSArray arrayWithObjects:nameCell, imageButtonCell, nil];
+        [nameTextField becomeFirstResponder];
     }
     return self;
 }
 
 - (void)dealloc {
-    [nameTextField release];
+    //[nameTextField release];
+    [nameCell release];
     [super dealloc];
 }
 
