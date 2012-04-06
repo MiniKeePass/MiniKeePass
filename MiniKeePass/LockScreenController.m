@@ -40,7 +40,12 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10, 15};
         pinViewController.view.frame = offScreenFrame;
         [self.view addSubview:pinViewController.view];
         
-        self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"splash"]];
+        imageName = @"splash";
+        if (CGRectGetWidth([[UIScreen mainScreen] bounds]) == 768) {
+            imageName = @"splash-ipad";
+        }
+        
+        self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:imageName]];
         
         appDelegate = (MiniKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
         
@@ -55,7 +60,7 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10, 15};
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    
+    [imageName release];
     [pinViewController release];
     [super dealloc];
 }
@@ -69,7 +74,7 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10, 15};
 }
 
 - (void)show {
-    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"splash"]];
+    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:imageName]];
     [[self frontMostViewController] presentModalViewController:self animated:NO];
 }
 
