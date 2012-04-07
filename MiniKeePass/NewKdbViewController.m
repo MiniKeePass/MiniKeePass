@@ -75,7 +75,11 @@
         
         versionSegmentedControl = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObjects:NSLocalizedString(@"Version 1.x", nil), NSLocalizedString(@"Version 2.x", nil), nil]];
         versionSegmentedControl.selectedSegmentIndex = 0;
-        versionSegmentedControl.frame = CGRectMake(HSPACER, VSPACER, BUTTON_WIDTH, BUTTON_HEIGHT);
+        if (CGRectGetWidth([[UIScreen mainScreen] bounds]) == 768) {
+            versionSegmentedControl.frame = CGRectMake(HSPACER*5, VSPACER*2, BUTTON_WIDTH, BUTTON_HEIGHT);
+        } else {
+            versionSegmentedControl.frame = CGRectMake(HSPACER, VSPACER, BUTTON_WIDTH, BUTTON_HEIGHT);
+        }
         [footerView addSubview:versionSegmentedControl];
         
         //self.controls = [NSArray arrayWithObjects:nameTextField, passwordTextField1, passwordTextField2, nil];
