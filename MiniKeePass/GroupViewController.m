@@ -142,7 +142,6 @@
 }
 
 - (void)dealloc {
-    [_actionButton release];
     [searchDisplayController release];
     [groupsArray release];
     [enteriesArray release];
