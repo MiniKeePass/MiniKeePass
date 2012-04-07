@@ -34,5 +34,6 @@
 }
 
 @property (nonatomic, assign) KdbGroup *group;
+@property (nonatomic, assign) UIBarButtonItem *_actionButton;
 
 @end

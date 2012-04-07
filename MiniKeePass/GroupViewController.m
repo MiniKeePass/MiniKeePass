@@ -33,6 +33,8 @@
 
 @implementation GroupViewController
 
+@synthesize _actionButton;
+
 - (void)viewDidLoad {
     appDelegate = (MiniKeePassAppDelegate *)[[UIApplication sharedApplication] delegate];
     
@@ -55,6 +57,8 @@
     UIBarButtonItem *actionButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(exportFilePressed)];
     UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addPressed)];
     UIBarButtonItem *spacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    
+    _actionButton = actionButton;
     
     self.toolbarItems = [NSArray arrayWithObjects:settingsButton, spacer, actionButton, spacer, addButton, nil];
     self.navigationItem.rightBarButtonItem = self.editButtonItem;
@@ -138,6 +142,7 @@
 }
 
 - (void)dealloc {
+    [_actionButton release];
     [searchDisplayController release];
     [groupsArray release];
     [enteriesArray release];
@@ -400,7 +405,8 @@
 }
 
 - (void)exportFilePressed {
-    BOOL didShow = [appDelegate.databaseDocument.documentInteractionController presentOpenInMenuFromRect:CGRectZero inView:self.view.window animated:YES];
+    //BOOL didShow = [appDelegate.databaseDocument.documentInteractionController presentOpenInMenuFromRect:CGRectZero inView:self.view.window animated:YES];
+    BOOL didShow = [appDelegate.databaseDocument.documentInteractionController presentOpenInMenuFromBarButtonItem:_actionButton animated:YES];
     if (!didShow) {
         NSString *prompt = NSLocalizedString(@"There are no applications installed capable of importing KeePass files", nil);
         UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:prompt delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", nil) destructiveButtonTitle:nil otherButtonTitles:nil];
