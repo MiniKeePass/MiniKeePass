@@ -292,4 +292,8 @@ BOOL stringsEqual(NSString *str1, NSString *str2) {
     passwordCell.textField.text = password;
 }
 
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
+    return YES;
+}
+
 @end

@@ -23,6 +23,7 @@
     UITextField *textField;
     NSArray *pinTextFields;
     UILabel *textLabel;
+    UIToolbar *topBar;
     id<PinViewControllerDelegate> delegate;
 }
 

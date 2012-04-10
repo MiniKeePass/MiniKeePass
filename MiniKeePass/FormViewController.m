@@ -43,6 +43,10 @@
         
         infoBar = [[InfoBar alloc] initWithFrame:CGRectMake(0, 0, 320, 20)];
         [self.view addSubview:infoBar];
+        
+        [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged) name:UIDeviceOrientationDidChangeNotification object:nil];
+
     }
     return self;
 }
@@ -62,6 +66,8 @@
 }
 
 - (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [[UIDevice currentDevice] endGeneratingDeviceOrientationNotifications];
     [infoBar release];
     [headerTitle release];
     [footerTitle release];
@@ -126,9 +132,10 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
         CGRect frame = cell.frame;
-        frame.size.width -= 40;
+        double xpos = UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? 55 : 20;
+        frame.size.width = tableView.frame.size.width - (xpos * 2);
         frame.size.height -= 22;
-        frame.origin.x = 20;
+        frame.origin.x = xpos;
         frame.origin.y = 11;
         
         view.frame = frame;
@@ -141,6 +148,39 @@
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     [self okPressed:nil];
     return YES;
+}
+
+- (CGRect)calculateNewFrameForView:(UIView *)view inOrientation:(UIInterfaceOrientation)orientation {
+    CGRect frame = view.frame;
+    CGRect screenBounds = [[UIScreen mainScreen] bounds];
+    double displayWidth = UIInterfaceOrientationIsPortrait(orientation) ? screenBounds.size.width : screenBounds.size.height;
+    frame.size.width = displayWidth - (2 * frame.origin.x);
+    return frame;
+}
+
+- (void)resizeControlsForOrientation:(UIInterfaceOrientation)orientation {
+    for (UIView *view in self.controls) {
+        if (![view isKindOfClass:[UITableViewCell class]]) {
+            view.frame = [self calculateNewFrameForView:view inOrientation:orientation];
+        }
+    }
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
+    return YES;
+}
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+    // Not sure why, but the non-UITableViewCell controls do not seem to get resized during rotation, so adjust here.
+    [UIView animateWithDuration:duration animations:^{
+        [self resizeControlsForOrientation:toInterfaceOrientation];
+    }];
+}
+
+- (void)orientationChanged {
+    // If this is not the topmost view in the navigation controller, then the willRotate... message is not received, so
+    // fix things up here.  This will be redundant if this view is visible, but not sure how to avoid that!
+    [self resizeControlsForOrientation:[[UIApplication sharedApplication] statusBarOrientation]];
 }
 
 @end

@@ -463,4 +463,8 @@ enum {
     [appDelegate.window.rootViewController dismissModalViewControllerAnimated:YES];
 }
 
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
+    return YES;
+}
+
 @end
