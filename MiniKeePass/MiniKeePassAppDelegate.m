@@ -116,8 +116,8 @@ static NSStringEncoding passwordEncodingValues[] = {
 
 - (void)applicationWillResignActive:(UIApplication *)application {    
     [self dismissActionSheet];
-    [LockScreenController present];
     if (!self.locked) {
+        [LockScreenController present];
         NSDate *currentTime = [NSDate date];
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
         [userDefaults setValue:currentTime forKey:@"exitTime"];        
