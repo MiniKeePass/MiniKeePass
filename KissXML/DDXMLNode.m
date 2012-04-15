@@ -4,17 +4,60 @@
 #import <libxml/xpath.h>
 #import <libxml/xpathInternals.h>
 
+#if ! __has_feature(objc_arc)
+#warning This file must be compiled with ARC. Use -fobjc-arc flag (or convert project to ARC).
+#endif
+
+/**
+ * Welcome to KissXML.
+ * 
+ * The project page has documentation if you have questions.
+ * https://github.com/robbiehanson/KissXML
+ * 
+ * If you're new to the project you may wish to read the "Getting Started" wiki.
+ * https://github.com/robbiehanson/KissXML/wiki/GettingStarted
+ * 
+ * KissXML provides a drop-in replacement for Apple's NSXML class cluster.
+ * The goal is to get the exact same behavior as the NSXML classes.
+ * 
+ * For API Reference, see Apple's excellent documentation,
+ * either via Xcode's Mac OS X documentation, or via the web:
+ * 
+ * https://github.com/robbiehanson/KissXML/wiki/Reference
+**/
 
 @implementation DDXMLNode
 
 static void MyErrorHandler(void * userData, xmlErrorPtr error);
 
+#if DDXML_DEBUG_MEMORY_ISSUES
+
+static CFMutableDictionaryRef zombieTracker;
+static dispatch_queue_t zombieQueue;
+
+static void RecursiveMarkZombiesFromNode(xmlNodePtr node);
+static void RecursiveMarkZombiesFromDoc(xmlDocPtr doc);
+
+static void MarkZombies(void *xmlPtr);
+static void MarkBirth(void *xmlPtr, DDXMLNode *wrapper);
+static void MarkDeath(void *xmlPtr, DDXMLNode *wrapper);
+
+#endif
+
+/**
+ * From Apple's Documentation:
+ * 
+ * The runtime sends initialize to each class in a program exactly one time just before the class,
+ * or any class that inherits from it, is sent its first message from within the program. (Thus the method may
+ * never be invoked if the class is not used.) The runtime sends the initialize message to classes
+ * in a thread-safe manner. Superclasses receive this message before their subclasses.
+ * 
+ * The method may also be called directly (assumably by accident), hence the safety mechanism.
+**/
 + (void)initialize
 {
-	static BOOL initialized = NO;
-	if (!initialized)
-	{
-		initialized = YES;
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
 		
 		// Redirect error output to our own function (don't clog up the console)
 		initGenericErrorDefaultFunc(NULL);
@@ -24,22 +67,30 @@ static void MyErrorHandler(void * userData, xmlErrorPtr error);
 		// NSXML ignores such whitespace.
 		// This also has the added benefit of taking up less RAM when parsing formatted XML documents.
 		xmlKeepBlanksDefault(0);
-	}
+		
+		#if DDXML_DEBUG_MEMORY_ISSUES
+		{
+			zombieTracker = CFDictionaryCreateMutable(NULL, 0, NULL, &kCFTypeDictionaryValueCallBacks);
+			zombieQueue = dispatch_queue_create("DDXMLZombieQueue", NULL);
+		}
+		#endif
+		
+	});
 }
 
 + (id)elementWithName:(NSString *)name
 {
-	return [[[DDXMLElement alloc] initWithName:name] autorelease];
+	return [[DDXMLElement alloc] initWithName:name];
 }
 
 + (id)elementWithName:(NSString *)name stringValue:(NSString *)string
 {
-	return [[[DDXMLElement alloc] initWithName:name stringValue:string] autorelease];
+	return [[DDXMLElement alloc] initWithName:name stringValue:string];
 }
 
 + (id)elementWithName:(NSString *)name children:(NSArray *)children attributes:(NSArray *)attributes
 {
-	DDXMLElement *result = [[[DDXMLElement alloc] initWithName:name] autorelease];
+	DDXMLElement *result = [[DDXMLElement alloc] initWithName:name];
 	[result setChildren:children];
 	[result setAttributes:attributes];
 	
@@ -48,7 +99,7 @@ static void MyErrorHandler(void * userData, xmlErrorPtr error);
 
 + (id)elementWithName:(NSString *)name URI:(NSString *)URI
 {
-	return [[[DDXMLElement alloc] initWithName:name URI:URI] autorelease];
+	return [[DDXMLElement alloc] initWithName:name URI:URI];
 }
 
 + (id)attributeWithName:(NSString *)name stringValue:(NSString *)stringValue
@@ -57,7 +108,7 @@ static void MyErrorHandler(void * userData, xmlErrorPtr error);
 	
 	if (attr == NULL) return nil;
 	
-	return [[[DDXMLAttributeNode alloc] initWithAttrPrimitive:attr freeOnDealloc:YES] autorelease];
+	return [[DDXMLAttributeNode alloc] initWithAttrPrimitive:attr owner:nil];
 }
 
 + (id)attributeWithName:(NSString *)name URI:(NSString *)URI stringValue:(NSString *)stringValue
@@ -66,10 +117,10 @@ static void MyErrorHandler(void * userData, xmlErrorPtr error);
 	
 	if (attr == NULL) return nil;
 	
-	DDXMLAttributeNode *result = [[DDXMLAttributeNode alloc] initWithAttrPrimitive:attr freeOnDealloc:YES];
+	DDXMLAttributeNode *result = [[DDXMLAttributeNode alloc] initWithAttrPrimitive:attr owner:nil];
 	[result setURI:URI];
 	
-	return [result autorelease];
+	return result;
 }
 
 + (id)namespaceWithName:(NSString *)name stringValue:(NSString *)stringValue
@@ -81,7 +132,7 @@ static void MyErrorHandler(void * userData, xmlErrorPtr error);
 	
 	if (ns == NULL) return nil;
 	
-	return [[[DDXMLNamespaceNode alloc] initWithNsPrimitive:ns nsParent:NULL freeOnDealloc:YES] autorelease];
+	return [[DDXMLNamespaceNode alloc] initWithNsPrimitive:ns nsParent:NULL owner:nil];
 }
 
 + (id)processingInstructionWithName:(NSString *)name stringValue:(NSString *)stringValue
@@ -90,7 +141,7 @@ static void MyErrorHandler(void * userData, xmlErrorPtr error);
 	
 	if (procInst == NULL) return nil;
 	
-	return [[[DDXMLNode alloc] initWithPrimitive:(xmlKindPtr)procInst freeOnDealloc:YES] autorelease];
+	return [[DDXMLNode alloc] initWithPrimitive:(xmlKindPtr)procInst owner:nil];
 }
 
 + (id)commentWithStringValue:(NSString *)stringValue
@@ -99,7 +150,7 @@ static void MyErrorHandler(void * userData, xmlErrorPtr error);
 	
 	if (comment == NULL) return nil;
 	
-	return [[[DDXMLNode alloc] initWithPrimitive:(xmlKindPtr)comment freeOnDealloc:YES] autorelease];
+	return [[DDXMLNode alloc] initWithPrimitive:(xmlKindPtr)comment owner:nil];
 }
 
 + (id)textWithStringValue:(NSString *)stringValue
@@ -108,36 +159,36 @@ static void MyErrorHandler(void * userData, xmlErrorPtr error);
 	
 	if (text == NULL) return nil;
 	
-	return [[[DDXMLNode alloc] initWithPrimitive:(xmlKindPtr)text freeOnDealloc:YES] autorelease];
+	return [[DDXMLNode alloc] initWithPrimitive:(xmlKindPtr)text owner:nil];
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma mark Init, Dealloc
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-+ (id)nodeWithUnknownPrimitive:(xmlKindPtr)kindPtr freeOnDealloc:(BOOL)flag
++ (id)nodeWithUnknownPrimitive:(xmlKindPtr)kindPtr owner:(DDXMLNode *)owner
 {
 	if (kindPtr->type == XML_DOCUMENT_NODE)
 	{
-		return [DDXMLDocument nodeWithDocPrimitive:(xmlDocPtr)kindPtr freeOnDealloc:flag];
+		return [DDXMLDocument nodeWithDocPrimitive:(xmlDocPtr)kindPtr owner:owner];
 	}
 	else if (kindPtr->type == XML_ELEMENT_NODE)
 	{
-		return [DDXMLElement nodeWithElementPrimitive:(xmlNodePtr)kindPtr freeOnDealloc:flag];
+		return [DDXMLElement nodeWithElementPrimitive:(xmlNodePtr)kindPtr owner:owner];
 	}
 	else if (kindPtr->type == XML_NAMESPACE_DECL)
 	{
 		// Todo: This may be a problem...
 		
-		return [DDXMLNamespaceNode nodeWithNsPrimitive:(xmlNsPtr)kindPtr nsParent:NULL freeOnDealloc:flag];
+		return [DDXMLNamespaceNode nodeWithNsPrimitive:(xmlNsPtr)kindPtr nsParent:NULL owner:owner];
 	}
 	else if (kindPtr->type == XML_ATTRIBUTE_NODE)
 	{
-		return [DDXMLAttributeNode nodeWithAttrPrimitive:(xmlAttrPtr)kindPtr freeOnDealloc:flag];
+		return [DDXMLAttributeNode nodeWithAttrPrimitive:(xmlAttrPtr)kindPtr owner:owner];
 	}
 	else
 	{
-		return [DDXMLNode nodeWithPrimitive:kindPtr freeOnDealloc:flag];
+		return [DDXMLNode nodeWithPrimitive:kindPtr owner:owner];
 	}
 }
 
@@ -145,55 +196,102 @@ static void MyErrorHandler(void * userData, xmlErrorPtr error);
  * Returns a DDXML wrapper object for the given primitive node.
  * The given node MUST be non-NULL and of the proper type.
 **/
-+ (id)nodeWithPrimitive:(xmlKindPtr)kindPtr freeOnDealloc:(BOOL)flag
++ (id)nodeWithPrimitive:(xmlKindPtr)kindPtr owner:(DDXMLNode *)owner
 {
-	return [[[DDXMLNode alloc] initWithPrimitive:kindPtr freeOnDealloc:flag] autorelease];
+	return [[DDXMLNode alloc] initWithPrimitive:kindPtr owner:owner];
 }
 
 /**
  * Returns a DDXML wrapper object for the given primitive node.
  * The given node MUST be non-NULL and of the proper type.
 **/
-- (id)initWithPrimitive:(xmlKindPtr)kindPtr freeOnDealloc:(BOOL)flag
+- (id)initWithPrimitive:(xmlKindPtr)kindPtr owner:(DDXMLNode *)inOwner
 {
 	if ((self = [super init]))
 	{
 		genericPtr = kindPtr;
-		freeOnDealloc = flag;
+		owner = inOwner;
+		
+	#if DDXML_DEBUG_MEMORY_ISSUES
+		MarkBirth(genericPtr, self);
+	#endif
 	}
 	return self;
 }
 
+/**
+ * This method shouldn't be used.
+ * To maintain compatibility with Apple, we return an invalid node.
+**/
+- (id)init
+{
+	self = [super init];
+	
+	if ([self isKindOfClass:[DDXMLInvalidNode class]])
+	{
+		return self;
+	}
+	else
+	{
+		return [[DDXMLInvalidNode alloc] init];
+	}
+}
+
 - (void)dealloc
 {
-	if (freeOnDealloc)
+#if DDXML_DEBUG_MEMORY_ISSUES
+	MarkDeath(genericPtr, self);
+#endif
+	
+	// We also check if genericPtr is NULL.
+	// This may be the case if, e.g., DDXMLElement calls [self release] from it's init method.
+	
+	if ((owner == nil) && (genericPtr != NULL))
 	{
 		if (IsXmlNsPtr(genericPtr))
 		{
+		#if DDXML_DEBUG_MEMORY_ISSUES
+			MarkZombies(genericPtr);
+		#endif
 			xmlFreeNs((xmlNsPtr)genericPtr);
 		}
 		else if (IsXmlAttrPtr(genericPtr))
 		{
+		#if DDXML_DEBUG_MEMORY_ISSUES
+			MarkZombies(genericPtr);
+		#endif
 			xmlFreeProp((xmlAttrPtr)genericPtr);
 		}
 		else if (IsXmlDtdPtr(genericPtr))
 		{
+		#if DDXML_DEBUG_MEMORY_ISSUES
+			MarkZombies(genericPtr);
+		#endif
 			xmlFreeDtd((xmlDtdPtr)genericPtr);
 		}
 		else if (IsXmlDocPtr(genericPtr))
 		{
-			xmlFreeDoc((xmlDocPtr)genericPtr);
+			xmlDocPtr doc = (xmlDocPtr)genericPtr;
+			
+		#if DDXML_DEBUG_MEMORY_ISSUES
+			RecursiveMarkZombiesFromDoc(doc);
+		#endif
+			xmlFreeDoc(doc);
 		}
 		else if (IsXmlNodePtr(genericPtr))
 		{
-			xmlFreeNode((xmlNodePtr)genericPtr);
+			xmlNodePtr node = (xmlNodePtr)genericPtr;
+			
+		#if DDXML_DEBUG_MEMORY_ISSUES
+			RecursiveMarkZombiesFromNode(node);
+		#endif
+			xmlFreeNode(node);
 		}
 		else
 		{
-			NSAssert1(NO, @"Cannot free unknown node type: %i", ((xmlKindPtr)genericPtr)->type);
+			NSAssert1(NO, @"Cannot free unknown node type: %i", genericPtr->type);
 		}
 	}
-	[super dealloc];
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -202,13 +300,17 @@ static void MyErrorHandler(void * userData, xmlErrorPtr error);
 
 - (id)copyWithZone:(NSZone *)zone
 {
+#if DDXML_DEBUG_MEMORY_ISSUES
+	DDXMLNotZombieAssert();
+#endif
+	
 	if (IsXmlDocPtr(genericPtr))
 	{
 		xmlDocPtr copyDocPtr = xmlCopyDoc((xmlDocPtr)genericPtr, 1);
 		
 		if (copyDocPtr == NULL) return nil;
 		
-		return [[DDXMLDocument alloc] initWithDocPrimitive:copyDocPtr freeOnDealloc:YES];
+		return [[DDXMLDocument alloc] initWithDocPrimitive:copyDocPtr owner:nil];
 	}
 	
 	if (IsXmlNodePtr(genericPtr))
@@ -218,9 +320,9 @@ static void MyErrorHandler(void * userData, xmlErrorPtr error);
 		if (copyNodePtr == NULL) return nil;
 		
 		if ([self isKindOfClass:[DDXMLElement class]])
-			return [[DDXMLElement alloc] initWithElementPrimitive:copyNodePtr freeOnDealloc:YES];
+			return [[DDXMLElement alloc] initWithElementPrimitive:copyNodePtr owner:nil];
 		else
-			return [[DDXMLNode alloc] initWithPrimitive:(xmlKindPtr)copyNodePtr freeOnDealloc:YES];
+			return [[DDXMLNode alloc] initWithPrimitive:(xmlKindPtr)copyNodePtr owner:nil];
 	}
 	
 	if (IsXmlAttrPtr(genericPtr))
@@ -229,7 +331,7 @@ static void MyErrorHandler(void * userData, xmlErrorPtr error);
 		
 		if (copyAttrPtr == NULL) return nil;
 		
-		return [[DDXMLAttributeNode alloc] initWithAttrPrimitive:copyAttrPtr freeOnDealloc:YES];
+		return [[DDXMLAttributeNode alloc] initWithAttrPrimitive:copyAttrPtr owner:nil];
 	}
 	
 	if (IsXmlNsPtr(genericPtr))
@@ -238,7 +340,7 @@ static void MyErrorHandler(void * userData, xmlErrorPtr error);
 		
 		if (copyNsPtr == NULL) return nil;
 		
-		return [[DDXMLNamespaceNode alloc] initWithNsPrimitive:copyNsPtr nsParent:NULL freeOnDealloc:YES];
+		return [[DDXMLNamespaceNode alloc] initWithNsPrimitive:copyNsPtr nsParent:NULL owner:nil];
 	}
 	
 	if (IsXmlDtdPtr(genericPtr))
@@ -247,10 +349,33 @@ static void MyErrorHandler(void * userData, xmlErrorPtr error);
 		
 		if (copyDtdPtr == NULL) return nil;
 		
-		return [[DDXMLNode alloc] initWithPrimitive:(xmlKindPtr)copyDtdPtr freeOnDealloc:YES];
+		return [[DDXMLNode alloc] initWithPrimitive:(xmlKindPtr)copyDtdPtr owner:nil];
 	}
 	
 	return nil;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+#pragma mark Equality
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+- (BOOL)isEqual:(id)anObject
+{
+	// DDXMLNode, DDXMLElement, and DDXMLDocument are simply light-weight wrappers atop a libxml structure.
+	// 
+	// To provide maximum speed and thread-safety,
+	// multiple DDXML wrapper objects may be created that wrap the same underlying libxml node.
+	// 
+	// Thus equality is simply a matter of what underlying libxml node DDXML is wrapping.
+	
+	if ([anObject class] == [self class])
+	{
+		DDXMLNode *aNode = (DDXMLNode *)anObject;
+		
+		return (genericPtr == aNode->genericPtr);
+	}
+	
+	return NO;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -259,6 +384,10 @@ static void MyErrorHandler(void * userData, xmlErrorPtr error);
 
 - (DDXMLNodeKind)kind
 {
+#if DDXML_DEBUG_MEMORY_ISSUES
+	DDXMLNotZombieAssert();
+#endif
+	
 	if (genericPtr != NULL)
 		return genericPtr->type;
 	else
@@ -269,6 +398,10 @@ static void MyErrorHandler(void * userData, xmlErrorPtr error);
 {
 	// Note: DDXMLNamespaceNode overrides this method
 	
+#if DDXML_DEBUG_MEMORY_ISSUES
+	DDXMLNotZombieAssert();
+#endif
+	
 	// The xmlNodeSetName function works for both nodes and attributes
 	xmlNodeSetName((xmlNodePtr)genericPtr, [name xmlChar]);
 }
@@ -276,19 +409,45 @@ static void MyErrorHandler(void * userData, xmlErrorPtr error);
 - (NSString *)name
 {
 	// Note: DDXMLNamespaceNode overrides this method
+	// Note: DDXMLAttributeNode overrides this method
 	
-	const char *name = (const char *)((xmlStdPtr)genericPtr)->name;
+#if DDXML_DEBUG_MEMORY_ISSUES
+	DDXMLNotZombieAssert();
+#endif
 	
-	if (name == NULL)
+	const xmlChar *xmlName = ((xmlStdPtr)genericPtr)->name;
+	if (xmlName == NULL)
+	{
 		return nil;
-	else
-		return [NSString stringWithUTF8String:name];
+	}
+	
+	NSString *name = [NSString stringWithUTF8String:(const char *)xmlName];
+	
+	if (IsXmlNodePtr(genericPtr))
+	{
+		xmlNodePtr node = (xmlNodePtr)genericPtr;
+		
+		NSRange range = [name rangeOfString:@":"];
+		if (range.length == 0)
+		{
+			if (node->ns && node->ns->prefix)
+			{
+				return [NSString stringWithFormat:@"%s:%@", node->ns->prefix, name];
+			}
+		}
+	}
+	
+	return name;
 }
 
 - (void)setStringValue:(NSString *)string
 {
 	// Note: DDXMLNamespaceNode overrides this method
 	// Note: DDXMLAttributeNode overrides this method
+	
+#if DDXML_DEBUG_MEMORY_ISSUES
+	DDXMLNotZombieAssert();
+#endif
 	
 	if (IsXmlNodePtr(genericPtr))
 	{
@@ -316,6 +475,10 @@ static void MyErrorHandler(void * userData, xmlErrorPtr error);
 	// Note: DDXMLNamespaceNode overrides this method
 	// Note: DDXMLAttributeNode overrides this method
 	
+#if DDXML_DEBUG_MEMORY_ISSUES
+	DDXMLNotZombieAssert();
+#endif
+	
 	if (IsXmlNodePtr(genericPtr))
 	{
 		xmlChar *content = xmlNodeGetContent((xmlNodePtr)genericPtr);
@@ -341,6 +504,10 @@ static void MyErrorHandler(void * userData, xmlErrorPtr error);
 {
 	// Note: DDXMLNamespaceNode overrides this method
 	
+#if DDXML_DEBUG_MEMORY_ISSUES
+	DDXMLNotZombieAssert();
+#endif
+	
 	NSUInteger result = 0;
 	
 	xmlStdPtr node = ((xmlStdPtr)genericPtr)->prev;
@@ -360,6 +527,10 @@ static void MyErrorHandler(void * userData, xmlErrorPtr error);
 - (NSUInteger)level
 {
 	// Note: DDXMLNamespaceNode overrides this method
+	
+#if DDXML_DEBUG_MEMORY_ISSUES
+	DDXMLNotZombieAssert();
+#endif
 	
 	NSUInteger result = 0;
 	
@@ -382,12 +553,16 @@ static void MyErrorHandler(void * userData, xmlErrorPtr error);
 {
 	// Note: DDXMLNamespaceNode overrides this method
 	
+#if DDXML_DEBUG_MEMORY_ISSUES
+	DDXMLNotZombieAssert();
+#endif
+	
 	xmlStdPtr node = (xmlStdPtr)genericPtr;
 	
 	if (node == NULL || node->doc == NULL)
 		return nil;
 	else
-		return [DDXMLDocument nodeWithDocPrimitive:node->doc freeOnDealloc:NO];
+		return [DDXMLDocument nodeWithDocPrimitive:node->doc owner:self];
 }
 
 /**
@@ -401,12 +576,16 @@ static void MyErrorHandler(void * userData, xmlErrorPtr error);
 {
 	// Note: DDXMLNamespaceNode overrides this method
 	
+#if DDXML_DEBUG_MEMORY_ISSUES
+	DDXMLNotZombieAssert();
+#endif
+	
 	xmlStdPtr node = (xmlStdPtr)genericPtr;
 	
 	if (node->parent == NULL)
 		return nil;
 	else
-		return [DDXMLNode nodeWithUnknownPrimitive:(xmlKindPtr)node->parent freeOnDealloc:NO];
+		return [DDXMLNode nodeWithUnknownPrimitive:(xmlKindPtr)node->parent owner:self];
 }
 
 /**
@@ -416,6 +595,10 @@ static void MyErrorHandler(void * userData, xmlErrorPtr error);
 - (NSUInteger)childCount
 {
 	// Note: DDXMLNamespaceNode overrides this method
+	
+#if DDXML_DEBUG_MEMORY_ISSUES
+	DDXMLNotZombieAssert();
+#endif
 	
 	if (!IsXmlDocPtr(genericPtr) && !IsXmlNodePtr(genericPtr) && !IsXmlDtdPtr(genericPtr))
 	{
@@ -441,6 +624,10 @@ static void MyErrorHandler(void * userData, xmlErrorPtr error);
 {
 	// Note: DDXMLNamespaceNode overrides this method
 	
+#if DDXML_DEBUG_MEMORY_ISSUES
+	DDXMLNotZombieAssert();
+#endif
+	
 	if (!IsXmlDocPtr(genericPtr) && !IsXmlNodePtr(genericPtr) && !IsXmlDtdPtr(genericPtr))
 	{
 		return nil;
@@ -451,12 +638,12 @@ static void MyErrorHandler(void * userData, xmlErrorPtr error);
 	xmlNodePtr child = ((xmlStdPtr)genericPtr)->children;
 	while (child != NULL)
 	{
-		[result addObject:[DDXMLNode nodeWithUnknownPrimitive:(xmlKindPtr)child freeOnDealloc:NO]];
+		[result addObject:[DDXMLNode nodeWithUnknownPrimitive:(xmlKindPtr)child owner:self]];
 		
 		child = child->next;
 	}
 	
-	return [[result copy] autorelease];
+	return [result copy];
 }
 
 /**
@@ -471,6 +658,10 @@ static void MyErrorHandler(void * userData, xmlErrorPtr error);
 - (DDXMLNode *)childAtIndex:(NSUInteger)index
 {
 	// Note: DDXMLNamespaceNode overrides this method
+	
+#if DDXML_DEBUG_MEMORY_ISSUES
+	DDXMLNotZombieAssert();
+#endif
 	
 	if (!IsXmlDocPtr(genericPtr) && !IsXmlNodePtr(genericPtr) && !IsXmlDtdPtr(genericPtr))
 	{
@@ -491,7 +682,7 @@ static void MyErrorHandler(void * userData, xmlErrorPtr error);
 	{
 		if (i == index)
 		{
-			return [DDXMLNode nodeWithUnknownPrimitive:(xmlKindPtr)child freeOnDealloc:NO];
+			return [DDXMLNode nodeWithUnknownPrimitive:(xmlKindPtr)child owner:self];
 		}
 		
 		i++;
@@ -514,12 +705,16 @@ static void MyErrorHandler(void * userData, xmlErrorPtr error);
 {
 	// Note: DDXMLNamespaceNode overrides this method
 	
+#if DDXML_DEBUG_MEMORY_ISSUES
+	DDXMLNotZombieAssert();
+#endif
+	
 	xmlStdPtr node = (xmlStdPtr)genericPtr;
 	
 	if (node->prev == NULL)
 		return nil;
 	else
-		return [DDXMLNode nodeWithUnknownPrimitive:(xmlKindPtr)node->prev freeOnDealloc:NO];
+		return [DDXMLNode nodeWithUnknownPrimitive:(xmlKindPtr)node->prev owner:self];
 }
 
 /**
@@ -533,12 +728,16 @@ static void MyErrorHandler(void * userData, xmlErrorPtr error);
 {
 	// Note: DDXMLNamespaceNode overrides this method
 	
+#if DDXML_DEBUG_MEMORY_ISSUES
+	DDXMLNotZombieAssert();
+#endif
+	
 	xmlStdPtr node = (xmlStdPtr)genericPtr;
 	
 	if (node->next == NULL)
 		return nil;
 	else
-		return [DDXMLNode nodeWithUnknownPrimitive:(xmlKindPtr)node->next freeOnDealloc:NO];
+		return [DDXMLNode nodeWithUnknownPrimitive:(xmlKindPtr)node->next owner:self];
 }
 
 /**
@@ -553,6 +752,10 @@ static void MyErrorHandler(void * userData, xmlErrorPtr error);
 {
 	// Note: DDXMLNamespaceNode overrides this method
 	// Note: DDXMLAttributeNode overrides this method
+	
+#if DDXML_DEBUG_MEMORY_ISSUES
+	DDXMLNotZombieAssert();
+#endif
 	
 	// If the node has a previous sibling,
 	// then we need the last child of the last child of the last child etc
@@ -572,12 +775,12 @@ static void MyErrorHandler(void * userData, xmlErrorPtr error);
 				lastChild = lastChild->last;
 			}
 			
-			return [DDXMLNode nodeWithUnknownPrimitive:(xmlKindPtr)lastChild freeOnDealloc:NO];
+			return [DDXMLNode nodeWithUnknownPrimitive:(xmlKindPtr)lastChild owner:self];
 		}
 		else
 		{
 			// The previous sibling has no children, so the previous node is simply the previous sibling
-			return [DDXMLNode nodeWithUnknownPrimitive:(xmlKindPtr)previousSibling freeOnDealloc:NO];
+			return [DDXMLNode nodeWithUnknownPrimitive:(xmlKindPtr)previousSibling owner:self];
 		}
 	}
 	
@@ -588,7 +791,7 @@ static void MyErrorHandler(void * userData, xmlErrorPtr error);
 	if (node->parent == NULL || node->parent->type == XML_DOCUMENT_NODE)
 		return nil;
 	else
-		return [DDXMLNode nodeWithUnknownPrimitive:(xmlKindPtr)node->parent freeOnDealloc:NO];
+		return [DDXMLNode nodeWithUnknownPrimitive:(xmlKindPtr)node->parent owner:self];
 }
 
 /**
@@ -603,6 +806,10 @@ static void MyErrorHandler(void * userData, xmlErrorPtr error);
 {
 	// Note: DDXMLNamespaceNode overrides this method
 	// Note: DDXMLAttributeNode overrides this method
+	
+#if DDXML_DEBUG_MEMORY_ISSUES
+	DDXMLNotZombieAssert();
+#endif
 	
 	// If the node has children, then next node is the first child
 	DDXMLNode *firstChild = [self childAtIndex:0];
@@ -625,7 +832,7 @@ static void MyErrorHandler(void * userData, xmlErrorPtr error);
 	{
 		xmlNodePtr parentNextSibling = parent->next;
 		if (parentNextSibling != NULL)
-			return [DDXMLNode nodeWithUnknownPrimitive:(xmlKindPtr)parentNextSibling freeOnDealloc:NO];
+			return [DDXMLNode nodeWithUnknownPrimitive:(xmlKindPtr)parentNextSibling owner:self];
 		else
 			parent = parent->parent;
 	}
@@ -644,20 +851,27 @@ static void MyErrorHandler(void * userData, xmlErrorPtr error);
 	// Note: DDXMLNamespaceNode overrides this method
 	// Note: DDXMLAttributeNode overrides this method
 	
+#if DDXML_DEBUG_MEMORY_ISSUES
+	DDXMLNotZombieAssert();
+#endif
+	
 	xmlStdPtr node = (xmlStdPtr)genericPtr;
 	
 	if (node->parent != NULL)
 	{
 		if (IsXmlNodePtr(genericPtr))
 		{
-			[[self class] detachChild:(xmlNodePtr)node fromNode:node->parent];
-			freeOnDealloc = YES;
+			[[self class] detachChild:(xmlNodePtr)node];
+			
+			owner = nil;
 		}
 	}
 }
 
-- (xmlStdPtr)XPathPreProcess:(NSMutableString *)result
+- (xmlStdPtr)_XPathPreProcess:(NSMutableString *)result
 {
+	// This is a private/internal method
+	
 	// Note: DDXMLNamespaceNode overrides this method
 	// Note: DDXMLAttributeNode overrides this method
 	
@@ -666,13 +880,17 @@ static void MyErrorHandler(void * userData, xmlErrorPtr error);
 
 - (NSString *)XPath
 {
+#if DDXML_DEBUG_MEMORY_ISSUES
+	DDXMLNotZombieAssert();
+#endif
+	
 	NSMutableString *result = [NSMutableString stringWithCapacity:25];
 	
 	// Examples:
 	// /rootElement[1]/subElement[4]/thisNode[2]
 	// topElement/thisNode[2]
 	
-	xmlStdPtr node = [self XPathPreProcess:result];
+	xmlStdPtr node = [self _XPathPreProcess:result];
 	
 	// Note: rootNode.parent == docNode
 		
@@ -709,7 +927,7 @@ static void MyErrorHandler(void * userData, xmlErrorPtr error);
 		node = (xmlStdPtr)node->parent;
 	}
 	
-	return [[result copy] autorelease];
+	return [result copy];
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -726,6 +944,8 @@ static void MyErrorHandler(void * userData, xmlErrorPtr error);
 {
 	// Note: DDXMLNamespaceNode overrides this method
 	
+	// Zombie test occurs in [self name]
+	
 	return [[self class] localNameForName:[self name]];
 }
 
@@ -740,6 +960,8 @@ static void MyErrorHandler(void * userData, xmlErrorPtr error);
 {
 	// Note: DDXMLNamespaceNode overrides this method
 	
+	// Zombie test occurs in [self name]
+	
 	return [[self class] prefixForName:[self name]];
 }
 
@@ -751,6 +973,10 @@ static void MyErrorHandler(void * userData, xmlErrorPtr error);
 {
 	// Note: DDXMLNamespaceNode overrides this method
 	// Note: DDXMLAttributeNode overrides this method
+	
+#if DDXML_DEBUG_MEMORY_ISSUES
+	DDXMLNotZombieAssert();
+#endif
 	
 	if (IsXmlNodePtr(genericPtr))
 	{
@@ -783,6 +1009,10 @@ static void MyErrorHandler(void * userData, xmlErrorPtr error);
 	// Note: DDXMLNamespaceNode overrides this method
 	// Note: DDXMLAttributeNode overrides this method
 	
+#if DDXML_DEBUG_MEMORY_ISSUES
+	DDXMLNotZombieAssert();
+#endif
+	
 	if (IsXmlNodePtr(genericPtr))
 	{
 		xmlNodePtr node = (xmlNodePtr)genericPtr;
@@ -793,6 +1023,58 @@ static void MyErrorHandler(void * userData, xmlErrorPtr error);
 	}
 	
 	return nil;
+}
+
++ (void)getHasPrefix:(BOOL *)hasPrefixPtr localName:(NSString **)localNamePtr forName:(NSString *)name
+{
+	// This is a private/internal method
+	
+	if (name)
+	{
+		NSRange range = [name rangeOfString:@":"];
+		
+		if (range.length != 0)
+		{
+			if (hasPrefixPtr) *hasPrefixPtr = range.location > 0;
+			if (localNamePtr) *localNamePtr = [name substringFromIndex:(range.location + range.length)];
+		}
+		else
+		{
+			if (hasPrefixPtr) *hasPrefixPtr = NO;
+			if (localNamePtr) *localNamePtr = name;
+		}
+	}
+	else
+	{
+		if (hasPrefixPtr) *hasPrefixPtr = NO;
+		if (localNamePtr) *localNamePtr = nil;
+	}
+}
+
++ (void)getPrefix:(NSString **)prefixPtr localName:(NSString **)localNamePtr forName:(NSString *)name
+{
+	// This is a private/internal method
+	
+	if (name)
+	{
+		NSRange range = [name rangeOfString:@":"];
+		
+		if (range.length != 0)
+		{
+			if (prefixPtr)    *prefixPtr    = [name substringToIndex:range.location];
+			if (localNamePtr) *localNamePtr = [name substringFromIndex:(range.location + range.length)];
+		}
+		else
+		{
+			if (prefixPtr)    *prefixPtr    = @"";
+			if (localNamePtr) *localNamePtr = name;
+		}
+	}
+	else
+	{
+		if (prefixPtr)    *prefixPtr    = @"";
+		if (localNamePtr) *localNamePtr = nil;
+	}
 }
 
 /**
@@ -806,16 +1088,12 @@ static void MyErrorHandler(void * userData, xmlErrorPtr error);
 **/
 + (NSString *)localNameForName:(NSString *)name
 {
-	if (name)
-	{
-		NSRange range = [name rangeOfString:@":"];
-		
-		if (range.length != 0)
-			return [name substringFromIndex:(range.location + range.length)];
-		else
-			return name;
-	}
-	return nil;
+	// This is a public/API method
+	
+	NSString *localName;
+	[self getPrefix:NULL localName:&localName forName:name];
+	
+	return localName;
 }
 
 /**
@@ -830,16 +1108,12 @@ static void MyErrorHandler(void * userData, xmlErrorPtr error);
 **/
 + (NSString *)prefixForName:(NSString *)name
 {
-	if (name)
-	{
-		NSRange range = [name rangeOfString:@":"];
-		
-		if (range.length != 0)
-		{
-			return [name substringToIndex:range.location];
-		}
-	}
-	return @"";
+	// This is a public/API method
+	
+	NSString *prefix;
+	[self getPrefix:&prefix localName:NULL forName:name];
+	
+	return prefix;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -848,17 +1122,24 @@ static void MyErrorHandler(void * userData, xmlErrorPtr error);
 
 - (NSString *)description
 {
+	// Zombie test occurs in XMLStringWithOptions:
+	
 	return [self XMLStringWithOptions:0];
 }
 
 - (NSString *)XMLString
 {
-	// Todo: Test XMLString for namespace node
+	// Zombie test occurs in XMLStringWithOptions:
+	
 	return [self XMLStringWithOptions:0];
 }
 
 - (NSString *)XMLStringWithOptions:(NSUInteger)options
 {
+#if DDXML_DEBUG_MEMORY_ISSUES
+	DDXMLNotZombieAssert();
+#endif
+	
 	// xmlSaveNoEmptyTags:
 	// Global setting, asking the serializer to not output empty tags
 	// as <empty/> but <empty></empty>. those two forms are undistinguishable
@@ -877,11 +1158,18 @@ static void MyErrorHandler(void * userData, xmlErrorPtr error);
 		xmlIndentTreeOutput = 1;
 	}
 	
+	int dumpCnt;
+	
 	xmlBufferPtr bufferPtr = xmlBufferCreate();
 	if (IsXmlNsPtr(genericPtr))
-		xmlNodeDump(bufferPtr, NULL, (xmlNodePtr)genericPtr, 0, format);
+		dumpCnt = xmlNodeDump(bufferPtr, NULL, (xmlNodePtr)genericPtr, 0, format);
 	else
-		xmlNodeDump(bufferPtr, ((xmlStdPtr)genericPtr)->doc, (xmlNodePtr)genericPtr, 0, format);
+		dumpCnt = xmlNodeDump(bufferPtr, ((xmlStdPtr)genericPtr)->doc, (xmlNodePtr)genericPtr, 0, format);
+	
+	if (dumpCnt < 0)
+	{
+		return nil;
+	}
 	
 	if ([self kind] == DDXMLTextKind)
 	{
@@ -894,11 +1182,11 @@ static void MyErrorHandler(void * userData, xmlErrorPtr error);
 	else
 	{
 		NSMutableString *resTmp = [NSMutableString stringWithUTF8String:(const char *)bufferPtr->content];
-		CFStringTrimWhitespace((CFMutableStringRef)resTmp);
+		CFStringTrimWhitespace((__bridge CFMutableStringRef)resTmp);
 		
 		xmlBufferFree(bufferPtr);
 		
-		return [[resTmp copy] autorelease];
+		return [resTmp copy];
 	}
 }
 
@@ -908,6 +1196,10 @@ static void MyErrorHandler(void * userData, xmlErrorPtr error);
 
 - (NSArray *)nodesForXPath:(NSString *)xpath error:(NSError **)error
 {
+#if DDXML_DEBUG_MEMORY_ISSUES
+	DDXMLNotZombieAssert();
+#endif
+	
 	xmlXPathContextPtr xpathCtx;
 	xmlXPathObjectPtr xpathObj;
 	
@@ -978,7 +1270,7 @@ static void MyErrorHandler(void * userData, xmlErrorPtr error);
 			{
 				xmlNodePtr node = xpathObj->nodesetval->nodeTab[i];
 				
-				[mResult addObject:[DDXMLNode nodeWithUnknownPrimitive:(xmlKindPtr)node freeOnDealloc:NO]];
+				[mResult addObject:[DDXMLNode nodeWithUnknownPrimitive:(xmlKindPtr)node owner:self]];
 			}
 			
 			result = mResult;
@@ -1031,7 +1323,7 @@ static void MyErrorHandler(void * userData, xmlErrorPtr error);
 // 
 // 
 // 
-// Example #2 - Safe vs Unsafe sub-element processing
+// Example #2 - Asynchronous child processing
 // 
 // DDXMLElement *root = [[DDXMLElement alloc] initWithXMLString:str error:nil];
 // DDXMLElement *child = [root elementForName:@"starbucks"];
@@ -1040,85 +1332,28 @@ static void MyErrorHandler(void * userData, xmlErrorPtr error);
 //     <process child>
 // });
 // 
-// [root release]; <-------------- NOT safe!
+// [root release];
 // 
-// But why is it not safe?
-// Does it have something to do with the child?
-// Do I need to retain the child?
-// Doesn't the child get retained automatically by dispatch_async?
+// You may have noticed that we possibly released the root node before the child was processed.
+// Is this safe?
 // 
-// Yes, the child does get retainied automatically by dispatch_async, but that's not the problem.
-// XML represents a heirarchy of nodes. For example:
-// 
-// <root>
-//   <starbucks>
-//     <coffee/>
-//   </starbucks>
-// </root>
-//     
-// Each element within the heirarchy has references/pointers to its parent, children, siblings, etc.
-// This is necessary to support the traversal strategies one requires to work with XML.
-// This also means its not thread-safe to deallocate the root node of an element if
-// you are still using/accessing a child node.
-// So let's rewrite example 2 in a thread-safe manner this time.
-// 
-// DDXMLElement *root = [[DDXMLElement alloc] initWithXMLString:str error:nil];
-// DDXMLElement *child = [root elementForName:@"starbucks"];
-// 
-// [child detach]; <-------------- Detached from root, and can safely be used even if we now dealloc root.
-// 
-// dispatch_async(queue, ^{
-//     <process child>
-// });
-// 
-// [root release]; <-------------- Thread-safe thanks to the detach above.
+// The answer is YES.
+// The child node retains a reference to the root node,
+// so the xml tree heirarchy won't be freed until you're done using all associated nodes.
 // 
 // 
 // 
-// Example #3 - Building up an element
-// 
-// DDXMLElement *coffee    = [[DDXMLElement alloc] initWithName:@"coffee"];
-// DDXMLElement *starbucks = [[DDXMLElement alloc] initWithName:@"starbucks"];
-// DDXMLElement *root      = [[DDXMLElement alloc] initWithName:@"root"];
-// 
-// At this point we have 3 root nodes (root, starbucks, coffee)
-// 
-// [starbucks addChild:coffee];
-// 
-// At this point we have 2 root nodes (root, starbucks).
-// The coffee node is now a child of starbucks, so it is no-longer a "root" node since
-// it has a parent within the xml tree heirarchy.
-// 
-// [coffee addChild:starbucks];
-// 
-// At this point we have only 1 root node (root).
-// Again, the others are no-longer "root" nodes since they have a parent within the xml tree heirarchy.
-// 
-// [coffee release]; coffee = nil;
-// 
-// If you have a reference to a child node, you can safely release that reference.
-// Since coffee is embedded in the tree heirarchy, the coffee node doesn't disappear.
-// 
-// DDXMLElement *coffee2 = [starbucks elementForName:@"coffee"];
-// 
-// So the above will return a new reference to the coffee node.
-// 
-// [root release]; root = nil;
-// 
-// Now, we have just released the root node.
-// This means that it is no longer safe to use starbucks or coffee2.
-// 
-// [starbucks release]; starbucks = nil;
-// 
-// Yes, this is safe. Just don't do anything else with starbucks besides release it.
+
 
 /**
  * Returns whether or not the node has a parent.
  * Use this method instead of parent when you only need to ensure parent is nil.
  * This prevents the unnecessary creation of a parent node wrapper.
 **/
-- (BOOL)hasParent
+- (BOOL)_hasParent
 {
+	// This is a private/internal method
+	
 	// Note: DDXMLNamespaceNode overrides this method
 	
 	xmlStdPtr node = (xmlStdPtr)genericPtr;
@@ -1158,89 +1393,241 @@ static void MyErrorHandler(void * userData, xmlErrorPtr error);
 }
 
 /**
- * Detaches the given attribute from the given node.
- * The attribute's surrounding prev/next pointers are properly updated to remove the attribute from the attr list.
- * Then, if flag is YES, the attribute's parent, prev, next and doc pointers are destroyed.
+ * If node->ns is pointing to the given ns, the pointer is nullified.
+ * The same goes for any attributes and childrend of node.
 **/
-+ (void)detachAttribute:(xmlAttrPtr)attr fromNode:(xmlNodePtr)node andNullifyPointers:(BOOL)flag
++ (void)recursiveStripNamespace:(xmlNsPtr)ns fromNode:(xmlNodePtr)node
 {
-	// Update the surrounding prev/next pointers
-	if (attr->prev == NULL)
+	if (node->ns == ns)
 	{
-		if (attr->next == NULL)
-		{
-			node->properties = NULL;
-		}
-		else
-		{
-			node->properties = attr->next;
-			attr->next->prev = NULL;
-		}
-	}
-	else
-	{
-		if (attr->next == NULL)
-		{
-			attr->prev->next = NULL;
-		}
-		else
-		{
-			attr->prev->next = attr->next;
-			attr->next->prev = attr->prev;
-		}
+		node->ns = NULL;
 	}
 	
-	if (flag)
-	{
-		// Nullify pointers
-		attr->parent = NULL;
-		attr->prev   = NULL;
-		attr->next   = NULL;
-		if(attr->doc != NULL) [self stripDocPointersFromAttr:attr];
-	}
-}
-
-/**
- * Detaches the given attribute from the given node.
- * The attribute's surrounding prev/next pointers are properly updated to remove the attribute from the attr list.
- * Then the attribute's parent, prev, next and doc pointers are destroyed.
-**/
-+ (void)detachAttribute:(xmlAttrPtr)attr fromNode:(xmlNodePtr)node
-{
-	[self detachAttribute:attr fromNode:node andNullifyPointers:YES];
-}
-
-/**
- * Removes and free's the given attribute from the given node.
- * The attribute's surrounding prev/next pointers are properly updated to remove the attribute from the attr list.
-**/
-+ (void)removeAttribute:(xmlAttrPtr)attr fromNode:(xmlNodePtr)node
-{
-	// We perform a bit of optimization here.
-	// No need to bother nullifying pointers since we're about to free the node anyway.
-	[self detachAttribute:attr fromNode:node andNullifyPointers:NO];
-	
-	xmlFreeProp(attr);
-}
-
-/**
- * Removes and frees all attributes from the given node.
- * Upon return, the given node's properties pointer is NULL.
-**/
-+ (void)removeAllAttributesFromNode:(xmlNodePtr)node
-{
 	xmlAttrPtr attr = node->properties;
-	
-	while (attr != NULL)
+	while (attr)
 	{
-		xmlAttrPtr nextAttr = attr->next;
-		
-		xmlFreeProp(attr);
-		
-		attr = nextAttr;
+		if (attr->ns == ns)
+		{
+			attr->ns = NULL;
+		}
+		attr = attr->next;
 	}
 	
-	node->properties = NULL;
+	xmlNodePtr child = node->children;
+	while (child)
+	{
+		[self recursiveStripNamespace:ns fromNode:child];
+		child = child->next;
+	}
+}
+
+/**
+ * If node or any of its attributes or children are referencing the the given old namespace,
+ * they are migrated to reference the new namespace instead.
+ * 
+ * If newNs is NULL, and a reference to oldNs is found, then oldNs is copied,
+ * and the copy is used for the remainder of the recursion.
+ * 
+ * This method makes copies of oldNs as needed so that oldNs can be cleanly detached from the tree.
+**/
++ (void)recursiveMigrateNamespace:(xmlNsPtr)oldNs to:(xmlNsPtr)newNs node:(xmlNodePtr)node
+{
+	// Do we need to copy old namespace?
+	
+	if (newNs == NULL)
+	{
+		// A copy needs to be made if:
+		//  * node->ns == oldNs
+		//  * attr->ns == oldNs
+		// 
+		// Remember: The namespaces in node->nsDef are owned by node.
+		//           That's not what we're migrating.
+		
+		BOOL needsCopy = (node->ns == oldNs);
+		
+		if (!needsCopy)
+		{
+			xmlAttrPtr attr = node->properties;
+			while (attr)
+			{
+				if (attr->ns == oldNs)
+				{
+					needsCopy = YES;
+					break;
+				}
+				attr = attr->next;
+			}
+		}
+		
+		if (needsCopy)
+		{
+			// Copy oldNs, and place at the end of the node's namspace list
+			newNs = xmlNewNs(NULL, oldNs->href, oldNs->prefix);
+			
+			if (node->nsDef == NULL)
+			{
+				node->nsDef = newNs;
+			}
+			else
+			{
+				xmlNsPtr lastNs = node->nsDef;
+				while (lastNs->next)
+				{
+					lastNs = lastNs->next;
+				}
+				
+				lastNs->next = newNs;
+			}
+		}
+	}
+	
+	// Migrate node & attributes
+	
+	if (newNs)
+	{
+		if (node->ns == oldNs)
+		{
+			node->ns = newNs;
+		}
+		
+		xmlAttrPtr attr = node->properties;
+		while (attr)
+		{
+			if (attr->ns == oldNs)
+			{
+				attr->ns = newNs;
+			}
+			attr = attr->next;
+		}
+	}
+	
+	// Migrate children
+	
+	xmlNodePtr child = node->children;
+	while (child)
+	{
+		[self recursiveMigrateNamespace:oldNs to:newNs node:child];
+		child = child->next;
+	}
+}
+
+/**
+ * If node has a default namespace allocated outside the given root,
+ * this method copies the namespace so that the given root can be cleanly detached from its tree.
+**/
++ (void)recursiveFixDefaultNamespacesInNode:(xmlNodePtr)node withNewRoot:(xmlNodePtr)rootNode
+{
+	NSAssert(rootNode != NULL, @"Must specify rootNode.");
+	
+	// Step 1 of 3
+	// 
+	// Copy our namespace.
+	// It's important to do this first (before the other steps).
+	// This way attributes and children can reference our copy. (prevents multiple copies throughout tree)
+	
+	xmlNsPtr nodeNs = node->ns;
+	if (nodeNs)
+	{
+		// Does the namespace reside within the new root somewhere?
+		// We can find out by searching for it in nsDef lists up to the given root.
+		
+		BOOL nsResidesWithinNewRoot = NO;
+		
+		xmlNodePtr treeNode = node;
+		while (treeNode)
+		{
+			xmlNsPtr treeNs = treeNode->nsDef;
+			while (treeNs)
+			{
+				if (treeNs == nodeNs)
+				{
+					nsResidesWithinNewRoot = YES;
+					break;
+				}
+				
+				treeNs = treeNs->next;
+			}
+			
+			if (nsResidesWithinNewRoot || treeNode == rootNode)
+				treeNode = NULL;
+			else
+				treeNode = treeNode->parent;
+		}
+		
+		if (!nsResidesWithinNewRoot)
+		{
+			// Create a copy of the namespace, add to nsDef list, and then set as ns
+			xmlNsPtr nodeNsCopy = xmlNewNs(NULL, nodeNs->href, nodeNs->prefix);
+			
+			nodeNsCopy->next = node->nsDef;
+			node->nsDef = nodeNsCopy;
+			
+			node->ns = nodeNsCopy;
+		}
+	}
+	
+	// Step 2 of 3
+	// 
+	// If any attributes are referencing namespaces outside the new root,
+	// copy the namespaces into node, and have the attributes reference the copy.
+	
+	xmlAttrPtr attr = node->properties;
+	while (attr)
+	{
+		xmlNsPtr attrNs = attr->ns;
+		while (attrNs)
+		{
+			BOOL nsResidesWithinNewRoot = NO;
+			
+			xmlNodePtr treeNode = node;
+			while (treeNode)
+			{
+				xmlNsPtr treeNs = treeNode->nsDef;
+				while (treeNs)
+				{
+					if (treeNs == attrNs)
+					{
+						nsResidesWithinNewRoot = YES;
+						break;
+					}
+					
+					treeNs = treeNs->next;
+				}
+				
+				if (nsResidesWithinNewRoot || treeNode == rootNode)
+					treeNode = NULL;
+				else
+					treeNode = treeNode->parent;
+			}
+			
+			if (!nsResidesWithinNewRoot)
+			{
+				// Create a copy of the namespace, add to node's nsDef list, and then set as attribute's ns
+				xmlNsPtr attrNsCopy = xmlNewNs(NULL, attrNs->href, attrNs->prefix);
+				
+				attrNsCopy->next = node->nsDef;
+				node->nsDef = attrNsCopy;
+				
+				attr->ns = attrNsCopy;
+			}
+			
+			attrNs = attrNs->next;
+		}
+		
+		attr = attr->next;
+	}
+	
+	// Step 3 of 3
+	// 
+	// Copy namespaces into children
+	
+	xmlNodePtr childNode = node->children;
+	while (childNode)
+	{
+		[self recursiveFixDefaultNamespacesInNode:childNode withNewRoot:rootNode];
+		
+		childNode = childNode->next;
+	}
 }
 
 /**
@@ -1250,6 +1637,36 @@ static void MyErrorHandler(void * userData, xmlErrorPtr error);
 **/
 + (void)detachNamespace:(xmlNsPtr)ns fromNode:(xmlNodePtr)node
 {
+	// If node, or any of node's attributes are referring to this namespace,
+	// then we need to nullify those references.
+	// 
+	// However, if any children are referring to this namespace,
+	// then we instruct those children to make copies.
+	
+	if (node->ns == ns)
+	{
+		node->ns = NULL;
+	}
+	
+	xmlAttrPtr attr = node->properties;
+	while (attr)
+	{
+		if (attr->ns == ns)
+		{
+			attr->ns = NULL;
+		}
+		attr = attr->next;
+	}
+	
+	xmlNodePtr child = node->children;
+	while (child)
+	{
+		[self recursiveMigrateNamespace:ns to:NULL node:child];
+		child = child->next;
+	}
+	
+	// Now detach namespace from the namespace list.
+	// 
 	// Namespace nodes have no previous pointer, so we have to search for the node
 	
 	xmlNsPtr previousNs = NULL;
@@ -1271,13 +1688,7 @@ static void MyErrorHandler(void * userData, xmlErrorPtr error);
 		currentNs = currentNs->next;
 	}
 	
-	if (node->ns == ns)
-	{
-		node->ns = NULL;
-	}
-	
 	// Nullify pointers
-	//ns->_private = NULL; Todo
 	ns->next = NULL;
 }
 
@@ -1289,6 +1700,10 @@ static void MyErrorHandler(void * userData, xmlErrorPtr error);
 **/
 + (void)removeNamespace:(xmlNsPtr)ns fromNode:(xmlNodePtr)node
 {
+#if DDXML_DEBUG_MEMORY_ISSUES
+	MarkZombies(ns);
+#endif
+	
 	[self detachNamespace:ns fromNode:node];
 	
 	xmlFreeNs(ns);
@@ -1302,13 +1717,15 @@ static void MyErrorHandler(void * userData, xmlErrorPtr error);
 + (void)removeAllNamespacesFromNode:(xmlNodePtr)node
 {
 	xmlNsPtr ns = node->nsDef;
-	
 	while (ns != NULL)
 	{
 		xmlNsPtr nextNs = ns->next;
 		
-		xmlFreeNs(ns);
+	#if DDXML_DEBUG_MEMORY_ISSUES
+		MarkZombies(ns);
+	#endif
 		
+		xmlFreeNs(ns);
 		ns = nextNs;
 	}
 	
@@ -1317,23 +1734,120 @@ static void MyErrorHandler(void * userData, xmlErrorPtr error);
 }
 
 /**
- * Detaches the given child from the given node.
- * The child's surrounding prev/next pointers are properly updated to remove the child from the node's children list.
- * Then, if flag is YES, the child's parent, prev, next and doc pointers are destroyed.
+ * Detaches the given attribute from its parent node.
+ * The attribute's surrounding prev/next pointers are properly updated to remove the attribute from the attr list.
+ * Then, if the clean flag is YES, the attribute's parent, prev, next and doc pointers are set to null.
 **/
-+ (void)detachChild:(xmlNodePtr)child fromNode:(xmlNodePtr)node andNullifyPointers:(BOOL)flag
++ (void)detachAttribute:(xmlAttrPtr)attr andClean:(BOOL)clean
 {
+	xmlNodePtr parent = attr->parent;
+	
+	// Update the surrounding prev/next pointers
+	if (attr->prev == NULL)
+	{
+		if (attr->next == NULL)
+		{
+			parent->properties = NULL;
+		}
+		else
+		{
+			parent->properties = attr->next;
+			attr->next->prev = NULL;
+		}
+	}
+	else
+	{
+		if (attr->next == NULL)
+		{
+			attr->prev->next = NULL;
+		}
+		else
+		{
+			attr->prev->next = attr->next;
+			attr->next->prev = attr->prev;
+		}
+	}
+	
+	if (clean)
+	{
+		// Nullify pointers
+		attr->parent = NULL;
+		attr->prev   = NULL;
+		attr->next   = NULL;
+		attr->ns     = NULL;
+		if (attr->doc != NULL) [self stripDocPointersFromAttr:attr];
+	}
+}
+
+/**
+ * Detaches the given attribute from its parent node.
+ * The attribute's surrounding prev/next pointers are properly updated to remove the attribute from the attr list.
+ * Then the attribute's parent, prev, next and doc pointers are destroyed.
+**/
++ (void)detachAttribute:(xmlAttrPtr)attr
+{
+	[self detachAttribute:attr andClean:YES];
+}
+
+/**
+ * Removes and free's the given attribute from its parent node.
+ * The attribute's surrounding prev/next pointers are properly updated to remove the attribute from the attr list.
+**/
++ (void)removeAttribute:(xmlAttrPtr)attr
+{
+#if DDXML_DEBUG_MEMORY_ISSUES
+	MarkZombies(attr);
+#endif
+	
+	// We perform a bit of optimization here.
+	// No need to bother nullifying pointers since we're about to free the node anyway.
+	[self detachAttribute:attr andClean:NO];
+	
+	xmlFreeProp(attr);
+}
+
+/**
+ * Removes and frees all attributes from the given node.
+ * Upon return, the given node's properties pointer is NULL.
+**/
++ (void)removeAllAttributesFromNode:(xmlNodePtr)node
+{
+	xmlAttrPtr attr = node->properties;
+	while (attr != NULL)
+	{
+		xmlAttrPtr nextAttr = attr->next;
+		
+	#if DDXML_DEBUG_MEMORY_ISSUES
+		MarkZombies(attr);
+	#endif
+		
+		xmlFreeProp(attr);
+		attr = nextAttr;
+	}
+	
+	node->properties = NULL;
+}
+
+/**
+ * Detaches the given child from its parent.
+ * The child's surrounding prev/next pointers are properly updated to remove the child from the node's children list.
+ * Then, if the clean flag is YES, the child's parent, prev, next and doc pointers are set to null.
+**/
++ (void)detachChild:(xmlNodePtr)child andClean:(BOOL)clean andFixNamespaces:(BOOL)fixNamespaces
+{
+	xmlNodePtr parent = child->parent;
+	
 	// Update the surrounding prev/next pointers
 	if (child->prev == NULL)
 	{
 		if (child->next == NULL)
 		{
-			node->children = NULL;
-			node->last = NULL;
+			parent->children = NULL;
+			parent->last = NULL;
 		}
 		else
 		{
-			node->children = child->next;
+			parent->children = child->next;
 			child->next->prev = NULL;
 		}
 	}
@@ -1341,7 +1855,7 @@ static void MyErrorHandler(void * userData, xmlErrorPtr error);
 	{
 		if (child->next == NULL)
 		{
-			node->last = child->prev;
+			parent->last = child->prev;
 			child->prev->next = NULL;
 		}
 		else
@@ -1351,39 +1865,49 @@ static void MyErrorHandler(void * userData, xmlErrorPtr error);
 		}
 	}
 	
-	if (flag)
+	if (fixNamespaces)
+	{
+		// Fix namesapces (namespace references that now point outside tree)
+		// Note: This must be done before we nullify pointers so we can search up the tree.
+		[self recursiveFixDefaultNamespacesInNode:child withNewRoot:child];
+	}
+	if (clean)
 	{
 		// Nullify pointers
 		child->parent = NULL;
 		child->prev   = NULL;
 		child->next   = NULL;
-		if(child->doc != NULL) [self recursiveStripDocPointersFromNode:child];
+		if (child->doc != NULL) [self recursiveStripDocPointersFromNode:child];
 	}
 }
 
 /**
- * Detaches the given child from the given node.
+ * Detaches the given child from its parent.
  * The child's surrounding prev/next pointers are properly updated to remove the child from the node's children list.
- * Then the child's parent, prev, next and doc pointers are destroyed.
+ * Then the child's parent, prev, next and doc pointers are set to null.
 **/
-+ (void)detachChild:(xmlNodePtr)child fromNode:(xmlNodePtr)node
++ (void)detachChild:(xmlNodePtr)child
 {
-	[self detachChild:child fromNode:node andNullifyPointers:YES];
+	[self detachChild:child andClean:YES andFixNamespaces:YES];
 }
 
 /**
- * Removes the given child from the given node.
+ * Removes the given child from its parent node.
  * The child's surrounding prev/next pointers are properly updated to remove the child from the node's children list.
  * Then the child is recursively freed if it's no longer being referenced.
  * Otherwise, it's parent, prev, next and doc pointers are destroyed.
  * 
  * During the recursive free, subnodes still being referenced are properly handled.
 **/
-+ (void)removeChild:(xmlNodePtr)child fromNode:(xmlNodePtr)node
++ (void)removeChild:(xmlNodePtr)child
 {
+#if DDXML_DEBUG_MEMORY_ISSUES
+	RecursiveMarkZombiesFromNode(child);
+#endif
+	
 	// We perform a bit of optimization here.
 	// No need to bother nullifying pointers since we're about to free the node anyway.
-	[self detachChild:child fromNode:node andNullifyPointers:NO];
+	[self detachChild:child andClean:NO andFixNamespaces:NO];
 	
 	xmlFreeNode(child);
 }
@@ -1398,13 +1922,15 @@ static void MyErrorHandler(void * userData, xmlErrorPtr error);
 + (void)removeAllChildrenFromNode:(xmlNodePtr)node
 {
 	xmlNodePtr child = node->children;
-	
 	while (child != NULL)
 	{
 		xmlNodePtr nextChild = child->next;
 		
-		xmlFreeNode(child);
+	#if DDXML_DEBUG_MEMORY_ISSUES
+		RecursiveMarkZombiesFromNode(child);
+	#endif
 		
+		xmlFreeNode(child);
 		child = nextChild;
 	}
 	
@@ -1457,6 +1983,192 @@ static void MyErrorHandler(void * userData, xmlErrorPtr error)
 	}
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+#pragma mark Zombie Tracking
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+#if DDXML_DEBUG_MEMORY_ISSUES
+
+// What is zombie tracking and how does it work?
+// 
+// It is all explained in full detail here:
+// https://github.com/robbiehanson/KissXML/wiki/MemoryManagementThreadSafety
+// 
+// But here's a quick overview in case you're on a plane right now
+// (and the plane doesn't have internet access, or charges some ridiculous amount and you don't want to pay for it.)
+// 
+// <starbucks>
+//   <latte/>
+//   <cappuchino/>
+// </starbucks>
+// 
+// You have a reference to the latte node, and you release/dealloc the starbucks node. Uh oh!
+// The latte node is now a zombie, since the xmlNode it was pointing to (wrapping) is now gone.
+// If you attempt to read info from the latte node, you might get a crash.
+// Or you might get junk results.
+// And if you attempt to write info to the latte node, you might just wind up with some ugly heap corruption.
+// And if this happens, well.. it's a huge P.I.T.A to track down.
+// 
+// But I've been there before. And I feel your pain. That's where this debug option comes in.
+// 
+// The debugging option keeps a dictionary where the keys are the xml pointers (xmlNodePtr, xmlAttrPtr, etc),
+// and the values are mutable arrays. Any wrapper objects (DDXMLElement, DDXMLNode, etc) get added to the
+// mutable array for which the wrapper is pointing.
+// 
+// If the xml (xmlNodePtr, xmlAttrPtr, etc) is to be freed, it first removes its key from the dictionary,
+// and in doing so destroys any associated mutable array.
+// 
+// So a zombie check ensures that the xml structure the wrapper is referring to hasn't been freed.
+// If it has an exception is thrown to help track down the problem.
+// 
+// In other words, if you try to read info from the latte node, or attempt to alter the latte node
+// (after you release/dealloc starbucks), you'll immediately get a helpful exception.
+// (Goodbye junk values and heap corruption.)
+// 
+// This is helpful in debugging, as it is sometimes easy to forget about the memory rules of the xml heirarchy.
+// Or simply due to combinations of passing subelements around and using asynchronous operations.
+
+
+static void RecursiveMarkZombiesFromNode(xmlNodePtr node)
+{
+	// This method only exists if DDXML_DEBUG_MEMORY_ISSUES is enabled.
+	
+	// Mark attributes
+	xmlAttrPtr attr = node->properties;
+	while (attr != NULL)
+	{
+		MarkZombies(attr);
+		attr = attr->next;
+	}
+	
+	// Mark namespaces
+	xmlNsPtr ns = node->nsDef;
+	while (ns != NULL)
+	{
+		MarkZombies(ns);
+		ns = ns->next;
+	}
+	if (node->ns)
+	{
+		MarkZombies(node->ns);
+	}
+	
+	// Recursively mark children
+	xmlNodePtr child = node->children;
+	while (child != NULL)
+	{
+		RecursiveMarkZombiesFromNode(child);
+		child = child->next;
+	}
+	
+	MarkZombies(node);
+}
+
+static void RecursiveMarkZombiesFromDoc(xmlDocPtr doc)
+{
+	// This method only exists if DDXML_DEBUG_MEMORY_ISSUES is enabled.
+	
+	xmlNodePtr child = doc->children;
+	while (child != NULL)
+	{
+		RecursiveMarkZombiesFromNode(child);
+		
+		child = child->next;
+	}
+	
+	MarkZombies(doc);
+}
+
+static void MarkZombies(void *xmlPtr)
+{
+	// This method only exists if DDXML_DEBUG_MEMORY_ISSUES is enabled.
+	
+	dispatch_async(zombieQueue, ^{
+		
+	//	NSLog(@"MarkZombies: %p", xmlPtr);
+		
+		CFDictionaryRemoveValue(zombieTracker, xmlPtr);
+	});
+}
+
+static void MarkBirth(void *xmlPtr, DDXMLNode *wrapper)
+{
+	// This method only exists if DDXML_DEBUG_MEMORY_ISSUES is enabled.
+	
+	const void *value = (void *)wrapper;
+	
+	dispatch_async(zombieQueue, ^{
+		
+	//	NSLog(@"MarkBirth: %p, %p", xmlPtr, value);
+		
+		CFMutableArrayRef values = (CFMutableArrayRef)CFDictionaryGetValue(zombieTracker, xmlPtr);
+		if (values == NULL)
+		{
+			values = CFArrayCreateMutable(NULL, /*MaxCapacity:*/0, /*ValueCallbacks:*/NULL);
+			CFArrayAppendValue(values, value);
+			
+			CFDictionarySetValue(zombieTracker, xmlPtr, values);
+			CFRelease(values);
+		}
+		else
+		{
+			CFArrayAppendValue(values, value);
+		}
+	});
+}
+
+static void MarkDeath(void *xmlPtr, DDXMLNode *wrapper)
+{
+	// This method only exists if DDXML_DEBUG_MEMORY_ISSUES is enabled.
+	
+	const void *value = (void *)wrapper;
+	
+	dispatch_async(zombieQueue, ^{
+		
+	//	NSLog(@"MarkDeath: %p, %p", xmlPtr, value);
+		
+		CFMutableArrayRef values = (CFMutableArrayRef)CFDictionaryGetValue(zombieTracker, xmlPtr);
+		if (values)
+		{
+			CFRange range = CFRangeMake(0, CFArrayGetCount(values));
+			CFIndex index = CFArrayGetFirstIndexOfValue(values, range, value);
+			if (index >= 0)
+			{
+				CFArrayRemoveValueAtIndex(values, index);
+			}
+		}
+	});
+}
+
+BOOL DDXMLIsZombie(void *xmlPtr, DDXMLNode *wrapper)
+{
+	// This method only exists if DDXML_DEBUG_MEMORY_ISSUES is enabled.
+	
+	__block BOOL result;
+	
+	const void *value = (void *)wrapper;
+	
+	dispatch_sync(zombieQueue, ^{
+		
+		CFMutableArrayRef values = (CFMutableArrayRef)CFDictionaryGetValue(zombieTracker, xmlPtr);
+		if (values)
+		{
+			CFRange range = CFRangeMake(0, CFArrayGetCount(values));
+			CFIndex index = CFArrayGetFirstIndexOfValue(values, range, value);
+			
+			result = (index < 0);
+		}
+		else
+		{
+			result = YES;
+		}
+	});
+	
+	return result;
+}
+
+#endif
+
 @end
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1469,40 +2181,37 @@ static void MyErrorHandler(void * userData, xmlErrorPtr error)
  * Returns a DDXML wrapper object for the given primitive node.
  * The given node MUST be non-NULL and of the proper type.
 **/
-+ (id)nodeWithNsPrimitive:(xmlNsPtr)ns nsParent:(xmlNodePtr)parent freeOnDealloc:(BOOL)flag
++ (id)nodeWithNsPrimitive:(xmlNsPtr)ns nsParent:(xmlNodePtr)parent owner:(DDXMLNode *)owner
 {
-	return [[[DDXMLNamespaceNode alloc] initWithNsPrimitive:ns nsParent:parent freeOnDealloc:flag] autorelease];
+	return [[DDXMLNamespaceNode alloc] initWithNsPrimitive:ns nsParent:parent owner:owner];
 }
 
 /**
  * Returns a DDXML wrapper object for the given primitive node.
  * The given node MUST be non-NULL and of the proper type.
 **/
-- (id)initWithNsPrimitive:(xmlNsPtr)ns nsParent:(xmlNodePtr)parent  freeOnDealloc:(BOOL)flag
+- (id)initWithNsPrimitive:(xmlNsPtr)ns nsParent:(xmlNodePtr)parent owner:(DDXMLNode *)inOwner
 {
-	if ((self = [super init]))
+	if ((self = [super initWithPrimitive:(xmlKindPtr)ns owner:inOwner]))
 	{
-		genericPtr = (xmlKindPtr)ns;
 		nsParentPtr = parent;
-		freeOnDealloc = flag;
 	}
 	return self;
 }
 
-+ (id)nodeWithPrimitive:(xmlKindPtr)kindPtr freeOnDealloc:(BOOL)flag
++ (id)nodeWithPrimitive:(xmlKindPtr)kindPtr owner:(DDXMLNode *)owner
 {
 	// Promote initializers which use proper parameter types to enable compiler to catch more mistakes.
-	NSAssert(NO, @"Use nodeWithNsPrimitive:nsParent:freeOnDealloc:");
+	NSAssert(NO, @"Use nodeWithNsPrimitive:nsParent:owner:");
 	
 	return nil;
 }
 
-- (id)initWithPrimitive:(xmlKindPtr)kindPtr freeOnDealloc:(BOOL)flag
+- (id)initWithPrimitive:(xmlKindPtr)kindPtr owner:(DDXMLNode *)inOwner
 {
 	// Promote initializers which use proper parameter types to enable compiler to catch more mistakes.
-	NSAssert(NO, @"Use initWithNsPrimitive:nsParent:freeOnDealloc:");
+	NSAssert(NO, @"Use initWithNsPrimitive:nsParent:owner:");
 	
-	[self release];
 	return nil;
 }
 
@@ -1512,6 +2221,10 @@ static void MyErrorHandler(void * userData, xmlErrorPtr error)
 
 - (void)setName:(NSString *)name
 {
+#if DDXML_DEBUG_MEMORY_ISSUES
+	DDXMLNotZombieAssert();
+#endif
+	
 	xmlNsPtr ns = (xmlNsPtr)genericPtr;
 	
 	xmlFree((xmlChar *)ns->prefix);
@@ -1520,6 +2233,10 @@ static void MyErrorHandler(void * userData, xmlErrorPtr error)
 
 - (NSString *)name
 {
+#if DDXML_DEBUG_MEMORY_ISSUES
+	DDXMLNotZombieAssert();
+#endif
+	
 	xmlNsPtr ns = (xmlNsPtr)genericPtr;
 	if (ns->prefix != NULL)
 		return [NSString stringWithUTF8String:((const char*)ns->prefix)];
@@ -1529,6 +2246,10 @@ static void MyErrorHandler(void * userData, xmlErrorPtr error)
 
 - (void)setStringValue:(NSString *)string
 {
+#if DDXML_DEBUG_MEMORY_ISSUES
+	DDXMLNotZombieAssert();
+#endif
+	
 	xmlNsPtr ns = (xmlNsPtr)genericPtr;
 	
 	xmlFree((xmlChar *)ns->href);
@@ -1537,6 +2258,10 @@ static void MyErrorHandler(void * userData, xmlErrorPtr error)
 
 - (NSString *)stringValue
 {
+#if DDXML_DEBUG_MEMORY_ISSUES
+	DDXMLNotZombieAssert();
+#endif
+	
 	return [NSString stringWithUTF8String:((const char *)((xmlNsPtr)genericPtr)->href)];
 }
 
@@ -1546,6 +2271,10 @@ static void MyErrorHandler(void * userData, xmlErrorPtr error)
 
 - (NSUInteger)index
 {
+#if DDXML_DEBUG_MEMORY_ISSUES
+	DDXMLNotZombieAssert();
+#endif
+	
 	xmlNsPtr ns = (xmlNsPtr)genericPtr;
 	
 	// The xmlNsPtr has no prev pointer, so we have to search from the parent
@@ -1573,6 +2302,10 @@ static void MyErrorHandler(void * userData, xmlErrorPtr error)
 
 - (NSUInteger)level
 {
+#if DDXML_DEBUG_MEMORY_ISSUES
+	DDXMLNotZombieAssert();
+#endif
+	
 	NSUInteger result = 0;
 	
 	xmlNodePtr currentNode = nsParentPtr;
@@ -1587,70 +2320,112 @@ static void MyErrorHandler(void * userData, xmlErrorPtr error)
 
 - (DDXMLDocument *)rootDocument
 {
+#if DDXML_DEBUG_MEMORY_ISSUES
+	DDXMLNotZombieAssert();
+#endif
+	
 	xmlStdPtr node = (xmlStdPtr)nsParentPtr;
 	
 	if (node == NULL || node->doc == NULL)
 		return nil;
 	else
-		return [DDXMLDocument nodeWithDocPrimitive:node->doc freeOnDealloc:NO];
+		return [DDXMLDocument nodeWithDocPrimitive:node->doc owner:self];
 }
 
 - (DDXMLNode *)parent
 {
+#if DDXML_DEBUG_MEMORY_ISSUES
+	DDXMLNotZombieAssert();
+#endif
+	
 	if (nsParentPtr == NULL)
 		return nil;
 	else
-		return [DDXMLNode nodeWithUnknownPrimitive:(xmlKindPtr)nsParentPtr freeOnDealloc:NO];
+		return [DDXMLNode nodeWithUnknownPrimitive:(xmlKindPtr)nsParentPtr owner:self];
 }
 
 - (NSUInteger)childCount
 {
+#if DDXML_DEBUG_MEMORY_ISSUES
+	DDXMLNotZombieAssert();
+#endif
+	
 	return 0;
 }
 
 - (NSArray *)children
 {
+#if DDXML_DEBUG_MEMORY_ISSUES
+	DDXMLNotZombieAssert();
+#endif
+	
 	return nil;
 }
 
 - (DDXMLNode *)childAtIndex:(NSUInteger)index
 {
+#if DDXML_DEBUG_MEMORY_ISSUES
+	DDXMLNotZombieAssert();
+#endif
+	
 	return nil;
 }
 
 - (DDXMLNode *)previousSibling
 {
+#if DDXML_DEBUG_MEMORY_ISSUES
+	DDXMLNotZombieAssert();
+#endif
+	
 	return nil;
 }
 
 - (DDXMLNode *)nextSibling
 {
+#if DDXML_DEBUG_MEMORY_ISSUES
+	DDXMLNotZombieAssert();
+#endif
+	
 	return nil;
 }
 
 - (DDXMLNode *)previousNode
 {
+#if DDXML_DEBUG_MEMORY_ISSUES
+	DDXMLNotZombieAssert();
+#endif
+	
 	return nil;
 }
 
 - (DDXMLNode *)nextNode
 {
+#if DDXML_DEBUG_MEMORY_ISSUES
+	DDXMLNotZombieAssert();
+#endif
+	
 	return nil;
 }
 
 - (void)detach
 {
+#if DDXML_DEBUG_MEMORY_ISSUES
+	DDXMLNotZombieAssert();
+#endif
+	
 	if (nsParentPtr != NULL)
 	{
 		[DDXMLNode detachNamespace:(xmlNsPtr)genericPtr fromNode:nsParentPtr];
 		
-		freeOnDealloc = YES;
+		owner = nil;
 		nsParentPtr = NULL;
 	}
 }
 
-- (xmlStdPtr)XPathPreProcess:(NSMutableString *)result
+- (xmlStdPtr)_XPathPreProcess:(NSMutableString *)result
 {
+	// This is a private/internal method
+	
 	xmlStdPtr parent = (xmlStdPtr)nsParentPtr;
 		
 	if (parent == NULL)
@@ -1667,6 +2442,10 @@ static void MyErrorHandler(void * userData, xmlErrorPtr error)
 
 - (NSString *)localName
 {
+#if DDXML_DEBUG_MEMORY_ISSUES
+	DDXMLNotZombieAssert();
+#endif
+	
 	// Strangely enough, the localName of a namespace is the prefix, and the prefix is an empty string
 	xmlNsPtr ns = (xmlNsPtr)genericPtr;
 	if (ns->prefix != NULL)
@@ -1677,17 +2456,29 @@ static void MyErrorHandler(void * userData, xmlErrorPtr error)
 
 - (NSString *)prefix
 {
+#if DDXML_DEBUG_MEMORY_ISSUES
+	DDXMLNotZombieAssert();
+#endif
+	
 	// Strangely enough, the localName of a namespace is the prefix, and the prefix is an empty string
 	return @"";
 }
 
 - (void)setURI:(NSString *)URI
 {
+#if DDXML_DEBUG_MEMORY_ISSUES
+	DDXMLNotZombieAssert();
+#endif
+	
 	// Do nothing
 }
 
 - (NSString *)URI
 {
+#if DDXML_DEBUG_MEMORY_ISSUES
+	DDXMLNotZombieAssert();
+#endif
+	
 	return nil;
 }
 
@@ -1695,18 +2486,24 @@ static void MyErrorHandler(void * userData, xmlErrorPtr error)
 #pragma mark Private API
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-- (BOOL)hasParent
+- (BOOL)_hasParent
 {
+	// This is a private/internal method
+	
 	return (nsParentPtr != NULL);
 }
 
-- (xmlNodePtr)nsParentPtr
+- (xmlNodePtr)_nsParentPtr
 {
+	// This is a private/internal method
+	
 	return nsParentPtr;
 }
 
-- (void)setNsParentPtr:(xmlNodePtr)parentPtr
+- (void)_setNsParentPtr:(xmlNodePtr)parentPtr
 {
+	// This is a private/internal method
+	
 	nsParentPtr = parentPtr;
 }
 
@@ -1718,40 +2515,76 @@ static void MyErrorHandler(void * userData, xmlErrorPtr error)
 
 @implementation DDXMLAttributeNode
 
-+ (id)nodeWithAttrPrimitive:(xmlAttrPtr)attr freeOnDealloc:(BOOL)flag
++ (id)nodeWithAttrPrimitive:(xmlAttrPtr)attr owner:(DDXMLNode *)owner
 {
-	return [[[DDXMLAttributeNode alloc] initWithAttrPrimitive:attr freeOnDealloc:flag] autorelease];
+	return [[DDXMLAttributeNode alloc] initWithAttrPrimitive:attr owner:owner];
 }
 
-- (id)initWithAttrPrimitive:(xmlAttrPtr)attr freeOnDealloc:(BOOL)flag
+- (id)initWithAttrPrimitive:(xmlAttrPtr)attr owner:(DDXMLNode *)inOwner
 {
-	self = [super initWithPrimitive:(xmlKindPtr)attr freeOnDealloc:flag];
+	self = [super initWithPrimitive:(xmlKindPtr)attr owner:inOwner];
 	return self;
 }
 
-+ (id)nodeWithPrimitive:(xmlKindPtr)kindPtr freeOnDealloc:(BOOL)flag
++ (id)nodeWithPrimitive:(xmlKindPtr)kindPtr owner:(DDXMLNode *)owner
 {
 	// Promote initializers which use proper parameter types to enable compiler to catch more mistakes.
-	NSAssert(NO, @"Use nodeWithAttrPrimitive:nsParent:freeOnDealloc:");
+	NSAssert(NO, @"Use nodeWithAttrPrimitive:nsParent:owner:");
 	
 	return nil;
 }
 
-- (id)initWithPrimitive:(xmlKindPtr)kindPtr freeOnDealloc:(BOOL)flag
+- (id)initWithPrimitive:(xmlKindPtr)kindPtr owner:(DDXMLNode *)inOwner
 {
 	// Promote initializers which use proper parameter types to enable compiler to catch more mistakes.
-	NSAssert(NO, @"Use initWithAttrPrimitive:nsParent:freeOnDealloc:");
+	NSAssert(NO, @"Use initWithAttrPrimitive:nsParent:owner:");
 	
-	[self release];
 	return nil;
+}
+
+- (void)dealloc
+{
+	if (attrNsPtr) xmlFreeNs(attrNsPtr);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma mark Properties
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+- (NSString *)name
+{
+#if DDXML_DEBUG_MEMORY_ISSUES
+	DDXMLNotZombieAssert();
+#endif
+	
+	xmlAttrPtr attr = (xmlAttrPtr)genericPtr;
+	
+	const xmlChar *xmlName = attr->name;
+	if (xmlName == NULL)
+	{
+		return nil;
+	}
+	
+	NSString *name = [NSString stringWithUTF8String:(const char *)xmlName];
+	
+	NSRange range = [name rangeOfString:@":"];
+	if (range.length == 0)
+	{
+		if (attr->ns && attr->ns->prefix)
+		{
+			return [NSString stringWithFormat:@"%s:%@", attr->ns->prefix, name];
+		}
+	}
+	
+	return name;
+}
+
 - (void)setStringValue:(NSString *)string
 {
+#if DDXML_DEBUG_MEMORY_ISSUES
+	DDXMLNotZombieAssert();
+#endif
+	
 	xmlAttrPtr attr = (xmlAttrPtr)genericPtr;
 	
 	if (attr->children != NULL)
@@ -1769,6 +2602,10 @@ static void MyErrorHandler(void * userData, xmlErrorPtr error)
 
 - (NSString *)stringValue
 {
+#if DDXML_DEBUG_MEMORY_ISSUES
+	DDXMLNotZombieAssert();
+#endif
+	
 	xmlAttrPtr attr = (xmlAttrPtr)genericPtr;
 	
 	if (attr->children != NULL)
@@ -1785,27 +2622,58 @@ static void MyErrorHandler(void * userData, xmlErrorPtr error)
 
 - (DDXMLNode *)previousNode
 {
+#if DDXML_DEBUG_MEMORY_ISSUES
+	DDXMLNotZombieAssert();
+#endif
+	
 	return nil;
 }
 
 - (DDXMLNode *)nextNode
 {
+#if DDXML_DEBUG_MEMORY_ISSUES
+	DDXMLNotZombieAssert();
+#endif
+	
 	return nil;
 }
 
 - (void)detach
 {
+#if DDXML_DEBUG_MEMORY_ISSUES
+	DDXMLNotZombieAssert();
+#endif
+	
 	xmlAttrPtr attr = (xmlAttrPtr)genericPtr;
 	
 	if (attr->parent != NULL)
 	{
-		[[self class] detachAttribute:attr fromNode:attr->parent];
-		freeOnDealloc = YES;
+		// If this attribute is associated with a namespace,
+		// then we need to copy the namespace in order to maintain the association.
+		// 
+		// Remember: attr->ns cannot be an owner of an allocated namespaces,
+		//           so we need to use DDXMLAttributeNode's attrNsPtr.
+		
+		if (attr->ns && (attr->ns != attrNsPtr))
+		{
+			attrNsPtr = xmlNewNs(NULL, attr->ns->href, attr->ns->prefix);
+		}
+		
+		[[self class] detachAttribute:attr];
+		
+		if (attrNsPtr)
+		{
+			attr->ns = attrNsPtr;
+		}
+		
+		owner = nil;
 	}
 }
 
-- (xmlStdPtr)XPathPreProcess:(NSMutableString *)result
+- (xmlStdPtr)_XPathPreProcess:(NSMutableString *)result
 {
+	// This is a private/internal method
+	
 	// Note: DDXMLNamespaceNode overrides this method
 	// Note: DDXMLAttributeNode overrides this method
 	
@@ -1826,33 +2694,212 @@ static void MyErrorHandler(void * userData, xmlErrorPtr error)
 
 - (void)setURI:(NSString *)URI
 {
-	xmlAttrPtr attr = (xmlAttrPtr)genericPtr;
-	if (attr->ns != NULL)
+#if DDXML_DEBUG_MEMORY_ISSUES
+	DDXMLNotZombieAssert();
+#endif
+	
+	// An attribute can only have a single namespace attached to it.
+	// In addition, this namespace can only be accessed via the URI method.
+	// There is no way, within the API, to get a DDXMLNode wrapper for the attribute's namespace.
+	
+	// Remember: attr->ns is simply a pointer to a namespace owned by somebody else.
+	//           Unless that points to our attrNsPtr (defined in DDXMLAttributeNode) we cannot free it.
+	
+	if (attrNsPtr != NULL)
 	{
-		// An attribute can only have a single namespace attached to it.
-		// In addition, this namespace can only be accessed via the URI method.
-		// There is no way, within the API, to get a DDXMLNode wrapper for the attribute's namespace.
-		xmlFreeNs(attr->ns);
-		attr->ns = NULL;
+		xmlFreeNs(attrNsPtr);
+		attrNsPtr = NULL;
 	}
+	
+	xmlAttrPtr attr = (xmlAttrPtr)genericPtr;
+	attr->ns = NULL;
 	
 	if (URI)
 	{
-		// Create a new xmlNsPtr, and make ns point to it
-		xmlNsPtr ns = xmlNewNs(NULL, [URI xmlChar], NULL);
-		attr->ns = ns;
+		// If there's a namespace defined further up the tree with this URI,
+		// then we want attr->ns to point to it.
+		
+		const xmlChar *uri = [URI xmlChar];
+		
+		xmlNodePtr parent = attr->parent;
+		while (parent)
+		{
+			xmlNsPtr ns = parent->nsDef;
+			while (ns)
+			{
+				if (xmlStrEqual(ns->href, uri))
+				{
+					attr->ns = ns;
+					return;
+				}
+				
+				ns = ns->next;
+			}
+			
+			parent = parent->parent;
+		}
+		
+		// There is no namespace further up the tree with this URI.
+		// We'll have to create it ourself...
+		// 
+		// Remember: The attr->ns pointer is not allowed to have direct ownership.
+		
+		attrNsPtr = xmlNewNs(NULL, uri, NULL);
+		attr->ns = attrNsPtr;
 	}
 }
 
 - (NSString *)URI
 {
+#if DDXML_DEBUG_MEMORY_ISSUES
+	DDXMLNotZombieAssert();
+#endif
+	
 	xmlAttrPtr attr = (xmlAttrPtr)genericPtr;
 	if (attr->ns != NULL)
 	{
-		return [NSString stringWithUTF8String:((const char *)attr->ns->href)];
+		if (attr->ns->href != NULL)
+		{
+			return [NSString stringWithUTF8String:((const char *)attr->ns->href)];
+		}
+	}
+	
+	// The attribute doesn't explicitly have a namespace.
+	// But if the attribute is something like animal:duck='quack', then we should look for the URI for 'animal'.
+	// 
+	// Note: [self prefix] returns an empty string if there is no prefix. (Not nil)
+	
+	NSString *prefix = [self prefix];
+	if ([prefix length] > 0)
+	{
+		xmlNsPtr ns = xmlSearchNs(attr->doc, attr->parent, [prefix xmlChar]);
+		if (ns && ns->href)
+		{
+			return [NSString stringWithUTF8String:((const char *)ns->href)];
+		}
 	}
 	
 	return nil;
 }
 
 @end
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+#pragma mark -
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+@implementation DDXMLInvalidNode
+
+// #pragma mark Properties
+
+- (DDXMLNodeKind)kind {
+	return DDXMLInvalidKind;
+}
+
+- (void)setName:(NSString *)name { }
+- (NSString *)name {
+	return nil;
+}
+
+- (void)setObjectValue:(id)value { }
+- (id)objectValue {
+	return nil;
+}
+
+- (void)setStringValue:(NSString *)string { }
+- (void)setStringValue:(NSString *)string resolvingEntities:(BOOL)resolve { }
+- (NSString *)stringValue {
+	return nil;
+}
+
+// #pragma mark Tree Navigation
+
+- (NSUInteger)index {
+	return 0;
+}
+
+- (NSUInteger)level {
+	return 0;
+}
+
+- (DDXMLDocument *)rootDocument {
+	return nil;
+}
+
+- (DDXMLNode *)parent {
+	return nil;
+}
+- (NSUInteger)childCount {
+	return 0;
+}
+- (NSArray *)children {
+	return [NSArray array];
+}
+- (DDXMLNode *)childAtIndex:(NSUInteger)index {
+	return nil;
+}
+
+- (DDXMLNode *)previousSibling {
+	return nil;
+}
+- (DDXMLNode *)nextSibling {
+	return nil;
+}
+
+- (DDXMLNode *)previousNode {
+	return nil;
+}
+- (DDXMLNode *)nextNode {
+	return nil;
+}
+
+- (void)detach { }
+
+- (NSString *)XPath {
+	return @"";
+}
+
+// #pragma mark QNames
+
+- (NSString *)localName {
+	return nil;
+}
+- (NSString *)prefix {
+	return @"";
+}
+
+- (void)setURI:(NSString *)URI { }
+- (NSString *)URI {
+	return nil;
+}
+
+// #pragma mark Output
+
+- (NSString *)description {
+	return @"";
+}
+- (NSString *)XMLString {
+	return @"";
+}
+- (NSString *)XMLStringWithOptions:(NSUInteger)options {
+	return @"";
+}
+- (NSString *)canonicalXMLStringPreservingComments:(BOOL)comments {
+	return nil;
+}
+
+// #pragma mark XPath/XQuery
+
+- (NSArray *)nodesForXPath:(NSString *)xpath error:(NSError **)error {
+	return [NSArray array];
+}
+
+- (NSArray *)objectsForXQuery:(NSString *)xquery constants:(NSDictionary *)constants error:(NSError **)error {
+	return [NSArray array];
+}
+- (NSArray *)objectsForXQuery:(NSString *)xquery error:(NSError **)error {
+	return [NSArray array];
+}
+
+@end
+

@@ -54,8 +54,18 @@ int closeCallback(void *context) {
     return 0;
 }
 
+- (NSData *)readStream:(InputStream *)stream {
+    NSMutableData *streamData = [[NSMutableData alloc] initWithCapacity:10000];
+    char buffer[4000];
+    int read = 0;
+    while ((read = [stream read:buffer length:sizeof(buffer)]) > 0) {
+        [streamData appendBytes:buffer length:read];
+    }
+    return [streamData autorelease];
+}
+
 - (Kdb4Tree*)parse:(InputStream*)inputStream {
-    DDXMLDocument *document = [[DDXMLDocument alloc] initWithReadIO:readCallback closeIO:closeCallback context:inputStream options:0 error:nil];
+    DDXMLDocument *document = [[DDXMLDocument alloc] initWithData:[self readStream:inputStream] options:0 error:nil];
     if (document == nil) {
         @throw [NSException exceptionWithName:@"ParseError" reason:@"Failed to parse database" userInfo:nil];
     }

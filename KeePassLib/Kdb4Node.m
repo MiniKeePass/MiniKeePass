@@ -8,6 +8,23 @@
 
 #import "Kdb4Node.h"
 
+@implementation DDXMLElement (MKPAdditions)
+
+- (void)removeChild:(DDXMLNode *)child {
+    int idx = -1;
+    for (int i = 0; i < [self childCount]; i++) {
+        if ([self childAtIndex:i] == child) {
+            idx = i;
+            break;
+        }
+    }
+    if (idx >= 0) {
+        [self removeChildAtIndex:idx];
+    }
+}
+
+@end
+
 @implementation Kdb4Group
 
 @synthesize element;
