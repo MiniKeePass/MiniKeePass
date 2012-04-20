@@ -210,6 +210,9 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10, 15};
                     case 14:
                         attemptsRemainingString = @"Incorrect PIN\n14 attempts remaining";
                         break;
+                    default:
+                        attemptsRemainingString = @"Incorrect PIN";
+                        break;
                 }
                 
                 controller.textLabel.text = NSLocalizedString(attemptsRemainingString, nil);
