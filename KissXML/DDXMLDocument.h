@@ -31,6 +31,7 @@ typedef NSUInteger DDXMLDocumentContentKind;
 @interface DDXMLDocument : DDXMLNode
 {
 }
+- (id)initWithDocPrimitive:(xmlDocPtr)doc owner:(DDXMLNode *)inOwner;
 
 - (id)initWithXMLString:(NSString *)string options:(NSUInteger)mask error:(NSError **)error;
 //- (id)initWithContentsOfURL:(NSURL *)url options:(NSUInteger)mask error:(NSError **)error;
