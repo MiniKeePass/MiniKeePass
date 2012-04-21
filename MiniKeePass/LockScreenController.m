@@ -31,8 +31,10 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10, 15};
 - (id)init {
     self = [super init];
     if (self) {
+        
+        double frameWidth = self.view.frame.size.width;
 
-        visibleFrame = CGRectZero;
+        visibleFrame = CGRectMake(0, 0, frameWidth, 95);
         offScreenFrame = CGRectOffset(visibleFrame, 0, -95);
         
         pinViewController = [[PinViewController alloc] init];
@@ -40,7 +42,17 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10, 15};
         pinViewController.view.frame = offScreenFrame;
         [self.view addSubview:pinViewController.view];
         
-        self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"splash"]];
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+            backgroundImageName = @"splash";
+        } else {
+            if (UIInterfaceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation)) {
+                backgroundImageName = @"Default-Portrait";
+            } else {
+                backgroundImageName = @"Default-Landscape";
+            }
+        }
+        
+        self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:backgroundImageName]];
         
         appDelegate = (MiniKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
         
@@ -69,7 +81,7 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10, 15};
 }
 
 - (void)show {
-    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"splash"]];
+    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:backgroundImageName]];
     [[self frontMostViewController] presentModalViewController:self animated:NO];
 }
 
@@ -227,6 +239,30 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10, 15};
                 }
             }
         }
+    }
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
+    // Only supporting landscape for iPads since iPhone apps always launch in portrait mode?
+    // Plus the title toolbar doesn't fit on a phone in landscape, so this is the easy way out!
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        return YES;
+    } else {
+        return UIInterfaceOrientationIsPortrait(toInterfaceOrientation);
+    }
+}
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+    CGRect screenBounds = [[UIScreen mainScreen] bounds];
+    visibleFrame.size.width = UIInterfaceOrientationIsPortrait(toInterfaceOrientation) ? screenBounds.size.width : screenBounds.size.height;
+    offScreenFrame = CGRectOffset(visibleFrame, 0, -95);
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) {
+            backgroundImageName = @"Default-Portrait";
+        } else {
+            backgroundImageName = @"Default-Landscape";
+        }
+        self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:backgroundImageName]];
     }
 }
 

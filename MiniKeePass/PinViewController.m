@@ -43,20 +43,25 @@
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textDidChange:) name:UITextFieldTextDidChangeNotification object:textField];
 
-        UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 240, 96)];
+        UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 320, 96)];
         [toolbar setBarStyle:UIBarStyleBlackTranslucent];
         
+        UIView *pinView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 96)];
+        pinView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+        [toolbar addSubview:pinView];
+        [pinView release];
+
         PinTextField *pinTextField1 = [[PinTextField alloc] initWithFrame:CGRectMake(23, 22, 61, 52)];
-        [toolbar addSubview:pinTextField1];
+        [pinView addSubview:pinTextField1];
         
         PinTextField *pinTextField2 = [[PinTextField alloc] initWithFrame:CGRectMake(94, 22, 61, 52)];
-        [toolbar addSubview:pinTextField2];
+        [pinView addSubview:pinTextField2];
       
         PinTextField *pinTextField3 = [[PinTextField alloc] initWithFrame:CGRectMake(165, 22, 61, 52)];
-        [toolbar addSubview:pinTextField3];
+        [pinView addSubview:pinTextField3];
       
         PinTextField *pinTextField4 = [[PinTextField alloc] initWithFrame:CGRectMake(236, 22, 61, 52)];
-        [toolbar addSubview:pinTextField4];
+        [pinView addSubview:pinTextField4];
       
         pinTextFields = [[NSArray arrayWithObjects:pinTextField1, pinTextField2, pinTextField3, pinTextField4, nil] retain];
         
@@ -68,16 +73,24 @@
         textField.inputAccessoryView = toolbar;
         [toolbar release];
         
-        textLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 320, 95)];
+        double labelWidth = self.view.frame.size.width;
+        double labelHeight = 95;
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone && UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation)) {
+            labelHeight = 45;
+        }
+        
+        textLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, labelWidth, labelHeight)];
         textLabel.backgroundColor = [UIColor clearColor];
         textLabel.textColor = [UIColor whiteColor];
         textLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:25];
         textLabel.numberOfLines = 0;
         textLabel.textAlignment = UITextAlignmentCenter;
         textLabel.text = text;
+        textLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         
-        UIToolbar *topBar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 320, 95)];
+        topBar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, labelWidth, labelHeight)];
         topBar.barStyle = UIBarStyleBlackTranslucent;
+        topBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         [topBar addSubview:textLabel];
         
         [self.view addSubview:topBar];
@@ -155,6 +168,20 @@
     for (PinTextField *pinTextField in pinTextFields) {
         pinTextField.label.text = @"";
     }
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
+    return YES;
+}
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) return;
+    CGRect newFrame = topBar.frame;
+    newFrame.size.height = UIInterfaceOrientationIsPortrait(toInterfaceOrientation) ? 95 : 45;
+    [UIView animateWithDuration:duration animations:^{
+        topBar.frame = newFrame;
+        textLabel.frame = newFrame;
+    }];
 }
 
 @end

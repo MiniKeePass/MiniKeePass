@@ -546,4 +546,8 @@
     return [self updatePositionOfObjectAtIndex:[array indexOfObject:object] inArray:array];
 }
 
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
+    return YES;
+}
+
 @end
