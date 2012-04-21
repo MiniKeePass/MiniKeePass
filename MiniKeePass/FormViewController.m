@@ -62,6 +62,7 @@
 }
 
 - (void)dealloc {
+    [controls release];
     [infoBar release];
     [headerTitle release];
     [footerTitle release];
