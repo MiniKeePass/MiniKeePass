@@ -19,6 +19,30 @@
 #import "Kdb4Node.h"
 #import "Base64.h"
 
+@implementation DDXMLDocument (MKPDDXMLDocument_Additions)
+
+- (id)initWithReadIO:(xmlInputReadCallback)ioread closeIO:(xmlInputCloseCallback)ioclose context:(void*)ioctx options:(NSUInteger)mask error:(NSError **)error {
+	
+	// Even though xmlKeepBlanksDefault(0) is called in DDXMLNode's initialize method,
+	// it has been documented that this call seems to get reset on the iPhone:
+	// http://code.google.com/p/kissxml/issues/detail?id=8
+	// 
+	// Therefore, we call it again here just to be safe.
+	xmlKeepBlanksDefault(0);
+	
+	xmlDocPtr doc = xmlReadIO(ioread, ioclose, ioctx, NULL, NULL, mask);
+	if (doc == NULL)
+	{
+		if (error) *error = [NSError errorWithDomain:@"DDXMLErrorDomain" code:1 userInfo:nil];
+		
+		return nil;
+	}
+	
+	return [self initWithDocPrimitive:doc owner:nil];
+}
+
+@end
+
 @interface Kdb4Parser (PrivateMethods)
 - (void)decodeProtected:(DDXMLElement*)root;
 - (Kdb4Group*)parseGroup:(DDXMLElement*)root;
@@ -54,18 +78,8 @@ int closeCallback(void *context) {
     return 0;
 }
 
-- (NSData *)readStream:(InputStream *)stream {
-    NSMutableData *streamData = [[NSMutableData alloc] initWithCapacity:10000];
-    char buffer[4000];
-    int read = 0;
-    while ((read = [stream read:buffer length:sizeof(buffer)]) > 0) {
-        [streamData appendBytes:buffer length:read];
-    }
-    return [streamData autorelease];
-}
-
 - (Kdb4Tree*)parse:(InputStream*)inputStream {
-    DDXMLDocument *document = [[DDXMLDocument alloc] initWithData:[self readStream:inputStream] options:0 error:nil];
+    DDXMLDocument *document = [[DDXMLDocument alloc] initWithReadIO:readCallback closeIO:closeCallback context:inputStream options:0 error:nil];
     if (document == nil) {
         @throw [NSException exceptionWithName:@"ParseError" reason:@"Failed to parse database" userInfo:nil];
     }
