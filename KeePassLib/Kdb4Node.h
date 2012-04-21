@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "Kdb.h"
 #import "DDXML.h"
+#import "DDXMLElementAdditions.h"
 
 #define KDB4_PRE_SIG1 (0x9AA2D903)
 #define KDB4_PRE_SIG2 (0xB54BFB66)

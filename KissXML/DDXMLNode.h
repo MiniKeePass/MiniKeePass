@@ -3,6 +3,23 @@
 
 @class DDXMLDocument;
 
+/**
+ * Welcome to KissXML.
+ * 
+ * The project page has documentation if you have questions.
+ * https://github.com/robbiehanson/KissXML
+ * 
+ * If you're new to the project you may wish to read the "Getting Started" wiki.
+ * https://github.com/robbiehanson/KissXML/wiki/GettingStarted
+ * 
+ * KissXML provides a drop-in replacement for Apple's NSXML class cluster.
+ * The goal is to get the exact same behavior as the NSXML classes.
+ * 
+ * For API Reference, see Apple's excellent documentation,
+ * either via Xcode's Mac OS X documentation, or via the web:
+ * 
+ * https://github.com/robbiehanson/KissXML/wiki/Reference
+**/
 
 enum {
 	DDXMLInvalidKind                = 0,
@@ -37,8 +54,11 @@ enum {
 	// Every DDXML object is simply a wrapper around an underlying libxml node
 	struct _xmlKind *genericPtr;
 	
-	// Root nodes free the underlying libxml node on dealloc.
-	BOOL freeOnDealloc;
+	// Every libxml node resides somewhere within an xml tree heirarchy.
+	// We cannot free the tree heirarchy until all referencing nodes have been released.
+	// So all nodes retain a reference to the node that created them,
+	// and when the last reference is released the tree gets freed.
+	DDXMLNode *owner;
 }
 
 //- (id)initWithKind:(DDXMLNodeKind)kind;
