@@ -23,6 +23,7 @@
     MiniKeePassAppDelegate *appDelegate;
     CGRect visibleFrame;
     CGRect offScreenFrame;
+    NSString *imageName;
 }
 
 + (void)present;

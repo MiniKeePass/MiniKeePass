@@ -16,12 +16,14 @@
  */
 
 #import "PasswordViewController.h"
+#import "TextFieldCell.h"
 
 #define ROW_KEY_FILE 1
 
 @implementation PasswordViewController
 
 @synthesize passwordTextField;
+@synthesize passwordCell;
 @synthesize keyFileCell;
 
 - (id)initWithFilename:(NSString*)filename {
@@ -31,8 +33,11 @@
         self.headerTitle = NSLocalizedString(@"Password", nil);
         self.footerTitle = [NSString stringWithFormat:NSLocalizedString(@"Enter the password and/or select the keyfile for the %@ database.", nil), filename];
         
-        passwordTextField = [[UITextField alloc] init];
-        passwordTextField.placeholder = NSLocalizedString(@"Password", nil);
+        //passwordTextField = [[UITextField alloc] init];
+        passwordCell = [[TextFieldCell alloc] init];
+        passwordCell.textLabel.text = NSLocalizedString(@"Password", nil);
+        passwordTextField = [passwordCell textField];
+        //passwordTextField.placeholder = NSLocalizedString(@"Password", nil);
         passwordTextField.secureTextEntry = YES;
         passwordTextField.returnKeyType = UIReturnKeyDone;
         passwordTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
@@ -52,14 +57,17 @@
         
         keyFileCell = [[ChoiceCell alloc] initWithLabel:NSLocalizedString(@"Key File", nil) choices:keyFileChoices selectedIndex:0];
         
-        self.controls = [NSArray arrayWithObjects:passwordTextField, keyFileCell, nil];
+        //self.controls = [NSArray arrayWithObjects:passwordTextField, keyFileCell, nil];
+        self.controls = [NSArray arrayWithObjects:passwordCell, keyFileCell, nil];
         self.navigationItem.rightBarButtonItem = nil;
+        [passwordTextField becomeFirstResponder];
     }
     return self;
 }
 
 - (void)dealloc {
-    [passwordTextField release];
+    //[passwordTextField release];
+    [passwordCell release];
     [keyFileCell release];
     [super dealloc];
 }

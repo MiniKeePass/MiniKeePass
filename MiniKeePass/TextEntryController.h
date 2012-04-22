@@ -17,15 +17,19 @@
 
 #import <UIKit/UIKit.h>
 #import "FormViewController.h"
+//#import "TextFieldCell.h" // <-- For some reason, this prevents
+                            //     TextFieldCell from compiling! WTF!?
 
 @protocol TextEntryControllerDelegate;
 
 @interface TextEntryController : FormViewController <FormViewControllerDelegate> {
     UITextField *textField;
+    UITableViewCell *textCell;
     id<TextEntryControllerDelegate> textEntryDelegate;
 }
 
 @property (nonatomic, readonly) UITextField *textField;
+@property (nonatomic, readonly) UITableViewCell *textCell;
 @property (nonatomic, retain) id<TextEntryControllerDelegate> textEntryDelegate;
 
 @end

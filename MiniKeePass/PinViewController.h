@@ -28,6 +28,7 @@
 
 - (id)initWithText:(NSString*)text;
 - (void)clearEntry;
+- (void)keyboardDidHide;
 
 @property (nonatomic, copy) UILabel *textLabel;
 @property (nonatomic, retain) id<PinViewControllerDelegate> delegate;

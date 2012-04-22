@@ -16,10 +16,12 @@
  */
 
 #import "TextEntryController.h"
+#import "TextFieldCell.h"
 
 @implementation TextEntryController
 
 @synthesize textField;
+@synthesize textCell;
 @synthesize textEntryDelegate;
 
 - (id)initWithStyle:(UITableViewStyle)style {
@@ -27,18 +29,24 @@
     if (self) {
         self.delegate = self;
         
-        textField = [[UITextField alloc] init];
+        //textField = [[UITextField alloc] init];
+        textCell = [[TextFieldCell alloc] init];
+        textCell.textLabel.text = NSLocalizedString(@"Name", nil);
+        textField = [textCell textField];
         textField.delegate = self;
         textField.returnKeyType = UIReturnKeyDone;
         textField.clearButtonMode = UITextFieldViewModeWhileEditing;
         
-        self.controls = [NSArray arrayWithObject:textField];
+        //self.controls = [NSArray arrayWithObject:textField];
+        self.controls = [NSArray arrayWithObject:textCell];
+        [textField becomeFirstResponder];
     }
     return self;
 }
 
 - (void)dealloc {
-    [textField release];
+    //[textField release];
+    [textCell release];
     [textEntryDelegate release];
     [super dealloc];
 }

@@ -25,17 +25,21 @@
         // Initialization code
         self.backgroundColor = [UIColor whiteColor];
         
+        CGFloat screenWidth = CGRectGetWidth([[UIScreen mainScreen] bounds]);
+        
         UIImage *image = [UIImage imageNamed:@"background"];
         
         CGFloat y = 40;
+        if (screenWidth == 768) y+=200;
+        
         UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
-        imageView.frame = CGRectMake(160 - image.size.width / 2.0, y, image.size.width, image.size.height);
+        imageView.frame = CGRectMake(screenWidth / 2.0 - image.size.width / 2.0, y, image.size.width, image.size.height);
         [self addSubview:imageView];
         [imageView release];
         
         y += imageView.frame.size.height + 40;
         
-        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, y, 320, 40)];
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(screenWidth / 2.0 - 160, y, 320, 40)];
         label.backgroundColor = [UIColor clearColor];
         label.textAlignment = UITextAlignmentCenter;
         label.numberOfLines = 0;
