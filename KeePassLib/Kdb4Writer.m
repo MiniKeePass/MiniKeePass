@@ -146,12 +146,8 @@
 }
 
 - (void)newFile:(NSString*)fileName withPassword:(KdbPassword*)kdbPassword {
-    DDXMLElement *docRoot = [DDXMLNode elementWithName:@"KeePassFile"];
-    
-    DDXMLElement *rootElement = [DDXMLElement elementWithName:@"Root"];
-    [docRoot addChild:rootElement];
-    
-    DDXMLDocument *document = [[DDXMLDocument alloc] initWithRootElement:docRoot];
+    DDXMLDocument *document = [[DDXMLDocument alloc] initWithXMLString:@"<KeePassFile><Root></Root></KeePassFile>" options:0 error:nil];
+    DDXMLElement *rootElement = [[document rootElement] elementForName:@"Root"];
     Kdb4Tree *tree = [[Kdb4Tree alloc] initWithDocument:document];
     [document release];
     

@@ -87,6 +87,22 @@
 }
 
 /**
+ * Shortcut to get a pretty (formatted) string representation of the element.
+**/
+- (NSString *)prettyXMLString
+{
+	return [self XMLStringWithOptions:(DDXMLNodePrettyPrint | DDXMLNodeCompactEmptyElement)];
+}
+
+/**
+ * Shortcut to get a compact string representation of the element.
+**/
+- (NSString *)compactXMLString
+{
+    return [self XMLStringWithOptions:DDXMLNodeCompactEmptyElement];
+}
+
+/**
  *	Shortcut to avoid having to manually create a DDXMLNode everytime.
 **/
 - (void)addAttributeWithName:(NSString *)name stringValue:(NSString *)string

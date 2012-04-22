@@ -11,6 +11,7 @@
 
 #import "KdbPassword.h"
 #import "DDXML.h"
+#import "DDXMLElementAdditions.h"
 #import "Base64.h"
 
 @interface KdbPassword (PrivateMethods)

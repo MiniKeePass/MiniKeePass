@@ -14,6 +14,9 @@
 - (NSString *)xmlns;
 - (void)setXmlns:(NSString *)ns;
 
+- (NSString *)prettyXMLString;
+- (NSString *)compactXMLString;
+
 - (void)addAttributeWithName:(NSString *)name stringValue:(NSString *)string;
 
 - (NSDictionary *)attributesAsDictionary;
