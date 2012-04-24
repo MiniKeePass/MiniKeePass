@@ -32,7 +32,11 @@
 - (id)initWithText:(NSString*)text {
     self = [super init];
     if (self) {
-        self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+            self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];            
+        } else {
+            self.view.backgroundColor = [UIColor colorWithRed:0.831372f green:0.843137f blue:0.870588f alpha:1.0f];
+        }
 
         CGFloat frameWidth = CGRectGetWidth(self.view.frame);
         
@@ -131,6 +135,9 @@
 }
 
 - (void)resizeToolbarsToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {	
+    // Nothing needs to be done for the iPad; return
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) return;
+
     CGRect newFrame = topBar.frame;
     newFrame.size.height = UIInterfaceOrientationIsPortrait(toInterfaceOrientation) ? 95 : 68;
 
@@ -140,8 +147,6 @@
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
-    // Nothing needs to be done for the iPad; return
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) return;
     [UIView animateWithDuration:duration animations:^{
         [self resizeToolbarsToInterfaceOrientation:toInterfaceOrientation];
     }];
