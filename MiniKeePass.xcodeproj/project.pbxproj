@@ -370,7 +370,6 @@
 		52E6C88915431D6C00A91CD3 /* AutorotatingTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AutorotatingTableViewController.h; sourceTree = "<group>"; };
 		52E6C88A15431D6C00A91CD3 /* AutorotatingTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AutorotatingTableViewController.m; sourceTree = "<group>"; };
 		6802F9C314EC9C1D00ACD4C1 /* wrench.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wrench.png; sourceTree = "<group>"; };
-		6802F9C414EC9C1D00ACD4C1 /* wrench.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = wrench.svg; sourceTree = "<group>"; };
 		6802F9C514EC9C1D00ACD4C1 /* wrench@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "wrench@2x.png"; sourceTree = "<group>"; };
 		68406ACB13CA42F200A5849C /* ImageButtonCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageButtonCell.h; sourceTree = "<group>"; };
 		68406ACC13CA42F200A5849C /* ImageButtonCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageButtonCell.m; sourceTree = "<group>"; };
@@ -535,7 +534,6 @@
 		689D02A313A42B63005EBD36 /* 9.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 9.png; sourceTree = "<group>"; };
 		689D02A413A42B63005EBD36 /* 9@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "9@2x.png"; sourceTree = "<group>"; };
 		689D02A513A42B63005EBD36 /* background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background.png; sourceTree = "<group>"; };
-		689D02A613A42B63005EBD36 /* background.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = background.svg; sourceTree = "<group>"; };
 		689D02A713A42B63005EBD36 /* background@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "background@2x.png"; sourceTree = "<group>"; };
 		689D02A813A42B63005EBD36 /* box.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = box.png; sourceTree = "<group>"; };
 		689D02A913A42B63005EBD36 /* box@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "box@2x.png"; sourceTree = "<group>"; };
@@ -724,7 +722,6 @@
 		68A3E1AD13A8C9D1006881CA /* FormViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FormViewController.h; sourceTree = "<group>"; };
 		68A3E1AE13A8C9D1006881CA /* FormViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FormViewController.m; sourceTree = "<group>"; };
 		68B0A70014ECBC1E005CFE31 /* reload.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = reload.png; sourceTree = "<group>"; };
-		68B0A70114ECBC1E005CFE31 /* reload.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = reload.svg; sourceTree = "<group>"; };
 		68B0A70214ECBC1E005CFE31 /* reload@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "reload@2x.png"; sourceTree = "<group>"; };
 		68CA21C614EA90D00046A7C5 /* FileInputStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileInputStream.h; sourceTree = "<group>"; };
 		68CA21C714EA90D00046A7C5 /* FileInputStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileInputStream.m; sourceTree = "<group>"; };
@@ -745,7 +742,6 @@
 		68F19D1D14EB3A9C00B772CB /* CharacterSetsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CharacterSetsViewController.h; sourceTree = "<group>"; };
 		68F19D1E14EB3A9C00B772CB /* CharacterSetsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CharacterSetsViewController.m; sourceTree = "<group>"; };
 		68FE79B11428C17F00818EE4 /* gear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gear.png; sourceTree = "<group>"; };
-		68FE79B21428C17F00818EE4 /* gear.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = gear.svg; sourceTree = "<group>"; };
 		68FE79B31428C17F00818EE4 /* gear@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gear@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -963,20 +959,16 @@
 				689D029B13A42B63005EBD36 /* 67@2x.png */,
 				689D029C13A42B63005EBD36 /* 68.png */,
 				689D029D13A42B63005EBD36 /* 68@2x.png */,
-				689D02A613A42B63005EBD36 /* background.svg */,
 				689D02A513A42B63005EBD36 /* background.png */,
 				689D02A713A42B63005EBD36 /* background@2x.png */,
 				689D02A813A42B63005EBD36 /* box.png */,
 				689D02A913A42B63005EBD36 /* box@2x.png */,
 				6876F67913B2F2DB00A05C7A /* checkmark.png */,
 				6876F67A13B2F2DB00A05C7A /* checkmark@2x.png */,
-				68FE79B21428C17F00818EE4 /* gear.svg */,
 				68FE79B11428C17F00818EE4 /* gear.png */,
 				68FE79B31428C17F00818EE4 /* gear@2x.png */,
-				68B0A70114ECBC1E005CFE31 /* reload.svg */,
 				68B0A70014ECBC1E005CFE31 /* reload.png */,
 				68B0A70214ECBC1E005CFE31 /* reload@2x.png */,
-				6802F9C414EC9C1D00ACD4C1 /* wrench.svg */,
 				6802F9C314EC9C1D00ACD4C1 /* wrench.png */,
 				6802F9C514EC9C1D00ACD4C1 /* wrench@2x.png */,
 			);
