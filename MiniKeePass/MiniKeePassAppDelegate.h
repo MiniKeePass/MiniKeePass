@@ -41,6 +41,7 @@
 @property (nonatomic, assign) BOOL locked;
 @property (nonatomic, readonly) BOOL backgroundSupported;
 
+- (CGFloat)currentScreenWidth;
 - (void)closeDatabase;
 - (void)deleteAllData;
 - (NSStringEncoding)getPasswordEncoding;

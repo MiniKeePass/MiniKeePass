@@ -20,8 +20,9 @@
 #import "ChoiceCell.h"
 #import "SwitchCell.h"
 #import "SelectionListViewController.h"
+#import "AutorotatingViewController.h"
 
-@interface SettingsViewController : UITableViewController <PinViewControllerDelegate, SelectionListViewControllerDelegate> {
+@interface SettingsViewController : AutorotatingTableViewController <PinViewControllerDelegate, SelectionListViewControllerDelegate> {
     SwitchCell *pinEnabledCell;
     ChoiceCell *pinLockTimeoutCell;
     SwitchCell *deleteOnFailureEnabledCell;

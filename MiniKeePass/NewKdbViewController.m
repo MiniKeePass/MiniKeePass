@@ -59,10 +59,17 @@
         passwordTextField2.delegate = self;
         
         footerView = [[UIView alloc] init];
-        
+        footerView.frame = CGRectMake(0, 0, self.view.frame.size.width, BUTTON_HEIGHT);
+        footerView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+
         versionSegmentedControl = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObjects:NSLocalizedString(@"Version 1.x", nil), NSLocalizedString(@"Version 2.x", nil), nil]];
         versionSegmentedControl.selectedSegmentIndex = 0;
-        versionSegmentedControl.frame = CGRectMake(HSPACER, VSPACER, BUTTON_WIDTH, BUTTON_HEIGHT);
+	  	
+        CGFloat versionSegmentedControlX = (self.view.frame.size.width - BUTTON_WIDTH) / 2;
+	
+        versionSegmentedControl.frame = CGRectMake(versionSegmentedControlX, VSPACER, BUTTON_WIDTH, BUTTON_HEIGHT);
+        versionSegmentedControl.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+        versionSegmentedControl.selectedSegmentIndex = 0;
         [footerView addSubview:versionSegmentedControl];
         
         self.controls = [NSArray arrayWithObjects:nameTextField, passwordTextField1, passwordTextField2, nil];

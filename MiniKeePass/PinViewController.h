@@ -16,10 +16,11 @@
  */
 
 #import <UIKit/UIKit.h>
+#import "AutorotatingViewController.h"
 
 @protocol PinViewControllerDelegate;
 
-@interface PinViewController : UIViewController <UITextFieldDelegate> {
+@interface PinViewController : AutorotatingViewController <UITextFieldDelegate> {
     UITextField *textField;
     NSArray *pinTextFields;
     UILabel *textLabel;
@@ -28,8 +29,10 @@
 
 - (id)initWithText:(NSString*)text;
 - (void)clearEntry;
+- (void)keyboardDidHide;
 
 @property (nonatomic, copy) UILabel *textLabel;
+@property (nonatomic, copy) UIColor *backgroundColor;
 @property (nonatomic, retain) id<PinViewControllerDelegate> delegate;
 
 @end

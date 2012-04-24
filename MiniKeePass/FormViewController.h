@@ -17,10 +17,11 @@
 
 #import <UIKit/UIKit.h>
 #import "InfoBar.h"
+#import "AutorotatingTableViewController.h"
 
 @protocol FormViewControllerDelegate;
 
-@interface FormViewController : UITableViewController <UITextFieldDelegate> {
+@interface FormViewController : AutorotatingTableViewController <UITextFieldDelegate> {
     NSArray *controls;
     NSString *headerTitle;
     NSString *footerTitle;

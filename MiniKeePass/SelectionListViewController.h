@@ -16,10 +16,11 @@
  */
 
 #import <UIKit/UIKit.h>
+#import "AutorotatingTableViewController.h"
 
 @protocol SelectionListViewControllerDelegate;
 
-@interface SelectionListViewController : UITableViewController {
+@interface SelectionListViewController : AutorotatingTableViewController {
     NSArray *items;
     NSInteger selectedIndex;
     id<SelectionListViewControllerDelegate> delegate;

@@ -31,16 +31,22 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10, 15};
 - (id)init {
     self = [super init];
     if (self) {
-
-        visibleFrame = CGRectZero;
-        offScreenFrame = CGRectOffset(visibleFrame, 0, -95);
+        UIInterfaceOrientation orientation = self.interfaceOrientation;
+        [self updateFramesForOrientation:orientation];
+        [self setBackgroundForOrientation:orientation];
         
+        CGRect screenBounds = [[UIScreen mainScreen] bounds];
+        CGFloat width = UIInterfaceOrientationIsPortrait(orientation) ? CGRectGetWidth(screenBounds) : CGRectGetHeight(screenBounds);
+                
         pinViewController = [[PinViewController alloc] init];
+        pinViewController.backgroundColor = [UIColor clearColor];
         pinViewController.delegate = self;
+        visibleFrame = CGRectMake(0, 0, width, 95);
+        offScreenFrame = CGRectMake(0, -95, width, 95);
+
+        
         pinViewController.view.frame = offScreenFrame;
         [self.view addSubview:pinViewController.view];
-        
-        self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"splash"]];
         
         appDelegate = (MiniKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
         
@@ -55,9 +61,32 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10, 15};
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    
     [pinViewController release];
     [super dealloc];
+}
+
+- (void)setBackgroundForOrientation:(UIInterfaceOrientation)orientation {
+    NSString *imageName = @"splash";
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        if (UIInterfaceOrientationIsPortrait(orientation)) {
+            imageName = [imageName stringByAppendingString:@"-Portrait~ipad"];
+        } else {
+            imageName = [imageName stringByAppendingString:@"-Landscape~ipad"];            
+        }
+    }
+    
+    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:imageName]];
+}
+
+- (void)updateFramesForOrientation:(UIInterfaceOrientation)orientation {
+}
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+    [UIView animateWithDuration:duration animations:^{
+//        [self updateFramesForOrientation:toInterfaceOrientation];
+        [self setBackgroundForOrientation:toInterfaceOrientation];
+    }];
 }
 
 - (UIViewController *)frontMostViewController {
@@ -69,7 +98,6 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10, 15};
 }
 
 - (void)show {
-    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"splash"]];
     [[self frontMostViewController] presentModalViewController:self animated:NO];
 }
 
@@ -84,14 +112,15 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10, 15};
 }
 
 - (void)lock {
-    appDelegate.locked = YES;
+    NSLog(@"Lock %@\n", self);
+        appDelegate.locked = YES;
 
-    pinViewController.textLabel.text = NSLocalizedString(@"Enter your PIN to unlock", nil);
-    
-    [pinViewController becomeFirstResponder];
-    [UIView animateWithDuration:DURATION animations:^{
-        pinViewController.view.frame = visibleFrame;
-    }];
+        pinViewController.textLabel.text = NSLocalizedString(@"Enter your PIN to unlock", nil);
+        
+        [pinViewController becomeFirstResponder];
+        [UIView animateWithDuration:DURATION animations:^{
+            pinViewController.view.frame = visibleFrame;
+        }];
 }
 
 - (void)unlock {

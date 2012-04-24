@@ -126,13 +126,7 @@
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil] autorelease];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
-        CGRect frame = cell.frame;
-        frame.size.width -= 40;
-        frame.size.height -= 22;
-        frame.origin.x = 20;
-        frame.origin.y = 11;
-        
-        view.frame = frame;
+        view.frame = [self calculateNewFrameForView:view inOrientation:[[UIApplication sharedApplication] statusBarOrientation]];
         [cell addSubview:view];
     }
     
@@ -142,6 +136,33 @@
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     [self okPressed:nil];
     return YES;
+}
+
+- (CGRect)calculateNewFrameForView:(UIView *)view inOrientation:(UIInterfaceOrientation)orientation{
+    CGRect screenBounds = [[UIScreen mainScreen] bounds];
+    CGFloat currentWidth = UIInterfaceOrientationIsPortrait(orientation) ? CGRectGetWidth(screenBounds) : CGRectGetHeight(screenBounds);
+    
+    CGFloat xOrigin = UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? 56.0f : 20.0f;
+    CGFloat yOrigin = 11;
+    CGFloat width = currentWidth - 2 * xOrigin;
+    CGFloat height = 22;
+    
+    return CGRectMake(xOrigin, yOrigin, width, height);
+}
+
+- (void)resizeControlsForOrientation:(UIInterfaceOrientation)orientation {
+    for (UIView *view in self.controls) {
+        if (![view isKindOfClass:[UITableViewCell class]]) {
+            view.frame = [self calculateNewFrameForView:view inOrientation:orientation];
+        }
+    }
+}
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {	
+    // Not sure why, but the non-UITableViewCell controls do not seem to get resized during rotation, so adjust here.
+    [UIView animateWithDuration:duration animations:^{
+        [self resizeControlsForOrientation:toInterfaceOrientation];
+    }];
 }
 
 @end

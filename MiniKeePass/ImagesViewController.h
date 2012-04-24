@@ -16,10 +16,11 @@
  */
 
 #import <UIKit/UIKit.h>
+#import "AutorotatingViewController.h"
 
 @protocol ImagesViewControllerDelegate;
 
-@interface ImagesViewController : UIViewController {
+@interface ImagesViewController : AutorotatingViewController {
     UIView *imagesView;
     NSMutableArray *imageViews;
     UIImageView *selectedImageView;

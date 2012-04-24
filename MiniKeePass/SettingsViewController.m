@@ -116,25 +116,28 @@ enum {
     clearClipboardTimeoutCell = [[ChoiceCell alloc] initWithLabel:NSLocalizedString(@"Clear Timeout", nil) choices:[NSArray arrayWithObjects:NSLocalizedString(@"30 Seconds", nil), NSLocalizedString(@"1 Minute", nil), NSLocalizedString(@"2 Minutes", nil), NSLocalizedString(@"3 Minutes", nil), nil] selectedIndex:0];
 
     // Add version number to table view footer
-    UIView *tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 40)];
+    CGFloat viewWidth = CGRectGetWidth(self.tableView.frame);
+    UIView *tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, viewWidth, 40)];
     
     NSString *text = [NSString stringWithFormat:@"MiniKeePass version %@", 
                     [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]];
     UIFont *font = [UIFont boldSystemFontOfSize:17];
     
-    UILabel *versionLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 320, 30)];
+    UILabel *versionLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, viewWidth, 30)];
     versionLabel.textAlignment = UITextAlignmentCenter;
     versionLabel.backgroundColor = [UIColor clearColor];
     versionLabel.font = font;
     versionLabel.textColor = [UIColor colorWithRed:0.298039 green:0.337255 blue:0.423529 alpha:1.0];
     versionLabel.text = text;
+    versionLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 
-    UILabel *highlighLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 1, 320, 30)];
+    UILabel *highlighLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 1, viewWidth, 30)];
     highlighLabel.textAlignment = UITextAlignmentCenter;
     highlighLabel.backgroundColor = [UIColor clearColor];
     highlighLabel.font = font;
     highlighLabel.textColor = [UIColor whiteColor];
     highlighLabel.text = text;
+    highlighLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 
     [tableFooterView addSubview:highlighLabel];
     [tableFooterView addSubview:versionLabel];
