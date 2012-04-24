@@ -16,7 +16,7 @@
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         shouldRotate = YES;
     } else {
-        shouldRotate = interfaceOrientation == UIInterfaceOrientationPortrait;
+        shouldRotate = interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown;
     }
     
     return shouldRotate;

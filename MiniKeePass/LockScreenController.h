@@ -19,7 +19,7 @@
 #import "PinViewController.h"
 #import "AutorotatingViewController.h"
 
-@interface LockScreenController : AutorotatingViewController <PinViewControllerDelegate> {
+@interface LockScreenController : UIViewController <PinViewControllerDelegate> {
     PinViewController *pinViewController;
     MiniKeePassAppDelegate *appDelegate;
     CGRect visibleFrame;

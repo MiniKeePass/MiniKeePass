@@ -82,6 +82,10 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10, 15};
 - (void)updateFramesForOrientation:(UIInterfaceOrientation)orientation {
 }
 
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
+    return UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad || toInterfaceOrientation == UIInterfaceOrientationPortrait;
+}
+
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
     [UIView animateWithDuration:duration animations:^{
 //        [self updateFramesForOrientation:toInterfaceOrientation];

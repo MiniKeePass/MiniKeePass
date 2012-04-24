@@ -159,7 +159,6 @@
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {	
-    // Not sure why, but the non-UITableViewCell controls do not seem to get resized during rotation, so adjust here.
     [UIView animateWithDuration:duration animations:^{
         [self resizeControlsForOrientation:toInterfaceOrientation];
     }];

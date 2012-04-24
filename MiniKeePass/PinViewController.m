@@ -33,9 +33,8 @@
     self = [super init];
     if (self) {
         self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
-        
-        MiniKeePassAppDelegate *appDelegate = (MiniKeePassAppDelegate *)[[UIApplication sharedApplication] delegate];        
-        CGFloat screenWidth = [appDelegate currentScreenWidth];
+
+        CGFloat frameWidth = CGRectGetWidth(self.view.frame);
         
         textField = [[UITextField alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
         textField.delegate = self;
@@ -48,7 +47,7 @@
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textDidChange:) name:UITextFieldTextDidChangeNotification object:textField];
         
         // Create topbar
-        textLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, screenWidth, 95)];
+        textLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, frameWidth, 95)];
         textLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         textLabel.backgroundColor = [UIColor clearColor];
         textLabel.textColor = [UIColor whiteColor];
@@ -57,13 +56,12 @@
         textLabel.textAlignment = UITextAlignmentCenter;
         textLabel.text = text;
         
-        UIToolbar *topBar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, screenWidth, 95)];
+        topBar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, frameWidth, 95)];
         topBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         topBar.barStyle = UIBarStyleBlackTranslucent;
         [topBar addSubview:textLabel];
         
         [self.view addSubview:topBar];
-        [topBar release];
         
         // Create PIN bar
         CGFloat pinTextFieldWidth = 61.0f;
@@ -72,8 +70,8 @@
         
         CGFloat textFieldViewWidth = pinTextFieldWidth * 4 + textFieldSpace * 3;
         
-        UIView *textFieldsView = [[UIView alloc] initWithFrame:CGRectMake((screenWidth - textFieldViewWidth) / 2, 22, textFieldViewWidth, pinTextFieldHeight)];
-        textFieldsView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+        UIView *textFieldsView = [[UIView alloc] initWithFrame:CGRectMake((frameWidth - textFieldViewWidth) / 2, 22, textFieldViewWidth, pinTextFieldHeight)];
+        textFieldsView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
         
         CGFloat xOrigin = 0;
         
@@ -99,13 +97,18 @@
         [pinTextField3 release];
         [pinTextField4 release];
         
-        UIToolbar *PINbar= [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, screenWidth, 95)];
-        PINbar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-        [PINbar setBarStyle:UIBarStyleBlackTranslucent];
-        [PINbar addSubview:textFieldsView];
+        pinBar= [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, frameWidth, 95)];
+        pinBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+        [pinBar setBarStyle:UIBarStyleBlackTranslucent];
+        [pinBar addSubview:textFieldsView];
       
-        textField.inputAccessoryView = PINbar;
-        [PINbar release];
+        textField.inputAccessoryView = pinBar;
+        
+        UIInterfaceOrientation orientation = self.interfaceOrientation;
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone &&
+            UIInterfaceOrientationIsLandscape(orientation)) {
+            [self resizeToolbarsToInterfaceOrientation:orientation];
+        }
         
         // If the keyboard is dismissed, show it again.
 //        [[NSNotificationCenter defaultCenter] addObserver:self
@@ -118,11 +121,30 @@
 }
 
 - (void)dealloc {
+    [topBar release];
+    [pinBar release];
     [textField release];
     [pinTextFields release];
     [textLabel release];
     [delegate release];
     [super dealloc];
+}
+
+- (void)resizeToolbarsToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {	
+    CGRect newFrame = topBar.frame;
+    newFrame.size.height = UIInterfaceOrientationIsPortrait(toInterfaceOrientation) ? 95 : 68;
+
+    topBar.frame = newFrame;
+    textLabel.frame = newFrame;
+    pinBar.frame = newFrame;    
+}
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+    // Nothing needs to be done for the iPad; return
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) return;
+    [UIView animateWithDuration:duration animations:^{
+        [self resizeToolbarsToInterfaceOrientation:toInterfaceOrientation];
+    }];
 }
 
 - (UIColor *)backgroundColor {
@@ -182,6 +204,9 @@
 
 - (BOOL)becomeFirstResponder {
     [super becomeFirstResponder];
+    
+    // When the PIN screen is presented from the lock screen the bars must be resized before presented
+    [self resizeToolbarsToInterfaceOrientation:self.interfaceOrientation];
     
     return [textField becomeFirstResponder];
 }
