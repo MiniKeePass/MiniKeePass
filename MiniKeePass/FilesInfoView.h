@@ -18,6 +18,9 @@
 #import <UIKit/UIKit.h>
 
 @interface FilesInfoView : UIView {
+    UIView *containerView;
+    CGFloat containerWidth;
+    CGFloat containerHeight;
 }
 
 @end

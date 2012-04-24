@@ -77,6 +77,7 @@ enum {
 - (void)displayInfoPage {
     if (filesInfoView == nil) {
         filesInfoView = [[FilesInfoView alloc] initWithFrame:self.view.frame];
+        filesInfoView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     }
     
     [self.view addSubview:filesInfoView];
