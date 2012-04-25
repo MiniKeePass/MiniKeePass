@@ -41,7 +41,8 @@
         self.navigationItem.leftBarButtonItem = cancelButton;
         [cancelButton release];
         
-        infoBar = [[InfoBar alloc] initWithFrame:CGRectMake(0, 0, 320, 20)];
+        infoBar = [[InfoBar alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 20)];
+        infoBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         [self.view addSubview:infoBar];
     }
     return self;

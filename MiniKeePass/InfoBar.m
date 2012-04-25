@@ -31,6 +31,7 @@
         self.backgroundColor = [UIColor colorWithRed:0.8 green:0.0 blue:0.0 alpha:1.0];
         
         label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
+        label.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         label.textAlignment = UITextAlignmentCenter;
         label.text = @"Finished";
         label.textColor = [UIColor whiteColor];
