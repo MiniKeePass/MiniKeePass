@@ -32,7 +32,7 @@
 - (id)initWithStyle:(UITableViewStyle)style {
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
-        self.title = NSLocalizedString(@"New Database", nil);
+        self.headerTitle = NSLocalizedString(@"New Database", nil);
         
         nameTextField = [[UITextField alloc] init];
         nameTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
@@ -57,22 +57,16 @@
         passwordTextField2.autocorrectionType = UITextAutocorrectionTypeNo;
         passwordTextField2.returnKeyType = UIReturnKeyDone;
         passwordTextField2.delegate = self;
-        
-        footerView = [[UIView alloc] init];
-        footerView.frame = CGRectMake(0, 0, self.view.frame.size.width, BUTTON_HEIGHT);
-        footerView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 
         versionSegmentedControl = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObjects:NSLocalizedString(@"Version 1.x", nil), NSLocalizedString(@"Version 2.x", nil), nil]];
         versionSegmentedControl.selectedSegmentIndex = 0;
+        versionSegmentedControl.segmentedControlStyle = UISegmentedControlStyleBar;
+        versionSegmentedControl.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 	  	
-        CGFloat versionSegmentedControlX = (self.view.frame.size.width - BUTTON_WIDTH) / 2;
-	
-        versionSegmentedControl.frame = CGRectMake(versionSegmentedControlX, VSPACER, BUTTON_WIDTH, BUTTON_HEIGHT);
-        versionSegmentedControl.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
-        versionSegmentedControl.selectedSegmentIndex = 0;
-        [footerView addSubview:versionSegmentedControl];
+        self.navigationItem.titleView = versionSegmentedControl;
         
         self.controls = [NSArray arrayWithObjects:nameTextField, passwordTextField1, passwordTextField2, nil];
+        self.tableView.scrollEnabled = YES;
     }
     return self;
 }
@@ -81,9 +75,14 @@
     [nameTextField release];
     [passwordTextField1 release];
     [passwordTextField2 release];
-    [footerView release];
     [versionSegmentedControl release];
     [super dealloc];
+}
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField {    
+    CGPoint point = [self.tableView convertPoint:CGPointZero fromView:textField];
+     UITableViewCell *cell =[self.tableView cellForRowAtIndexPath:[self.tableView indexPathForRowAtPoint:point]];
+    [self.tableView scrollRectToVisible:cell.frame animated:YES];
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
@@ -96,14 +95,6 @@
     }
     
     return YES;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    return VSPACER + BUTTON_HEIGHT + VSPACER;
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
-    return footerView;
 }
 
 @end

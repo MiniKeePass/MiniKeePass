@@ -23,6 +23,7 @@
 
 @interface FormViewController : AutorotatingTableViewController <UITextFieldDelegate> {
     NSArray *controls;
+    NSMutableArray *cells;
     NSString *headerTitle;
     NSString *footerTitle;
     

@@ -93,7 +93,7 @@
 - (void)textFieldDidBeginEditing:(UITextField *)field {
     // Scroll to the top
     UITableView *tableView = (UITableView*)self.superview;
-    [tableView setContentOffset:CGPointMake(0.0, 0.0) animated:YES];
+    [tableView scrollRectToVisible:self.frame animated:YES];
     
     tapGesture.enabled = NO;
 }

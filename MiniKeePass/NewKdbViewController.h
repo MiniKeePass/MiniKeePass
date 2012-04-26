@@ -22,7 +22,6 @@
     UITextField *nameTextField;
     UITextField *passwordTextField1;
     UITextField *passwordTextField2;
-    UIView *footerView;
     UISegmentedControl *versionSegmentedControl;
 }
 
