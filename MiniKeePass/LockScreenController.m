@@ -66,14 +66,18 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10, 15};
 }
 
 - (void)setBackgroundForOrientation:(UIInterfaceOrientation)orientation {
-    NSString *imageName = @"splash";
+    NSString *imageName;
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        imageName = @"Default";
+        
         if (UIInterfaceOrientationIsPortrait(orientation)) {
             imageName = [imageName stringByAppendingString:@"-Portrait~ipad"];
         } else {
             imageName = [imageName stringByAppendingString:@"-Landscape~ipad"];            
         }
+    } else {
+        imageName = @"splash";
     }
     
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:imageName]];
