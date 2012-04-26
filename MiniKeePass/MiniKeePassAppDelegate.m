@@ -340,7 +340,7 @@ static NSStringEncoding passwordEncodingValues[] = {
     myActionSheetDelegate = actionSheet.delegate;
     
     actionSheet.delegate = self;
-    [actionSheet showInView:window];
+    [actionSheet showInView:window.rootViewController.view];
     [actionSheet release];
 }
 
