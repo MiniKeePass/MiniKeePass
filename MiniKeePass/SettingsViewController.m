@@ -130,18 +130,10 @@ enum {
     versionLabel.textColor = [UIColor colorWithRed:0.298039 green:0.337255 blue:0.423529 alpha:1.0];
     versionLabel.text = text;
     versionLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    versionLabel.shadowColor = [UIColor whiteColor];
+    versionLabel.shadowOffset = CGSizeMake(0.0, 1.0);
 
-    UILabel *highlighLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 1, viewWidth, 30)];
-    highlighLabel.textAlignment = UITextAlignmentCenter;
-    highlighLabel.backgroundColor = [UIColor clearColor];
-    highlighLabel.font = font;
-    highlighLabel.textColor = [UIColor whiteColor];
-    highlighLabel.text = text;
-    highlighLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-
-    [tableFooterView addSubview:highlighLabel];
     [tableFooterView addSubview:versionLabel];
-    [highlighLabel release];
     [versionLabel release];
     
     self.tableView.tableFooterView = tableFooterView;
