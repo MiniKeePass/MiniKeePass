@@ -16,6 +16,7 @@
  */
 
 #import "EntryViewController.h"
+#import "Kdb4Node.h"
 
 @implementation EntryViewController
 
@@ -133,6 +134,15 @@
     passwordCell.textField.text = entry.password;
     urlCell.textField.text = entry.url;
     commentsCell.textView.text = entry.notes;
+    
+    // FIXME Example code for looping through string fields
+    if ([entry isKindOfClass:[Kdb4Entry class]]) {
+        Kdb4Entry *kdb4Entry = (Kdb4Entry*)entry;
+        for (NSString *key in kdb4Entry.stringFields) {
+            NSString *value = [kdb4Entry.stringFields valueForKey:key];
+            NSLog(@"%@ = %@\n", key, value);
+        }
+    }
 }
 
 - (KdbEntry *)entry {

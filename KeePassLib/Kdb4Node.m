@@ -68,11 +68,13 @@
 @implementation Kdb4Entry
 
 @synthesize element;
+@synthesize stringFields;
 
 - (id)initWithElement:(DDXMLElement*)e {
     self = [super init];
     if(self) {
         self.element = e;
+        self.stringFields = [[NSMutableDictionary alloc] init];
     }
     return self;
 }

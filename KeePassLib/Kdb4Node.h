@@ -52,9 +52,11 @@
 
 @interface Kdb4Entry : KdbEntry {
     DDXMLElement *element;
+    NSMutableDictionary *stringFields;
 }
 
 @property(nonatomic, retain) DDXMLElement *element;
+@property(nonatomic, retain) NSMutableDictionary *stringFields;
 
 - (id)initWithElement:(DDXMLElement*)e;
 

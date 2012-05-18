@@ -19,6 +19,12 @@
 #import "Kdb4Node.h"
 #import "Base64.h"
 
+#define FIELD_TITLE     @"Title"
+#define FIELD_USER_NAME @"UserName"
+#define FIELD_PASSWORD  @"Password"
+#define FIELD_URL       @"URL"
+#define FIELD_NOTES     @"Notes"
+
 @implementation DDXMLDocument (MKPDDXMLDocument_Additions)
 
 - (id)initWithReadIO:(xmlInputReadCallback)ioread closeIO:(xmlInputCloseCallback)ioclose context:(void*)ioctx options:(NSUInteger)mask error:(NSError **)error {
@@ -198,16 +204,18 @@ int closeCallback(void *context) {
         DDXMLElement *valueElement = [element elementForName:@"Value"];
         NSString *value = [valueElement stringValue];
         
-        if ([key isEqualToString:@"Title"]) {
+        if ([key isEqualToString:FIELD_TITLE]) {
             entry.title = value;
-        } else if ([key isEqualToString:@"UserName"]) {
+        } else if ([key isEqualToString:FIELD_USER_NAME]) {
             entry.username = value;
-        } else if ([key isEqualToString:@"Password"]) {
+        } else if ([key isEqualToString:FIELD_PASSWORD]) {
             entry.password = value;
-        } else if ([key isEqualToString:@"URL"]) {
+        } else if ([key isEqualToString:FIELD_URL]) {
             entry.url = value;
-        } else if ([key isEqualToString:@"Notes"]) {
+        } else if ([key isEqualToString:FIELD_NOTES]) {
             entry.notes = value;
+        } else {
+            [entry.stringFields setValue:value forKey:key];
         }
     }
     

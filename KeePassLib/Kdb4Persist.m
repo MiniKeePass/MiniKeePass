@@ -126,6 +126,8 @@
             valueElement.stringValue = entry.url;
         } else if ([key isEqualToString:@"Notes"]) {
             valueElement.stringValue = entry.notes;
+        } else {
+            valueElement.stringValue = [entry.stringFields valueForKey:key];
         }
     }
 }
