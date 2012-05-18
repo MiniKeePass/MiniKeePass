@@ -63,9 +63,11 @@
 
 @interface Kdb4Tree : KdbTree {
     DDXMLDocument *document;
+    uint64_t rounds;
 }
 
 @property(nonatomic, retain) DDXMLDocument *document;
+@property(nonatomic, assign) uint64_t rounds;
 
 - (id)initWithDocument:(DDXMLDocument*)doc;
 

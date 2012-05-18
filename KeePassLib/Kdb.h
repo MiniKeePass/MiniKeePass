@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+#define DEFAULT_TRANSFORMATION_ROUNDS 6000
+
 @class KdbEntry;
 
 @interface KdbGroup : NSObject {

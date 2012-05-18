@@ -88,11 +88,13 @@
 @implementation Kdb4Tree
 
 @synthesize document;
+@synthesize rounds;
 
 - (id)initWithDocument:(DDXMLDocument*)doc {
     self = [super init];
     if(self) {
         self.document = doc;
+        self.rounds = DEFAULT_TRANSFORMATION_ROUNDS;
     }
     return self;
 }

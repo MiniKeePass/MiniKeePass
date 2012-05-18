@@ -14,7 +14,6 @@
     NSData *masterSeed;
     NSData *encryptionIv;
     NSData *transformSeed;
-    uint32_t rounds;
 }
 
 @end

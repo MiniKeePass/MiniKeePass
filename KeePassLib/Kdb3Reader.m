@@ -92,6 +92,9 @@
     Kdb3Parser *parser = [[Kdb3Parser alloc]init];
     @try {
         tree = [parser parse:aesInputStream numGroups:numGroups numEntris:numEntries];
+        
+        // Copy in the number of rounds
+        tree.rounds = rounds;
     } @finally {
         [parser release];
         [aesInputStream release];

@@ -74,7 +74,12 @@
     
     // Parse the tree
     Kdb4Parser *parser = [[[Kdb4Parser alloc] initWithRandomStream:randomStream] autorelease];
-    return [parser parse:stream];
+    Kdb4Tree *tree = [parser parse:stream];
+    
+    // Copy in the number of rounds
+    tree.rounds = rounds;
+    
+    return tree;
 }
 
 - (void)readHeader:inputStream {

@@ -20,7 +20,7 @@
 @interface Kdb3Writer (PrivateMethods)
 - (uint32_t)numOfGroups:(Kdb3Group*)root;
 - (uint32_t)numOfEntries:(Kdb3Group*)root;
-- (void)writeHeader:(OutputStream*)outputStream withRoot:(Kdb3Group*)root;
+- (void)writeHeader:(OutputStream*)outputStream withTree:(Kdb3Tree*)tree;
 @end
 
 @implementation Kdb3Writer
@@ -31,7 +31,6 @@
         masterSeed = [[Utils randomBytes:16] retain];
         encryptionIv = [[Utils randomBytes:16] retain];
         transformSeed = [[Utils randomBytes:32] retain];
-        rounds = 6000;
     }
     return self;
 }
@@ -68,7 +67,9 @@
 /**
  * Write the KDB3 header
  */
-- (void)writeHeader:(OutputStream*)outputStream withRoot:(Kdb3Group*)root {
+- (void)writeHeader:(OutputStream*)outputStream withTree:(Kdb3Tree*)tree {
+    Kdb3Group *root = (Kdb3Group*)tree.root;
+    
     // Signature, Flags & Version
     [outputStream writeInt32:CFSwapInt32HostToLittle(KDB3_SIG1)];
     [outputStream writeInt32:CFSwapInt32HostToLittle(KDB3_SIG2)];
@@ -91,7 +92,7 @@
     
     [outputStream write:transformSeed];
     
-    [outputStream writeInt32:CFSwapInt32HostToLittle(rounds)];
+    [outputStream writeInt32:CFSwapInt32HostToLittle(tree.rounds)];
 }
 
 /**
@@ -101,10 +102,10 @@
     DataOutputStream *dataOutputStream = [[DataOutputStream alloc] init];
     
     // Write the header
-    [self writeHeader:dataOutputStream withRoot:(Kdb3Group*)tree.root];
+    [self writeHeader:dataOutputStream withTree:tree];
     
     // Create the encryption output stream
-    NSData *key = [kdbPassword createFinalKeyForVersion:3 masterSeed:masterSeed transformSeed:transformSeed rounds:rounds];
+    NSData *key = [kdbPassword createFinalKeyForVersion:3 masterSeed:masterSeed transformSeed:transformSeed rounds:tree.rounds];
     AesOutputStream *aesOutputStream = [[AesOutputStream alloc] initWithOutputStream:dataOutputStream key:key iv:encryptionIv];
     
     // Wrap the AES output stream in a SHA256 output stream to calculate a hash

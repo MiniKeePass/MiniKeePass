@@ -31,7 +31,7 @@
 
 @interface Kdb4Writer (PrivateMethods)
 - (void)writeHeaderField:(OutputStream*)outputStream headerId:(uint8_t)headerId data:(const void*)data length:(uint16_t)length;
-- (void)writeHeader:(OutputStream*)outputStream;
+- (void)writeHeader:(OutputStream*)outputStream withTree:(Kdb4Tree*)tree;
 @end
 
 @implementation Kdb4Writer
@@ -41,7 +41,6 @@
     if (self) {
         masterSeed = [[Utils randomBytes:32] retain];
         transformSeed = [[Utils randomBytes:32] retain];
-        rounds = 6000;
         encryptionIv = [[Utils randomBytes:16] retain];
         protectedStreamKey = [[Utils randomBytes:32] retain];
         streamStartBytes = [[Utils randomBytes:32] retain];
@@ -63,10 +62,10 @@
     DataOutputStream *outputStream = [[[DataOutputStream alloc] init] autorelease];
     
     // Write the header
-    [self writeHeader:outputStream];
+    [self writeHeader:outputStream withTree:tree];
     
     // Create the encryption output stream
-    NSData *key = [kdbPassword createFinalKeyForVersion:4 masterSeed:masterSeed transformSeed:transformSeed rounds:rounds];
+    NSData *key = [kdbPassword createFinalKeyForVersion:4 masterSeed:masterSeed transformSeed:transformSeed rounds:tree.rounds];
     AesOutputStream *aesOutputStream = [[[AesOutputStream alloc] initWithOutputStream:outputStream key:key iv:encryptionIv] autorelease];
     
     // Write the stream start bytes
@@ -104,7 +103,7 @@
     }
 }
 
-- (void)writeHeader:(OutputStream*)outputStream {
+- (void)writeHeader:(OutputStream*)outputStream withTree:(Kdb4Tree*)tree {
     uint8_t buffer[16];
     uint32_t i32;
     uint64_t i64;
@@ -118,7 +117,6 @@
     [cipherUuid getBytes:buffer length:16];
     [self writeHeaderField:outputStream headerId:HEADER_CIPHERID data:buffer length:16];
     
-    // FIXME support gzip
     i32 = CFSwapInt32HostToLittle(COMPRESSION_GZIP);
     [self writeHeaderField:outputStream headerId:HEADER_COMPRESSION data:&i32 length:4];
     
@@ -126,7 +124,7 @@
     
     [self writeHeaderField:outputStream headerId:HEADER_TRANSFORMSEED data:transformSeed.bytes length:transformSeed.length];
     
-    i64 = CFSwapInt64HostToLittle(rounds);
+    i64 = CFSwapInt64HostToLittle(tree.rounds);
     [self writeHeaderField:outputStream headerId:HEADER_TRANSFORMROUNDS data:&i64 length:8];
     
     [self writeHeaderField:outputStream headerId:HEADER_ENCRYPTIONIV data:encryptionIv.bytes length:encryptionIv.length];

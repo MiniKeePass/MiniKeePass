@@ -50,7 +50,11 @@
 
 
 @interface Kdb3Tree : KdbTree {
-
+    uint32_t rounds;
 }
+
+@property(nonatomic, assign) uint32_t rounds;
+
+- (id)init;
 
 @end
