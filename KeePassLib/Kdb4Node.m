@@ -91,12 +91,14 @@
 
 @synthesize document;
 @synthesize rounds;
+@synthesize compressionAlgorithm;
 
 - (id)initWithDocument:(DDXMLDocument*)doc {
     self = [super init];
     if(self) {
         self.document = doc;
         self.rounds = DEFAULT_TRANSFORMATION_ROUNDS;
+        self.compressionAlgorithm = COMPRESSION_GZIP;
     }
     return self;
 }

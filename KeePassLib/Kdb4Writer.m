@@ -72,20 +72,22 @@
     [aesOutputStream write:streamStartBytes];
     
     // Create the hashed output stream
-    HashedOutputStream *hashedOutputStream = [[[HashedOutputStream alloc] initWithOutputStream:aesOutputStream blockSize:1024*1024] autorelease];
+    OutputStream *stream = [[[HashedOutputStream alloc] initWithOutputStream:aesOutputStream blockSize:1024*1024] autorelease];
     
     // Create the gzip output stream
-    GZipOutputStream *gzipOutputStream = [[[GZipOutputStream alloc] initWithOutputStream:hashedOutputStream] autorelease];
+    if (tree.compressionAlgorithm == COMPRESSION_GZIP) {
+        stream = [[[GZipOutputStream alloc] initWithOutputStream:stream] autorelease];
+    }
     
     // Create the random stream
     RandomStream *randomStream = [[[Salsa20RandomStream alloc] init:protectedStreamKey] autorelease];
     
     // Serialize the XML
-    Kdb4Persist *persist = [[[Kdb4Persist alloc] initWithTree:tree outputStream:gzipOutputStream randomStream:randomStream] autorelease];
+    Kdb4Persist *persist = [[[Kdb4Persist alloc] initWithTree:tree outputStream:stream randomStream:randomStream] autorelease];
     [persist persist];
     
     // Close the output stream
-    [gzipOutputStream close];
+    [stream close];
     
     // Write to the file
     if (![outputStream.data writeToFile:filename atomically:YES]) {
@@ -117,7 +119,7 @@
     [cipherUuid getBytes:buffer length:16];
     [self writeHeaderField:outputStream headerId:HEADER_CIPHERID data:buffer length:16];
     
-    i32 = CFSwapInt32HostToLittle(COMPRESSION_GZIP);
+    i32 = CFSwapInt32HostToLittle(tree.compressionAlgorithm);
     [self writeHeaderField:outputStream headerId:HEADER_COMPRESSION data:&i32 length:4];
     
     [self writeHeaderField:outputStream headerId:HEADER_MASTERSEED data:masterSeed.bytes length:masterSeed.length];

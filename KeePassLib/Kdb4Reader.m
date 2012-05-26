@@ -76,8 +76,9 @@
     Kdb4Parser *parser = [[[Kdb4Parser alloc] initWithRandomStream:randomStream] autorelease];
     Kdb4Tree *tree = [parser parse:stream];
     
-    // Copy in the number of rounds
+    // Copy some parameters into the KdbTree
     tree.rounds = rounds;
+    tree.compressionAlgorithm = compressionAlgorithm;
     
     return tree;
 }
