@@ -126,9 +126,12 @@
             valueElement.stringValue = entry.url;
         } else if ([key isEqualToString:@"Notes"]) {
             valueElement.stringValue = entry.notes;
-        } else {
-            valueElement.stringValue = [entry.stringFields valueForKey:key];
         }
+    }
+    
+    for (StringField *stringField in entry.stringFields) {
+        [stringField.element elementForName:@"Key"].stringValue = stringField.name;
+        [stringField.element elementForName:@"Value"].stringValue = stringField.value;
     }
 }
 

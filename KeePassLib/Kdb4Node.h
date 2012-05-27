@@ -50,15 +50,37 @@
 @end
 
 
+@class StringField;
+
 @interface Kdb4Entry : KdbEntry {
     DDXMLElement *element;
-    NSMutableDictionary *stringFields;
+    NSMutableArray *stringFields;
 }
 
 @property(nonatomic, retain) DDXMLElement *element;
-@property(nonatomic, retain) NSMutableDictionary *stringFields;
+@property(nonatomic, retain) NSArray *stringFields;
 
 - (id)initWithElement:(DDXMLElement*)e;
+
+- (void)addStringField:(StringField*)stringField;
+- (void)removeStringField:(StringField*)stringField;
+
+@end
+
+
+@interface StringField : NSObject {
+    Kdb4Entry *parent;
+    NSString *name;
+    NSString *value;
+    DDXMLElement *element;
+}
+
+@property(nonatomic, retain) Kdb4Entry *parent;
+@property(nonatomic, copy) NSString *name;
+@property(nonatomic, copy) NSString *value;
+@property(nonatomic, retain) DDXMLElement *element;
+
+- (id)initWithElement:(DDXMLElement*)element;
 
 @end
 
@@ -74,5 +96,6 @@
 @property(nonatomic, assign) uint32_t compressionAlgorithm;
 
 - (id)initWithDocument:(DDXMLDocument*)doc;
+- (StringField*)createStringField:(Kdb4Entry*)parent;
 
 @end

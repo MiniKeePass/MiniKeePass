@@ -215,7 +215,10 @@ int closeCallback(void *context) {
         } else if ([key isEqualToString:FIELD_NOTES]) {
             entry.notes = value;
         } else {
-            [entry.stringFields setValue:value forKey:key];
+            StringField *stringField = [[StringField alloc] initWithElement:element];
+            stringField.name = key;
+            stringField.value = value;
+            [entry addStringField:stringField];
         }
     }
     
