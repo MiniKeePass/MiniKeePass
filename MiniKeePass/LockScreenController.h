@@ -22,8 +22,9 @@
 @interface LockScreenController : UIViewController <PinViewControllerDelegate> {
     PinViewController *pinViewController;
     MiniKeePassAppDelegate *appDelegate;
-    CGRect visibleFrame;
-    CGRect offScreenFrame;
+    UIViewController *previousViewController;
+    UIColor *landscapeColor;
+    UIColor *portraitColor;
 }
 
 + (void)present;

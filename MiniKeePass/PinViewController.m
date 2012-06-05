@@ -20,6 +20,10 @@
 #import "PinTextField.h"
 #import "MiniKeePassAppDelegate.h"
 
+#define PINTEXTFIELDWIDTH  61.0f
+#define PINTEXTFIELDHEIGHT 52.0f
+#define TEXTFIELDSPACE     10.0f
+
 @implementation PinViewController
 
 @synthesize delegate;
@@ -52,7 +56,7 @@
         
         // Create topbar
         textLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, frameWidth, 95)];
-        textLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+        textLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         textLabel.backgroundColor = [UIColor clearColor];
         textLabel.textColor = [UIColor whiteColor];
         textLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:25];
@@ -67,31 +71,26 @@
         
         [self.view addSubview:topBar];
         
-        // Create PIN bar
-        CGFloat pinTextFieldWidth = 61.0f;
-        CGFloat pinTextFieldHeight = 52.0f;
-        CGFloat textFieldSpace = 10.0f;
+        CGFloat textFieldViewWidth = PINTEXTFIELDWIDTH * 4 + TEXTFIELDSPACE * 3;
         
-        CGFloat textFieldViewWidth = pinTextFieldWidth * 4 + textFieldSpace * 3;
-        
-        UIView *textFieldsView = [[UIView alloc] initWithFrame:CGRectMake((frameWidth - textFieldViewWidth) / 2, 22, textFieldViewWidth, pinTextFieldHeight)];
+        UIView *textFieldsView = [[UIView alloc] initWithFrame:CGRectMake((frameWidth - textFieldViewWidth) / 2, 22, textFieldViewWidth, PINTEXTFIELDHEIGHT)];
         textFieldsView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
         
         CGFloat xOrigin = 0;
         
-        PinTextField *pinTextField1 = [[PinTextField alloc] initWithFrame:CGRectMake(xOrigin, 0, pinTextFieldWidth, pinTextFieldHeight)];
-        xOrigin += (pinTextFieldWidth + textFieldSpace);
+        PinTextField *pinTextField1 = [[PinTextField alloc] initWithFrame:CGRectMake(xOrigin, 0, PINTEXTFIELDWIDTH, PINTEXTFIELDHEIGHT)];
+        xOrigin += (PINTEXTFIELDWIDTH + TEXTFIELDSPACE);
         [textFieldsView addSubview:pinTextField1];
         
-        PinTextField *pinTextField2 = [[PinTextField alloc] initWithFrame:CGRectMake(xOrigin, 0, pinTextFieldWidth, pinTextFieldHeight)];
-        xOrigin += (pinTextFieldWidth + textFieldSpace);
+        PinTextField *pinTextField2 = [[PinTextField alloc] initWithFrame:CGRectMake(xOrigin, 0, PINTEXTFIELDWIDTH, PINTEXTFIELDHEIGHT)];
+        xOrigin += (PINTEXTFIELDWIDTH + TEXTFIELDSPACE);
         [textFieldsView addSubview:pinTextField2];
       
-        PinTextField *pinTextField3 = [[PinTextField alloc] initWithFrame:CGRectMake(xOrigin, 0, pinTextFieldWidth, pinTextFieldHeight)];
-        xOrigin += (pinTextFieldWidth + textFieldSpace);
+        PinTextField *pinTextField3 = [[PinTextField alloc] initWithFrame:CGRectMake(xOrigin, 0, PINTEXTFIELDWIDTH, PINTEXTFIELDHEIGHT)];
+        xOrigin += (PINTEXTFIELDWIDTH + TEXTFIELDSPACE);
         [textFieldsView addSubview:pinTextField3];
       
-        PinTextField *pinTextField4 = [[PinTextField alloc] initWithFrame:CGRectMake(xOrigin, 0, pinTextFieldWidth, pinTextFieldHeight)];
+        PinTextField *pinTextField4 = [[PinTextField alloc] initWithFrame:CGRectMake(xOrigin, 0, PINTEXTFIELDWIDTH, PINTEXTFIELDHEIGHT)];
         [textFieldsView addSubview:pinTextField4];
         
         pinTextFields = [[NSArray arrayWithObjects:pinTextField1, pinTextField2, pinTextField3, pinTextField4, nil] retain];
@@ -107,13 +106,7 @@
         [pinBar addSubview:textFieldsView];
       
         textField.inputAccessoryView = pinBar;
-        
-        UIInterfaceOrientation orientation = self.interfaceOrientation;
-        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone &&
-            UIInterfaceOrientationIsLandscape(orientation)) {
-            [self resizeToolbarsToInterfaceOrientation:orientation];
-        }
-        
+                
         // If the keyboard is dismissed, show it again.
 //        [[NSNotificationCenter defaultCenter] addObserver:self
 //                                                 selector:@selector(keyboardDidHide)
@@ -132,24 +125,6 @@
     [textLabel release];
     [delegate release];
     [super dealloc];
-}
-
-- (void)resizeToolbarsToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {	
-    // Nothing needs to be done for the iPad; return
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) return;
-
-    CGRect newFrame = topBar.frame;
-    newFrame.size.height = UIInterfaceOrientationIsPortrait(toInterfaceOrientation) ? 95 : 68;
-
-    topBar.frame = newFrame;
-    textLabel.frame = newFrame;
-    pinBar.frame = newFrame;    
-}
-
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
-    [UIView animateWithDuration:duration animations:^{
-        [self resizeToolbarsToInterfaceOrientation:toInterfaceOrientation];
-    }];
 }
 
 - (UIColor *)backgroundColor {
@@ -209,9 +184,6 @@
 
 - (BOOL)becomeFirstResponder {
     [super becomeFirstResponder];
-    
-    // When the PIN screen is presented from the lock screen the bars must be resized before presented
-    [self resizeToolbarsToInterfaceOrientation:self.interfaceOrientation];
     
     return [textField becomeFirstResponder];
 }
