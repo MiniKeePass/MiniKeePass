@@ -77,6 +77,8 @@ static NSStringEncoding passwordEncodingValues[] = {
     navigationController = [[UINavigationController alloc] initWithRootViewController:filesViewController];
     [filesViewController release];
     
+    navigationController.navigationBar.tintColor = [UIColor darkGrayColor];
+    navigationController.toolbar.tintColor = [UIColor darkGrayColor];
     navigationController.toolbarHidden = NO;
     
     // Create the window
@@ -319,6 +321,7 @@ static NSStringEncoding passwordEncodingValues[] = {
     [doneButton release];
     
     UINavigationController *settingsNavController = [[UINavigationController alloc] initWithRootViewController:settingsViewController];
+    settingsNavController.navigationBar.tintColor = [UIColor darkGrayColor];
     settingsNavController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
     
     [window.rootViewController presentModalViewController:settingsNavController animated:YES];

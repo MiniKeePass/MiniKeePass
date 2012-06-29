@@ -106,6 +106,7 @@ static DatabaseManager *sharedInstance;
         }
         
         UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:passwordViewController];
+        navigationController.navigationBar.tintColor = [UIColor darkGrayColor];
         
         [appDelegate.window.rootViewController presentModalViewController:navigationController animated:animated];
         

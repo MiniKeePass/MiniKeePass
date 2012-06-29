@@ -107,23 +107,22 @@
                 break;
         }
 
-        if ([newKdbTitle localizedCaseInsensitiveCompare:pushedKdbTitle] != 0) {        
-            NSUInteger index = [self updatePositionOfObjectAtIndex:selectedIndexPath.row inArray:array];
-                
-            // Move or update the row
-            if (index != selectedIndexPath.row) {
-                [self.tableView beginUpdates];
-                [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:selectedIndexPath] withRowAnimation:UITableViewRowAnimationFade];
-                selectedIndexPath = [NSIndexPath indexPathForRow:index inSection:selectedIndexPath.section];
-                [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:selectedIndexPath] withRowAnimation:UITableViewRowAnimationFade];
-                [self.tableView endUpdates];
-            } else {
-                [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:selectedIndexPath] withRowAnimation:UITableViewRowAnimationNone];
-            }
+        NSUInteger index = [self updatePositionOfObjectAtIndex:selectedIndexPath.row inArray:array];
             
-            // Re-select the row
-            [self.tableView selectRowAtIndexPath:selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+        // Move or update the row
+        if (index != selectedIndexPath.row) {
+            [self.tableView beginUpdates];
+            [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:selectedIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+            selectedIndexPath = [NSIndexPath indexPathForRow:index inSection:selectedIndexPath.section];
+            [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:selectedIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+            [self.tableView endUpdates];
+        } else {
+            [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:selectedIndexPath] withRowAnimation:UITableViewRowAnimationNone];
         }
+        
+        // Re-select the row
+        [self.tableView selectRowAtIndexPath:selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+        
         [newKdbTitle release];
     }
     

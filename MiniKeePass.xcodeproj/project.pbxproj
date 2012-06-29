@@ -19,6 +19,7 @@
 		529708AE14FEEFD3003547FB /* Andale Mono.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 529708AD14FEEFD3003547FB /* Andale Mono.ttf */; };
 		529708B014FEF149003547FB /* Andale Mono.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 529708AD14FEEFD3003547FB /* Andale Mono.ttf */; };
 		52A177BC13EB698E00CEEFCE /* createdb.html in Resources */ = {isa = PBXBuildFile; fileRef = 52A177BB13EB698E00CEEFCE /* createdb.html */; };
+		52A512B1159CE7540009F82F /* ImageContainerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 52A512B0159CE7540009F82F /* ImageContainerView.m */; };
 		52A7E1A914EDF1CB0041F950 /* LockScreenController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52A7E1A814EDF1CB0041F950 /* LockScreenController.m */; };
 		52CF7D871542515500D681C1 /* Default-Landscape~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 52CF7D861542515500D681C1 /* Default-Landscape~ipad.png */; };
 		52CF7D891542515900D681C1 /* Default-Landscape@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 52CF7D881542515900D681C1 /* Default-Landscape@2x~ipad.png */; };
@@ -26,6 +27,12 @@
 		52CF7D8D1542516300D681C1 /* Default-Portrait~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 52CF7D8C1542516300D681C1 /* Default-Portrait~ipad.png */; };
 		52CF7D8F1542516900D681C1 /* icon@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 52CF7D8E1542516900D681C1 /* icon@2x~ipad.png */; };
 		52CF7D911542516D00D681C1 /* icon~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 52CF7D901542516D00D681C1 /* icon~ipad.png */; };
+		52DDE05B15899DFF0054429F /* lockBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 52DDE05A15899DFF0054429F /* lockBackground.png */; };
+		52DDE05D15899E2C0054429F /* lockBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52DDE05C15899E2B0054429F /* lockBackground@2x.png */; };
+		52DDE0621589A0110054429F /* lockLandscape@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 52DDE05E1589A0100054429F /* lockLandscape@2x~ipad.png */; };
+		52DDE0631589A0110054429F /* lockLandscape~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 52DDE05F1589A0100054429F /* lockLandscape~ipad.png */; };
+		52DDE0641589A0110054429F /* lockPortrait@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 52DDE0601589A0100054429F /* lockPortrait@2x~ipad.png */; };
+		52DDE0651589A0110054429F /* lockPortrait~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 52DDE0611589A0100054429F /* lockPortrait~ipad.png */; };
 		52E6C88715431C7700A91CD3 /* AutorotatingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52E6C88615431C7700A91CD3 /* AutorotatingViewController.m */; };
 		52E6C88B15431D6C00A91CD3 /* AutorotatingTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52E6C88A15431D6C00A91CD3 /* AutorotatingTableViewController.m */; };
 		6802F9C614EC9C1D00ACD4C1 /* wrench.png in Resources */ = {isa = PBXBuildFile; fileRef = 6802F9C314EC9C1D00ACD4C1 /* wrench.png */; };
@@ -349,6 +356,8 @@
 		529BED9E14D7CD8600618250 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		529BED9F14D7CD9700618250 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		52A177BB13EB698E00CEEFCE /* createdb.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = createdb.html; sourceTree = "<group>"; };
+		52A512AF159CE7540009F82F /* ImageContainerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageContainerView.h; sourceTree = "<group>"; };
+		52A512B0159CE7540009F82F /* ImageContainerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageContainerView.m; sourceTree = "<group>"; };
 		52A7E1A714EDF1CB0041F950 /* LockScreenController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LockScreenController.h; sourceTree = "<group>"; };
 		52A7E1A814EDF1CB0041F950 /* LockScreenController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LockScreenController.m; sourceTree = "<group>"; };
 		52CF7D861542515500D681C1 /* Default-Landscape~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape~ipad.png"; sourceTree = "<group>"; };
@@ -357,6 +366,12 @@
 		52CF7D8C1542516300D681C1 /* Default-Portrait~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Portrait~ipad.png"; sourceTree = "<group>"; };
 		52CF7D8E1542516900D681C1 /* icon@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon@2x~ipad.png"; sourceTree = "<group>"; };
 		52CF7D901542516D00D681C1 /* icon~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon~ipad.png"; sourceTree = "<group>"; };
+		52DDE05A15899DFF0054429F /* lockBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lockBackground.png; sourceTree = "<group>"; };
+		52DDE05C15899E2B0054429F /* lockBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lockBackground@2x.png"; sourceTree = "<group>"; };
+		52DDE05E1589A0100054429F /* lockLandscape@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lockLandscape@2x~ipad.png"; sourceTree = "<group>"; };
+		52DDE05F1589A0100054429F /* lockLandscape~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lockLandscape~ipad.png"; sourceTree = "<group>"; };
+		52DDE0601589A0100054429F /* lockPortrait@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lockPortrait@2x~ipad.png"; sourceTree = "<group>"; };
+		52DDE0611589A0100054429F /* lockPortrait~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lockPortrait~ipad.png"; sourceTree = "<group>"; };
 		52E6C88515431C7700A91CD3 /* AutorotatingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AutorotatingViewController.h; sourceTree = "<group>"; };
 		52E6C88615431C7700A91CD3 /* AutorotatingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AutorotatingViewController.m; sourceTree = "<group>"; };
 		52E6C88915431D6C00A91CD3 /* AutorotatingTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AutorotatingTableViewController.h; sourceTree = "<group>"; };
@@ -1142,6 +1157,10 @@
 		689D041413A42B85005EBD36 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				52DDE05E1589A0100054429F /* lockLandscape@2x~ipad.png */,
+				52DDE05F1589A0100054429F /* lockLandscape~ipad.png */,
+				52DDE0601589A0100054429F /* lockPortrait@2x~ipad.png */,
+				52DDE0611589A0100054429F /* lockPortrait~ipad.png */,
 				529708AD14FEEFD3003547FB /* Andale Mono.ttf */,
 				689D021313A42B63005EBD36 /* help */,
 				689D021A13A42B63005EBD36 /* images */,
@@ -1155,6 +1174,8 @@
 				689D021913A42B63005EBD36 /* icon@2x.png */,
 				52CF7D901542516D00D681C1 /* icon~ipad.png */,
 				52CF7D8E1542516900D681C1 /* icon@2x~ipad.png */,
+				52DDE05A15899DFF0054429F /* lockBackground.png */,
+				52DDE05C15899E2B0054429F /* lockBackground@2x.png */,
 				5235D58214F8160900B0C991 /* splash.png */,
 				5235D58414F8176300B0C991 /* splash@2x.png */,
 			);
@@ -1260,6 +1281,8 @@
 				689D043113A42C81005EBD36 /* GroupViewController.m */,
 				68CE37F014049BC900E4A5E1 /* HelpViewController.h */,
 				68CE37F114049BC900E4A5E1 /* HelpViewController.m */,
+				52A512AF159CE7540009F82F /* ImageContainerView.h */,
+				52A512B0159CE7540009F82F /* ImageContainerView.m */,
 				6876F67613B2D8F400A05C7A /* ImagesViewController.h */,
 				6876F67713B2D8F400A05C7A /* ImagesViewController.m */,
 				68915A0913A6F6C200A408B0 /* InfoBar.h */,
@@ -1591,6 +1614,12 @@
 				52CF7D8D1542516300D681C1 /* Default-Portrait~ipad.png in Resources */,
 				52CF7D8F1542516900D681C1 /* icon@2x~ipad.png in Resources */,
 				52CF7D911542516D00D681C1 /* icon~ipad.png in Resources */,
+				52DDE05B15899DFF0054429F /* lockBackground.png in Resources */,
+				52DDE05D15899E2C0054429F /* lockBackground@2x.png in Resources */,
+				52DDE0621589A0110054429F /* lockLandscape@2x~ipad.png in Resources */,
+				52DDE0631589A0110054429F /* lockLandscape~ipad.png in Resources */,
+				52DDE0641589A0110054429F /* lockPortrait@2x~ipad.png in Resources */,
+				52DDE0651589A0110054429F /* lockPortrait~ipad.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1702,6 +1731,7 @@
 				68633022150BCD6000D9988A /* FileOutputStream.m in Sources */,
 				52E6C88715431C7700A91CD3 /* AutorotatingViewController.m in Sources */,
 				52E6C88B15431D6C00A91CD3 /* AutorotatingTableViewController.m in Sources */,
+				52A512B1159CE7540009F82F /* ImageContainerView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

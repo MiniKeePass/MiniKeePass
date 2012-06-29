@@ -293,7 +293,7 @@ BOOL stringsEqual(NSString *str1, NSString *str2) {
 - (void)imageButtonPressed {
     ImagesViewController *imagesViewController = [[ImagesViewController alloc] init];
     imagesViewController.delegate = self;
-    [imagesViewController setSelectedImage:entry.image];
+    [imagesViewController setSelectedImage:selectedImageIndex];
     [self.navigationController pushViewController:imagesViewController animated:YES];
     [imagesViewController release];
 }
@@ -307,6 +307,7 @@ BOOL stringsEqual(NSString *str1, NSString *str2) {
     passwordGeneratorViewController.delegate = self;
     
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:passwordGeneratorViewController];
+    navigationController.navigationBar.tintColor = [UIColor darkGrayColor];
     
     [self presentModalViewController:navigationController animated:YES];
 
