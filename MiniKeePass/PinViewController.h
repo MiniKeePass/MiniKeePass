@@ -20,7 +20,7 @@
 
 @protocol PinViewControllerDelegate;
 
-@interface PinViewController : AutorotatingViewController <UITextFieldDelegate> {
+@interface PinViewController : UIViewController <UITextFieldDelegate> {
     UITextField *textField;
     NSArray *pinTextFields;
     UILabel *textLabel;
@@ -41,4 +41,8 @@
 
 @protocol PinViewControllerDelegate <NSObject>
 - (void)pinViewController:(PinViewController*)controller pinEntered:(NSString*)pin;
+- (BOOL)pinViewControllerShouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation;
+@optional
+- (void)pinViewControllerDidShow:(PinViewController*)controller;
+- (UIColor *)pinViewController:(PinViewController*)controller backgroundColorForInterfaceOrientation:(UIInterfaceOrientation)orientation;
 @end

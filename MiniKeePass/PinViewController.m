@@ -127,6 +127,36 @@
     [super dealloc];
 }
 
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
+    if ([delegate respondsToSelector:@selector(pinViewControllerShouldAutorotateToInterfaceOrientation:)]) {
+        return [delegate pinViewControllerShouldAutorotateToInterfaceOrientation:toInterfaceOrientation];
+    } else {
+        return NO;
+    }
+}
+
+
+- (void)resizeToolbarsToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {  
+    // Nothing needs to be done for the iPad; return
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) return;
+
+    CGRect newFrame = topBar.frame;
+    newFrame.size.height = UIInterfaceOrientationIsPortrait(toInterfaceOrientation) ? 95 : 68;
+
+    topBar.frame = newFrame;
+    textLabel.frame = newFrame;
+    pinBar.frame = newFrame;    
+}
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+        [UIView animateWithDuration:duration animations:^{
+            [self resizeToolbarsToInterfaceOrientation:toInterfaceOrientation];
+            if ([delegate respondsToSelector:@selector(pinViewController:backgroundColorForInterfaceOrientation:)]) {
+                self.backgroundColor = [delegate pinViewController:self backgroundColorForInterfaceOrientation:toInterfaceOrientation];
+            }
+        }];
+}
+
 - (UIColor *)backgroundColor {
     return self.view.backgroundColor;
 }
@@ -144,6 +174,12 @@
     [super viewWillAppear:animated];
     
     [self clearEntry];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    if ([delegate respondsToSelector:@selector(pinViewControllerDidShow:)]) {
+        [delegate pinViewControllerDidShow:self];
+    }
 }
 
 - (void)viewDidUnload {

@@ -88,10 +88,15 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10, 15};
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
     BOOL boolean = UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad || toInterfaceOrientation == UIInterfaceOrientationPortrait;
-    if (boolean) {
-        [self willRotateToInterfaceOrientation:toInterfaceOrientation duration:0.0];
-    }
     return boolean;
+}
+
+-(BOOL)pinViewControllerShouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
+    return [self shouldAutorotateToInterfaceOrientation:toInterfaceOrientation];
+}
+
+-(UIColor *)pinViewController:(PinViewController *)controller backgroundColorForInterfaceOrientation:(UIInterfaceOrientation)orientation {
+    return [self lockBackgroundColorForOrientation:orientation];
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
@@ -123,20 +128,19 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10, 15};
 }
 
 - (void)lock {
-    if (appDelegate.locked) {
-        NSLog(@"Already Locked");
-//        return;
+    if (!appDelegate.locked) {
+        pinViewController.textLabel.text = NSLocalizedString(@"Enter your PIN to unlock", nil);
+        [self presentModalViewController:pinViewController animated:YES];
     }
-    NSLog(@"Lock %@", self);
-    appDelegate.locked = YES;
-
-    pinViewController.textLabel.text = NSLocalizedString(@"Enter your PIN to unlock", nil);
-    [self presentModalViewController:pinViewController animated:YES];
 }
 
 - (void)unlock {
     appDelegate.locked = NO;
     [previousViewController dismissModalViewControllerAnimated:YES];
+}
+
+- (void)pinViewControllerDidShow:(PinViewController *)controller {
+    appDelegate.locked = YES;
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
