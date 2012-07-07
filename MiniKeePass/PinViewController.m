@@ -173,6 +173,11 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
+    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
+    if ([self shouldAutorotateToInterfaceOrientation:orientation]) {
+        [self resizeToolbarsToInterfaceOrientation:orientation];            
+    }
+
     [self clearEntry];
 }
 
