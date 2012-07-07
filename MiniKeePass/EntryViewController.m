@@ -307,7 +307,6 @@ BOOL stringsEqual(NSString *str1, NSString *str2) {
     passwordGeneratorViewController.delegate = self;
     
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:passwordGeneratorViewController];
-    navigationController.navigationBar.tintColor = [UIColor darkGrayColor];
     
     [self presentModalViewController:navigationController animated:YES];
 

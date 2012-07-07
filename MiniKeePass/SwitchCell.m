@@ -31,11 +31,6 @@
         
         switchControl = [[UISwitch alloc] init];
         
-        // Setting the switch color is only available in 5.0+
-        if ([switchControl respondsToSelector:@selector(setOnTintColor:)]) {
-            switchControl.onTintColor = [UIColor darkGrayColor];
-        }
-        
         self.accessoryView = switchControl;
     }
     return self;

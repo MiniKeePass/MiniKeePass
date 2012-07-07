@@ -246,7 +246,6 @@ enum {
                 textEntryController.textField.text = [filename stringByDeletingPathExtension];
                 
                 UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:textEntryController];
-                navigationController.navigationBar.tintColor = [UIColor darkGrayColor];
                 
                 [appDelegate.window.rootViewController presentModalViewController:navigationController animated:YES];
                 
@@ -363,7 +362,6 @@ enum {
     newKdbViewController.delegate = self;
     
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:newKdbViewController];
-    navigationController.navigationBar.tintColor = [UIColor darkGrayColor];
     
     [appDelegate.window.rootViewController presentModalViewController:navigationController animated:YES];
     
