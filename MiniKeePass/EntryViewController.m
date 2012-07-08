@@ -197,9 +197,11 @@ BOOL stringsEqual(NSString *str1, NSString *str2) {
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+#if 0
     if ([entry isKindOfClass:[Kdb4Entry class]]) {
         return 3;
     }
+#endif
     return 2;
 }
 
@@ -210,8 +212,10 @@ BOOL stringsEqual(NSString *str1, NSString *str2) {
             return 5;
         case 1:
             return 1;
+#if 0
         case 2:
             return [((Kdb4Entry*)entry).stringFields count];
+#endif
     }
     
     return 0;
@@ -223,8 +227,10 @@ BOOL stringsEqual(NSString *str1, NSString *str2) {
             return 40;
         case 1:
             return 104;
+#if 0
         case 2:
             return 40;
+#endif
     }
     
     return 40;
@@ -236,16 +242,19 @@ BOOL stringsEqual(NSString *str1, NSString *str2) {
             return nil;
         case 1:
             return NSLocalizedString(@"Comments", nil);
+#if 0
         case 2:
             return NSLocalizedString(@"String Fields", nil);
+#endif
     }
     
     return nil;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+#if 0
     static NSString *CellIdentifier = @"Cell";
-    
+#endif
     switch (indexPath.section) {
         case 0: {
             switch (indexPath.row) {
@@ -264,6 +273,7 @@ BOOL stringsEqual(NSString *str1, NSString *str2) {
         case 1: {
             return commentsCell;
         }
+#if 0
         case 2: {
             StringField *stringField = [((Kdb4Entry*)entry).stringFields objectAtIndex:indexPath.row];
             
@@ -275,6 +285,7 @@ BOOL stringsEqual(NSString *str1, NSString *str2) {
             cell.textField.text = stringField.value;
             return cell;
         }
+#endif
     }
     
     return nil;
