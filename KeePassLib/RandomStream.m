@@ -19,6 +19,10 @@
 
 @implementation RandomStream
 
+- (void)reset {
+    [self doesNotRecognizeSelector:_cmd];
+}
+
 - (uint8_t)getByte {
     [self doesNotRecognizeSelector:_cmd];
     return 0;

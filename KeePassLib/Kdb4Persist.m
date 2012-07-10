@@ -22,6 +22,7 @@
 - (void)updateGroup:(Kdb4Group*)group;
 - (void)updateEntry:(Kdb4Entry*)entry;
 - (void)encodeProtected:(DDXMLElement*)root;
+- (void)decodeProtected:(DDXMLElement*)root;
 @end
 
 @implementation Kdb4Persist
@@ -51,12 +52,16 @@
 - (void)persist {
     // Update the DOM model
     [self updateGroup:(Kdb4Group*)tree.root];
-    
-    // Apply CSR to protected fields
+	    
+    // Encode all the protected entries
     [self encodeProtected:tree.document.rootElement];
     
     // Serialize the DOM to XML
     [outputStream write:[tree.document XMLData]];
+    
+    // Re-decode all the protected entries
+    [randomStream reset];
+    [self decodeProtected:tree.document.rootElement];
 }
 
 - (void)updateGroup:(Kdb4Group*)group {
@@ -157,6 +162,29 @@
     for (DDXMLNode *node in [root children]) {
         if ([node kind] == DDXMLElementKind) {
             [self encodeProtected:(DDXMLElement*)node];
+        }
+    }
+}
+
+- (void)decodeProtected:(DDXMLElement*)root {
+    DDXMLNode *protectedAttribute = [root attributeForName:@"Protected"];
+    if ([[protectedAttribute stringValue] isEqual:@"True"]) {
+        NSString *str = [root stringValue];
+        
+        // Base64 decode the string
+        NSMutableData *data = [Base64 decode:[str dataUsingEncoding:NSASCIIStringEncoding]];
+        
+        // Unprotect the password
+        [randomStream xor:data];
+
+        NSString *unprotected = [[NSString alloc] initWithBytes:data.bytes length:data.length encoding:NSUTF8StringEncoding];
+        [root setStringValue:unprotected];
+        [unprotected release];
+    }
+    
+    for (DDXMLNode *node in [root children]) {
+        if ([node kind] == DDXMLElementKind) {
+            [self decodeProtected:(DDXMLElement*)node];
         }
     }
 }
