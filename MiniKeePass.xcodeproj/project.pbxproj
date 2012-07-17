@@ -33,6 +33,11 @@
 		52DDE0631589A0110054429F /* lockLandscape~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 52DDE05F1589A0100054429F /* lockLandscape~ipad.png */; };
 		52DDE0641589A0110054429F /* lockPortrait@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 52DDE0601589A0100054429F /* lockPortrait@2x~ipad.png */; };
 		52DDE0651589A0110054429F /* lockPortrait~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 52DDE0611589A0100054429F /* lockPortrait~ipad.png */; };
+		52E43F4C15B59C890029F979 /* ru-createdb.html in Resources */ = {isa = PBXBuildFile; fileRef = 52E43F4715B59C880029F979 /* ru-createdb.html */; };
+		52E43F4D15B59C890029F979 /* ru-dropbox.html in Resources */ = {isa = PBXBuildFile; fileRef = 52E43F4815B59C880029F979 /* ru-dropbox.html */; };
+		52E43F4E15B59C890029F979 /* ru-itunes.html in Resources */ = {isa = PBXBuildFile; fileRef = 52E43F4915B59C890029F979 /* ru-itunes.html */; };
+		52E43F4F15B59C890029F979 /* ru-keyfiles.html in Resources */ = {isa = PBXBuildFile; fileRef = 52E43F4A15B59C890029F979 /* ru-keyfiles.html */; };
+		52E43F5015B59C890029F979 /* ru-safariemail.html in Resources */ = {isa = PBXBuildFile; fileRef = 52E43F4B15B59C890029F979 /* ru-safariemail.html */; };
 		52E6C88715431C7700A91CD3 /* AutorotatingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52E6C88615431C7700A91CD3 /* AutorotatingViewController.m */; };
 		52E6C88B15431D6C00A91CD3 /* AutorotatingTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52E6C88A15431D6C00A91CD3 /* AutorotatingTableViewController.m */; };
 		6802F9C614EC9C1D00ACD4C1 /* wrench.png in Resources */ = {isa = PBXBuildFile; fileRef = 6802F9C314EC9C1D00ACD4C1 /* wrench.png */; };
@@ -372,6 +377,11 @@
 		52DDE05F1589A0100054429F /* lockLandscape~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lockLandscape~ipad.png"; sourceTree = "<group>"; };
 		52DDE0601589A0100054429F /* lockPortrait@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lockPortrait@2x~ipad.png"; sourceTree = "<group>"; };
 		52DDE0611589A0100054429F /* lockPortrait~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lockPortrait~ipad.png"; sourceTree = "<group>"; };
+		52E43F4715B59C880029F979 /* ru-createdb.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "ru-createdb.html"; sourceTree = "<group>"; };
+		52E43F4815B59C880029F979 /* ru-dropbox.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "ru-dropbox.html"; sourceTree = "<group>"; };
+		52E43F4915B59C890029F979 /* ru-itunes.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "ru-itunes.html"; sourceTree = "<group>"; };
+		52E43F4A15B59C890029F979 /* ru-keyfiles.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "ru-keyfiles.html"; sourceTree = "<group>"; };
+		52E43F4B15B59C890029F979 /* ru-safariemail.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "ru-safariemail.html"; sourceTree = "<group>"; };
 		52E6C88515431C7700A91CD3 /* AutorotatingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AutorotatingViewController.h; sourceTree = "<group>"; };
 		52E6C88615431C7700A91CD3 /* AutorotatingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AutorotatingViewController.m; sourceTree = "<group>"; };
 		52E6C88915431D6C00A91CD3 /* AutorotatingTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AutorotatingTableViewController.h; sourceTree = "<group>"; };
@@ -811,9 +821,22 @@
 			path = de;
 			sourceTree = "<group>";
 		};
+		52E43F4615B59C880029F979 /* ru */ = {
+			isa = PBXGroup;
+			children = (
+				52E43F4715B59C880029F979 /* ru-createdb.html */,
+				52E43F4815B59C880029F979 /* ru-dropbox.html */,
+				52E43F4915B59C890029F979 /* ru-itunes.html */,
+				52E43F4A15B59C890029F979 /* ru-keyfiles.html */,
+				52E43F4B15B59C890029F979 /* ru-safariemail.html */,
+			);
+			path = ru;
+			sourceTree = "<group>";
+		};
 		689D021313A42B63005EBD36 /* help */ = {
 			isa = PBXGroup;
 			children = (
+				52E43F4615B59C880029F979 /* ru */,
 				52491D0614D8F3FB00F8CBC8 /* de */,
 				52A177BB13EB698E00CEEFCE /* createdb.html */,
 				689D021413A42B63005EBD36 /* dropbox.html */,
@@ -1623,6 +1646,11 @@
 				52DDE0631589A0110054429F /* lockLandscape~ipad.png in Resources */,
 				52DDE0641589A0110054429F /* lockPortrait@2x~ipad.png in Resources */,
 				52DDE0651589A0110054429F /* lockPortrait~ipad.png in Resources */,
+				52E43F4C15B59C890029F979 /* ru-createdb.html in Resources */,
+				52E43F4D15B59C890029F979 /* ru-dropbox.html in Resources */,
+				52E43F4E15B59C890029F979 /* ru-itunes.html in Resources */,
+				52E43F4F15B59C890029F979 /* ru-keyfiles.html in Resources */,
+				52E43F5015B59C890029F979 /* ru-safariemail.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
