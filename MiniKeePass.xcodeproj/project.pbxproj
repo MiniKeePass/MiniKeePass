@@ -1900,6 +1900,7 @@
 				GCC_VERSION = "";
 				INFOPLIST_FILE = "MiniKeePass/MiniKeePass-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				"OTHER_LDFLAGS[arch=*]" = "-fobjc-arc";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
@@ -1992,6 +1993,7 @@
 				GCC_VERSION = "";
 				INFOPLIST_FILE = "MiniKeePass/MiniKeePass-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				"OTHER_LDFLAGS[arch=*]" = "-fobjc-arc";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -2010,6 +2012,7 @@
 				GCC_VERSION = "";
 				INFOPLIST_FILE = "MiniKeePass/MiniKeePass-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				"OTHER_LDFLAGS[arch=*]" = "-fobjc-arc";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
