@@ -173,6 +173,9 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
+    // Required for 4.3 to show keyboard
+    [self becomeFirstResponder];
+    
     UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
     if ([self shouldAutorotateToInterfaceOrientation:orientation]) {
         [self resizeToolbarsToInterfaceOrientation:orientation];            
