@@ -108,10 +108,10 @@
         textField.inputAccessoryView = pinBar;
                 
         // If the keyboard is dismissed, show it again.
-//        [[NSNotificationCenter defaultCenter] addObserver:self
-//                                                 selector:@selector(keyboardDidHide)
-//                                                     name:UIKeyboardDidHideNotification
-//                                                   object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(keyboardDidHide)
+                                                     name:UIKeyboardDidHideNotification
+                                                   object:nil];
     }
     
     return self;
