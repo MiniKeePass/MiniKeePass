@@ -23,10 +23,10 @@
 @synthesize choices;
 
 - (id)initWithLabel:(NSString*)labelText choices:(NSArray*)newChoices selectedIndex:(NSInteger)selectedIdx {
-    self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+    self = [super initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:nil];
     if (self) {
         // Initialization code
-        self.prefix = labelText;
+        self.textLabel.text = labelText;
         self.choices = newChoices;
         
         self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -45,6 +45,7 @@
 - (void)setEnabled:(BOOL)enabled {
     self.selectionStyle = enabled ? UITableViewCellSelectionStyleBlue : UITableViewCellSelectionStyleNone;
     self.textLabel.enabled = enabled;
+    self.detailTextLabel.enabled = enabled;
 }
 
 - (NSInteger)selectedIndex {
@@ -53,7 +54,7 @@
 
 - (void)setSelectedIndex:(NSInteger)selectedIdx {
     selectedIndex = selectedIdx;
-    self.textLabel.text = [NSString stringWithFormat:@"%@: %@", prefix, [choices objectAtIndex:selectedIndex]];
+    self.detailTextLabel.text = [choices objectAtIndex:selectedIndex];
 }
 
 - (NSString *)getSelectedItem {
