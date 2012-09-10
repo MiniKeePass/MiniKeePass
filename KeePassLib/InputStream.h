@@ -32,6 +32,8 @@
 - (NSString*)readString:(NSUInteger)length encoding:(NSStringEncoding)encoding;
 - (NSString*)readCString:(NSUInteger)length encoding:(NSStringEncoding)encoding;
 
+- (NSUInteger)skip:(NSUInteger)length;
+
 - (void)close;
 
 @end

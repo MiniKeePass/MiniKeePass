@@ -80,6 +80,29 @@
     return [NSString stringWithCString:str encoding:encoding];
 }
 
+- (NSUInteger)skip:(NSUInteger)length {
+    NSUInteger n = length;
+    NSInteger ret;
+
+    if (length == 0) {
+        return 0;
+    }
+
+    NSUInteger buflen = MIN(n, 1024);
+    uint8_t bytes[buflen];
+
+    while (n > 0) {
+        ret = [self read:bytes length:MIN(n, buflen)];
+        if (ret < 0) {
+            break;
+        }
+
+        n -= ret;
+    }
+
+    return length - n;
+}
+
 - (void)close {
     
 }
