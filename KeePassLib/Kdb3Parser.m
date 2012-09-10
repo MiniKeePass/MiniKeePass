@@ -54,10 +54,8 @@
             
             switch (fieldType) {
                 case 0x0000:
-                    if (fieldSize != 0) {
-                        [group release];
-                        @throw [NSException exceptionWithName:@"IOException" reason:@"Invalid field size" userInfo:nil];
-                    }
+                    // Skip this field for now
+                    [inputStream skip:fieldSize];
                     break;
                     
                 case 0x0001:
@@ -148,10 +146,8 @@
             
             switch (fieldType) {
                 case 0x0000:
-                    if (fieldSize != 0) {
-                        [entry release];
-                        @throw [NSException exceptionWithName:@"IOException" reason:@"Invalid field size" userInfo:nil];
-                    }
+                    // Skip this field for now
+                    [inputStream skip:fieldSize];
                     break;
                     
                 case 0x0001:
