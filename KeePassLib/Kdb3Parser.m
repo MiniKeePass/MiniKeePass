@@ -35,17 +35,19 @@
     return tree;
 }
 
-- (void)read:(InputStream*)inputStream toGroups:(NSMutableArray*)groups levels:(NSMutableArray*)levels numOfGroups:(uint32_t)numGroups {
+- (void)read:(InputStream *)inputStream toGroups:(NSMutableArray *)groups levels:(NSMutableArray *)levels numOfGroups:(uint32_t)numGroups {
     uint16_t fieldType;
     uint32_t fieldSize;
     uint8_t dateBuffer[5];
+    BOOL eos;
     
     // Parse the groups
     for (uint32_t i = 0; i < numGroups; i++) {
         Kdb3Group *group = [[Kdb3Group alloc] init];
         
         // Parse the fields
-        do {
+        eos = NO;
+        while (!eos) {
             fieldType = [inputStream readInt16];
             fieldType = CFSwapInt16LittleToHost(fieldType);
 
@@ -54,8 +56,9 @@
             
             switch (fieldType) {
                 case 0x0000:
-                    // Skip this field for now
-                    [inputStream skip:fieldSize];
+                    if (fieldSize > 0) {
+                        [self readExtData:inputStream];
+                    }
                     break;
                     
                 case 0x0001:
@@ -109,18 +112,17 @@
                         [group release];
                         @throw [NSException exceptionWithName:@"IOException" reason:@"Invalid field size" userInfo:nil];
                     }
+
+                    [groups addObject:group];
+
+                    eos = YES;
                     break;
                 
                 default:
                     [group release];
                     @throw [NSException exceptionWithName:@"IOException" reason:@"Invalid field type" userInfo:nil];
             }
-            
-            if (fieldType == 0xFFFF) {
-                [groups addObject:group];
-                break;
-            }
-        } while(true);
+        }
         
         [group release];
     }
@@ -131,13 +133,15 @@
     uint32_t fieldSize;
     uint8_t buffer[16];
     uint32_t groupId;
+    BOOL eos;
     
     // Parse the entries
     for (uint32_t i = 0; i < numEntries; i++) {
-        Kdb3Entry *entry = [[Kdb3Entry alloc]init];
+        Kdb3Entry *entry = [[Kdb3Entry alloc] init];
         
-        // Parse the field
-        do {
+        // Parse the entry
+        eos = NO;
+        while (!eos) {
             fieldType = [inputStream readInt16];
             fieldType = CFSwapInt16LittleToHost(fieldType);
             
@@ -146,8 +150,9 @@
             
             switch (fieldType) {
                 case 0x0000:
-                    // Skip this field for now
-                    [inputStream skip:fieldSize];
+                    if (fieldSize > 0) {
+                        [self readExtData:inputStream];
+                    }
                     break;
                     
                 case 0x0001:
@@ -243,29 +248,71 @@
                         [entry release];
                         @throw [NSException exceptionWithName:@"IOException" reason:@"Invalid field size" userInfo:nil];
                     }
+
+                    // Find the parent group
+                    for (Kdb3Group *g in groups) {
+                        if (g.groupId == groupId) {
+                            [g addEntry:entry];
+                            break;
+                        }
+                    }
+                    
+                    [entries addObject:entry];
+
+                    eos = YES;
                     break;
                 
                 default:
                     [entry release];
                     @throw [NSException exceptionWithName:@"IOException" reason:@"Invalid field type" userInfo:nil];
             }
-            
-            if (fieldType == 0xFFFF) {
-                // Find the parent group
-                for (Kdb3Group *g in groups) {
-                    if (g.groupId == groupId) {
-                        [g addEntry:entry];
-                        break;
-                    }
-                }
-                
-                [entries addObject:entry];
-                break;
-            }
-        } while(true);
+        }
         
         [entry release];
     }
+}
+
+- (void)readExtData:(InputStream*)inputStream {
+    uint16_t fieldType;
+    uint32_t fieldSize;
+    uint8_t buffer[32];
+	BOOL eos = NO;
+
+	while (!eos) {
+        fieldType = [inputStream readInt16];
+        fieldType = CFSwapInt16LittleToHost(fieldType);
+
+        fieldSize = [inputStream readInt32];
+        fieldSize = CFSwapInt32LittleToHost(fieldSize);
+
+		switch (fieldType) {
+            case 0x0000:
+                // Ignore field
+                [inputStream skip:fieldSize];
+                break;
+
+            case 0x0001:
+                if (fieldSize != 32) {
+                    @throw [NSException exceptionWithName:@"IOException" reason:@"Invalid field size" userInfo:nil];
+                }
+                [inputStream read:buffer length:fieldSize];
+                // FIXME do something with the hash
+                break;
+
+            case 0x0002:
+                // Ignore random data
+                [inputStream skip:fieldSize];
+                break;
+
+            case 0xFFFF:
+                eos = YES;
+                break;
+                
+            default:
+                @throw [NSException exceptionWithName:@"IOException" reason:@"Invalid field type" userInfo:nil];
+                break;
+		}
+	}
 }
 
 - (Kdb3Tree*)buildTree:(NSArray*)groups levels:(NSArray*)levels entries:(NSArray*)entries {
