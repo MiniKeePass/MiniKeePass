@@ -47,6 +47,7 @@
 
 @property (nonatomic, assign) NSUInteger selectedImageIndex;
 @property (nonatomic, assign) KdbEntry *entry;
+@property (nonatomic) BOOL isKdb4;
 @property (nonatomic) BOOL isNewEntry;
 
 - (BOOL)isDirty;
