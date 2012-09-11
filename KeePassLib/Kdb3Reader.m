@@ -39,7 +39,7 @@
     [super dealloc];
 }
 
-- (void)readHeader:(InputStream*)inputStream {
+- (void)readHeader:(InputStream *)inputStream {
     uint8_t buffer[32];
     
     flags = [inputStream readInt32];
@@ -80,7 +80,7 @@
     rounds = CFSwapInt32LittleToHost(rounds);
 }
 
-- (KdbTree*)load:(InputStream*)inputStream withPassword:(KdbPassword*)kdbPassword {
+- (KdbTree*)load:(InputStream *)inputStream withPassword:(KdbPassword *)kdbPassword {
     Kdb3Tree *tree;
     
     // Read the header
