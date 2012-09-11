@@ -17,7 +17,6 @@
 
 #import "TextFieldCell.h"
 
-@interface TitleFieldCell : TextFieldCell {
-}
+@interface TitleFieldCell : TextFieldCell
 
 @end

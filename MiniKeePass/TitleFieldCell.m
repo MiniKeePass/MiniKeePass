@@ -20,7 +20,7 @@
 
 @implementation TitleFieldCell
 
--(void)textFieldDidEndEditing:(UITextField *)inTextField {
+- (void)textFieldDidEndEditing:(UITextField *)inTextField {
     [super textFieldDidEndEditing:inTextField];
     
     UITableView *tableView = (UITableView*)self.superview;

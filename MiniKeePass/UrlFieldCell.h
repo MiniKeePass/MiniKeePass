@@ -17,7 +17,6 @@
 
 #import "TextFieldCell.h"
 
-@interface UrlFieldCell : TextFieldCell {
-}
+@interface UrlFieldCell : TextFieldCell
 
 @end

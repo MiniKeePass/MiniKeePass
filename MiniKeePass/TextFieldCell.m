@@ -18,97 +18,73 @@
 #import "TextFieldCell.h"
 #import <UIKit/UIPasteboard.h>
 
+#define INSET 83
+
 @implementation TextFieldCell
 
-@synthesize textField;
-@synthesize textFieldCellDelegate;
-
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
-    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    self = [super initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:reuseIdentifier];
     if (self) {
-        // Initialization code
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         
-        textField = [[UITextField alloc] init];
-        textField.delegate = self;
-        textField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-        textField.textColor = [UIColor colorWithRed:.285 green:.376 blue:.541 alpha:1];
-        textField.font = [UIFont systemFontOfSize:16];
-        textField.returnKeyType = UIReturnKeyNext;
-        textField.clearButtonMode = UITextFieldViewModeWhileEditing;
-        [self addSubview:textField];
+        CGRect frame = self.contentView.frame;
+        frame.origin.x = INSET;
+        frame.size.width -= INSET;
         
-        tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapPressed)];
-        [textField addGestureRecognizer:tapGesture];
+        _textField = [[UITextField alloc] initWithFrame:frame];
+        _textField.delegate = self;
+        _textField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+        _textField.textColor = [UIColor colorWithRed:.285 green:.376 blue:.541 alpha:1];
+        _textField.font = [UIFont systemFontOfSize:16];
+        _textField.returnKeyType = UIReturnKeyNext;
+        _textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+        _textField.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+        _textField.font = [UIFont boldSystemFontOfSize:15];
+        _textField.textColor = [UIColor blackColor];
         
-        appDelegate = (MiniKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
+        [self.contentView addSubview:self.textField];
     }
     return self;
 }
 
 - (void)dealloc {
-    [textField release];
-    [tapGesture release];
-    [textFieldCellDelegate release];
     [super dealloc];
-}
-
-- (void)layoutSubviews {
-    [super layoutSubviews];
+    [_textField release];
+    _textFieldCellDelegate = nil;
     
-    CGRect rect = self.contentView.frame;
-    
-    textField.frame = CGRectMake(rect.origin.x + 110, rect.origin.y, rect.size.width - 120, rect.size.height);
+    [_accessoryButton release];
+    [_editAccessoryButton release];
 }
 
-- (void)tapPressed {
-    if (self.textField.text == nil || [self.textField.text isEqualToString:@""]) {
-        [textField becomeFirstResponder];
-    } else {
-        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", nil) destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"Copy", nil), NSLocalizedString(@"Edit", nil), nil];
-        
-        [appDelegate showActionSheet:actionSheet];
-        [actionSheet release];
+- (void)setAccessoryButton:(UIButton *)accessoryButton {
+    if (self.accessoryButton != nil) {
+        [_accessoryButton release];
     }
+    _accessoryButton = [accessoryButton retain];
+    self.accessoryView = accessoryButton;
 }
 
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-    switch (buttonIndex) {
-        case 0: {
-            UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
-            pasteboard.string = textField.text;
-            break;
-        }
-        
-        case 1: {
-            [textField becomeFirstResponder];
-            break;
-        }
-        
-        default:
-            break;
+- (void)setEditAccessoryButton:(UIButton *)editAccessoryButton {
+    if (self.editAccessoryButton != nil) {
+        [_editAccessoryButton release];
     }
+    _editAccessoryButton = [editAccessoryButton retain];
+    self.editingAccessoryView = editAccessoryButton;
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)field {
-    // Scroll to the top
+    // Keep cell visable
     UITableView *tableView = (UITableView*)self.superview;
     [tableView scrollRectToVisible:self.frame animated:YES];
-    
-    tapGesture.enabled = NO;
 }
 
-- (void)textFieldDidEndEditing:(UITextField *)field {
-    // Ensure our gesture recgonizer is on top
-    [field removeGestureRecognizer:tapGesture];
-    [field addGestureRecognizer:tapGesture];
-    
-    tapGesture.enabled = YES;
+- (void)textFieldDidEndEditing:(UITextField *)textField {
+    // Do nothing
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)field {
-    if ([textFieldCellDelegate respondsToSelector:@selector(textFieldCellWillReturn:)]) {
-        [textFieldCellDelegate textFieldCellWillReturn:self];
+    if ([self.textFieldCellDelegate respondsToSelector:@selector(textFieldCellWillReturn:)]) {
+        [self.textFieldCellDelegate textFieldCellWillReturn:self];
     }
     
     return NO;

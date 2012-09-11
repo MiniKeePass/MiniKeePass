@@ -16,26 +16,29 @@
  */
 
 #import <Foundation/Foundation.h>
+#import <ATMHud/ATMHud.h>
+#import <ATMHud/ATMHudDelegate.h>
+
 #import "TextFieldCell.h"
 #import "TitleFieldCell.h"
 #import "UrlFieldCell.h"
 #import "TextViewCell.h"
 #import "PasswordFieldCell.h"
-#import "ImageButtonCell.h"
 #import "ImagesViewController.h"
 #import "KdbLib.h"
 #import "MiniKeePassAppDelegate.h"
 #import "PasswordGeneratorViewController.h"
 #import "AutorotatingTableViewController.h"
 
-@interface EntryViewController : AutorotatingTableViewController <UIGestureRecognizerDelegate, ImagesViewControllerDelegate, TextFieldCellDelegate, PasswordGeneratorDelegate> {
+@interface EntryViewController : AutorotatingTableViewController <UIGestureRecognizerDelegate, ImagesViewControllerDelegate, TextFieldCellDelegate, PasswordGeneratorDelegate, ATMHudDelegate> {
     MiniKeePassAppDelegate *appDelegate;
     TitleFieldCell *titleCell;
-    ImageButtonCell *imageButtonCell;
     TextFieldCell *usernameCell;
     PasswordFieldCell *passwordCell;
     UrlFieldCell *urlCell;
     TextViewCell *commentsCell;
+    
+    NSArray *defaultCells;
     
     NSUInteger selectedImageIndex;
     CGFloat originalHeight;

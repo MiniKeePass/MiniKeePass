@@ -20,15 +20,14 @@
 
 @protocol TextFieldCellDelegate;
 
-@interface TextFieldCell : UITableViewCell <UITextFieldDelegate, UIActionSheetDelegate> {
-    MiniKeePassAppDelegate *appDelegate;
-    UITextField *textField;
-    UIGestureRecognizer *tapGesture;
-    id<TextFieldCellDelegate> textFieldCellDelegate;
-}
+@interface TextFieldCell : UITableViewCell <UITextFieldDelegate, UIActionSheetDelegate>
 
+@property (nonatomic, copy) NSString *title;
 @property (nonatomic, retain) UITextField *textField;
-@property (nonatomic, retain) id<TextFieldCellDelegate> textFieldCellDelegate;
+@property (nonatomic, assign) id<TextFieldCellDelegate> textFieldCellDelegate;
+
+@property (nonatomic, retain) UIButton *accessoryButton;
+@property (nonatomic, retain) UIButton *editAccessoryButton;
 
 @end
 
