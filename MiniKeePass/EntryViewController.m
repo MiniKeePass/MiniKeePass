@@ -18,10 +18,24 @@
 #import "EntryViewController.h"
 #import "Kdb4Node.h"
 
-@implementation EntryViewController
+@interface EntryViewController() {
+    MiniKeePassAppDelegate *appDelegate;
+    TitleFieldCell *titleCell;
+    TextFieldCell *usernameCell;
+    PasswordFieldCell *passwordCell;
+    UrlFieldCell *urlCell;
+    TextViewCell *commentsCell;
+    
+    NSArray *defaultCells;
+    
+    BOOL canceled;
+}
 
-@synthesize isNewEntry;
-@synthesize entry;
+@property (nonatomic) BOOL isKdb4;
+
+@end
+
+@implementation EntryViewController
 
 - (id)initWithStyle:(UITableViewStyle)style {
     self = [super initWithStyle:style];
@@ -37,6 +51,8 @@
         titleCell.textField.placeholder = NSLocalizedString(@"Title", nil);
         titleCell.textField.enabled = NO;
         titleCell.textFieldCellDelegate = self;
+        titleCell.imageButton.adjustsImageWhenHighlighted = NO;
+        [titleCell.imageButton addTarget:self action:@selector(imageButtonPressed) forControlEvents:UIControlEventTouchUpInside];
         
         usernameCell = [[TextFieldCell alloc] init];
         usernameCell.textLabel.text = NSLocalizedString(@"Username", nil);
@@ -64,8 +80,6 @@
         defaultCells = [@[titleCell, usernameCell, passwordCell, urlCell] retain];
         
         commentsCell = [[TextViewCell alloc] init];
-        
-        canceled = NO;
     }
     return self;
 }
@@ -76,31 +90,86 @@
     [passwordCell release];
     [urlCell release];
     [commentsCell release];
-    [entry release];
     [defaultCells release];
+    [_entry release];
+
     [super dealloc];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    // Mark the view as not being canceled
+    canceled = NO;
+    
+    // Add listeners to the keyboard
+    NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+    [notificationCenter addObserver:self selector:@selector(applicationWillResignActive:) name:UIApplicationWillResignActiveNotification object:nil];
+    
+    if (self.isNewEntry) {
+        [self setEditing:YES animated:NO];
+        self.isNewEntry = NO;
+    }
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    
+    // Remove listeners from the keyboard
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)applicationWillResignActive:(id)sender {
+    // Resign first responder to prevent password being in sight and UI glitchs
+    [titleCell.textField resignFirstResponder];
+    [usernameCell.textField resignFirstResponder];
+    [passwordCell.textField resignFirstResponder];
+    [urlCell.textField resignFirstResponder];
+    [commentsCell.textView resignFirstResponder];
+}
+
+- (void)setEntry:(KdbEntry *)e {
+    [_entry release];
+    
+    _entry = [e retain];
+    self.isKdb4 = [self.entry isKindOfClass:[Kdb4Entry class]];
+    
+    // Update the fields
+    self.title = self.entry.title;
+    titleCell.textField.text = self.entry.title;
+    [self setSelectedImageIndex:self.entry.image];
+    usernameCell.textField.text = self.entry.username;
+    passwordCell.textField.text = self.entry.password;
+    urlCell.textField.text = self.entry.url;
+    commentsCell.textView.text = self.entry.notes;
+}
+
+- (void)cancelPressed {
+    canceled = YES;
+    [self setEditing:NO animated:YES];
 }
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated {
     [super setEditing:editing animated:animated];
-
+    
     // Save the database or reset the entry
     if (editing == NO && !canceled) {
-        entry.title = titleCell.textField.text;
-        entry.image = selectedImageIndex;
-        entry.username = usernameCell.textField.text;
-        entry.password = passwordCell.textField.text;
-        entry.url = urlCell.textField.text;
-        entry.notes = commentsCell.textView.text;
+        self.entry.title = titleCell.textField.text;
+        self.entry.image = self.selectedImageIndex;
+        self.entry.username = usernameCell.textField.text;
+        self.entry.password = passwordCell.textField.text;
+        self.entry.url = urlCell.textField.text;
+        self.entry.notes = commentsCell.textView.text;
         
         appDelegate.databaseDocument.dirty = YES;
         
         // Save the database document
         [appDelegate.databaseDocument save];
     } else {
-        [self setEntry:entry];
+        [self setEntry:self.entry];
     }
     
+    // Find empty text field cells
     NSMutableArray *paths = [NSMutableArray arrayWithCapacity:3];
     for (TextFieldCell *cell in defaultCells) {
         cell.textField.enabled = editing;
@@ -114,9 +183,10 @@
         UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", nil) style:UIBarButtonItemStylePlain target:self action:@selector(cancelPressed)];
         self.navigationItem.leftBarButtonItem = cancelButton;
         [cancelButton release];
-        
+                
+        titleCell.imageButton.adjustsImageWhenHighlighted = YES;
         canceled = NO;
-
+        
         [self.tableView insertRowsAtIndexPaths:paths withRowAnimation:UITableViewRowAnimationAutomatic];
     } else {
         self.navigationItem.leftBarButtonItem = nil;
@@ -127,109 +197,10 @@
         [urlCell.textField resignFirstResponder];
         [commentsCell.textView resignFirstResponder];
         
+        titleCell.imageButton.adjustsImageWhenHighlighted = NO;
+        
         [self.tableView deleteRowsAtIndexPaths:paths withRowAnimation:UITableViewRowAnimationAutomatic];
     }
-}
-
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    
-    // Mark the view as not being canceled
-    canceled = NO;
-    
-    // Add listeners to the keyboard
-    NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
-    [notificationCenter addObserver:self selector:@selector(applicationWillResignActive:) name:UIApplicationWillResignActiveNotification object:nil];
-    
-    if (isNewEntry) {
-        [self setEditing:YES animated:NO];
-        isNewEntry = NO;
-    }
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-    
-    originalHeight = self.view.frame.size.height;
-}
-
-- (void)viewWillDisappear:(BOOL)animated {
-    if (!canceled && [self isDirty]) {
-        entry.title = titleCell.textField.text;
-        entry.image = selectedImageIndex;
-        entry.username = usernameCell.textField.text;
-        entry.password = passwordCell.textField.text;
-        entry.url = urlCell.textField.text;
-        entry.notes = commentsCell.textView.text;
-        
-        appDelegate.databaseDocument.dirty = YES;
-        
-        // Save the database document
-        [appDelegate.databaseDocument save];
-    }
-}
-
-- (void)viewDidDisappear:(BOOL)animated {
-    [super viewDidDisappear:animated];
-    
-    // Remove listeners from the keyboard
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
-- (void)setEntry:(KdbEntry *)e {
-    [entry release];
-    
-    entry = [e retain];
-    self.isKdb4 = [entry isKindOfClass:[Kdb4Entry class]];
-    
-    // Update the fields
-    self.title = entry.title;
-    titleCell.textField.text = entry.title;
-    [self setSelectedImageIndex:entry.image];
-    usernameCell.textField.text = entry.username;
-    passwordCell.textField.text = entry.password;
-    urlCell.textField.text = entry.url;
-    commentsCell.textView.text = entry.notes;
-}
-
-- (KdbEntry *)entry {
-    return entry;
-}
-
-- (void)applicationWillResignActive:(id)sender {
-    // Resign first responder to prevent password being in sight and UI glitchs
-    [titleCell.textField resignFirstResponder];
-    [usernameCell.textField resignFirstResponder];
-    [passwordCell.textField resignFirstResponder];
-    [urlCell.textField resignFirstResponder];
-    [commentsCell.textView resignFirstResponder];
-}
-
-- (void)cancelPressed {
-    canceled = YES;
-    [self setEditing:NO animated:YES];
-}
-
-BOOL stringsEqual(NSString *str1, NSString *str2) {
-    str1 = str1 == nil ? @"" : [str1 stringByReplacingOccurrencesOfString:@"\r\n" withString:@"\n"];
-    str2 = str2 == nil ? @"" : [str2 stringByReplacingOccurrencesOfString:@"\r\n" withString:@"\n"];
-    return [str1 isEqualToString:str2];
-}
-
-- (BOOL)isDirty {
-    return !(stringsEqual(entry.title, titleCell.textField.text) &&
-        entry.image == selectedImageIndex &&
-        stringsEqual(entry.username, usernameCell.textField.text) &&
-        stringsEqual(entry.password, passwordCell.textField.text) &&
-        stringsEqual(entry.url, urlCell.textField.text) &&
-        stringsEqual(entry.notes, commentsCell.textView.text));
-}
-
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
-    if ([touch.view isKindOfClass:[UIControl class]]) {
-        return NO;
-    }
-    return YES;
 }
 
 - (void)textFieldCellWillReturn:(TextFieldCell *)textFieldCell {
@@ -243,6 +214,8 @@ BOOL stringsEqual(NSString *str1, NSString *str2) {
         [urlCell.textField resignFirstResponder];
     }
 }
+
+#pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 3;
@@ -266,13 +239,15 @@ BOOL stringsEqual(NSString *str1, NSString *str2) {
             
             return filledCells;
         case 1:
-            return self.isKdb4 ? [((Kdb4Entry*)entry).stringFields count] : 0;
+            return self.isKdb4 ? [((Kdb4Entry*)self.entry).stringFields count] : 0;
         case 2:
             return 1;
     }
     
     return 0;
 }
+
+# pragma mark - Table view delegate
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     switch (indexPath.section) {
@@ -291,7 +266,7 @@ BOOL stringsEqual(NSString *str1, NSString *str2) {
         case 0:
             return nil;
         case 1:
-            if ((self.isKdb4 ? [((Kdb4Entry*)entry).stringFields count] : 0) != 0) {
+            if (self.isKdb4 ? [((Kdb4Entry*)self.entry).stringFields count] : 0) {
                 return NSLocalizedString(@"Custom Fields", nil);
             } else {
                 return nil;
@@ -347,7 +322,7 @@ BOOL stringsEqual(NSString *str1, NSString *str2) {
             }
         }
         case 1: {
-            StringField *stringField = [((Kdb4Entry*)entry).stringFields objectAtIndex:indexPath.row];
+            StringField *stringField = [((Kdb4Entry*)self.entry).stringFields objectAtIndex:indexPath.row];
             
             TextFieldCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
             if (cell == nil) {
@@ -379,29 +354,19 @@ BOOL stringsEqual(NSString *str1, NSString *str2) {
     [hud release];
 }
 
-- (NSUInteger)selectedImageIndex {
-    return selectedImageIndex;
-}
+#pragma mark - Image related
 
 - (void)setSelectedImageIndex:(NSUInteger)index {
-    selectedImageIndex = index;
-    
-    UIImage *selectedImage = [appDelegate loadImage:index];
+    _selectedImageIndex = index;
 
-    titleCell.accessoryView = [[[UIImageView alloc] initWithImage:selectedImage] autorelease];
-    if (titleCell.editAccessoryButton == nil) {
-        titleCell.editAccessoryButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
-        [titleCell.editAccessoryButton addTarget:self action:@selector(imageButtonPressed) forControlEvents:UIControlEventTouchUpInside];
-    }
-    
-    [titleCell.editAccessoryButton setImage:selectedImage forState:UIControlStateNormal];
+    [titleCell.imageButton setImage:[appDelegate loadImage:index] forState:UIControlStateNormal];
 }
 
 - (void)imageButtonPressed {
     if (self.tableView.isEditing) {
         ImagesViewController *imagesViewController = [[ImagesViewController alloc] init];
         imagesViewController.delegate = self;
-        [imagesViewController setSelectedImage:selectedImageIndex];
+        [imagesViewController setSelectedImage:self.selectedImageIndex];
         [self.navigationController pushViewController:imagesViewController animated:YES];
         [imagesViewController release];
     }
@@ -411,9 +376,11 @@ BOOL stringsEqual(NSString *str1, NSString *str2) {
     [self setSelectedImageIndex:index];
 }
 
+#pragma mark - Password Display
+
 - (void)showPasswordPressed {
     ATMHud *hud = [[ATMHud alloc] initWithDelegate:self];
-    [hud setCaption:entry.password];
+    [hud setCaption:self.entry.password];
     
     [appDelegate.window addSubview:hud.view];
     [hud show];
@@ -427,6 +394,8 @@ BOOL stringsEqual(NSString *str1, NSString *str2) {
 - (void)hudDidDisappear:(ATMHud *)_hud {
     [_hud.view removeFromSuperview];
 }
+
+#pragma mark - Password Generation
 
 - (void)generatePasswordPressed {
     PasswordGeneratorViewController *passwordGeneratorViewController = [[PasswordGeneratorViewController alloc] init];

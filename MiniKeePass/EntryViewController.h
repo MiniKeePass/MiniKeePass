@@ -30,29 +30,10 @@
 #import "PasswordGeneratorViewController.h"
 #import "AutorotatingTableViewController.h"
 
-@interface EntryViewController : AutorotatingTableViewController <UIGestureRecognizerDelegate, ImagesViewControllerDelegate, TextFieldCellDelegate, PasswordGeneratorDelegate, ATMHudDelegate> {
-    MiniKeePassAppDelegate *appDelegate;
-    TitleFieldCell *titleCell;
-    TextFieldCell *usernameCell;
-    PasswordFieldCell *passwordCell;
-    UrlFieldCell *urlCell;
-    TextViewCell *commentsCell;
-    
-    NSArray *defaultCells;
-    
-    NSUInteger selectedImageIndex;
-    CGFloat originalHeight;
-    BOOL canceled;
-    
-    KdbEntry *entry;
-    BOOL isNewEntry;
-}
+@interface EntryViewController : AutorotatingTableViewController <UIGestureRecognizerDelegate, ImagesViewControllerDelegate, TextFieldCellDelegate, PasswordGeneratorDelegate, ATMHudDelegate>
 
 @property (nonatomic, assign) NSUInteger selectedImageIndex;
-@property (nonatomic, assign) KdbEntry *entry;
-@property (nonatomic) BOOL isKdb4;
+@property (nonatomic, retain) KdbEntry *entry;
 @property (nonatomic) BOOL isNewEntry;
-
-- (BOOL)isDirty;
 
 @end
