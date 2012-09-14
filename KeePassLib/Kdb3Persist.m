@@ -86,13 +86,13 @@
     [self appendField:3 size:5 bytes:packedDate];
     
     [Kdb3Date toPacked:group.lastModificationTime bytes:packedDate];
-    [self appendField:3 size:5 bytes:packedDate];
+    [self appendField:4 size:5 bytes:packedDate];
     
     [Kdb3Date toPacked:group.lastAccessTime bytes:packedDate];
-    [self appendField:3 size:5 bytes:packedDate];
+    [self appendField:5 size:5 bytes:packedDate];
     
     [Kdb3Date toPacked:group.expiryTime bytes:packedDate];
-    [self appendField:3 size:5 bytes:packedDate];
+    [self appendField:6 size:5 bytes:packedDate];
     
     tmp32 = CFSwapInt32HostToLittle(group.image);
     [self appendField:7 size:4 bytes:&tmp32];
