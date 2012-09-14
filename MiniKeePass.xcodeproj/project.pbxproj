@@ -16,7 +16,6 @@
 		52491D1014D8F3FB00F8CBC8 /* de-safariemail.html in Resources */ = {isa = PBXBuildFile; fileRef = 52491D0B14D8F3FB00F8CBC8 /* de-safariemail.html */; };
 		52709AB9150141D9008AB6C9 /* info.png in Resources */ = {isa = PBXBuildFile; fileRef = 52709AB7150141D9008AB6C9 /* info.png */; };
 		52709ABA150141D9008AB6C9 /* info@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52709AB8150141D9008AB6C9 /* info@2x.png */; };
-		529708AE14FEEFD3003547FB /* Andale Mono.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 529708AD14FEEFD3003547FB /* Andale Mono.ttf */; };
 		529708B014FEF149003547FB /* Andale Mono.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 529708AD14FEEFD3003547FB /* Andale Mono.ttf */; };
 		52A177BC13EB698E00CEEFCE /* createdb.html in Resources */ = {isa = PBXBuildFile; fileRef = 52A177BB13EB698E00CEEFCE /* createdb.html */; };
 		52A512B1159CE7540009F82F /* ImageContainerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 52A512B0159CE7540009F82F /* ImageContainerView.m */; };
@@ -259,63 +258,14 @@
 		689D046013A42C82005EBD36 /* TextViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D044913A42C82005EBD36 /* TextViewCell.m */; };
 		689D046113A42C82005EBD36 /* TitleFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D044B13A42C82005EBD36 /* TitleFieldCell.m */; };
 		689D046213A42C82005EBD36 /* UrlFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D044D13A42C82005EBD36 /* UrlFieldCell.m */; };
-		689D046513A431C5005EBD36 /* AesInputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D02B213A42B63005EBD36 /* AesInputStream.m */; };
-		689D046713A431C5005EBD36 /* AesOutputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D02B413A42B63005EBD36 /* AesOutputStream.m */; };
-		689D046913A431C5005EBD36 /* Arc4RandomStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D02B613A42B63005EBD36 /* Arc4RandomStream.m */; };
-		689D046B13A431C5005EBD36 /* Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D02B813A42B63005EBD36 /* Base64.m */; };
-		689D046D13A431C5005EBD36 /* DataInputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D02BA13A42B63005EBD36 /* DataInputStream.m */; };
-		689D046F13A431C5005EBD36 /* DataOutputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D02BC13A42B63005EBD36 /* DataOutputStream.m */; };
-		689D047113A431C5005EBD36 /* GZipInputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D02BE13A42B63005EBD36 /* GZipInputStream.m */; };
-		689D047313A431C5005EBD36 /* GZipOutputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D02C013A42B63005EBD36 /* GZipOutputStream.m */; };
-		689D047513A431C5005EBD36 /* HashedInputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D02C213A42B63005EBD36 /* HashedInputStream.m */; };
-		689D047713A431C5005EBD36 /* HashedOutputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D02C413A42B63005EBD36 /* HashedOutputStream.m */; };
-		689D047913A431C5005EBD36 /* InputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D02C613A42B63005EBD36 /* InputStream.m */; };
-		689D047B13A431C5005EBD36 /* Kdb.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D02C813A42B63005EBD36 /* Kdb.m */; };
-		689D047D13A431C5005EBD36 /* Kdb3Date.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D02CA13A42B63005EBD36 /* Kdb3Date.m */; };
-		689D047F13A431C5005EBD36 /* Kdb3Node.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D02CC13A42B63005EBD36 /* Kdb3Node.m */; };
-		689D048313A431C5005EBD36 /* Kdb3Persist.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D02D013A42B63005EBD36 /* Kdb3Persist.m */; };
-		689D048513A431C5005EBD36 /* Kdb3Reader.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D02D213A42B63005EBD36 /* Kdb3Reader.m */; };
-		689D048713A431C5005EBD36 /* Kdb3Writer.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D02D413A42B63005EBD36 /* Kdb3Writer.m */; };
-		689D048913A431C5005EBD36 /* Kdb4Node.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D02D613A42B63005EBD36 /* Kdb4Node.m */; };
-		689D048B13A431C5005EBD36 /* Kdb4Parser.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D02D813A42B63005EBD36 /* Kdb4Parser.m */; };
-		689D048D13A431C5005EBD36 /* Kdb4Persist.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D02DA13A42B63005EBD36 /* Kdb4Persist.m */; };
-		689D048F13A431C5005EBD36 /* Kdb4Reader.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D02DC13A42B63005EBD36 /* Kdb4Reader.m */; };
-		689D049113A431C5005EBD36 /* Kdb4Writer.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D02DE13A42B63005EBD36 /* Kdb4Writer.m */; };
-		689D049413A431C5005EBD36 /* KdbPassword.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D02E113A42B63005EBD36 /* KdbPassword.m */; };
-		689D049713A431C5005EBD36 /* KdbReaderFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D02E413A42B63005EBD36 /* KdbReaderFactory.m */; };
-		689D049A13A431C5005EBD36 /* KdbWriterFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D02E713A42B63005EBD36 /* KdbWriterFactory.m */; };
-		689D049C13A431C5005EBD36 /* OutputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D02E913A42B63005EBD36 /* OutputStream.m */; };
-		689D049F13A431C5005EBD36 /* Salsa20RandomStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D02EC13A42B63005EBD36 /* Salsa20RandomStream.m */; };
-		689D04A113A431C5005EBD36 /* Sha256OutputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D02EE13A42B63005EBD36 /* Sha256OutputStream.m */; };
-		689D04A313A431C6005EBD36 /* Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D02F013A42B63005EBD36 /* Utils.m */; };
-		689D04A513A431C6005EBD36 /* UUID.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D02F213A42B63005EBD36 /* UUID.m */; };
-		689D04A713A431C6005EBD36 /* DDXMLElementAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D02F613A42B63005EBD36 /* DDXMLElementAdditions.m */; };
-		689D04A913A431C6005EBD36 /* NSString+DDXML.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D02F913A42B63005EBD36 /* NSString+DDXML.m */; };
-		689D04AC13A431C6005EBD36 /* DDXMLDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D02FC13A42B63005EBD36 /* DDXMLDocument.m */; };
-		689D04AE13A431C6005EBD36 /* DDXMLElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D02FE13A42B63005EBD36 /* DDXMLElement.m */; };
-		689D04B013A431C6005EBD36 /* DDXMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D030013A42B63005EBD36 /* DDXMLNode.m */; };
-		689D04B313A431C6005EBD36 /* AesStreamTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D041613A42C17005EBD36 /* AesStreamTest.m */; };
-		689D04B513A431C6005EBD36 /* Base64Test.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D041813A42C17005EBD36 /* Base64Test.m */; };
-		689D04B713A431C6005EBD36 /* GZipStreamTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D041A13A42C17005EBD36 /* GZipStreamTest.m */; };
-		689D04B913A431C6005EBD36 /* HashedStreamTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D041C13A42C17005EBD36 /* HashedStreamTest.m */; };
-		689D04BB13A431C6005EBD36 /* Sha256StreamTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D041E13A42C17005EBD36 /* Sha256StreamTest.m */; };
-		689D04CD13A433DF005EBD36 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 689D04CC13A433DF005EBD36 /* Security.framework */; };
-		689D04CF13A433E5005EBD36 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 689D04CE13A433E5005EBD36 /* AudioToolbox.framework */; };
-		689D04D113A433ED005EBD36 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 689D04D013A433ED005EBD36 /* libxml2.dylib */; };
-		689D04D313A433F4005EBD36 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 689D04D213A433F3005EBD36 /* libz.dylib */; };
 		689DFFDA13A4273F005EBD36 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 689DFFD913A4273F005EBD36 /* UIKit.framework */; };
 		689DFFDC13A4273F005EBD36 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 689DFFDB13A4273F005EBD36 /* Foundation.framework */; };
 		689DFFDE13A4273F005EBD36 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 689DFFDD13A4273F005EBD36 /* CoreGraphics.framework */; };
 		689DFFE713A4273F005EBD36 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 689DFFE613A4273F005EBD36 /* main.m */; };
-		689DFFF413A42740005EBD36 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 689DFFD913A4273F005EBD36 /* UIKit.framework */; };
-		689DFFF513A42740005EBD36 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 689DFFDB13A4273F005EBD36 /* Foundation.framework */; };
-		689DFFF613A42740005EBD36 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 689DFFDD13A4273F005EBD36 /* CoreGraphics.framework */; };
-		689DFFFE13A42740005EBD36 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 689DFFFC13A42740005EBD36 /* InfoPlist.strings */; };
 		68A3E1AF13A8C9D1006881CA /* FormViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68A3E1AE13A8C9D1006881CA /* FormViewController.m */; };
 		68B0A70314ECBC1E005CFE31 /* reload.png in Resources */ = {isa = PBXBuildFile; fileRef = 68B0A70014ECBC1E005CFE31 /* reload.png */; };
 		68B0A70514ECBC1E005CFE31 /* reload@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 68B0A70214ECBC1E005CFE31 /* reload@2x.png */; };
 		68CA21C814EA90D00046A7C5 /* FileInputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 68CA21C714EA90D00046A7C5 /* FileInputStream.m */; };
-		68CA21C914EA90D00046A7C5 /* FileInputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 68CA21C714EA90D00046A7C5 /* FileInputStream.m */; };
 		68CE37F214049BC900E4A5E1 /* HelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68CE37F114049BC900E4A5E1 /* HelpViewController.m */; };
 		68CE37F51404A86600E4A5E1 /* safariemail.html in Resources */ = {isa = PBXBuildFile; fileRef = 68CE37F41404A86600E4A5E1 /* safariemail.html */; };
 		68CE868F14EDF4C300D34A61 /* LengthCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68CE868E14EDF4C300D34A61 /* LengthCell.m */; };
@@ -324,22 +274,10 @@
 		68DDC3731405160300FC8BD8 /* keyfiles.html in Resources */ = {isa = PBXBuildFile; fileRef = 68DDC3721405160300FC8BD8 /* keyfiles.html */; };
 		68E08310146F24E3001C4EDF /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 68E0830E146F24E3001C4EDF /* Localizable.strings */; };
 		68E08316146F2749001C4EDF /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 68E08314146F2749001C4EDF /* InfoPlist.strings */; };
-		68E0831D146F2D50001C4EDF /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 68E08314146F2749001C4EDF /* InfoPlist.strings */; };
-		68E0831E146F2D56001C4EDF /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 68E0830E146F24E3001C4EDF /* Localizable.strings */; };
 		68F19D1F14EB3A9C00B772CB /* CharacterSetsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F19D1E14EB3A9C00B772CB /* CharacterSetsViewController.m */; };
 		68FE79B41428C17F00818EE4 /* gear.png in Resources */ = {isa = PBXBuildFile; fileRef = 68FE79B11428C17F00818EE4 /* gear.png */; };
 		68FE79B61428C17F00818EE4 /* gear@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 68FE79B31428C17F00818EE4 /* gear@2x.png */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		689DFFF713A42740005EBD36 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 689DFFCC13A4273F005EBD36 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 689DFFD413A4273F005EBD36;
-			remoteInfo = MiniKeePass;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		52051E971524EAAE00D217B8 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -667,16 +605,6 @@
 		689D032813A42B63005EBD36 /* sample.2.15.kdbx */ = {isa = PBXFileReference; lastKnownFileType = file; path = sample.2.15.kdbx; sourceTree = "<group>"; };
 		689D032A13A42B63005EBD36 /* SFHFKeychainUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFHFKeychainUtils.h; sourceTree = "<group>"; };
 		689D032B13A42B63005EBD36 /* SFHFKeychainUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFHFKeychainUtils.m; sourceTree = "<group>"; };
-		689D041513A42C17005EBD36 /* AesStreamTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AesStreamTest.h; sourceTree = "<group>"; };
-		689D041613A42C17005EBD36 /* AesStreamTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AesStreamTest.m; sourceTree = "<group>"; };
-		689D041713A42C17005EBD36 /* Base64Test.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Base64Test.h; sourceTree = "<group>"; };
-		689D041813A42C17005EBD36 /* Base64Test.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Base64Test.m; sourceTree = "<group>"; };
-		689D041913A42C17005EBD36 /* GZipStreamTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GZipStreamTest.h; sourceTree = "<group>"; };
-		689D041A13A42C17005EBD36 /* GZipStreamTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GZipStreamTest.m; sourceTree = "<group>"; };
-		689D041B13A42C17005EBD36 /* HashedStreamTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HashedStreamTest.h; sourceTree = "<group>"; };
-		689D041C13A42C17005EBD36 /* HashedStreamTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HashedStreamTest.m; sourceTree = "<group>"; };
-		689D041D13A42C17005EBD36 /* Sha256StreamTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Sha256StreamTest.h; sourceTree = "<group>"; };
-		689D041E13A42C17005EBD36 /* Sha256StreamTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Sha256StreamTest.m; sourceTree = "<group>"; };
 		689D042413A42C81005EBD36 /* ChoiceCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChoiceCell.h; sourceTree = "<group>"; };
 		689D042513A42C81005EBD36 /* ChoiceCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChoiceCell.m; sourceTree = "<group>"; };
 		689D042613A42C81005EBD36 /* DatabaseDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DatabaseDocument.h; sourceTree = "<group>"; };
@@ -717,10 +645,6 @@
 		689D044B13A42C82005EBD36 /* TitleFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TitleFieldCell.m; sourceTree = "<group>"; };
 		689D044C13A42C82005EBD36 /* UrlFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UrlFieldCell.h; sourceTree = "<group>"; };
 		689D044D13A42C82005EBD36 /* UrlFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UrlFieldCell.m; sourceTree = "<group>"; };
-		689D04CC13A433DF005EBD36 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
-		689D04CE13A433E5005EBD36 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
-		689D04D013A433ED005EBD36 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
-		689D04D213A433F3005EBD36 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		689DFFD513A4273F005EBD36 /* MiniKeePass.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MiniKeePass.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		689DFFD913A4273F005EBD36 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		689DFFDB13A4273F005EBD36 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -728,10 +652,6 @@
 		689DFFE113A4273F005EBD36 /* MiniKeePass-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "MiniKeePass-Info.plist"; sourceTree = "<group>"; };
 		689DFFE513A4273F005EBD36 /* MiniKeePass-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MiniKeePass-Prefix.pch"; sourceTree = "<group>"; };
 		689DFFE613A4273F005EBD36 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		689DFFF313A42740005EBD36 /* MiniKeePassTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MiniKeePassTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
-		689DFFFB13A42740005EBD36 /* MiniKeePassTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "MiniKeePassTests-Info.plist"; sourceTree = "<group>"; };
-		689DFFFD13A42740005EBD36 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		689DFFFF13A42740005EBD36 /* MiniKeePassTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MiniKeePassTests-Prefix.pch"; sourceTree = "<group>"; };
 		68A3E1AD13A8C9D1006881CA /* FormViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FormViewController.h; sourceTree = "<group>"; };
 		68A3E1AE13A8C9D1006881CA /* FormViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FormViewController.m; sourceTree = "<group>"; };
 		68B0A70014ECBC1E005CFE31 /* reload.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = reload.png; sourceTree = "<group>"; };
@@ -772,20 +692,6 @@
 				689D000D13A42765005EBD36 /* AudioToolbox.framework in Frameworks */,
 				689D001113A4277E005EBD36 /* libxml2.dylib in Frameworks */,
 				689D001313A42784005EBD36 /* libz.dylib in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		689DFFEF13A42740005EBD36 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				689DFFF413A42740005EBD36 /* UIKit.framework in Frameworks */,
-				689DFFF513A42740005EBD36 /* Foundation.framework in Frameworks */,
-				689DFFF613A42740005EBD36 /* CoreGraphics.framework in Frameworks */,
-				689D04CD13A433DF005EBD36 /* Security.framework in Frameworks */,
-				689D04CF13A433E5005EBD36 /* AudioToolbox.framework in Frameworks */,
-				689D04D113A433ED005EBD36 /* libxml2.dylib in Frameworks */,
-				689D04D313A433F4005EBD36 /* libz.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1176,13 +1082,9 @@
 		689D041413A42B85005EBD36 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				52DDE05E1589A0100054429F /* lockLandscape@2x~ipad.png */,
-				52DDE05F1589A0100054429F /* lockLandscape~ipad.png */,
-				52DDE0601589A0100054429F /* lockPortrait@2x~ipad.png */,
-				52DDE0611589A0100054429F /* lockPortrait~ipad.png */,
-				529708AD14FEEFD3003547FB /* Andale Mono.ttf */,
 				689D021313A42B63005EBD36 /* help */,
 				689D021A13A42B63005EBD36 /* images */,
+				529708AD14FEEFD3003547FB /* Andale Mono.ttf */,
 				689D021013A42B63005EBD36 /* Default.png */,
 				689D021213A42B63005EBD36 /* Default@2x.png */,
 				52CF7D8C1542516300D681C1 /* Default-Portrait~ipad.png */,
@@ -1195,6 +1097,10 @@
 				52CF7D8E1542516900D681C1 /* icon@2x~ipad.png */,
 				52DDE05A15899DFF0054429F /* lockBackground.png */,
 				52DDE05C15899E2B0054429F /* lockBackground@2x.png */,
+				52DDE05E1589A0100054429F /* lockLandscape@2x~ipad.png */,
+				52DDE05F1589A0100054429F /* lockLandscape~ipad.png */,
+				52DDE0601589A0100054429F /* lockPortrait@2x~ipad.png */,
+				52DDE0611589A0100054429F /* lockPortrait~ipad.png */,
 				5235D58214F8160900B0C991 /* splash.png */,
 				5235D58414F8176300B0C991 /* splash@2x.png */,
 			);
@@ -1224,17 +1130,6 @@
 			name = Cells;
 			sourceTree = "<group>";
 		};
-		689D04D413A4340E005EBD36 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				689D04CC13A433DF005EBD36 /* Security.framework */,
-				689D04CE13A433E5005EBD36 /* AudioToolbox.framework */,
-				689D04D013A433ED005EBD36 /* libxml2.dylib */,
-				689D04D213A433F3005EBD36 /* libz.dylib */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 		689DFFCA13A4273F005EBD36 = {
 			isa = PBXGroup;
 			children = (
@@ -1244,7 +1139,6 @@
 				689D02B013A42B63005EBD36 /* KeePassLib */,
 				689D02F313A42B63005EBD36 /* KissXML */,
 				689D032913A42B63005EBD36 /* Security */,
-				689DFFF913A42740005EBD36 /* MiniKeePassTests */,
 				689DFFD813A4273F005EBD36 /* Frameworks */,
 				689D041413A42B85005EBD36 /* Resources */,
 				689D030513A42B63005EBD36 /* Samples */,
@@ -1256,7 +1150,6 @@
 			isa = PBXGroup;
 			children = (
 				689DFFD513A4273F005EBD36 /* MiniKeePass.app */,
-				689DFFF313A42740005EBD36 /* MiniKeePassTests.octest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1338,35 +1231,6 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		689DFFF913A42740005EBD36 /* MiniKeePassTests */ = {
-			isa = PBXGroup;
-			children = (
-				689D04D413A4340E005EBD36 /* Frameworks */,
-				689D041513A42C17005EBD36 /* AesStreamTest.h */,
-				689D041613A42C17005EBD36 /* AesStreamTest.m */,
-				689D041713A42C17005EBD36 /* Base64Test.h */,
-				689D041813A42C17005EBD36 /* Base64Test.m */,
-				689D041913A42C17005EBD36 /* GZipStreamTest.h */,
-				689D041A13A42C17005EBD36 /* GZipStreamTest.m */,
-				689D041B13A42C17005EBD36 /* HashedStreamTest.h */,
-				689D041C13A42C17005EBD36 /* HashedStreamTest.m */,
-				689D041D13A42C17005EBD36 /* Sha256StreamTest.h */,
-				689D041E13A42C17005EBD36 /* Sha256StreamTest.m */,
-				689DFFFA13A42740005EBD36 /* Supporting Files */,
-			);
-			path = MiniKeePassTests;
-			sourceTree = "<group>";
-		};
-		689DFFFA13A42740005EBD36 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				689DFFFB13A42740005EBD36 /* MiniKeePassTests-Info.plist */,
-				689DFFFC13A42740005EBD36 /* InfoPlist.strings */,
-				689DFFFF13A42740005EBD36 /* MiniKeePassTests-Prefix.pch */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
 		68F19D1B14EB3A3900B772CB /* Password Generator */ = {
 			isa = PBXGroup;
 			children = (
@@ -1400,25 +1264,6 @@
 			productReference = 689DFFD513A4273F005EBD36 /* MiniKeePass.app */;
 			productType = "com.apple.product-type.application";
 		};
-		689DFFF213A42740005EBD36 /* MiniKeePassTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 689D000913A42740005EBD36 /* Build configuration list for PBXNativeTarget "MiniKeePassTests" */;
-			buildPhases = (
-				689DFFEE13A42740005EBD36 /* Sources */,
-				689DFFEF13A42740005EBD36 /* Frameworks */,
-				689DFFF013A42740005EBD36 /* Resources */,
-				689DFFF113A42740005EBD36 /* ShellScript */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				689DFFF813A42740005EBD36 /* PBXTargetDependency */,
-			);
-			name = MiniKeePassTests;
-			productName = MiniKeePassTests;
-			productReference = 689DFFF313A42740005EBD36 /* MiniKeePassTests.octest */;
-			productType = "com.apple.product-type.bundle";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -1446,7 +1291,6 @@
 			projectRoot = "";
 			targets = (
 				689DFFD413A4273F005EBD36 /* MiniKeePass */,
-				689DFFF213A42740005EBD36 /* MiniKeePassTests */,
 			);
 		};
 /* End PBXProject section */
@@ -1648,34 +1492,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		689DFFF013A42740005EBD36 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				689DFFFE13A42740005EBD36 /* InfoPlist.strings in Resources */,
-				68E0831D146F2D50001C4EDF /* InfoPlist.strings in Resources */,
-				68E0831E146F2D56001C4EDF /* Localizable.strings in Resources */,
-				529708AE14FEEFD3003547FB /* Andale Mono.ttf in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		689DFFF113A42740005EBD36 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		689DFFD113A4273F005EBD36 /* Sources */ = {
@@ -1759,73 +1576,9 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		689DFFEE13A42740005EBD36 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				689D046513A431C5005EBD36 /* AesInputStream.m in Sources */,
-				689D046713A431C5005EBD36 /* AesOutputStream.m in Sources */,
-				689D046913A431C5005EBD36 /* Arc4RandomStream.m in Sources */,
-				689D046B13A431C5005EBD36 /* Base64.m in Sources */,
-				689D046D13A431C5005EBD36 /* DataInputStream.m in Sources */,
-				689D046F13A431C5005EBD36 /* DataOutputStream.m in Sources */,
-				689D047113A431C5005EBD36 /* GZipInputStream.m in Sources */,
-				689D047313A431C5005EBD36 /* GZipOutputStream.m in Sources */,
-				689D047513A431C5005EBD36 /* HashedInputStream.m in Sources */,
-				689D047713A431C5005EBD36 /* HashedOutputStream.m in Sources */,
-				689D047913A431C5005EBD36 /* InputStream.m in Sources */,
-				689D047B13A431C5005EBD36 /* Kdb.m in Sources */,
-				689D047D13A431C5005EBD36 /* Kdb3Date.m in Sources */,
-				689D047F13A431C5005EBD36 /* Kdb3Node.m in Sources */,
-				689D048313A431C5005EBD36 /* Kdb3Persist.m in Sources */,
-				689D048513A431C5005EBD36 /* Kdb3Reader.m in Sources */,
-				689D048713A431C5005EBD36 /* Kdb3Writer.m in Sources */,
-				689D048913A431C5005EBD36 /* Kdb4Node.m in Sources */,
-				689D048B13A431C5005EBD36 /* Kdb4Parser.m in Sources */,
-				689D048D13A431C5005EBD36 /* Kdb4Persist.m in Sources */,
-				689D048F13A431C5005EBD36 /* Kdb4Reader.m in Sources */,
-				689D049113A431C5005EBD36 /* Kdb4Writer.m in Sources */,
-				689D049413A431C5005EBD36 /* KdbPassword.m in Sources */,
-				689D049713A431C5005EBD36 /* KdbReaderFactory.m in Sources */,
-				689D049A13A431C5005EBD36 /* KdbWriterFactory.m in Sources */,
-				689D049C13A431C5005EBD36 /* OutputStream.m in Sources */,
-				689D049F13A431C5005EBD36 /* Salsa20RandomStream.m in Sources */,
-				689D04A113A431C5005EBD36 /* Sha256OutputStream.m in Sources */,
-				689D04A313A431C6005EBD36 /* Utils.m in Sources */,
-				689D04A513A431C6005EBD36 /* UUID.m in Sources */,
-				689D04A713A431C6005EBD36 /* DDXMLElementAdditions.m in Sources */,
-				689D04A913A431C6005EBD36 /* NSString+DDXML.m in Sources */,
-				689D04AC13A431C6005EBD36 /* DDXMLDocument.m in Sources */,
-				689D04AE13A431C6005EBD36 /* DDXMLElement.m in Sources */,
-				689D04B013A431C6005EBD36 /* DDXMLNode.m in Sources */,
-				689D04B313A431C6005EBD36 /* AesStreamTest.m in Sources */,
-				689D04B513A431C6005EBD36 /* Base64Test.m in Sources */,
-				689D04B713A431C6005EBD36 /* GZipStreamTest.m in Sources */,
-				689D04B913A431C6005EBD36 /* HashedStreamTest.m in Sources */,
-				689D04BB13A431C6005EBD36 /* Sha256StreamTest.m in Sources */,
-				68CA21C914EA90D00046A7C5 /* FileInputStream.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
-/* Begin PBXTargetDependency section */
-		689DFFF813A42740005EBD36 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 689DFFD413A4273F005EBD36 /* MiniKeePass */;
-			targetProxy = 689DFFF713A42740005EBD36 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
-
 /* Begin PBXVariantGroup section */
-		689DFFFC13A42740005EBD36 /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				689DFFFD13A42740005EBD36 /* en */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
 		68E0830E146F24E3001C4EDF /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -1899,29 +1652,6 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				WRAPPER_EXTENSION = app;
-			};
-			name = Distribution;
-		};
-		5200281B13D7D95900B77DD8 /* Distribution */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/MiniKeePass.app/MiniKeePass";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "MiniKeePassTests/MiniKeePassTests-Prefix.pch";
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
-				INFOPLIST_FILE = "MiniKeePassTests/MiniKeePassTests-Info.plist";
-				OTHER_LDFLAGS = (
-					"-framework",
-					SenTestingKit,
-				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = octest;
 			};
 			name = Distribution;
 		};
@@ -2013,52 +1743,6 @@
 			};
 			name = Release;
 		};
-		689D000A13A42740005EBD36 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/MiniKeePass.app/MiniKeePass";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "MiniKeePassTests/MiniKeePassTests-Prefix.pch";
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
-				INFOPLIST_FILE = "MiniKeePassTests/MiniKeePassTests-Info.plist";
-				OTHER_LDFLAGS = (
-					"-framework",
-					SenTestingKit,
-				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = octest;
-			};
-			name = Debug;
-		};
-		689D000B13A42740005EBD36 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/MiniKeePass.app/MiniKeePass";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "MiniKeePassTests/MiniKeePassTests-Prefix.pch";
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
-				INFOPLIST_FILE = "MiniKeePassTests/MiniKeePassTests-Info.plist";
-				OTHER_LDFLAGS = (
-					"-framework",
-					SenTestingKit,
-				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = octest;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -2068,16 +1752,6 @@
 				689D000713A42740005EBD36 /* Debug */,
 				689D000813A42740005EBD36 /* Release */,
 				5200281A13D7D95900B77DD8 /* Distribution */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		689D000913A42740005EBD36 /* Build configuration list for PBXNativeTarget "MiniKeePassTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				689D000A13A42740005EBD36 /* Debug */,
-				689D000B13A42740005EBD36 /* Release */,
-				5200281B13D7D95900B77DD8 /* Distribution */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
