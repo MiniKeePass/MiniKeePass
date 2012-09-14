@@ -14,11 +14,11 @@
 
 @interface Kdb3Reader (privateMethods)
 - (void)readHeader:(InputStream *)inputStream;
+- (NSData *)hashHeader:(kdb3_header_t *)header;
 - (void)readGroups:(InputStream *)inputStream;
 - (void)readEntries:(InputStream*)inputStream;
 - (void)readExtData:(InputStream*)inputStream;
 - (Kdb3Tree*)buildTree;
-
 @end
 
 @implementation Kdb3Reader
@@ -33,6 +33,7 @@
         contentsHash = nil;
         masterSeed2 = nil;
         keyEncRounds = 0;
+        headerHash = nil;
         levels = nil;
         groups = nil;
         entries = nil;
@@ -45,6 +46,7 @@
     [encryptionIv release];
     [contentsHash release];
     [masterSeed2 release];
+    [headerHash release];
     [levels release];
     [groups release];
     [entries release];
@@ -115,6 +117,24 @@
     masterSeed2 = [[NSData alloc] initWithBytes:header.masterSeed2 length:sizeof(header.masterSeed2)];
 
     keyEncRounds = CFSwapInt32LittleToHost(header.keyEncRounds);
+
+    // Compute a sha256 hash of the header up to but not including the contentsHash
+    headerHash = [[self hashHeader:&header] retain];
+}
+
+- (NSData *)hashHeader:(kdb3_header_t *)header {
+    uint8_t *buffer = (uint8_t *)header;
+    size_t endCount = sizeof(header->masterSeed2) + sizeof(header->keyEncRounds);
+    size_t startCount = sizeof(kdb3_header_t) - sizeof(header->contentsHash) - endCount;
+    uint8_t hash[32];
+
+    CC_SHA256_CTX ctx;
+    CC_SHA256_Init(&ctx);
+    CC_SHA256_Update(&ctx, buffer, startCount);
+    CC_SHA256_Update(&ctx, buffer + (sizeof(kdb3_header_t) - endCount), endCount);
+    CC_SHA256_Final(hash, &ctx);
+
+    return [NSData dataWithBytes:hash length:sizeof(hash)];
 }
 
 - (void)readGroups:(InputStream *)inputStream {
@@ -377,8 +397,13 @@
                 if (fieldSize != 32) {
                     @throw [NSException exceptionWithName:@"IOException" reason:@"Invalid field size" userInfo:nil];
                 }
+
                 [inputStream read:buffer length:fieldSize];
-                // FIXME do something with the hash
+
+                // Compare the header hash
+                if (memcmp(headerHash.bytes, buffer, fieldSize) != 0) {
+                    @throw [NSException exceptionWithName:@"IOException" reason:@"Header hash does not match" userInfo:nil];
+                }
                 break;
 
             case 0x0002:
