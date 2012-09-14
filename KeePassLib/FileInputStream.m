@@ -41,6 +41,10 @@
     return read(fd, bytes, bytesLength);
 }
 
+- (NSInteger)seek:(NSUInteger)offset {
+    return lseek(fd, offset, SEEK_SET);
+}
+
 - (void)close {
     if (fd == -1) {
         return;

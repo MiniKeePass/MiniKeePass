@@ -23,5 +23,6 @@
 }
 
 - (id)initWithFilename:(NSString*)filename;
+- (NSInteger)seek:(NSUInteger)offset;
 
 @end
