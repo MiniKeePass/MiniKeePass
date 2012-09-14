@@ -217,7 +217,6 @@
 		689D03D513A42B63005EBD36 /* Kdb.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D02C813A42B63005EBD36 /* Kdb.m */; };
 		689D03D613A42B63005EBD36 /* Kdb3Date.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D02CA13A42B63005EBD36 /* Kdb3Date.m */; };
 		689D03D713A42B63005EBD36 /* Kdb3Node.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D02CC13A42B63005EBD36 /* Kdb3Node.m */; };
-		689D03D813A42B63005EBD36 /* Kdb3Parser.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D02CE13A42B63005EBD36 /* Kdb3Parser.m */; };
 		689D03D913A42B63005EBD36 /* Kdb3Persist.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D02D013A42B63005EBD36 /* Kdb3Persist.m */; };
 		689D03DA13A42B63005EBD36 /* Kdb3Reader.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D02D213A42B63005EBD36 /* Kdb3Reader.m */; };
 		689D03DB13A42B63005EBD36 /* Kdb3Writer.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D02D413A42B63005EBD36 /* Kdb3Writer.m */; };
@@ -274,7 +273,6 @@
 		689D047B13A431C5005EBD36 /* Kdb.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D02C813A42B63005EBD36 /* Kdb.m */; };
 		689D047D13A431C5005EBD36 /* Kdb3Date.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D02CA13A42B63005EBD36 /* Kdb3Date.m */; };
 		689D047F13A431C5005EBD36 /* Kdb3Node.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D02CC13A42B63005EBD36 /* Kdb3Node.m */; };
-		689D048113A431C5005EBD36 /* Kdb3Parser.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D02CE13A42B63005EBD36 /* Kdb3Parser.m */; };
 		689D048313A431C5005EBD36 /* Kdb3Persist.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D02D013A42B63005EBD36 /* Kdb3Persist.m */; };
 		689D048513A431C5005EBD36 /* Kdb3Reader.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D02D213A42B63005EBD36 /* Kdb3Reader.m */; };
 		689D048713A431C5005EBD36 /* Kdb3Writer.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D02D413A42B63005EBD36 /* Kdb3Writer.m */; };
@@ -582,8 +580,6 @@
 		689D02CA13A42B63005EBD36 /* Kdb3Date.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Kdb3Date.m; sourceTree = "<group>"; };
 		689D02CB13A42B63005EBD36 /* Kdb3Node.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Kdb3Node.h; sourceTree = "<group>"; };
 		689D02CC13A42B63005EBD36 /* Kdb3Node.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Kdb3Node.m; sourceTree = "<group>"; };
-		689D02CD13A42B63005EBD36 /* Kdb3Parser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Kdb3Parser.h; sourceTree = "<group>"; };
-		689D02CE13A42B63005EBD36 /* Kdb3Parser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Kdb3Parser.m; sourceTree = "<group>"; };
 		689D02CF13A42B63005EBD36 /* Kdb3Persist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Kdb3Persist.h; sourceTree = "<group>"; };
 		689D02D013A42B63005EBD36 /* Kdb3Persist.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Kdb3Persist.m; sourceTree = "<group>"; };
 		689D02D113A42B63005EBD36 /* Kdb3Reader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Kdb3Reader.h; sourceTree = "<group>"; };
@@ -1042,8 +1038,6 @@
 				689D02CA13A42B63005EBD36 /* Kdb3Date.m */,
 				689D02CB13A42B63005EBD36 /* Kdb3Node.h */,
 				689D02CC13A42B63005EBD36 /* Kdb3Node.m */,
-				689D02CD13A42B63005EBD36 /* Kdb3Parser.h */,
-				689D02CE13A42B63005EBD36 /* Kdb3Parser.m */,
 				689D02CF13A42B63005EBD36 /* Kdb3Persist.h */,
 				689D02D013A42B63005EBD36 /* Kdb3Persist.m */,
 				689D02D113A42B63005EBD36 /* Kdb3Reader.h */,
@@ -1703,7 +1697,6 @@
 				689D03D513A42B63005EBD36 /* Kdb.m in Sources */,
 				689D03D613A42B63005EBD36 /* Kdb3Date.m in Sources */,
 				689D03D713A42B63005EBD36 /* Kdb3Node.m in Sources */,
-				689D03D813A42B63005EBD36 /* Kdb3Parser.m in Sources */,
 				689D03D913A42B63005EBD36 /* Kdb3Persist.m in Sources */,
 				689D03DA13A42B63005EBD36 /* Kdb3Reader.m in Sources */,
 				689D03DB13A42B63005EBD36 /* Kdb3Writer.m in Sources */,
@@ -1784,7 +1777,6 @@
 				689D047B13A431C5005EBD36 /* Kdb.m in Sources */,
 				689D047D13A431C5005EBD36 /* Kdb3Date.m in Sources */,
 				689D047F13A431C5005EBD36 /* Kdb3Node.m in Sources */,
-				689D048113A431C5005EBD36 /* Kdb3Parser.m in Sources */,
 				689D048313A431C5005EBD36 /* Kdb3Persist.m in Sources */,
 				689D048513A431C5005EBD36 /* Kdb3Reader.m in Sources */,
 				689D048713A431C5005EBD36 /* Kdb3Writer.m in Sources */,

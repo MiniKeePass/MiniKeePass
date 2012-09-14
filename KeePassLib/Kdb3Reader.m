@@ -7,12 +7,18 @@
 //
 
 #import "Kdb3Reader.h"
-#import "Kdb3Parser.h"
 #import "AesInputStream.h"
 #import "KdbPassword.h"
+#import "Kdb3Node.h"
+#import "Kdb3Date.h"
 
 @interface Kdb3Reader (privateMethods)
-- (void)readHeader:(InputStream*)inputStream;
+- (void)readHeader:(InputStream *)inputStream;
+- (void)readGroups:(InputStream *)inputStream;
+- (void)readEntries:(InputStream*)inputStream;
+- (void)readExtData:(InputStream*)inputStream;
+- (Kdb3Tree*)buildTree;
+
 @end
 
 @implementation Kdb3Reader
@@ -24,9 +30,12 @@
         encryptionIv = nil;
         numGroups = 0;
         numEntries = 0;
-        contentHash = nil;
-        transformSeed = nil;
-        rounds = 0;
+        contentsHash = nil;
+        masterSeed2 = nil;
+        keyEncRounds = 0;
+        levels = nil;
+        groups = nil;
+        entries = nil;
     }
     return self;
 }
@@ -34,73 +43,411 @@
 - (void)dealloc {
     [masterSeed release];
     [encryptionIv release];
-    [contentHash release];
-    [transformSeed release];
+    [contentsHash release];
+    [masterSeed2 release];
+    [levels release];
+    [groups release];
+    [entries release];
     [super dealloc];
 }
 
-- (void)readHeader:(InputStream *)inputStream {
-    uint8_t buffer[32];
-    
-    flags = [inputStream readInt32];
-    flags = CFSwapInt32LittleToHost(flags);
-    
-    version = [inputStream readInt32];
-    version = CFSwapInt32LittleToHost(version);
-    
-    // Check the version
-    if ((version & 0xFFFFFF00) != (KDB3_VER & 0xFFFFFF00)) {
-        @throw [NSException exceptionWithName:@"Unsupported" reason:@"Unsupported version" userInfo:nil];
-    }
-    
-    // Check the encryption algorithm
-    if (!(flags & FLAG_RIJNDAEL)) {
-        @throw [NSException exceptionWithName:@"Unsupported" reason:@"Unsupported algorithm" userInfo:nil];
-    }
-    
-    [inputStream read:buffer length:16];
-    masterSeed = [[NSData alloc] initWithBytes:buffer length:16];
-
-    [inputStream read:buffer length:16];
-    encryptionIv = [[NSData alloc] initWithBytes:buffer length:16];
-    
-    numGroups = [inputStream readInt32];
-    numGroups = CFSwapInt32LittleToHost(numGroups);
-    
-    numEntries = [inputStream readInt32];
-    numEntries = CFSwapInt32LittleToHost(numEntries);
-    
-    [inputStream read:buffer length:32];
-    contentHash = [[NSData alloc] initWithBytes:buffer length:32];
-    
-    [inputStream read:buffer length:32];
-    transformSeed = [[NSData alloc] initWithBytes:buffer length:32];
-    
-    rounds = [inputStream readInt32];
-    rounds = CFSwapInt32LittleToHost(rounds);
-}
-
 - (KdbTree*)load:(InputStream *)inputStream withPassword:(KdbPassword *)kdbPassword {
-    Kdb3Tree *tree;
-    
-    // Read the header
     [self readHeader:inputStream];
-    
-    NSData *key = [kdbPassword createFinalKeyForVersion:3 masterSeed:masterSeed transformSeed:transformSeed rounds:rounds];
+
+    // Create the final key and initialize the AES input stream
+    NSData *key = [kdbPassword createFinalKeyForVersion:3 masterSeed:masterSeed transformSeed:masterSeed2 rounds:keyEncRounds];
     AesInputStream *aesInputStream = [[AesInputStream alloc] initWithInputStream:inputStream key:key iv:encryptionIv];
 
-    Kdb3Parser *parser = [[Kdb3Parser alloc]init];
+    levels = [[NSMutableArray alloc] initWithCapacity:numGroups];
+    groups = [[NSMutableArray alloc] initWithCapacity:numGroups];
+    entries = [[NSMutableArray alloc] initWithCapacity:numEntries];
+
     @try {
-        tree = [parser parse:aesInputStream numGroups:numGroups numEntris:numEntries];
-        
-        // Copy in the number of rounds
-        tree.rounds = rounds;
+        // Parse groups
+        [self readGroups:aesInputStream];
+
+        // Parse entries
+        [self readEntries:aesInputStream];
+
+        // Build the tree
+        return [self buildTree];
     } @finally {
-        [parser release];
         [aesInputStream release];
     }
+
+    return nil;
+}
+
+- (void)readHeader:(InputStream *)inputStream  {
+    kdb3_header_t header;
+
+    // Read in the header
+    if ([inputStream read:&header length:sizeof(header)] != sizeof(header)) {
+        @throw [NSException exceptionWithName:@"IOException" reason:@"Failed to read header" userInfo:nil];
+    }
+
+    // Check the signature
+    header.signature1 = CFSwapInt32LittleToHost(header.signature1);
+    header.signature2 = CFSwapInt32LittleToHost(header.signature2);
+    if (!(header.signature1 == KDB3_SIG1 && header.signature2 == KDB3_SIG2)) {
+        @throw [NSException exceptionWithName:@"IOException" reason:@"Invalid signature" userInfo:nil];
+    }
+
+    // Check the version
+    header.version = CFSwapInt32LittleToHost(header.version);
+    if ((header.version & 0xFFFFFF00) != (KDB3_VER & 0xFFFFFF00)) {
+        @throw [NSException exceptionWithName:@"IOException" reason:@"Unsupported version" userInfo:nil];
+    }
+
+    // Check the encryption algorithm
+    header.flags = CFSwapInt32LittleToHost(header.flags);
+    if (!(header.flags & FLAG_RIJNDAEL)) {
+        @throw [NSException exceptionWithName:@"IOException" reason:@"Unsupported algorithm" userInfo:nil];
+    }
+
+    masterSeed = [[NSData alloc] initWithBytes:header.masterSeed length:sizeof(header.masterSeed)];
+    encryptionIv = [[NSData alloc] initWithBytes:header.encryptionIv length:sizeof(header.encryptionIv)];
+
+    numGroups = CFSwapInt32LittleToHost(header.groups);
+    numEntries = CFSwapInt32LittleToHost(header.entries);
+
+    contentsHash = [[NSData alloc] initWithBytes:header.contentsHash length:sizeof(header.contentsHash)];
+    masterSeed2 = [[NSData alloc] initWithBytes:header.masterSeed2 length:sizeof(header.masterSeed2)];
+
+    keyEncRounds = CFSwapInt32LittleToHost(header.keyEncRounds);
+}
+
+- (void)readGroups:(InputStream *)inputStream {
+    uint16_t fieldType;
+    uint32_t fieldSize;
+    uint8_t dateBuffer[5];
+    BOOL eos;
+
+    // Parse the groups
+    for (uint32_t i = 0; i < numGroups; i++) {
+        Kdb3Group *group = [[Kdb3Group alloc] init];
+
+        // Parse the fields
+        eos = NO;
+        while (!eos) {
+            fieldType = [inputStream readInt16];
+            fieldType = CFSwapInt16LittleToHost(fieldType);
+
+            fieldSize = [inputStream readInt32];
+            fieldSize = CFSwapInt32LittleToHost(fieldSize);
+
+            switch (fieldType) {
+                case 0x0000:
+                    if (fieldSize > 0) {
+                        [self readExtData:inputStream];
+                    }
+                    break;
+
+                case 0x0001:
+                    group.groupId = [inputStream readInt32];
+                    group.groupId = CFSwapInt32LittleToHost(group.groupId);
+                    break;
+
+                case 0x0002:
+                    group.name = [inputStream readCString:fieldSize encoding:NSUTF8StringEncoding];
+                    break;
+
+                case 0x0003:
+                    [inputStream read:dateBuffer length:fieldSize];
+                    group.creationTime = [Kdb3Date fromPacked:dateBuffer];
+                    break;
+
+                case 0x0004:
+                    [inputStream read:dateBuffer length:fieldSize];
+                    group.lastModificationTime = [Kdb3Date fromPacked:dateBuffer];
+                    break;
+
+                case 0x0005:
+                    [inputStream read:dateBuffer length:fieldSize];
+                    group.lastAccessTime = [Kdb3Date fromPacked:dateBuffer];
+                    break;
+
+                case 0x0006:
+                    [inputStream read:dateBuffer length:fieldSize];
+                    group.expiryTime = [Kdb3Date fromPacked:dateBuffer];
+                    break;
+
+                case 0x0007:
+                    group.image = [inputStream readInt32];
+                    group.image = CFSwapInt32LittleToHost(group.image);
+                    break;
+
+                case 0x0008: {
+                    uint16_t level = [inputStream readInt16];
+                    level = CFSwapInt16LittleToHost(level);
+                    [levels addObject:[NSNumber numberWithUnsignedInteger:level]];
+                    break;
+                }
+
+                case 0x0009:
+                    group.flags = [inputStream readInt32];
+                    group.flags = CFSwapInt32LittleToHost(group.flags);
+                    break;
+
+                case 0xFFFF:
+                    if (fieldSize != 0) {
+                        [group release];
+                        @throw [NSException exceptionWithName:@"IOException" reason:@"Invalid field size" userInfo:nil];
+                    }
+
+                    [groups addObject:group];
+
+                    eos = YES;
+                    break;
+
+                default:
+                    [group release];
+                    @throw [NSException exceptionWithName:@"IOException" reason:@"Invalid field type" userInfo:nil];
+            }
+        }
+
+        [group release];
+    }
+}
+
+- (void)readEntries:(InputStream*)inputStream {
+    uint16_t fieldType;
+    uint32_t fieldSize;
+    uint8_t buffer[16];
+    uint32_t groupId;
+    BOOL eos;
+
+    // Parse the entries
+    for (uint32_t i = 0; i < numEntries; i++) {
+        Kdb3Entry *entry = [[Kdb3Entry alloc] init];
+
+        // Parse the entry
+        eos = NO;
+        while (!eos) {
+            fieldType = [inputStream readInt16];
+            fieldType = CFSwapInt16LittleToHost(fieldType);
+
+            fieldSize = [inputStream readInt32];
+            fieldSize = CFSwapInt32LittleToHost(fieldSize);
+
+            switch (fieldType) {
+                case 0x0000:
+                    if (fieldSize > 0) {
+                        [self readExtData:inputStream];
+                    }
+                    break;
+
+                case 0x0001:
+                    if (fieldSize != 16) {
+                        [entry release];
+                        @throw [NSException exceptionWithName:@"IOException" reason:@"Invalid field size" userInfo:nil];
+                    }
+                    if ([inputStream read:buffer length:fieldSize] != fieldSize) {
+                        [entry release];
+                        @throw [NSException exceptionWithName:@"IOException" reason:@"Failed to read UUID" userInfo:nil];
+                    }
+                    entry.uuid = [[[UUID alloc] initWithBytes:buffer] autorelease];
+                    break;
+
+                case 0x0002:
+                    groupId = [inputStream readInt32];
+                    groupId = CFSwapInt32LittleToHost(groupId);
+                    break;
+
+                case 0x0003:
+                    entry.image = [inputStream readInt32];
+                    entry.image = CFSwapInt32LittleToHost(entry.image);
+                    break;
+
+                case 0x0004:
+                    entry.title = [inputStream readCString:fieldSize encoding:NSUTF8StringEncoding];
+                    break;
+
+                case 0x0005:
+                    entry.url = [inputStream readCString:fieldSize encoding:NSUTF8StringEncoding];
+                    break;
+
+                case 0x0006:
+                    entry.username = [inputStream readCString:fieldSize encoding:NSUTF8StringEncoding];
+                    break;
+
+                case 0x0007:
+                    entry.password = [inputStream readCString:fieldSize encoding:NSUTF8StringEncoding];
+                    break;
+
+                case 0x0008:
+                    entry.notes = [inputStream readCString:fieldSize encoding:NSUTF8StringEncoding];
+                    break;
+
+                case 0x0009:
+                    if (fieldSize != 5) {
+                        [entry release];
+                        @throw [NSException exceptionWithName:@"IOException" reason:@"Invalid field size" userInfo:nil];
+                    }
+                    [inputStream read:buffer length:fieldSize];
+                    entry.creationTime = [Kdb3Date fromPacked:buffer];
+                    break;
+
+                case 0x000A:
+                    if (fieldSize != 5) {
+                        [entry release];
+                        @throw [NSException exceptionWithName:@"IOException" reason:@"Invalid field size" userInfo:nil];
+                    }
+                    [inputStream read:buffer length:fieldSize];
+                    entry.lastModificationTime = [Kdb3Date fromPacked:buffer];
+                    break;
+
+                case 0x000B:
+                    if (fieldSize != 5) {
+                        [entry release];
+                        @throw [NSException exceptionWithName:@"IOException" reason:@"Invalid field size" userInfo:nil];
+                    }
+                    [inputStream read:buffer length:fieldSize];
+                    entry.lastAccessTime = [Kdb3Date fromPacked:buffer];
+                    break;
+
+                case 0x000C:
+                    if (fieldSize != 5) {
+                        [entry release];
+                        @throw [NSException exceptionWithName:@"IOException" reason:@"Invalid field size" userInfo:nil];
+                    }
+                    [inputStream read:buffer length:fieldSize];
+                    entry.expiryTime = [Kdb3Date fromPacked:buffer];
+                    break;
+
+                case 0x000D:
+                    entry.binaryDesc = [inputStream readCString:fieldSize encoding:NSUTF8StringEncoding];
+                    break;
+
+                case 0x000E:
+                    if (fieldSize > 0) {
+                        entry.binary = [inputStream readData:fieldSize];
+                    }
+                    break;
+
+                case 0xFFFF:
+                    if (fieldSize != 0) {
+                        [entry release];
+                        @throw [NSException exceptionWithName:@"IOException" reason:@"Invalid field size" userInfo:nil];
+                    }
+
+                    // Find the parent group
+                    for (Kdb3Group *g in groups) {
+                        if (g.groupId == groupId) {
+                            [g addEntry:entry];
+                            break;
+                        }
+                    }
+
+                    [entries addObject:entry];
+
+                    eos = YES;
+                    break;
+
+                default:
+                    [entry release];
+                    @throw [NSException exceptionWithName:@"IOException" reason:@"Invalid field type" userInfo:nil];
+            }
+        }
+
+        [entry release];
+    }
+}
+
+- (void)readExtData:(InputStream*)inputStream {
+    uint16_t fieldType;
+    uint32_t fieldSize;
+    uint8_t buffer[32];
+	BOOL eos = NO;
+
+	while (!eos) {
+        fieldType = [inputStream readInt16];
+        fieldType = CFSwapInt16LittleToHost(fieldType);
+
+        fieldSize = [inputStream readInt32];
+        fieldSize = CFSwapInt32LittleToHost(fieldSize);
+
+		switch (fieldType) {
+            case 0x0000:
+                // Ignore field
+                [inputStream skip:fieldSize];
+                break;
+
+            case 0x0001:
+                if (fieldSize != 32) {
+                    @throw [NSException exceptionWithName:@"IOException" reason:@"Invalid field size" userInfo:nil];
+                }
+                [inputStream read:buffer length:fieldSize];
+                // FIXME do something with the hash
+                break;
+
+            case 0x0002:
+                // Ignore random data
+                [inputStream skip:fieldSize];
+                break;
+
+            case 0xFFFF:
+                eos = YES;
+                break;
+
+            default:
+                @throw [NSException exceptionWithName:@"IOException" reason:@"Invalid field type" userInfo:nil];
+                break;
+		}
+	}
+}
+
+- (Kdb3Tree*)buildTree {
+    uint16_t level1;
+    uint16_t level2;
+    int i;
+    int j;
+
+    Kdb3Tree *tree = [[Kdb3Tree alloc] init];
+    tree.rounds = keyEncRounds;
+
+    Kdb3Group *root = [[Kdb3Group alloc] init];
+    root.name = @"$ROOT$";
+    root.parent = nil;
+    root.canAddEntries = NO;
+    tree.root = root;
+
+    // Find the parent for every group
+    for (i = 0; i < [groups count]; i++) {
+        Kdb3Group *group = [groups objectAtIndex:i];
+        level1 = [[levels objectAtIndex:i] unsignedIntValue];
+
+        if (level1 == 0) {
+            [root addGroup:group];
+            continue;
+        }
+
+        // The first item with a lower level is the parent
+        for (j = i - 1; j >= 0; j--) {
+            level2 = [[levels objectAtIndex:j] unsignedIntValue];
+            if (level2 < level1) {
+                if (level1 - level2 != 1) {
+                    [tree release];
+                    [root release];
+                    @throw [NSException exceptionWithName:@"InvalidData" reason:@"InvalidTree" userInfo:nil];
+                } else {
+                    break;
+                }
+            }
+            if (j == 0) {
+                [tree release];
+                [root release];
+                @throw [NSException exceptionWithName:@"InvalidData" reason:@"InvalidTree" userInfo:nil];
+            }
+        }
+        
+        Kdb3Group *parent = [groups objectAtIndex:j];
+        [parent addGroup:group];
+    }
     
-    return tree;
+    [root release];
+    
+    return [tree autorelease];
 }
 
 @end

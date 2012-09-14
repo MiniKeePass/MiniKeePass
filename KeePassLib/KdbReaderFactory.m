@@ -31,6 +31,9 @@
         [inputStream release];
         @throw [NSException exceptionWithName:@"IOException" reason:@"Invalid file signature" userInfo:nil];
     }
+
+    // Reset the input stream back to the beginning of the file
+    [inputStream seek:0];
     
     KdbTree *tree = [reader load:inputStream withPassword:kdbPassword];
     [reader release];

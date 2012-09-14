@@ -21,6 +21,24 @@
 #define FLAG_ARCFOUR  4
 #define FLAG_TWOFISH  8
 
+typedef struct {
+	uint32_t signature1;
+	uint32_t signature2;
+	uint32_t flags;
+	uint32_t version;
+
+	uint8_t masterSeed[16];
+	uint8_t encryptionIv[16];
+
+	uint32_t groups;
+	uint32_t entries;
+
+	uint8_t contentsHash[32];
+
+	uint8_t masterSeed2[32];
+	uint32_t keyEncRounds;
+} kdb3_header_t;
+
 @interface Kdb3Group : KdbGroup {
     uint32_t groupId;
     uint32_t flags;

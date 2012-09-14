@@ -43,7 +43,7 @@
     
     // Check the cipher algorithm
     if (![cipherUuid isEqual:[UUID getAESUUID]]) {
-        @throw [NSException exceptionWithName:@"Unsupported" reason:@"Unsupported cipher" userInfo:nil];
+        @throw [NSException exceptionWithName:@"IOException" reason:@"Unsupported cipher" userInfo:nil];
     }
     
     // Create the AES input stream
@@ -69,7 +69,7 @@
     } else if (randomStreamID == CSR_ARC4VARIANT) {
         randomStream = [[[Arc4RandomStream alloc] init:protectedStreamKey] autorelease];
     } else {
-        @throw [NSException exceptionWithName:@"Unsupported" reason:@"Unsupported CSR algorithm" userInfo:nil];
+        @throw [NSException exceptionWithName:@"IOException" reason:@"Unsupported CSR algorithm" userInfo:nil];
     }
     
     // Parse the tree
@@ -85,14 +85,23 @@
 
 - (void)readHeader:inputStream {
     uint8_t buffer[16];
-    
+
+    uint32_t sig1 = [inputStream readInt32];
+    sig1 = CFSwapInt32LittleToHost(sig1);
+
+    uint32_t sig2 = [inputStream readInt32];
+    sig2 = CFSwapInt32LittleToHost(sig2);
+    if (!(sig1 == KDB4_SIG1 && sig2 == KDB4_SIG2)) {
+        @throw [NSException exceptionWithName:@"IOException" reason:@"Invalid signature" userInfo:nil];
+    }
+
     uint32_t version = [inputStream readInt32];
     version = CFSwapInt32LittleToHost(version);
-        
+
     if ((version & VERSION_CRITICAL_MASK) > (VERSION_CRITICAL_MAX_32 & VERSION_CRITICAL_MASK)) {
-        @throw [NSException exceptionWithName:@"Unsupported" reason:@"Unsupported version" userInfo:nil];
+        @throw [NSException exceptionWithName:@"IOException" reason:@"Unsupported version" userInfo:nil];
     }
-    
+
     BOOL eoh = NO;
     while (!eoh) {
         uint8_t fieldType = [inputStream readInt8];
