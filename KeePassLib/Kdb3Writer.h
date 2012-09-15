@@ -14,6 +14,8 @@
     NSData *masterSeed;
     NSData *encryptionIv;
     NSData *transformSeed;
+    kdb3_header_t header;
+    BOOL firstGroup;
 }
 
 @end
