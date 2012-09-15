@@ -17,6 +17,8 @@
 
 #import "Kdb4Parser.h"
 #import "Kdb4Node.h"
+#import "DDXMLDocument+MKPAdditions.h"
+#import "DDXMLElement+MKPAdditions.h"
 #import "Base64.h"
 
 #define FIELD_TITLE     @"Title"
@@ -25,39 +27,16 @@
 #define FIELD_URL       @"URL"
 #define FIELD_NOTES     @"Notes"
 
-@implementation DDXMLDocument (MKPDDXMLDocument_Additions)
-
-- (id)initWithReadIO:(xmlInputReadCallback)ioread closeIO:(xmlInputCloseCallback)ioclose context:(void*)ioctx options:(NSUInteger)mask error:(NSError **)error {
-	
-	// Even though xmlKeepBlanksDefault(0) is called in DDXMLNode's initialize method,
-	// it has been documented that this call seems to get reset on the iPhone:
-	// http://code.google.com/p/kissxml/issues/detail?id=8
-	// 
-	// Therefore, we call it again here just to be safe.
-	xmlKeepBlanksDefault(0);
-	
-	xmlDocPtr doc = xmlReadIO(ioread, ioclose, ioctx, NULL, NULL, mask);
-	if (doc == NULL)
-	{
-		if (error) *error = [NSError errorWithDomain:@"DDXMLErrorDomain" code:1 userInfo:nil];
-		
-		return nil;
-	}
-	
-	return [self initWithDocPrimitive:doc owner:nil];
-}
-
-@end
-
 @interface Kdb4Parser (PrivateMethods)
-- (void)decodeProtected:(DDXMLElement*)root;
-- (Kdb4Group*)parseGroup:(DDXMLElement*)root;
-- (Kdb4Entry*)parseEntry:(DDXMLElement*)root;
+- (void)decodeProtected:(DDXMLElement *)root;
+- (void)parseMeta:(DDXMLElement *)root;
+- (Kdb4Group *)parseGroup:(DDXMLElement *)root;
+- (Kdb4Entry *)parseEntry:(DDXMLElement *)root;
 @end
 
 @implementation Kdb4Parser
 
-- (id)initWithRandomStream:(RandomStream*)cryptoRandomStream {
+- (id)initWithRandomStream:(RandomStream *)cryptoRandomStream {
     self = [super init];
     if (self) {
         randomStream = [cryptoRandomStream retain];
@@ -84,7 +63,7 @@ int closeCallback(void *context) {
     return 0;
 }
 
-- (Kdb4Tree*)parse:(InputStream*)inputStream {
+- (Kdb4Tree *)parse:(InputStream *)inputStream {
     DDXMLDocument *document = [[DDXMLDocument alloc] initWithReadIO:readCallback closeIO:closeCallback context:inputStream options:0 error:nil];
     if (document == nil) {
         @throw [NSException exceptionWithName:@"ParseError" reason:@"Failed to parse database" userInfo:nil];
@@ -95,13 +74,20 @@ int closeCallback(void *context) {
     
     // Decode all the protected entries
     [self decodeProtected:rootElement];
-    
+
+    DDXMLElement *meta = [rootElement elementForName:@"Meta"];
+    if (meta == nil) {
+        [document release];
+        @throw [NSException exceptionWithName:@"ParseError" reason:@"Failed to parse database" userInfo:nil];
+    }
+    [self parseMeta:meta];
+
     DDXMLElement *root = [rootElement elementForName:@"Root"];
     if (root == nil) {
         [document release];
         @throw [NSException exceptionWithName:@"ParseError" reason:@"Failed to parse database" userInfo:nil];
     }
-    
+
     DDXMLElement *element = [root elementForName:@"Group"];
     if (element == nil) {
         [document release];
@@ -116,7 +102,14 @@ int closeCallback(void *context) {
     return [tree autorelease];
 }
 
-- (void)decodeProtected:(DDXMLElement*)root {
+- (void)parseMeta:(DDXMLElement *)root {
+    DDXMLElement *element = [root elementForName:@"HeaderHash"];
+    if (element != nil) {
+        [root removeChild:element];
+    }
+}
+
+- (void)decodeProtected:(DDXMLElement *)root {
     DDXMLNode *protectedAttribute = [root attributeForName:@"Protected"];
     if ([[protectedAttribute stringValue] isEqual:@"True"]) {
         NSString *str = [root stringValue];
@@ -139,7 +132,7 @@ int closeCallback(void *context) {
     }
 }
 
-- (Kdb4Group*)parseGroup:(DDXMLElement*)root {
+- (Kdb4Group *)parseGroup:(DDXMLElement *)root {
     Kdb4Group *group = [[[Kdb4Group alloc] initWithElement:root] autorelease];
     
     DDXMLElement *element = [root elementForName:@"IconID"];
@@ -179,7 +172,7 @@ int closeCallback(void *context) {
     return group;
 }
 
-- (Kdb4Entry*)parseEntry:(DDXMLElement*)root {
+- (Kdb4Entry *)parseEntry:(DDXMLElement *)root {
     Kdb4Entry *entry = [[[Kdb4Entry alloc] initWithElement:root] autorelease];
     
     entry.image = [[[root elementForName:@"IconID"] stringValue] intValue];
