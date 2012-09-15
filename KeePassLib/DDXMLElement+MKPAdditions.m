@@ -6,8 +6,16 @@
 //  Copyright (c) 2012 Self. All rights reserved.
 //
 
-#import "DDXMLNode+MKPAdditions.h"
+#import "DDXMLElement+MKPAdditions.h"
 
-@implementation DDXMLNode (MKPAdditions)
+@implementation DDXMLElement (MKPAdditions)
+
+- (void)removeChild:(DDXMLNode *)child {
+    int idx = [child index];
+
+    if (idx >= 0) {
+        [self removeChildAtIndex:idx];
+    }
+}
 
 @end

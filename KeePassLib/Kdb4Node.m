@@ -7,18 +7,7 @@
 //
 
 #import "Kdb4Node.h"
-
-@implementation DDXMLElement (MKPAdditions)
-
-- (void)removeChild:(DDXMLNode *)child {
-    int idx = [child index];
-
-    if (idx >= 0) {
-        [self removeChildAtIndex:idx];
-    }
-}
-
-@end
+#import "DDXMLElement+MKPAdditions.h"
 
 @implementation Kdb4Group
 

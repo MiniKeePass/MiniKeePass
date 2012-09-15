@@ -6,8 +6,10 @@
 //  Copyright (c) 2012 Self. All rights reserved.
 //
 
-#import "DDXMLNode.h"
+#import "DDXMLElement.h"
 
-@interface DDXMLNode (MKPAdditions)
+@interface DDXMLElement (MKPAdditions)
+
+- (void)removeChild:(DDXMLElement *)child;
 
 @end

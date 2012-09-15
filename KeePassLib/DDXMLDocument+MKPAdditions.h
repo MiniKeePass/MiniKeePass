@@ -10,4 +10,6 @@
 
 @interface DDXMLDocument (MKPAdditions)
 
+- (id)initWithReadIO:(xmlInputReadCallback)ioread closeIO:(xmlInputCloseCallback)ioclose context:(void*)ioctx options:(NSUInteger)mask error:(NSError **)error;
+
 @end
