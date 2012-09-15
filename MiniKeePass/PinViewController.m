@@ -100,7 +100,7 @@
         [pinTextField3 release];
         [pinTextField4 release];
         
-        pinBar= [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, frameWidth, 95)];
+        pinBar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, frameWidth, 95)];
         pinBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         [pinBar setBarStyle:UIBarStyleBlackTranslucent];
         [pinBar addSubview:textFieldsView];
