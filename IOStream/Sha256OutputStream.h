@@ -26,7 +26,7 @@
     uint8_t hash[32];
 }
 
-- (id)initWithOutputStream:(OutputStream*)stream;
+- (id)initWithOutputStream:(OutputStream *)stream;
 - (uint8_t*)getHash;
 
 @end

@@ -19,7 +19,7 @@
 
 @implementation Sha256OutputStream
 
-- (id)initWithOutputStream:(OutputStream*)stream {
+- (id)initWithOutputStream:(OutputStream *)stream {
     self = [super init];
     if (self) {
         outputStream = [stream retain];
@@ -42,7 +42,6 @@
 
 - (void)close {
     [outputStream close];
-    
     CC_SHA256_Final(hash, &shaCtx);
 }
 
