@@ -16,12 +16,14 @@
  */
 
 #import <Foundation/Foundation.h>
+#include <fcntl.h>
 #import "OutputStream.h"
 
 @interface FileOutputStream : OutputStream {
     int fd;
 }
 
-- (id)initWithFilename:(NSString*)filename;
+- (id)initWithFilename:(NSString*)filename flags:(NSUInteger)flags mode:(NSUInteger)mode;
+- (NSInteger)seek:(NSUInteger)offset;
 
 @end

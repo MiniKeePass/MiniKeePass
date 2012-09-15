@@ -17,14 +17,12 @@
 
 #import "FileOutputStream.h"
 
-#include <fcntl.h>
-
 @implementation FileOutputStream
 
-- (id)initWithFilename:(NSString*)filename {
+- (id)initWithFilename:(NSString*)filename flags:(NSUInteger)flags mode:(NSUInteger)mode {
     self = [super init];
     if (self) {
-        fd = open([filename UTF8String], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+        fd = open([filename UTF8String], flags, mode);
         if (fd == -1) {
             @throw [NSException exceptionWithName:@"IOException" reason:@"Failed to open file" userInfo:nil];
         }
@@ -39,6 +37,10 @@
 
 - (NSUInteger)write:(const void *)bytes length:(NSUInteger)bytesLength {
     return write(fd, bytes, bytesLength);
+}
+
+- (NSInteger)seek:(NSUInteger)offset {
+    return lseek(fd, offset, SEEK_SET);
 }
 
 - (void)close {
