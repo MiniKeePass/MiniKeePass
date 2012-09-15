@@ -11,6 +11,7 @@
 #import "KdbPassword.h"
 #import "Kdb3Node.h"
 #import "Kdb3Date.h"
+#import "Kdb3Utils.h"
 
 @interface Kdb3Reader (privateMethods)
 - (void)readHeader:(InputStream *)inputStream;
@@ -119,22 +120,7 @@
     keyEncRounds = CFSwapInt32LittleToHost(header.keyEncRounds);
 
     // Compute a sha256 hash of the header up to but not including the contentsHash
-    headerHash = [[self hashHeader:&header] retain];
-}
-
-- (NSData *)hashHeader:(kdb3_header_t *)header {
-    uint8_t *buffer = (uint8_t *)header;
-    size_t endCount = sizeof(header->masterSeed2) + sizeof(header->keyEncRounds);
-    size_t startCount = sizeof(kdb3_header_t) - sizeof(header->contentsHash) - endCount;
-    uint8_t hash[32];
-
-    CC_SHA256_CTX ctx;
-    CC_SHA256_Init(&ctx);
-    CC_SHA256_Update(&ctx, buffer, startCount);
-    CC_SHA256_Update(&ctx, buffer + (sizeof(kdb3_header_t) - endCount), endCount);
-    CC_SHA256_Final(hash, &ctx);
-
-    return [NSData dataWithBytes:hash length:sizeof(hash)];
+    headerHash = [[Kdb3Utils hashHeader:&header] retain];
 }
 
 - (void)readGroups:(InputStream *)inputStream {

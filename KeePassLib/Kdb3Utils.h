@@ -7,7 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "Kdb3Node.h"
 
 @interface Kdb3Utils : NSObject
+
++ (NSData *)hashHeader:(kdb3_header_t *)header;
 
 @end
