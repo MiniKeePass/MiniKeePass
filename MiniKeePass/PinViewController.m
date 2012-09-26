@@ -37,13 +37,13 @@
     self = [super init];
     if (self) {
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-            self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];            
+            self.view.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
         } else {
             self.view.backgroundColor = [UIColor colorWithRed:0.831372f green:0.843137f blue:0.870588f alpha:1.0f];
         }
 
         CGFloat frameWidth = CGRectGetWidth(self.view.frame);
-        
+
         textField = [[UITextField alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
         textField.delegate = self;
         textField.hidden = YES;
@@ -67,8 +67,9 @@
         topBar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, frameWidth, 95)];
         topBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         topBar.barStyle = UIBarStyleBlackTranslucent;
+
         [topBar addSubview:textLabel];
-        
+
         [self.view addSubview:topBar];
         
         CGFloat textFieldViewWidth = PINTEXTFIELDWIDTH * 4 + TEXTFIELDSPACE * 3;
@@ -104,9 +105,9 @@
         pinBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         [pinBar setBarStyle:UIBarStyleBlackTranslucent];
         [pinBar addSubview:textFieldsView];
-      
+
         textField.inputAccessoryView = pinBar;
-                
+
         // If the keyboard is dismissed, show it again.
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(keyboardDidHide)
@@ -135,8 +136,7 @@
     }
 }
 
-
-- (void)resizeToolbarsToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {  
+- (void)resizeToolbarsToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
     // Nothing needs to be done for the iPad; return
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) return;
 
