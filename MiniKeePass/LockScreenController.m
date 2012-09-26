@@ -31,28 +31,13 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10, 15};
 - (id)init {
     self = [super init];
     if (self) {
-        UIInterfaceOrientation orientation = self.interfaceOrientation;
-
-        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {            
-            portraitColor = [[UIColor colorWithPatternImage:[UIImage imageNamed:@"Default-Portrait~ipad"]] retain];
-            landscapeColor = [[UIColor colorWithPatternImage:[UIImage imageNamed:@"Default-Landscape~ipad"]] retain];
-            lockPortraitColor = [[UIColor colorWithPatternImage:[UIImage imageNamed:@"lockPortrait~ipad"]] retain];
-            lockLandscapeColor = [[UIColor colorWithPatternImage:[UIImage imageNamed:@"lockLandscape~ipad"]] retain];
-        } else {
-            portraitColor = [[UIColor colorWithPatternImage:[UIImage imageNamed:@"lockBackground"]] retain];
-            landscapeColor = [[UIColor colorWithPatternImage:[UIImage imageNamed:@"lockBackground"]] retain];
-            lockPortraitColor = [[UIColor colorWithPatternImage:[UIImage imageNamed:@"splash"]] retain];
-            lockLandscapeColor = [[UIColor colorWithPatternImage:[UIImage imageNamed:@"splash"]] retain];
-        }
-        
         pinViewController = [[PinViewController alloc] init];
         pinViewController.delegate = self;
-        pinViewController.backgroundColor = [self lockBackgroundColorForOrientation:orientation];
 
-        self.view.backgroundColor = [self backgroundColorForOrientation:orientation];
-        
+        self.view.backgroundColor = [UIColor colorWithRed:0.831372f green:0.843137f blue:0.870588f alpha:1.0f];
+
         appDelegate = (MiniKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
-        
+
         NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
         [notificationCenter addObserver:self 
                                selector:@selector(applicationDidBecomeActive:)
@@ -65,25 +50,7 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10, 15};
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [pinViewController release];
-    [portraitColor release];
-    [landscapeColor release];
     [super dealloc];
-}
-
-- (UIColor *)lockBackgroundColorForOrientation:(UIInterfaceOrientation)orientation {
-    if (UIInterfaceOrientationIsPortrait(orientation)) {
-        return lockPortraitColor;
-    } else {
-        return lockLandscapeColor;  
-    }
-}
-
-- (UIColor *)backgroundColorForOrientation:(UIInterfaceOrientation)orientation {
-    if (UIInterfaceOrientationIsPortrait(orientation)) {
-        return portraitColor;
-    } else {
-        return landscapeColor;  
-    }
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
@@ -93,15 +60,6 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10, 15};
 
 -(BOOL)pinViewControllerShouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
     return [self shouldAutorotateToInterfaceOrientation:toInterfaceOrientation];
-}
-
--(UIColor *)pinViewController:(PinViewController *)controller backgroundColorForInterfaceOrientation:(UIInterfaceOrientation)orientation {
-    return [self lockBackgroundColorForOrientation:orientation];
-}
-
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
-    self.view.backgroundColor = [self backgroundColorForOrientation:toInterfaceOrientation];
-    pinViewController.backgroundColor = [self lockBackgroundColorForOrientation:toInterfaceOrientation];
 }
 
 - (UIViewController *)frontMostViewController {

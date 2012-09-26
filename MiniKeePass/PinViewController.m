@@ -16,6 +16,7 @@
  */
 
 #import <AudioToolbox/AudioToolbox.h>
+#import <QuartzCore/QuartzCore.h>
 #import "PinViewController.h"
 #import "PinTextField.h"
 #import "MiniKeePassAppDelegate.h"
@@ -36,11 +37,7 @@
 - (id)initWithText:(NSString*)text {
     self = [super init];
     if (self) {
-        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-            self.view.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
-        } else {
-            self.view.backgroundColor = [UIColor colorWithRed:0.831372f green:0.843137f blue:0.870588f alpha:1.0f];
-        }
+        self.view.backgroundColor = [UIColor colorWithRed:0.831372f green:0.843137f blue:0.870588f alpha:1.0f];
 
         CGFloat frameWidth = CGRectGetWidth(self.view.frame);
 
@@ -151,9 +148,6 @@
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
         [UIView animateWithDuration:duration animations:^{
             [self resizeToolbarsToInterfaceOrientation:toInterfaceOrientation];
-            if ([delegate respondsToSelector:@selector(pinViewController:backgroundColorForInterfaceOrientation:)]) {
-                self.backgroundColor = [delegate pinViewController:self backgroundColorForInterfaceOrientation:toInterfaceOrientation];
-            }
         }];
 }
 

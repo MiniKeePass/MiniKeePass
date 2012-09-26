@@ -23,10 +23,6 @@
     PinViewController *pinViewController;
     MiniKeePassAppDelegate *appDelegate;
     UIViewController *previousViewController;
-    UIColor *landscapeColor;
-    UIColor *portraitColor;
-    UIColor *lockLandscapeColor;
-    UIColor *lockPortraitColor;
 }
 
 + (void)present;

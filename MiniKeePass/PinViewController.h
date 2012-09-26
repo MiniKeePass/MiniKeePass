@@ -44,5 +44,4 @@
 - (BOOL)pinViewControllerShouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation;
 @optional
 - (void)pinViewControllerDidShow:(PinViewController*)controller;
-- (UIColor *)pinViewController:(PinViewController*)controller backgroundColorForInterfaceOrientation:(UIInterfaceOrientation)orientation;
 @end
