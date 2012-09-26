@@ -63,6 +63,7 @@
 		6876F67B13B2F2DB00A05C7A /* checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = 6876F67913B2F2DB00A05C7A /* checkmark.png */; };
 		6876F67C13B2F2DB00A05C7A /* checkmark@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6876F67A13B2F2DB00A05C7A /* checkmark@2x.png */; };
 		68915A0B13A6F6C200A408B0 /* InfoBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 68915A0A13A6F6C200A408B0 /* InfoBar.m */; };
+		6894F93E16129E6B00288AE0 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6894F93D16129E6B00288AE0 /* Default-568h@2x.png */; };
 		689A4D1314046B8200AA897D /* RandomStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 689A4D1214046B8200AA897D /* RandomStream.m */; };
 		689A4D171404759700AA897D /* PasswordGeneratorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 689A4D161404759700AA897D /* PasswordGeneratorViewController.m */; };
 		689D000D13A42765005EBD36 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 689D000C13A42765005EBD36 /* AudioToolbox.framework */; };
@@ -368,6 +369,7 @@
 		6876F67A13B2F2DB00A05C7A /* checkmark@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "checkmark@2x.png"; sourceTree = "<group>"; };
 		68915A0913A6F6C200A408B0 /* InfoBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfoBar.h; sourceTree = "<group>"; };
 		68915A0A13A6F6C200A408B0 /* InfoBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfoBar.m; sourceTree = "<group>"; };
+		6894F93D16129E6B00288AE0 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		689A4D1214046B8200AA897D /* RandomStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RandomStream.m; sourceTree = "<group>"; };
 		689A4D151404759700AA897D /* PasswordGeneratorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasswordGeneratorViewController.h; sourceTree = "<group>"; };
 		689A4D161404759700AA897D /* PasswordGeneratorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PasswordGeneratorViewController.m; sourceTree = "<group>"; };
@@ -1104,6 +1106,7 @@
 				529708AD14FEEFD3003547FB /* Andale Mono.ttf */,
 				689D021013A42B63005EBD36 /* Default.png */,
 				689D021213A42B63005EBD36 /* Default@2x.png */,
+				6894F93D16129E6B00288AE0 /* Default-568h@2x.png */,
 				52CF7D8C1542516300D681C1 /* Default-Portrait~ipad.png */,
 				52CF7D8A1542515D00D681C1 /* Default-Portrait@2x~ipad.png */,
 				52CF7D861542515500D681C1 /* Default-Landscape~ipad.png */,
@@ -1507,6 +1510,7 @@
 				52E43F4E15B59C890029F979 /* ru-itunes.html in Resources */,
 				52E43F4F15B59C890029F979 /* ru-keyfiles.html in Resources */,
 				52E43F5015B59C890029F979 /* ru-safariemail.html in Resources */,
+				6894F93E16129E6B00288AE0 /* Default-568h@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1644,7 +1648,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				PROVISIONING_PROFILE = "";
@@ -1664,7 +1668,7 @@
 				GCC_PREFIX_HEADER = "MiniKeePass/MiniKeePass-Prefix.pch";
 				GCC_VERSION = "";
 				INFOPLIST_FILE = "MiniKeePass/MiniKeePass-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				"OTHER_LDFLAGS[arch=*]" = "-fobjc-arc";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -1692,7 +1696,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				ONLY_ACTIVE_ARCH = NO;
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
@@ -1714,7 +1718,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				PROVISIONING_PROFILE = "";
@@ -1734,7 +1738,7 @@
 				GCC_PREFIX_HEADER = "MiniKeePass/MiniKeePass-Prefix.pch";
 				GCC_VERSION = "";
 				INFOPLIST_FILE = "MiniKeePass/MiniKeePass-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				"OTHER_LDFLAGS[arch=*]" = "-fobjc-arc";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -1753,7 +1757,7 @@
 				GCC_PREFIX_HEADER = "MiniKeePass/MiniKeePass-Prefix.pch";
 				GCC_VERSION = "";
 				INFOPLIST_FILE = "MiniKeePass/MiniKeePass-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				"OTHER_LDFLAGS[arch=*]" = "-fobjc-arc";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
