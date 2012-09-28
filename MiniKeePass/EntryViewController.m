@@ -380,7 +380,20 @@
 
 - (void)showPasswordPressed {
     ATMHud *hud = [[ATMHud alloc] initWithDelegate:self];
-    [hud setCaption:self.entry.password];
+    NSString *caption = self.entry.password;
+    UIFont *captionFont = [UIFont fontWithName:@"Andale Mono" size:24];
+    CGSize captionSize;
+    
+    [hud setCaption:caption];
+    [hud setCaptionFont:captionFont];
+    
+    CGFloat size = 300 - hud.padding;
+    captionSize = [caption sizeWithFont:captionFont constrainedToSize:CGSizeMake(size, size) lineBreakMode:UILineBreakModeWordWrap];
+    
+    captionSize.width += 2 * hud.padding;
+    captionSize.height += 2 * hud.padding;
+
+    [hud setFixedSize:captionSize];
     
     [appDelegate.window addSubview:hud.view];
     [hud show];
