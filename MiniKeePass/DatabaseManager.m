@@ -19,6 +19,7 @@
 #import "MiniKeePassAppDelegate.h"
 #import "SFHFKeychainUtils.h"
 #import "PasswordViewController.h"
+#import "AppSettings.h"
 
 @implementation DatabaseManager
 
@@ -159,8 +160,7 @@ static DatabaseManager *sharedInstance;
             [dd open:path password:password keyFile:keyFilePath];
             
             // Store the password in the keychain
-            NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-            if ([userDefaults boolForKey:@"rememberPasswordsEnabled"]) {
+            if ([[AppSettings sharedInstance] rememberPasswordsEnabled]) {
                 NSError *error;
                 [SFHFKeychainUtils storeUsername:selectedFilename andPassword:password forServiceName:@"com.jflan.MiniKeePass.passwords" updateExisting:YES error:&error];
                 [SFHFKeychainUtils storeUsername:selectedFilename andPassword:keyFile forServiceName:@"com.jflan.MiniKeePass.keyfiles" updateExisting:YES error:&error];

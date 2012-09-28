@@ -19,7 +19,7 @@
 #import "GroupViewController.h"
 #import "SettingsViewController.h"
 #import "EntryViewController.h"
-#import "CharacterSetsViewController.h"
+#import "AppSettings.h"
 #import "DatabaseManager.h"
 #import "SFHFKeychainUtils.h"
 #import "LockScreenController.h"
@@ -31,19 +31,6 @@
 @synthesize databaseDocument;
 @synthesize backgroundSupported;
 
-static NSInteger closeTimeoutValues[] = {0, 30, 60, 120, 300};
-static NSInteger clearClipboardTimeoutValues[] = {30, 60, 120, 180};
-static NSStringEncoding passwordEncodingValues[] = {
-    NSUTF8StringEncoding,
-    NSUTF16BigEndianStringEncoding,
-    NSUTF16LittleEndianStringEncoding,
-    NSISOLatin1StringEncoding,
-    NSISOLatin2StringEncoding,
-    NSASCIIStringEncoding,
-    NSJapaneseEUCStringEncoding,
-    NSISO2022JPStringEncoding
-};
-
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Initialize the images array
     int i;
@@ -52,25 +39,6 @@ static NSStringEncoding passwordEncodingValues[] = {
     }
     
     databaseDocument = nil;
-    
-    // Set the user defaults
-    NSMutableDictionary *defaultsDict = [NSMutableDictionary dictionary];
-    [defaultsDict setValue:[NSNumber numberWithBool:NO] forKey:@"pinEnabled"];
-    [defaultsDict setValue:[NSNumber numberWithInt:1] forKey:@"pinLockTimeout"];
-    [defaultsDict setValue:[NSNumber numberWithBool:NO] forKey:@"deleteOnFailureEnabled"];
-    [defaultsDict setValue:[NSNumber numberWithInt:1] forKey:@"deleteOnFailureAttempts"];
-    [defaultsDict setValue:[NSNumber numberWithBool:YES] forKey:@"closeEnabled"];
-    [defaultsDict setValue:[NSNumber numberWithInt:4] forKey:@"closeTimeout"];
-    [defaultsDict setValue:[NSNumber numberWithBool:NO] forKey:@"rememberPasswordsEnabled"];
-    [defaultsDict setValue:[NSNumber numberWithBool:YES] forKey:@"hidePasswords"];
-    [defaultsDict setValue:[NSNumber numberWithBool:YES] forKey:@"sortAlphabetically"];
-    [defaultsDict setValue:[NSNumber numberWithInt:0] forKey:@"passwordEncoding"];
-    [defaultsDict setValue:[NSNumber numberWithBool:NO] forKey:@"clearClipboardEnabled"];
-    [defaultsDict setValue:[NSNumber numberWithInt:10] forKey:@"pwGenLength"];
-    [defaultsDict setValue:[NSNumber numberWithInt:CHARACTER_SET_DEFAULT] forKey:@"pwGenCharSets"];
-    
-    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
-    [userDefaults registerDefaults:defaultsDict];
     
     // Create the files view
     FilesViewController *filesViewController = [[FilesViewController alloc] initWithStyle:UITableViewStylePlain];
@@ -119,8 +87,7 @@ static NSStringEncoding passwordEncodingValues[] = {
     if (!self.locked) {
         [LockScreenController present];
         NSDate *currentTime = [NSDate date];
-        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-        [userDefaults setValue:currentTime forKey:@"exitTime"];        
+        [[AppSettings sharedInstance] setExitTime:currentTime];
     }
 }
 
@@ -138,14 +105,14 @@ static NSStringEncoding passwordEncodingValues[] = {
     }
 
     // Get the time when the application last exited
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSDate *exitTime = [userDefaults valueForKey:@"exitTime"];
+    AppSettings *appSettings = [AppSettings sharedInstance];
+    NSDate *exitTime = [appSettings exitTime];
 
     // Check if closing the database is enabled
-    if ([userDefaults boolForKey:@"closeEnabled"] && exitTime != nil) {
+    if ([appSettings closeEnabled] && exitTime != nil) {
         // Get the lock timeout (in seconds)
-        NSInteger closeTimeout = closeTimeoutValues[[userDefaults integerForKey:@"closeTimeout"]];
-        
+        NSInteger closeTimeout = [appSettings closeTimeout];
+
         // Check if it's been longer then lock timeout
         NSTimeInterval timeInterval = [exitTime timeIntervalSinceNow];
         if (timeInterval < -closeTimeout) {
@@ -232,9 +199,9 @@ static NSStringEncoding passwordEncodingValues[] = {
     [self closeDatabase];
     
     // Reset some settings
-    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
-    [userDefaults setInteger:0 forKey:@"pinFailedAttempts"];
-    [userDefaults setBool:NO forKey:@"pinEnabled"];
+    AppSettings *appSettings = [AppSettings sharedInstance];
+    [appSettings setPinFailedAttempts:0];
+    [appSettings setPinEnabled:NO];
     
     // Delete the PIN from the keychain
     [SFHFKeychainUtils deleteItemForUsername:@"PIN" andServiceName:@"com.jflan.MiniKeePass.pin" error:nil];
@@ -253,11 +220,6 @@ static NSStringEncoding passwordEncodingValues[] = {
     for (NSString *file in files) {
         [fileManager removeItemAtPath:[documentsDirectory stringByAppendingPathComponent:file] error:nil];
     }
-}
-
-- (NSStringEncoding)getPasswordEncoding {
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    return passwordEncodingValues[[userDefaults integerForKey:@"passwordEncoding"]];
 }
 
 - (UIImage *)loadImage:(NSUInteger)index {
@@ -279,14 +241,15 @@ static NSStringEncoding passwordEncodingValues[] = {
         return;
     }
     
+    AppSettings *appSettings = [AppSettings sharedInstance];
+
     // Check if the clearing the clipboard is enabled
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    if ([userDefaults boolForKey:@"clearClipboardEnabled"]) {
+    if ([appSettings clearClipboardEnabled]) {
         // Get the "version" of the pasteboard contents
         NSInteger pasteboardVersion = pasteboard.changeCount;
 
         // Get the clear clipboard timeout (in seconds)
-        NSInteger clearClipboardTimeout = clearClipboardTimeoutValues[[userDefaults integerForKey:@"clearClipboardTimeout"]];
+        NSInteger clearClipboardTimeout = [appSettings clearClipboardTimeout];
         
         // Initiate a background task
         UIApplication *application = [UIApplication sharedApplication];

@@ -20,13 +20,11 @@
 #import "MiniKeePassAppDelegate.h"
 #import "SFHFKeychainUtils.h"
 #import "LockScreenController.h"
+#import "AppSettings.h"
 
 #define DURATION 0.3
 
 @implementation LockScreenController
-
-static NSInteger timeoutValues[] = {0, 30, 60, 120, 300};
-static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10, 15};
 
 - (id)init {
     self = [super init];
@@ -103,17 +101,14 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10, 15};
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     // Get the time when the application last exited
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSDate *exitTime = [userDefaults valueForKey:@"exitTime"];
+    AppSettings *appSettings = [AppSettings sharedInstance];
+    NSDate *exitTime = [appSettings exitTime];
     
     // Check if the PIN is enabled
-    if ([userDefaults boolForKey:@"pinEnabled"] && exitTime != nil) {
-        // Get the lock timeout (in seconds)
-        NSInteger pinLockTimeout = timeoutValues[[userDefaults integerForKey:@"pinLockTimeout"]];
-        
+    if ([appSettings pinEnabled] && exitTime != nil) {
         // Check if it's been longer then lock timeout
         NSTimeInterval timeInterval = -[exitTime timeIntervalSinceNow];
-        if (timeInterval > pinLockTimeout) {
+        if (timeInterval > [appSettings pinLockTimeout]) {
             [self lock];
         } else {
             [self hide];
@@ -132,12 +127,12 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10, 15};
         // Hide spashscreen
         [self unlock];
     } else {
-        NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+        AppSettings *appSettings = [AppSettings sharedInstance];
         
         // Check if the PIN is valid
         if ([pin isEqualToString:validPin]) {
             // Reset the number of pin failed attempts
-            [userDefaults setInteger:0 forKey:@"pinFailedAttempts"];
+            [appSettings setPinFailedAttempts:0];
             
             // Dismiss the pin view
             [self unlock];
@@ -146,16 +141,16 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10, 15};
             AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
             [controller clearEntry];
             
-            if (![userDefaults boolForKey:@"deleteOnFailureEnabled"]) {
+            if (![appSettings deleteOnFailureEnabled]) {
                 // Update the status message on the PIN view
                 controller.textLabel.text = NSLocalizedString(@"Incorrect PIN", nil);
             } else {
                 // Get the number of failed attempts
-                NSInteger pinFailedAttempts = [userDefaults integerForKey:@"pinFailedAttempts"];
-                [userDefaults setInteger:++pinFailedAttempts forKey:@"pinFailedAttempts"];
-                
+                NSInteger pinFailedAttempts = [appSettings pinFailedAttempts];
+                [appSettings setPinFailedAttempts:++pinFailedAttempts];
+
                 // Get the number of failed attempts before deleting
-                NSInteger deleteOnFailureAttempts = deleteOnFailureAttemptsValues[[userDefaults integerForKey:@"deleteOnFailureAttempts"]];
+                NSInteger deleteOnFailureAttempts = [appSettings deleteOnFailureAttempts];
                 
                 // Update the status message on the PIN view
                 NSInteger remainingAttempts = (deleteOnFailureAttempts - pinFailedAttempts);

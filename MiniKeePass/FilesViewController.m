@@ -20,6 +20,7 @@
 #import "HelpViewController.h"
 #import "DatabaseManager.h"
 #import "NewKdbViewController.h"
+#import "AppSettings.h"
 #import "SFHFKeychainUtils.h"
 #import "Kdb3Writer.h"
 #import "Kdb4Writer.h"
@@ -456,8 +457,7 @@ enum {
         [kdbPassword release];
         
         // Store the password in the keychain
-        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-        if ([userDefaults boolForKey:@"rememberPasswordsEnabled"]) {
+        if ([[AppSettings sharedInstance] rememberPasswordsEnabled]) {
             NSError *error;
             [SFHFKeychainUtils storeUsername:filename andPassword:password1 forServiceName:@"com.jflan.MiniKeePass.passwords" updateExisting:YES error:&error];
         }

@@ -16,7 +16,7 @@
  */
 
 #import "DatabaseDocument.h"
-#import "MiniKeePassAppDelegate.h"
+#import "AppSettings.h"
 
 @implementation DatabaseDocument
 
@@ -61,8 +61,7 @@
     filename = [newFilename retain];
     dirty = NO;
     
-    MiniKeePassAppDelegate *appDelegate = (MiniKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
-    NSStringEncoding passwordEncoding = [appDelegate getPasswordEncoding];
+    NSStringEncoding passwordEncoding = [[AppSettings sharedInstance] passwordEncoding];
 
     if (password != nil && keyFile != nil) {
         kdbPassword = [[KdbPassword alloc] initWithPassword:password encoding:passwordEncoding keyfile:keyFile];
