@@ -25,10 +25,15 @@
 #define PINTEXTFIELDHEIGHT 52.0f
 #define TEXTFIELDSPACE     10.0f
 
-@implementation PinViewController
+@interface PinViewController () {
+    UITextField *textField;
+    NSArray *pinTextFields;
+    UIToolbar *topBar;
+    UIToolbar *pinBar;
+}
+@end
 
-@synthesize delegate;
-@synthesize textLabel;
+@implementation PinViewController
 
 - (id)init {
     return [self initWithText:NSLocalizedString(@"Enter your PIN to unlock", nil)];
@@ -37,8 +42,7 @@
 - (id)initWithText:(NSString*)text {
     self = [super init];
     if (self) {
-        self.view.backgroundColor = [UIColor colorWithRed:0.831372f green:0.843137f blue:0.870588f alpha:1.0f];
-
+        self.view.backgroundColor = [UIColor darkGrayColor];
         CGFloat frameWidth = CGRectGetWidth(self.view.frame);
 
         textField = [[UITextField alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
@@ -52,20 +56,20 @@
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textDidChange:) name:UITextFieldTextDidChangeNotification object:textField];
         
         // Create topbar
-        textLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, frameWidth, 95)];
-        textLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        textLabel.backgroundColor = [UIColor clearColor];
-        textLabel.textColor = [UIColor whiteColor];
-        textLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:25];
-        textLabel.numberOfLines = 0;
-        textLabel.textAlignment = UITextAlignmentCenter;
-        textLabel.text = text;
+        _textLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, frameWidth, 95)];
+        self.textLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        self.textLabel.backgroundColor = [UIColor clearColor];
+        self.textLabel.textColor = [UIColor whiteColor];
+        self.textLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:25];
+        self.textLabel.numberOfLines = 0;
+        self.textLabel.textAlignment = UITextAlignmentCenter;
+        self.textLabel.text = text;
         
         topBar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, frameWidth, 95)];
         topBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         topBar.barStyle = UIBarStyleBlackTranslucent;
 
-        [topBar addSubview:textLabel];
+        [topBar addSubview:self.textLabel];
 
         [self.view addSubview:topBar];
         
@@ -120,14 +124,13 @@
     [pinBar release];
     [textField release];
     [pinTextFields release];
-    [textLabel release];
-    [delegate release];
+    [_textLabel release];
     [super dealloc];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
-    if ([delegate respondsToSelector:@selector(pinViewControllerShouldAutorotateToInterfaceOrientation:)]) {
-        return [delegate pinViewControllerShouldAutorotateToInterfaceOrientation:toInterfaceOrientation];
+    if ([self.delegate respondsToSelector:@selector(pinViewControllerShouldAutorotateToInterfaceOrientation:)]) {
+        return [self.delegate pinViewControllerShouldAutorotateToInterfaceOrientation:toInterfaceOrientation];
     } else {
         return NO;
     }
@@ -141,22 +144,14 @@
     newFrame.size.height = UIInterfaceOrientationIsPortrait(toInterfaceOrientation) ? 95 : 68;
 
     topBar.frame = newFrame;
-    textLabel.frame = newFrame;
-    pinBar.frame = newFrame;    
+    self.textLabel.frame = newFrame;
+    pinBar.frame = newFrame;
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
-        [UIView animateWithDuration:duration animations:^{
-            [self resizeToolbarsToInterfaceOrientation:toInterfaceOrientation];
-        }];
-}
-
-- (UIColor *)backgroundColor {
-    return self.view.backgroundColor;
-}
-
-- (void)setBackgroundColor:(UIColor *)backgroundColor {
-    self.view.backgroundColor = backgroundColor;
+    [UIView animateWithDuration:duration animations:^{
+        [self resizeToolbarsToInterfaceOrientation:toInterfaceOrientation];
+    }];
 }
 
 - (void)keyboardDidHide {
@@ -172,15 +167,15 @@
     
     UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
     if ([self shouldAutorotateToInterfaceOrientation:orientation]) {
-        [self resizeToolbarsToInterfaceOrientation:orientation];            
+        [self resizeToolbarsToInterfaceOrientation:orientation];
     }
 
     [self clearEntry];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
-    if ([delegate respondsToSelector:@selector(pinViewControllerDidShow:)]) {
-        [delegate pinViewControllerDidShow:self];
+    if ([self.delegate respondsToSelector:@selector(pinViewControllerDidShow:)]) {
+        [self.delegate pinViewControllerDidShow:self];
     }
 }
 
@@ -215,8 +210,8 @@
 }
 
 - (void)checkPin:(id)sender {
-    if ([delegate respondsToSelector:@selector(pinViewController:pinEntered:)]) {
-        [delegate pinViewController:self pinEntered:textField.text];
+    if ([self.delegate respondsToSelector:@selector(pinViewController:pinEntered:)]) {
+        [self.delegate pinViewController:self pinEntered:textField.text];
     }
 }
 

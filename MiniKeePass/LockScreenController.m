@@ -24,6 +24,13 @@
 
 #define DURATION 0.3
 
+@interface LockScreenController () {
+    PinViewController *pinViewController;
+    MiniKeePassAppDelegate *appDelegate;
+    UIViewController *previousViewController;
+}
+@end
+
 @implementation LockScreenController
 
 - (id)init {
@@ -32,12 +39,15 @@
         pinViewController = [[PinViewController alloc] init];
         pinViewController.delegate = self;
 
-        self.view.backgroundColor = [UIColor colorWithRed:0.831372f green:0.843137f blue:0.870588f alpha:1.0f];
-
         appDelegate = (MiniKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
+        
+        UIImageView *imageView = [[UIImageView alloc] initWithFrame:self.view.frame];
+        imageView.image = [[UIImage imageNamed:@"stretchme"] stretchableImageWithLeftCapWidth:0 topCapHeight:44];
+        self.view = imageView;
+        [imageView release];
 
         NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
-        [notificationCenter addObserver:self 
+        [notificationCenter addObserver:self
                                selector:@selector(applicationDidBecomeActive:)
                                    name:UIApplicationDidBecomeActiveNotification
                                  object:nil];
@@ -86,7 +96,7 @@
 - (void)lock {
     if (!appDelegate.locked) {
         pinViewController.textLabel.text = NSLocalizedString(@"Enter your PIN to unlock", nil);
-        [self presentModalViewController:pinViewController animated:YES];
+        [self presentModalViewController:pinViewController animated:NO];
     }
 }
 

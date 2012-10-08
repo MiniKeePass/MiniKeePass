@@ -21,20 +21,7 @@
 
 #define NUM_IMAGES 69
 
-@interface MiniKeePassAppDelegate : NSObject <UIApplicationDelegate, UIActionSheetDelegate> {
-    UIWindow *window;
-    UINavigationController *navigationController;
-    UIActionSheet* myActionSheet;
-    id<UIActionSheetDelegate> myActionSheetDelegate;
-    
-    DatabaseDocument *databaseDocument;
-    NSString *fileToOpen;
-    
-    UIImage *images[NUM_IMAGES];
-    
-    BOOL locked;
-    BOOL backgroundSupported;
-}
+@interface MiniKeePassAppDelegate : NSObject <UIApplicationDelegate, UIActionSheetDelegate>
 
 @property (nonatomic, retain) UIWindow *window;
 @property (nonatomic, retain) DatabaseDocument *databaseDocument;
@@ -45,8 +32,10 @@
 - (void)closeDatabase;
 - (void)deleteAllData;
 - (UIImage*)loadImage:(NSUInteger)index;
+
 - (void)showSettingsView;
 - (void)dismissSettingsView;
+
 - (void)showActionSheet:(UIActionSheet*)actionSheet;
 - (void)dismissActionSheet;
 

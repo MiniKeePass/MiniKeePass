@@ -24,12 +24,19 @@
 #import "SFHFKeychainUtils.h"
 #import "LockScreenController.h"
 
-@implementation MiniKeePassAppDelegate
+@interface MiniKeePassAppDelegate ()  {
+    UINavigationController *navigationController;
+    UIActionSheet* myActionSheet;
+    id<UIActionSheetDelegate> myActionSheetDelegate;
+    
+    UIImage *images[NUM_IMAGES];
+}
 
-@synthesize window;
-@synthesize locked;
-@synthesize databaseDocument;
-@synthesize backgroundSupported;
+@property (copy, nonatomic) NSString *fileToOpen;
+
+@end
+
+@implementation MiniKeePassAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Initialize the images array
@@ -38,29 +45,23 @@
         images[i] = nil;
     }
     
-    databaseDocument = nil;
+    _databaseDocument = nil;
     
     // Create the files view
-    FilesViewController *filesViewController = [[FilesViewController alloc] initWithStyle:UITableViewStylePlain];
+    FilesViewController *filesViewController = [[[FilesViewController alloc] initWithStyle:UITableViewStylePlain] autorelease];
     navigationController = [[UINavigationController alloc] initWithRootViewController:filesViewController];
-    [filesViewController release];
-    
     navigationController.toolbarHidden = NO;
     
     // Create the window
-    window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    window.rootViewController = navigationController;
-    [window makeKeyAndVisible];
+    _window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    self.window.rootViewController = navigationController;
+    [self.window makeKeyAndVisible];
     
     // Check if backgrounding is supported
-    backgroundSupported = FALSE;
-    UIDevice* device = [UIDevice currentDevice];
-    if ([device respondsToSelector:@selector(isMultitaskingSupported)]) {
-        backgroundSupported = device.multitaskingSupported;
-    }
+    _backgroundSupported = [[UIDevice currentDevice] isMultitaskingSupported];
     
     // Add a pasteboard notification listener is backgrounding is supported
-    if (backgroundSupported) {
+    if (self.backgroundSupported) {
     NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
         [notificationCenter addObserver:self selector:@selector(handlePasteboardNotification:) name:UIPasteboardChangedNotification object:nil];
     }
@@ -75,14 +76,14 @@
     for (i = 0; i < NUM_IMAGES; i++) {
         [images[i] release];
     }
-    [databaseDocument release];
-    [fileToOpen release];
+    [_databaseDocument release];
+    [_fileToOpen release];
+    [_window release];
     [navigationController release];
-    [window release];
     [super dealloc];
 }
 
-- (void)applicationWillResignActive:(UIApplication *)application {    
+- (void)applicationDidEnterBackground:(UIApplication *)application {
     [self dismissActionSheet];
     if (!self.locked) {
         [LockScreenController present];
@@ -91,17 +92,16 @@
     }
 }
 
-- (void)applicationDidBecomeActive:(UIApplication *)application {
+- (void)applicationWillEnterForeground:(UIApplication *)application {
     // Check if we're supposed to open a file
-    if (fileToOpen != nil) {
+    if (self.fileToOpen != nil) {
         // Close the current database
         [self closeDatabase];
         
         // Open the file
-        [[DatabaseManager sharedInstance] openDatabaseDocument:fileToOpen animated:NO];
+        [[DatabaseManager sharedInstance] openDatabaseDocument:self.fileToOpen animated:NO];
         
-        [fileToOpen release];
-        fileToOpen = nil;
+        self.fileToOpen = nil;
     }
 
     // Get the time when the application last exited
@@ -146,11 +146,10 @@
     [fileManager removeItemAtPath:[documentsDirectory stringByAppendingPathComponent:@"Inbox"] error:nil];
     
     // Store the filename to open if it's a database
-    [fileToOpen release];
     if ([filename hasSuffix:@".kdb"] || [filename hasSuffix:@".kdbx"]) {
-        fileToOpen = [filename copy];
+        self.fileToOpen = [filename copy];
     } else {
-        fileToOpen = nil;
+        self.fileToOpen = nil;
         FilesViewController *fileView = [[navigationController viewControllers] objectAtIndex:0];
         [fileView updateFiles];
         [fileView.tableView reloadData];
@@ -167,21 +166,17 @@
     return YES;
 }
 
-- (DatabaseDocument *)databaseDocument {
-    return databaseDocument;
-}
-
 - (void)setDatabaseDocument:(DatabaseDocument *)newDatabaseDocument {
-    if (databaseDocument != nil) {
+    if (_databaseDocument != nil) {
         [self closeDatabase];
     }
     
-    databaseDocument = [newDatabaseDocument retain];
+    _databaseDocument = [newDatabaseDocument retain];
     
     // Create and push on the root group view controller
     GroupViewController *groupViewController = [[GroupViewController alloc] initWithStyle:UITableViewStylePlain];
-    groupViewController.title = [[databaseDocument.filename lastPathComponent] stringByDeletingPathExtension];
-    groupViewController.group = databaseDocument.kdbTree.root;
+    groupViewController.title = [[_databaseDocument.filename lastPathComponent] stringByDeletingPathExtension];
+    groupViewController.group = _databaseDocument.kdbTree.root;
     [navigationController pushViewController:groupViewController animated:YES];
     [groupViewController release];
 }
@@ -190,8 +185,8 @@
     // Close any open database views
     [navigationController popToRootViewControllerAnimated:NO];
     
-    [databaseDocument release];
-    databaseDocument = nil;
+    [_databaseDocument release];
+    _databaseDocument = nil;
 }
 
 - (void)deleteAllData {
@@ -284,14 +279,14 @@
     UINavigationController *settingsNavController = [[UINavigationController alloc] initWithRootViewController:settingsViewController];
     settingsNavController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
     
-    [window.rootViewController presentModalViewController:settingsNavController animated:YES];
+    [self.window.rootViewController presentModalViewController:settingsNavController animated:YES];
 
     [settingsViewController release];
     [settingsNavController release];
 }
 
 - (void)dismissSettingsView {
-    [window.rootViewController dismissModalViewControllerAnimated:YES];
+    [self.window.rootViewController dismissModalViewControllerAnimated:YES];
 }
 
 - (void)showActionSheet:(UIActionSheet *)actionSheet {
@@ -303,7 +298,7 @@
     myActionSheetDelegate = actionSheet.delegate;
     
     actionSheet.delegate = self;
-    [actionSheet showInView:window.rootViewController.view];
+    [actionSheet showInView:self.window.rootViewController.view];
     [actionSheet release];
 }
 
