@@ -240,7 +240,9 @@ enum {
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateStyle:NSDateFormatterShortStyle];
     [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-    cell.detailTextLabel.text = [NSString stringWithFormat:@"Last Modified: %@", [dateFormatter stringFromDate:modificationDate]];
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"%@: %@",
+                                 NSLocalizedString(@"Last Modified", nil),
+                                 [dateFormatter stringFromDate:modificationDate]];
     [dateFormatter release];
 
     return cell;
