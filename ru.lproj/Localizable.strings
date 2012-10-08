@@ -49,6 +49,7 @@
 "Name" = "Имя";
 "Rename" = "Переименовать";
 "Database Name" = "Имя базы данных";
+"Last Modified" = "Последнее изменение";
 
 // General Messages
 "Enter your PIN to unlock" = "Введите PIN-код для разблокировки";
