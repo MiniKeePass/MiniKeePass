@@ -77,10 +77,8 @@ int closeCallback(void *context) {
 
     DDXMLElement *meta = [rootElement elementForName:@"Meta"];
     if (meta == nil) {
-        [document release];
-        @throw [NSException exceptionWithName:@"ParseError" reason:@"Failed to parse database" userInfo:nil];
+        [self parseMeta:meta];
     }
-    [self parseMeta:meta];
 
     DDXMLElement *root = [rootElement elementForName:@"Root"];
     if (root == nil) {
