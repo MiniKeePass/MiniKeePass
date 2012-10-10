@@ -16,23 +16,15 @@
  */
 
 #import <UIKit/UIKit.h>
-#import "FormViewController.h"
-#import "ImagesViewController.h"
-#import "ImageButtonCell.h"
+#import "EditGroupViewController.h"
 
 typedef enum {
     RenameItemTypeGroup,
     RenameItemTypeEntry
 } RenameItemType;
 
-@interface RenameItemViewController : FormViewController <ImagesViewControllerDelegate> {
-    UITextField *nameTextField;
-    ImageButtonCell *imageButtonCell;
-    NSUInteger selectedImageIndex;
-}
+@interface RenameItemViewController : EditGroupViewController <ImagesViewControllerDelegate>
 
 @property (nonatomic, assign) RenameItemType type;
-@property (nonatomic, readonly) UITextField *nameTextField;
-@property (nonatomic, assign) NSUInteger selectedImageIndex;
 
 @end

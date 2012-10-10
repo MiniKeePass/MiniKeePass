@@ -20,8 +20,9 @@
 #import "EditGroupViewController.h"
 #import "KdbLib.h"
 #import "AutorotatingTableViewController.h"
+#import "ChooseGroupViewController.h"
 
-@interface GroupViewController : AutorotatingTableViewController <UIActionSheetDelegate, UISearchDisplayDelegate, FormViewControllerDelegate> {
+@interface GroupViewController : AutorotatingTableViewController <UIActionSheetDelegate, UISearchDisplayDelegate, FormViewControllerDelegate, ChooseGroupDelegate> {
     MiniKeePassAppDelegate *appDelegate;
     UISearchDisplayController *searchDisplayController;
     NSMutableArray *results;

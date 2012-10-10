@@ -52,6 +52,12 @@
     [groups removeObject:group];
 }
 
+- (void)prepareGroupForMove:(KdbGroup *)group {
+    // This method avoids the behavior of the Kdb4Group subclass
+    group.parent = nil;
+    [groups removeObject:group];
+}
+
 - (void)addEntry:(KdbEntry*)entry {
     entry.parent = self;
     [entries addObject:entry];
@@ -60,6 +66,26 @@
 - (void)removeEntry:(KdbEntry*)entry {
     entry.parent = nil;
     [entries removeObject:entry];
+}
+
+- (void)prepareEntryForMove:(KdbEntry *)entry {
+    entry.parent = nil;
+    [entries removeObject:entry];    
+}
+
+- (BOOL)containsGroup:(KdbGroup *)group {
+    // Check trivial case where group is passed to itself
+    if (self == group) {
+        return YES;
+    } else {
+        // Check subgroups
+        for (KdbGroup *subGroup in groups) {
+            if ([subGroup containsGroup:group]) {
+                return YES;
+            }
+        }
+        return NO;
+    }
 }
 
 - (NSString*)description {

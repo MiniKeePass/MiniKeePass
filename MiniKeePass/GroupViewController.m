@@ -17,8 +17,10 @@
 
 #import "GroupViewController.h"
 #import "EntryViewController.h"
-#import "RenameItemViewController.h"
+#import "ChooseGroupViewController.h"
 #import "AppSettings.h"
+#import "RenameItemViewController.h"
+#import "Kdb4Node.h"
 
 #define GROUPS_SECTION  0
 #define ENTRIES_SECTION 1
@@ -99,14 +101,16 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+    NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
+    
     BOOL sortAlphabetically = [[AppSettings sharedInstance] sortAlphabetically];
     if (sortingEnabled != sortAlphabetically) {
         sortingEnabled = sortAlphabetically;
-        [self updateLocalArrays];
-        [self.tableView reloadData];
+        selectedIndexPath = nil;
     }
-    
-    NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
+
+    [self updateLocalArrays];
+    [self.tableView reloadData];
     
     // Reload the cell in case the title was changed by the entry view
     if (selectedIndexPath != nil) {
@@ -164,14 +168,51 @@
     [results release];
     [group release];
     [_standardToolbarItems release];
+    [_deleteButton release];
+    [_deleteButtonTitle release];
+    [_moveButton release];
+    [_moveButtonTitle release];
+    [_renameButton release];
+    [_renameButtonTitle release];
     [super dealloc];
 }
 
-- (void)deleteItems {
-    NSArray *indexPaths = [self.tableView indexPathsForSelectedRows];
+- (void)deleteElementsFromModelAtIndexPaths:(NSArray *)indexPaths {
+    NSMutableArray *groupsToRemove = [NSMutableArray arrayWithCapacity:10];
+    NSMutableArray *enteriesToRemove = [NSMutableArray arrayWithCapacity:10];
+
+    // Find items to remove
+    for (NSIndexPath *indexPath in indexPaths) {
+        if (indexPath.section == GROUPS_SECTION) {
+            [groupsToRemove addObject:[groupsArray objectAtIndex:indexPath.row]];
+        } else if (indexPath.section == ENTRIES_SECTION) {
+            [enteriesToRemove addObject:[enteriesArray objectAtIndex:indexPath.row]];
+        }
+    }
+
+    // Remove groups
+    for (KdbGroup *g in groupsToRemove) {
+        [group removeGroup:g];
+        [groupsArray removeObject:g];
+    }
+    
+    // Remote Enteries
+    for (KdbEntry *e in enteriesToRemove) {
+        [group removeEntry:e];
+        [enteriesArray removeObject:e];
+    }
+    
+    // Save the database
+    DatabaseDocument *databaseDocument = appDelegate.databaseDocument;
+    databaseDocument.dirty = YES;
+    [databaseDocument save];
+}
+
+- (void)deleteSelectedItems {
+    NSArray *indexPaths = self.tableView.indexPathsForSelectedRows;
     [self deleteElementsFromModelAtIndexPaths:indexPaths];
     [self.tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
-
+    
     // Clean up section headers
     NSMutableIndexSet *indexSet = [NSMutableIndexSet indexSet];
     if ([groupsArray count] == 0) {
@@ -181,14 +222,131 @@
         [indexSet addIndex:ENTRIES_SECTION];
     }
     [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationFade];
-    [self updateEditingButtons];
+
+    [self setEditing:NO animated:YES];
 }
 
-- (void)moveItems {
+- (void)moveSelectedItems {
+    ChooseGroupViewController *chooseGroupViewController = [[[ChooseGroupViewController alloc] initWithStyle:UITableViewStylePlain] autorelease];
+    chooseGroupViewController.delegate = self;
+    UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:chooseGroupViewController] autorelease];
     
+    [appDelegate.window.rootViewController presentModalViewController:navController animated:YES];
 }
 
-- (void)renameItem {
+- (BOOL)checkChoiceValidity:(KdbGroup *)chosenGroup success:(void (^)(void))success failure:(void (^)(NSString *))failure {
+    BOOL validGroup = YES;
+    NSArray *indexPaths = self.tableView.indexPathsForSelectedRows;
+    NSString *errorMessage;
+    KdbGroup *movingGroup;
+    KdbGroup *movingEntry;
+    BOOL containsEntry = NO;
+    
+    // Check if chosen group is a subgroup of any groups to be moved
+    int count = indexPaths.count;
+    NSIndexPath *indexPath;
+    for (int i = 0; i < count && validGroup; i++) {
+        indexPath = [indexPaths objectAtIndex:i];
+        switch (indexPath.section) {
+            case GROUPS_SECTION:
+                movingGroup = [groupsArray objectAtIndex:indexPath.row];
+                if (movingGroup.parent == chosenGroup) {
+                    validGroup = NO;
+                    errorMessage = [NSString stringWithFormat:@"Items are already in %@", chosenGroup.name];
+                }
+                if ([movingGroup containsGroup:chosenGroup]) {
+                    validGroup = NO;
+                    errorMessage = [NSString stringWithFormat:@"%@ cannot be moved into %@", movingGroup.name, chosenGroup.name];
+                }
+                break;
+            case ENTRIES_SECTION:
+                containsEntry = YES;
+                movingEntry = [enteriesArray objectAtIndex:indexPath.row];
+                if (movingEntry.parent == chosenGroup) {
+                    validGroup = NO;
+                    errorMessage = [NSString stringWithFormat:@"Items are already in %@", chosenGroup.name];                    
+                }
+                break;
+        }
+    }
+    
+    // Failed subgroup check
+    if (!validGroup) {
+        if (failure) {
+            failure(errorMessage);
+        }
+        return NO;
+    }
+    
+    // Check if trying to move entries to top level in 1.x database
+    KdbTree *tree = appDelegate.databaseDocument.kdbTree;
+    if (![tree isKindOfClass:[Kdb4Tree class]] && tree.root == chosenGroup && containsEntry) {
+        if (failure) {
+            failure(@"Cannot move entries to top level in 1.x database");
+        }
+        return NO;
+    }
+    
+    // All tests passsed
+    if (success) {
+        success();
+    }
+    return YES;
+}
+
+- (void)chooseGroup:(KdbGroup *)chosenGroup {
+    NSArray *indexPaths = self.tableView.indexPathsForSelectedRows;
+
+    // Find items to move
+    NSMutableArray *groupsToMove = [NSMutableArray arrayWithCapacity:[indexPaths count]];
+    NSMutableArray *enteriesToMove = [NSMutableArray arrayWithCapacity:[indexPaths count]];
+
+    for (NSIndexPath *indexPath in indexPaths) {
+        switch (indexPath.section) {
+            case GROUPS_SECTION:
+                [groupsToMove addObject:[groupsArray objectAtIndex:indexPath.row]];
+                break;
+            case ENTRIES_SECTION:
+                [enteriesToMove addObject:[enteriesArray objectAtIndex:indexPath.row]];
+                break;
+        }
+    }
+
+    // Add desired items to chosen group
+    for (KdbGroup *movingGroup in groupsToMove) {
+        if (movingGroup.parent == chosenGroup) {
+            continue;
+        }
+        [movingGroup.parent prepareGroupForMove:movingGroup];
+        [chosenGroup addGroup:movingGroup];
+        [groupsArray removeObject:movingGroup];
+    }
+    for (KdbEntry *movingEntry in enteriesToMove) {
+        if (movingEntry.parent == chosenGroup) {
+            continue;
+        }
+        [movingEntry.parent prepareEntryForMove:movingEntry];
+        [chosenGroup addEntry:movingEntry];
+        [enteriesArray removeObject:movingEntry];
+    }
+    
+    // Save the database
+    DatabaseDocument *databaseDocument = appDelegate.databaseDocument;
+    databaseDocument.dirty = YES;
+    [databaseDocument save];
+    
+    // Update the table
+    if ([groupsToMove count]) {
+        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:GROUPS_SECTION] withRowAnimation:UITableViewRowAnimationAutomatic];
+    }
+    if ([enteriesToMove count]) {
+        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:ENTRIES_SECTION] withRowAnimation:UITableViewRowAnimationAutomatic];
+    }
+    
+    [self setEditing:NO animated:YES];
+}
+
+- (void)renameSelectedItem {
     [self renameItemAtIndexPath:[self.tableView.indexPathsForSelectedRows objectAtIndex:0]];
 }
 
@@ -197,18 +355,18 @@
     
     if (editing && self.selectMultipleWhileEditing) {
         self.deleteButtonTitle = NSLocalizedString(@"Delete", nil);
-        self.deleteButton = [[[UIBarButtonItem alloc] initWithTitle:self.deleteButtonTitle style:UIBarButtonItemStyleBordered target:self action:@selector(deleteItems)] autorelease];
+        self.deleteButton = [[[UIBarButtonItem alloc] initWithTitle:self.deleteButtonTitle style:UIBarButtonItemStyleBordered target:self action:@selector(deleteSelectedItems)] autorelease];
         self.deleteButton.tintColor = [UIColor redColor];
         self.deleteButton.width = 97;
         self.deleteButton.enabled = NO;
         
         self.moveButtonTitle = NSLocalizedString(@"Move", nil);
-        self.moveButton = [[[UIBarButtonItem alloc] initWithTitle:self.moveButtonTitle style:UIBarButtonItemStyleBordered target:self action:@selector(moveItems)] autorelease];
+        self.moveButton = [[[UIBarButtonItem alloc] initWithTitle:self.moveButtonTitle style:UIBarButtonItemStyleBordered target:self action:@selector(moveSelectedItems)] autorelease];
         self.moveButton.width = 97;
         self.moveButton.enabled = NO;
         
         self.renameButtonTitle = NSLocalizedString(@"Rename", nil);
-        self.renameButton = [[[UIBarButtonItem alloc] initWithTitle:self.renameButtonTitle style:UIBarButtonItemStyleBordered target:self action:@selector(renameItem)] autorelease];
+        self.renameButton = [[[UIBarButtonItem alloc] initWithTitle:self.renameButtonTitle style:UIBarButtonItemStyleBordered target:self action:@selector(renameSelectedItem)] autorelease];
         self.renameButton.width = 97;
         self.renameButton.enabled = NO;
         
@@ -218,6 +376,31 @@
     } else {
         self.toolbarItems = self.standardToolbarItems;
     }
+}
+
+- (void)updateEditingButtons {
+    NSArray *selectedRows = [self.tableView indexPathsForSelectedRows];
+    NSUInteger numSelectedRows = [selectedRows count];
+    if (numSelectedRows != 0) {
+        self.deleteButton.title = [self.deleteButtonTitle stringByAppendingFormat:@" (%u)", numSelectedRows];
+        self.deleteButton.enabled = YES;
+        
+        self.moveButton.title = [self.moveButtonTitle stringByAppendingFormat:@" (%u)", numSelectedRows];
+        self.moveButton.enabled = YES;
+        
+        self.renameButton.title = [self.renameButtonTitle stringByAppendingFormat:@" (%u)", numSelectedRows];
+        self.renameButton.enabled = numSelectedRows == 1;
+    } else {
+        self.deleteButton.title = self.deleteButtonTitle;
+        self.deleteButton.enabled = NO;
+        
+        self.moveButton.title = self.moveButtonTitle;
+        self.moveButton.enabled = NO;
+        
+        self.renameButton.title = self.renameButtonTitle;
+        self.renameButton.enabled = NO;
+    }
+
 }
 
 - (KdbGroup *)group {
@@ -355,31 +538,6 @@
     return cell;
 }
 
-- (void)updateEditingButtons {
-    NSArray *selectedRows = [self.tableView indexPathsForSelectedRows];
-    NSUInteger numSelectedRows = [selectedRows count];
-    if (numSelectedRows != 0) {
-        self.deleteButton.title = [self.deleteButtonTitle stringByAppendingFormat:@" (%u)", numSelectedRows];
-        self.deleteButton.enabled = YES;
-        
-        self.moveButton.title = [self.moveButtonTitle stringByAppendingFormat:@" (%u)", numSelectedRows];
-        self.moveButton.enabled = YES;
-        
-        self.renameButton.title = [self.renameButtonTitle stringByAppendingFormat:@" (%u)", numSelectedRows];
-        self.renameButton.enabled = numSelectedRows == 1;
-    } else {
-        self.deleteButton.title = self.deleteButtonTitle;
-        self.deleteButton.enabled = NO;
-        
-        self.moveButton.title = self.moveButtonTitle;
-        self.moveButton.enabled = NO;
-        
-        self.renameButton.title = self.renameButtonTitle;
-        self.renameButton.enabled = NO;
-    }
-
-}
-
 - (void)renameItemAtIndexPath:(NSIndexPath *)indexPath {
     RenameItemViewController *renameItemViewController = [[RenameItemViewController alloc] initWithStyle:UITableViewStyleGrouped];
     renameItemViewController.delegate = self;
@@ -467,38 +625,6 @@
     } else {
         return UITableViewCellEditingStyleDelete;
     }
-    
-}
-
-- (void)deleteElementsFromModelAtIndexPaths:(NSArray *)indexPaths {
-    NSMutableArray *groupsToRemove = [NSMutableArray arrayWithCapacity:10];
-    NSMutableArray *enteriesToRemove = [NSMutableArray arrayWithCapacity:10];
-
-    // Find items to remove
-    for (NSIndexPath *indexPath in indexPaths) {
-        if (indexPath.section == GROUPS_SECTION) {
-            [groupsToRemove addObject:[groupsArray objectAtIndex:indexPath.row]];
-        } else if (indexPath.section == ENTRIES_SECTION) {
-            [enteriesToRemove addObject:[enteriesArray objectAtIndex:indexPath.row]];
-        }
-    }
-
-    // Remove groups
-    for (KdbGroup *g in groupsToRemove) {
-        [group removeGroup:g];
-        [groupsArray removeObject:g];
-    }
-    
-    // Remote Enteries
-    for (KdbEntry *e in enteriesToRemove) {
-        [group removeEntry:e];
-        [enteriesArray removeObject:e];
-    }
-    
-    // Save the database
-    DatabaseDocument *databaseDocument = appDelegate.databaseDocument;
-    databaseDocument.dirty = YES;
-    [databaseDocument save];
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {

@@ -44,9 +44,13 @@
 
 - (void)addGroup:(KdbGroup*)group;
 - (void)removeGroup:(KdbGroup*)group;
+- (void)prepareGroupForMove:(KdbGroup*)group;
 
 - (void)addEntry:(KdbEntry*)entry;
 - (void)removeEntry:(KdbEntry*)entry;
+- (void)prepareEntryForMove:(KdbEntry*)entry;
+
+- (BOOL)containsGroup:(KdbGroup*)group;
 
 @end
 
