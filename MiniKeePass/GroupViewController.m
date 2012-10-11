@@ -101,7 +101,13 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
+    NSArray *selectedIndexPaths = [self.tableView indexPathsForSelectedRows];
+    if ([selectedIndexPaths count] > 1) {
+        [super viewWillAppear:animated];
+        return;
+    }
+    
+    NSIndexPath *selectedIndexPath = [selectedIndexPaths objectAtIndex:0];
     
     BOOL sortAlphabetically = [[AppSettings sharedInstance] sortAlphabetically];
     if (sortingEnabled != sortAlphabetically) {
