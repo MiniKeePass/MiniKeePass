@@ -9,13 +9,30 @@
 	<key>CFBundleDocumentTypes</key>
 	<array>
 		<dict>
+			<key>CFBundleTypeName</key>
+			<string>KeePass 2.x Database</string>
 			<key>CFBundleTypeIconFiles</key>
 			<array>
 				<string>icon.png</string>
 				<string>icon@2x.png</string>
 			</array>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>LSHandlerRank</key>
+			<string>Owner</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>com.jflan.MiniKeePass.kdbx</string>
+			</array>
+		</dict>
+		<dict>
 			<key>CFBundleTypeName</key>
-			<string>KeePass Database</string>
+			<string>KeePass 1.x Database</string>
+			<key>CFBundleTypeIconFiles</key>
+			<array>
+				<string>icon.png</string>
+				<string>icon@2x.png</string>
+			</array>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>LSHandlerRank</key>
@@ -26,13 +43,13 @@
 			</array>
 		</dict>
 		<dict>
+			<key>CFBundleTypeName</key>
+			<string>KeePass Keyfile</string>
 			<key>CFBundleTypeIconFiles</key>
 			<array>
 				<string>icon.png</string>
 				<string>icon@2x.png</string>
 			</array>
-			<key>CFBundleTypeName</key>
-			<string>KeePass Keyfile</string>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>LSHandlerRank</key>
@@ -129,14 +146,14 @@
 				<string>public.database</string>
 			</array>
 			<key>UTTypeDescription</key>
-			<string>KeePass Keyfile</string>
+			<string>KeePass 2.x Database</string>
 			<key>UTTypeIdentifier</key>
-			<string>com.jflan.MiniKeePass.key</string>
+			<string>com.jflan.MiniKeePass.kdbx</string>
 			<key>UTTypeTagSpecification</key>
 			<dict>
 				<key>public.filename-extension</key>
 				<array>
-					<string>key</string>
+					<string>kdbx</string>
 				</array>
 			</dict>
 		</dict>
@@ -147,7 +164,7 @@
 				<string>public.database</string>
 			</array>
 			<key>UTTypeDescription</key>
-			<string>KeePass Database</string>
+			<string>KeePass 1.x Database</string>
 			<key>UTTypeIdentifier</key>
 			<string>com.jflan.MiniKeePass.kdb</string>
 			<key>UTTypeTagSpecification</key>
@@ -155,7 +172,24 @@
 				<key>public.filename-extension</key>
 				<array>
 					<string>kdb</string>
-					<string>kdbx</string>
+				</array>
+			</dict>
+		</dict>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>public.data</string>
+				<string>public.database</string>
+			</array>
+			<key>UTTypeDescription</key>
+			<string>KeePass Keyfile</string>
+			<key>UTTypeIdentifier</key>
+			<string>com.jflan.MiniKeePass.key</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<array>
+					<string>key</string>
 				</array>
 			</dict>
 		</dict>
