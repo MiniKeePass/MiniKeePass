@@ -147,7 +147,6 @@
 			<key>UTTypeConformsTo</key>
 			<array>
 				<string>public.data</string>
-				<string>public.database</string>
 			</array>
 			<key>UTTypeDescription</key>
 			<string>KeePass 2.x Database</string>
@@ -165,7 +164,6 @@
 			<key>UTTypeConformsTo</key>
 			<array>
 				<string>public.data</string>
-				<string>public.database</string>
 			</array>
 			<key>UTTypeDescription</key>
 			<string>KeePass 1.x Database</string>
@@ -183,7 +181,6 @@
 			<key>UTTypeConformsTo</key>
 			<array>
 				<string>public.data</string>
-				<string>public.database</string>
 			</array>
 			<key>UTTypeDescription</key>
 			<string>KeePass Keyfile</string>
