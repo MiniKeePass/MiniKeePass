@@ -22,11 +22,17 @@
 
 - (BOOL) activateLink: (UIViewController *) viewController;
 
+// Connect to Dropbox
 - (BOOL) connect;
 
+// Has link to Dropbox user account
 - (BOOL) hasLink;
 
+// Sync from Dropbox file, initiatize database load
 - (BOOL) syncFrom: (NSString *) dbFile;
+
+// Sync to Dropbox file
+- (BOOL) syncToDropbox;
 
 
 @end

@@ -19,6 +19,7 @@
 #import "EntryViewController.h"
 #import "EditGroupViewController.h"
 #import "AppSettings.h"
+#import "DropboxManager.h"
 
 #define GROUPS_SECTION  0
 #define ENTRIES_SECTION 1
@@ -430,6 +431,7 @@
 // Add functionality to handle syncing file to DropBox
 - (void)syncFilePressed {
     
+    [[DropboxManager singleton] syncToDropbox];
 }
 
 - (void)addPressed {

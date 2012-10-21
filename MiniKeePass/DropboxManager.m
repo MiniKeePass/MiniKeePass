@@ -162,6 +162,33 @@
     return YES;
 }
 
+//
+// Sync to Dropbox
+- (BOOL) syncToDropbox
+{
+    // if we haven't linked to Dropbox
+    if (![self hasLink])
+    {
+        NSLog(@"Not connected to user dropbox");
+        return NO;
+    }
+    
+    NSLog(@"SyncToDropbox: %@ to version %@", self.localDb, self.cloudVersion);
+    
+    // Upload local file to Dropbox server
+    // In upload delegate:
+    // Get revision from Dropbox server
+    // Write revision info to local store
+    
+    [[self restClient] uploadFile: self.localDb
+                    toPath:@"/"
+                    withParentRev: self.cloudVersion
+                         fromPath: [self getTargetDb: self.localDb]];
+    
+    return YES;
+}
+
+
 #pragma mark -
 #pragma Private methods
 
@@ -319,8 +346,24 @@
 {
     NSLog(@"Error loading file %@, message: %@", [self getCloudDb: self.localDb], [error localizedDescription]);
     
+    self.cloudVersion = nil;
+    
     // go directly to edit database
     [self openDatabaseForEdit];
+}
+
+-(void)restClient:(DBRestClient *)client uploadedFile:(NSString *)destPath from:(NSString *)srcPath metadata:(DBMetadata *)metadata
+{
+    NSString *newRev = metadata.rev;
+    NSLog(@"File %@ uploaded successfully with rev %@", metadata.path, newRev);
+    
+    [self writeVersionInfo: newRev into: [self getVersionPath: self.localDb]];
+}
+
+-(void)restClient:(DBRestClient *)client uploadFileFailedWithError:(NSError *)error
+{
+    NSLog(@"Error writing file %@, message: %@", [self getCloudDb: self.localDb], [error localizedDescription]);
+    
 }
 
 #pragma mark -
