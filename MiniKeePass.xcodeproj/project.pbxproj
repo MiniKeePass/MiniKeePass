@@ -276,6 +276,8 @@
 		68F19D1F14EB3A9C00B772CB /* CharacterSetsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F19D1E14EB3A9C00B772CB /* CharacterSetsViewController.m */; };
 		68FE79B41428C17F00818EE4 /* gear.png in Resources */ = {isa = PBXBuildFile; fileRef = 68FE79B11428C17F00818EE4 /* gear.png */; };
 		68FE79B61428C17F00818EE4 /* gear@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 68FE79B31428C17F00818EE4 /* gear@2x.png */; };
+		DA6C51FE1634B70000E77C87 /* DropboxSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA6C51FD1634B70000E77C87 /* DropboxSDK.framework */; };
+		DA6C52021634B76900E77C87 /* DropboxManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DA6C52011634B76900E77C87 /* DropboxManager.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -677,6 +679,9 @@
 		68F19D1E14EB3A9C00B772CB /* CharacterSetsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CharacterSetsViewController.m; sourceTree = "<group>"; };
 		68FE79B11428C17F00818EE4 /* gear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gear.png; sourceTree = "<group>"; };
 		68FE79B31428C17F00818EE4 /* gear@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gear@2x.png"; sourceTree = "<group>"; };
+		DA6C51FD1634B70000E77C87 /* DropboxSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = DropboxSDK.framework; sourceTree = "<group>"; };
+		DA6C52001634B75E00E77C87 /* DropboxManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DropboxManager.h; sourceTree = "<group>"; };
+		DA6C52011634B76900E77C87 /* DropboxManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DropboxManager.m; sourceTree = "<group>"; };
 		EFD785BA15B3D02600B9A276 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		EFD785BB15B3D03F00B9A276 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -694,6 +699,7 @@
 				689DFFDA13A4273F005EBD36 /* UIKit.framework in Frameworks */,
 				689D001113A4277E005EBD36 /* libxml2.dylib in Frameworks */,
 				689D001313A42784005EBD36 /* libz.dylib in Frameworks */,
+				DA6C51FE1634B70000E77C87 /* DropboxSDK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1166,6 +1172,7 @@
 		689DFFD813A4273F005EBD36 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				DA6C51FD1634B70000E77C87 /* DropboxSDK.framework */,
 				689D000C13A42765005EBD36 /* AudioToolbox.framework */,
 				689DFFDD13A4273F005EBD36 /* CoreGraphics.framework */,
 				689DFFDB13A4273F005EBD36 /* Foundation.framework */,
@@ -1191,6 +1198,8 @@
 				689D042713A42C81005EBD36 /* DatabaseDocument.m */,
 				689D042813A42C81005EBD36 /* DatabaseManager.h */,
 				689D042913A42C81005EBD36 /* DatabaseManager.m */,
+				DA6C52001634B75E00E77C87 /* DropboxManager.h */,
+				DA6C52011634B76900E77C87 /* DropboxManager.m */,
 				68CFB1E013B357EE00333B38 /* EditGroupViewController.h */,
 				68CFB1E113B357EE00333B38 /* EditGroupViewController.m */,
 				689D042A13A42C81005EBD36 /* EntryViewController.h */,
@@ -1583,6 +1592,7 @@
 				680C277216050B76009403DE /* DDXMLElement+MKPAdditions.m in Sources */,
 				680C277616050C7A009403DE /* DDXMLDocument+MKPAdditions.m in Sources */,
 				6859176F1615DE1D005FECA5 /* AppSettings.m in Sources */,
+				DA6C52021634B76900E77C87 /* DropboxManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1651,6 +1661,10 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MiniKeePass/MiniKeePass-Prefix.pch";
 				GCC_THUMB_SUPPORT = NO;
@@ -1723,6 +1737,10 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MiniKeePass/MiniKeePass-Prefix.pch";
@@ -1744,6 +1762,10 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MiniKeePass/MiniKeePass-Prefix.pch";
 				GCC_THUMB_SUPPORT = NO;
