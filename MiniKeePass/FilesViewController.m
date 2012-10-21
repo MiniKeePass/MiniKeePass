@@ -24,6 +24,7 @@
 #import "SFHFKeychainUtils.h"
 #import "Kdb3Writer.h"
 #import "Kdb4Writer.h"
+#import "DropboxManager.h"
 
 enum {
     SECTION_DATABASE,
@@ -50,7 +51,9 @@ enum {
     
     UIBarButtonItem *spacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     
-    self.toolbarItems = [NSArray arrayWithObjects:settingsButton, spacer, helpButton, spacer, addButton, nil];
+    UIBarButtonItem *linkButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemOrganize target:self action:@selector(linkToDropbox)];
+    
+    self.toolbarItems = [NSArray arrayWithObjects:settingsButton, spacer, helpButton, spacer, linkButton, spacer, addButton, nil];
     self.navigationItem.rightBarButtonItem = self.editButtonItem;
     
     [settingsButton release];
@@ -250,12 +253,23 @@ enum {
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+
     switch (indexPath.section) {
         // Database file section
         case SECTION_DATABASE:
+
+        {
+            NSString *filename = [databaseFiles objectAtIndex:indexPath.row];
             if (self.editing == NO) {
+                
+                NSLog(@"Trigger dropbox syncing of %@ before loading", filename);
+            
+                [[DropboxManager singleton] syncFrom: filename];
+                
                 // Load the database
-                [[DatabaseManager sharedInstance] openDatabaseDocument:[databaseFiles objectAtIndex:indexPath.row] animated:YES];
+                //[[DatabaseManager sharedInstance] openDatabaseDocument:[databaseFiles objectAtIndex:indexPath.row] animated:YES];
+                
             } else {
                 TextEntryController *textEntryController = [[TextEntryController alloc] initWithStyle:UITableViewStyleGrouped];
                 textEntryController.title = NSLocalizedString(@"Rename", nil);
@@ -264,7 +278,6 @@ enum {
                 textEntryController.textEntryDelegate = self;
                 textEntryController.textField.placeholder = NSLocalizedString(@"Name", nil);
                 
-                NSString *filename = [databaseFiles objectAtIndex:indexPath.row];
                 textEntryController.textField.text = [filename stringByDeletingPathExtension];
                 
                 UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:textEntryController];
@@ -274,6 +287,7 @@ enum {
                 [navigationController release];
                 [textEntryController release];
             }
+        }
             break;
         default:
             break;
@@ -397,6 +411,12 @@ enum {
     [self.navigationController pushViewController:helpViewController animated:YES];
     
     [helpViewController release];
+}
+
+- (void)linkToDropbox
+{
+    // HACK to show the linking if necessary
+    [[DropboxManager singleton] activateLink: self.navigationController];
 }
 
 - (void)formViewController:(FormViewController *)controller button:(FormViewControllerButton)button {

@@ -53,16 +53,23 @@
     
     UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"gear"] style:UIBarButtonItemStylePlain target:appDelegate action:@selector(showSettingsView)];
     settingsButton.imageInsets = UIEdgeInsetsMake(2, 0, -2, 0);
+    
     UIBarButtonItem *actionButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(exportFilePressed)];
+    
+    // Add function to sync to Dropbox
+    UIBarButtonItem *syncButton = [[UIBarButtonItem alloc]
+                                   initWithBarButtonSystemItem:UIBarButtonSystemItemOrganize target:self action:@selector(syncFilePressed)];
+    
     UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addPressed)];
     UIBarButtonItem *spacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     
-    self.toolbarItems = [NSArray arrayWithObjects:settingsButton, spacer, actionButton, spacer, addButton, nil];
+    self.toolbarItems = [NSArray arrayWithObjects:settingsButton, spacer, actionButton, spacer, syncButton, spacer, addButton, nil];
     self.navigationItem.rightBarButtonItem = self.editButtonItem;
     
     [settingsButton release];
     [actionButton release];
     [addButton release];
+    [syncButton release];
     [spacer release];
     
     results = [[NSMutableArray alloc] init];
@@ -417,6 +424,12 @@
         [appDelegate showActionSheet:actionSheet];
         [actionSheet release];
     }
+}
+
+//
+// Add functionality to handle syncing file to DropBox
+- (void)syncFilePressed {
+    
 }
 
 - (void)addPressed {

@@ -23,6 +23,8 @@
 #import "DatabaseManager.h"
 #import "SFHFKeychainUtils.h"
 #import "LockScreenController.h"
+#import "DropboxManager.h"
+#import <DropboxSDK/DropboxSDK.h>
 
 @interface MiniKeePassAppDelegate ()  {
     UINavigationController *navigationController;
@@ -51,12 +53,17 @@
     FilesViewController *filesViewController = [[[FilesViewController alloc] initWithStyle:UITableViewStylePlain] autorelease];
     navigationController = [[UINavigationController alloc] initWithRootViewController:filesViewController];
     navigationController.toolbarHidden = NO;
-    
+        
     // Create the window
     _window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.rootViewController = navigationController;
     [self.window makeKeyAndVisible];
-    
+
+    // Initialize and update the Dropbox manager
+    DropboxManager *dropManager = [DropboxManager singleton];
+    dropManager.rootController = filesViewController;
+    [dropManager connect];
+
     // Check if backgrounding is supported
     _backgroundSupported = [[UIDevice currentDevice] isMultitaskingSupported];
     
@@ -156,14 +163,30 @@
     }
 }
 
-- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
+- (BOOL) commonHandleURL: (NSURL *) url
+{
+    // Deal with drop box login method
+    if ([[DBSession sharedSession] handleOpenURL:url]) {
+        if ([[DBSession sharedSession] isLinked])
+        {
+            NSLog(@"App linked successfully!");
+            // At this point you can start making API calls
+        }
+        return YES;
+    }
+    
     [self openUrl:url];
-    return YES;
+    return YES;    
 }
 
-- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
-    [self openUrl:url];
-    return YES;
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url
+{
+    return [self commonHandleURL:url];
+}
+
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+{
+    return [self commonHandleURL:url];
 }
 
 - (void)setDatabaseDocument:(DatabaseDocument *)newDatabaseDocument {

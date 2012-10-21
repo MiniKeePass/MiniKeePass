@@ -20,6 +20,7 @@
 #import "SFHFKeychainUtils.h"
 #import "PasswordViewController.h"
 #import "AppSettings.h"
+#import "DropboxManager.h"
 
 @implementation DatabaseManager
 
@@ -152,7 +153,7 @@ static DatabaseManager *sharedInstance;
             NSString *documentsDirectory = [paths objectAtIndex:0];
             keyFilePath = [documentsDirectory stringByAppendingPathComponent:keyFile];
         }
-        
+
         // Load the database
         DatabaseDocument *dd = [[DatabaseDocument alloc] init];
         @try {
