@@ -90,7 +90,7 @@
         [NSPropertyListSerialization
          propertyListFromData:plistData mutabilityOption:0 format:NULL errorDescription:NULL];
 		NSString *scheme = [[[[loadedPlist objectForKey:@"CFBundleURLTypes"] objectAtIndex:0] objectForKey:@"CFBundleURLSchemes"] objectAtIndex:0];
-		if ([scheme isEqual:@"db-niw3e9tunrhclgg"]) {
+		if ([scheme isEqual:@"db-APP_KEY"]) {
 			errorMsg = @"Set your URL scheme correctly";
 		}
 	}
