@@ -7,6 +7,7 @@
 //
 
 #import "Kdb4Node.h"
+#import "DDXMLElement+MKPAdditions.h"
 
 @implementation Kdb4Group
 
@@ -14,7 +15,7 @@
 
 - (id)initWithElement:(DDXMLElement*)e {
     self = [super init];
-    if(self) {
+    if (self) {
         self.element = e;
     }
     return self;
@@ -48,14 +49,42 @@
 @end
 
 
+@implementation StringField
+
+@synthesize parent;
+@synthesize name;
+@synthesize value;
+@synthesize element;
+
+- (id)initWithElement:(DDXMLElement *)e {
+    self = [super init];
+    if (self) {
+        self.element = e;
+    }
+    return self;
+}
+
+- (void)dealloc {
+    [parent release];
+    [name release];
+    [value release];
+    [element release];
+    [super dealloc];
+}
+
+@end
+
+
 @implementation Kdb4Entry
 
 @synthesize element;
+@synthesize stringFields;
 
 - (id)initWithElement:(DDXMLElement*)e {
     self = [super init];
-    if(self) {
+    if (self) {
         self.element = e;
+        self.stringFields = [[NSMutableArray alloc] init];
     }
     return self;
 }
@@ -65,17 +94,36 @@
     [super dealloc];
 }
 
+- (void)addStringField:(StringField*)stringField {
+    stringField.parent = self;
+    [stringFields addObject:stringField];
+}
+
+- (void)removeStringField:(StringField*)stringField {
+    if (stringField.parent != nil) {
+        DDXMLElement *root = ((Kdb4Group*)stringField.parent).element;
+        [root removeChild:stringField.element];
+    }
+    
+    stringField.parent = nil;
+    [stringFields removeObject:stringField];
+}
+
 @end
 
 
 @implementation Kdb4Tree
 
 @synthesize document;
+@synthesize rounds;
+@synthesize compressionAlgorithm;
 
 - (id)initWithDocument:(DDXMLDocument*)doc {
     self = [super init];
-    if(self) {
+    if (self) {
         self.document = doc;
+        self.rounds = DEFAULT_TRANSFORMATION_ROUNDS;
+        self.compressionAlgorithm = COMPRESSION_GZIP;
     }
     return self;
 }
@@ -255,6 +303,16 @@
     [((Kdb4Group*)parent).element addChild:entry.element];
     
     return [entry autorelease];
+}
+
+- (StringField*)createStringField:(Kdb4Entry*)parent {
+    StringField *stringField = [[StringField alloc] init];
+    stringField.parent = parent;
+    stringField.element = [self createStringElement:@"" value:@"" protected:NO];
+    
+    [parent.element addChild:stringField.element];
+    
+    return [stringField autorelease];
 }
 
 @end

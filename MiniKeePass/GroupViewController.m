@@ -18,6 +18,7 @@
 #import "GroupViewController.h"
 #import "EntryViewController.h"
 #import "EditGroupViewController.h"
+#import "AppSettings.h"
 
 #define GROUPS_SECTION  0
 #define ENTRIES_SECTION 1
@@ -80,8 +81,9 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    if (sortingEnabled != [[NSUserDefaults standardUserDefaults] boolForKey:@"sortAlphabetically"]) {
-        sortingEnabled = [[NSUserDefaults standardUserDefaults] boolForKey:@"sortAlphabetically"];
+    BOOL sortAlphabetically = [[AppSettings sharedInstance] sortAlphabetically];
+    if (sortingEnabled != sortAlphabetically) {
+        sortingEnabled = sortAlphabetically;
         [self updateLocalArrays];
         [self.tableView reloadData];
     }
@@ -107,23 +109,22 @@
                 break;
         }
 
-        if ([newKdbTitle localizedCaseInsensitiveCompare:pushedKdbTitle] != 0) {        
-            NSUInteger index = [self updatePositionOfObjectAtIndex:selectedIndexPath.row inArray:array];
-                
-            // Move or update the row
-            if (index != selectedIndexPath.row) {
-                [self.tableView beginUpdates];
-                [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:selectedIndexPath] withRowAnimation:UITableViewRowAnimationFade];
-                selectedIndexPath = [NSIndexPath indexPathForRow:index inSection:selectedIndexPath.section];
-                [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:selectedIndexPath] withRowAnimation:UITableViewRowAnimationFade];
-                [self.tableView endUpdates];
-            } else {
-                [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:selectedIndexPath] withRowAnimation:UITableViewRowAnimationNone];
-            }
+        NSUInteger index = [self updatePositionOfObjectAtIndex:selectedIndexPath.row inArray:array];
             
-            // Re-select the row
-            [self.tableView selectRowAtIndexPath:selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+        // Move or update the row
+        if (index != selectedIndexPath.row) {
+            [self.tableView beginUpdates];
+            [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:selectedIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+            selectedIndexPath = [NSIndexPath indexPathForRow:index inSection:selectedIndexPath.section];
+            [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:selectedIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+            [self.tableView endUpdates];
+        } else {
+            [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:selectedIndexPath] withRowAnimation:UITableViewRowAnimationNone];
         }
+        
+        // Re-select the row
+        [self.tableView selectRowAtIndexPath:selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+        
         [newKdbTitle release];
     }
     
@@ -340,6 +341,15 @@
     }
 }
 
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (tableView == searchDisplayController.searchResultsTableView) {
+        return UITableViewCellEditingStyleNone;
+    } else {
+        return UITableViewCellEditingStyleDelete;
+    }
+    
+}
+
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle != UITableViewCellEditingStyleDelete) {
         return;
@@ -400,7 +410,7 @@
 }
 
 - (void)exportFilePressed {
-    BOOL didShow = [appDelegate.databaseDocument.documentInteractionController presentOpenInMenuFromRect:CGRectZero inView:self.view.window animated:YES];
+    BOOL didShow = [appDelegate.databaseDocument.documentInteractionController presentOpenInMenuFromRect:CGRectZero inView:self.view.window.rootViewController.view animated:YES];
     if (!didShow) {
         NSString *prompt = NSLocalizedString(@"There are no applications installed capable of importing KeePass files", nil);
         UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:prompt delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", nil) destructiveButtonTitle:nil otherButtonTitles:nil];

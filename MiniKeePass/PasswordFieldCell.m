@@ -16,6 +16,7 @@
  */
 
 #import "PasswordFieldCell.h"
+#import "AppSettings.h"
 
 @implementation PasswordFieldCell
 
@@ -25,9 +26,9 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
-        NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
-        textField.secureTextEntry = [userDefaults boolForKey:@"hidePasswords"];
+        textField.secureTextEntry = [[AppSettings sharedInstance] hidePasswords];
         textField.font = [UIFont fontWithName:@"Andale Mono" size:16];
+        textField.clearButtonMode = UITextFieldViewModeNever;
         
         UIImage *image = [UIImage imageNamed:@"wrench"];
         
@@ -53,8 +54,7 @@
 - (void)textFieldDidEndEditing:(UITextField *)field {
     [super textFieldDidEndEditing:field];
     
-    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
-    textField.secureTextEntry = [userDefaults boolForKey:@"hidePasswords"];
+    textField.secureTextEntry = [[AppSettings sharedInstance] hidePasswords];
     textField.returnKeyType = UIReturnKeyDone;
 }
 

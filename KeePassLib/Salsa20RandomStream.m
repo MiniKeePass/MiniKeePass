@@ -81,6 +81,12 @@ static uint32_t SIGMA[4] = {0x61707865, 0x3320646E, 0x79622D32, 0x6B206574};
     _state[9] = 0;
 }
 
+- (void)reset {
+    _state[8] = 0;
+    _state[9] = 0;
+    _index = 0;
+}
+
 - (void)updateState {
     uint32_t x[16];
     

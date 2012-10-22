@@ -19,8 +19,9 @@
 #import "MiniKeePassAppDelegate.h"
 #import "EditGroupViewController.h"
 #import "KdbLib.h"
+#import "AutorotatingTableViewController.h"
 
-@interface GroupViewController : UITableViewController <UIActionSheetDelegate, UISearchDisplayDelegate, FormViewControllerDelegate> {
+@interface GroupViewController : AutorotatingTableViewController <UIActionSheetDelegate, UISearchDisplayDelegate, FormViewControllerDelegate> {
     MiniKeePassAppDelegate *appDelegate;
     UISearchDisplayController *searchDisplayController;
     NSMutableArray *results;

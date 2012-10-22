@@ -17,13 +17,9 @@
 
 #import <UIKit/UIKit.h>
 #import "PinViewController.h"
+#import "AutorotatingViewController.h"
 
-@interface LockScreenController : UIViewController <PinViewControllerDelegate> {
-    PinViewController *pinViewController;
-    MiniKeePassAppDelegate *appDelegate;
-    CGRect visibleFrame;
-    CGRect offScreenFrame;
-}
+@interface LockScreenController : UIViewController <PinViewControllerDelegate>
 
 + (void)present;
 

@@ -29,6 +29,9 @@
 - (id)initWithSession:(DBSession*)session;
 - (id)initWithSession:(DBSession *)session userId:(NSString *)userId;
 
+/* Cancels all outstanding requests. No callback for those requests will be sent */
+- (void)cancelAllRequests;
+
 
 /* Loads metadata for the object at the given root/path and returns the result to the delegate as a 
    dictionary */
@@ -38,6 +41,9 @@
 
 /* This will load the metadata of a file at a given rev */
 - (void)loadMetadata:(NSString *)path atRev:(NSString *)rev;
+
+/* Loads a list of files (represented as DBDeltaEntry objects) that have changed since the cursor was generated */
+- (void)loadDelta:(NSString *)cursor;
 
 
 /* Loads the file contents at the given root/path and stores the result into destinationPath */
@@ -65,6 +71,15 @@
    compatibility reasons only */
 - (void)uploadFile:(NSString*)filename toPath:(NSString*)path fromPath:(NSString *)sourcePath __attribute__((deprecated));
 
+/* These calls allow you to upload files in chunks, which is better for file larger than a few megabytes.
+   You can append bytes to the file using -[DBRestClient uploadFileChunk:offset:uploadId:] and then call
+   -[DBRestClient uploadFile:toPath:withParentRev:fromUploadId:] to turn the bytes appended at that uploadId
+   into an actual file in the user's Dropbox.
+   Use a nil uploadId to start uploading a new file. */
+- (void)uploadFileChunk:(NSString *)uploadId offset:(unsigned long long)offset fromPath:(NSString *)localPath;
+- (void)uploadFile:(NSString *)filename toPath:(NSString *)parentFolder withParentRev:(NSString *)parentRev
+	fromUploadId:(NSString *)uploadId;
+
 
 /* Loads a list of up to 10 DBMetadata objects representing past revisions of the file at path */
 - (void)loadRevisionsForFile:(NSString *)path;
@@ -81,15 +96,19 @@
 
 - (void)deletePath:(NSString*)path;
 
-- (void)copyFrom:(NSString*)from_path toPath:(NSString *)to_path;
+- (void)copyFrom:(NSString*)fromPath toPath:(NSString *)toPath;
 
-- (void)moveFrom:(NSString*)from_path toPath:(NSString *)to_path;
+- (void)createCopyRef:(NSString *)path; // Used to copy between Dropboxes
+- (void)copyFromRef:(NSString*)copyRef toPath:(NSString *)toPath; // Takes copy ref created by above call
+
+- (void)moveFrom:(NSString*)fromPath toPath:(NSString *)toPath;
 
 - (void)loadAccountInfo;
 
 - (void)searchPath:(NSString*)path forKeyword:(NSString*)keyword;
 
 - (void)loadSharableLinkForFile:(NSString *)path;
+- (void)loadSharableLinkForFile:(NSString *)path shortUrl:(BOOL)createShortUrl;
 
 - (void)loadStreamableURLForFile:(NSString *)path;
 
@@ -114,6 +133,9 @@
 - (void)restClient:(DBRestClient*)client loadMetadataFailedWithError:(NSError*)error; 
 // [error userInfo] contains the root and path of the call that failed
 
+- (void)restClient:(DBRestClient*)client loadedDeltaEntries:(NSArray *)entries reset:(BOOL)shouldReset cursor:(NSString *)cursor hasMore:(BOOL)hasMore;
+- (void)restClient:(DBRestClient*)client loadDeltaFailedWithError:(NSError *)error;
+
 - (void)restClient:(DBRestClient*)client loadedAccountInfo:(DBAccountInfo*)info;
 - (void)restClient:(DBRestClient*)client loadAccountInfoFailedWithError:(NSError*)error; 
 
@@ -136,6 +158,14 @@
 - (void)restClient:(DBRestClient*)client uploadFileFailedWithError:(NSError*)error;
 // [error userInfo] contains the sourcePath
 
+- (void)restClient:(DBRestClient *)client uploadedFileChunk:(NSString *)uploadId newOffset:(unsigned long long)offset
+	fromFile:(NSString *)localPath expires:(NSDate *)expiresDate;
+- (void)restClient:(DBRestClient *)client uploadFileChunkFailedWithError:(NSError *)error;
+
+- (void)restClient:(DBRestClient *)client uploadedFile:(NSString *)destPath fromUploadId:(NSString *)uploadId
+    metadata:(DBMetadata *)metadata;
+- (void)restClient:(DBRestClient *)client uploadFromUploadIdFailedWithError:(NSError *)error;
+
 // Deprecated upload callback
 - (void)restClient:(DBRestClient*)client uploadedFile:(NSString*)destPath from:(NSString*)srcPath;
 
@@ -155,17 +185,20 @@
 // [error userInfo] contains the root and path
 
 - (void)restClient:(DBRestClient*)client deletedPath:(NSString *)path;
-// Folder is the metadata for the newly created folder
 - (void)restClient:(DBRestClient*)client deletePathFailedWithError:(NSError*)error;
 // [error userInfo] contains the root and path
 
-- (void)restClient:(DBRestClient*)client copiedPath:(NSString *)from_path toPath:(NSString *)to_path;
-// Folder is the metadata for the newly created folder
+- (void)restClient:(DBRestClient*)client copiedPath:(NSString *)fromPath to:(DBMetadata *)to;
 - (void)restClient:(DBRestClient*)client copyPathFailedWithError:(NSError*)error;
 // [error userInfo] contains the root and path
-//
-- (void)restClient:(DBRestClient*)client movedPath:(NSString *)from_path toPath:(NSString *)to_path;
-// Folder is the metadata for the newly created folder
+
+- (void)restClient:(DBRestClient*)client createdCopyRef:(NSString *)copyRef;
+- (void)restClient:(DBRestClient*)client createCopyRefFailedWithError:(NSError *)error;
+
+- (void)restClient:(DBRestClient*)client copiedRef:(NSString *)copyRef to:(DBMetadata *)to;
+- (void)restClient:(DBRestClient*)client copyFromRefFailedWithError:(NSError*)error;
+
+- (void)restClient:(DBRestClient*)client movedPath:(NSString *)from_path to:(DBMetadata *)result;
 - (void)restClient:(DBRestClient*)client movePathFailedWithError:(NSError*)error;
 // [error userInfo] contains the root and path
 

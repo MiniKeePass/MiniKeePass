@@ -19,7 +19,6 @@
 #import "SelectionListViewController.h"
 
 @interface ChoiceCell : UITableViewCell {
-    NSString *prefix;
     NSInteger selectedIndex;
     NSArray *choices;
 }

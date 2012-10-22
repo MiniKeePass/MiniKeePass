@@ -17,17 +17,26 @@
 
 #import "Kdb4Parser.h"
 #import "Kdb4Node.h"
+#import "DDXMLDocument+MKPAdditions.h"
+#import "DDXMLElement+MKPAdditions.h"
 #import "Base64.h"
 
+#define FIELD_TITLE     @"Title"
+#define FIELD_USER_NAME @"UserName"
+#define FIELD_PASSWORD  @"Password"
+#define FIELD_URL       @"URL"
+#define FIELD_NOTES     @"Notes"
+
 @interface Kdb4Parser (PrivateMethods)
-- (void)decodeProtected:(DDXMLElement*)root;
-- (Kdb4Group*)parseGroup:(DDXMLElement*)root;
-- (Kdb4Entry*)parseEntry:(DDXMLElement*)root;
+- (void)decodeProtected:(DDXMLElement *)root;
+- (void)parseMeta:(DDXMLElement *)root;
+- (Kdb4Group *)parseGroup:(DDXMLElement *)root;
+- (Kdb4Entry *)parseEntry:(DDXMLElement *)root;
 @end
 
 @implementation Kdb4Parser
 
-- (id)initWithRandomStream:(RandomStream*)cryptoRandomStream {
+- (id)initWithRandomStream:(RandomStream *)cryptoRandomStream {
     self = [super init];
     if (self) {
         randomStream = [cryptoRandomStream retain];
@@ -54,7 +63,7 @@ int closeCallback(void *context) {
     return 0;
 }
 
-- (Kdb4Tree*)parse:(InputStream*)inputStream {
+- (Kdb4Tree *)parse:(InputStream *)inputStream {
     DDXMLDocument *document = [[DDXMLDocument alloc] initWithReadIO:readCallback closeIO:closeCallback context:inputStream options:0 error:nil];
     if (document == nil) {
         @throw [NSException exceptionWithName:@"ParseError" reason:@"Failed to parse database" userInfo:nil];
@@ -65,13 +74,18 @@ int closeCallback(void *context) {
     
     // Decode all the protected entries
     [self decodeProtected:rootElement];
-    
+
+    DDXMLElement *meta = [rootElement elementForName:@"Meta"];
+    if (meta != nil) {
+        [self parseMeta:meta];
+    }
+
     DDXMLElement *root = [rootElement elementForName:@"Root"];
     if (root == nil) {
         [document release];
         @throw [NSException exceptionWithName:@"ParseError" reason:@"Failed to parse database" userInfo:nil];
     }
-    
+
     DDXMLElement *element = [root elementForName:@"Group"];
     if (element == nil) {
         [document release];
@@ -86,7 +100,14 @@ int closeCallback(void *context) {
     return [tree autorelease];
 }
 
-- (void)decodeProtected:(DDXMLElement*)root {
+- (void)parseMeta:(DDXMLElement *)root {
+    DDXMLElement *element = [root elementForName:@"HeaderHash"];
+    if (element != nil) {
+        [root removeChild:element];
+    }
+}
+
+- (void)decodeProtected:(DDXMLElement *)root {
     DDXMLNode *protectedAttribute = [root attributeForName:@"Protected"];
     if ([[protectedAttribute stringValue] isEqual:@"True"]) {
         NSString *str = [root stringValue];
@@ -109,7 +130,7 @@ int closeCallback(void *context) {
     }
 }
 
-- (Kdb4Group*)parseGroup:(DDXMLElement*)root {
+- (Kdb4Group *)parseGroup:(DDXMLElement *)root {
     Kdb4Group *group = [[[Kdb4Group alloc] initWithElement:root] autorelease];
     
     DDXMLElement *element = [root elementForName:@"IconID"];
@@ -149,7 +170,7 @@ int closeCallback(void *context) {
     return group;
 }
 
-- (Kdb4Entry*)parseEntry:(DDXMLElement*)root {
+- (Kdb4Entry *)parseEntry:(DDXMLElement *)root {
     Kdb4Entry *entry = [[[Kdb4Entry alloc] initWithElement:root] autorelease];
     
     entry.image = [[[root elementForName:@"IconID"] stringValue] intValue];
@@ -174,16 +195,21 @@ int closeCallback(void *context) {
         DDXMLElement *valueElement = [element elementForName:@"Value"];
         NSString *value = [valueElement stringValue];
         
-        if ([key isEqualToString:@"Title"]) {
+        if ([key isEqualToString:FIELD_TITLE]) {
             entry.title = value;
-        } else if ([key isEqualToString:@"UserName"]) {
+        } else if ([key isEqualToString:FIELD_USER_NAME]) {
             entry.username = value;
-        } else if ([key isEqualToString:@"Password"]) {
+        } else if ([key isEqualToString:FIELD_PASSWORD]) {
             entry.password = value;
-        } else if ([key isEqualToString:@"URL"]) {
+        } else if ([key isEqualToString:FIELD_URL]) {
             entry.url = value;
-        } else if ([key isEqualToString:@"Notes"]) {
+        } else if ([key isEqualToString:FIELD_NOTES]) {
             entry.notes = value;
+        } else {
+            StringField *stringField = [[StringField alloc] initWithElement:element];
+            stringField.name = key;
+            stringField.value = value;
+            [entry addStringField:stringField];
         }
     }
     

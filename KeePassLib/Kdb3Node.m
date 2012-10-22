@@ -94,6 +94,16 @@
 
 @implementation Kdb3Tree
 
+@synthesize rounds;
+
+- (id)init {
+    self = [super init];
+    if (self) {
+        self.rounds = DEFAULT_TRANSFORMATION_ROUNDS;
+    }
+    return self;
+}
+
 - (BOOL)isGroupIdUnique:(Kdb3Group*)group groupId:(uint32_t)groupId {
     if (group.groupId == groupId) {
         return NO;

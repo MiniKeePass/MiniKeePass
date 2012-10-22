@@ -21,6 +21,8 @@
     
 }
 
+- (void)reset;
+
 - (uint8_t)getByte;
 - (uint16_t)getShort;
 - (uint32_t)getInt;

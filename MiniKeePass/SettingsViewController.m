@@ -21,6 +21,7 @@
 #import "SelectionListViewController.h"
 #import "DirectoryChoiceViewController.h"
 #import "SFHFKeychainUtils.h"
+#import "AppSettings.h"
 
 enum {
     SECTION_PIN,
@@ -90,33 +91,67 @@ enum {
     ROW_CLEAR_CLIPBOARD_NUMBER
 };
 
+@interface SettingsViewController () {
+    AppSettings *appSettings;
+}
+@end
+
 @implementation SettingsViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+
+    appSettings = [AppSettings sharedInstance];
+
     self.title = NSLocalizedString(@"Settings", nil);
     
     pinEnabledCell = [[SwitchCell alloc] initWithLabel:NSLocalizedString(@"PIN Enabled", nil)];
-    [pinEnabledCell.switchControl addTarget:self action:@selector(togglePinEnabled:) forControlEvents:UIControlEventValueChanged];
+    [pinEnabledCell.switchControl addTarget:self
+                                     action:@selector(togglePinEnabled:)
+                           forControlEvents:UIControlEventValueChanged];
     
-    pinLockTimeoutCell = [[ChoiceCell alloc] initWithLabel:NSLocalizedString(@"Lock Timeout", nil) choices:[NSArray arrayWithObjects:NSLocalizedString(@"Immediately", nil), NSLocalizedString(@"30 Seconds", nil), NSLocalizedString(@"1 Minute", nil), NSLocalizedString(@"2 Minutes", nil), NSLocalizedString(@"5 Minutes", nil), nil] selectedIndex:0];
+    pinLockTimeoutCell = [[ChoiceCell alloc] initWithLabel:NSLocalizedString(@"Lock Timeout", nil)
+                                                   choices:@[NSLocalizedString(@"Immediately", nil),
+                                                             NSLocalizedString(@"30 Seconds", nil),
+                                                             NSLocalizedString(@"1 Minute", nil),
+                                                             NSLocalizedString(@"2 Minutes", nil),
+                                                             NSLocalizedString(@"5 Minutes", nil)]
+                                             selectedIndex:0];
     
     deleteOnFailureEnabledCell = [[SwitchCell alloc] initWithLabel:NSLocalizedString(@"Enabled", nil)];
-    [deleteOnFailureEnabledCell.switchControl addTarget:self action:@selector(toggleDeleteOnFailureEnabled:) forControlEvents:UIControlEventValueChanged];    
+    [deleteOnFailureEnabledCell.switchControl addTarget:self
+                                                 action:@selector(toggleDeleteOnFailureEnabled:)
+                                       forControlEvents:UIControlEventValueChanged];
     
-    deleteOnFailureAttemptsCell = [[ChoiceCell alloc] initWithLabel:NSLocalizedString(@"Attempts", nil) choices:[NSArray arrayWithObjects:@"3", @"5", @"10", @"15", nil] selectedIndex:0];
+    deleteOnFailureAttemptsCell = [[ChoiceCell alloc] initWithLabel:NSLocalizedString(@"Attempts", nil)
+                                                            choices:@[@"3",
+                                                                      @"5",
+                                                                      @"10",
+                                                                      @"15"]
+                                                      selectedIndex:0];
     
     closeEnabledCell = [[SwitchCell alloc] initWithLabel:NSLocalizedString(@"Close Enabled", nil)];
-    [closeEnabledCell.switchControl addTarget:self action:@selector(toggleCloseEnabled:) forControlEvents:UIControlEventValueChanged];
+    [closeEnabledCell.switchControl addTarget:self
+                                       action:@selector(toggleCloseEnabled:)
+                             forControlEvents:UIControlEventValueChanged];
     
-    closeTimeoutCell = [[ChoiceCell alloc] initWithLabel:NSLocalizedString(@"Close Timeout", nil) choices:[NSArray arrayWithObjects:NSLocalizedString(@"Immediately", nil), NSLocalizedString(@"30 Seconds", nil), NSLocalizedString(@"1 Minute", nil), NSLocalizedString(@"2 Minutes", nil), NSLocalizedString(@"5 Minutes", nil), nil] selectedIndex:0];
+    closeTimeoutCell = [[ChoiceCell alloc] initWithLabel:NSLocalizedString(@"Close Timeout", nil)
+                                                 choices:@[NSLocalizedString(@"Immediately", nil),
+                                                           NSLocalizedString(@"30 Seconds", nil),
+                                                           NSLocalizedString(@"1 Minute", nil),
+                                                           NSLocalizedString(@"2 Minutes", nil),
+                                                           NSLocalizedString(@"5 Minutes", nil)]
+                                           selectedIndex:0];
     
     rememberPasswordsEnabledCell = [[SwitchCell alloc] initWithLabel:NSLocalizedString(@"Enabled", nil)];
-    [rememberPasswordsEnabledCell.switchControl addTarget:self action:@selector(toggleRememberPasswords:) forControlEvents:UIControlEventValueChanged];
+    [rememberPasswordsEnabledCell.switchControl addTarget:self
+                                                   action:@selector(toggleRememberPasswords:)
+                                         forControlEvents:UIControlEventValueChanged];
     
     hidePasswordsCell = [[SwitchCell alloc] initWithLabel:NSLocalizedString(@"Hide Passwords", nil)];
-    [hidePasswordsCell.switchControl addTarget:self action:@selector(toggleHidePasswords:) forControlEvents:UIControlEventValueChanged];
+    [hidePasswordsCell.switchControl addTarget:self
+                                        action:@selector(toggleHidePasswords:)
+                              forControlEvents:UIControlEventValueChanged];
     
     dropboxLinkCell = [[ButtonCell alloc] initWithLabel:@"Link"];
     dropboxUnlinkCell = [[ButtonCell alloc] initWithLabel:@"Unink"];
@@ -125,41 +160,53 @@ enum {
     dropboxDirectoryCell.textLabel.text = @"Directory:";
     
     sortingEnabledCell = [[SwitchCell alloc] initWithLabel:NSLocalizedString(@"Enabled", nil)];
-    [sortingEnabledCell.switchControl addTarget:self action:@selector(toggleSortingEnabled:) forControlEvents:UIControlEventValueChanged];
+    [sortingEnabledCell.switchControl addTarget:self
+                                         action:@selector(toggleSortingEnabled:)
+                               forControlEvents:UIControlEventValueChanged];
 
-    passwordEncodingCell = [[ChoiceCell alloc] initWithLabel:NSLocalizedString(@"Encoding", nil) choices:[NSArray arrayWithObjects:NSLocalizedString(@"UTF-8", nil), NSLocalizedString(@"UTF-16 Big Endian", nil), NSLocalizedString(@"UTF-16 Little Endian", nil), NSLocalizedString(@"Latin 1 (ISO/IEC 8859-1)", nil), NSLocalizedString(@"Latin 2 (ISO/IEC 8859-2)", nil), NSLocalizedString(@"7-Bit ASCII", nil), NSLocalizedString(@"Japanese EUC", nil), NSLocalizedString(@"ISO-2022-JP", nil), nil] selectedIndex:0];
+    passwordEncodingCell = [[ChoiceCell alloc] initWithLabel:NSLocalizedString(@"Encoding", nil)
+                                                     choices:@[NSLocalizedString(@"UTF-8", nil),
+                                                               NSLocalizedString(@"UTF-16 Big Endian", nil),
+                                                               NSLocalizedString(@"UTF-16 Little Endian", nil),
+                                                               NSLocalizedString(@"Latin 1 (ISO/IEC 8859-1)", nil),
+                                                               NSLocalizedString(@"Latin 2 (ISO/IEC 8859-2)", nil),
+                                                               NSLocalizedString(@"7-Bit ASCII", nil),
+                                                               NSLocalizedString(@"Japanese EUC", nil),
+                                                               NSLocalizedString(@"ISO-2022-JP", nil)]
+                                               selectedIndex:0];
 
     clearClipboardEnabledCell = [[SwitchCell alloc] initWithLabel:NSLocalizedString(@"Enabled", nil)];
-    [clearClipboardEnabledCell.switchControl addTarget:self action:@selector(toggleClearClipboardEnabled:) forControlEvents:UIControlEventValueChanged];
+    [clearClipboardEnabledCell.switchControl addTarget:self
+                                                action:@selector(toggleClearClipboardEnabled:)
+                                      forControlEvents:UIControlEventValueChanged];
     
-    clearClipboardTimeoutCell = [[ChoiceCell alloc] initWithLabel:NSLocalizedString(@"Clear Timeout", nil) choices:[NSArray arrayWithObjects:NSLocalizedString(@"30 Seconds", nil), NSLocalizedString(@"1 Minute", nil), NSLocalizedString(@"2 Minutes", nil), NSLocalizedString(@"3 Minutes", nil), nil] selectedIndex:0];
-    
+    clearClipboardTimeoutCell = [[ChoiceCell alloc] initWithLabel:NSLocalizedString(@"Clear Timeout", nil)
+                                                          choices:@[NSLocalizedString(@"30 Seconds", nil),
+                                                                    NSLocalizedString(@"1 Minute", nil),
+                                                                    NSLocalizedString(@"2 Minutes", nil),
+                                                                    NSLocalizedString(@"3 Minutes", nil)]
+                                                    selectedIndex:0];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
 
     // Add version number to table view footer
-    UIView *tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 40)];
+    CGFloat viewWidth = CGRectGetWidth(self.tableView.frame);
+    UIView *tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, viewWidth, 40)];
     
     NSString *text = [NSString stringWithFormat:@"MiniKeePass version %@", 
                     [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]];
     UIFont *font = [UIFont boldSystemFontOfSize:17];
     
-    UILabel *versionLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 320, 30)];
+    UILabel *versionLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, viewWidth, 30)];
     versionLabel.textAlignment = UITextAlignmentCenter;
     versionLabel.backgroundColor = [UIColor clearColor];
     versionLabel.font = font;
     versionLabel.textColor = [UIColor colorWithRed:0.298039 green:0.337255 blue:0.423529 alpha:1.0];
     versionLabel.text = text;
+    versionLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    versionLabel.shadowColor = [UIColor whiteColor];
+    versionLabel.shadowOffset = CGSizeMake(0.0, 1.0);
 
-    UILabel *highlighLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 1, 320, 30)];
-    highlighLabel.textAlignment = UITextAlignmentCenter;
-    highlighLabel.backgroundColor = [UIColor clearColor];
-    highlighLabel.font = font;
-    highlighLabel.textColor = [UIColor whiteColor];
-    highlighLabel.text = text;
-
-    [tableFooterView addSubview:highlighLabel];
     [tableFooterView addSubview:versionLabel];
-    [highlighLabel release];
     [versionLabel release];
     
     self.tableView.tableFooterView = tableFooterView;
@@ -196,31 +243,29 @@ enum {
     tempPin = nil;
     
     // Initialize all the controls with their settings
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    pinEnabledCell.switchControl.on = [appSettings pinEnabled];
+    [pinLockTimeoutCell setSelectedIndex:[appSettings pinLockTimeoutIndex]];
     
-    pinEnabledCell.switchControl.on = [userDefaults boolForKey:@"pinEnabled"];
-    [pinLockTimeoutCell setSelectedIndex:[userDefaults integerForKey:@"pinLockTimeout"]];
+    deleteOnFailureEnabledCell.switchControl.on = [appSettings deleteOnFailureEnabled];
+    [deleteOnFailureAttemptsCell setSelectedIndex:[appSettings deleteOnFailureAttemptsIndex]];
     
-    deleteOnFailureEnabledCell.switchControl.on = [userDefaults boolForKey:@"deleteOnFailureEnabled"];
-    [deleteOnFailureAttemptsCell setSelectedIndex:[userDefaults integerForKey:@"deleteOnFailureAttempts"]];
+    closeEnabledCell.switchControl.on = [appSettings closeEnabled];
+    [closeTimeoutCell setSelectedIndex:[appSettings closeTimeoutIndex]];
     
-    closeEnabledCell.switchControl.on = [userDefaults boolForKey:@"closeEnabled"];
-    [closeTimeoutCell setSelectedIndex:[userDefaults integerForKey:@"closeTimeout"]];
+    rememberPasswordsEnabledCell.switchControl.on = [appSettings rememberPasswordsEnabled];
     
-    rememberPasswordsEnabledCell.switchControl.on = [userDefaults boolForKey:@"rememberPasswordsEnabled"];
+    hidePasswordsCell.switchControl.on = [appSettings hidePasswords];
     
-    hidePasswordsCell.switchControl.on = [userDefaults boolForKey:@"hidePasswords"];
+    sortingEnabledCell.switchControl.on = [appSettings sortAlphabetically];
     
-    sortingEnabledCell.switchControl.on = [userDefaults boolForKey:@"sortAlphabetically"];
+    [passwordEncodingCell setSelectedIndex:[appSettings passwordEncodingIndex]];
     
-    [passwordEncodingCell setSelectedIndex:[userDefaults integerForKey:@"passwordEncoding"]];
-    
-    clearClipboardEnabledCell.switchControl.on = [userDefaults boolForKey:@"clearClipboardEnabled"];
-    [clearClipboardTimeoutCell setSelectedIndex:[userDefaults integerForKey:@"clearClipboardTimeout"]];
+    clearClipboardEnabledCell.switchControl.on = [appSettings clearClipboardEnabled];
+    [clearClipboardTimeoutCell setSelectedIndex:[appSettings clearClipboardTimeoutIndex]];
     
     [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:SECTION_DROPBOX] withRowAnimation:UITableViewRowAnimationNone];
     
-    dropboxDirectory = [userDefaults valueForKey:@"dropboxDirectory"];
+    dropboxDirectory = [appSettings dropboxDirectory];
     NSURL *fileUrl = [NSURL fileURLWithPath:dropboxDirectory];
     dropboxDirectoryCell.detailTextLabel.text = fileUrl.lastPathComponent;
     
@@ -229,11 +274,10 @@ enum {
 }
 
 - (void)updateEnabledControls {
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    BOOL pinEnabled = [userDefaults boolForKey:@"pinEnabled"];
-    BOOL deleteOnFailureEnabled = [userDefaults boolForKey:@"deleteOnFailureEnabled"];
-    BOOL closeEnabled = [userDefaults boolForKey:@"closeEnabled"];
-    BOOL clearClipboardEnabled = [userDefaults boolForKey:@"clearClipboardEnabled"];
+    BOOL pinEnabled = [appSettings pinEnabled];
+    BOOL deleteOnFailureEnabled = [appSettings deleteOnFailureEnabled];
+    BOOL closeEnabled = [appSettings closeEnabled];
+    BOOL clearClipboardEnabled = [appSettings clearClipboardEnabled];
     
     // Enable/disable the components dependant on settings
     [pinLockTimeoutCell setEnabled:pinEnabled];
@@ -306,10 +350,7 @@ enum {
             
         case SECTION_SORTING:
             return NSLocalizedString(@"Sorting", nil);
-            
-        case SECTION_SORTING:
-            return NSLocalizedString(@"Sorting", nil);
-            
+                        
         case SECTION_PASSWORD_ENCODING:
             return NSLocalizedString(@"Password Encoding", nil);
             
@@ -338,9 +379,6 @@ enum {
 
         case SECTION_DROPBOX:
             return @"Link with your Dropbox account to keep changes in sync between multiple devices.";
-            
-        case SECTION_SORTING:
-            return NSLocalizedString(@"Sort Groups and Entries Alphabetically", nil);
             
         case SECTION_SORTING:
             return NSLocalizedString(@"Sort Groups and Entries Alphabetically", nil);
@@ -453,20 +491,32 @@ enum {
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == SECTION_PIN && indexPath.row == ROW_PIN_LOCK_TIMEOUT && pinEnabledCell.switchControl.on) {
-        [self pushSelectionViewControllerWithTitle:@"Lock Timeout"
-                                             items:pinLockTimeoutCell.choices
-                                    andDefaultsKey:@"pinLockTimeout"];
-        
+        SelectionListViewController *selectionListViewController = [[SelectionListViewController alloc] initWithStyle:UITableViewStyleGrouped];
+        selectionListViewController.title = NSLocalizedString(@"Lock Timeout", nil);
+        selectionListViewController.items = pinLockTimeoutCell.choices;
+        selectionListViewController.selectedIndex = [appSettings pinLockTimeoutIndex];
+        selectionListViewController.delegate = self;
+        selectionListViewController.reference = indexPath;
+        [self.navigationController pushViewController:selectionListViewController animated:YES];
+        [selectionListViewController release];
     } else if (indexPath.section == SECTION_DELETE_ON_FAILURE && indexPath.row == ROW_DELETE_ON_FAILURE_ATTEMPTS && deleteOnFailureEnabledCell.switchControl.on) {
-        [self pushSelectionViewControllerWithTitle:@"Attempts"
-                                             items:deleteOnFailureAttemptsCell.choices
-                                    andDefaultsKey:@"deleteOnFailureAttempts"];
-        
+        SelectionListViewController *selectionListViewController = [[SelectionListViewController alloc] initWithStyle:UITableViewStyleGrouped];
+        selectionListViewController.title = NSLocalizedString(@"Attempts", nil);
+        selectionListViewController.items = deleteOnFailureAttemptsCell.choices;
+        selectionListViewController.selectedIndex = [appSettings deleteOnFailureAttemptsIndex];
+        selectionListViewController.delegate = self;
+        selectionListViewController.reference = indexPath;
+        [self.navigationController pushViewController:selectionListViewController animated:YES];
+        [selectionListViewController release];
     } else if (indexPath.section == SECTION_CLOSE && indexPath.row == ROW_CLOSE_TIMEOUT && closeEnabledCell.switchControl.on) {
-        [self pushSelectionViewControllerWithTitle:@"Close Timeout"
-                                             items:closeTimeoutCell.choices
-                                    andDefaultsKey:@"closeTimeout"];
-
+        SelectionListViewController *selectionListViewController = [[SelectionListViewController alloc] initWithStyle:UITableViewStyleGrouped];
+        selectionListViewController.title = NSLocalizedString(@"Close Timeout", nil);
+        selectionListViewController.items = closeTimeoutCell.choices;
+        selectionListViewController.selectedIndex = [appSettings closeTimeoutIndex];
+        selectionListViewController.delegate = self;
+        selectionListViewController.reference = indexPath;
+        [self.navigationController pushViewController:selectionListViewController animated:YES];
+        [selectionListViewController release];
     } else if (indexPath.section == SECTION_DROPBOX) {
         if ([[DBSession sharedSession] isLinked]) {
             if (indexPath.row == ROW_LINKED_DROPBOX_DIRECTORY_BUTTON) {
@@ -498,19 +548,28 @@ enum {
         } else {
             switch (indexPath.row) {
                 case ROW_UNLINKED_DROPBOX_LINK_BUTTON:
-                    [[DBSession sharedSession] link];
+                    [[DBSession sharedSession] linkFromController:self];
                     break;
             }
         }
     } else if (indexPath.section == SECTION_PASSWORD_ENCODING && indexPath.row == ROW_PASSWORD_ENCODING_VALUE) {
-        [self pushSelectionViewControllerWithTitle:@"Password Encoding"
-                                             items:passwordEncodingCell.choices
-                                    andDefaultsKey:@"passwordEncoding"];
-
+        SelectionListViewController *selectionListViewController = [[SelectionListViewController alloc] initWithStyle:UITableViewStyleGrouped];
+        selectionListViewController.title = NSLocalizedString(@"Password Encoding", nil);
+        selectionListViewController.items = passwordEncodingCell.choices;
+        selectionListViewController.selectedIndex = [appSettings passwordEncodingIndex];
+        selectionListViewController.delegate = self;
+        selectionListViewController.reference = indexPath;
+        [self.navigationController pushViewController:selectionListViewController animated:YES];
+        [selectionListViewController release];
     } else if (indexPath.section == SECTION_CLEAR_CLIPBOARD && indexPath.row == ROW_CLEAR_CLIPBOARD_TIMEOUT && clearClipboardEnabledCell.switchControl.on) {
-        [self pushSelectionViewControllerWithTitle:@"Clear Clipboard Timeout"
-                                             items:clearClipboardTimeoutCell.choices
-                                    andDefaultsKey:@"clearClipboardTimeout"];
+        SelectionListViewController *selectionListViewController = [[SelectionListViewController alloc] initWithStyle:UITableViewStyleGrouped];
+        selectionListViewController.title = NSLocalizedString(@"Clear Clipboard Timeout", nil);
+        selectionListViewController.items = clearClipboardTimeoutCell.choices;
+        selectionListViewController.selectedIndex = [appSettings clearClipboardTimeoutIndex];
+        selectionListViewController.delegate = self;
+        selectionListViewController.reference = indexPath;
+        [self.navigationController pushViewController:selectionListViewController animated:YES];
+        [selectionListViewController release];
     }
 }
 
@@ -518,36 +577,31 @@ enum {
     NSIndexPath *indexPath = (NSIndexPath*)reference;
     if (indexPath.section == SECTION_PIN && indexPath.row == ROW_PIN_LOCK_TIMEOUT) {
         // Save the user setting
-        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-        [userDefaults setInteger:selectedIndex forKey:@"pinLockTimeout"];
+        [appSettings setPinLockTimeoutIndex:selectedIndex];
         
         // Update the cell text
         [pinLockTimeoutCell setSelectedIndex:selectedIndex];
     } else if (indexPath.section == SECTION_DELETE_ON_FAILURE && indexPath.row == ROW_DELETE_ON_FAILURE_ATTEMPTS) {
         // Save the user setting
-        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-        [userDefaults setInteger:selectedIndex forKey:@"deleteOnFailureAttempts"];
+        [appSettings setDeleteOnFailureAttemptsIndex:selectedIndex];
         
         // Update the cell text
         [deleteOnFailureAttemptsCell setSelectedIndex:selectedIndex];
     } else if (indexPath.section == SECTION_CLOSE && indexPath.row == ROW_CLOSE_TIMEOUT) {
         // Save the user setting
-        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-        [userDefaults setInteger:selectedIndex forKey:@"closeTimeout"];
+        [appSettings setCloseTimeoutIndex:selectedIndex];
         
         // Update the cell text
         [pinLockTimeoutCell setSelectedIndex:selectedIndex];
     } else if (indexPath.section == SECTION_PASSWORD_ENCODING && indexPath.row == ROW_PASSWORD_ENCODING_VALUE) {
         // Save the user setting
-        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-        [userDefaults setInteger:selectedIndex forKey:@"passwordEncoding"];
+        [appSettings setPasswordEncodingIndex:selectedIndex];
         
         // Update the cell text
         [passwordEncodingCell setSelectedIndex:selectedIndex];
     } else if (indexPath.section == SECTION_CLEAR_CLIPBOARD && indexPath.row == ROW_CLEAR_CLIPBOARD_TIMEOUT) {
         // Save the user setting
-        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-        [userDefaults setInteger:selectedIndex forKey:@"clearClipboardTimeout"];
+        [appSettings setClearClipboardTimeoutIndex:selectedIndex];
         
         // Update the cell text
         [clearClipboardTimeoutCell setSelectedIndex:selectedIndex];
@@ -564,7 +618,7 @@ enum {
     } else {
         // Delete the PIN and disable the PIN enabled setting
         [SFHFKeychainUtils deleteItemForUsername:@"PIN" andServiceName:@"com.jflan.MiniKeePass.pin" error:nil];
-        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"pinEnabled"];
+        [appSettings setPinEnabled:NO];
         
         // Update which controls are enabled
         [self updateEnabledControls];
@@ -573,7 +627,7 @@ enum {
 
 - (void)toggleDeleteOnFailureEnabled:(id)sender {
     // Update the setting
-    [[NSUserDefaults standardUserDefaults] setBool:deleteOnFailureEnabledCell.switchControl.on forKey:@"deleteOnFailureEnabled"];
+    [appSettings setDeleteOnFailureEnabled:deleteOnFailureEnabledCell.switchControl.on];
     
     // Update which controls are enabled
     [self updateEnabledControls];
@@ -581,7 +635,7 @@ enum {
 
 - (void)toggleCloseEnabled:(id)sender {
     // Update the setting
-    [[NSUserDefaults standardUserDefaults] setBool:closeEnabledCell.switchControl.on forKey:@"closeEnabled"];
+    [appSettings setCloseEnabled:closeEnabledCell.switchControl.on];
     
     // Update which controls are enabled
     [self updateEnabledControls];
@@ -589,7 +643,7 @@ enum {
 
 - (void)toggleRememberPasswords:(id)sender {
     // Update the setting
-    [[NSUserDefaults standardUserDefaults] setBool:rememberPasswordsEnabledCell.switchControl.on forKey:@"rememberPasswordsEnabled"];
+    [appSettings setRememberPasswordsEnabled:rememberPasswordsEnabledCell.switchControl.on];
     
     // Delete all database passwords from the keychain
     [SFHFKeychainUtils deleteAllItemForServiceName:@"com.jflan.MiniKeePass.passwords" error:nil];
@@ -598,17 +652,17 @@ enum {
 
 - (void)toggleHidePasswords:(id)sender {
     // Update the setting
-    [[NSUserDefaults standardUserDefaults] setBool:hidePasswordsCell.switchControl.on forKey:@"hidePasswords"];
+    [appSettings setHidePasswords:hidePasswordsCell.switchControl.on];
 }
 
 - (void)toggleSortingEnabled:(id)sender {
     // Update the setting
-    [[NSUserDefaults standardUserDefaults] setBool:sortingEnabledCell.switchControl.on forKey:@"sortAlphabetically"];
+    [appSettings setSortAlphabetically:sortingEnabledCell.switchControl.on];
 }
 
 - (void)toggleClearClipboardEnabled:(id)sender {
     // Update the setting
-    [[NSUserDefaults standardUserDefaults] setBool:clearClipboardEnabledCell.switchControl.on forKey:@"clearClipboardEnabled"];
+    [appSettings setClearClipboardEnabled:clearClipboardEnabledCell.switchControl.on];
     
     // Update which controls are enabled
     [self updateEnabledControls];
@@ -628,7 +682,7 @@ enum {
         
         // Set the PIN and enable the PIN enabled setting
         [SFHFKeychainUtils storeUsername:@"PIN" andPassword:pin forServiceName:@"com.jflan.MiniKeePass.pin" updateExisting:YES error:nil];
-        [[NSUserDefaults standardUserDefaults] setBool:pinEnabledCell.switchControl.on forKey:@"pinEnabled"];
+        [appSettings setPinEnabled:pinEnabledCell.switchControl.on];
         
         // Update which controls are enabled
         [self updateEnabledControls];
@@ -660,5 +714,9 @@ enum {
     }
 }
 
+
+-(BOOL)pinViewControllerShouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
+    return [self shouldAutorotateToInterfaceOrientation:toInterfaceOrientation];
+}
 
 @end

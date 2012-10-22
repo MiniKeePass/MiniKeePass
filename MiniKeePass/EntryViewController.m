@@ -16,6 +16,7 @@
  */
 
 #import "EntryViewController.h"
+#import "Kdb4Node.h"
 
 @implementation EntryViewController
 
@@ -196,8 +197,14 @@ BOOL stringsEqual(NSString *str1, NSString *str2) {
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+#if 0
+    if ([entry isKindOfClass:[Kdb4Entry class]]) {
+        return 3;
+    }
+#endif
     return 2;
 }
+
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     switch (section) {
@@ -205,6 +212,10 @@ BOOL stringsEqual(NSString *str1, NSString *str2) {
             return 5;
         case 1:
             return 1;
+#if 0
+        case 2:
+            return [((Kdb4Entry*)entry).stringFields count];
+#endif
     }
     
     return 0;
@@ -216,6 +227,10 @@ BOOL stringsEqual(NSString *str1, NSString *str2) {
             return 40;
         case 1:
             return 104;
+#if 0
+        case 2:
+            return 40;
+#endif
     }
     
     return 40;
@@ -227,14 +242,21 @@ BOOL stringsEqual(NSString *str1, NSString *str2) {
             return nil;
         case 1:
             return NSLocalizedString(@"Comments", nil);
+#if 0
+        case 2:
+            return NSLocalizedString(@"String Fields", nil);
+#endif
     }
     
     return nil;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+#if 0
+    static NSString *CellIdentifier = @"Cell";
+#endif
     switch (indexPath.section) {
-        case 0:
+        case 0: {
             switch (indexPath.row) {
                 case 0:
                     return titleCell;
@@ -247,8 +269,23 @@ BOOL stringsEqual(NSString *str1, NSString *str2) {
                 case 4:
                     return urlCell;
             }
-        case 1:
+        }
+        case 1: {
             return commentsCell;
+        }
+#if 0
+        case 2: {
+            StringField *stringField = [((Kdb4Entry*)entry).stringFields objectAtIndex:indexPath.row];
+            
+            TextFieldCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+            if (cell == nil) {
+                cell = [[[TextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+            }
+            cell.textLabel.text = stringField.name;
+            cell.textField.text = stringField.value;
+            return cell;
+        }
+#endif
     }
     
     return nil;
@@ -267,7 +304,7 @@ BOOL stringsEqual(NSString *str1, NSString *str2) {
 - (void)imageButtonPressed {
     ImagesViewController *imagesViewController = [[ImagesViewController alloc] init];
     imagesViewController.delegate = self;
-    [imagesViewController setSelectedImage:entry.image];
+    [imagesViewController setSelectedImage:selectedImageIndex];
     [self.navigationController pushViewController:imagesViewController animated:YES];
     [imagesViewController release];
 }

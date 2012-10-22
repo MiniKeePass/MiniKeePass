@@ -20,32 +20,34 @@
 #import "MiniKeePassAppDelegate.h"
 #import "SFHFKeychainUtils.h"
 #import "LockScreenController.h"
+#import "AppSettings.h"
 
 #define DURATION 0.3
 
-@implementation LockScreenController
+@interface LockScreenController () {
+    PinViewController *pinViewController;
+    MiniKeePassAppDelegate *appDelegate;
+    UIViewController *previousViewController;
+}
+@end
 
-static NSInteger timeoutValues[] = {0, 30, 60, 120, 300};
-static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10, 15};
+@implementation LockScreenController
 
 - (id)init {
     self = [super init];
     if (self) {
-
-        visibleFrame = CGRectZero;
-        offScreenFrame = CGRectOffset(visibleFrame, 0, -95);
-        
         pinViewController = [[PinViewController alloc] init];
         pinViewController.delegate = self;
-        pinViewController.view.frame = offScreenFrame;
-        [self.view addSubview:pinViewController.view];
-        
-        self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"splash"]];
-        
+
         appDelegate = (MiniKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
         
+        UIImageView *imageView = [[UIImageView alloc] initWithFrame:self.view.frame];
+        imageView.image = [[UIImage imageNamed:@"stretchme"] stretchableImageWithLeftCapWidth:0 topCapHeight:44];
+        self.view = imageView;
+        [imageView release];
+
         NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
-        [notificationCenter addObserver:self 
+        [notificationCenter addObserver:self
                                selector:@selector(applicationDidBecomeActive:)
                                    name:UIApplicationDidBecomeActiveNotification
                                  object:nil];
@@ -55,9 +57,17 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10, 15};
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    
     [pinViewController release];
     [super dealloc];
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
+    BOOL boolean = UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad || toInterfaceOrientation == UIInterfaceOrientationPortrait;
+    return boolean;
+}
+
+-(BOOL)pinViewControllerShouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
+    return [self shouldAutorotateToInterfaceOrientation:toInterfaceOrientation];
 }
 
 - (UIViewController *)frontMostViewController {
@@ -69,8 +79,8 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10, 15};
 }
 
 - (void)show {
-    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"splash"]];
-    [[self frontMostViewController] presentModalViewController:self animated:NO];
+    previousViewController = [self frontMostViewController];
+    [previousViewController presentModalViewController:self animated:NO];
 }
 
 + (void)present {
@@ -84,48 +94,37 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10, 15};
 }
 
 - (void)lock {
-    appDelegate.locked = YES;
-
-    pinViewController.textLabel.text = NSLocalizedString(@"Enter your PIN to unlock", nil);
-    
-    [pinViewController becomeFirstResponder];
-    [UIView animateWithDuration:DURATION animations:^{
-        pinViewController.view.frame = visibleFrame;
-    }];
+    if (!appDelegate.locked) {
+        pinViewController.textLabel.text = NSLocalizedString(@"Enter your PIN to unlock", nil);
+        [self presentModalViewController:pinViewController animated:NO];
+    }
 }
 
 - (void)unlock {
     appDelegate.locked = NO;
-    
-    [UIView animateWithDuration:DURATION
-                     animations:^{
-                         pinViewController.view.frame = offScreenFrame;
-                         [pinViewController resignFirstResponder];
-                     }
-                     completion:^(BOOL finished){
-                         [self hide];
-                     }];
+    [previousViewController dismissModalViewControllerAnimated:YES];
+}
+
+- (void)pinViewControllerDidShow:(PinViewController *)controller {
+    appDelegate.locked = YES;
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     // Get the time when the application last exited
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSDate *exitTime = [userDefaults valueForKey:@"exitTime"];
+    AppSettings *appSettings = [AppSettings sharedInstance];
+    NSDate *exitTime = [appSettings exitTime];
     
     // Check if the PIN is enabled
-    if ([userDefaults boolForKey:@"pinEnabled"] && exitTime != nil) {
-        // Get the lock timeout (in seconds)
-        NSInteger pinLockTimeout = timeoutValues[[userDefaults integerForKey:@"pinLockTimeout"]];
-        
+    if ([appSettings pinEnabled] && exitTime != nil) {
         // Check if it's been longer then lock timeout
         NSTimeInterval timeInterval = -[exitTime timeIntervalSinceNow];
-        if (timeInterval > pinLockTimeout) {
+        if (timeInterval > [appSettings pinLockTimeout]) {
             [self lock];
         } else {
-            [self unlock];
+            [self hide];
         }
     } else {
-        [self unlock];
+        [self hide];
     }
 }
 
@@ -138,12 +137,12 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10, 15};
         // Hide spashscreen
         [self unlock];
     } else {
-        NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+        AppSettings *appSettings = [AppSettings sharedInstance];
         
         // Check if the PIN is valid
         if ([pin isEqualToString:validPin]) {
             // Reset the number of pin failed attempts
-            [userDefaults setInteger:0 forKey:@"pinFailedAttempts"];
+            [appSettings setPinFailedAttempts:0];
             
             // Dismiss the pin view
             [self unlock];
@@ -152,20 +151,70 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10, 15};
             AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
             [controller clearEntry];
             
-            if (![userDefaults boolForKey:@"deleteOnFailureEnabled"]) {
+            if (![appSettings deleteOnFailureEnabled]) {
                 // Update the status message on the PIN view
                 controller.textLabel.text = NSLocalizedString(@"Incorrect PIN", nil);
             } else {
                 // Get the number of failed attempts
-                NSInteger pinFailedAttempts = [userDefaults integerForKey:@"pinFailedAttempts"];
-                [userDefaults setInteger:++pinFailedAttempts forKey:@"pinFailedAttempts"];
-                
+                NSInteger pinFailedAttempts = [appSettings pinFailedAttempts];
+                [appSettings setPinFailedAttempts:++pinFailedAttempts];
+
                 // Get the number of failed attempts before deleting
-                NSInteger deleteOnFailureAttempts = deleteOnFailureAttemptsValues[[userDefaults integerForKey:@"deleteOnFailureAttempts"]];
+                NSInteger deleteOnFailureAttempts = [appSettings deleteOnFailureAttempts];
                 
                 // Update the status message on the PIN view
                 NSInteger remainingAttempts = (deleteOnFailureAttempts - pinFailedAttempts);
-                controller.textLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Incorrect PIN\n%d attempt%@ remaining", nil), remainingAttempts, remainingAttempts > 1 ? @"s" : @""];
+                
+                NSString *attemptsRemainingString;
+                switch (remainingAttempts) {
+                    case 1:
+                        attemptsRemainingString = @"Incorrect PIN\n1 attempt remaining";
+                        break;
+                    case 2:
+                        attemptsRemainingString = @"Incorrect PIN\n2 attempts remaining";
+                        break;
+                    case 3:
+                        attemptsRemainingString = @"Incorrect PIN\n3 attempts remaining";
+                        break;
+                    case 4:
+                        attemptsRemainingString = @"Incorrect PIN\n4 attempts remaining";
+                        break;
+                    case 5:
+                        attemptsRemainingString = @"Incorrect PIN\n5 attempts remaining";
+                        break;
+                    case 6:
+                        attemptsRemainingString = @"Incorrect PIN\n6 attempts remaining";
+                        break;
+                    case 7:
+                        attemptsRemainingString = @"Incorrect PIN\n7 attempts remaining";
+                        break;
+                    case 8:
+                        attemptsRemainingString = @"Incorrect PIN\n8 attempts remaining";
+                        break;
+                    case 9:
+                        attemptsRemainingString = @"Incorrect PIN\n9 attempts remaining";
+                        break;
+                    case 10:
+                        attemptsRemainingString = @"Incorrect PIN\n10 attempts remaining";
+                        break;
+                    case 11:
+                        attemptsRemainingString = @"Incorrect PIN\n11 attempts remaining";
+                        break;
+                    case 12:
+                        attemptsRemainingString = @"Incorrect PIN\n12 attempts remaining";
+                        break;
+                    case 13:
+                        attemptsRemainingString = @"Incorrect PIN\n13 attempts remaining";
+                        break;
+                    case 14:
+                        attemptsRemainingString = @"Incorrect PIN\n14 attempts remaining";
+                        break;
+                    default:
+                        attemptsRemainingString = @"Incorrect PIN";
+                        break;
+                }
+                
+                controller.textLabel.text = NSLocalizedString(attemptsRemainingString, nil);
                 
                 // Check if they have failed too many times
                 if (pinFailedAttempts >= deleteOnFailureAttempts) {

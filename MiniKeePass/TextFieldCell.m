@@ -35,6 +35,7 @@
         textField.textColor = [UIColor colorWithRed:.285 green:.376 blue:.541 alpha:1];
         textField.font = [UIFont systemFontOfSize:16];
         textField.returnKeyType = UIReturnKeyNext;
+        textField.clearButtonMode = UITextFieldViewModeWhileEditing;
         [self addSubview:textField];
         
         tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapPressed)];
@@ -61,10 +62,14 @@
 }
 
 - (void)tapPressed {
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", nil) destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"Copy", nil), NSLocalizedString(@"Edit", nil), nil];
-    
-    [appDelegate showActionSheet:actionSheet];
-    [actionSheet release];
+    if (self.textField.text == nil || [self.textField.text isEqualToString:@""]) {
+        [textField becomeFirstResponder];
+    } else {
+        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", nil) destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"Copy", nil), NSLocalizedString(@"Edit", nil), nil];
+        
+        [appDelegate showActionSheet:actionSheet];
+        [actionSheet release];
+    }
 }
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
@@ -88,7 +93,7 @@
 - (void)textFieldDidBeginEditing:(UITextField *)field {
     // Scroll to the top
     UITableView *tableView = (UITableView*)self.superview;
-    [tableView setContentOffset:CGPointMake(0.0, 0.0) animated:YES];
+    [tableView scrollRectToVisible:self.frame animated:YES];
     
     tapGesture.enabled = NO;
 }

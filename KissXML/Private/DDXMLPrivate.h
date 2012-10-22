@@ -5,8 +5,7 @@
 // Our API contract requires us to keep these assertions intact.
 #define DDXMLAssert(condition, desc, ...)                                                                 \
   do{                                                                                                     \
-    if(!(condition))                                                                                      \
-    {                                                                                                     \
+    if(!(condition)) {                                                                                    \
       [[NSAssertionHandler currentHandler] handleFailureInMethod:_cmd                                     \
                                                           object:self                                     \
                                                             file:[NSString stringWithUTF8String:__FILE__] \
@@ -15,7 +14,25 @@
     }                                                                                                     \
   }while(NO)
 
+
+// Create assertion to ensure xml node is not a zombie.
+#if DDXML_DEBUG_MEMORY_ISSUES
+#define DDXMLNotZombieAssert()                                                                            \
+  do{                                                                                                     \
+    if(DDXMLIsZombie(genericPtr, self)) {                                                                      \
+      NSString *desc = @"XML node is a zombie - It's parent structure has been freed!";                   \
+      [[NSAssertionHandler currentHandler] handleFailureInMethod:_cmd                                     \
+                                                          object:self                                     \
+                                                            file:[NSString stringWithUTF8String:__FILE__] \
+                                                      lineNumber:__LINE__                                 \
+                                                     description:desc];                                   \
+    }                                                                                                     \
+  }while(NO)
+#endif
+
 #define DDLastErrorKey @"DDXML:LastError"
+
+
 
 /**
  * DDXMLNode can represent several underlying types, such as xmlNodePtr, xmlDocPtr, xmlAttrPtr, xmlNsPtr, etc.
@@ -99,11 +116,11 @@ NS_INLINE BOOL IsXmlNsPtr(void *kindPtr)
 	xmlNodePtr nsParentPtr;
 }
 
-+ (id)nodeWithNsPrimitive:(xmlNsPtr)ns nsParent:(xmlNodePtr)parent freeOnDealloc:(BOOL)flag;
-- (id)initWithNsPrimitive:(xmlNsPtr)ns nsParent:(xmlNodePtr)parent freeOnDealloc:(BOOL)flag;
++ (id)nodeWithNsPrimitive:(xmlNsPtr)ns nsParent:(xmlNodePtr)parent owner:(DDXMLNode *)owner;
+- (id)initWithNsPrimitive:(xmlNsPtr)ns nsParent:(xmlNodePtr)parent owner:(DDXMLNode *)owner;
 
-- (xmlNodePtr)nsParentPtr;
-- (void)setNsParentPtr:(xmlNodePtr)parentPtr;
+- (xmlNodePtr)_nsParentPtr;
+- (void)_setNsParentPtr:(xmlNodePtr)parentPtr;
 
 // Overrides several methods in DDXMLNode
 
@@ -114,9 +131,35 @@ NS_INLINE BOOL IsXmlNsPtr(void *kindPtr)
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 @interface DDXMLAttributeNode : DDXMLNode
+{
+	// The xmlAttrPtr type doesn't allow for ownership of a namespace.
+	// 
+	// In other types, such as xmlNodePtr:
+	// - nsDef stores namespaces that are owned by the node (have been alloced by the node).
+	// - ns is simply a pointer to the default namespace of the node, which may or may not reside in its own nsDef list.
+	// 
+	// The xmlAttrPtr only has a ns, it doesn't have a nsDef list.
+	// Which completely makes sense really, since namespaces have to be defined elsewhere.
+	// 
+	// This is here to maintain compatibility with the NSXML classes,
+	// where one can assign a namespace to an attribute independently.
+	xmlNsPtr attrNsPtr;
+}
 
-+ (id)nodeWithAttrPrimitive:(xmlAttrPtr)attr freeOnDealloc:(BOOL)flag;
-- (id)initWithAttrPrimitive:(xmlAttrPtr)attr freeOnDealloc:(BOOL)flag;
++ (id)nodeWithAttrPrimitive:(xmlAttrPtr)attr owner:(DDXMLNode *)owner;
+- (id)initWithAttrPrimitive:(xmlAttrPtr)attr owner:(DDXMLNode *)owner;
+
+// Overrides several methods in DDXMLNode
+
+@end
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+#pragma mark -
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+@interface DDXMLInvalidNode : DDXMLNode
+{
+}
 
 // Overrides several methods in DDXMLNode
 
@@ -128,28 +171,33 @@ NS_INLINE BOOL IsXmlNsPtr(void *kindPtr)
 
 @interface DDXMLNode (PrivateAPI)
 
-+ (id)nodeWithUnknownPrimitive:(xmlKindPtr)kindPtr freeOnDealloc:(BOOL)flag;
++ (id)nodeWithUnknownPrimitive:(xmlKindPtr)kindPtr owner:(DDXMLNode *)owner;
 
-+ (id)nodeWithPrimitive:(xmlKindPtr)kindPtr freeOnDealloc:(BOOL)flag;
-- (id)initWithPrimitive:(xmlKindPtr)kindPtr freeOnDealloc:(BOOL)flag;
++ (id)nodeWithPrimitive:(xmlKindPtr)kindPtr owner:(DDXMLNode *)owner;
+- (id)initWithPrimitive:(xmlKindPtr)kindPtr owner:(DDXMLNode *)owner;
 
-- (BOOL)hasParent;
+- (BOOL)_hasParent;
+
++ (void)getHasPrefix:(BOOL *)hasPrefixPtr localName:(NSString **)localNamePtr forName:(NSString *)name;
++ (void)getPrefix:(NSString **)prefixPtr localName:(NSString **)localNamePtr forName:(NSString *)name;
 
 + (void)recursiveStripDocPointersFromNode:(xmlNodePtr)node;
-
-+ (void)detachAttribute:(xmlAttrPtr)attr fromNode:(xmlNodePtr)node;
-+ (void)removeAttribute:(xmlAttrPtr)attr fromNode:(xmlNodePtr)node;
-+ (void)removeAllAttributesFromNode:(xmlNodePtr)node;
 
 + (void)detachNamespace:(xmlNsPtr)ns fromNode:(xmlNodePtr)node;
 + (void)removeNamespace:(xmlNsPtr)ns fromNode:(xmlNodePtr)node;
 + (void)removeAllNamespacesFromNode:(xmlNodePtr)node;
 
-+ (void)detachChild:(xmlNodePtr)child fromNode:(xmlNodePtr)node;
-+ (void)removeChild:(xmlNodePtr)child fromNode:(xmlNodePtr)node;
++ (void)detachAttribute:(xmlAttrPtr)attr andClean:(BOOL)clean;
++ (void)detachAttribute:(xmlAttrPtr)attr;
++ (void)removeAttribute:(xmlAttrPtr)attr;
++ (void)removeAllAttributesFromNode:(xmlNodePtr)node;
+
++ (void)detachChild:(xmlNodePtr)child andClean:(BOOL)clean andFixNamespaces:(BOOL)fixNamespaces;
++ (void)detachChild:(xmlNodePtr)child;
++ (void)removeChild:(xmlNodePtr)child;
 + (void)removeAllChildrenFromNode:(xmlNodePtr)node;
 
-- (void)nodeFree;
+BOOL DDXMLIsZombie(void *xmlPtr, DDXMLNode *wrapper);
 
 + (NSError *)lastError;
 
@@ -161,13 +209,11 @@ NS_INLINE BOOL IsXmlNsPtr(void *kindPtr)
 
 @interface DDXMLElement (PrivateAPI)
 
-+ (id)nodeWithElementPrimitive:(xmlNodePtr)node freeOnDealloc:(BOOL)flag;
-- (id)initWithElementPrimitive:(xmlNodePtr)node freeOnDealloc:(BOOL)flag;
++ (id)nodeWithElementPrimitive:(xmlNodePtr)node owner:(DDXMLNode *)owner;
+- (id)initWithElementPrimitive:(xmlNodePtr)node owner:(DDXMLNode *)owner;
 
-- (NSArray *)elementsForName:(NSString *)name uri:(NSString *)URI;
-
-+ (DDXMLNode *)resolveNamespaceForPrefix:(NSString *)prefix atNode:(xmlNodePtr)nodePtr;
-+ (NSString *)resolvePrefixForURI:(NSString *)uri atNode:(xmlNodePtr)nodePtr;
+- (DDXMLNode *)_recursiveResolveNamespaceForPrefix:(NSString *)prefix atNode:(xmlNodePtr)nodePtr;
+- (NSString *)_recursiveResolvePrefixForURI:(NSString *)uri atNode:(xmlNodePtr)nodePtr;
 
 @end
 
@@ -177,7 +223,7 @@ NS_INLINE BOOL IsXmlNsPtr(void *kindPtr)
 
 @interface DDXMLDocument (PrivateAPI)
 
-+ (id)nodeWithDocPrimitive:(xmlDocPtr)doc freeOnDealloc:(BOOL)flag;
-- (id)initWithDocPrimitive:(xmlDocPtr)doc freeOnDealloc:(BOOL)flag;
++ (id)nodeWithDocPrimitive:(xmlDocPtr)doc owner:(DDXMLNode *)owner;
+- (id)initWithDocPrimitive:(xmlDocPtr)doc owner:(DDXMLNode *)owner;
 
 @end

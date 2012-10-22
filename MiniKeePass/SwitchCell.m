@@ -30,6 +30,7 @@
         self.textLabel.text = labelText;
         
         switchControl = [[UISwitch alloc] init];
+        
         self.accessoryView = switchControl;
     }
     return self;

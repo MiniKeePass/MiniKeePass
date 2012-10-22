@@ -32,7 +32,7 @@
 - (id)initWithStyle:(UITableViewStyle)style {
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
-        self.title = NSLocalizedString(@"New Database", nil);
+        self.headerTitle = NSLocalizedString(@"New Database", nil);
         
         nameTextField = [[UITextField alloc] init];
         nameTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
@@ -57,15 +57,16 @@
         passwordTextField2.autocorrectionType = UITextAutocorrectionTypeNo;
         passwordTextField2.returnKeyType = UIReturnKeyDone;
         passwordTextField2.delegate = self;
-        
-        footerView = [[UIView alloc] init];
-        
+
         versionSegmentedControl = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObjects:NSLocalizedString(@"Version 1.x", nil), NSLocalizedString(@"Version 2.x", nil), nil]];
         versionSegmentedControl.selectedSegmentIndex = 0;
-        versionSegmentedControl.frame = CGRectMake(HSPACER, VSPACER, BUTTON_WIDTH, BUTTON_HEIGHT);
-        [footerView addSubview:versionSegmentedControl];
+        versionSegmentedControl.segmentedControlStyle = UISegmentedControlStyleBar;
+        versionSegmentedControl.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+	  	
+        self.navigationItem.titleView = versionSegmentedControl;
         
         self.controls = [NSArray arrayWithObjects:nameTextField, passwordTextField1, passwordTextField2, nil];
+        self.tableView.scrollEnabled = YES;
     }
     return self;
 }
@@ -74,9 +75,14 @@
     [nameTextField release];
     [passwordTextField1 release];
     [passwordTextField2 release];
-    [footerView release];
     [versionSegmentedControl release];
     [super dealloc];
+}
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField {    
+    CGPoint point = [self.tableView convertPoint:CGPointZero fromView:textField];
+     UITableViewCell *cell =[self.tableView cellForRowAtIndexPath:[self.tableView indexPathForRowAtPoint:point]];
+    [self.tableView scrollRectToVisible:cell.frame animated:YES];
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
@@ -89,14 +95,6 @@
     }
     
     return YES;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    return VSPACER + BUTTON_HEIGHT + VSPACER;
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
-    return footerView;
 }
 
 @end

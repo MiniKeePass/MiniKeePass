@@ -28,6 +28,7 @@ extern NSString *kDBProtocolHTTPS;
 @interface DBSession : NSObject {
     NSDictionary *baseCredentials;
     NSMutableDictionary *credentialStores;
+    MPOAuthCredentialConcreteStore *anonymousStore;
     NSString *root;
     id<DBSessionDelegate> delegate;
 }
@@ -37,10 +38,6 @@ extern NSString *kDBProtocolHTTPS;
 
 - (id)initWithAppKey:(NSString *)key appSecret:(NSString *)secret root:(NSString *)root;
 - (BOOL)isLinked; // Session must be linked before creating any DBRestClient objects
-- (void)link;
-- (void)linkUserId:(NSString *)userId;
-
-- (BOOL)handleOpenURL:(NSURL *)url;
 
 - (void)unlinkAll;
 - (void)unlinkUserId:(NSString *)userId;

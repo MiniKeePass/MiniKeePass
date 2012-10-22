@@ -41,7 +41,8 @@
         self.navigationItem.leftBarButtonItem = cancelButton;
         [cancelButton release];
         
-        infoBar = [[InfoBar alloc] initWithFrame:CGRectMake(0, 0, 320, 20)];
+        infoBar = [[InfoBar alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 20)];
+        infoBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         [self.view addSubview:infoBar];
     }
     return self;
@@ -62,6 +63,7 @@
 }
 
 - (void)dealloc {
+    [controls release];
     [infoBar release];
     [headerTitle release];
     [footerTitle release];
@@ -69,6 +71,7 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
     UITextField *textField = [controls objectAtIndex:0];
     [textField becomeFirstResponder];
 }
@@ -115,32 +118,67 @@
     return footerTitle;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell;
+// Create a local array of pre-generated cells.
+// This has potential memory issues if a large number of cells are created, but it solves a probem with scrolling the form
+- (void)setControls:(NSArray *)newControls {
+    [controls release];
+    controls = [newControls retain];
     
-    UIView *view = [controls objectAtIndex:indexPath.row];
-    if ([view isKindOfClass:[UITableViewCell class]]) {
-        cell = (UITableViewCell*)view;
+    if (cells == nil) {
+        cells = [[NSMutableArray alloc] initWithCapacity:[controls count]];
     } else {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil] autorelease];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        
-        CGRect frame = cell.frame;
-        frame.size.width -= 40;
-        frame.size.height -= 22;
-        frame.origin.x = 20;
-        frame.origin.y = 11;
-        
-        view.frame = frame;
-        [cell addSubview:view];
+        [cells removeAllObjects];
     }
     
-    return cell;
+    UITableViewCell *cell;
+    for (UIView *controlView in controls) {
+        if ([controlView isKindOfClass:[UITableViewCell class]]) {
+            cell = (UITableViewCell*)controlView;
+        } else {
+            cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil] autorelease];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            
+            controlView.frame = [self calculateNewFrameForView:controlView inOrientation:[[UIApplication sharedApplication] statusBarOrientation]];
+            //            NSLog(@"%@", controlView);
+            [cell addSubview:controlView];
+        }
+        [cells addObject:cell];
+    }
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return [cells objectAtIndex:indexPath.row];
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     [self okPressed:nil];
     return YES;
+}
+
+- (CGRect)calculateNewFrameForView:(UIView *)view inOrientation:(UIInterfaceOrientation)orientation{
+    CGRect screenBounds = [[UIScreen mainScreen] bounds];
+    CGFloat currentWidth = UIInterfaceOrientationIsPortrait(orientation) ? CGRectGetWidth(screenBounds) : CGRectGetHeight(screenBounds);
+    
+    CGFloat xOrigin = UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? 56.0f : 20.0f;
+    CGFloat yOrigin = 11;
+    CGFloat width = currentWidth - 2 * xOrigin;
+    CGFloat height = 22;
+    
+    return CGRectMake(xOrigin, yOrigin, width, height);
+}
+
+- (void)resizeControlsForOrientation:(UIInterfaceOrientation)orientation {
+    for (UIView *controlView in self.controls) {
+        if (![controlView isKindOfClass:[UITableViewCell class]]) {
+            controlView.frame = [self calculateNewFrameForView:controlView inOrientation:orientation];
+        }
+    }
+}
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {	
+    [UIView animateWithDuration:duration animations:^{
+        [self resizeControlsForOrientation:toInterfaceOrientation];
+    }];
 }
 
 @end

@@ -16,20 +16,19 @@
  */
 
 #import <UIKit/UIKit.h>
+#import "AutorotatingViewController.h"
+#import "ImageContainerView.h"
 
 @protocol ImagesViewControllerDelegate;
 
-@interface ImagesViewController : UIViewController {
-    UIView *imagesView;
-    NSMutableArray *imageViews;
-    UIImageView *selectedImageView;
+@interface ImagesViewController : AutorotatingViewController {
+    ImageContainerView *imageContainerView;
     id<ImagesViewControllerDelegate> delegate;
 }
 
-@property (nonatomic, retain) id<ImagesViewControllerDelegate> delegate;
-
 - (void)setSelectedImage:(NSUInteger)index;
 
+@property (nonatomic, retain) id<ImagesViewControllerDelegate> delegate;
 @end
 
 @protocol ImagesViewControllerDelegate <NSObject>

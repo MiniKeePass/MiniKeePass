@@ -20,6 +20,7 @@
 #import "HelpViewController.h"
 #import "DatabaseManager.h"
 #import "NewKdbViewController.h"
+#import "AppSettings.h"
 #import "SFHFKeychainUtils.h"
 #import "Kdb3Writer.h"
 #import "Kdb4Writer.h"
@@ -83,6 +84,7 @@ enum {
 - (void)displayInfoPage {
     if (filesInfoView == nil) {
         filesInfoView = [[FilesInfoView alloc] initWithFrame:self.view.frame];
+        filesInfoView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     }
     
     [self.view addSubview:filesInfoView];
@@ -121,7 +123,7 @@ enum {
 - (void)updateFiles {
     [databaseFiles release];
     [keyFiles release];
-    [restClient loadMetadata:[[NSUserDefaults standardUserDefaults] stringForKey:@"dropboxDirectory"]];
+    [restClient loadMetadata:[[AppSettings sharedInstance] dropboxDirectory]];
     
     // Get the document's directory
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
@@ -209,10 +211,11 @@ enum {
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *CellIdentifier = @"Cell";
+    NSString *filename;
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier] autorelease];
     }
     
     int localFiles = [databaseFiles count];
@@ -220,11 +223,13 @@ enum {
     switch (indexPath.section) {
         case SECTION_DATABASE:
             if (indexPath.row < localFiles) {
-                cell.textLabel.text = [databaseFiles objectAtIndex:indexPath.row];
+                filename = [databaseFiles objectAtIndex:indexPath.row];
+                cell.textLabel.text = filename;
                 cell.accessoryView = nil;
             } else {
                 DBMetadata *file = [dropboxFiles objectAtIndex:indexPath.row - localFiles];
-                cell.textLabel.text = file.filename;
+                filename = file.filename;
+                cell.textLabel.text = filename;
                 UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"dropbox"]];
                 cell.accessoryView = imageView;
                 [imageView release];
@@ -233,13 +238,32 @@ enum {
             cell.selectionStyle = UITableViewCellSelectionStyleBlue;
             break;
         case SECTION_KEYFILE:
-            cell.textLabel.text = [keyFiles objectAtIndex:indexPath.row];
+            filename = [keyFiles objectAtIndex:indexPath.row];
+            cell.textLabel.text = filename;
             cell.textLabel.textColor = [UIColor grayColor];
             cell.accessoryView = nil;
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             break;
     }
-    
+
+    // Retrieve the Document directory
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString *path = [documentsDirectory stringByAppendingPathComponent:filename];
+
+    // Get the file's modification date
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSDate *modificationDate = [[fileManager attributesOfItemAtPath:path error:nil] fileModificationDate];
+
+    // Format the last modified time as the subtitle of the cell
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateStyle:NSDateFormatterShortStyle];
+    [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"%@: %@",
+                                 NSLocalizedString(@"Last Modified", nil),
+                                 [dateFormatter stringFromDate:modificationDate]];
+    [dateFormatter release];
+
     return cell;
 }
 
@@ -459,8 +483,7 @@ enum {
         [kdbPassword release];
         
         // Store the password in the keychain
-        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-        if ([userDefaults boolForKey:@"rememberPasswordsEnabled"]) {
+        if ([[AppSettings sharedInstance] rememberPasswordsEnabled]) {
             NSError *error;
             [SFHFKeychainUtils storeUsername:filename andPassword:password1 forServiceName:@"com.jflan.MiniKeePass.passwords" updateExisting:YES error:&error];
         }

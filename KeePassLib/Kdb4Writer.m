@@ -31,7 +31,7 @@
 
 @interface Kdb4Writer (PrivateMethods)
 - (void)writeHeaderField:(OutputStream*)outputStream headerId:(uint8_t)headerId data:(const void*)data length:(uint16_t)length;
-- (void)writeHeader:(OutputStream*)outputStream;
+- (void)writeHeader:(OutputStream*)outputStream withTree:(Kdb4Tree*)tree;
 @end
 
 @implementation Kdb4Writer
@@ -41,7 +41,6 @@
     if (self) {
         masterSeed = [[Utils randomBytes:32] retain];
         transformSeed = [[Utils randomBytes:32] retain];
-        rounds = 6000;
         encryptionIv = [[Utils randomBytes:16] retain];
         protectedStreamKey = [[Utils randomBytes:32] retain];
         streamStartBytes = [[Utils randomBytes:32] retain];
@@ -63,30 +62,32 @@
     DataOutputStream *outputStream = [[[DataOutputStream alloc] init] autorelease];
     
     // Write the header
-    [self writeHeader:outputStream];
+    [self writeHeader:outputStream withTree:tree];
     
     // Create the encryption output stream
-    NSData *key = [kdbPassword createFinalKeyForVersion:4 masterSeed:masterSeed transformSeed:transformSeed rounds:rounds];
+    NSData *key = [kdbPassword createFinalKeyForVersion:4 masterSeed:masterSeed transformSeed:transformSeed rounds:tree.rounds];
     AesOutputStream *aesOutputStream = [[[AesOutputStream alloc] initWithOutputStream:outputStream key:key iv:encryptionIv] autorelease];
     
     // Write the stream start bytes
     [aesOutputStream write:streamStartBytes];
     
     // Create the hashed output stream
-    HashedOutputStream *hashedOutputStream = [[[HashedOutputStream alloc] initWithOutputStream:aesOutputStream blockSize:1024*1024] autorelease];
+    OutputStream *stream = [[[HashedOutputStream alloc] initWithOutputStream:aesOutputStream blockSize:1024*1024] autorelease];
     
     // Create the gzip output stream
-    GZipOutputStream *gzipOutputStream = [[[GZipOutputStream alloc] initWithOutputStream:hashedOutputStream] autorelease];
+    if (tree.compressionAlgorithm == COMPRESSION_GZIP) {
+        stream = [[[GZipOutputStream alloc] initWithOutputStream:stream] autorelease];
+    }
     
     // Create the random stream
     RandomStream *randomStream = [[[Salsa20RandomStream alloc] init:protectedStreamKey] autorelease];
     
     // Serialize the XML
-    Kdb4Persist *persist = [[[Kdb4Persist alloc] initWithTree:tree outputStream:gzipOutputStream randomStream:randomStream] autorelease];
+    Kdb4Persist *persist = [[[Kdb4Persist alloc] initWithTree:tree outputStream:stream randomStream:randomStream] autorelease];
     [persist persist];
     
     // Close the output stream
-    [gzipOutputStream close];
+    [stream close];
     
     // Write to the file
     if (![outputStream.data writeToFile:filename atomically:YES]) {
@@ -104,7 +105,7 @@
     }
 }
 
-- (void)writeHeader:(OutputStream*)outputStream {
+- (void)writeHeader:(OutputStream*)outputStream withTree:(Kdb4Tree*)tree {
     uint8_t buffer[16];
     uint32_t i32;
     uint64_t i64;
@@ -118,15 +119,14 @@
     [cipherUuid getBytes:buffer length:16];
     [self writeHeaderField:outputStream headerId:HEADER_CIPHERID data:buffer length:16];
     
-    // FIXME support gzip
-    i32 = CFSwapInt32HostToLittle(COMPRESSION_GZIP);
+    i32 = CFSwapInt32HostToLittle(tree.compressionAlgorithm);
     [self writeHeaderField:outputStream headerId:HEADER_COMPRESSION data:&i32 length:4];
     
     [self writeHeaderField:outputStream headerId:HEADER_MASTERSEED data:masterSeed.bytes length:masterSeed.length];
     
     [self writeHeaderField:outputStream headerId:HEADER_TRANSFORMSEED data:transformSeed.bytes length:transformSeed.length];
     
-    i64 = CFSwapInt64HostToLittle(rounds);
+    i64 = CFSwapInt64HostToLittle(tree.rounds);
     [self writeHeaderField:outputStream headerId:HEADER_TRANSFORMROUNDS data:&i64 length:8];
     
     [self writeHeaderField:outputStream headerId:HEADER_ENCRYPTIONIV data:encryptionIv.bytes length:encryptionIv.length];
@@ -146,12 +146,8 @@
 }
 
 - (void)newFile:(NSString*)fileName withPassword:(KdbPassword*)kdbPassword {
-    DDXMLElement *docRoot = [DDXMLNode elementWithName:@"KeePassFile"];
-    
-    DDXMLElement *rootElement = [DDXMLElement elementWithName:@"Root"];
-    [docRoot addChild:rootElement];
-    
-    DDXMLDocument *document = [[DDXMLDocument alloc] initWithRootElement:docRoot];
+    DDXMLDocument *document = [[DDXMLDocument alloc] initWithXMLString:@"<KeePassFile><Root></Root></KeePassFile>" options:0 error:nil];
+    DDXMLElement *rootElement = [[document rootElement] elementForName:@"Root"];
     Kdb4Tree *tree = [[Kdb4Tree alloc] initWithDocument:document];
     [document release];
     

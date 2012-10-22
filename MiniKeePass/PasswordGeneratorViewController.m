@@ -17,6 +17,7 @@
 
 #import "PasswordGeneratorViewController.h"
 #import "Salsa20RandomStream.h"
+#import "AppSettings.h"
 
 #define CHARSET_LOWER_CASE @"abcdefghijklmnopqrstuvwxyz"
 #define CHARSET_UPPER_CASE @"ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -94,9 +95,9 @@ enum {
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    length = [userDefaults integerForKey:@"pwGenLength"];
-    charSets = [userDefaults integerForKey:@"pwGenCharSets"];
+    AppSettings *appSettings = [AppSettings sharedInstance];
+    length = [appSettings pwGenLength];
+    charSets = [appSettings pwGenCharSets];
     
     [lengthCell setLength:length];
     characterSetsCell.detailTextLabel.text = [self createCharSetsDescription];
@@ -301,8 +302,7 @@ enum {
 -(void)lengthCell:(LengthCell *)lengthCell length:(NSInteger)len {
     length = len;
     
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    [userDefaults setInteger:length forKey:@"pwGenLength"];
+    [[AppSettings sharedInstance] setPwGenLength:length];
     
     [self generatePassword];
 }

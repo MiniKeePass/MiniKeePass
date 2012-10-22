@@ -28,7 +28,6 @@
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
         self.title = NSLocalizedString(@"Password", nil);
-        self.headerTitle = NSLocalizedString(@"Password", nil);
         self.footerTitle = [NSString stringWithFormat:NSLocalizedString(@"Enter the password and/or select the keyfile for the %@ database.", nil), filename];
         
         passwordTextField = [[UITextField alloc] init];

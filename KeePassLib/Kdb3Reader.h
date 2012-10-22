@@ -18,15 +18,17 @@
 #import "Kdb3Node.h"
 
 @interface Kdb3Reader : NSObject<KdbReader> {
-    uint32_t flags;
-    uint32_t version;
     NSData *masterSeed;
     NSData *encryptionIv;
     uint32_t numGroups;
     uint32_t numEntries;
-    NSData *contentHash;
-    NSData *transformSeed;
-    uint32_t rounds;
+    NSData *contentsHash;
+    NSData *masterSeed2;
+    uint32_t keyEncRounds;
+    NSData *headerHash;
+    NSMutableArray *levels;
+    NSMutableArray *groups;
+    NSMutableArray *entries;
 }
 
 @end

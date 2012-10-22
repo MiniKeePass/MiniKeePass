@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "Kdb.h"
 #import "DDXML.h"
+#import "DDXMLElementAdditions.h"
 
 #define KDB4_PRE_SIG1 (0x9AA2D903)
 #define KDB4_PRE_SIG2 (0xB54BFB66)
@@ -49,23 +50,52 @@
 @end
 
 
+@class StringField;
+
 @interface Kdb4Entry : KdbEntry {
     DDXMLElement *element;
+    NSMutableArray *stringFields;
 }
 
 @property(nonatomic, retain) DDXMLElement *element;
+@property(nonatomic, retain) NSArray *stringFields;
 
 - (id)initWithElement:(DDXMLElement*)e;
+
+- (void)addStringField:(StringField*)stringField;
+- (void)removeStringField:(StringField*)stringField;
+
+@end
+
+
+@interface StringField : NSObject {
+    Kdb4Entry *parent;
+    NSString *name;
+    NSString *value;
+    DDXMLElement *element;
+}
+
+@property(nonatomic, retain) Kdb4Entry *parent;
+@property(nonatomic, copy) NSString *name;
+@property(nonatomic, copy) NSString *value;
+@property(nonatomic, retain) DDXMLElement *element;
+
+- (id)initWithElement:(DDXMLElement*)element;
 
 @end
 
 
 @interface Kdb4Tree : KdbTree {
     DDXMLDocument *document;
+    uint64_t rounds;
+    uint32_t compressionAlgorithm;
 }
 
 @property(nonatomic, retain) DDXMLDocument *document;
+@property(nonatomic, assign) uint64_t rounds;
+@property(nonatomic, assign) uint32_t compressionAlgorithm;
 
 - (id)initWithDocument:(DDXMLDocument*)doc;
+- (StringField*)createStringField:(Kdb4Entry*)parent;
 
 @end

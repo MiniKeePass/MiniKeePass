@@ -31,13 +31,14 @@
         self.backgroundColor = [UIColor colorWithRed:0.8 green:0.0 blue:0.0 alpha:1.0];
         
         label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
+        label.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         label.textAlignment = UITextAlignmentCenter;
         label.text = @"Finished";
         label.textColor = [UIColor whiteColor];
         label.backgroundColor = [UIColor clearColor];
         [self addSubview:label];
         
-        hidden = YES;
+        self.hidden = YES;
     }
     return self;
 }
@@ -48,13 +49,13 @@
 }
 
 - (void)showBar {
-    if (hidden) {
+    if (self.hidden) {
+        self.hidden = NO;
         [UIView animateWithDuration:0.5 delay:0 options:UIViewAnimationOptionCurveEaseOut
                          animations: ^{
                              self.frame = CGRectMake(self.frame.origin.x, 0, self.frame.size.width, self.frame.size.height);
 						 }
                          completion:Nil];
-        hidden = NO;
     }
     
     autoHideCount++;
@@ -63,12 +64,11 @@
 }
 
 - (void)hideBar {
-    if (!hidden) {
+    if (!self.hidden) {
         [UIView animateWithDuration:0.5 delay:0 options:UIViewAnimationOptionCurveEaseOut
                          animations: ^{
                              self.frame = CGRectMake(self.frame.origin.x, -self.frame.size.height, self.frame.size.width, self.frame.size.height);
-						 } completion:Nil];
-        hidden = YES;
+						 } completion: ^(BOOL done){self.hidden = YES;}];
     }
 }
 

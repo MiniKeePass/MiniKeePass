@@ -20,8 +20,7 @@
 #import "GroupViewController.h"
 #import "SettingsViewController.h"
 #import "EntryViewController.h"
-#import "CharacterSetsViewController.h"
-#import "LockScreenController.h"
+#import "AppSettings.h"
 #import "DatabaseManager.h"
 #import "SFHFKeychainUtils.h"
 #import "LockScreenController.h"
@@ -29,28 +28,22 @@
 #define APP_KEY @"1cml57v07lqm5xu"
 #define APP_SECRET @"sao1iiuox8urrai"
 
+@interface MiniKeePassAppDelegate ()  {
+    UINavigationController *navigationController;
+    UIActionSheet* myActionSheet;
+    id<UIActionSheetDelegate> myActionSheetDelegate;
+    
+    UIImage *images[NUM_IMAGES];
+}
+
+@property (copy, nonatomic) NSString *fileToOpen;
+
+@end
+
 @implementation MiniKeePassAppDelegate
 
-@synthesize window;
-@synthesize locked;
-@synthesize databaseDocument;
-@synthesize backgroundSupported;
-
-static NSInteger closeTimeoutValues[] = {0, 30, 60, 120, 300};
-static NSInteger clearClipboardTimeoutValues[] = {30, 60, 120, 180};
-static NSStringEncoding passwordEncodingValues[] = {
-    NSUTF8StringEncoding,
-    NSUTF16BigEndianStringEncoding,
-    NSUTF16LittleEndianStringEncoding,
-    NSISOLatin1StringEncoding,
-    NSISOLatin2StringEncoding,
-    NSASCIIStringEncoding,
-    NSJapaneseEUCStringEncoding,
-    NSISO2022JPStringEncoding
-};
-
 - (UIViewController *) frontmostViewController {
-    UIViewController *frontmostViewController = window.rootViewController;
+    UIViewController *frontmostViewController = self.window.rootViewController;
     while (frontmostViewController.modalViewController != nil) {
         frontmostViewController = frontmostViewController.modalViewController;
     }
@@ -69,7 +62,7 @@ static NSStringEncoding passwordEncodingValues[] = {
         images[i] = nil;
     }
     
-    databaseDocument = nil;
+    _databaseDocument = nil;
     
     // Set the user defaults
     NSMutableDictionary *defaultsDict = [NSMutableDictionary dictionary];
@@ -92,26 +85,20 @@ static NSStringEncoding passwordEncodingValues[] = {
     [userDefaults registerDefaults:defaultsDict];
     
     // Create the files view
-    FilesViewController *filesViewController = [[FilesViewController alloc] initWithStyle:UITableViewStylePlain];
+    FilesViewController *filesViewController = [[[FilesViewController alloc] initWithStyle:UITableViewStylePlain] autorelease];
     navigationController = [[UINavigationController alloc] initWithRootViewController:filesViewController];
-    [filesViewController release];
-    
     navigationController.toolbarHidden = NO;
     
     // Create the window
-    window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    window.rootViewController = navigationController;
-    [window makeKeyAndVisible];
+    _window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    self.window.rootViewController = navigationController;
+    [self.window makeKeyAndVisible];
     
     // Check if backgrounding is supported
-    backgroundSupported = FALSE;
-    UIDevice* device = [UIDevice currentDevice];
-    if ([device respondsToSelector:@selector(isMultitaskingSupported)]) {
-        backgroundSupported = device.multitaskingSupported;
-    }
+    _backgroundSupported = [[UIDevice currentDevice] isMultitaskingSupported];
     
     // Add a pasteboard notification listener is backgrounding is supported
-    if (backgroundSupported) {
+    if (self.backgroundSupported) {
     NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
         [notificationCenter addObserver:self selector:@selector(handlePasteboardNotification:) name:UIPasteboardChangedNotification object:nil];
     }
@@ -126,54 +113,56 @@ static NSStringEncoding passwordEncodingValues[] = {
     for (i = 0; i < NUM_IMAGES; i++) {
         [images[i] release];
     }
-    [databaseDocument release];
-    [fileToOpen release];
+    [_databaseDocument release];
+    [_fileToOpen release];
+    [_window release];
     [navigationController release];
-    [window release];
     [super dealloc];
 }
 
-- (void)applicationWillResignActive:(UIApplication *)application {    
+- (void)applicationDidEnterBackground:(UIApplication *)application {
     [self dismissActionSheet];
     if (!self.locked) {
+        [LockScreenController present];
         NSDate *currentTime = [NSDate date];
-        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-        [userDefaults setValue:currentTime forKey:@"exitTime"];
-        
-        if ([userDefaults boolForKey:@"pinEnabled"]) {
-            [LockScreenController present];
-        }
+        [[AppSettings sharedInstance] setExitTime:currentTime];
     }
 }
 
-- (void)applicationDidBecomeActive:(UIApplication *)application {
+- (void)applicationWillEnterForeground:(UIApplication *)application {
     // Check if we're supposed to open a file
-    if (fileToOpen != nil) {
+    if (self.fileToOpen != nil) {
         // Close the current database
         [self closeDatabase];
         
         // Open the file
-        [[DatabaseManager sharedInstance] openDatabaseDocument:fileToOpen animated:NO];
+        [[DatabaseManager sharedInstance] openDatabaseDocument:self.fileToOpen animated:NO];
         
-        [fileToOpen release];
-        fileToOpen = nil;
+        self.fileToOpen = nil;
     }
 
     // Get the time when the application last exited
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSDate *exitTime = [userDefaults valueForKey:@"exitTime"];
+    AppSettings *appSettings = [AppSettings sharedInstance];
+    NSDate *exitTime = [appSettings exitTime];
 
     // Check if closing the database is enabled
-    if ([userDefaults boolForKey:@"closeEnabled"] && exitTime != nil) {
+    if ([appSettings closeEnabled] && exitTime != nil) {
         // Get the lock timeout (in seconds)
-        NSInteger closeTimeout = closeTimeoutValues[[userDefaults integerForKey:@"closeTimeout"]];
-        
+        NSInteger closeTimeout = [appSettings closeTimeout];
+
         // Check if it's been longer then lock timeout
         NSTimeInterval timeInterval = [exitTime timeIntervalSinceNow];
         if (timeInterval < -closeTimeout) {
             [self closeDatabase];
         }
     }
+}
+
+- (CGFloat)currentScreenWidth {
+    CGRect screenRect = [[UIScreen mainScreen] bounds];
+    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
+    
+    return UIInterfaceOrientationIsPortrait(orientation) ? CGRectGetWidth(screenRect) : CGRectGetHeight(screenRect);
 }
 
 - (void)openUrl:(NSURL *)url {
@@ -194,11 +183,10 @@ static NSStringEncoding passwordEncodingValues[] = {
     [fileManager removeItemAtPath:[documentsDirectory stringByAppendingPathComponent:@"Inbox"] error:nil];
     
     // Store the filename to open if it's a database
-    [fileToOpen release];
     if ([filename hasSuffix:@".kdb"] || [filename hasSuffix:@".kdbx"]) {
-        fileToOpen = [filename copy];
+        self.fileToOpen = [filename copy];
     } else {
-        fileToOpen = nil;
+        self.fileToOpen = nil;
         FilesViewController *fileView = [[navigationController viewControllers] objectAtIndex:0];
         [fileView updateFiles];
         [fileView.tableView reloadData];
@@ -231,21 +219,17 @@ static NSStringEncoding passwordEncodingValues[] = {
     return YES;
 }
 
-- (DatabaseDocument *)databaseDocument {
-    return databaseDocument;
-}
-
 - (void)setDatabaseDocument:(DatabaseDocument *)newDatabaseDocument {
-    if (databaseDocument != nil) {
+    if (_databaseDocument != nil) {
         [self closeDatabase];
     }
     
-    databaseDocument = [newDatabaseDocument retain];
+    _databaseDocument = [newDatabaseDocument retain];
     
     // Create and push on the root group view controller
     GroupViewController *groupViewController = [[GroupViewController alloc] initWithStyle:UITableViewStylePlain];
-    groupViewController.title = [[databaseDocument.filename lastPathComponent] stringByDeletingPathExtension];
-    groupViewController.group = databaseDocument.kdbTree.root;
+    groupViewController.title = [[_databaseDocument.filename lastPathComponent] stringByDeletingPathExtension];
+    groupViewController.group = _databaseDocument.kdbTree.root;
     [navigationController pushViewController:groupViewController animated:YES];
     [groupViewController release];
 }
@@ -254,8 +238,8 @@ static NSStringEncoding passwordEncodingValues[] = {
     // Close any open database views
     [navigationController popToRootViewControllerAnimated:NO];
     
-    [databaseDocument release];
-    databaseDocument = nil;
+    [_databaseDocument release];
+    _databaseDocument = nil;
 }
 
 - (void)deleteAllData {
@@ -263,9 +247,9 @@ static NSStringEncoding passwordEncodingValues[] = {
     [self closeDatabase];
     
     // Reset some settings
-    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
-    [userDefaults setInteger:0 forKey:@"pinFailedAttempts"];
-    [userDefaults setBool:NO forKey:@"pinEnabled"];
+    AppSettings *appSettings = [AppSettings sharedInstance];
+    [appSettings setPinFailedAttempts:0];
+    [appSettings setPinEnabled:NO];
     
     // Delete the PIN from the keychain
     [SFHFKeychainUtils deleteItemForUsername:@"PIN" andServiceName:@"com.jflan.MiniKeePass.pin" error:nil];
@@ -284,11 +268,6 @@ static NSStringEncoding passwordEncodingValues[] = {
     for (NSString *file in files) {
         [fileManager removeItemAtPath:[documentsDirectory stringByAppendingPathComponent:file] error:nil];
     }
-}
-
-- (NSStringEncoding)getPasswordEncoding {
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    return passwordEncodingValues[[userDefaults integerForKey:@"passwordEncoding"]];
 }
 
 - (UIImage *)loadImage:(NSUInteger)index {
@@ -310,14 +289,15 @@ static NSStringEncoding passwordEncodingValues[] = {
         return;
     }
     
+    AppSettings *appSettings = [AppSettings sharedInstance];
+
     // Check if the clearing the clipboard is enabled
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    if ([userDefaults boolForKey:@"clearClipboardEnabled"]) {
+    if ([appSettings clearClipboardEnabled]) {
         // Get the "version" of the pasteboard contents
         NSInteger pasteboardVersion = pasteboard.changeCount;
 
         // Get the clear clipboard timeout (in seconds)
-        NSInteger clearClipboardTimeout = clearClipboardTimeoutValues[[userDefaults integerForKey:@"clearClipboardTimeout"]];
+        NSInteger clearClipboardTimeout = [appSettings clearClipboardTimeout];
         
         // Initiate a background task
         // FIXME there's a bug here that bgTask is being passed into the block being used to create bgTask
@@ -353,14 +333,14 @@ static NSStringEncoding passwordEncodingValues[] = {
     UINavigationController *settingsNavController = [[UINavigationController alloc] initWithRootViewController:settingsViewController];
     settingsNavController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
     
-    [window.rootViewController presentModalViewController:settingsNavController animated:YES];
+    [self.window.rootViewController presentModalViewController:settingsNavController animated:YES];
 
     [settingsViewController release];
     [settingsNavController release];
 }
 
 - (void)dismissSettingsView {
-    [window.rootViewController dismissModalViewControllerAnimated:YES];
+    [self.window.rootViewController dismissModalViewControllerAnimated:YES];
 }
 
 - (void)showActionSheet:(UIActionSheet *)actionSheet {
@@ -372,7 +352,7 @@ static NSStringEncoding passwordEncodingValues[] = {
     myActionSheetDelegate = actionSheet.delegate;
     
     actionSheet.delegate = self;
-    [actionSheet showInView:window];
+    [actionSheet showInView:self.window.rootViewController.view];
     [actionSheet release];
 }
 

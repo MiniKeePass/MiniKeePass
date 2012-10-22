@@ -17,7 +17,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface FilesInfoView : UIView {
-}
+@interface FilesInfoView : UIView
 
 @end
