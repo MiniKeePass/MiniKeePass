@@ -52,7 +52,6 @@
     
     self.tableView.allowsSelectionDuringEditing = YES;
     if ([self.tableView respondsToSelector:@selector(setAllowsMultipleSelectionDuringEditing:)]) {
-        self.tableView.allowsMultipleSelectionDuringEditing = YES;
         self.selectMultipleWhileEditing = YES;
     } else {
         self.selectMultipleWhileEditing = NO;
@@ -357,7 +356,19 @@
 }
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated {
+    if (self.selectMultipleWhileEditing) {
+        self.tableView.allowsMultipleSelectionDuringEditing = editing;
+    }
+    
     [super setEditing:editing animated:animated];
+    
+    // If any cell is showing the delete confirmation swipe gesture was used, don't configure toolbar
+    NSArray *cells = self.tableView.visibleCells;
+    for (UITableViewCell *cell in cells) {
+        if (cell.showingDeleteConfirmation) {
+            return;
+        }
+    }
     
     if (editing && self.selectMultipleWhileEditing) {
         self.deleteButtonTitle = NSLocalizedString(@"Delete", nil);
