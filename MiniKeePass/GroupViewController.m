@@ -353,6 +353,31 @@
     [self renameItemAtIndexPath:[self.tableView.indexPathsForSelectedRows objectAtIndex:0]];
 }
 
+- (void)setSeachBar:(UISearchBar *)searchBar enabled:(BOOL)enabled {
+    static UIView *overlayView = nil;
+    if (overlayView == nil) {
+        overlayView = [[UIView alloc] initWithFrame:searchBar.frame];
+        overlayView.backgroundColor = [UIColor darkGrayColor];
+        overlayView.alpha = 0.0;
+    }
+
+    searchBar.userInteractionEnabled = enabled;
+    if (enabled) {
+        [UIView animateWithDuration:0.3 animations:^{
+            overlayView.alpha = 0.0;
+        } completion:^(BOOL finished) {
+            [overlayView removeFromSuperview];
+            [overlayView release];
+            overlayView = nil;
+        }];
+    } else {
+        [searchBar addSubview:overlayView];
+        [UIView animateWithDuration:0.3 animations:^{
+            overlayView.alpha = 0.25;
+        }];
+    }
+}
+
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated {
     NSLog(@"setEditing: %d", editing);
     if (self.selectMultipleWhileEditing) {
@@ -371,6 +396,9 @@
     }
     
     if (editing && self.selectMultipleWhileEditing) {
+        [self.navigationItem setHidesBackButton:YES animated:YES];
+        [self setSeachBar:self.searchDisplayController.searchBar enabled:NO];
+
         self.deleteButtonTitle = NSLocalizedString(@"Delete", nil);
         self.deleteButton = [[[UIBarButtonItem alloc] initWithTitle:self.deleteButtonTitle style:UIBarButtonItemStyleBordered target:self action:@selector(deleteSelectedItems)] autorelease];
         self.deleteButton.tintColor = [UIColor redColor];
@@ -391,6 +419,9 @@
         
         self.toolbarItems = @[self.deleteButton, spacer, self.moveButton, spacer, self.renameButton];
     } else {
+        [self.navigationItem setHidesBackButton:NO animated:YES];
+        [self setSeachBar:self.searchDisplayController.searchBar enabled:YES];
+
         self.toolbarItems = self.standardToolbarItems;
     }
 }
