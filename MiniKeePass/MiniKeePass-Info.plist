@@ -9,13 +9,13 @@
 	<key>CFBundleDocumentTypes</key>
 	<array>
 		<dict>
-			<key>CFBundleTypeName</key>
-			<string>KeePass 2.x Database</string>
 			<key>CFBundleTypeIconFiles</key>
 			<array>
 				<string>icon.png</string>
 				<string>icon@2x.png</string>
 			</array>
+			<key>CFBundleTypeName</key>
+			<string>KeePass 2.x Database</string>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>LSHandlerRank</key>
@@ -26,13 +26,13 @@
 			</array>
 		</dict>
 		<dict>
-			<key>CFBundleTypeName</key>
-			<string>KeePass 1.x Database</string>
 			<key>CFBundleTypeIconFiles</key>
 			<array>
 				<string>icon.png</string>
 				<string>icon@2x.png</string>
 			</array>
+			<key>CFBundleTypeName</key>
+			<string>KeePass 1.x Database</string>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>LSHandlerRank</key>
@@ -43,13 +43,13 @@
 			</array>
 		</dict>
 		<dict>
-			<key>CFBundleTypeName</key>
-			<string>KeePass Keyfile</string>
 			<key>CFBundleTypeIconFiles</key>
 			<array>
 				<string>icon.png</string>
 				<string>icon@2x.png</string>
 			</array>
+			<key>CFBundleTypeName</key>
+			<string>KeePass Keyfile</string>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>LSHandlerRank</key>
@@ -109,11 +109,11 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.3.3</string>
+	<string>1.3.4</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>1.3.3</string>
+	<string>1.3.4</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UIAppFonts</key>
