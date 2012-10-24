@@ -322,16 +322,14 @@
         if (movingGroup.parent == chosenGroup) {
             continue;
         }
-        [movingGroup.parent prepareGroupForMove:movingGroup];
-        [chosenGroup addGroup:movingGroup];
+        [movingGroup.parent moveGroup:movingGroup toGroup:chosenGroup];
         [groupsArray removeObject:movingGroup];
     }
     for (KdbEntry *movingEntry in enteriesToMove) {
         if (movingEntry.parent == chosenGroup) {
             continue;
         }
-        [movingEntry.parent prepareEntryForMove:movingEntry];
-        [chosenGroup addEntry:movingEntry];
+        [movingEntry.parent moveEntry:movingEntry toGroup:chosenGroup];
         [enteriesArray removeObject:movingEntry];
     }
     

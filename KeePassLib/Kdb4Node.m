@@ -30,20 +30,32 @@
     if (group.parent != nil) {
         DDXMLElement *root = ((Kdb4Group*)group.parent).element;
         [root removeChild:((Kdb4Group*)group).element];
-        group.parent = nil;
     }
     
     [super removeGroup:group];
+}
+
+- (void)moveGroup:(KdbGroup *)group toGroup:(KdbGroup *)toGroup {
+    [((Kdb4Group*)group).element detach];
+    [((Kdb4Entry*)toGroup).element addChild:((Kdb4Group*)group).element];
+
+    [super moveGroup:group toGroup:toGroup];
 }
 
 - (void)removeEntry:(KdbEntry*)entry {
     if (entry.parent != nil) {
         DDXMLElement *root = ((Kdb4Group*)entry.parent).element;
         [root removeChild:((Kdb4Group*)entry).element];
-        entry.parent = nil;
     }
     
     [super removeEntry:entry];
+}
+
+- (void)moveEntry:(KdbEntry *)entry toGroup:(KdbGroup *)toGroup {
+    [((Kdb4Entry*)entry).element detach];
+    [((Kdb4Entry*)toGroup).element addChild:((Kdb4Entry*)entry).element];
+
+    [super moveEntry:entry toGroup:toGroup];
 }
 
 @end
