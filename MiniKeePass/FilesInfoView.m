@@ -17,6 +17,13 @@
 
 #import "FilesInfoView.h"
 
+@interface FilesInfoView ()  {
+    UIView *containerView;
+    CGFloat containerWidth;
+    CGFloat containerHeight;
+}
+@end
+
 @implementation FilesInfoView
 
 - (id)initWithFrame:(CGRect)frame {
@@ -26,10 +33,7 @@
         self.backgroundColor = [UIColor whiteColor];
         
         CGFloat viewWidth = CGRectGetWidth(self.frame);
-        
         UIImage *image = [UIImage imageNamed:@"background"];
-        
-        CGFloat y = UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? 240.0f : 40.0f;
         
         CGFloat imageWidth = image.size.width;
         CGFloat imageHeight = image.size.height;        
@@ -56,6 +60,7 @@
         label.textColor = [UIColor grayColor];
         label.text = NSLocalizedString(@"You do not have any KeePass files available for MiniKeePass to open.", nil);
         
+        CGFloat y = UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? 240.0f : 40.0f;
         containerView = [[UIView alloc] initWithFrame:CGRectMake((viewWidth - containerWidth) / 2.0f, y, containerWidth, containerHeight)];
         containerView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
         [containerView addSubview:imageView];

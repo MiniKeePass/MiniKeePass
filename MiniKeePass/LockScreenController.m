@@ -20,41 +20,34 @@
 #import "MiniKeePassAppDelegate.h"
 #import "SFHFKeychainUtils.h"
 #import "LockScreenController.h"
+#import "AppSettings.h"
 
 #define DURATION 0.3
 
-@implementation LockScreenController
+@interface LockScreenController () {
+    PinViewController *pinViewController;
+    MiniKeePassAppDelegate *appDelegate;
+    UIViewController *previousViewController;
+}
+@end
 
-static NSInteger timeoutValues[] = {0, 30, 60, 120, 300};
-static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10, 15};
+@implementation LockScreenController
 
 - (id)init {
     self = [super init];
     if (self) {
-        UIInterfaceOrientation orientation = self.interfaceOrientation;
-
-        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {            
-            portraitColor = [[UIColor colorWithPatternImage:[UIImage imageNamed:@"Default-Portrait~ipad"]] retain];
-            landscapeColor = [[UIColor colorWithPatternImage:[UIImage imageNamed:@"Default-Landscape~ipad"]] retain];
-            lockPortraitColor = [[UIColor colorWithPatternImage:[UIImage imageNamed:@"lockPortrait~ipad"]] retain];
-            lockLandscapeColor = [[UIColor colorWithPatternImage:[UIImage imageNamed:@"lockLandscape~ipad"]] retain];
-        } else {
-            portraitColor = [[UIColor colorWithPatternImage:[UIImage imageNamed:@"lockBackground"]] retain];
-            landscapeColor = [[UIColor colorWithPatternImage:[UIImage imageNamed:@"lockBackground"]] retain];
-            lockPortraitColor = [[UIColor colorWithPatternImage:[UIImage imageNamed:@"splash"]] retain];
-            lockLandscapeColor = [[UIColor colorWithPatternImage:[UIImage imageNamed:@"splash"]] retain];
-        }
-        
         pinViewController = [[PinViewController alloc] init];
         pinViewController.delegate = self;
-        pinViewController.backgroundColor = [self lockBackgroundColorForOrientation:orientation];
 
-        self.view.backgroundColor = [self backgroundColorForOrientation:orientation];
-        
         appDelegate = (MiniKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
         
+        UIImageView *imageView = [[UIImageView alloc] initWithFrame:self.view.frame];
+        imageView.image = [[UIImage imageNamed:@"stretchme"] stretchableImageWithLeftCapWidth:0 topCapHeight:44];
+        self.view = imageView;
+        [imageView release];
+
         NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
-        [notificationCenter addObserver:self 
+        [notificationCenter addObserver:self
                                selector:@selector(applicationDidBecomeActive:)
                                    name:UIApplicationDidBecomeActiveNotification
                                  object:nil];
@@ -65,25 +58,7 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10, 15};
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [pinViewController release];
-    [portraitColor release];
-    [landscapeColor release];
     [super dealloc];
-}
-
-- (UIColor *)lockBackgroundColorForOrientation:(UIInterfaceOrientation)orientation {
-    if (UIInterfaceOrientationIsPortrait(orientation)) {
-        return lockPortraitColor;
-    } else {
-        return lockLandscapeColor;  
-    }
-}
-
-- (UIColor *)backgroundColorForOrientation:(UIInterfaceOrientation)orientation {
-    if (UIInterfaceOrientationIsPortrait(orientation)) {
-        return portraitColor;
-    } else {
-        return landscapeColor;  
-    }
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
@@ -93,15 +68,6 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10, 15};
 
 -(BOOL)pinViewControllerShouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
     return [self shouldAutorotateToInterfaceOrientation:toInterfaceOrientation];
-}
-
--(UIColor *)pinViewController:(PinViewController *)controller backgroundColorForInterfaceOrientation:(UIInterfaceOrientation)orientation {
-    return [self lockBackgroundColorForOrientation:orientation];
-}
-
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
-    self.view.backgroundColor = [self backgroundColorForOrientation:toInterfaceOrientation];
-    pinViewController.backgroundColor = [self lockBackgroundColorForOrientation:toInterfaceOrientation];
 }
 
 - (UIViewController *)frontMostViewController {
@@ -130,7 +96,7 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10, 15};
 - (void)lock {
     if (!appDelegate.locked) {
         pinViewController.textLabel.text = NSLocalizedString(@"Enter your PIN to unlock", nil);
-        [self presentModalViewController:pinViewController animated:YES];
+        [self presentModalViewController:pinViewController animated:NO];
     }
 }
 
@@ -145,17 +111,14 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10, 15};
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     // Get the time when the application last exited
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSDate *exitTime = [userDefaults valueForKey:@"exitTime"];
+    AppSettings *appSettings = [AppSettings sharedInstance];
+    NSDate *exitTime = [appSettings exitTime];
     
     // Check if the PIN is enabled
-    if ([userDefaults boolForKey:@"pinEnabled"] && exitTime != nil) {
-        // Get the lock timeout (in seconds)
-        NSInteger pinLockTimeout = timeoutValues[[userDefaults integerForKey:@"pinLockTimeout"]];
-        
+    if ([appSettings pinEnabled] && exitTime != nil) {
         // Check if it's been longer then lock timeout
         NSTimeInterval timeInterval = -[exitTime timeIntervalSinceNow];
-        if (timeInterval > pinLockTimeout) {
+        if (timeInterval > [appSettings pinLockTimeout]) {
             [self lock];
         } else {
             [self hide];
@@ -174,12 +137,12 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10, 15};
         // Hide spashscreen
         [self unlock];
     } else {
-        NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+        AppSettings *appSettings = [AppSettings sharedInstance];
         
         // Check if the PIN is valid
         if ([pin isEqualToString:validPin]) {
             // Reset the number of pin failed attempts
-            [userDefaults setInteger:0 forKey:@"pinFailedAttempts"];
+            [appSettings setPinFailedAttempts:0];
             
             // Dismiss the pin view
             [self unlock];
@@ -188,16 +151,16 @@ static NSInteger deleteOnFailureAttemptsValues[] = {3, 5, 10, 15};
             AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
             [controller clearEntry];
             
-            if (![userDefaults boolForKey:@"deleteOnFailureEnabled"]) {
+            if (![appSettings deleteOnFailureEnabled]) {
                 // Update the status message on the PIN view
                 controller.textLabel.text = NSLocalizedString(@"Incorrect PIN", nil);
             } else {
                 // Get the number of failed attempts
-                NSInteger pinFailedAttempts = [userDefaults integerForKey:@"pinFailedAttempts"];
-                [userDefaults setInteger:++pinFailedAttempts forKey:@"pinFailedAttempts"];
-                
+                NSInteger pinFailedAttempts = [appSettings pinFailedAttempts];
+                [appSettings setPinFailedAttempts:++pinFailedAttempts];
+
                 // Get the number of failed attempts before deleting
-                NSInteger deleteOnFailureAttempts = deleteOnFailureAttemptsValues[[userDefaults integerForKey:@"deleteOnFailureAttempts"]];
+                NSInteger deleteOnFailureAttempts = [appSettings deleteOnFailureAttempts];
                 
                 // Update the status message on the PIN view
                 NSInteger remainingAttempts = (deleteOnFailureAttempts - pinFailedAttempts);

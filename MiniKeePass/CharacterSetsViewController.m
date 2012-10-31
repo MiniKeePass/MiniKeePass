@@ -16,6 +16,7 @@
  */
 
 #import "CharacterSetsViewController.h"
+#import "AppSettings.h"
 
 #define NUMBER_CHARACTER_SETS    8
 
@@ -25,9 +26,8 @@
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
         self.title = NSLocalizedString(@"Character Sets", nil);
-        
-        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-        NSInteger charSets = [userDefaults integerForKey:@"pwGenCharSets"];
+
+        NSInteger charSets = [[AppSettings sharedInstance] pwGenCharSets];
         
         upperCaseSwitchCell = [[SwitchCell alloc] initWithLabel:NSLocalizedString(@"Upper Case", nil)];
         upperCaseSwitchCell.switchControl.on = charSets & CHARACTER_SET_UPPER_CASE;
@@ -95,8 +95,7 @@
         charSets |= CHARACTER_SET_BRACKETS;
     }
     
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    [userDefaults setInteger:charSets forKey:@"pwGenCharSets"];
+    [[AppSettings sharedInstance] setPwGenCharSets:charSets];
     
     [super viewWillDisappear:animated];
 }

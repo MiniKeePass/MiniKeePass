@@ -19,15 +19,7 @@
 #import "PinViewController.h"
 #import "AutorotatingViewController.h"
 
-@interface LockScreenController : UIViewController <PinViewControllerDelegate> {
-    PinViewController *pinViewController;
-    MiniKeePassAppDelegate *appDelegate;
-    UIViewController *previousViewController;
-    UIColor *landscapeColor;
-    UIColor *portraitColor;
-    UIColor *lockLandscapeColor;
-    UIColor *lockPortraitColor;
-}
+@interface LockScreenController : UIViewController <PinViewControllerDelegate>
 
 + (void)present;
 

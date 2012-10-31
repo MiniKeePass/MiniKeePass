@@ -20,22 +20,14 @@
 
 @protocol PinViewControllerDelegate;
 
-@interface PinViewController : UIViewController <UITextFieldDelegate> {
-    UITextField *textField;
-    NSArray *pinTextFields;
-    UILabel *textLabel;
-    UIToolbar *topBar;
-    UIToolbar *pinBar;
-    id<PinViewControllerDelegate> delegate;
-}
+@interface PinViewController : UIViewController <UITextFieldDelegate>
 
 - (id)initWithText:(NSString*)text;
 - (void)clearEntry;
 - (void)keyboardDidHide;
 
 @property (nonatomic, copy) UILabel *textLabel;
-@property (nonatomic, copy) UIColor *backgroundColor;
-@property (nonatomic, retain) id<PinViewControllerDelegate> delegate;
+@property (nonatomic, assign) id<PinViewControllerDelegate> delegate;
 
 @end
 
@@ -44,5 +36,4 @@
 - (BOOL)pinViewControllerShouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation;
 @optional
 - (void)pinViewControllerDidShow:(PinViewController*)controller;
-- (UIColor *)pinViewController:(PinViewController*)controller backgroundColorForInterfaceOrientation:(UIInterfaceOrientation)orientation;
 @end

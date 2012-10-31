@@ -18,6 +18,7 @@
 #import "GroupViewController.h"
 #import "EntryViewController.h"
 #import "EditGroupViewController.h"
+#import "AppSettings.h"
 
 #define GROUPS_SECTION  0
 #define ENTRIES_SECTION 1
@@ -80,8 +81,9 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    if (sortingEnabled != [[NSUserDefaults standardUserDefaults] boolForKey:@"sortAlphabetically"]) {
-        sortingEnabled = [[NSUserDefaults standardUserDefaults] boolForKey:@"sortAlphabetically"];
+    BOOL sortAlphabetically = [[AppSettings sharedInstance] sortAlphabetically];
+    if (sortingEnabled != sortAlphabetically) {
+        sortingEnabled = sortAlphabetically;
         [self updateLocalArrays];
         [self.tableView reloadData];
     }
