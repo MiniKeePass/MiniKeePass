@@ -47,12 +47,12 @@
 }
 
 - (void)dealloc {
-    [super dealloc];
     [_textField release];
     _textFieldCellDelegate = nil;
     
     [_accessoryButton release];
     [_editAccessoryButton release];
+    [super dealloc];
 }
 
 - (void)setAccessoryButton:(UIButton *)accessoryButton {
