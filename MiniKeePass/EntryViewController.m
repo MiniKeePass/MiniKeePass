@@ -76,6 +76,7 @@
         urlCell.textField.enabled = NO;
         urlCell.textFieldCellDelegate = self;
         urlCell.textField.returnKeyType = UIReturnKeyDone;
+        [urlCell.accessoryButton addTarget:self action:@selector(openUrlPressed) forControlEvents:UIControlEventTouchUpInside];
         
         defaultCells = [@[titleCell, usernameCell, passwordCell, urlCell] retain];
         
@@ -455,6 +456,17 @@
 
 - (void)passwordGeneratorViewController:(PasswordGeneratorViewController *)controller password:(NSString *)password {
     passwordCell.textField.text = password;
+}
+
+- (void)openUrlPressed {
+    NSString *text = urlCell.textField.text;
+    
+    NSURL *url = [NSURL URLWithString:text];
+    if (url.scheme == nil) {
+        url = [NSURL URLWithString:[@"http://" stringByAppendingString:text]];
+    }
+    
+    [[UIApplication sharedApplication] openURL:url];
 }
 
 @end

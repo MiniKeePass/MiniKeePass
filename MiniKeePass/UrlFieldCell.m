@@ -27,6 +27,12 @@
         self.textField.autocorrectionType = UITextAutocorrectionTypeNo;
         self.textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
         self.textField.keyboardType = UIKeyboardTypeURL;
+        
+        self.accessoryButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        self.accessoryButton.frame = CGRectMake(0.0, 0.0, 40, 40);
+        [self.accessoryButton setImage:[UIImage imageNamed:@"arrow"] forState:UIControlStateNormal];
+        
+        self.accessoryView = self.accessoryButton;
     }
     return self;
 }
