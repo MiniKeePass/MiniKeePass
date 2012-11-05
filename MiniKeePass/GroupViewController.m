@@ -401,7 +401,7 @@
 
         self.deleteButtonTitle = NSLocalizedString(@"Delete", nil);
         self.deleteButton = [[[UIBarButtonItem alloc] initWithTitle:self.deleteButtonTitle style:UIBarButtonItemStyleBordered target:self action:@selector(deleteSelectedItems)] autorelease];
-        self.deleteButton.tintColor = [UIColor redColor];
+        self.deleteButton.tintColor = [UIColor colorWithRed:0.8 green:0.15 blue:0.15 alpha:1];
         self.deleteButton.width = 97;
         self.deleteButton.enabled = NO;
         
