@@ -310,11 +310,11 @@
                 case 0:
                     return titleCell;
                 case 1:
-                    if (tableView.isEditing || usernameCell.textField.text.length > 0) {
+                    if ((tableView.isEditing || usernameCell.textField.text.length > 0) && [usernameCell superview] == nil) {
                         return usernameCell;
                     }
                 case 2:
-                    if (tableView.isEditing || passwordCell.textField.text.length > 0) {
+                    if ((tableView.isEditing || passwordCell.textField.text.length > 0) && [passwordCell superview] == nil) {
                         return passwordCell;
                     }
                 case 3:
@@ -341,17 +341,48 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    tableView.allowsSelection = NO;
     UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
     TextFieldCell *cell = (TextFieldCell *)[tableView cellForRowAtIndexPath:indexPath];
     pasteboard.string = cell.textField.text;
     
-    ATMHud *hud = [[ATMHud alloc] initWithDelegate:self];
-    [hud setCaption:NSLocalizedString(@"Coppied", nil)];
+    // Figure out frame for copied label
+    NSString *copiedString = NSLocalizedString(@"Coppied", nil);
+    UIFont *font = [UIFont boldSystemFontOfSize:18];
+    CGSize size = [copiedString sizeWithFont:font];
+    CGFloat x = (cell.frame.size.width - size.width) / 2.0;
+    CGFloat y = (cell.frame.size.height - size.height) / 2.0;
     
-    [appDelegate.window addSubview:hud.view];
-    [hud show];
-    [hud hideAfter:1.5];
-    [hud release];
+    // Contruct label
+    UILabel *copiedLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, y, size.width, size.height)];
+    copiedLabel.text = copiedString;
+    copiedLabel.font = font;
+    copiedLabel.textAlignment = UITextAlignmentCenter;
+    copiedLabel.textColor = [UIColor whiteColor];
+    copiedLabel.backgroundColor = [UIColor clearColor];
+
+    // Put cell into "Copied" state
+    [cell addSubview:copiedLabel];
+    cell.textField.alpha = 0;
+    cell.textLabel.alpha = 0;
+    cell.accessoryView.hidden = YES;
+
+    int64_t delayInSeconds = 1.0;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        [UIView animateWithDuration:0.5 animations:^{
+            // Return to normal state
+            copiedLabel.alpha = 0;
+            cell.textField.alpha = 1;
+            cell.textLabel.alpha = 1;
+            [cell setSelected:NO animated:YES];
+        } completion:^(BOOL finished) {
+            cell.accessoryView.hidden = NO;
+            [copiedLabel removeFromSuperview];
+            [copiedLabel release];
+            tableView.allowsSelection = YES;
+        }];
+    });
 }
 
 #pragma mark - Image related
