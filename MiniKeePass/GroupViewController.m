@@ -28,10 +28,10 @@
 #define SORTED_INSERTION_FAILED NSUIntegerMax
 
 @interface GroupViewController ()
-- (void) updateLocalArrays;
-- (NSUInteger) addObject:object toArray:array;
+- (void)updateLocalArrays;
+- (NSUInteger)addObject:object toArray:array;
 - (NSUInteger)updatePositionOfObjectAtIndex:(NSUInteger)index inArray:(NSMutableArray *)array;
-- (NSUInteger) updatePositionOfObject:object inArray:array;
+- (NSUInteger)updatePositionOfObject:object inArray:array;
 
 @property (nonatomic, assign) BOOL selectMultipleWhileEditing;
 @property (nonatomic, retain) NSArray *standardToolbarItems;
@@ -354,9 +354,11 @@
 }
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated {
+    NSLog(@"setEditing: %d", editing);
     if (self.selectMultipleWhileEditing) {
         self.tableView.allowsMultipleSelectionDuringEditing = editing;
     }
+    NSLog(@"multiple? %d", self.tableView.allowsMultipleSelectionDuringEditing);
     
     [super setEditing:editing animated:animated];
     
@@ -805,7 +807,7 @@
     }
 }
 
-- (NSUInteger) addObject:object toArray:array {
+- (NSUInteger)addObject:object toArray:array {
     NSUInteger index;
     if (sortingEnabled) {
         NSComparisonResult (^comparator) (id obj1, id obj2);
@@ -850,7 +852,7 @@
     return newIndex;
 }
 
-- (NSUInteger) updatePositionOfObject:object inArray:array {
+- (NSUInteger)updatePositionOfObject:object inArray:array {
     return [self updatePositionOfObjectAtIndex:[array indexOfObject:object] inArray:array];
 }
 
