@@ -26,10 +26,11 @@
 
 - (NSData*)readData:(NSUInteger)length {
     uint8_t *bytes = calloc(sizeof(uint8_t), length);
+    
     [self read:bytes length:length];
-
-    id data = [NSData dataWithBytes:bytes length:length];
+    NSData *data = [NSData dataWithBytes:bytes length:length];
     free(bytes);
+
     return data;
 }
 
