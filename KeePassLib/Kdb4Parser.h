@@ -28,4 +28,7 @@
 - (id)initWithRandomStream:(RandomStream*)cryptoRandomStream;
 - (Kdb4Tree*)parse:(InputStream*)inputStream;
 
+- (void)parseTimesElement:(DDXMLElement *)timesElement intoGroup:(Kdb4Group *)group;
+- (void)parseTimesElement:(DDXMLElement *)timesElement intoEntry:(Kdb4Entry *)entry;
+
 @end
