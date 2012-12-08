@@ -18,15 +18,28 @@
 #import <Foundation/Foundation.h>
 #import "FormViewController.h"
 
-@interface DatabaseManager : NSObject <FormViewControllerDelegate> {
-    NSString *selectedFilename;
-    BOOL animated;
-}
+typedef NS_ENUM(NSInteger, DatabaseType) {
+    DatabaseTypeLocal,
+    DatabaseTypeDropbox
+};
 
-@property (nonatomic, copy) NSString *selectedFilename;
+@interface DatabaseFile : NSObject
+@property (nonatomic, assign) DatabaseType type;
+@property (nonatomic, copy) NSString *path;
+@property (nonatomic, retain) NSDate *modificationDate;
+@property (nonatomic, readonly) NSString *filename;
+
++ (DatabaseFile*)databaseWithType:(DatabaseType)type andPath:(NSString *)path;
++ (DatabaseFile*)databaseWithType:(DatabaseType)type path:(NSString *)path andModificationDate:(NSDate*)date;
+
+@end
+
+@interface DatabaseManager : NSObject <FormViewControllerDelegate>
+
+@property (nonatomic, retain) DatabaseFile *selectedDatabaseFile;
 @property (nonatomic) BOOL animated;
 
 + (DatabaseManager*)sharedInstance;
-- (void)openDatabaseDocument:(NSString*)path animated:(BOOL)newAnimated;
+- (void)openDatabaseDocument:(DatabaseFile*)document animated:(BOOL)newAnimated;
 
 @end

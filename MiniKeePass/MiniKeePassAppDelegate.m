@@ -136,7 +136,8 @@
         [self closeDatabase];
         
         // Open the file
-        [[DatabaseManager sharedInstance] openDatabaseDocument:self.fileToOpen animated:NO];
+        DatabaseFile *file = [DatabaseFile databaseWithType:DatabaseTypeLocal andPath:self.fileToOpen];
+        [[DatabaseManager sharedInstance] openDatabaseDocument:file animated:NO];
         
         self.fileToOpen = nil;
     }

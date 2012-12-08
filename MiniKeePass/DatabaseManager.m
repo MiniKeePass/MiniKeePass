@@ -21,10 +21,29 @@
 #import "PasswordViewController.h"
 #import "AppSettings.h"
 
-@implementation DatabaseManager
+@implementation DatabaseFile
 
-@synthesize selectedFilename;
-@synthesize animated;
++ (DatabaseFile*)databaseWithType:(DatabaseType)type path:(NSString *)path andModificationDate:(NSDate *)date {
+    DatabaseFile *database = [[[DatabaseFile alloc] init] autorelease];
+    database.type = type;
+    database.path = path;
+    database.modificationDate = date;
+    // filename is generated
+
+    return database;
+}
+
++ (DatabaseFile*)databaseWithType:(DatabaseType)type andPath:(NSString *)path {
+    return [DatabaseFile databaseWithType:type path:path andModificationDate:nil];
+}
+
+- (NSString *)filename {
+    return [self.path lastPathComponent];
+}
+
+@end
+
+@implementation DatabaseManager
 
 static DatabaseManager *sharedInstance;
 
@@ -41,42 +60,38 @@ static DatabaseManager *sharedInstance;
 }
 
 - (void)dealloc {
-    [selectedFilename release];
+    [_selectedDatabaseFile release];
     [super dealloc];
 }
 
-- (void)openDatabaseDocument:(NSString*)filename animated:(BOOL)newAnimated {
+- (void)openDatabaseDocument:(DatabaseFile*)document animated:(BOOL)newAnimated {
     BOOL databaseLoaded = NO;
     
-    self.selectedFilename = filename;
+    self.selectedDatabaseFile = document;
     self.animated = newAnimated;
     
     // Get the application delegate
     MiniKeePassAppDelegate *appDelegate = (MiniKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
-    
-    // Get the documents directory
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
-    
+
+    // Create key for retreiving password
+    NSString *passwordKey = document.type == DatabaseTypeLocal ? document.filename : document.path;
+
     // Load the password and keyfile from the keychain
-    NSString *password = [SFHFKeychainUtils getPasswordForUsername:selectedFilename andServiceName:@"com.jflan.MiniKeePass.passwords" error:nil];
-    NSString *keyFile = [SFHFKeychainUtils getPasswordForUsername:selectedFilename andServiceName:@"com.jflan.MiniKeePass.keyfiles" error:nil];
+    NSString *password = [SFHFKeychainUtils getPasswordForUsername:passwordKey andServiceName:@"com.jflan.MiniKeePass.passwords" error:nil];
+    NSString *keyFile = [SFHFKeychainUtils getPasswordForUsername:passwordKey andServiceName:@"com.jflan.MiniKeePass.keyfiles" error:nil];
     
     // Try and load the database with the cached password from the keychain
     if (password != nil || keyFile != nil) {
-        // Get the absolute path to the database
-        NSString *path = [documentsDirectory stringByAppendingPathComponent:selectedFilename];
-        
         // Get the absolute path to the keyfile
         NSString *keyFilePath = nil;
         if (keyFile != nil) {
-            keyFilePath = [documentsDirectory stringByAppendingPathComponent:keyFile];
+            keyFilePath = [[document.path stringByDeletingLastPathComponent] stringByAppendingPathComponent:keyFile];
         }
         
         // Load the database
         DatabaseDocument *dd = [[DatabaseDocument alloc] init];
         @try {
-            [dd open:path password:password keyFile:keyFilePath];
+            [dd open:document.path password:password keyFile:keyFilePath];
             
             databaseLoaded = YES;
             
@@ -92,11 +107,11 @@ static DatabaseManager *sharedInstance;
     // Prompt the user for the password if we haven't loaded the database yet
     if (!databaseLoaded) {
         // Prompt the user for a password
-        PasswordViewController *passwordViewController = [[PasswordViewController alloc] initWithFilename:filename];
+        PasswordViewController *passwordViewController = [[PasswordViewController alloc] initWithFilename:document.filename];
         passwordViewController.delegate = self;
         
-        // Create a defult keyfile name from the database name
-        keyFile = [[filename stringByDeletingPathExtension] stringByAppendingPathExtension:@"key"];
+        // Create a default keyfile name from the database name
+        keyFile = [[document.filename stringByDeletingPathExtension] stringByAppendingPathExtension:@"key"];
         
         // Select the keyfile if it's in the list
         NSInteger index = [passwordViewController.keyFileCell.choices indexOfObject:keyFile];
@@ -108,7 +123,7 @@ static DatabaseManager *sharedInstance;
         
         UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:passwordViewController];
         
-        [appDelegate.window.rootViewController presentModalViewController:navigationController animated:animated];
+        [appDelegate.window.rootViewController presentModalViewController:navigationController animated:self.animated];
         
         [navigationController release];
         [passwordViewController release];
@@ -129,10 +144,6 @@ static DatabaseManager *sharedInstance;
     
     // Check if the OK button was pressed
     if (button == FormViewControllerButtonOk) {
-        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-        NSString *documentsDirectory = [paths objectAtIndex:0];
-        NSString *path = [documentsDirectory stringByAppendingPathComponent:selectedFilename];
-        
         // Get the password
         NSString *password = passwordViewController.passwordTextField.text;
         if ([password isEqualToString:@""]) {
@@ -157,13 +168,18 @@ static DatabaseManager *sharedInstance;
         DatabaseDocument *dd = [[DatabaseDocument alloc] init];
         @try {
             // Open the database
-            [dd open:path password:password keyFile:keyFilePath];
+            [dd open:self.selectedDatabaseFile.path password:password keyFile:keyFilePath];
             
             // Store the password in the keychain
             if ([[AppSettings sharedInstance] rememberPasswordsEnabled]) {
+
+                // Create key for retreiving password
+                DatabaseFile *document = self.selectedDatabaseFile;
+                NSString *passwordKey = document.type == DatabaseTypeLocal ? document.filename : document.path;
+
                 NSError *error;
-                [SFHFKeychainUtils storeUsername:selectedFilename andPassword:password forServiceName:@"com.jflan.MiniKeePass.passwords" updateExisting:YES error:&error];
-                [SFHFKeychainUtils storeUsername:selectedFilename andPassword:keyFile forServiceName:@"com.jflan.MiniKeePass.keyfiles" updateExisting:YES error:&error];
+                [SFHFKeychainUtils storeUsername:passwordKey andPassword:password forServiceName:@"com.jflan.MiniKeePass.passwords" updateExisting:YES error:&error];
+                [SFHFKeychainUtils storeUsername:passwordKey andPassword:keyFile forServiceName:@"com.jflan.MiniKeePass.keyfiles" updateExisting:YES error:&error];
             }
             
             // Load the database after a short delay so the push animation is visible

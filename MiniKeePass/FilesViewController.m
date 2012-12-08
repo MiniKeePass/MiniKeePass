@@ -135,28 +135,32 @@ enum {
     
     // Strip out all the directories
     NSMutableArray *files = [[NSMutableArray alloc] init];
-    for (NSString *file in dirContents) {
-        if (![file hasPrefix:@"."]) {
-            NSString *path = [documentsDirectory stringByAppendingPathComponent:file];
-            
+    for (NSString *filename in dirContents) {
+        if (![filename hasPrefix:@"."]) {
+            NSString *path = [documentsDirectory stringByAppendingPathComponent:filename];
             BOOL dir = NO;
             [fileManager fileExistsAtPath:path isDirectory:&dir];
             if (!dir) {
-                [files addObject:file];
+                // Get the file's modification date
+                NSDate *modificationDate = [[fileManager attributesOfItemAtPath:path error:nil] fileModificationDate];
+                DatabaseFile *database = [DatabaseFile databaseWithType:DatabaseTypeLocal path:path andModificationDate:modificationDate];
+                [files addObject:database];
             }
         }
     }
     
     // Sort the list of files
-    [files sortUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
+    [files sortUsingComparator:^NSComparisonResult(DatabaseFile *file1, DatabaseFile *file2) {
+        return [file1.filename localizedCaseInsensitiveCompare:file2.filename];
+    }];
     
     // Filter the list of files into everything ending with .kdb or .kdbx
-    NSArray *databaseFilenames = [files filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"(self ENDSWITH[c] '.kdb') OR (self ENDSWITH[c] '.kdbx')"]];
+    NSArray *databaseFilenames = [files filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"(self.filename ENDSWITH[c] '.kdb') OR (self.filename ENDSWITH[c] '.kdbx')"]];
     
     // Filter the list of files into everything not ending with .kdb or .kdbx
-    NSArray *keyFilenames = [files filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"!((self ENDSWITH[c] '.kdb') OR (self ENDSWITH[c] '.kdbx'))"]];
+    NSArray *keyFilenames = [files filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"!((self.filename ENDSWITH[c] '.kdb') OR (self.filename ENDSWITH[c] '.kdbx'))"]];
     [files release];
-    
+
     databaseFiles = [[NSMutableArray arrayWithArray:databaseFilenames] retain];
     keyFiles = [[NSMutableArray arrayWithArray:keyFilenames] retain];
 }
@@ -212,6 +216,7 @@ enum {
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *CellIdentifier = @"Cell";
     NSString *filename;
+    DatabaseFile *databaseFile;
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
@@ -223,8 +228,8 @@ enum {
     switch (indexPath.section) {
         case SECTION_DATABASE:
             if (indexPath.row < localFiles) {
-                filename = [databaseFiles objectAtIndex:indexPath.row];
-                cell.textLabel.text = filename;
+                databaseFile = [databaseFiles objectAtIndex:indexPath.row];
+                cell.textLabel.text = databaseFile.filename;
                 cell.accessoryView = nil;
             } else {
                 DBMetadata *file = [dropboxFiles objectAtIndex:indexPath.row - localFiles];
@@ -246,22 +251,13 @@ enum {
             break;
     }
 
-    // Retrieve the Document directory
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
-    NSString *path = [documentsDirectory stringByAppendingPathComponent:filename];
-
-    // Get the file's modification date
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSDate *modificationDate = [[fileManager attributesOfItemAtPath:path error:nil] fileModificationDate];
-
     // Format the last modified time as the subtitle of the cell
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateStyle:NSDateFormatterShortStyle];
     [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
     cell.detailTextLabel.text = [NSString stringWithFormat:@"%@: %@",
                                  NSLocalizedString(@"Last Modified", nil),
-                                 [dateFormatter stringFromDate:modificationDate]];
+                                 [dateFormatter stringFromDate:databaseFile.modificationDate]];
     [dateFormatter release];
 
     return cell;
@@ -277,8 +273,21 @@ enum {
                 if (indexPath.row < localFiles) {
                     [[DatabaseManager sharedInstance] openDatabaseDocument:[databaseFiles objectAtIndex:indexPath.row] animated:YES];
                 } else {
-                    // TODO load the dropbox file
-                    [tableView cellForRowAtIndexPath:indexPath].selected = NO;
+                    DBMetadata *file = [dropboxFiles objectAtIndex:indexPath.row - localFiles];
+                    NSString *filename = file.filename;
+                    NSString *remotePath = [[[AppSettings sharedInstance] dropboxDirectory] stringByAppendingPathComponent:filename];
+
+                    NSArray *paths  = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+                    NSString *localDir = [NSString pathWithComponents:@[[paths objectAtIndex:0], @"Dropbox"]];
+
+                    // Make a subdir under the cache for the Dropbox files
+                    NSFileManager *fileManager = [NSFileManager defaultManager];
+                    if (![fileManager fileExistsAtPath:localDir]) {
+                        [fileManager createDirectoryAtPath:localDir withIntermediateDirectories:YES attributes:nil error:nil];
+                    }
+
+                    [restClient loadFile:remotePath intoPath:[localDir stringByAppendingPathComponent:filename]];
+                    [tableView deselectRowAtIndexPath:indexPath animated:YES];
                 }
             } else {
                 TextEntryController *textEntryController = [[TextEntryController alloc] initWithStyle:UITableViewStyleGrouped];
@@ -510,15 +519,45 @@ enum {
 }
 
 - (void) restClient:(DBRestClient *)client loadedMetadata:(DBMetadata *)metadata {
-    [dropboxFiles removeAllObjects];
+//    [self.tableView beginUpdates];
+
+    if (dropboxFiles == nil) {
+        dropboxFiles = [[NSMutableArray alloc] initWithCapacity:[[metadata contents] count]];
+    }
+
+    int index = 0;
+    int tableIndex = [databaseFiles count];
+
     for (DBMetadata *file in [metadata contents]) {
         NSURL *fileUrl = [NSURL fileURLWithPath:file.path];
         NSString *extension = fileUrl.pathExtension;
+
         if ([extension isEqualToString:@"kdb"] || [extension isEqualToString:@"kdbx"]) {
-            [dropboxFiles addObject:file];
+
+            if (index < [dropboxFiles count]) {
+
+                DBMetadata *currentFile = [dropboxFiles objectAtIndex:index];
+
+                if (file.filename != currentFile.filename) {
+
+                    [databaseFiles replaceObjectAtIndex:index withObject:file];
+                    [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:tableIndex inSection:0]] withRowAnimation:UITableViewScrollPositionMiddle];
+
+                }
+            } else {
+                [dropboxFiles addObject:file];
+                [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:tableIndex inSection:0]] withRowAnimation:UITableViewRowAnimationTop];
+            }
         }
+        index++;
+        tableIndex++;
     }
-    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
+//    [self.tableView endUpdates];
+}
+
+- (void)restClient:(DBRestClient *)client loadedFile:(NSString *)destPath {
+    DatabaseFile *file = [DatabaseFile databaseWithType:DatabaseTypeDropbox andPath:destPath];
+    [[DatabaseManager sharedInstance] openDatabaseDocument:file animated:YES];
 }
 
 @end
