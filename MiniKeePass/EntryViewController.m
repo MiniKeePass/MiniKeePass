@@ -151,6 +151,13 @@
 }
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated {
+    if (titleCell.textField.text.length <= 0) {
+        NSString *title = NSLocalizedString(@"Title cannot be empty", nil);
+        UIAlertView  *alertView = [[[UIAlertView alloc] initWithTitle:title message:nil delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil] autorelease];
+        [alertView show];
+        return;
+    }
+
     [super setEditing:editing animated:animated];
     
     // Save the database or reset the entry
