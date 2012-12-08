@@ -188,7 +188,7 @@
         titleCell.imageButton.adjustsImageWhenHighlighted = YES;
         canceled = NO;
         
-        [self.tableView insertRowsAtIndexPaths:paths withRowAnimation:UITableViewRowAnimationAutomatic];
+        [self.tableView insertRowsAtIndexPaths:paths withRowAnimation:UITableViewRowAnimationTop];
     } else {
         self.navigationItem.leftBarButtonItem = nil;
         
@@ -200,7 +200,7 @@
         
         titleCell.imageButton.adjustsImageWhenHighlighted = NO;
         
-        [self.tableView deleteRowsAtIndexPaths:paths withRowAnimation:UITableViewRowAnimationAutomatic];
+        [self.tableView deleteRowsAtIndexPaths:paths withRowAnimation:UITableViewRowAnimationTop];
     }
 }
 
