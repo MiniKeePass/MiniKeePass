@@ -106,6 +106,7 @@
         pinBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         [pinBar setBarStyle:UIBarStyleBlackTranslucent];
         [pinBar addSubview:textFieldsView];
+        [textFieldsView release];
 
         textField.inputAccessoryView = pinBar;
 

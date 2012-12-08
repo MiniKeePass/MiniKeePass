@@ -84,13 +84,14 @@
     self = [super init];
     if (self) {
         self.element = e;
-        self.stringFields = [[NSMutableArray alloc] init];
+        self.stringFields = [[[NSMutableArray alloc] init] autorelease];
     }
     return self;
 }
 
 - (void)dealloc {
     [element release];
+    [stringFields release];
     [super dealloc];
 }
 

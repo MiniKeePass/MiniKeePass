@@ -210,6 +210,7 @@ int closeCallback(void *context) {
             stringField.name = key;
             stringField.value = value;
             [entry addStringField:stringField];
+            [stringField release];
         }
     }
     
