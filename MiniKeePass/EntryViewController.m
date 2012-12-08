@@ -81,6 +81,7 @@
         defaultCells = [@[titleCell, usernameCell, passwordCell, urlCell] retain];
         
         commentsCell = [[TextViewCell alloc] init];
+        commentsCell.textView.editable = NO;
     }
     return self;
 }
@@ -173,7 +174,7 @@
         
         // Save the database document
         [appDelegate.databaseDocument save];
-    } else {
+    } else if (canceled) {
         [self setEntry:self.entry];
     }
     
@@ -186,7 +187,8 @@
             [paths addObject:[NSIndexPath indexPathForRow:[defaultCells indexOfObject:cell] inSection:0]];
         }
     }
-    
+    commentsCell.textView.editable = editing;
+
     if (editing) {
         UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", nil) style:UIBarButtonItemStylePlain target:self action:@selector(cancelPressed)];
         self.navigationItem.leftBarButtonItem = cancelButton;
@@ -206,7 +208,7 @@
         [commentsCell.textView resignFirstResponder];
         
         titleCell.imageButton.adjustsImageWhenHighlighted = NO;
-        
+
         [self.tableView deleteRowsAtIndexPaths:paths withRowAnimation:UITableViewRowAnimationTop];
     }
 }
@@ -219,7 +221,7 @@
     } else if (textFieldCell == passwordCell) {
         [urlCell.textField becomeFirstResponder];
     } else if (textFieldCell == urlCell) {
-        [urlCell.textField resignFirstResponder];
+        [self setEditing:NO animated:YES];
     }
 }
 
@@ -228,7 +230,6 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 3;
 }
-
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     int filledCells = 1; // Title is always filled out
@@ -335,6 +336,7 @@
             TextFieldCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
             if (cell == nil) {
                 cell = [[[TextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+                cell.textField.enabled = NO;
             }
             cell.textLabel.text = stringField.name;
             cell.textField.text = stringField.value;
