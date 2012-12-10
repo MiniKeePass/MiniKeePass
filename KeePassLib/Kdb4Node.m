@@ -121,6 +121,9 @@
 
 - (void)addStringField:(StringField*)stringField {
     stringField.parent = self;
+    if (!stringFields) {
+        self.stringFields = [[[NSMutableArray alloc] init] autorelease];
+    }
     [stringFields addObject:stringField];
 }
 
