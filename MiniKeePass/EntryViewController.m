@@ -300,13 +300,24 @@
     switch (indexPath.section) {
         case 0:
             break;
-        case 1:
-            if (editingStyle == UITableViewCellEditingStyleInsert) {
-                Kdb4Entry *entry = (Kdb4Entry *)self.entry;
-                [entry addStringField:[StringField stringFieldWithName:@"Name" andValue:@""]];
-                [tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationBottom];
+        case 1: {
+            Kdb4Entry *entry = (Kdb4Entry *)self.entry;
+            switch (editingStyle) {
+                case UITableViewCellEditingStyleInsert:
+                    [entry addStringField:[StringField stringFieldWithName:@"Name" andValue:@""]];
+                    [tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationBottom];
+                    break;
+                case UITableViewCellEditingStyleDelete: {
+                    StringField *stringField = [entry.stringFields objectAtIndex:indexPath.row];
+                    [entry removeStringField:stringField];
+                    [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationBottom];
+                    break;
+                }
+                default:
+                    break;
             }
             break;
+        }
         case 2:
             break;
     }
@@ -369,6 +380,8 @@
             if (self.isKdb4) {
                 if (indexPath.row >= ((Kdb4Entry *)self.entry).stringFields.count) {
                     return UITableViewCellEditingStyleInsert;
+                } else {
+                    return UITableViewCellEditingStyleDelete;
                 }
             }
             return UITableViewCellEditingStyleNone;
