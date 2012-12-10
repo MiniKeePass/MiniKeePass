@@ -18,6 +18,8 @@
 #import "EntryViewController.h"
 #import "Kdb4Node.h"
 
+#define SECTION_HEADER_HEIGHT 46.0f
+
 @interface EntryViewController() {
     MiniKeePassAppDelegate *appDelegate;
     TitleFieldCell *titleCell;
@@ -96,6 +98,11 @@
     [_entry release];
 
     [super dealloc];
+}
+
+- (void)viewDidLoad {
+    self.tableView.sectionHeaderHeight = 0.0f;
+    self.tableView.sectionFooterHeight = 0.0f;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -177,9 +184,14 @@
     } else if (canceled) {
         [self setEntry:self.entry];
     }
-    
-    // Find empty text field cells
+
+    // Ensure that all updates happen at once
+    [self.tableView beginUpdates];
+
+    // Index paths for cells to be added or removed
     NSMutableArray *paths = [NSMutableArray arrayWithCapacity:3];
+
+    // Set editing state for all cells
     for (TextFieldCell *cell in defaultCells) {
         cell.textField.enabled = editing;
         if (cell.textField.text.length == 0) {
@@ -189,14 +201,33 @@
     }
     commentsCell.textView.editable = editing;
 
+    if (self.isKdb4) {
+        int count = [((Kdb4Entry *)self.entry).stringFields count];
+
+        // Reset the custom string cells
+        for (int i = 0; i < count; i++) {
+            TextFieldCell *cell = (TextFieldCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:1]];
+            cell.textField.enabled = editing;
+            [cell.textField resignFirstResponder];
+        }
+
+        if (count == 0) {
+            // Special case where Custom section was not visable
+            [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationFade];
+        } else {
+            // Add New cell added to list of cells to update
+            [paths addObject:[NSIndexPath indexPathForRow:count inSection:1]];
+        }
+    }
+
     if (editing) {
         UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", nil) style:UIBarButtonItemStylePlain target:self action:@selector(cancelPressed)];
         self.navigationItem.leftBarButtonItem = cancelButton;
         [cancelButton release];
-                
+
         titleCell.imageButton.adjustsImageWhenHighlighted = YES;
         canceled = NO;
-        
+
         [self.tableView insertRowsAtIndexPaths:paths withRowAnimation:UITableViewRowAnimationTop];
     } else {
         self.navigationItem.leftBarButtonItem = nil;
@@ -206,11 +237,14 @@
         [passwordCell.textField resignFirstResponder];
         [urlCell.textField resignFirstResponder];
         [commentsCell.textView resignFirstResponder];
-        
+
         titleCell.imageButton.adjustsImageWhenHighlighted = NO;
 
         [self.tableView deleteRowsAtIndexPaths:paths withRowAnimation:UITableViewRowAnimationTop];
     }
+
+    // Commit all updates
+    [self.tableView endUpdates];
 }
 
 - (void)textFieldCellWillReturn:(TextFieldCell *)textFieldCell {
@@ -248,12 +282,34 @@
             
             return filledCells;
         case 1:
-            return self.isKdb4 ? [((Kdb4Entry*)self.entry).stringFields count] : 0;
+            if (self.isKdb4) {
+                int numCells = [((Kdb4Entry*)self.entry).stringFields count];
+                // Additional cell for Add cell
+                return self.editing ? numCells + 1 : numCells;
+            } else {
+                return 0;
+            }
         case 2:
             return 1;
     }
     
     return 0;
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    switch (indexPath.section) {
+        case 0:
+            break;
+        case 1:
+            if (editingStyle == UITableViewCellEditingStyleInsert) {
+                Kdb4Entry *entry = (Kdb4Entry *)self.entry;
+                [entry addStringField:[StringField stringFieldWithName:@"Name" andValue:@""]];
+                [tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationBottom];
+            }
+            break;
+        case 2:
+            break;
+    }
 }
 
 # pragma mark - Table view delegate
@@ -275,8 +331,12 @@
         case 0:
             return nil;
         case 1:
-            if (self.isKdb4 ? [((Kdb4Entry*)self.entry).stringFields count] : 0) {
-                return NSLocalizedString(@"Custom Fields", nil);
+            if (self.isKdb4) {
+                if ([self tableView:tableView numberOfRowsInSection:1] > 0) {
+                    return NSLocalizedString(@"Custom Fields", nil);
+                } else {
+                    return nil;
+                }
             } else {
                 return nil;
             }
@@ -285,6 +345,16 @@
     }
     
     return nil;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+
+    // Special case for top section with no section title
+    if (section == 0) {
+        return 10.0f;
+    }
+    
+    return [self tableView:tableView titleForHeaderInSection:section] == nil ? 0.0f : SECTION_HEADER_HEIGHT;;
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -296,7 +366,12 @@
         case 0:
             return UITableViewCellEditingStyleNone;
         case 1:
-            return UITableViewCellEditingStyleDelete;
+            if (self.isKdb4) {
+                if (indexPath.row >= ((Kdb4Entry *)self.entry).stringFields.count) {
+                    return UITableViewCellEditingStyleInsert;
+                }
+            }
+            return UITableViewCellEditingStyleNone;
         case 2:
             return UITableViewCellEditingStyleNone;
     }
@@ -312,7 +387,8 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *CellIdentifier = @"Cell";
+    static NSString *TextFieldCellIdentifier = @"TextFieldCell";
+    static NSString *AddFieldCellIdentifier = @"AddFieldCell";
     switch (indexPath.section) {
         case 0: {
             switch (indexPath.row) {
@@ -331,16 +407,30 @@
             }
         }
         case 1: {
-            StringField *stringField = [((Kdb4Entry*)self.entry).stringFields objectAtIndex:indexPath.row];
-            
-            TextFieldCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-            if (cell == nil) {
-                cell = [[[TextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
-                cell.textField.enabled = NO;
+            NSArray *stringFields = ((Kdb4Entry*)self.entry).stringFields;
+            if (indexPath.row == stringFields.count) {
+                // Return "Add new..." cell
+                UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:AddFieldCellIdentifier];
+                if (cell == nil) {
+                    cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:AddFieldCellIdentifier] autorelease];
+                    cell.textLabel.textAlignment = NSTextAlignmentLeft;
+                    cell.textLabel.text = @"Add new...";
+                }
+
+                return cell;
+            } else {
+                TextFieldCell *cell = [tableView dequeueReusableCellWithIdentifier:TextFieldCellIdentifier];
+                if (cell == nil) {
+                    cell = [[[TextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:TextFieldCellIdentifier] autorelease];
+                }
+                StringField *stringField = [((Kdb4Entry*)self.entry).stringFields objectAtIndex:indexPath.row];
+
+                cell.textLabel.text = stringField.name;
+                cell.textField.text = stringField.value;
+                cell.textField.enabled = self.editing;
+
+                return cell;
             }
-            cell.textLabel.text = stringField.name;
-            cell.textField.text = stringField.value;
-            return cell;
         }
         case 2: {
             return commentsCell;

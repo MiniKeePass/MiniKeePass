@@ -81,6 +81,9 @@
 @property(nonatomic, retain) DDXMLElement *element;
 
 - (id)initWithElement:(DDXMLElement*)element;
+- (id)initWithName:(NSString *)name andValue:(NSString *)value;
+
++ (StringField *)stringFieldWithName:(NSString *)name andValue:(NSString *)value;
 
 @end
 

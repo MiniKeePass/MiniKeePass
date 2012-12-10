@@ -64,6 +64,26 @@
     return self;
 }
 
+- (id)initWithName:(NSString *)inName andValue:(NSString *)inValue {
+    DDXMLElement *tempElement;
+    DDXMLElement *rootElement = [DDXMLElement elementWithName:@"String"];
+
+    tempElement = [DDXMLElement elementWithName:@"Key" stringValue:inName];
+    [rootElement addChild:tempElement];
+
+    tempElement = [DDXMLElement elementWithName:@"Value" stringValue:inValue];
+    [rootElement addChild:tempElement];
+
+    self.name = inName;
+    self.value = inValue;
+
+    return [self initWithElement:rootElement];
+}
+
++ (StringField *)stringFieldWithName:(NSString *)inName andValue:(NSString *)inValue {
+    return [[[StringField alloc] initWithName:inName andValue:inValue] autorelease];
+}
+
 - (void)dealloc {
     [parent release];
     [name release];
@@ -93,6 +113,10 @@
     [element release];
     [stringFields release];
     [super dealloc];
+}
+
+- (NSInteger)numStringFields {
+    return [self.stringFields count];
 }
 
 - (void)addStringField:(StringField*)stringField {
