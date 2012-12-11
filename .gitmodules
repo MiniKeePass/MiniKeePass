@@ -3,4 +3,4 @@
 	url = git://github.com/samsoffes/sstoolkit.git
 [submodule "ATMHud"]
 	path = ATMHud
-	url = git://github.com/atomton/ATMHud.git
+	url = git@github.com:MiniKeePass/ATMHud.git
