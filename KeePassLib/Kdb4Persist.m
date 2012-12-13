@@ -35,7 +35,7 @@
         tree = [t retain];
         outputStream = [stream retain];
         randomStream = [cryptoRandomStream retain];
-        
+
         dateFormatter = [[NSDateFormatter alloc] init];
         dateFormatter.timeZone = [NSTimeZone timeZoneWithName:@"GMT"];
         dateFormatter.dateFormat = @"yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'";
@@ -62,10 +62,73 @@
     [outputStream write:[document XMLData]];
 }
 
+- (NSString *)persistUuid:(UUID *)uuid {
+    NSData *data = [Base64 encode:[uuid getData]];
+    return [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
+}
+
 - (DDXMLDocument *)persistTree {
+    DDXMLElement *element;
+
     DDXMLDocument *document = [[DDXMLDocument alloc] initWithXMLString:@"<KeePassFile></KeePassFile>" options:0 error:nil];
 
-    DDXMLElement *element = [DDXMLNode elementWithName:@"Root"];
+    element = [DDXMLNode elementWithName:@"Meta"];
+    [element addChild:[DDXMLNode elementWithName:@"Generator"
+                                     stringValue:tree.generator]];
+    [element addChild:[DDXMLNode elementWithName:@"DatabaseName"
+                                     stringValue:tree.databaseName]];
+    [element addChild:[DDXMLNode elementWithName:@"DatabaseNameChanged"
+                                     stringValue:[dateFormatter stringFromDate:tree.databaseNameChanged]]];
+    [element addChild:[DDXMLNode elementWithName:@"DatabaseDescription"
+                                     stringValue:tree.databaseDescription]];
+    [element addChild:[DDXMLNode elementWithName:@"DatabaseDescriptionChanged"
+                                     stringValue:[dateFormatter stringFromDate:tree.databaseDescriptionChanged]]];
+    [element addChild:[DDXMLNode elementWithName:@"DefaultUserName"
+                                     stringValue:tree.defaultUserName]];
+    [element addChild:[DDXMLNode elementWithName:@"DefaultUserNameChanged"
+                                     stringValue:[dateFormatter stringFromDate:tree.defaultUserNameChanged]]];
+    [element addChild:[DDXMLNode elementWithName:@"MaintenanceHistoryDays"
+                                     stringValue:[NSString stringWithFormat:@"%d", tree.maintenanceHistoryDays]]];
+    [element addChild:[DDXMLNode elementWithName:@"Color"
+                                     stringValue:tree.color]];
+    [element addChild:[DDXMLNode elementWithName:@"MasterKeyChanged"
+                                     stringValue:[dateFormatter stringFromDate:tree.masterKeyChanged]]];
+    [element addChild:[DDXMLNode elementWithName:@"MasterKeyChangeRec"
+                                     stringValue:[NSString stringWithFormat:@"%d", tree.masterKeyChangeRec]]];
+    [element addChild:[DDXMLNode elementWithName:@"MasterKeyChangeForce"
+                                     stringValue:[NSString stringWithFormat:@"%d", tree.masterKeyChangeForce]]];
+    [element addChild:[DDXMLNode elementWithName:@"ProtectTitle"
+                                     stringValue:tree.protectTitle ? @"True" : @"False"]];
+    [element addChild:[DDXMLNode elementWithName:@"ProtectUserName"
+                                     stringValue:tree.protectUserName ? @"True" : @"False"]];
+    [element addChild:[DDXMLNode elementWithName:@"ProtectPassword"
+                                     stringValue:tree.protectPassword ? @"True" : @"False"]];
+    [element addChild:[DDXMLNode elementWithName:@"ProtectURL"
+                                     stringValue:tree.protectUrl ? @"True" : @"False"]];
+    [element addChild:[DDXMLNode elementWithName:@"ProtectNotes"
+                                     stringValue:tree.protectNotes ? @"True" : @"False"]];
+    [element addChild:[DDXMLNode elementWithName:@"RecycleBinEnabled"
+                                     stringValue:tree.recycleBinEnabled ? @"True" : @"False"]];
+    [element addChild:[DDXMLNode elementWithName:@"RecycleBinUUID"
+                                     stringValue:[self persistUuid:tree.recycleBinUuid]]];
+    [element addChild:[DDXMLNode elementWithName:@"RecycleBinChanged"
+                                     stringValue:[dateFormatter stringFromDate:tree.recycleBinChanged]]];
+    [element addChild:[DDXMLNode elementWithName:@"EntryTemplatesGroup"
+                                     stringValue:[self persistUuid:tree.entryTemplatesGroup]]];
+    [element addChild:[DDXMLNode elementWithName:@"EntryTemplatesGroupChanged"
+                                     stringValue:[dateFormatter stringFromDate:tree.entryTemplatesGroupChanged]]];
+    [element addChild:[DDXMLNode elementWithName:@"HistoryMaxItems"
+                                     stringValue:[NSString stringWithFormat:@"%d", tree.historyMaxItems]]];
+    [element addChild:[DDXMLNode elementWithName:@"HistoryMaxSize"
+                                     stringValue:[NSString stringWithFormat:@"%d", tree.historyMaxSize]]];
+    [element addChild:[DDXMLNode elementWithName:@"LastSelectedGroup"
+                                     stringValue:[self persistUuid:tree.lastSelectedGroup]]];
+    [element addChild:[DDXMLNode elementWithName:@"LastTopVisibleGroup"
+                                     stringValue:[self persistUuid:tree.lastTopVisibleGroup]]];
+    // FIXME Binaries
+    [document.rootElement addChild:element];
+
+    element = [DDXMLNode elementWithName:@"Root"];
     [element addChild:[self persistGroup:(Kdb4Group *)tree.root]];
     [document.rootElement addChild:element];
 
@@ -76,14 +139,12 @@
     DDXMLElement *root = [DDXMLNode elementWithName:@"Group"];
 
     // Add the standard properties
-    NSData *data = [Base64 encode:[group.uuid getData]];
-    NSString *uuidString = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
     [root addChild:[DDXMLNode elementWithName:@"UUID"
-                                  stringValue:uuidString]];
+                                  stringValue:[self persistUuid:group.uuid]]];
     [root addChild:[DDXMLNode elementWithName:@"Name"
-                                     stringValue:group.name]];
+                                  stringValue:group.name]];
     [root addChild:[DDXMLNode elementWithName:@"IconID"
-                                     stringValue:[NSString stringWithFormat:@"%d", group.image]]];
+                                  stringValue:[NSString stringWithFormat:@"%d", group.image]]];
     [root addChild:[DDXMLNode elementWithName:@"Notes"
                                   stringValue:group.notes]];
 
@@ -92,9 +153,9 @@
     [timesElement addChild:[DDXMLNode elementWithName:@"LastModificationTime"
                                           stringValue:[dateFormatter stringFromDate:group.lastModificationTime]]];
     [timesElement addChild:[DDXMLNode elementWithName:@"CreationTime"
-                                             stringValue:[dateFormatter stringFromDate:group.creationTime]]];
+                                          stringValue:[dateFormatter stringFromDate:group.creationTime]]];
     [timesElement addChild:[DDXMLNode elementWithName:@"LastAccessTime"
-                                             stringValue:[dateFormatter stringFromDate:group.lastAccessTime]]];
+                                          stringValue:[dateFormatter stringFromDate:group.lastAccessTime]]];
     [timesElement addChild:[DDXMLNode elementWithName:@"ExpiryTime"
                                           stringValue:[dateFormatter stringFromDate:group.expiryTime]]];
     [timesElement addChild:[DDXMLNode elementWithName:@"Expires"
@@ -115,12 +176,12 @@
     [root addChild:[DDXMLNode elementWithName:@"EnableSearching"
                                   stringValue:group.enableSearching]];
     [root addChild:[DDXMLNode elementWithName:@"LastTopVisibleEntry"
-                                  stringValue:group.lastTopVisibleEntry]];
+                                  stringValue:[self persistUuid:group.lastTopVisibleEntry]]];
 
     for (Kdb4Entry *entry in group.entries) {
         [root addChild:[self persistEntry:entry]];
     }
-    
+
     for (Kdb4Group *subGroup in group.groups) {
         [root addChild:[self persistGroup:subGroup]];
     }
@@ -132,12 +193,10 @@
     DDXMLElement *root = [DDXMLNode elementWithName:@"Entry"];
 
     // Add the standard properties
-    NSData *data = [Base64 encode:[entry.uuid getData]];
-    NSString *uuidString = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
     [root addChild:[DDXMLNode elementWithName:@"UUID"
-                                  stringValue:uuidString]];
+                                  stringValue:[self persistUuid:entry.uuid]]];
     [root addChild:[DDXMLNode elementWithName:@"IconID"
-                                     stringValue:[NSString stringWithFormat:@"%d", entry.image]]];
+                                  stringValue:[NSString stringWithFormat:@"%d", entry.image]]];
     [root addChild:[DDXMLNode elementWithName:@"ForegroundColor"
                                   stringValue:entry.foregroundColor]];
     [root addChild:[DDXMLNode elementWithName:@"BackgroundColor"
@@ -187,7 +246,7 @@
     DDXMLElement *root = [DDXMLNode elementWithName:@"String"];
 
     [root addChild:[DDXMLElement elementWithName:@"Key" stringValue:key]];
-    
+
     DDXMLElement *element = [DDXMLElement elementWithName:@"Value" stringValue:value];
     if (protected) {
         [element addAttributeWithName:@"Protected" stringValue:@"True"];
@@ -206,20 +265,20 @@
     if ([[protectedAttribute stringValue] isEqual:@"True"]) {
         NSString *str = [root stringValue];
         NSMutableData *mutableData = [[str dataUsingEncoding:NSUTF8StringEncoding] mutableCopy];
-        
+
         // Unprotect the password
         [randomStream xor:mutableData];
-        
+
         // Base64 encode the string
         NSData *data = [Base64 encode:mutableData];
-        
+
         [mutableData release];
-        
+
         NSString *protected = [[NSString alloc] initWithBytes:data.bytes length:data.length encoding:NSUTF8StringEncoding];
         [root setStringValue:protected];
         [protected release];
     }
-    
+
     for (DDXMLNode *node in [root children]) {
         if ([node kind] == DDXMLElementKind) {
             [self encodeProtected:(DDXMLElement*)node];
@@ -231,10 +290,10 @@
     DDXMLNode *protectedAttribute = [root attributeForName:@"Protected"];
     if ([[protectedAttribute stringValue] isEqual:@"True"]) {
         NSString *str = [root stringValue];
-        
+
         // Base64 decode the string
         NSMutableData *data = [Base64 decode:[str dataUsingEncoding:NSASCIIStringEncoding]];
-        
+
         // Unprotect the password
         [randomStream xor:data];
 
@@ -242,7 +301,7 @@
         [root setStringValue:unprotected];
         [unprotected release];
     }
-    
+
     for (DDXMLNode *node in [root children]) {
         if ([node kind] == DDXMLElementKind) {
             [self decodeProtected:(DDXMLElement*)node];
