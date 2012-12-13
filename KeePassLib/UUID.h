@@ -31,6 +31,7 @@
 - (NSData *)getData;
 
 + (UUID *)uuid;
++ (UUID *)nullUuid;
 + (UUID *)getAESUUID;
 
 @end
