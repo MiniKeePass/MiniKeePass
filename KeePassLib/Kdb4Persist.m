@@ -97,16 +97,20 @@
                                      stringValue:[NSString stringWithFormat:@"%d", tree.masterKeyChangeRec]]];
     [element addChild:[DDXMLNode elementWithName:@"MasterKeyChangeForce"
                                      stringValue:[NSString stringWithFormat:@"%d", tree.masterKeyChangeForce]]];
-    [element addChild:[DDXMLNode elementWithName:@"ProtectTitle"
-                                     stringValue:tree.protectTitle ? @"True" : @"False"]];
-    [element addChild:[DDXMLNode elementWithName:@"ProtectUserName"
-                                     stringValue:tree.protectUserName ? @"True" : @"False"]];
-    [element addChild:[DDXMLNode elementWithName:@"ProtectPassword"
-                                     stringValue:tree.protectPassword ? @"True" : @"False"]];
-    [element addChild:[DDXMLNode elementWithName:@"ProtectURL"
-                                     stringValue:tree.protectUrl ? @"True" : @"False"]];
-    [element addChild:[DDXMLNode elementWithName:@"ProtectNotes"
-                                     stringValue:tree.protectNotes ? @"True" : @"False"]];
+
+    DDXMLElement *protectionElement = [DDXMLElement elementWithName:@"MemoryProtection"];
+    [protectionElement addChild:[DDXMLNode elementWithName:@"ProtectTitle"
+                                               stringValue:tree.protectTitle ? @"True" : @"False"]];
+    [protectionElement addChild:[DDXMLNode elementWithName:@"ProtectUserName"
+                                               stringValue:tree.protectUserName ? @"True" : @"False"]];
+    [protectionElement addChild:[DDXMLNode elementWithName:@"ProtectPassword"
+                                               stringValue:tree.protectPassword ? @"True" : @"False"]];
+    [protectionElement addChild:[DDXMLNode elementWithName:@"ProtectURL"
+                                               stringValue:tree.protectUrl ? @"True" : @"False"]];
+    [protectionElement addChild:[DDXMLNode elementWithName:@"ProtectNotes"
+                                               stringValue:tree.protectNotes ? @"True" : @"False"]];
+    [element addChild:protectionElement];
+
     [element addChild:[DDXMLNode elementWithName:@"RecycleBinEnabled"
                                      stringValue:tree.recycleBinEnabled ? @"True" : @"False"]];
     [element addChild:[DDXMLNode elementWithName:@"RecycleBinUUID"
@@ -131,7 +135,7 @@
         [binaryElements addChild:[self persistBinary:binary]];
     }
     [element addChild:binaryElements];
-    
+
     // FIXME Custom Data
 
     [document.rootElement addChild:element];
@@ -161,10 +165,10 @@
                                   stringValue:[self persistUuid:group.uuid]]];
     [root addChild:[DDXMLNode elementWithName:@"Name"
                                   stringValue:group.name]];
-    [root addChild:[DDXMLNode elementWithName:@"IconID"
-                                  stringValue:[NSString stringWithFormat:@"%d", group.image]]];
     [root addChild:[DDXMLNode elementWithName:@"Notes"
                                   stringValue:group.notes]];
+    [root addChild:[DDXMLNode elementWithName:@"IconID"
+                                  stringValue:[NSString stringWithFormat:@"%d", group.image]]];
 
     // Add the Times element
     DDXMLElement *timesElement = [DDXMLNode elementWithName:@"Times"];
@@ -290,7 +294,7 @@
     DDXMLElement *root = [DDXMLNode elementWithName:@"Binary"];
 
     [root addChild:[DDXMLElement elementWithName:@"Key" stringValue:binaryRef.key]];
-    
+
     DDXMLElement *element = [DDXMLElement elementWithName:@"Value"];
     [element addAttributeWithName:@"Ref" stringValue:[NSString stringWithFormat:@"%d", binaryRef.ref]];
     [root addChild:element];
@@ -309,7 +313,7 @@
     // Add the associations
     for (Association *association in autoType.associations) {
         DDXMLElement *element = [DDXMLElement elementWithName:@"Association"];
-        
+
         [element addChild:[DDXMLElement elementWithName:@"Window" stringValue:association.window]];
         [element addChild:[DDXMLElement elementWithName:@"KeystrokeSequence" stringValue:association.keystrokeSequence]];
 
@@ -342,7 +346,7 @@
         [root setStringValue:protected];
         [protected release];
     }
-
+    
     for (DDXMLNode *node in [root children]) {
         if ([node kind] == DDXMLElementKind) {
             [self encodeProtected:(DDXMLElement*)node];

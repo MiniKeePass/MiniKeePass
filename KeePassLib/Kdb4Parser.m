@@ -145,11 +145,14 @@ int closeCallback(void *context) {
     tree.masterKeyChanged = [dateFormatter dateFromString:[[root elementForName:@"MasterKeyChanged"] stringValue]];
     tree.masterKeyChangeRec = [[[root elementForName:@"MasterKeyChangeRec"] stringValue] integerValue];
     tree.masterKeyChangeForce = [[[root elementForName:@"MasterKeyChangeForce"] stringValue] integerValue];
-    tree.protectTitle = [[[root elementForName:@"ProtectTitle"] stringValue] boolValue];
-    tree.protectUserName = [[[root elementForName:@"ProtectUserName"] stringValue] boolValue];
-    tree.protectPassword = [[[root elementForName:@"ProtectPassword"] stringValue] boolValue];
-    tree.protectUrl = [[[root elementForName:@"ProtectURL"] stringValue] boolValue];
-    tree.protectNotes = [[[root elementForName:@"ProtectNotes"] stringValue] boolValue];
+
+    DDXMLElement *element = [root elementForName:@"MemoryProtection"];
+    tree.protectTitle = [[[element elementForName:@"ProtectTitle"] stringValue] boolValue];
+    tree.protectUserName = [[[element elementForName:@"ProtectUserName"] stringValue] boolValue];
+    tree.protectPassword = [[[element elementForName:@"ProtectPassword"] stringValue] boolValue];
+    tree.protectUrl = [[[element elementForName:@"ProtectURL"] stringValue] boolValue];
+    tree.protectNotes = [[[element elementForName:@"ProtectNotes"] stringValue] boolValue];
+
     tree.recycleBinEnabled = [[[root elementForName:@"RecycleBinEnabled"] stringValue] boolValue];
     tree.recycleBinUuid = [self parseUuidString:[[root elementForName:@"RecycleBinUUID"] stringValue]];
     tree.recycleBinChanged = [dateFormatter dateFromString:[[root elementForName:@"RecycleBinChanged"] stringValue]];
@@ -183,8 +186,8 @@ int closeCallback(void *context) {
 
     group.uuid = [self parseUuidString:[[root elementForName:@"UUID"] stringValue]];
     group.name = [[root elementForName:@"Name"] stringValue];
-    group.image = [[[root elementForName:@"IconID"] stringValue] integerValue];
     group.notes = [[root elementForName:@"Notes"] stringValue];
+    group.image = [[[root elementForName:@"IconID"] stringValue] integerValue];
 
     DDXMLElement *timesElement = [root elementForName:@"Times"];
     group.lastModificationTime = [dateFormatter dateFromString:[[timesElement elementForName:@"LastModificationTime"] stringValue]];
