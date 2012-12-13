@@ -121,9 +121,6 @@
     entry.overrideUrl = @"";
     entry.tags = @"";
 
-    // FIXME Auto-Type
-    // FIXME History
-
     NSDate *currentTime = [NSDate date];
     entry.lastModificationTime = currentTime;
     entry.creationTime = currentTime;
@@ -132,6 +129,9 @@
     entry.expires = false;
     entry.usageCount = 0;
     entry.locationChanged = currentTime;
+
+    // FIXME Auto-type stuff goes here
+    // FIXME History stuff goes here
 
     return [entry autorelease];
 }
