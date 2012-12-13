@@ -260,7 +260,7 @@ int closeCallback(void *context) {
             StringField *stringField = [[StringField alloc] init];
             stringField.key = key;
             stringField.value = value;
-            stringField.protected = [[element attributeForName:@"Protected"] isEqual:@"True"];
+            stringField.protected = [[valueElement attributeForName:@"Protected"] isEqual:@"True"];
             [entry.stringFields addObject:stringField];
         }
     }
