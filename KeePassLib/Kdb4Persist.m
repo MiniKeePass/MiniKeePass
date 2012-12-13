@@ -21,10 +21,13 @@
 #import "DDXMLElementAdditions.h"
 
 @interface Kdb4Persist (PrivateMethods)
-- (void)updateGroup:(Kdb4Group*)group;
-- (void)updateEntry:(Kdb4Entry*)entry;
+- (DDXMLDocument *)persistTree;
+- (DDXMLElement *)persistBinary:(Binary *)binary;
+- (DDXMLElement *)persistGroup:(Kdb4Group *)group;
+- (DDXMLElement *)persistEntry:(Kdb4Entry *)entry;
+- (DDXMLElement *)persistStringField:(StringField *)stringField;
+- (NSString *)persistUuid:(UUID *)uuid;
 - (void)encodeProtected:(DDXMLElement*)root;
-- (void)decodeProtected:(DDXMLElement*)root;
 @end
 
 @implementation Kdb4Persist
@@ -60,11 +63,6 @@
 
     // Serialize the DOM to XML
     [outputStream write:[document XMLData]];
-}
-
-- (NSString *)persistUuid:(UUID *)uuid {
-    NSData *data = [Base64 encode:[uuid getData]];
-    return [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
 }
 
 - (DDXMLDocument *)persistTree {
@@ -125,7 +123,15 @@
                                      stringValue:[self persistUuid:tree.lastSelectedGroup]]];
     [element addChild:[DDXMLNode elementWithName:@"LastTopVisibleGroup"
                                      stringValue:[self persistUuid:tree.lastTopVisibleGroup]]];
-    // FIXME Binaries
+
+    DDXMLElement *binaryElements = [DDXMLElement elementWithName:@"Binaries"];
+    for (Binary *binary in tree.binaries) {
+        [binaryElements addChild:[self persistBinary:binary]];
+    }
+    [element addChild:binaryElements];
+    
+    // FIXME Custom Data
+
     [document.rootElement addChild:element];
 
     element = [DDXMLNode elementWithName:@"Root"];
@@ -133,6 +139,16 @@
     [document.rootElement addChild:element];
 
     return document;
+}
+
+- (DDXMLElement *)persistBinary:(Binary *)binary {
+    DDXMLElement *root = [DDXMLNode elementWithName:@"Binary"];
+
+    [root addAttributeWithName:@"ID" stringValue:[NSString stringWithFormat:@"%d", binary.binaryId]];
+    [root addAttributeWithName:@"Compressed" stringValue:binary.compressed ? @"True" : @"False"];
+    root.stringValue = binary.data;
+
+    return root;
 }
 
 - (DDXMLElement *)persistGroup:(Kdb4Group *)group {
@@ -260,6 +276,11 @@
     return [self persistStringFieldWithKey:stringField.key andValue:stringField.value andProtected:stringField.protected];
 }
 
+- (NSString *)persistUuid:(UUID *)uuid {
+    NSData *data = [Base64 encode:[uuid getData]];
+    return [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
+}
+
 - (void)encodeProtected:(DDXMLElement*)root {
     DDXMLNode *protectedAttribute = [root attributeForName:@"Protected"];
     if ([[protectedAttribute stringValue] isEqual:@"True"]) {
@@ -282,29 +303,6 @@
     for (DDXMLNode *node in [root children]) {
         if ([node kind] == DDXMLElementKind) {
             [self encodeProtected:(DDXMLElement*)node];
-        }
-    }
-}
-
-- (void)decodeProtected:(DDXMLElement*)root {
-    DDXMLNode *protectedAttribute = [root attributeForName:@"Protected"];
-    if ([[protectedAttribute stringValue] isEqual:@"True"]) {
-        NSString *str = [root stringValue];
-
-        // Base64 decode the string
-        NSMutableData *data = [Base64 decode:[str dataUsingEncoding:NSASCIIStringEncoding]];
-
-        // Unprotect the password
-        [randomStream xor:data];
-
-        NSString *unprotected = [[NSString alloc] initWithBytes:data.bytes length:data.length encoding:NSUTF8StringEncoding];
-        [root setStringValue:unprotected];
-        [unprotected release];
-    }
-
-    for (DDXMLNode *node in [root children]) {
-        if ([node kind] == DDXMLElementKind) {
-            [self decodeProtected:(DDXMLElement*)node];
         }
     }
 }

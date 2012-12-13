@@ -80,6 +80,15 @@
 @end
 
 
+@interface Binary : NSObject
+
+@property(nonatomic, assign) NSInteger binaryId;
+@property(nonatomic, assign) BOOL compressed;
+@property(nonatomic, retain) NSString *data;
+
+@end
+
+
 @interface Kdb4Tree : KdbTree
 
 @property(nonatomic, assign) uint64_t rounds;
@@ -111,5 +120,6 @@
 @property(nonatomic, assign) NSInteger historyMaxSize;
 @property(nonatomic, retain) UUID *lastSelectedGroup;
 @property(nonatomic, retain) UUID *lastTopVisibleGroup;
+@property(nonatomic, readonly) NSMutableArray *binaries;
 
 @end

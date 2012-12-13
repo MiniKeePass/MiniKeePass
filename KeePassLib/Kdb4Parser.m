@@ -32,8 +32,10 @@
 @interface Kdb4Parser (PrivateMethods)
 - (void)decodeProtected:(DDXMLElement *)root;
 - (void)parseMeta:(DDXMLElement *)root;
+- (Binary *)parseBinary:(DDXMLElement *)root;
 - (Kdb4Group *)parseGroup:(DDXMLElement *)root;
 - (Kdb4Entry *)parseEntry:(DDXMLElement *)root;
+- (UUID *)parseUuidString:(NSString *)uuidString;
 @end
 
 @implementation Kdb4Parser
@@ -70,6 +72,8 @@ int closeCallback(void *context) {
     if (document == nil) {
         @throw [NSException exceptionWithName:@"ParseError" reason:@"Failed to parse database" userInfo:nil];
     }
+
+    NSLog(@"\n%@", document);
 
     // Get the root document element
     DDXMLElement *rootElement = [document rootElement];
@@ -154,12 +158,22 @@ int closeCallback(void *context) {
     tree.lastSelectedGroup = [self parseUuidString:[[root elementForName:@"LastSelectedGroup"] stringValue]];
     tree.lastTopVisibleGroup = [self parseUuidString:[[root elementForName:@"LastTopVisibleGroup"] stringValue]];
 
-    // FIXME Binaries
+    DDXMLElement *binariesElement = [root elementForName:@"Binaries"];
+    for (DDXMLElement *element in [binariesElement elementsForName:@"Binary"]) {
+        [tree.binaries addObject:[self parseBinary:element]];
+    }
+
+    // FIXME CustomData
 }
 
-- (UUID *)parseUuidString:(NSString *)uuidString {
-    NSData *data = [Base64 decode:[uuidString dataUsingEncoding:NSUTF8StringEncoding]];
-    return [[[UUID alloc] initWithData:data] autorelease];
+- (Binary *)parseBinary:(DDXMLElement *)root {
+    Binary *binary = [[Binary alloc] init];
+
+    binary.binaryId = [[[root attributeForName:@"ID"] stringValue] integerValue];
+    binary.compressed = [[[root attributeForName:@"Compressed"] stringValue] boolValue];
+    binary.data = [root stringValue];
+
+    return binary;
 }
 
 - (Kdb4Group *)parseGroup:(DDXMLElement *)root {
@@ -253,6 +267,11 @@ int closeCallback(void *context) {
     // FIXME History stuff goes here
     
     return entry;
+}
+
+- (UUID *)parseUuidString:(NSString *)uuidString {
+    NSData *data = [Base64 decode:[uuidString dataUsingEncoding:NSUTF8StringEncoding]];
+    return [[[UUID alloc] initWithData:data] autorelease];
 }
 
 @end

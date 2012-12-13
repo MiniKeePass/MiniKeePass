@@ -70,6 +70,16 @@
 @end
 
 
+@implementation Binary
+
+- (void)dealloc {
+    [_data release];
+    [super dealloc];
+}
+
+@end
+
+
 @implementation Kdb4Tree
 
 - (id)init {
@@ -77,6 +87,7 @@
     if (self) {
         _rounds = DEFAULT_TRANSFORMATION_ROUNDS;
         _compressionAlgorithm = COMPRESSION_GZIP;
+        _binaries = [[NSMutableArray alloc] init];
     }
     return self;
 }
@@ -97,6 +108,7 @@
     [_entryTemplatesGroupChanged release];
     [_lastSelectedGroup release];
     [_lastTopVisibleGroup release];
+    [_binaries release];
     [super dealloc];
 }
 
