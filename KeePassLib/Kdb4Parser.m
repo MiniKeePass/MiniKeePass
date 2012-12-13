@@ -36,6 +36,7 @@
 - (Kdb4Group *)parseGroup:(DDXMLElement *)root;
 - (Kdb4Entry *)parseEntry:(DDXMLElement *)root;
 - (BinaryRef *)parseBinaryRef:(DDXMLElement *)root;
+- (AutoType *)parseAutoType:(DDXMLElement *)root;
 - (UUID *)parseUuidString:(NSString *)uuidString;
 @end
 
@@ -265,8 +266,8 @@ int closeCallback(void *context) {
         [entry.binaries addObject:[self parseBinaryRef:element]];
     }
 
-    // FIXME Auto-type stuff goes here
-    
+    entry.autoType = [self parseAutoType:[root elementForName:@"AutoType"]];
+
     return entry;
 }
 
@@ -277,6 +278,24 @@ int closeCallback(void *context) {
     binaryRef.ref = [[[[root elementForName:@"Value"] attributeForName:@"Ref"] stringValue] integerValue];
 
     return binaryRef;
+}
+
+- (AutoType *)parseAutoType:(DDXMLElement *)root {
+    AutoType *autoType = [[[AutoType alloc] init] autorelease];
+
+    autoType.enabled = [[[root elementForName:@"Enabled"] stringValue] boolValue];
+    autoType.dataTransferObfuscation = [[[root elementForName:@"DataTransferObfuscation"] stringValue] integerValue];
+
+    for (DDXMLElement *element in [root elementsForName:@"Association"]) {
+        Association *association = [[[Association alloc] init] autorelease];
+
+        association.window = [[element elementForName:@"Window"] stringValue];
+        association.keystrokeSequence = [[element elementForName:@"KeystrokeSequence"] stringValue];
+
+        [autoType.associations addObject:association];
+    }
+
+    return autoType;
 }
 
 - (UUID *)parseUuidString:(NSString *)uuidString {

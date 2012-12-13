@@ -26,6 +26,8 @@
 - (DDXMLElement *)persistGroup:(Kdb4Group *)group;
 - (DDXMLElement *)persistEntry:(Kdb4Entry *)entry;
 - (DDXMLElement *)persistStringField:(StringField *)stringField;
+- (DDXMLElement *)persistBinaryRef:(BinaryRef *)binaryRef;
+- (DDXMLElement *)persistAutoType:(AutoType *)autoType;
 - (NSString *)persistUuid:(UUID *)uuid;
 - (void)encodeProtected:(DDXMLElement*)root;
 @end
@@ -257,7 +259,8 @@
         [root addChild:[self persistBinaryRef:binaryRef]];
     }
 
-    // FIXME Auto-type stuff goes here
+    // Add the auto-type
+    [root addChild:[self persistAutoType:entry.autoType]];
 
     // Add a blank History element
     [root addChild:[DDXMLElement elementWithName:@"History"]];
@@ -291,6 +294,27 @@
     DDXMLElement *element = [DDXMLElement elementWithName:@"Value"];
     [element addAttributeWithName:@"Ref" stringValue:[NSString stringWithFormat:@"%d", binaryRef.ref]];
     [root addChild:element];
+
+    return root;
+}
+
+- (DDXMLElement *)persistAutoType:(AutoType *)autoType {
+    DDXMLElement *root = [DDXMLNode elementWithName:@"AutoType"];
+
+    [root addChild:[DDXMLElement elementWithName:@"Enabled"
+                                     stringValue:autoType.enabled ? @"True" : @"False"]];
+    [root addChild:[DDXMLElement elementWithName:@"DataTransferObfuscation"
+                                     stringValue:[NSString stringWithFormat:@"%d", autoType.dataTransferObfuscation]]];
+
+    // Add the associations
+    for (Association *association in autoType.associations) {
+        DDXMLElement *element = [DDXMLElement elementWithName:@"Association"];
+        
+        [element addChild:[DDXMLElement elementWithName:@"Window" stringValue:association.window]];
+        [element addChild:[DDXMLElement elementWithName:@"KeystrokeSequence" stringValue:association.keystrokeSequence]];
+
+        [root addChild:element];
+    }
 
     return root;
 }

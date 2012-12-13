@@ -66,6 +66,35 @@
 @end
 
 
+@implementation Association
+
+- (void)dealloc {
+    [_window release];
+    [_keystrokeSequence release];
+    [super dealloc];
+}
+
+@end
+
+
+@implementation AutoType
+
+- (id)init {
+    self = [super init];
+    if (self) {
+        _associations = [[NSMutableArray alloc] init];
+    }
+    return self;
+}
+
+- (void)dealloc {
+    [_associations release];
+    [super dealloc];
+}
+
+@end
+
+
 @implementation Kdb4Entry
 
 - (id)init {
@@ -86,6 +115,7 @@
     [_locationChanged release];
     [_stringFields release];
     [_binaries release];
+    [_autoType release];
     [super dealloc];
 }
 
@@ -167,8 +197,15 @@
     entry.usageCount = 0;
     entry.locationChanged = currentTime;
 
-    // FIXME Auto-type stuff goes here
-    // FIXME History stuff goes here
+    // Add a default AutoType object
+    entry.autoType = [[[AutoType alloc] init] autorelease];
+    entry.autoType.enabled = YES;
+    entry.autoType.dataTransferObfuscation = 1;
+
+    Association *association = [[[Association alloc] init] autorelease];
+    association.window = @"Target Window";
+    association.keystrokeSequence = @"{USERNAME}{TAB}{PASSWORD}{TAB}{ENTER}";
+    [entry.autoType.associations addObject:association];
 
     return [entry autorelease];
 }

@@ -82,6 +82,23 @@
 @end
 
 
+@interface Association : NSObject
+
+@property(nonatomic, copy) NSString *window;
+@property(nonatomic, copy) NSString *keystrokeSequence;
+
+@end
+
+
+@interface AutoType : NSObject
+
+@property(nonatomic, assign) BOOL enabled;
+@property(nonatomic, assign) NSInteger dataTransferObfuscation;
+@property(nonatomic, readonly) NSMutableArray *associations;
+
+@end
+
+
 @interface Kdb4Entry : KdbEntry
 
 @property(nonatomic, retain) UUID *uuid;
@@ -94,6 +111,7 @@
 @property(nonatomic, retain) NSDate *locationChanged;
 @property(nonatomic, readonly) NSMutableArray *stringFields;
 @property(nonatomic, readonly) NSMutableArray *binaries;
+@property(nonatomic, retain) AutoType *autoType;
 
 @end
 
