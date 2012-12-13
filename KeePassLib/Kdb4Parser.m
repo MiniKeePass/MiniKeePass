@@ -17,6 +17,8 @@
 
 #import "Kdb4Parser.h"
 #import "Kdb4Node.h"
+#import "DDXML.h"
+#import "DDXMLElementAdditions.h"
 #import "DDXMLDocument+MKPAdditions.h"
 #import "DDXMLElement+MKPAdditions.h"
 #import "Base64.h"
@@ -92,9 +94,9 @@ int closeCallback(void *context) {
         @throw [NSException exceptionWithName:@"ParseError" reason:@"Failed to parse database" userInfo:nil];
     }
     
-    Kdb4Tree *tree = [[Kdb4Tree alloc] initWithDocument:document];
+    Kdb4Tree *tree = [[Kdb4Tree alloc] init];
     tree.root = [self parseGroup:element];
-    
+
     [document release];
     
     return [tree autorelease];
@@ -131,7 +133,7 @@ int closeCallback(void *context) {
 }
 
 - (Kdb4Group *)parseGroup:(DDXMLElement *)root {
-    Kdb4Group *group = [[[Kdb4Group alloc] initWithElement:root] autorelease];
+    Kdb4Group *group = [[[Kdb4Group alloc] init] autorelease];
     
     DDXMLElement *element = [root elementForName:@"IconID"];
     group.image = element.stringValue.intValue;
@@ -171,7 +173,7 @@ int closeCallback(void *context) {
 }
 
 - (Kdb4Entry *)parseEntry:(DDXMLElement *)root {
-    Kdb4Entry *entry = [[[Kdb4Entry alloc] initWithElement:root] autorelease];
+    Kdb4Entry *entry = [[[Kdb4Entry alloc] init] autorelease];
     
     entry.image = [[[root elementForName:@"IconID"] stringValue] intValue];
     
@@ -206,10 +208,11 @@ int closeCallback(void *context) {
         } else if ([key isEqualToString:FIELD_NOTES]) {
             entry.notes = value;
         } else {
-            StringField *stringField = [[StringField alloc] initWithElement:element];
-            stringField.name = key;
+            StringField *stringField = [[StringField alloc] init];
+            stringField.key = key;
             stringField.value = value;
-            [entry addStringField:stringField];
+            stringField.protected = [[element attributeForName:@"Protected"] isEqual:@"True"];
+            [entry.stringFields addObject:stringField];
         }
     }
     

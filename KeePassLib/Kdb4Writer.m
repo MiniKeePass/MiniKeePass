@@ -146,15 +146,11 @@
 }
 
 - (void)newFile:(NSString*)fileName withPassword:(KdbPassword*)kdbPassword {
-    DDXMLDocument *document = [[DDXMLDocument alloc] initWithXMLString:@"<KeePassFile><Root></Root></KeePassFile>" options:0 error:nil];
-    DDXMLElement *rootElement = [[document rootElement] elementForName:@"Root"];
-    Kdb4Tree *tree = [[Kdb4Tree alloc] initWithDocument:document];
-    [document release];
+    Kdb4Tree *tree = [[Kdb4Tree alloc] init];
     
     KdbGroup *parentGroup = [tree createGroup:nil];
     parentGroup.name = @"General";
     parentGroup.image = 48;
-    [rootElement addChild:((Kdb4Group*)parentGroup).element];
     tree.root = parentGroup;
     
     KdbGroup *group = [tree createGroup:parentGroup];
@@ -166,22 +162,22 @@
     group.name = @"Network";
     group.image = 3;
     [parentGroup addGroup:group];
-    
+
     group = [tree createGroup:parentGroup];
     group.name = @"Internet";
     group.image = 1;
     [parentGroup addGroup:group];
-    
+
     group = [tree createGroup:parentGroup];
     group.name = @"eMail";
     group.image = 19;
     [parentGroup addGroup:group];
-    
+
     group = [tree createGroup:parentGroup];
     group.name = @"Homebanking";
     group.image = 37;
     [parentGroup addGroup:group];
-    
+
     [self persist:tree file:fileName withPassword:kdbPassword];
     
     [tree release];

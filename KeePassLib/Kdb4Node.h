@@ -8,8 +8,6 @@
 
 #import <Foundation/Foundation.h>
 #import "Kdb.h"
-#import "DDXML.h"
-#import "DDXMLElementAdditions.h"
 
 #define KDB4_PRE_SIG1 (0x9AA2D903)
 #define KDB4_PRE_SIG2 (0xB54BFB66)
@@ -39,63 +37,42 @@
 #define CSR_SALSA20     2
 #define CSR_COUNT       3
 
-@interface Kdb4Group : KdbGroup {
-    DDXMLElement *element;
-}
+@interface Kdb4Group : KdbGroup
 
-@property(nonatomic, retain) DDXMLElement *element;
-
-- (id)initWithElement:(DDXMLElement*)e;
-
-@end
-
-
-@class StringField;
-
-@interface Kdb4Entry : KdbEntry {
-    DDXMLElement *element;
-    NSMutableArray *stringFields;
-}
-
-@property(nonatomic, retain) DDXMLElement *element;
-@property(nonatomic, retain) NSArray *stringFields;
-
-- (id)initWithElement:(DDXMLElement*)e;
-
-- (void)addStringField:(StringField*)stringField;
-- (void)removeStringField:(StringField*)stringField;
+@property(nonatomic, readonly) NSMutableDictionary *properties;
+@property(nonatomic, assign) BOOL expires;
+@property(nonatomic, assign) NSUInteger usageCount;
+@property(nonatomic, retain) NSDate *locationChanged;
 
 @end
 
 
-@interface StringField : NSObject {
-    Kdb4Entry *parent;
-    NSString *name;
-    NSString *value;
-    DDXMLElement *element;
-}
+@interface StringField : NSObject
 
-@property(nonatomic, retain) Kdb4Entry *parent;
-@property(nonatomic, copy) NSString *name;
+@property(nonatomic, copy) NSString *key;
 @property(nonatomic, copy) NSString *value;
-@property(nonatomic, retain) DDXMLElement *element;
+@property(nonatomic, assign) BOOL protected;
 
-- (id)initWithElement:(DDXMLElement*)element;
+- (id)initWithKey:(NSString *)key andValue:(NSString *)value;
 
 @end
 
 
-@interface Kdb4Tree : KdbTree {
-    DDXMLDocument *document;
-    uint64_t rounds;
-    uint32_t compressionAlgorithm;
-}
+@interface Kdb4Entry : KdbEntry
 
-@property(nonatomic, retain) DDXMLDocument *document;
+@property(nonatomic, readonly) NSMutableDictionary *properties;
+@property(nonatomic, readonly) NSMutableArray *stringFields;
+@property(nonatomic, assign) BOOL expires;
+@property(nonatomic, assign) NSUInteger usageCount;
+@property(nonatomic, retain) NSDate *locationChanged;
+
+@end
+
+
+@interface Kdb4Tree : KdbTree
+
+@property(nonatomic, readonly) NSMutableDictionary *properties;
 @property(nonatomic, assign) uint64_t rounds;
 @property(nonatomic, assign) uint32_t compressionAlgorithm;
-
-- (id)initWithDocument:(DDXMLDocument*)doc;
-- (StringField*)createStringField:(Kdb4Entry*)parent;
 
 @end

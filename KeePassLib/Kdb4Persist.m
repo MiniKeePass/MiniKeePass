@@ -17,6 +17,8 @@
 
 #import "Kdb4Persist.h"
 #import "Base64.h"
+#import "DDXML.h"
+#import "DDXMLElementAdditions.h"
 
 @interface Kdb4Persist (PrivateMethods)
 - (void)updateGroup:(Kdb4Group*)group;
@@ -51,93 +53,105 @@
 
 - (void)persist {
     // Update the DOM model
-    [self updateGroup:(Kdb4Group*)tree.root];
-	    
+    DDXMLDocument *document = [self persistTree];
+
     // Encode all the protected entries
-    [self encodeProtected:tree.document.rootElement];
-    
+    [self encodeProtected:document.rootElement];
+
     // Serialize the DOM to XML
-    [outputStream write:[tree.document XMLData]];
-    
-    // Re-decode all the protected entries
-    [randomStream reset];
-    [self decodeProtected:tree.document.rootElement];
+    [outputStream write:[document XMLData]];
 }
 
-- (void)updateGroup:(Kdb4Group*)group {
-    DDXMLElement *element;
-    
-    element = [group.element elementForName:@"Name"];
-    element.stringValue = group.name;
-    
-    element = [group.element elementForName:@"IconID"];
-    element.stringValue = [NSString stringWithFormat:@"%d", group.image];
-    
-    DDXMLElement *timesElement = [group.element elementForName:@"Times"];
-    
-    element = [timesElement elementForName:@"CreationTime"];
-    element.stringValue = [dateFormatter stringFromDate:group.creationTime];
-    
-    element = [timesElement elementForName:@"LastModificationTime"];
-    element.stringValue = [dateFormatter stringFromDate:group.lastModificationTime];
-    
-    element = [timesElement elementForName:@"LastAccessTime"];
-    element.stringValue = [dateFormatter stringFromDate:group.lastAccessTime];
-    
-    element = [timesElement elementForName:@"ExpiryTime"];
-    element.stringValue = [dateFormatter stringFromDate:group.expiryTime];
+- (DDXMLDocument *)persistTree {
+    DDXMLDocument *document = [[DDXMLDocument alloc] initWithXMLString:@"<KeePassFile></KeePassFile>" options:0 error:nil];
+
+    DDXMLElement *element = [DDXMLNode elementWithName:@"Root"];
+    [element addChild:[self persistGroup:(Kdb4Group *)tree.root]];
+    [document.rootElement addChild:element];
+
+    return document;
+}
+
+- (DDXMLElement *)persistGroup:(Kdb4Group *)group {
+    DDXMLElement *root = [DDXMLNode elementWithName:@"Group"];
+
+    [root addChild:[DDXMLNode elementWithName:@"Name"
+                                     stringValue:group.name]];
+    [root addChild:[DDXMLNode elementWithName:@"IconID"
+                                     stringValue:[NSString stringWithFormat:@"%d", group.image]]];
+
+    // Add the Times element
+    DDXMLElement *timesElement = [DDXMLNode elementWithName:@"Times"];
+    [timesElement addChild:[DDXMLNode elementWithName:@"CreationTime"
+                                             stringValue:[dateFormatter stringFromDate:group.creationTime]]];
+    [timesElement addChild:[DDXMLNode elementWithName:@"LastModificationTime"
+                                             stringValue:[dateFormatter stringFromDate:group.lastModificationTime]]];
+    [timesElement addChild:[DDXMLNode elementWithName:@"LastAccessTime"
+                                             stringValue:[dateFormatter stringFromDate:group.lastAccessTime]]];
+    [timesElement addChild:[DDXMLNode elementWithName:@"ExpiryTime"
+                                             stringValue:[dateFormatter stringFromDate:group.expiryTime]]];
+    [root addChild:timesElement];
     
     for (Kdb4Entry *entry in group.entries) {
-        [self updateEntry:entry];
+        [root addChild:[self persistEntry:entry]];
     }
     
-    for (Kdb4Group *g in group.groups) {
-        [self updateGroup:g];
+    for (Kdb4Group *subGroup in group.groups) {
+        [root addChild:[self persistGroup:subGroup]];
     }
+
+    return root;
 }
 
-- (void)updateEntry:(Kdb4Entry*)entry {
-    DDXMLElement *root = entry.element;
-    
-    DDXMLElement *iconElement = [root elementForName:@"IconID"];
-    iconElement.stringValue = [NSString stringWithFormat:@"%d", entry.image];
-    
-    DDXMLElement *timesElement = [entry.element elementForName:@"Times"];
-    
-    DDXMLElement *timeElement = [timesElement elementForName:@"CreationTime"];
-    timeElement.stringValue = [dateFormatter stringFromDate:entry.creationTime];
-    
-    timeElement = [timesElement elementForName:@"LastModificationTime"];
-    timeElement.stringValue = [dateFormatter stringFromDate:entry.lastModificationTime];
-    
-    timeElement = [timesElement elementForName:@"LastAccessTime"];
-    timeElement.stringValue = [dateFormatter stringFromDate:entry.lastAccessTime];
-    
-    timeElement = [timesElement elementForName:@"ExpiryTime"];
-    timeElement.stringValue = [dateFormatter stringFromDate:entry.expiryTime];
-    
-    for (DDXMLElement *element in [root elementsForName:@"String"]) {
-        NSString *key = [[element elementForName:@"Key"] stringValue];
-        
-        DDXMLElement *valueElement = [element elementForName:@"Value"];
-        
-        if ([key isEqualToString:@"Title"]) {
-            valueElement.stringValue = entry.title;
-        } else if ([key isEqualToString:@"UserName"]) {
-            valueElement.stringValue = entry.username;
-        } else if ([key isEqualToString:@"Password"]) {
-            valueElement.stringValue = entry.password;
-        } else if ([key isEqualToString:@"URL"]) {
-            valueElement.stringValue = entry.url;
-        } else if ([key isEqualToString:@"Notes"]) {
-            valueElement.stringValue = entry.notes;
-        }
-    }
-    
+- (DDXMLElement *)persistEntry:(Kdb4Entry *)entry {
+    DDXMLElement *root = [DDXMLNode elementWithName:@"Entry"];
+
+    [root addChild:[DDXMLNode elementWithName:@"IconID"
+                                     stringValue:[NSString stringWithFormat:@"%d", entry.image]]];
+
+    // Add the Times element
+    DDXMLElement *timesElement = [DDXMLNode elementWithName:@"Times"];
+    [timesElement addChild:[DDXMLNode elementWithName:@"CreationTime"
+                                             stringValue:[dateFormatter stringFromDate:entry.creationTime]]];
+    [timesElement addChild:[DDXMLNode elementWithName:@"LastModificationTime"
+                                             stringValue:[dateFormatter stringFromDate:entry.lastModificationTime]]];
+    [timesElement addChild:[DDXMLNode elementWithName:@"LastAccessTime"
+                                             stringValue:[dateFormatter stringFromDate:entry.lastAccessTime]]];
+    [timesElement addChild:[DDXMLNode elementWithName:@"ExpiryTime"
+                                             stringValue:[dateFormatter stringFromDate:entry.expiryTime]]];
+    [root addChild:timesElement];
+
+    // Add the standard string fields
+    [root addChild:[self persistStringFieldWithKey:@"Title" andValue:entry.title andProtected:false]];
+    [root addChild:[self persistStringFieldWithKey:@"UserName" andValue:entry.username andProtected:false]];
+    [root addChild:[self persistStringFieldWithKey:@"Password" andValue:entry.password andProtected:true]];
+    [root addChild:[self persistStringFieldWithKey:@"URL" andValue:entry.url andProtected:false]];
+    [root addChild:[self persistStringFieldWithKey:@"Notes" andValue:entry.notes andProtected:false]];
+
+    // Add the string fields
     for (StringField *stringField in entry.stringFields) {
-        [stringField.element elementForName:@"Key"].stringValue = stringField.name;
-        [stringField.element elementForName:@"Value"].stringValue = stringField.value;
+        [root addChild:[self persistStringField:stringField]];
     }
+
+    return root;
+}
+
+- (DDXMLElement *)persistStringFieldWithKey:(NSString *)key andValue:(NSString *)value andProtected:(BOOL)protected {
+    DDXMLElement *root = [DDXMLNode elementWithName:@"String"];
+
+    [root addChild:[DDXMLElement elementWithName:@"Key" stringValue:key]];
+    
+    DDXMLElement *element = [DDXMLElement elementWithName:@"Value" stringValue:value];
+    if (protected) {
+        [element addAttributeWithName:@"Protected" stringValue:@"True"];
+    }
+    [root addChild:element];
+
+    return root;
+}
+
+- (DDXMLElement *)persistStringField:(StringField *)stringField {
+    return [self persistStringFieldWithKey:stringField.key andValue:stringField.value andProtected:stringField.protected];
 }
 
 - (void)encodeProtected:(DDXMLElement*)root {
