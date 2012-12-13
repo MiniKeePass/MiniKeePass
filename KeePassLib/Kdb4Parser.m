@@ -77,9 +77,11 @@ int closeCallback(void *context) {
     // Decode all the protected entries
     [self decodeProtected:rootElement];
 
+    Kdb4Tree *tree = [[Kdb4Tree alloc] init];
+
     DDXMLElement *meta = [rootElement elementForName:@"Meta"];
     if (meta != nil) {
-        [self parseMeta:meta];
+        [self parseMeta:meta tree:tree];
     }
 
     DDXMLElement *root = [rootElement elementForName:@"Root"];
@@ -94,7 +96,6 @@ int closeCallback(void *context) {
         @throw [NSException exceptionWithName:@"ParseError" reason:@"Failed to parse database" userInfo:nil];
     }
 
-    Kdb4Tree *tree = [[Kdb4Tree alloc] init];
     tree.root = [self parseGroup:element];
 
     [document release];
@@ -133,11 +134,11 @@ int closeCallback(void *context) {
     tree.databaseDescriptionChanged = [dateFormatter dateFromString:[[root elementForName:@"DatabaseDescriptionChanged"] stringValue]];
     tree.defaultUserName = [[root elementForName:@"DefaultUserName"] stringValue];
     tree.defaultUserNameChanged = [dateFormatter dateFromString:[[root elementForName:@"DefaultUserNameChanged"] stringValue]];
-    tree.maintenanceHistoryDays = [[[root elementForName:@"IconID"] stringValue] integerValue];
+    tree.maintenanceHistoryDays = [[[root elementForName:@"MaintenanceHistoryDays"] stringValue] integerValue];
     tree.color = [[root elementForName:@"Color"] stringValue];
     tree.masterKeyChanged = [dateFormatter dateFromString:[[root elementForName:@"MasterKeyChanged"] stringValue]];
-    tree.masterKeyChangeRec = [[[root elementForName:@"IconID"] stringValue] integerValue];
-    tree.masterKeyChangeForce = [[[root elementForName:@"IconID"] stringValue] integerValue];
+    tree.masterKeyChangeRec = [[[root elementForName:@"MasterKeyChangeRec"] stringValue] integerValue];
+    tree.masterKeyChangeForce = [[[root elementForName:@"MasterKeyChangeForce"] stringValue] integerValue];
     tree.protectTitle = [[[root elementForName:@"ProtectTitle"] stringValue] boolValue];
     tree.protectUserName = [[[root elementForName:@"ProtectUserName"] stringValue] boolValue];
     tree.protectPassword = [[[root elementForName:@"ProtectPassword"] stringValue] boolValue];
@@ -147,11 +148,13 @@ int closeCallback(void *context) {
     tree.recycleBinUuid = [self parseUuidString:[[root elementForName:@"RecycleBinUUID"] stringValue]];
     tree.recycleBinChanged = [dateFormatter dateFromString:[[root elementForName:@"RecycleBinChanged"] stringValue]];
     tree.entryTemplatesGroup = [self parseUuidString:[[root elementForName:@"EntryTemplatesGroup"] stringValue]];
-    tree.entryTemplatesGroupChanged = [dateFormatter dateFromString:[[root elementForName:@"entryTemplatesGroupChanged"] stringValue]];
+    tree.entryTemplatesGroupChanged = [dateFormatter dateFromString:[[root elementForName:@"EntryTemplatesGroupChanged"] stringValue]];
     tree.historyMaxItems = [[[root elementForName:@"HistoryMaxItems"] stringValue] integerValue];
     tree.historyMaxSize = [[[root elementForName:@"HistoryMaxSize"] stringValue] integerValue];
     tree.lastSelectedGroup = [self parseUuidString:[[root elementForName:@"LastSelectedGroup"] stringValue]];
     tree.lastTopVisibleGroup = [self parseUuidString:[[root elementForName:@"LastTopVisibleGroup"] stringValue]];
+
+    // FIXME Binaries
 }
 
 - (UUID *)parseUuidString:(NSString *)uuidString {
@@ -180,7 +183,7 @@ int closeCallback(void *context) {
     group.defaultAutoTypeSequence = [[root elementForName:@"DefaultAutoTypeSequence"] stringValue];
     group.EnableAutoType = [[root elementForName:@"EnableAutoType"] stringValue];
     group.EnableSearching = [[root elementForName:@"EnableSearching"] stringValue];
-    group.LastTopVisibleEntry = [[root elementForName:@"LastTopVisibleEntry"] stringValue];
+    group.LastTopVisibleEntry = [self parseUuidString:[[root elementForName:@"LastTopVisibleEntry"] stringValue]];
 
     for (DDXMLElement *element in [root elementsForName:@"Entry"]) {
         Kdb4Entry *entry = [self parseEntry:element];
