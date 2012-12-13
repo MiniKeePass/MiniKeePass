@@ -110,7 +110,7 @@
     group.defaultAutoTypeSequence = @"";
     group.enableAutoType = @"null";
     group.enableSearching = @"null";
-    group.lastTopVisibleEntry = @"";
+    group.lastTopVisibleEntry = [UUID nullUuid];
 
     NSDate *currentTime = [NSDate date];
     group.lastModificationTime = currentTime;
