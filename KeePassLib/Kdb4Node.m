@@ -46,12 +46,33 @@
 @end
 
 
+@implementation Binary
+
+- (void)dealloc {
+    [_data release];
+    [super dealloc];
+}
+
+@end
+
+
+@implementation BinaryRef
+
+- (void)dealloc {
+    [_key release];
+    [super dealloc];
+}
+
+@end
+
+
 @implementation Kdb4Entry
 
-- (id)init:(DDXMLElement*)e {
+- (id)init {
     self = [super init];
     if (self) {
         _stringFields = [[NSMutableArray alloc] init];
+        _binaries = [[NSMutableArray alloc] init];
     }
     return self;
 }
@@ -64,16 +85,7 @@
     [_tags release];
     [_locationChanged release];
     [_stringFields release];
-    [super dealloc];
-}
-
-@end
-
-
-@implementation Binary
-
-- (void)dealloc {
-    [_data release];
+    [_binaries release];
     [super dealloc];
 }
 

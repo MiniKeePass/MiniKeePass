@@ -252,6 +252,11 @@
         [root addChild:[self persistStringField:stringField]];
     }
 
+    // Add the binary references
+    for (BinaryRef *binaryRef in entry.binaries) {
+        [root addChild:[self persistBinaryRef:binaryRef]];
+    }
+
     // FIXME Auto-type stuff goes here
     // FIXME History stuff goes here
 
@@ -274,6 +279,18 @@
 
 - (DDXMLElement *)persistStringField:(StringField *)stringField {
     return [self persistStringFieldWithKey:stringField.key andValue:stringField.value andProtected:stringField.protected];
+}
+
+- (DDXMLElement *)persistBinaryRef:(BinaryRef *)binaryRef {
+    DDXMLElement *root = [DDXMLNode elementWithName:@"Binary"];
+
+    [root addChild:[DDXMLElement elementWithName:@"Key" stringValue:binaryRef.key]];
+    
+    DDXMLElement *element = [DDXMLElement elementWithName:@"Value"];
+    [element addAttributeWithName:@"Ref" stringValue:[NSString stringWithFormat:@"%d", binaryRef.ref]];
+    [root addChild:element];
+
+    return root;
 }
 
 - (NSString *)persistUuid:(UUID *)uuid {

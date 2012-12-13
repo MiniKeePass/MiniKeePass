@@ -65,6 +65,23 @@
 @end
 
 
+@interface Binary : NSObject
+
+@property(nonatomic, assign) NSInteger binaryId;
+@property(nonatomic, assign) BOOL compressed;
+@property(nonatomic, retain) NSString *data;
+
+@end
+
+
+@interface BinaryRef : NSObject
+
+@property(nonatomic, retain) NSString *key;
+@property(nonatomic, assign) NSInteger ref;
+
+@end
+
+
 @interface Kdb4Entry : KdbEntry
 
 @property(nonatomic, retain) UUID *uuid;
@@ -76,15 +93,7 @@
 @property(nonatomic, assign) NSInteger usageCount;
 @property(nonatomic, retain) NSDate *locationChanged;
 @property(nonatomic, readonly) NSMutableArray *stringFields;
-
-@end
-
-
-@interface Binary : NSObject
-
-@property(nonatomic, assign) NSInteger binaryId;
-@property(nonatomic, assign) BOOL compressed;
-@property(nonatomic, retain) NSString *data;
+@property(nonatomic, readonly) NSMutableArray *binaries;
 
 @end
 

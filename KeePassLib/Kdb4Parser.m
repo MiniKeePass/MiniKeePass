@@ -35,6 +35,7 @@
 - (Binary *)parseBinary:(DDXMLElement *)root;
 - (Kdb4Group *)parseGroup:(DDXMLElement *)root;
 - (Kdb4Entry *)parseEntry:(DDXMLElement *)root;
+- (BinaryRef *)parseBinaryRef:(DDXMLElement *)root;
 - (UUID *)parseUuidString:(NSString *)uuidString;
 @end
 
@@ -219,10 +220,7 @@ int closeCallback(void *context) {
 - (Kdb4Entry *)parseEntry:(DDXMLElement *)root {
     Kdb4Entry *entry = [[[Kdb4Entry alloc] init] autorelease];
 
-    NSString *uuidString = [[root elementForName:@"UUID"] stringValue];
-    NSData *data = [Base64 decode:[uuidString dataUsingEncoding:NSUTF8StringEncoding]];
-    entry.uuid = [[[UUID alloc] initWithData:data] autorelease];
-
+    entry.uuid = [self parseUuidString:[[root elementForName:@"UUID"] stringValue]];
     entry.image = [[[root elementForName:@"IconID"] stringValue] integerValue];
     entry.foregroundColor = [[root elementForName:@"ForegroundColor"] stringValue];
     entry.backgroundColor = [[root elementForName:@"BackgroundColor"] stringValue];
@@ -262,11 +260,24 @@ int closeCallback(void *context) {
             [entry.stringFields addObject:stringField];
         }
     }
-    
+
+    for (DDXMLElement *element in [root elementsForName:@"Binary"]) {
+        [entry.binaries addObject:[self parseBinaryRef:element]];
+    }
+
     // FIXME Auto-type stuff goes here
     // FIXME History stuff goes here
     
     return entry;
+}
+
+- (BinaryRef *)parseBinaryRef:(DDXMLElement *)root {
+    BinaryRef *binaryRef = [[[BinaryRef alloc] init] autorelease];
+
+    binaryRef.key = [[root elementForName:@"Key"] stringValue];
+    binaryRef.ref = [[[[root elementForName:@"Value"] attributeForName:@"Ref"] stringValue] integerValue];
+
+    return binaryRef;
 }
 
 - (UUID *)parseUuidString:(NSString *)uuidString {
