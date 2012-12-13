@@ -9,6 +9,9 @@
 #import "Kdb4Node.h"
 #import "DDXMLElement+MKPAdditions.h"
 
+#import "UUID.h"
+#import "Kdb4Parser.h"
+
 @implementation Kdb4Group
 
 @synthesize element;
@@ -30,6 +33,7 @@
     if (group.parent != nil) {
         DDXMLElement *root = ((Kdb4Group*)group.parent).element;
         [root removeChild:((Kdb4Group*)group).element];
+        // QUESTION: Should update the modification time of parent?
         group.parent = nil;
     }
     
@@ -40,6 +44,7 @@
     if (entry.parent != nil) {
         DDXMLElement *root = ((Kdb4Group*)entry.parent).element;
         [root removeChild:((Kdb4Group*)entry).element];
+        // QUESTION: Should update the modification time of parent?
         entry.parent = nil;
     }
     
@@ -141,9 +146,11 @@
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     dateFormatter.timeZone = [NSTimeZone timeZoneWithName:@"GMT"];
     dateFormatter.dateFormat = @"yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'";
-    
     NSString *currentTime = [dateFormatter stringFromDate:[NSDate date]];
-    
+#ifdef DEBUG
+    // expected format 2012-12-01T13:53:18Z
+    NSLog(@"current Time: %@",currentTime);
+#endif
     [dateFormatter release];
     
     element = [DDXMLElement elementWithName:@"LastModificationTime" stringValue:currentTime];
@@ -205,7 +212,8 @@
     
     return rootElement;
 }
-
+// only the DOM is valid after creation.
+// HBXX maybe do a parseGroup? or make sure we update the datastructure
 - (KdbGroup*)createGroup:(KdbGroup*)parent {
     DDXMLElement *element;
     
@@ -214,7 +222,11 @@
     
     group.element = [DDXMLElement elementWithName:@"Group"];
     
-    element = [DDXMLElement elementWithName:@"UUID" stringValue:@""];
+    NSString* randomUUID = [[[[UUID alloc] init] autorelease] inBase64];
+    element = [DDXMLElement elementWithName:@"UUID" stringValue:randomUUID];
+#ifdef DEBUG
+    NSLog(@"createGroup: UUID: %@",element.stringValue);
+#endif
     [group.element addChild:element];
     
     element = [DDXMLElement elementWithName:@"Name" stringValue:@""];
@@ -228,6 +240,14 @@
     
     element = [self createTimesElement];
     [group.element addChild:element];
+
+    // UPDATE group's structure
+    // QUESTION: is this the best place?, groups are created when a file is created and when
+    // group's are created via the UI
+    Kdb4Parser* parser = [[[Kdb4Parser alloc] initWithRandomStream:nil] autorelease];
+    [parser parseTimesElement:element intoGroup:group];
+
+    
     
     element = [DDXMLElement elementWithName:@"IsExpanded" stringValue:@"True"];
     [group.element addChild:element];
@@ -241,8 +261,16 @@
     element = [DDXMLElement elementWithName:@"EnableSearching" stringValue:@"null"];
     [group.element addChild:element];
     
-    element = [DDXMLElement elementWithName:@"LastTopVisibleEntry" stringValue:@""];
+    // WARNING: this might not be a randomUUID, find out from doc.
+    // KeePassX expects it not to be empty.
+    randomUUID = [[[[UUID alloc] init] autorelease] inBase64];
+    element = [DDXMLElement elementWithName:@"LastTopVisibleEntry" stringValue:randomUUID];
+#ifdef DEBUG
+    NSLog(@"  LastTopVisibleEntry with UUID: %@",element.stringValue);
+#endif
     [group.element addChild:element];
+    // waiting for UUID here.
+    
     
     // Add the root element to the parent group's element
     [((Kdb4Group*)parent).element addChild:group.element];
@@ -257,7 +285,11 @@
     entry.parent = parent;
     entry.element = [DDXMLElement elementWithName:@"Entry"];
     
-    element = [DDXMLElement elementWithName:@"UUID" stringValue:@""];
+    NSString* randomUUID = [[[[UUID alloc] init] autorelease] inBase64];
+    element = [DDXMLElement elementWithName:@"UUID" stringValue:randomUUID];
+#ifdef DEBUG
+    NSLog(@"createEntry: UUID: %@",element.stringValue);
+#endif
     [entry.element addChild:element];
     
     element = [DDXMLElement elementWithName:@"IconID" stringValue:@"0"];
@@ -277,6 +309,13 @@
     
     element = [self createTimesElement];
     [entry.element addChild:element];
+    
+    // UPDATE group's structure
+    // QUESTION: is this the best place?, groups are created when a file is created and when
+    // group's are created via the UI
+    Kdb4Parser* parser = [[[Kdb4Parser alloc] initWithRandomStream:nil] autorelease];
+    [parser parseTimesElement:element intoEntry:entry];
+
     
     element = [self createStringElement:@"Notes" value:@"" protected:NO];
     [entry.element addChild:element];

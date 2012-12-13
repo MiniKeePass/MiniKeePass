@@ -16,6 +16,7 @@
  */
 
 #import "UUID.h"
+#import "Base64.h"
 
 static UUID *AES_UUID;
 
@@ -69,6 +70,18 @@ static UUID *AES_UUID;
 
 - (NSString*)description {
     NSString *uuidString = (NSString *)CFUUIDCreateString(NULL, uuid);
+    return [uuidString autorelease];
+}
+
+- (NSString*)inBase64 {
+    CFUUIDBytes uuidBytes1 = CFUUIDGetUUIDBytes(uuid);
+    
+    NSData *data = [ NSData dataWithBytes:&uuidBytes1 length:16];
+    // Base64 encode the string
+    NSData *dataBase64 = [Base64 encode:data];
+    
+    
+    NSString *uuidString = [[NSString alloc] initWithBytes:dataBase64.bytes length:dataBase64.length encoding:NSUTF8StringEncoding];
     return [uuidString autorelease];
 }
 

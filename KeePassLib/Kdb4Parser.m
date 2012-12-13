@@ -130,21 +130,15 @@ int closeCallback(void *context) {
     }
 }
 
-- (Kdb4Group *)parseGroup:(DDXMLElement *)root {
-    Kdb4Group *group = [[[Kdb4Group alloc] initWithElement:root] autorelease];
-    
-    DDXMLElement *element = [root elementForName:@"IconID"];
-    group.image = element.stringValue.intValue;
-    
-    element = [root elementForName:@"Name"];
-    group.name =  element.stringValue;
-    
-    DDXMLElement *timesElement = [root elementForName:@"Times"];
-    
+- (void)parseTimesElement:(DDXMLElement *)timesElement intoGroup:(Kdb4Group *)group
+{
     NSString *str = [[timesElement elementForName:@"CreationTime"] stringValue];
     group.creationTime = [dateFormatter dateFromString:str];
     
     str = [[timesElement elementForName:@"LastModificationTime"] stringValue];
+#ifdef DEBUG
+    NSDate *modifcationTime = [dateFormatter dateFromString:str];
+#endif
     group.lastModificationTime = [dateFormatter dateFromString:str];
     
     str = [[timesElement elementForName:@"LastAccessTime"] stringValue];
@@ -152,6 +146,26 @@ int closeCallback(void *context) {
     
     str = [[timesElement elementForName:@"ExpiryTime"] stringValue];
     group.expiryTime = [dateFormatter dateFromString:str];
+    
+}
+// reads from DOM into datastructure
+- (Kdb4Group *)parseGroup:(DDXMLElement *)root {
+    Kdb4Group *group = [[[Kdb4Group alloc] initWithElement:root] autorelease];
+    
+    DDXMLElement *element = [root elementForName:@"IconID"];
+    group.image = element.stringValue.intValue;
+
+    // HBXX
+    element = [root elementForName:@"UUID"];
+    NSString * lUUID = element.stringValue;
+    const char *lUUIDstr = [lUUID UTF8String];
+    
+    
+    element = [root elementForName:@"Name"];
+    group.name =  element.stringValue;
+    
+    DDXMLElement *timesElement = [root elementForName:@"Times"];
+    [self parseTimesElement:timesElement intoGroup:group];
     
     for (DDXMLElement *element in [root elementsForName:@"Entry"]) {
         Kdb4Entry *entry = [self parseEntry:element];
@@ -170,17 +184,15 @@ int closeCallback(void *context) {
     return group;
 }
 
-- (Kdb4Entry *)parseEntry:(DDXMLElement *)root {
-    Kdb4Entry *entry = [[[Kdb4Entry alloc] initWithElement:root] autorelease];
-    
-    entry.image = [[[root elementForName:@"IconID"] stringValue] intValue];
-    
-    DDXMLElement *timesElement = [root elementForName:@"Times"];
-    
+- (void)parseTimesElement:(DDXMLElement *)timesElement intoEntry:(Kdb4Entry *)entry
+{
     NSString *str = [[timesElement elementForName:@"CreationTime"] stringValue];
     entry.creationTime = [dateFormatter dateFromString:str];
     
     str = [[timesElement elementForName:@"LastModificationTime"] stringValue];
+#ifdef DEBUG
+    NSDate *modifcationTime = [dateFormatter dateFromString:str];
+#endif
     entry.lastModificationTime = [dateFormatter dateFromString:str];
     
     str = [[timesElement elementForName:@"LastAccessTime"] stringValue];
@@ -189,6 +201,16 @@ int closeCallback(void *context) {
     str = [[timesElement elementForName:@"ExpiryTime"] stringValue];
     entry.expiryTime = [dateFormatter dateFromString:str];
     
+}
+
+- (Kdb4Entry *)parseEntry:(DDXMLElement *)root {
+    Kdb4Entry *entry = [[[Kdb4Entry alloc] initWithElement:root] autorelease];
+    
+    entry.image = [[[root elementForName:@"IconID"] stringValue] intValue];
+    
+    DDXMLElement *timesElement = [root elementForName:@"Times"];
+    [self parseTimesElement:timesElement intoEntry:entry];
+        
     for (DDXMLElement *element in [root elementsForName:@"String"]) {
         NSString *key = [[element elementForName:@"Key"] stringValue];
 

@@ -26,6 +26,8 @@
 - (id)initWithBytes:(uint8_t*)bytes;
 - (void)getBytes:(uint8_t*)bytes length:(NSUInteger)length;
 
+- (NSString*)inBase64;
+
 + (UUID*)getAESUUID;
 
 @end

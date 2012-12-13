@@ -64,6 +64,10 @@
     [self decodeProtected:tree.document.rootElement];
 }
 
+// NOTE:
+// This supposes that the group's structures are up to date
+// if group.lastModificationTime is nil, this will be bad.
+// updates DOM from structures
 - (void)updateGroup:(Kdb4Group*)group {
     DDXMLElement *element;
     
@@ -80,6 +84,12 @@
     
     element = [timesElement elementForName:@"LastModificationTime"];
     element.stringValue = [dateFormatter stringFromDate:group.lastModificationTime];
+#ifdef DEBUG
+    NSDate* lDate = group.lastModificationTime;
+    NSLog(@"date: \"%@\"",[lDate description]);
+    NSString* lDateStr = [dateFormatter stringFromDate:group.lastModificationTime];
+    NSLog(@"datestr: \"%@\"",lDateStr);
+#endif
     
     element = [timesElement elementForName:@"LastAccessTime"];
     element.stringValue = [dateFormatter stringFromDate:group.lastAccessTime];
@@ -115,7 +125,7 @@
     
     timeElement = [timesElement elementForName:@"ExpiryTime"];
     timeElement.stringValue = [dateFormatter stringFromDate:entry.expiryTime];
-    
+
     for (DDXMLElement *element in [root elementsForName:@"String"]) {
         NSString *key = [[element elementForName:@"Key"] stringValue];
         
