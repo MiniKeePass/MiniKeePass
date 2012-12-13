@@ -24,6 +24,7 @@
 @property (nonatomic, assign) CFUUIDRef uuid;
 
 - (id)initWithBytes:(uint8_t *)bytes;
+- (id)initWithString:(NSString *)string;
 
 - (void)getBytes:(uint8_t *)bytes length:(NSUInteger)length;
 

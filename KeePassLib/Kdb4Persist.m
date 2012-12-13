@@ -79,13 +79,13 @@
 
     // Add the standard properties
     [root addChild:[DDXMLNode elementWithName:@"UUID"
-                                  stringValue:[group.properties valueForKey:@"UUID"]]];
+                                  stringValue:[group.uuid description]]];
     [root addChild:[DDXMLNode elementWithName:@"Name"
                                      stringValue:group.name]];
     [root addChild:[DDXMLNode elementWithName:@"IconID"
                                      stringValue:[NSString stringWithFormat:@"%d", group.image]]];
     [root addChild:[DDXMLNode elementWithName:@"Notes"
-                                  stringValue:[group.properties valueForKey:@"Notes"]]];
+                                  stringValue:group.notes]];
 
     // Add the Times element
     DDXMLElement *timesElement = [DDXMLNode elementWithName:@"Times"];
@@ -107,15 +107,15 @@
 
     // Add the additional properties
     [root addChild:[DDXMLNode elementWithName:@"IsExpanded"
-                                  stringValue:[group.properties valueForKey:@"IsExpanded"]]];
+                                  stringValue:group.isExpanded ? @"True" : @"False"]];
     [root addChild:[DDXMLNode elementWithName:@"DefaultAutoTypeSequence"
-                                  stringValue:[group.properties valueForKey:@"DefaultAutoTypeSequence"]]];
+                                  stringValue:group.defaultAutoTypeSequence]];
     [root addChild:[DDXMLNode elementWithName:@"EnableAutoType"
-                                  stringValue:[group.properties valueForKey:@"EnableAutoType"]]];
+                                  stringValue:group.enableAutoType]];
     [root addChild:[DDXMLNode elementWithName:@"EnableSearching"
-                                  stringValue:[group.properties valueForKey:@"EnableSearching"]]];
+                                  stringValue:group.enableSearching]];
     [root addChild:[DDXMLNode elementWithName:@"LastTopVisibleEntry"
-                                  stringValue:[group.properties valueForKey:@"LastTopVisibleEntry"]]];
+                                  stringValue:group.lastTopVisibleEntry]];
 
     for (Kdb4Entry *entry in group.entries) {
         [root addChild:[self persistEntry:entry]];
@@ -133,17 +133,17 @@
 
     // Add the standard properties
     [root addChild:[DDXMLNode elementWithName:@"UUID"
-                                  stringValue:[entry.properties valueForKey:@"UUID"]]];
+                                  stringValue:[entry.uuid description]]];
     [root addChild:[DDXMLNode elementWithName:@"IconID"
                                      stringValue:[NSString stringWithFormat:@"%d", entry.image]]];
     [root addChild:[DDXMLNode elementWithName:@"ForegroundColor"
-                                  stringValue:[entry.properties valueForKey:@"ForegroundColor"]]];
+                                  stringValue:entry.foregroundColor]];
     [root addChild:[DDXMLNode elementWithName:@"BackgroundColor"
-                                  stringValue:[entry.properties valueForKey:@"BackgroundColor"]]];
+                                  stringValue:entry.backgroundColor]];
     [root addChild:[DDXMLNode elementWithName:@"OverrideURL"
-                                  stringValue:[entry.properties valueForKey:@"OverrideURL"]]];
+                                  stringValue:entry.overrideUrl]];
     [root addChild:[DDXMLNode elementWithName:@"Tags"
-                                  stringValue:[entry.properties valueForKey:@"Tags"]]];
+                                  stringValue:entry.tags]];
 
     // Add the Times element
     DDXMLElement *timesElement = [DDXMLNode elementWithName:@"Times"];

@@ -11,16 +11,14 @@
 
 @implementation Kdb4Group
 
-- (id)init {
-    self = [super init];
-    if (self) {
-        _properties = [[NSMutableDictionary alloc] init];
-    }
-    return self;
-}
-
 - (void)dealloc {
-    [_properties release];
+    [_uuid release];
+    [_notes release];
+    [_defaultAutoTypeSequence release];
+    [_enableAutoType release];
+    [_enableSearching release];
+    [_lastTopVisibleEntry release];
+    [_locationChanged release];
     [super dealloc];
 }
 
@@ -53,14 +51,18 @@
 - (id)init:(DDXMLElement*)e {
     self = [super init];
     if (self) {
-        _properties = [[NSMutableDictionary alloc] init];
         _stringFields = [[NSMutableArray alloc] init];
     }
     return self;
 }
 
 - (void)dealloc {
-    [_properties release];
+    [_uuid release];
+    [_foregroundColor release];
+    [_backgroundColor release];
+    [_overrideUrl release];
+    [_tags release];
+    [_locationChanged release];
     [_stringFields release];
     [super dealloc];
 }
@@ -88,14 +90,14 @@
 - (KdbGroup*)createGroup:(KdbGroup*)parent {
     Kdb4Group *group = [[Kdb4Group alloc] init];
 
-    [group.properties setValue:@"" forKey:@"UUID"]; // FIXME
-    [group.properties setValue:@"" forKey:@"Notes"];
-    [group.properties setValue:@"0" forKey:@"IconID"];
-    [group.properties setValue:@"True" forKey:@"IsExpanded"];
-    [group.properties setValue:@"" forKey:@"DefaultAutoTypeSequence"];
-    [group.properties setValue:@"null" forKey:@"EnableAutoType"];
-    [group.properties setValue:@"null" forKey:@"EnableSearching"];
-    [group.properties setValue:@"" forKey:@"LastTopVisibleEntry"];
+    group.uuid = [UUID uuid];
+    group.Notes = @"";
+    group.image = 0;
+    group.isExpanded = true;
+    group.defaultAutoTypeSequence = @"";
+    group.enableAutoType = @"null";
+    group.enableSearching = @"null";
+    group.lastTopVisibleEntry = @"";
 
     NSDate *currentTime = [NSDate date];
     group.lastModificationTime = currentTime;
@@ -112,15 +114,15 @@
 - (KdbEntry*)createEntry:(KdbGroup*)parent {
     Kdb4Entry *entry = [[Kdb4Entry alloc] init];
 
-    [entry.properties setValue:@"" forKey:@"UUID"];
-    [entry.properties setValue:@"0" forKey:@"IconID"];
-    [entry.properties setValue:nil forKey:@"ForegroundColor"];
-    [entry.properties setValue:nil forKey:@"BackgroundColor"];
-    [entry.properties setValue:nil forKey:@"OverrideURL"];
-    [entry.properties setValue:nil forKey:@"Tags"];
-    [entry.properties setValue:@"" forKey:@"LastTopVisibleEntry"];
-    [entry.properties setValue:nil forKey:@"AutoType"]; // FIXME  Association.Window = Target Window, Association.KeystrokeSequence = {USERNAME}{TAB}{PASSWORD}{TAB}{ENTER}
-    [entry.properties setValue:nil forKey:@"History"];
+    entry.uuid = [UUID uuid];
+    entry.image = 0;
+    entry.foregroundColor = @"";
+    entry.backgroundColor = @"";
+    entry.overrideUrl = @"";
+    entry.tags = @"";
+
+    // FIXME Auto-Type
+    // FIXME History
 
     NSDate *currentTime = [NSDate date];
     entry.lastModificationTime = currentTime;

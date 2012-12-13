@@ -132,60 +132,28 @@ int closeCallback(void *context) {
     }
 }
 
-- (Kdb4Group *)parseGroup:(DDXMLElement *)root {
-    DDXMLElement *element;
-    
+- (Kdb4Group *)parseGroup:(DDXMLElement *)root {    
     Kdb4Group *group = [[[Kdb4Group alloc] init] autorelease];
 
-    element = [root elementForName:@"UUID"];
-    [group.properties setValue:element.stringValue forKey:@"UUID"];
-
-    element = [root elementForName:@"Name"];
-    group.name =  element.stringValue;
-    
-    element = [root elementForName:@"Notes"];
-    [group.properties setValue:element.stringValue forKey:@"Notes"];
-
-    element = [root elementForName:@"IconID"];
-    group.image = element.stringValue.integerValue;
+    group.uuid = [[[UUID alloc] initWithString:[[root elementForName:@"UUID"] stringValue]] autorelease];
+    group.name = [[root elementForName:@"Name"] stringValue];
+    group.image = [[[root elementForName:@"IconID"] stringValue] integerValue];
+    group.notes = [[root elementForName:@"Notes"] stringValue];
 
     DDXMLElement *timesElement = [root elementForName:@"Times"];
-    
-    NSString *str = [[timesElement elementForName:@"LastModificationTime"] stringValue];
-    group.lastModificationTime = [dateFormatter dateFromString:str];
-    
-    str = [[timesElement elementForName:@"CreationTime"] stringValue];
-    group.creationTime = [dateFormatter dateFromString:str];
+    group.lastModificationTime = [dateFormatter dateFromString:[[timesElement elementForName:@"LastModificationTime"] stringValue]];
+    group.creationTime = [dateFormatter dateFromString:[[timesElement elementForName:@"CreationTime"] stringValue]];
+    group.lastAccessTime = [dateFormatter dateFromString:[[timesElement elementForName:@"LastAccessTime"] stringValue]];
+    group.expiryTime = [dateFormatter dateFromString:[[timesElement elementForName:@"ExpiryTime"] stringValue]];
+    group.expires = [[[timesElement elementForName:@"Expires"] stringValue] boolValue];
+    group.usageCount = [[[timesElement elementForName:@"UsageCount"] stringValue] integerValue];
+    group.locationChanged = [dateFormatter dateFromString:[[timesElement elementForName:@"LocationChanged"] stringValue]];
 
-    str = [[timesElement elementForName:@"LastAccessTime"] stringValue];
-    group.lastAccessTime = [dateFormatter dateFromString:str];
-    
-    str = [[timesElement elementForName:@"ExpiryTime"] stringValue];
-    group.expiryTime = [dateFormatter dateFromString:str];
-
-    str = [[timesElement elementForName:@"Expires"] stringValue];
-    group.expires = [str isEqual:@"True"];
-
-    str = [[timesElement elementForName:@"UsageCount"] stringValue];
-    group.expires = [str integerValue];
-
-    str = [[timesElement elementForName:@"LocationChanged"] stringValue];
-    group.locationChanged = [dateFormatter dateFromString:str];
-
-    element = [root elementForName:@"IsExpanded"];
-    [group.properties setValue:element.stringValue forKey:@"IsExpanded"];
-
-    element = [root elementForName:@"DefaultAutoTypeSequence"];
-    [group.properties setValue:element.stringValue forKey:@"DefaultAutoTypeSequence"];
-
-    element = [root elementForName:@"EnableAutoType"];
-    [group.properties setValue:element.stringValue forKey:@"EnableAutoType"];
-
-    element = [root elementForName:@"EnableSearching"];
-    [group.properties setValue:element.stringValue forKey:@"EnableSearching"];
-
-    element = [root elementForName:@"LastTopVisibleEntry"];
-    [group.properties setValue:element.stringValue forKey:@"LastTopVisibleEntry"];
+    group.isExpanded = [[[root elementForName:@"IsExpanded"] stringValue] boolValue];
+    group.defaultAutoTypeSequence = [[root elementForName:@"DefaultAutoTypeSequence"] stringValue];
+    group.EnableAutoType = [[root elementForName:@"EnableAutoType"] stringValue];
+    group.EnableSearching = [[root elementForName:@"EnableSearching"] stringValue];
+    group.LastTopVisibleEntry = [[root elementForName:@"LastTopVisibleEntry"] stringValue];
 
     for (DDXMLElement *element in [root elementsForName:@"Entry"]) {
         Kdb4Entry *entry = [self parseEntry:element];
@@ -209,45 +177,22 @@ int closeCallback(void *context) {
     
     Kdb4Entry *entry = [[[Kdb4Entry alloc] init] autorelease];
 
-    element = [root elementForName:@"UUID"];
-    [entry.properties setValue:element.stringValue forKey:@"UUID"];
+    entry.uuid = [[[UUID alloc] initWithString:[[root elementForName:@"UUID"] stringValue]] autorelease];
+    entry.image = [[[root elementForName:@"IconID"] stringValue] integerValue];
 
-    entry.image = [[[root elementForName:@"IconID"] stringValue] intValue];
-
-    element = [root elementForName:@"ForegroundColor"];
-    [entry.properties setValue:element.stringValue forKey:@"ForegroundColor"];
-
-    element = [root elementForName:@"BackgroundColor"];
-    [entry.properties setValue:element.stringValue forKey:@"BackgroundColor"];
-
-    element = [root elementForName:@"OverrideURL"];
-    [entry.properties setValue:element.stringValue forKey:@"OverrideURL"];
-
-    element = [root elementForName:@"Tags"];
-    [entry.properties setValue:element.stringValue forKey:@"Tags"];
+    entry.foregroundColor = [[root elementForName:@"ForegroundColor"] stringValue];
+    entry.backgroundColor = [[root elementForName:@"BackgroundColor"] stringValue];
+    entry.overrideUrl = [[root elementForName:@"OverrideURL"] stringValue];
+    entry.tags = [[root elementForName:@"Tags"] stringValue];
 
     DDXMLElement *timesElement = [root elementForName:@"Times"];
-
-    NSString *str = [[timesElement elementForName:@"LastModificationTime"] stringValue];
-    entry.lastModificationTime = [dateFormatter dateFromString:str];
-
-    str = [[timesElement elementForName:@"CreationTime"] stringValue];
-    entry.creationTime = [dateFormatter dateFromString:str];
-
-    str = [[timesElement elementForName:@"LastAccessTime"] stringValue];
-    entry.lastAccessTime = [dateFormatter dateFromString:str];
-
-    str = [[timesElement elementForName:@"ExpiryTime"] stringValue];
-    entry.expiryTime = [dateFormatter dateFromString:str];
-
-    str = [[timesElement elementForName:@"Expires"] stringValue];
-    entry.expires = [str isEqual:@"True"];
-
-    str = [[timesElement elementForName:@"UsageCount"] stringValue];
-    entry.expires = [str integerValue];
-
-    str = [[timesElement elementForName:@"LocationChanged"] stringValue];
-    entry.locationChanged = [dateFormatter dateFromString:str];
+    entry.lastModificationTime = [dateFormatter dateFromString:[[timesElement elementForName:@"LastModificationTime"] stringValue]];
+    entry.creationTime = [dateFormatter dateFromString:[[timesElement elementForName:@"CreationTime"] stringValue]];
+    entry.lastAccessTime = [dateFormatter dateFromString:[[timesElement elementForName:@"LastAccessTime"] stringValue]];
+    entry.expiryTime = [dateFormatter dateFromString:[[timesElement elementForName:@"ExpiryTime"] stringValue]];
+    entry.expires = [[[timesElement elementForName:@"Expires"] stringValue] boolValue];
+    entry.usageCount = [[[timesElement elementForName:@"UsageCount"] stringValue] integerValue];
+    entry.locationChanged = [dateFormatter dateFromString:[[timesElement elementForName:@"LocationChanged"] stringValue]];
 
     for (DDXMLElement *element in [root elementsForName:@"String"]) {
         NSString *key = [[element elementForName:@"Key"] stringValue];

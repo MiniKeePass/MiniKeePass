@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "Kdb.h"
+#import "UUID.h"
 
 #define KDB4_PRE_SIG1 (0x9AA2D903)
 #define KDB4_PRE_SIG2 (0xB54BFB66)
@@ -39,7 +40,13 @@
 
 @interface Kdb4Group : KdbGroup
 
-@property(nonatomic, readonly) NSMutableDictionary *properties;
+@property(nonatomic, retain) UUID *uuid;
+@property(nonatomic, copy) NSString *notes;
+@property(nonatomic, assign) BOOL isExpanded;
+@property(nonatomic, copy) NSString *defaultAutoTypeSequence;
+@property(nonatomic, copy) NSString *enableAutoType;
+@property(nonatomic, copy) NSString *enableSearching;
+@property(nonatomic, copy) NSString *lastTopVisibleEntry;
 @property(nonatomic, assign) BOOL expires;
 @property(nonatomic, assign) NSUInteger usageCount;
 @property(nonatomic, retain) NSDate *locationChanged;
@@ -60,11 +67,15 @@
 
 @interface Kdb4Entry : KdbEntry
 
-@property(nonatomic, readonly) NSMutableDictionary *properties;
-@property(nonatomic, readonly) NSMutableArray *stringFields;
+@property(nonatomic, retain) UUID *uuid;
+@property(nonatomic, copy) NSString *foregroundColor;
+@property(nonatomic, copy) NSString *backgroundColor;
+@property(nonatomic, copy) NSString *overrideUrl;
+@property(nonatomic, copy) NSString *tags;
 @property(nonatomic, assign) BOOL expires;
 @property(nonatomic, assign) NSUInteger usageCount;
 @property(nonatomic, retain) NSDate *locationChanged;
+@property(nonatomic, readonly) NSMutableArray *stringFields;
 
 @end
 

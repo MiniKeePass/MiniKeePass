@@ -39,6 +39,14 @@ static UUID *AES_UUID;
 	return self;
 }
 
+- (id)initWithString:(NSString *)string {
+    self = [super init];
+	if (self) {
+        uuid = CFUUIDCreateFromString(kCFAllocatorDefault, (CFStringRef)string);
+	}
+	return self;
+}
+
 - (void)dealloc {
     CFRelease(uuid);
     [super dealloc];
