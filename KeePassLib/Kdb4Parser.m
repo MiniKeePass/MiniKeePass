@@ -42,7 +42,7 @@
     self = [super init];
     if (self) {
         randomStream = [cryptoRandomStream retain];
-        
+
         dateFormatter = [[NSDateFormatter alloc] init];
         dateFormatter.timeZone = [NSTimeZone timeZoneWithName:@"GMT"];
         dateFormatter.dateFormat = @"yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'";
@@ -70,10 +70,10 @@ int closeCallback(void *context) {
     if (document == nil) {
         @throw [NSException exceptionWithName:@"ParseError" reason:@"Failed to parse database" userInfo:nil];
     }
-    
+
     // Get the root document element
     DDXMLElement *rootElement = [document rootElement];
-    
+
     // Decode all the protected entries
     [self decodeProtected:rootElement];
 
@@ -93,38 +93,31 @@ int closeCallback(void *context) {
         [document release];
         @throw [NSException exceptionWithName:@"ParseError" reason:@"Failed to parse database" userInfo:nil];
     }
-    
+
     Kdb4Tree *tree = [[Kdb4Tree alloc] init];
     tree.root = [self parseGroup:element];
 
     [document release];
-    
-    return [tree autorelease];
-}
 
-- (void)parseMeta:(DDXMLElement *)root {
-    DDXMLElement *element = [root elementForName:@"HeaderHash"];
-    if (element != nil) {
-        [root removeChild:element];
-    }
+    return [tree autorelease];
 }
 
 - (void)decodeProtected:(DDXMLElement *)root {
     DDXMLNode *protectedAttribute = [root attributeForName:@"Protected"];
     if ([[protectedAttribute stringValue] isEqual:@"True"]) {
         NSString *str = [root stringValue];
-        
+
         // Base64 decode the string
         NSMutableData *data = [Base64 decode:[str dataUsingEncoding:NSASCIIStringEncoding]];
-        
+
         // Unprotect the password
         [randomStream xor:data];
-        
+
         NSString *unprotected = [[NSString alloc] initWithBytes:data.bytes length:data.length encoding:NSUTF8StringEncoding];
         [root setStringValue:unprotected];
         [unprotected release];
     }
-    
+
     for (DDXMLNode *node in [root children]) {
         if ([node kind] == DDXMLElementKind) {
             [self decodeProtected:(DDXMLElement*)node];
@@ -132,14 +125,44 @@ int closeCallback(void *context) {
     }
 }
 
-- (Kdb4Group *)parseGroup:(DDXMLElement *)root {    
+- (void)parseMeta:(DDXMLElement *)root tree:(Kdb4Tree *)tree {
+    tree.generator = [[root elementForName:@"Generator"] stringValue];
+    tree.databaseName = [[root elementForName:@"DatabaseName"] stringValue];
+    tree.databaseNameChanged = [dateFormatter dateFromString:[[root elementForName:@"DatabaseNameChanged"] stringValue]];
+    tree.databaseDescription = [[root elementForName:@"DatabaseDescription"] stringValue];
+    tree.databaseDescriptionChanged = [dateFormatter dateFromString:[[root elementForName:@"DatabaseDescriptionChanged"] stringValue]];
+    tree.defaultUserName = [[root elementForName:@"DefaultUserName"] stringValue];
+    tree.defaultUserNameChanged = [dateFormatter dateFromString:[[root elementForName:@"DefaultUserNameChanged"] stringValue]];
+    tree.maintenanceHistoryDays = [[[root elementForName:@"IconID"] stringValue] integerValue];
+    tree.color = [[root elementForName:@"Color"] stringValue];
+    tree.masterKeyChanged = [dateFormatter dateFromString:[[root elementForName:@"MasterKeyChanged"] stringValue]];
+    tree.masterKeyChangeRec = [[[root elementForName:@"IconID"] stringValue] integerValue];
+    tree.masterKeyChangeForce = [[[root elementForName:@"IconID"] stringValue] integerValue];
+    tree.protectTitle = [[[root elementForName:@"ProtectTitle"] stringValue] boolValue];
+    tree.protectUserName = [[[root elementForName:@"ProtectUserName"] stringValue] boolValue];
+    tree.protectPassword = [[[root elementForName:@"ProtectPassword"] stringValue] boolValue];
+    tree.protectUrl = [[[root elementForName:@"ProtectURL"] stringValue] boolValue];
+    tree.protectNotes = [[[root elementForName:@"ProtectNotes"] stringValue] boolValue];
+    tree.recycleBinEnabled = [[[root elementForName:@"RecycleBinEnabled"] stringValue] boolValue];
+    tree.recycleBinUuid = [self parseUuidString:[[root elementForName:@"RecycleBinUUID"] stringValue]];
+    tree.recycleBinChanged = [dateFormatter dateFromString:[[root elementForName:@"RecycleBinChanged"] stringValue]];
+    tree.entryTemplatesGroup = [self parseUuidString:[[root elementForName:@"EntryTemplatesGroup"] stringValue]];
+    tree.entryTemplatesGroupChanged = [dateFormatter dateFromString:[[root elementForName:@"entryTemplatesGroupChanged"] stringValue]];
+    tree.historyMaxItems = [[[root elementForName:@"HistoryMaxItems"] stringValue] integerValue];
+    tree.historyMaxSize = [[[root elementForName:@"HistoryMaxSize"] stringValue] integerValue];
+    tree.lastSelectedGroup = [self parseUuidString:[[root elementForName:@"LastSelectedGroup"] stringValue]];
+    tree.lastTopVisibleGroup = [self parseUuidString:[[root elementForName:@"LastTopVisibleGroup"] stringValue]];
+}
+
+- (UUID *)parseUuidString:(NSString *)uuidString {
+    NSData *data = [Base64 decode:[uuidString dataUsingEncoding:NSUTF8StringEncoding]];
+    return [[[UUID alloc] initWithData:data] autorelease];
+}
+
+- (Kdb4Group *)parseGroup:(DDXMLElement *)root {
     Kdb4Group *group = [[[Kdb4Group alloc] init] autorelease];
 
-    NSString *uuidString = [[root elementForName:@"UUID"] stringValue];
-    NSData *data = [Base64 decode:[uuidString dataUsingEncoding:NSUTF8StringEncoding]];
-    group.uuid = [[[UUID alloc] initWithData:data] autorelease];
-    NSLog(@"%@ = %@", uuidString, group.uuid);
-
+    group.uuid = [self parseUuidString:[[root elementForName:@"UUID"] stringValue]];
     group.name = [[root elementForName:@"Name"] stringValue];
     group.image = [[[root elementForName:@"IconID"] stringValue] integerValue];
     group.notes = [[root elementForName:@"Notes"] stringValue];
@@ -162,17 +185,17 @@ int closeCallback(void *context) {
     for (DDXMLElement *element in [root elementsForName:@"Entry"]) {
         Kdb4Entry *entry = [self parseEntry:element];
         entry.parent = group;
-        
+
         [group addEntry:entry];
     }
-    
+
     for (DDXMLElement *element in [root elementsForName:@"Group"]) {
         Kdb4Group *subGroup = [self parseGroup:element];
         subGroup.parent = group;
-        
+
         [group addGroup:subGroup];
     }
-    
+
     return group;
 }
 
@@ -203,7 +226,7 @@ int closeCallback(void *context) {
 
         DDXMLElement *valueElement = [element elementForName:@"Value"];
         NSString *value = [valueElement stringValue];
-        
+
         if ([key isEqualToString:FIELD_TITLE]) {
             entry.title = value;
         } else if ([key isEqualToString:FIELD_USER_NAME]) {
@@ -222,7 +245,7 @@ int closeCallback(void *context) {
             [entry.stringFields addObject:stringField];
         }
     }
-
+    
     // FIXME Auto-type stuff goes here
     // FIXME History stuff goes here
     

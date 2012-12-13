@@ -48,7 +48,7 @@
 @property(nonatomic, copy) NSString *enableSearching;
 @property(nonatomic, copy) NSString *lastTopVisibleEntry;
 @property(nonatomic, assign) BOOL expires;
-@property(nonatomic, assign) NSUInteger usageCount;
+@property(nonatomic, assign) NSInteger usageCount;
 @property(nonatomic, retain) NSDate *locationChanged;
 
 @end
@@ -73,7 +73,7 @@
 @property(nonatomic, copy) NSString *overrideUrl;
 @property(nonatomic, copy) NSString *tags;
 @property(nonatomic, assign) BOOL expires;
-@property(nonatomic, assign) NSUInteger usageCount;
+@property(nonatomic, assign) NSInteger usageCount;
 @property(nonatomic, retain) NSDate *locationChanged;
 @property(nonatomic, readonly) NSMutableArray *stringFields;
 
@@ -82,8 +82,34 @@
 
 @interface Kdb4Tree : KdbTree
 
-@property(nonatomic, readonly) NSMutableDictionary *properties;
 @property(nonatomic, assign) uint64_t rounds;
 @property(nonatomic, assign) uint32_t compressionAlgorithm;
+
+@property(nonatomic, copy) NSString *generator;
+@property(nonatomic, copy) NSString *databaseName;
+@property(nonatomic, retain) NSDate *databaseNameChanged;
+@property(nonatomic, copy) NSString *databaseDescription;
+@property(nonatomic, retain) NSDate *databaseDescriptionChanged;
+@property(nonatomic, copy) NSString *defaultUserName;
+@property(nonatomic, retain) NSDate *defaultUserNameChanged;
+@property(nonatomic, assign) NSInteger maintenanceHistoryDays;
+@property(nonatomic, copy) NSString *color;
+@property(nonatomic, retain) NSDate *masterKeyChanged;
+@property(nonatomic, assign) NSInteger masterKeyChangeRec;
+@property(nonatomic, assign) NSInteger masterKeyChangeForce;
+@property(nonatomic, assign) BOOL protectTitle;
+@property(nonatomic, assign) BOOL protectUserName;
+@property(nonatomic, assign) BOOL protectPassword;
+@property(nonatomic, assign) BOOL protectUrl;
+@property(nonatomic, assign) BOOL protectNotes;
+@property(nonatomic, assign) BOOL recycleBinEnabled;
+@property(nonatomic, retain) UUID *recycleBinUuid;
+@property(nonatomic, retain) NSDate *recycleBinChanged;
+@property(nonatomic, retain) UUID *entryTemplatesGroup;
+@property(nonatomic, retain) NSDate *entryTemplatesGroupChanged;
+@property(nonatomic, assign) NSInteger historyMaxItems;
+@property(nonatomic, assign) NSInteger historyMaxSize;
+@property(nonatomic, retain) UUID *lastSelectedGroup;
+@property(nonatomic, retain) UUID *lastTopVisibleGroup;
 
 @end

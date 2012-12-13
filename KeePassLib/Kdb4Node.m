@@ -72,10 +72,9 @@
 
 @implementation Kdb4Tree
 
-- (id)initWithDocument:(DDXMLDocument*)doc {
+- (id)init {
     self = [super init];
     if (self) {
-        _properties = [[NSMutableDictionary alloc] init];
         _rounds = DEFAULT_TRANSFORMATION_ROUNDS;
         _compressionAlgorithm = COMPRESSION_GZIP;
     }
@@ -83,7 +82,21 @@
 }
 
 - (void)dealloc {
-    [_properties release];
+    [_generator release];
+    [_databaseName release];
+    [_databaseNameChanged release];
+    [_databaseDescription release];
+    [_databaseDescriptionChanged release];
+    [_defaultUserName release];
+    [_defaultUserNameChanged release];
+    [_color release];
+    [_masterKeyChanged release];
+    [_recycleBinUuid release];
+    [_recycleBinChanged release];
+    [_entryTemplatesGroup release];
+    [_entryTemplatesGroupChanged release];
+    [_lastSelectedGroup release];
+    [_lastTopVisibleGroup release];
     [super dealloc];
 }
 
