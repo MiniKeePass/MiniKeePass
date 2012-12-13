@@ -88,7 +88,7 @@
 - (KdbGroup*)createGroup:(KdbGroup*)parent {
     Kdb4Group *group = [[Kdb4Group alloc] init];
 
-    [group.properties setValue:@"" forKey:@"UUID"];
+    [group.properties setValue:@"" forKey:@"UUID"]; // FIXME
     [group.properties setValue:@"" forKey:@"Notes"];
     [group.properties setValue:@"0" forKey:@"IconID"];
     [group.properties setValue:@"True" forKey:@"IsExpanded"];
@@ -101,7 +101,7 @@
     group.lastModificationTime = currentTime;
     group.creationTime = currentTime;
     group.lastAccessTime = currentTime;
-    group.expiryTime = nil; // FIXME
+    group.expiryTime = currentTime;
     group.expires = false;
     group.usageCount = 0;
     group.locationChanged = currentTime;
@@ -126,7 +126,7 @@
     entry.lastModificationTime = currentTime;
     entry.creationTime = currentTime;
     entry.lastAccessTime = currentTime;
-    entry.expiryTime = nil; // FIXME
+    entry.expiryTime = currentTime;
     entry.expires = false;
     entry.usageCount = 0;
     entry.locationChanged = currentTime;

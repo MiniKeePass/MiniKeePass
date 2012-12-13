@@ -55,6 +55,8 @@
     // Update the DOM model
     DDXMLDocument *document = [self persistTree];
 
+    NSLog(@"%@", document);
+
     // Encode all the protected entries
     [self encodeProtected:document.rootElement];
 
@@ -75,23 +77,46 @@
 - (DDXMLElement *)persistGroup:(Kdb4Group *)group {
     DDXMLElement *root = [DDXMLNode elementWithName:@"Group"];
 
+    // Add the standard properties
+    [root addChild:[DDXMLNode elementWithName:@"UUID"
+                                  stringValue:[group.properties valueForKey:@"UUID"]]];
     [root addChild:[DDXMLNode elementWithName:@"Name"
                                      stringValue:group.name]];
     [root addChild:[DDXMLNode elementWithName:@"IconID"
                                      stringValue:[NSString stringWithFormat:@"%d", group.image]]];
+    [root addChild:[DDXMLNode elementWithName:@"Notes"
+                                  stringValue:[group.properties valueForKey:@"Notes"]]];
 
     // Add the Times element
     DDXMLElement *timesElement = [DDXMLNode elementWithName:@"Times"];
+    [timesElement addChild:[DDXMLNode elementWithName:@"LastModificationTime"
+                                          stringValue:[dateFormatter stringFromDate:group.lastModificationTime]]];
     [timesElement addChild:[DDXMLNode elementWithName:@"CreationTime"
                                              stringValue:[dateFormatter stringFromDate:group.creationTime]]];
-    [timesElement addChild:[DDXMLNode elementWithName:@"LastModificationTime"
-                                             stringValue:[dateFormatter stringFromDate:group.lastModificationTime]]];
     [timesElement addChild:[DDXMLNode elementWithName:@"LastAccessTime"
                                              stringValue:[dateFormatter stringFromDate:group.lastAccessTime]]];
     [timesElement addChild:[DDXMLNode elementWithName:@"ExpiryTime"
-                                             stringValue:[dateFormatter stringFromDate:group.expiryTime]]];
+                                          stringValue:[dateFormatter stringFromDate:group.expiryTime]]];
+    [timesElement addChild:[DDXMLNode elementWithName:@"Expires"
+                                          stringValue:group.expires ? @"True" : @"False"]];
+    [timesElement addChild:[DDXMLNode elementWithName:@"UsageCount"
+                                          stringValue:[NSString stringWithFormat:@"%d", group.usageCount]]];
+    [timesElement addChild:[DDXMLNode elementWithName:@"LocationChanged"
+                                          stringValue:[dateFormatter stringFromDate:group.locationChanged]]];
     [root addChild:timesElement];
-    
+
+    // Add the additional properties
+    [root addChild:[DDXMLNode elementWithName:@"IsExpanded"
+                                  stringValue:[group.properties valueForKey:@"IsExpanded"]]];
+    [root addChild:[DDXMLNode elementWithName:@"DefaultAutoTypeSequence"
+                                  stringValue:[group.properties valueForKey:@"DefaultAutoTypeSequence"]]];
+    [root addChild:[DDXMLNode elementWithName:@"EnableAutoType"
+                                  stringValue:[group.properties valueForKey:@"EnableAutoType"]]];
+    [root addChild:[DDXMLNode elementWithName:@"EnableSearching"
+                                  stringValue:[group.properties valueForKey:@"EnableSearching"]]];
+    [root addChild:[DDXMLNode elementWithName:@"LastTopVisibleEntry"
+                                  stringValue:[group.properties valueForKey:@"LastTopVisibleEntry"]]];
+
     for (Kdb4Entry *entry in group.entries) {
         [root addChild:[self persistEntry:entry]];
     }
@@ -106,19 +131,36 @@
 - (DDXMLElement *)persistEntry:(Kdb4Entry *)entry {
     DDXMLElement *root = [DDXMLNode elementWithName:@"Entry"];
 
+    // Add the standard properties
+    [root addChild:[DDXMLNode elementWithName:@"UUID"
+                                  stringValue:[entry.properties valueForKey:@"UUID"]]];
     [root addChild:[DDXMLNode elementWithName:@"IconID"
                                      stringValue:[NSString stringWithFormat:@"%d", entry.image]]];
+    [root addChild:[DDXMLNode elementWithName:@"ForegroundColor"
+                                  stringValue:[entry.properties valueForKey:@"ForegroundColor"]]];
+    [root addChild:[DDXMLNode elementWithName:@"BackgroundColor"
+                                  stringValue:[entry.properties valueForKey:@"BackgroundColor"]]];
+    [root addChild:[DDXMLNode elementWithName:@"OverrideURL"
+                                  stringValue:[entry.properties valueForKey:@"OverrideURL"]]];
+    [root addChild:[DDXMLNode elementWithName:@"Tags"
+                                  stringValue:[entry.properties valueForKey:@"Tags"]]];
 
     // Add the Times element
     DDXMLElement *timesElement = [DDXMLNode elementWithName:@"Times"];
-    [timesElement addChild:[DDXMLNode elementWithName:@"CreationTime"
-                                             stringValue:[dateFormatter stringFromDate:entry.creationTime]]];
     [timesElement addChild:[DDXMLNode elementWithName:@"LastModificationTime"
-                                             stringValue:[dateFormatter stringFromDate:entry.lastModificationTime]]];
+                                          stringValue:[dateFormatter stringFromDate:entry.lastModificationTime]]];
+    [timesElement addChild:[DDXMLNode elementWithName:@"CreationTime"
+                                          stringValue:[dateFormatter stringFromDate:entry.creationTime]]];
     [timesElement addChild:[DDXMLNode elementWithName:@"LastAccessTime"
-                                             stringValue:[dateFormatter stringFromDate:entry.lastAccessTime]]];
+                                          stringValue:[dateFormatter stringFromDate:entry.lastAccessTime]]];
     [timesElement addChild:[DDXMLNode elementWithName:@"ExpiryTime"
-                                             stringValue:[dateFormatter stringFromDate:entry.expiryTime]]];
+                                          stringValue:[dateFormatter stringFromDate:entry.expiryTime]]];
+    [timesElement addChild:[DDXMLNode elementWithName:@"Expires"
+                                          stringValue:entry.expires ? @"True" : @"False"]];
+    [timesElement addChild:[DDXMLNode elementWithName:@"UsageCount"
+                                          stringValue:[NSString stringWithFormat:@"%d", entry.usageCount]]];
+    [timesElement addChild:[DDXMLNode elementWithName:@"LocationChanged"
+                                          stringValue:[dateFormatter stringFromDate:entry.locationChanged]]];
     [root addChild:timesElement];
 
     // Add the standard string fields
@@ -132,6 +174,8 @@
     for (StringField *stringField in entry.stringFields) {
         [root addChild:[self persistStringField:stringField]];
     }
+
+    // FIXME Auto-type stuff goes here
 
     return root;
 }
