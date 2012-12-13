@@ -266,7 +266,6 @@ int closeCallback(void *context) {
     }
 
     // FIXME Auto-type stuff goes here
-    // FIXME History stuff goes here
     
     return entry;
 }
