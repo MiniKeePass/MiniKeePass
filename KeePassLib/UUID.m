@@ -72,6 +72,10 @@ static UUID *AES_UUID;
     return [uuidString autorelease];
 }
 
++ (UUID *)uuid {
+    return [[[UUID alloc] init] autorelease];
+}
+
 + (UUID*)getAESUUID {
     @synchronized(self) {
         if (!AES_UUID) {
