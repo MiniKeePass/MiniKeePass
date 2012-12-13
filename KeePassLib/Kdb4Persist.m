@@ -55,8 +55,6 @@
     // Update the DOM model
     DDXMLDocument *document = [self persistTree];
 
-    NSLog(@"%@", document);
-
     // Encode all the protected entries
     [self encodeProtected:document.rootElement];
 
@@ -78,8 +76,10 @@
     DDXMLElement *root = [DDXMLNode elementWithName:@"Group"];
 
     // Add the standard properties
+    NSData *data = [Base64 encode:[group.uuid getData]];
+    NSString *uuidString = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
     [root addChild:[DDXMLNode elementWithName:@"UUID"
-                                  stringValue:[group.uuid description]]];
+                                  stringValue:uuidString]];
     [root addChild:[DDXMLNode elementWithName:@"Name"
                                      stringValue:group.name]];
     [root addChild:[DDXMLNode elementWithName:@"IconID"
@@ -132,8 +132,10 @@
     DDXMLElement *root = [DDXMLNode elementWithName:@"Entry"];
 
     // Add the standard properties
+    NSData *data = [Base64 encode:[entry.uuid getData]];
+    NSString *uuidString = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
     [root addChild:[DDXMLNode elementWithName:@"UUID"
-                                  stringValue:[entry.uuid description]]];
+                                  stringValue:uuidString]];
     [root addChild:[DDXMLNode elementWithName:@"IconID"
                                      stringValue:[NSString stringWithFormat:@"%d", entry.image]]];
     [root addChild:[DDXMLNode elementWithName:@"ForegroundColor"

@@ -31,9 +31,20 @@ static UUID *AES_UUID;
 	return self;
 }
 
-- (id)initWithBytes:(uint8_t*)bytes {
+- (id)initWithBytes:(uint8_t *)bytes {
     self = [super init];
 	if (self) {
+		uuid = CFUUIDCreateWithBytes(kCFAllocatorDefault, bytes[0], bytes[1], bytes[2], bytes[3], bytes[4], bytes[5], bytes[6], bytes[7], bytes[8], bytes[9], bytes[10], bytes[11], bytes[12], bytes[13], bytes[14], bytes[15]);
+	}
+	return self;
+}
+
+- (id)initWithData:(NSData *)data {
+    self = [super init];
+	if (self) {
+        uint8_t bytes[16];
+        [data getBytes:bytes length:sizeof(bytes)];
+
 		uuid = CFUUIDCreateWithBytes(kCFAllocatorDefault, bytes[0], bytes[1], bytes[2], bytes[3], bytes[4], bytes[5], bytes[6], bytes[7], bytes[8], bytes[9], bytes[10], bytes[11], bytes[12], bytes[13], bytes[14], bytes[15]);
 	}
 	return self;
@@ -59,6 +70,15 @@ static UUID *AES_UUID;
     
     CFUUIDBytes uuidBytes = CFUUIDGetUUIDBytes(uuid);
     memcpy(bytes, &uuidBytes, 16);
+}
+
+- (NSData *)getData {
+    uint8_t bytes[16];
+
+    CFUUIDBytes uuidBytes = CFUUIDGetUUIDBytes(uuid);
+    memcpy(bytes, &uuidBytes, 16);
+
+    return [NSData dataWithBytes:bytes length:sizeof(bytes)];
 }
 
 - (BOOL)isEqual:(id)object {

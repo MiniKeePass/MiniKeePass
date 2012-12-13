@@ -135,7 +135,11 @@ int closeCallback(void *context) {
 - (Kdb4Group *)parseGroup:(DDXMLElement *)root {    
     Kdb4Group *group = [[[Kdb4Group alloc] init] autorelease];
 
-    group.uuid = [[[UUID alloc] initWithString:[[root elementForName:@"UUID"] stringValue]] autorelease];
+    NSString *uuidString = [[root elementForName:@"UUID"] stringValue];
+    NSData *data = [Base64 decode:[uuidString dataUsingEncoding:NSUTF8StringEncoding]];
+    group.uuid = [[[UUID alloc] initWithData:data] autorelease];
+    NSLog(@"%@ = %@", uuidString, group.uuid);
+
     group.name = [[root elementForName:@"Name"] stringValue];
     group.image = [[[root elementForName:@"IconID"] stringValue] integerValue];
     group.notes = [[root elementForName:@"Notes"] stringValue];
@@ -173,13 +177,13 @@ int closeCallback(void *context) {
 }
 
 - (Kdb4Entry *)parseEntry:(DDXMLElement *)root {
-    DDXMLElement *element;
-    
     Kdb4Entry *entry = [[[Kdb4Entry alloc] init] autorelease];
 
-    entry.uuid = [[[UUID alloc] initWithString:[[root elementForName:@"UUID"] stringValue]] autorelease];
-    entry.image = [[[root elementForName:@"IconID"] stringValue] integerValue];
+    NSString *uuidString = [[root elementForName:@"UUID"] stringValue];
+    NSData *data = [Base64 decode:[uuidString dataUsingEncoding:NSUTF8StringEncoding]];
+    entry.uuid = [[[UUID alloc] initWithData:data] autorelease];
 
+    entry.image = [[[root elementForName:@"IconID"] stringValue] integerValue];
     entry.foregroundColor = [[root elementForName:@"ForegroundColor"] stringValue];
     entry.backgroundColor = [[root elementForName:@"BackgroundColor"] stringValue];
     entry.overrideUrl = [[root elementForName:@"OverrideURL"] stringValue];
