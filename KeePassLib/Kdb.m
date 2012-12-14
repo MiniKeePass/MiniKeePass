@@ -53,10 +53,7 @@
 }
 
 - (void)moveGroup:(KdbGroup *)group toGroup:(KdbGroup *)toGroup {
-    // Remove the group from the old group without calling removeEntry to support 2.x
-    group.parent = nil;
-    [groups removeObject:group];
-
+    [self removeGroup:group];
     [toGroup addGroup:group];
 }
 
@@ -71,10 +68,7 @@
 }
 
 - (void)moveEntry:(KdbEntry *)entry toGroup:(KdbGroup *)toGroup {
-    // Remove the entry from the old group without calling removeEntry to support 2.x
-    entry.parent = nil;
-    [entries removeObject:entry];
-
+    [self removeEntry:entry];
     [toGroup addEntry:entry];
 }
 
