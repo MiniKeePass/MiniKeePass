@@ -15,26 +15,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#import <UIKit/UIKit.h>
+#import "RenameItemViewController.h"
 #import "MiniKeePassAppDelegate.h"
-#import "EditGroupViewController.h"
-#import "KdbLib.h"
-#import "AutorotatingTableViewController.h"
-#import "ChooseGroupViewController.h"
 
-@interface GroupViewController : AutorotatingTableViewController <UIActionSheetDelegate, UISearchDisplayDelegate, FormViewControllerDelegate, ChooseGroupDelegate> {
-    MiniKeePassAppDelegate *appDelegate;
-    UISearchDisplayController *searchDisplayController;
-    NSMutableArray *results;
-    KdbGroup *group;
-    NSString *pushedKdbTitle;
-    BOOL sortingEnabled;
-    NSMutableArray *groupsArray;
-    NSMutableArray *enteriesArray;
-    NSComparisonResult (^groupComparator) (id obj1, id obj2);
-    NSComparisonResult (^entryComparator) (id obj1, id obj2);
+@implementation RenameItemViewController
+
+- (void)setType:(RenameItemType)type {
+    _type = type;
+    switch (_type) {
+        case RenameItemTypeGroup:
+            self.title = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"Rename", nil), NSLocalizedString(@"Group", nil)];
+            break;
+
+        case RenameItemTypeEntry:
+            self.title = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"Rename", nil), NSLocalizedString(@"Entry", nil)];
+            break;
+    }
 }
-
-@property (nonatomic, assign) KdbGroup *group;
 
 @end

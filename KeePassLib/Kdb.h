@@ -42,11 +42,15 @@
 
 @property(nonatomic, assign) BOOL canAddEntries;
 
-- (void)addGroup:(KdbGroup*)group;
-- (void)removeGroup:(KdbGroup*)group;
+- (void)addGroup:(KdbGroup *)group;
+- (void)removeGroup:(KdbGroup *)group;
+- (void)moveGroup:(KdbGroup *)group toGroup:(KdbGroup *)toGroup;
 
-- (void)addEntry:(KdbEntry*)entry;
-- (void)removeEntry:(KdbEntry*)entry;
+- (void)addEntry:(KdbEntry *)entry;
+- (void)removeEntry:(KdbEntry *)entry;
+- (void)moveEntry:(KdbEntry *)entry toGroup:(KdbGroup *)toGroup;
+
+- (BOOL)containsGroup:(KdbGroup*)group;
 
 @end
 

@@ -304,12 +304,12 @@
             Kdb4Entry *entry = (Kdb4Entry *)self.entry;
             switch (editingStyle) {
                 case UITableViewCellEditingStyleInsert:
-                    [entry addStringField:[StringField stringFieldWithName:@"Name" andValue:@""]];
+                    [entry.stringFields addObject:[[StringField alloc] initWithKey:@"Name" andValue:@""]];
                     [tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationBottom];
                     break;
                 case UITableViewCellEditingStyleDelete: {
                     StringField *stringField = [entry.stringFields objectAtIndex:indexPath.row];
-                    [entry removeStringField:stringField];
+                    [entry.stringFields removeObject:stringField];
                     [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationBottom];
                     break;
                 }
@@ -438,7 +438,7 @@
                 }
                 StringField *stringField = [((Kdb4Entry*)self.entry).stringFields objectAtIndex:indexPath.row];
 
-                cell.textLabel.text = stringField.name;
+                cell.textLabel.text = stringField.key;
                 cell.textField.text = stringField.value;
                 cell.textField.enabled = self.editing;
 

@@ -42,24 +42,55 @@
     [super dealloc];
 }
 
-- (void)addGroup:(KdbGroup*)group {
+- (void)addGroup:(KdbGroup *)group {
     group.parent = self;
     [groups addObject:group];
 }
 
-- (void)removeGroup:(KdbGroup*)group {
+- (void)removeGroup:(KdbGroup *)group {
     group.parent = nil;
     [groups removeObject:group];
 }
 
-- (void)addEntry:(KdbEntry*)entry {
+- (void)moveGroup:(KdbGroup *)group toGroup:(KdbGroup *)toGroup {
+    // Remove the group from the old group without calling removeEntry to support 2.x
+    group.parent = nil;
+    [groups removeObject:group];
+
+    [toGroup addGroup:group];
+}
+
+- (void)addEntry:(KdbEntry *)entry {
     entry.parent = self;
     [entries addObject:entry];
 }
 
-- (void)removeEntry:(KdbEntry*)entry {
+- (void)removeEntry:(KdbEntry *)entry {
     entry.parent = nil;
     [entries removeObject:entry];
+}
+
+- (void)moveEntry:(KdbEntry *)entry toGroup:(KdbGroup *)toGroup {
+    // Remove the entry from the old group without calling removeEntry to support 2.x
+    entry.parent = nil;
+    [entries removeObject:entry];
+
+    [toGroup addEntry:entry];
+}
+
+- (BOOL)containsGroup:(KdbGroup *)group {
+    // Check trivial case where group is passed to itself
+    if (self == group) {
+        return YES;
+    } else {
+        // Check subgroups
+        for (KdbGroup *subGroup in groups) {
+            if ([subGroup containsGroup:group]) {
+                return YES;
+            }
+        }
+        return NO;
+    }
 }
 
 - (NSString*)description {
