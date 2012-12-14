@@ -226,6 +226,8 @@ enum {
             cell.textLabel.textColor = [UIColor grayColor];
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             break;
+        default:
+            return nil;
     }
 
     // Retrieve the Document directory
