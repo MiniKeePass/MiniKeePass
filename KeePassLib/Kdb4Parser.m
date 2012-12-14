@@ -33,6 +33,7 @@
 - (void)decodeProtected:(DDXMLElement *)root;
 - (void)parseMeta:(DDXMLElement *)root;
 - (Binary *)parseBinary:(DDXMLElement *)root;
+- (CustomItem *)parseCustomItem:(DDXMLElement *)root;
 - (Kdb4Group *)parseGroup:(DDXMLElement *)root;
 - (Kdb4Entry *)parseEntry:(DDXMLElement *)root;
 - (BinaryRef *)parseBinaryRef:(DDXMLElement *)root;
@@ -168,6 +169,11 @@ int closeCallback(void *context) {
         [tree.binaries addObject:[self parseBinary:element]];
     }
 
+    DDXMLElement *customDataElement = [root elementForName:@"CustomData"];
+    for (DDXMLElement *element in [customDataElement elementsForName:@"Item"]) {
+        [tree.customData addObject:[self parseCustomItem:element]];
+    }
+
     // FIXME CustomData
 }
 
@@ -179,6 +185,15 @@ int closeCallback(void *context) {
     binary.data = [root stringValue];
 
     return binary;
+}
+
+- (CustomItem *)parseCustomItem:(DDXMLElement *)root {
+    CustomItem *customItem = [[CustomItem alloc] init];
+
+    customItem.key = [[root attributeForName:@"ID"] stringValue];
+    customItem.value = [[root attributeForName:@"Compressed"] stringValue];
+
+    return customItem;
 }
 
 - (Kdb4Group *)parseGroup:(DDXMLElement *)root {

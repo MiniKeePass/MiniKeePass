@@ -23,6 +23,7 @@
 @interface Kdb4Persist (PrivateMethods)
 - (DDXMLDocument *)persistTree;
 - (DDXMLElement *)persistBinary:(Binary *)binary;
+- (DDXMLElement *)persistCustomItem:(CustomItem *)customItem;
 - (DDXMLElement *)persistGroup:(Kdb4Group *)group;
 - (DDXMLElement *)persistEntry:(Kdb4Entry *)entry;
 - (DDXMLElement *)persistStringField:(StringField *)stringField;
@@ -136,7 +137,11 @@
     }
     [element addChild:binaryElements];
 
-    // FIXME Custom Data
+    DDXMLElement *customDataElements = [DDXMLElement elementWithName:@"CustomData"];
+    for (CustomItem *customItem in tree.customData) {
+        [customDataElements addChild:[self persistCustomItem:customItem]];
+    }
+    [element addChild:customDataElements];
 
     [document.rootElement addChild:element];
 
@@ -153,6 +158,15 @@
     [root addAttributeWithName:@"ID" stringValue:[NSString stringWithFormat:@"%d", binary.binaryId]];
     [root addAttributeWithName:@"Compressed" stringValue:binary.compressed ? @"True" : @"False"];
     root.stringValue = binary.data;
+
+    return root;
+}
+
+- (DDXMLElement *)persistCustomItem:(CustomItem *)customItem {
+    DDXMLElement *root = [DDXMLNode elementWithName:@"Item"];
+
+    [root addAttributeWithName:@"Key" stringValue:customItem.key];
+    [root addAttributeWithName:@"Value" stringValue:customItem.value];
 
     return root;
 }

@@ -46,6 +46,17 @@
 @end
 
 
+@implementation CustomItem
+
+- (void)dealloc {
+    [_key release];
+    [_value release];
+    [super dealloc];
+}
+
+@end
+
+
 @implementation Binary
 
 - (void)dealloc {
@@ -130,6 +141,7 @@
         _rounds = DEFAULT_TRANSFORMATION_ROUNDS;
         _compressionAlgorithm = COMPRESSION_GZIP;
         _binaries = [[NSMutableArray alloc] init];
+        _customData = [[NSMutableArray alloc] init];
     }
     return self;
 }
@@ -151,6 +163,7 @@
     [_lastSelectedGroup release];
     [_lastTopVisibleGroup release];
     [_binaries release];
+    [_customData release];
     [super dealloc];
 }
 

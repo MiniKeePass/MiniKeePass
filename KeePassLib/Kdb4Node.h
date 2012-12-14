@@ -65,6 +65,14 @@
 @end
 
 
+@interface CustomItem : NSObject
+
+@property(nonatomic, copy) NSString *key;
+@property(nonatomic, copy) NSString *value;
+
+@end
+
+
 @interface Binary : NSObject
 
 @property(nonatomic, assign) NSInteger binaryId;
@@ -148,5 +156,6 @@
 @property(nonatomic, retain) UUID *lastSelectedGroup;
 @property(nonatomic, retain) UUID *lastTopVisibleGroup;
 @property(nonatomic, readonly) NSMutableArray *binaries;
+@property(nonatomic, readonly) NSMutableArray *customData;
 
 @end
