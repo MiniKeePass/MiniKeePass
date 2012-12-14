@@ -25,7 +25,7 @@
 - (DDXMLElement *)persistBinary:(Binary *)binary;
 - (DDXMLElement *)persistCustomItem:(CustomItem *)customItem;
 - (DDXMLElement *)persistGroup:(Kdb4Group *)group;
-- (DDXMLElement *)persistEntry:(Kdb4Entry *)entry;
+- (DDXMLElement *)persistEntry:(Kdb4Entry *)entry includeHistory:(BOOL)includeHistory;
 - (DDXMLElement *)persistStringField:(StringField *)stringField;
 - (DDXMLElement *)persistBinaryRef:(BinaryRef *)binaryRef;
 - (DDXMLElement *)persistAutoType:(AutoType *)autoType;
@@ -215,7 +215,7 @@
                                   stringValue:[self persistUuid:group.lastTopVisibleEntry]]];
 
     for (Kdb4Entry *entry in group.entries) {
-        [root addChild:[self persistEntry:entry]];
+        [root addChild:[self persistEntry:entry includeHistory:YES]];
     }
 
     for (Kdb4Group *subGroup in group.groups) {
@@ -225,7 +225,7 @@
     return root;
 }
 
-- (DDXMLElement *)persistEntry:(Kdb4Entry *)entry {
+- (DDXMLElement *)persistEntry:(Kdb4Entry *)entry includeHistory:(BOOL)includeHistory {
     DDXMLElement *root = [DDXMLNode elementWithName:@"Entry"];
 
     // Add the standard properties
@@ -280,8 +280,14 @@
     // Add the auto-type
     [root addChild:[self persistAutoType:entry.autoType]];
 
-    // Add a blank History element
-    [root addChild:[DDXMLElement elementWithName:@"History"]];
+    // Add the history entries
+    if (includeHistory) {
+        DDXMLElement *historyElement = [DDXMLElement elementWithName:@"History"];
+        for (Kdb4Entry *oldEntry in entry.history) {
+            [historyElement addChild:[self persistEntry:oldEntry includeHistory:NO]];
+        }
+        [root addChild:historyElement];
+    }
 
     return root;
 }

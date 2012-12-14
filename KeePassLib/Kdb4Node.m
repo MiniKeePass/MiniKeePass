@@ -113,6 +113,7 @@
     if (self) {
         _stringFields = [[NSMutableArray alloc] init];
         _binaries = [[NSMutableArray alloc] init];
+        _history = [[NSMutableArray alloc] init];
     }
     return self;
 }
@@ -127,6 +128,7 @@
     [_stringFields release];
     [_binaries release];
     [_autoType release];
+    [_history release];
     [super dealloc];
 }
 

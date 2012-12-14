@@ -256,26 +256,19 @@ int closeCallback(void *context) {
     entry.locationChanged = [dateFormatter dateFromString:[[timesElement elementForName:@"LocationChanged"] stringValue]];
 
     for (DDXMLElement *element in [root elementsForName:@"String"]) {
-        NSString *key = [[element elementForName:@"Key"] stringValue];
+        StringField *stringField = [self parseStringField:element];
 
-        DDXMLElement *valueElement = [element elementForName:@"Value"];
-        NSString *value = [valueElement stringValue];
-
-        if ([key isEqualToString:FIELD_TITLE]) {
-            entry.title = value;
-        } else if ([key isEqualToString:FIELD_USER_NAME]) {
-            entry.username = value;
-        } else if ([key isEqualToString:FIELD_PASSWORD]) {
-            entry.password = value;
-        } else if ([key isEqualToString:FIELD_URL]) {
-            entry.url = value;
-        } else if ([key isEqualToString:FIELD_NOTES]) {
-            entry.notes = value;
+        if ([stringField.key isEqualToString:FIELD_TITLE]) {
+            entry.title = stringField.value;
+        } else if ([stringField.key isEqualToString:FIELD_USER_NAME]) {
+            entry.username = stringField.value;
+        } else if ([stringField.key isEqualToString:FIELD_PASSWORD]) {
+            entry.password = stringField.value;
+        } else if ([stringField.key isEqualToString:FIELD_URL]) {
+            entry.url = stringField.value;
+        } else if ([stringField.key isEqualToString:FIELD_NOTES]) {
+            entry.notes = stringField.value;
         } else {
-            StringField *stringField = [[StringField alloc] init];
-            stringField.key = key;
-            stringField.value = value;
-            stringField.protected = [[valueElement attributeForName:@"Protected"] isEqual:@"True"];
             [entry.stringFields addObject:stringField];
         }
     }
@@ -286,7 +279,26 @@ int closeCallback(void *context) {
 
     entry.autoType = [self parseAutoType:[root elementForName:@"AutoType"]];
 
+    DDXMLElement *historyElement = [root elementForName:@"History"];
+    if (historyElement != nil) {
+        for (DDXMLElement *element in [historyElement elementsForName:@"Entry"]) {
+            [entry.history addObject:[self parseEntry:element]];
+        }
+    }
+
     return entry;
+}
+
+- (StringField *)parseStringField:(DDXMLElement *)root {
+    StringField *stringField = [[[StringField alloc] init] autorelease];
+
+    stringField.key = [[root elementForName:@"Key"] stringValue];
+
+    DDXMLElement *valueElement = [root elementForName:@"Value"];
+    stringField.value = [valueElement stringValue];
+    stringField.protected = [[[valueElement attributeForName:@"Protected"] stringValue] boolValue];
+
+    return stringField;
 }
 
 - (BinaryRef *)parseBinaryRef:(DDXMLElement *)root {

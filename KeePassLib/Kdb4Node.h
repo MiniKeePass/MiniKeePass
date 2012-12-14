@@ -120,6 +120,7 @@
 @property(nonatomic, readonly) NSMutableArray *stringFields;
 @property(nonatomic, readonly) NSMutableArray *binaries;
 @property(nonatomic, retain) AutoType *autoType;
+@property(nonatomic, readonly) NSMutableArray *history;
 
 @end
 
