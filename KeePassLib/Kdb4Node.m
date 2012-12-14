@@ -50,6 +50,17 @@
 @end
 
 
+@implementation CustomIcon
+
+- (void)dealloc {
+    [_uuid release];
+    [_data release];
+    [super dealloc];
+}
+
+@end
+
+
 @implementation CustomItem
 
 - (void)dealloc {
@@ -103,6 +114,7 @@
 }
 
 - (void)dealloc {
+    [_defaultSequence release];
     [_associations release];
     [super dealloc];
 }
@@ -124,6 +136,12 @@
 
 - (void)dealloc {
     [_uuid release];
+    [_titleStringField release];
+    [_usernameStringField release];
+    [_passwordStringField release];
+    [_urlStringField release];
+    [_notesStringField release];
+    [_customIconUuid release];
     [_foregroundColor release];
     [_backgroundColor release];
     [_overrideUrl release];
@@ -186,6 +204,7 @@
     if (self) {
         _rounds = DEFAULT_TRANSFORMATION_ROUNDS;
         _compressionAlgorithm = COMPRESSION_GZIP;
+        _customIcons = [[NSMutableArray alloc] init];
         _binaries = [[NSMutableArray alloc] init];
         _customData = [[NSMutableArray alloc] init];
     }
@@ -202,6 +221,7 @@
     [_defaultUserNameChanged release];
     [_color release];
     [_masterKeyChanged release];
+    [_customIcons release];
     [_recycleBinUuid release];
     [_recycleBinChanged release];
     [_entryTemplatesGroup release];

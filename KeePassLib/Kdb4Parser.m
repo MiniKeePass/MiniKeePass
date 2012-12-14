@@ -32,6 +32,7 @@
 @interface Kdb4Parser (PrivateMethods)
 - (void)decodeProtected:(DDXMLElement *)root;
 - (void)parseMeta:(DDXMLElement *)root;
+- (CustomIcon *)parseCustomIcon:(DDXMLElement *)root;
 - (Binary *)parseBinary:(DDXMLElement *)root;
 - (CustomItem *)parseCustomItem:(DDXMLElement *)root;
 - (Kdb4Group *)parseGroup:(DDXMLElement *)root;
@@ -147,12 +148,17 @@ int closeCallback(void *context) {
     tree.masterKeyChangeRec = [[[root elementForName:@"MasterKeyChangeRec"] stringValue] integerValue];
     tree.masterKeyChangeForce = [[[root elementForName:@"MasterKeyChangeForce"] stringValue] integerValue];
 
-    DDXMLElement *element = [root elementForName:@"MemoryProtection"];
-    tree.protectTitle = [[[element elementForName:@"ProtectTitle"] stringValue] boolValue];
-    tree.protectUserName = [[[element elementForName:@"ProtectUserName"] stringValue] boolValue];
-    tree.protectPassword = [[[element elementForName:@"ProtectPassword"] stringValue] boolValue];
-    tree.protectUrl = [[[element elementForName:@"ProtectURL"] stringValue] boolValue];
-    tree.protectNotes = [[[element elementForName:@"ProtectNotes"] stringValue] boolValue];
+    DDXMLElement *memoryProtectionElement = [root elementForName:@"MemoryProtection"];
+    tree.protectTitle = [[[memoryProtectionElement elementForName:@"ProtectTitle"] stringValue] boolValue];
+    tree.protectUserName = [[[memoryProtectionElement elementForName:@"ProtectUserName"] stringValue] boolValue];
+    tree.protectPassword = [[[memoryProtectionElement elementForName:@"ProtectPassword"] stringValue] boolValue];
+    tree.protectUrl = [[[memoryProtectionElement elementForName:@"ProtectURL"] stringValue] boolValue];
+    tree.protectNotes = [[[memoryProtectionElement elementForName:@"ProtectNotes"] stringValue] boolValue];
+
+    DDXMLElement *customIconsElement = [root elementForName:@"CustomIcons"];
+    for (DDXMLElement *element in [customIconsElement elementsForName:@"Icon"]) {
+        [tree.customIcons addObject:[self parseCustomIcon:element]];
+    }
 
     tree.recycleBinEnabled = [[[root elementForName:@"RecycleBinEnabled"] stringValue] boolValue];
     tree.recycleBinUuid = [self parseUuidString:[[root elementForName:@"RecycleBinUUID"] stringValue]];
@@ -173,12 +179,19 @@ int closeCallback(void *context) {
     for (DDXMLElement *element in [customDataElement elementsForName:@"Item"]) {
         [tree.customData addObject:[self parseCustomItem:element]];
     }
+}
 
-    // FIXME CustomData
+- (CustomIcon *)parseCustomIcon:(DDXMLElement *)root {
+    CustomIcon *customIcon = [[[CustomIcon alloc] init] autorelease];
+
+    customIcon.uuid = [self parseUuidString:[[root elementForName:@"UUID"] stringValue]];
+    customIcon.data = [[root elementForName:@"Data"] stringValue];
+
+    return customIcon;
 }
 
 - (Binary *)parseBinary:(DDXMLElement *)root {
-    Binary *binary = [[Binary alloc] init];
+    Binary *binary = [[[Binary alloc] init] autorelease];
 
     binary.binaryId = [[[root attributeForName:@"ID"] stringValue] integerValue];
     binary.compressed = [[[root attributeForName:@"Compressed"] stringValue] boolValue];
@@ -188,7 +201,7 @@ int closeCallback(void *context) {
 }
 
 - (CustomItem *)parseCustomItem:(DDXMLElement *)root {
-    CustomItem *customItem = [[CustomItem alloc] init];
+    CustomItem *customItem = [[[CustomItem alloc] init] autorelease];
 
     customItem.key = [[root attributeForName:@"ID"] stringValue];
     customItem.value = [[root attributeForName:@"Compressed"] stringValue];
@@ -241,6 +254,12 @@ int closeCallback(void *context) {
 
     entry.uuid = [self parseUuidString:[[root elementForName:@"UUID"] stringValue]];
     entry.image = [[[root elementForName:@"IconID"] stringValue] integerValue];
+
+    DDXMLElement *customIconUuidElement = [root elementForName:@"CustomIconUUID"];
+    if (customIconUuidElement != nil) {
+        entry.customIconUuid = [self parseUuidString:[customIconUuidElement stringValue]];
+    }
+
     entry.foregroundColor = [[root elementForName:@"ForegroundColor"] stringValue];
     entry.backgroundColor = [[root elementForName:@"BackgroundColor"] stringValue];
     entry.overrideUrl = [[root elementForName:@"OverrideURL"] stringValue];
@@ -316,6 +335,11 @@ int closeCallback(void *context) {
     autoType.enabled = [[[root elementForName:@"Enabled"] stringValue] boolValue];
     autoType.dataTransferObfuscation = [[[root elementForName:@"DataTransferObfuscation"] stringValue] integerValue];
 
+    DDXMLElement *defaultSequenceElement = [root elementForName:@"DefaultSequence"];
+    if (defaultSequenceElement != nil) {
+        autoType.defaultSequence = [defaultSequenceElement stringValue];
+    }
+
     for (DDXMLElement *element in [root elementsForName:@"Association"]) {
         Association *association = [[[Association alloc] init] autorelease];
 
@@ -324,7 +348,7 @@ int closeCallback(void *context) {
 
         [autoType.associations addObject:association];
     }
-
+    
     return autoType;
 }
 

@@ -112,6 +112,14 @@
                                                stringValue:tree.protectNotes ? @"True" : @"False"]];
     [element addChild:protectionElement];
 
+    if ([tree.customIcons count] > 0) {
+        DDXMLElement *customIconsElements = [DDXMLElement elementWithName:@"CustomIcon"];
+        for (CustomIcon *customIcon in tree.customIcons) {
+            [customIconsElements addChild:[self persistCustomIcon:customIcon]];
+        }
+        [element addChild:customIconsElements];
+    }
+
     [element addChild:[DDXMLNode elementWithName:@"RecycleBinEnabled"
                                      stringValue:tree.recycleBinEnabled ? @"True" : @"False"]];
     [element addChild:[DDXMLNode elementWithName:@"RecycleBinUUID"
@@ -150,6 +158,15 @@
     [document.rootElement addChild:element];
 
     return document;
+}
+
+- (DDXMLElement *)persistCustomIcon:(CustomIcon *)customIcon {
+    DDXMLElement *root = [DDXMLNode elementWithName:@"Icon"];
+
+    [root addAttributeWithName:@"UUID" stringValue:[self persistUuid:customIcon.uuid]];
+    [root addAttributeWithName:@"Data" stringValue:customIcon.data];
+
+    return root;
 }
 
 - (DDXMLElement *)persistBinary:(Binary *)binary {
@@ -233,6 +250,10 @@
                                   stringValue:[self persistUuid:entry.uuid]]];
     [root addChild:[DDXMLNode elementWithName:@"IconID"
                                   stringValue:[NSString stringWithFormat:@"%d", entry.image]]];
+    if (entry.customIconUuid != nil) {
+        [root addChild:[DDXMLNode elementWithName:@"CustomIconUUID"
+                                      stringValue:[self persistUuid:entry.customIconUuid]]];
+    }
     [root addChild:[DDXMLNode elementWithName:@"ForegroundColor"
                                   stringValue:entry.foregroundColor]];
     [root addChild:[DDXMLNode elementWithName:@"BackgroundColor"
@@ -292,22 +313,18 @@
     return root;
 }
 
-- (DDXMLElement *)persistStringFieldWithKey:(NSString *)key andValue:(NSString *)value andProtected:(BOOL)protected {
+- (DDXMLElement *)persistStringField:(StringField *)stringField {
     DDXMLElement *root = [DDXMLNode elementWithName:@"String"];
 
-    [root addChild:[DDXMLElement elementWithName:@"Key" stringValue:key]];
+    [root addChild:[DDXMLElement elementWithName:@"Key" stringValue:stringField.key]];
 
-    DDXMLElement *element = [DDXMLElement elementWithName:@"Value" stringValue:value];
-    if (protected) {
+    DDXMLElement *element = [DDXMLElement elementWithName:@"Value" stringValue:stringField.value];
+    if (stringField.protected) {
         [element addAttributeWithName:@"Protected" stringValue:@"True"];
     }
     [root addChild:element];
 
     return root;
-}
-
-- (DDXMLElement *)persistStringField:(StringField *)stringField {
-    return [self persistStringFieldWithKey:stringField.key andValue:stringField.value andProtected:stringField.protected];
 }
 
 - (DDXMLElement *)persistBinaryRef:(BinaryRef *)binaryRef {
@@ -329,6 +346,10 @@
                                      stringValue:autoType.enabled ? @"True" : @"False"]];
     [root addChild:[DDXMLElement elementWithName:@"DataTransferObfuscation"
                                      stringValue:[NSString stringWithFormat:@"%d", autoType.dataTransferObfuscation]]];
+
+    if (autoType.defaultSequence != nil) {
+        [root addChild:[DDXMLElement elementWithName:@"DefaultSequence" stringValue:autoType.defaultSequence]];
+    }
 
     // Add the associations
     for (Association *association in autoType.associations) {

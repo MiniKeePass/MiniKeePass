@@ -66,6 +66,14 @@
 @end
 
 
+@interface CustomIcon : NSObject
+
+@property(nonatomic, retain) UUID *uuid;
+@property(nonatomic, copy) NSString *data;
+
+@end
+
+
 @interface CustomItem : NSObject
 
 @property(nonatomic, copy) NSString *key;
@@ -103,6 +111,7 @@
 
 @property(nonatomic, assign) BOOL enabled;
 @property(nonatomic, assign) NSInteger dataTransferObfuscation;
+@property(nonatomic, copy) NSString *defaultSequence;
 @property(nonatomic, readonly) NSMutableArray *associations;
 
 @end
@@ -116,6 +125,7 @@
 @property(nonatomic, retain) StringField *passwordStringField;
 @property(nonatomic, retain) StringField *urlStringField;
 @property(nonatomic, retain) StringField *notesStringField;
+@property(nonatomic, retain) UUID *customIconUuid;
 @property(nonatomic, copy) NSString *foregroundColor;
 @property(nonatomic, copy) NSString *backgroundColor;
 @property(nonatomic, copy) NSString *overrideUrl;
@@ -153,6 +163,7 @@
 @property(nonatomic, assign) BOOL protectPassword;
 @property(nonatomic, assign) BOOL protectUrl;
 @property(nonatomic, assign) BOOL protectNotes;
+@property(nonatomic, readonly) NSMutableArray *customIcons;
 @property(nonatomic, assign) BOOL recycleBinEnabled;
 @property(nonatomic, retain) UUID *recycleBinUuid;
 @property(nonatomic, retain) NSDate *recycleBinChanged;
