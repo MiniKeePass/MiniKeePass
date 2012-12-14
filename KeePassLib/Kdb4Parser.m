@@ -77,8 +77,6 @@ int closeCallback(void *context) {
         @throw [NSException exceptionWithName:@"ParseError" reason:@"Failed to parse database" userInfo:nil];
     }
 
-    NSLog(@"\n%@", document);
-
     // Get the root document element
     DDXMLElement *rootElement = [document rootElement];
 
