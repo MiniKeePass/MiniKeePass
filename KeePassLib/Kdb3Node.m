@@ -120,20 +120,18 @@
 
 - (KdbGroup*)createGroup:(KdbGroup*)parent {
     Kdb3Group *group = [[Kdb3Group alloc] init];
-    group.parent = parent;
     
     do {
         group.groupId = random();
     } while (![self isGroupIdUnique:(Kdb3Group*)root groupId:group.groupId]);
-    
+
     return [group autorelease];
 }
 
 - (KdbEntry*)createEntry:(KdbGroup*)parent {
     Kdb3Entry *entry = [[Kdb3Entry alloc] init];
-    entry.parent = parent;
-    entry.uuid = [[[UUID alloc] init] autorelease];
-    
+    entry.uuid = [UUID uuid];
+
     return [entry autorelease];
 }
 

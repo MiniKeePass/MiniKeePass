@@ -17,6 +17,8 @@
 
 #import "Kdb4Parser.h"
 #import "Kdb4Node.h"
+#import "DDXML.h"
+#import "DDXMLElementAdditions.h"
 #import "DDXMLDocument+MKPAdditions.h"
 #import "DDXMLElement+MKPAdditions.h"
 #import "Base64.h"
@@ -30,8 +32,12 @@
 @interface Kdb4Parser (PrivateMethods)
 - (void)decodeProtected:(DDXMLElement *)root;
 - (void)parseMeta:(DDXMLElement *)root;
+- (Binary *)parseBinary:(DDXMLElement *)root;
 - (Kdb4Group *)parseGroup:(DDXMLElement *)root;
 - (Kdb4Entry *)parseEntry:(DDXMLElement *)root;
+- (BinaryRef *)parseBinaryRef:(DDXMLElement *)root;
+- (AutoType *)parseAutoType:(DDXMLElement *)root;
+- (UUID *)parseUuidString:(NSString *)uuidString;
 @end
 
 @implementation Kdb4Parser
@@ -40,7 +46,7 @@
     self = [super init];
     if (self) {
         randomStream = [cryptoRandomStream retain];
-        
+
         dateFormatter = [[NSDateFormatter alloc] init];
         dateFormatter.timeZone = [NSTimeZone timeZoneWithName:@"GMT"];
         dateFormatter.dateFormat = @"yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'";
@@ -68,16 +74,20 @@ int closeCallback(void *context) {
     if (document == nil) {
         @throw [NSException exceptionWithName:@"ParseError" reason:@"Failed to parse database" userInfo:nil];
     }
-    
+
+    NSLog(@"\n%@", document);
+
     // Get the root document element
     DDXMLElement *rootElement = [document rootElement];
-    
+
     // Decode all the protected entries
     [self decodeProtected:rootElement];
 
+    Kdb4Tree *tree = [[Kdb4Tree alloc] init];
+
     DDXMLElement *meta = [rootElement elementForName:@"Meta"];
     if (meta != nil) {
-        [self parseMeta:meta];
+        [self parseMeta:meta tree:tree];
     }
 
     DDXMLElement *root = [rootElement elementForName:@"Root"];
@@ -91,38 +101,30 @@ int closeCallback(void *context) {
         [document release];
         @throw [NSException exceptionWithName:@"ParseError" reason:@"Failed to parse database" userInfo:nil];
     }
-    
-    Kdb4Tree *tree = [[Kdb4Tree alloc] initWithDocument:document];
-    tree.root = [self parseGroup:element];
-    
-    [document release];
-    
-    return [tree autorelease];
-}
 
-- (void)parseMeta:(DDXMLElement *)root {
-    DDXMLElement *element = [root elementForName:@"HeaderHash"];
-    if (element != nil) {
-        [root removeChild:element];
-    }
+    tree.root = [self parseGroup:element];
+
+    [document release];
+
+    return [tree autorelease];
 }
 
 - (void)decodeProtected:(DDXMLElement *)root {
     DDXMLNode *protectedAttribute = [root attributeForName:@"Protected"];
     if ([[protectedAttribute stringValue] isEqual:@"True"]) {
         NSString *str = [root stringValue];
-        
+
         // Base64 decode the string
         NSMutableData *data = [Base64 decode:[str dataUsingEncoding:NSASCIIStringEncoding]];
-        
+
         // Unprotect the password
         [randomStream xor:data];
-        
+
         NSString *unprotected = [[NSString alloc] initWithBytes:data.bytes length:data.length encoding:NSUTF8StringEncoding];
         [root setStringValue:unprotected];
         [unprotected release];
     }
-    
+
     for (DDXMLNode *node in [root children]) {
         if ([node kind] == DDXMLElementKind) {
             [self decodeProtected:(DDXMLElement*)node];
@@ -130,71 +132,120 @@ int closeCallback(void *context) {
     }
 }
 
+- (void)parseMeta:(DDXMLElement *)root tree:(Kdb4Tree *)tree {
+    tree.generator = [[root elementForName:@"Generator"] stringValue];
+    tree.databaseName = [[root elementForName:@"DatabaseName"] stringValue];
+    tree.databaseNameChanged = [dateFormatter dateFromString:[[root elementForName:@"DatabaseNameChanged"] stringValue]];
+    tree.databaseDescription = [[root elementForName:@"DatabaseDescription"] stringValue];
+    tree.databaseDescriptionChanged = [dateFormatter dateFromString:[[root elementForName:@"DatabaseDescriptionChanged"] stringValue]];
+    tree.defaultUserName = [[root elementForName:@"DefaultUserName"] stringValue];
+    tree.defaultUserNameChanged = [dateFormatter dateFromString:[[root elementForName:@"DefaultUserNameChanged"] stringValue]];
+    tree.maintenanceHistoryDays = [[[root elementForName:@"MaintenanceHistoryDays"] stringValue] integerValue];
+    tree.color = [[root elementForName:@"Color"] stringValue];
+    tree.masterKeyChanged = [dateFormatter dateFromString:[[root elementForName:@"MasterKeyChanged"] stringValue]];
+    tree.masterKeyChangeRec = [[[root elementForName:@"MasterKeyChangeRec"] stringValue] integerValue];
+    tree.masterKeyChangeForce = [[[root elementForName:@"MasterKeyChangeForce"] stringValue] integerValue];
+
+    DDXMLElement *element = [root elementForName:@"MemoryProtection"];
+    tree.protectTitle = [[[element elementForName:@"ProtectTitle"] stringValue] boolValue];
+    tree.protectUserName = [[[element elementForName:@"ProtectUserName"] stringValue] boolValue];
+    tree.protectPassword = [[[element elementForName:@"ProtectPassword"] stringValue] boolValue];
+    tree.protectUrl = [[[element elementForName:@"ProtectURL"] stringValue] boolValue];
+    tree.protectNotes = [[[element elementForName:@"ProtectNotes"] stringValue] boolValue];
+
+    tree.recycleBinEnabled = [[[root elementForName:@"RecycleBinEnabled"] stringValue] boolValue];
+    tree.recycleBinUuid = [self parseUuidString:[[root elementForName:@"RecycleBinUUID"] stringValue]];
+    tree.recycleBinChanged = [dateFormatter dateFromString:[[root elementForName:@"RecycleBinChanged"] stringValue]];
+    tree.entryTemplatesGroup = [self parseUuidString:[[root elementForName:@"EntryTemplatesGroup"] stringValue]];
+    tree.entryTemplatesGroupChanged = [dateFormatter dateFromString:[[root elementForName:@"EntryTemplatesGroupChanged"] stringValue]];
+    tree.historyMaxItems = [[[root elementForName:@"HistoryMaxItems"] stringValue] integerValue];
+    tree.historyMaxSize = [[[root elementForName:@"HistoryMaxSize"] stringValue] integerValue];
+    tree.lastSelectedGroup = [self parseUuidString:[[root elementForName:@"LastSelectedGroup"] stringValue]];
+    tree.lastTopVisibleGroup = [self parseUuidString:[[root elementForName:@"LastTopVisibleGroup"] stringValue]];
+
+    DDXMLElement *binariesElement = [root elementForName:@"Binaries"];
+    for (DDXMLElement *element in [binariesElement elementsForName:@"Binary"]) {
+        [tree.binaries addObject:[self parseBinary:element]];
+    }
+
+    // FIXME CustomData
+}
+
+- (Binary *)parseBinary:(DDXMLElement *)root {
+    Binary *binary = [[Binary alloc] init];
+
+    binary.binaryId = [[[root attributeForName:@"ID"] stringValue] integerValue];
+    binary.compressed = [[[root attributeForName:@"Compressed"] stringValue] boolValue];
+    binary.data = [root stringValue];
+
+    return binary;
+}
+
 - (Kdb4Group *)parseGroup:(DDXMLElement *)root {
-    Kdb4Group *group = [[[Kdb4Group alloc] initWithElement:root] autorelease];
-    
-    DDXMLElement *element = [root elementForName:@"IconID"];
-    group.image = element.stringValue.intValue;
-    
-    element = [root elementForName:@"Name"];
-    group.name =  element.stringValue;
-    
+    Kdb4Group *group = [[[Kdb4Group alloc] init] autorelease];
+
+    group.uuid = [self parseUuidString:[[root elementForName:@"UUID"] stringValue]];
+    group.name = [[root elementForName:@"Name"] stringValue];
+    group.notes = [[root elementForName:@"Notes"] stringValue];
+    group.image = [[[root elementForName:@"IconID"] stringValue] integerValue];
+
     DDXMLElement *timesElement = [root elementForName:@"Times"];
-    
-    NSString *str = [[timesElement elementForName:@"CreationTime"] stringValue];
-    group.creationTime = [dateFormatter dateFromString:str];
-    
-    str = [[timesElement elementForName:@"LastModificationTime"] stringValue];
-    group.lastModificationTime = [dateFormatter dateFromString:str];
-    
-    str = [[timesElement elementForName:@"LastAccessTime"] stringValue];
-    group.lastAccessTime = [dateFormatter dateFromString:str];
-    
-    str = [[timesElement elementForName:@"ExpiryTime"] stringValue];
-    group.expiryTime = [dateFormatter dateFromString:str];
-    
+    group.lastModificationTime = [dateFormatter dateFromString:[[timesElement elementForName:@"LastModificationTime"] stringValue]];
+    group.creationTime = [dateFormatter dateFromString:[[timesElement elementForName:@"CreationTime"] stringValue]];
+    group.lastAccessTime = [dateFormatter dateFromString:[[timesElement elementForName:@"LastAccessTime"] stringValue]];
+    group.expiryTime = [dateFormatter dateFromString:[[timesElement elementForName:@"ExpiryTime"] stringValue]];
+    group.expires = [[[timesElement elementForName:@"Expires"] stringValue] boolValue];
+    group.usageCount = [[[timesElement elementForName:@"UsageCount"] stringValue] integerValue];
+    group.locationChanged = [dateFormatter dateFromString:[[timesElement elementForName:@"LocationChanged"] stringValue]];
+
+    group.isExpanded = [[[root elementForName:@"IsExpanded"] stringValue] boolValue];
+    group.defaultAutoTypeSequence = [[root elementForName:@"DefaultAutoTypeSequence"] stringValue];
+    group.EnableAutoType = [[root elementForName:@"EnableAutoType"] stringValue];
+    group.EnableSearching = [[root elementForName:@"EnableSearching"] stringValue];
+    group.LastTopVisibleEntry = [self parseUuidString:[[root elementForName:@"LastTopVisibleEntry"] stringValue]];
+
     for (DDXMLElement *element in [root elementsForName:@"Entry"]) {
         Kdb4Entry *entry = [self parseEntry:element];
         entry.parent = group;
-        
+
         [group addEntry:entry];
     }
-    
+
     for (DDXMLElement *element in [root elementsForName:@"Group"]) {
         Kdb4Group *subGroup = [self parseGroup:element];
         subGroup.parent = group;
-        
+
         [group addGroup:subGroup];
     }
-    
+
     return group;
 }
 
 - (Kdb4Entry *)parseEntry:(DDXMLElement *)root {
-    Kdb4Entry *entry = [[[Kdb4Entry alloc] initWithElement:root] autorelease];
-    
-    entry.image = [[[root elementForName:@"IconID"] stringValue] intValue];
-    
+    Kdb4Entry *entry = [[[Kdb4Entry alloc] init] autorelease];
+
+    entry.uuid = [self parseUuidString:[[root elementForName:@"UUID"] stringValue]];
+    entry.image = [[[root elementForName:@"IconID"] stringValue] integerValue];
+    entry.foregroundColor = [[root elementForName:@"ForegroundColor"] stringValue];
+    entry.backgroundColor = [[root elementForName:@"BackgroundColor"] stringValue];
+    entry.overrideUrl = [[root elementForName:@"OverrideURL"] stringValue];
+    entry.tags = [[root elementForName:@"Tags"] stringValue];
+
     DDXMLElement *timesElement = [root elementForName:@"Times"];
-    
-    NSString *str = [[timesElement elementForName:@"CreationTime"] stringValue];
-    entry.creationTime = [dateFormatter dateFromString:str];
-    
-    str = [[timesElement elementForName:@"LastModificationTime"] stringValue];
-    entry.lastModificationTime = [dateFormatter dateFromString:str];
-    
-    str = [[timesElement elementForName:@"LastAccessTime"] stringValue];
-    entry.lastAccessTime = [dateFormatter dateFromString:str];
-    
-    str = [[timesElement elementForName:@"ExpiryTime"] stringValue];
-    entry.expiryTime = [dateFormatter dateFromString:str];
-    
+    entry.lastModificationTime = [dateFormatter dateFromString:[[timesElement elementForName:@"LastModificationTime"] stringValue]];
+    entry.creationTime = [dateFormatter dateFromString:[[timesElement elementForName:@"CreationTime"] stringValue]];
+    entry.lastAccessTime = [dateFormatter dateFromString:[[timesElement elementForName:@"LastAccessTime"] stringValue]];
+    entry.expiryTime = [dateFormatter dateFromString:[[timesElement elementForName:@"ExpiryTime"] stringValue]];
+    entry.expires = [[[timesElement elementForName:@"Expires"] stringValue] boolValue];
+    entry.usageCount = [[[timesElement elementForName:@"UsageCount"] stringValue] integerValue];
+    entry.locationChanged = [dateFormatter dateFromString:[[timesElement elementForName:@"LocationChanged"] stringValue]];
+
     for (DDXMLElement *element in [root elementsForName:@"String"]) {
         NSString *key = [[element elementForName:@"Key"] stringValue];
 
         DDXMLElement *valueElement = [element elementForName:@"Value"];
         NSString *value = [valueElement stringValue];
-        
+
         if ([key isEqualToString:FIELD_TITLE]) {
             entry.title = value;
         } else if ([key isEqualToString:FIELD_USER_NAME]) {
@@ -206,14 +257,53 @@ int closeCallback(void *context) {
         } else if ([key isEqualToString:FIELD_NOTES]) {
             entry.notes = value;
         } else {
-            StringField *stringField = [[StringField alloc] initWithElement:element];
-            stringField.name = key;
+            StringField *stringField = [[StringField alloc] init];
+            stringField.key = key;
             stringField.value = value;
-            [entry addStringField:stringField];
+            stringField.protected = [[valueElement attributeForName:@"Protected"] isEqual:@"True"];
+            [entry.stringFields addObject:stringField];
         }
     }
-    
+
+    for (DDXMLElement *element in [root elementsForName:@"Binary"]) {
+        [entry.binaries addObject:[self parseBinaryRef:element]];
+    }
+
+    entry.autoType = [self parseAutoType:[root elementForName:@"AutoType"]];
+
     return entry;
+}
+
+- (BinaryRef *)parseBinaryRef:(DDXMLElement *)root {
+    BinaryRef *binaryRef = [[[BinaryRef alloc] init] autorelease];
+
+    binaryRef.key = [[root elementForName:@"Key"] stringValue];
+    binaryRef.ref = [[[[root elementForName:@"Value"] attributeForName:@"Ref"] stringValue] integerValue];
+
+    return binaryRef;
+}
+
+- (AutoType *)parseAutoType:(DDXMLElement *)root {
+    AutoType *autoType = [[[AutoType alloc] init] autorelease];
+
+    autoType.enabled = [[[root elementForName:@"Enabled"] stringValue] boolValue];
+    autoType.dataTransferObfuscation = [[[root elementForName:@"DataTransferObfuscation"] stringValue] integerValue];
+
+    for (DDXMLElement *element in [root elementsForName:@"Association"]) {
+        Association *association = [[[Association alloc] init] autorelease];
+
+        association.window = [[element elementForName:@"Window"] stringValue];
+        association.keystrokeSequence = [[element elementForName:@"KeystrokeSequence"] stringValue];
+
+        [autoType.associations addObject:association];
+    }
+
+    return autoType;
+}
+
+- (UUID *)parseUuidString:(NSString *)uuidString {
+    NSData *data = [Base64 decode:[uuidString dataUsingEncoding:NSUTF8StringEncoding]];
+    return [[[UUID alloc] initWithData:data] autorelease];
 }
 
 @end
