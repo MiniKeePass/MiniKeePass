@@ -98,22 +98,12 @@
 
 @synthesize parent;
 @synthesize image;
-@synthesize title;
-@synthesize username;
-@synthesize password;
-@synthesize url;
-@synthesize notes;
 @synthesize creationTime;
 @synthesize lastModificationTime;
 @synthesize lastAccessTime;
 @synthesize expiryTime;
 
 - (void)dealloc {
-    [title release];
-    [username release];
-    [password release];
-    [url release];
-    [notes release];
     [creationTime release];
     [lastModificationTime release];
     [lastAccessTime release];
@@ -121,8 +111,53 @@
     [super dealloc];
 }
 
+- (NSString *)title {
+    [self doesNotRecognizeSelector:_cmd];
+    return nil;
+}
+
+- (void)setTitle:(NSString *)title {
+    [self doesNotRecognizeSelector:_cmd];
+}
+
+- (NSString *)username {
+    [self doesNotRecognizeSelector:_cmd];
+    return nil;
+}
+
+- (void)setUsername:(NSString *)username {
+    [self doesNotRecognizeSelector:_cmd];
+}
+
+- (NSString *)password {
+    [self doesNotRecognizeSelector:_cmd];
+    return nil;
+}
+
+- (void)setPassword:(NSString *)password {
+    [self doesNotRecognizeSelector:_cmd];
+}
+
+- (NSString *)url {
+    [self doesNotRecognizeSelector:_cmd];
+    return nil;
+}
+
+- (void)setUrl:(NSString *)url {
+    [self doesNotRecognizeSelector:_cmd];
+}
+
+- (NSString *)notes {
+    [self doesNotRecognizeSelector:_cmd];
+    return nil;
+}
+
+- (void)setNotes:(NSString *)notes {
+    [self doesNotRecognizeSelector:_cmd];
+}
+
 - (NSString*)description {
-    return [NSString stringWithFormat:@"KdbEntry [image=%d, title=%@, username=%@, password=%@, url=%@, notes=%@, creationTime=%@, lastModificationTime=%@, lastAccessTime=%@, expiryTime=%@]", image, title, username, password, url, notes, creationTime, lastModificationTime, lastAccessTime, expiryTime];
+    return [NSString stringWithFormat:@"KdbEntry [image=%d, title=%@, username=%@, password=%@, url=%@, notes=%@, creationTime=%@, lastModificationTime=%@, lastAccessTime=%@, expiryTime=%@]", image, self.title, self.username, self.password, self.url, self.notes, creationTime, lastModificationTime, lastAccessTime, expiryTime];
 }
 
 @end

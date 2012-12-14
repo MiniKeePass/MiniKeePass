@@ -110,6 +110,11 @@
 @interface Kdb4Entry : KdbEntry
 
 @property(nonatomic, retain) UUID *uuid;
+@property(nonatomic, retain) StringField *titleStringField;
+@property(nonatomic, retain) StringField *usernameStringField;
+@property(nonatomic, retain) StringField *passwordStringField;
+@property(nonatomic, retain) StringField *urlStringField;
+@property(nonatomic, retain) StringField *notesStringField;
 @property(nonatomic, copy) NSString *foregroundColor;
 @property(nonatomic, copy) NSString *backgroundColor;
 @property(nonatomic, copy) NSString *overrideUrl;

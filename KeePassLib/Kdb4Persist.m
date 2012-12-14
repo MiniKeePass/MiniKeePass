@@ -261,11 +261,11 @@
     [root addChild:timesElement];
 
     // Add the standard string fields
-    [root addChild:[self persistStringFieldWithKey:@"Title" andValue:entry.title andProtected:false]];
-    [root addChild:[self persistStringFieldWithKey:@"UserName" andValue:entry.username andProtected:false]];
-    [root addChild:[self persistStringFieldWithKey:@"Password" andValue:entry.password andProtected:true]];
-    [root addChild:[self persistStringFieldWithKey:@"URL" andValue:entry.url andProtected:false]];
-    [root addChild:[self persistStringFieldWithKey:@"Notes" andValue:entry.notes andProtected:false]];
+    [root addChild:[self persistStringField:entry.titleStringField]];
+    [root addChild:[self persistStringField:entry.usernameStringField]];
+    [root addChild:[self persistStringField:entry.passwordStringField]];
+    [root addChild:[self persistStringField:entry.urlStringField]];
+    [root addChild:[self persistStringField:entry.notesStringField]];
 
     // Add the string fields
     for (StringField *stringField in entry.stringFields) {

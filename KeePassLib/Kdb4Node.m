@@ -132,6 +132,46 @@
     [super dealloc];
 }
 
+- (NSString *)title {
+    return _titleStringField.value;
+}
+
+- (void)setTitle:(NSString *)title {
+    _titleStringField.value = title;
+}
+
+- (NSString *)username {
+    return _usernameStringField.value;
+}
+
+- (void)setUsername:(NSString *)username {
+    _usernameStringField.value = username;
+}
+
+- (NSString *)password {
+    return _passwordStringField.value;
+}
+
+- (void)setPassword:(NSString *)password {
+    _passwordStringField.value = password;
+}
+
+- (NSString *)url {
+    return _urlStringField.value;
+}
+
+- (void)setUrl:(NSString *)url {
+    _urlStringField.value = url;
+}
+
+- (NSString *)notes {
+    return _notesStringField.value;
+}
+
+- (void)setNotes:(NSString *)notes {
+    _notesStringField.value = notes;
+}
+
 @end
 
 

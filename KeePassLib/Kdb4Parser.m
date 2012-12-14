@@ -259,15 +259,15 @@ int closeCallback(void *context) {
         StringField *stringField = [self parseStringField:element];
 
         if ([stringField.key isEqualToString:FIELD_TITLE]) {
-            entry.title = stringField.value;
+            entry.titleStringField = stringField;
         } else if ([stringField.key isEqualToString:FIELD_USER_NAME]) {
-            entry.username = stringField.value;
+            entry.usernameStringField = stringField;
         } else if ([stringField.key isEqualToString:FIELD_PASSWORD]) {
-            entry.password = stringField.value;
+            entry.passwordStringField = stringField;
         } else if ([stringField.key isEqualToString:FIELD_URL]) {
-            entry.url = stringField.value;
+            entry.urlStringField = stringField;
         } else if ([stringField.key isEqualToString:FIELD_NOTES]) {
-            entry.notes = stringField.value;
+            entry.notesStringField = stringField;
         } else {
             [entry.stringFields addObject:stringField];
         }
