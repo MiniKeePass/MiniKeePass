@@ -61,6 +61,7 @@
 @property(nonatomic, assign) BOOL protected;
 
 - (id)initWithKey:(NSString *)key andValue:(NSString *)value;
+- (id)initWithKey:(NSString *)key andValue:(NSString *)value andProtected:(BOOL)protected;
 
 @end
 

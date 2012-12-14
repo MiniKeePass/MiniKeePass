@@ -28,11 +28,15 @@
 @implementation StringField
 
 - (id)initWithKey:(NSString *)key andValue:(NSString *)value {
+    return [self initWithKey:key andValue:value andProtected:NO];
+}
+
+- (id)initWithKey:(NSString *)key andValue:(NSString *)value andProtected:(BOOL)protected {
     self = [super init];
     if (self) {
         _key = key;
         _value = value;
-        _protected = false;
+        _protected = protected;
     }
     return self;
 }
@@ -238,6 +242,11 @@
 
     entry.uuid = [UUID uuid];
     entry.image = 0;
+    entry.titleStringField = [[StringField alloc] initWithKey:@"Title" andValue:@"New Entry"];
+    entry.usernameStringField = [[StringField alloc] initWithKey:@"Username" andValue:@""];
+    entry.passwordStringField = [[StringField alloc] initWithKey:@"Password" andValue:@"" andProtected:YES];
+    entry.urlStringField = [[StringField alloc] initWithKey:@"URL" andValue:@""];
+    entry.notesStringField = [[StringField alloc] initWithKey:@"Notes" andValue:@""];
     entry.foregroundColor = @"";
     entry.backgroundColor = @"";
     entry.overrideUrl = @"";
