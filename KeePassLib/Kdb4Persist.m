@@ -113,7 +113,7 @@
     [element addChild:protectionElement];
 
     if ([tree.customIcons count] > 0) {
-        DDXMLElement *customIconsElements = [DDXMLElement elementWithName:@"CustomIcon"];
+        DDXMLElement *customIconsElements = [DDXMLElement elementWithName:@"CustomIcons"];
         for (CustomIcon *customIcon in tree.customIcons) {
             [customIconsElements addChild:[self persistCustomIcon:customIcon]];
         }
@@ -157,14 +157,14 @@
     [element addChild:[self persistGroup:(Kdb4Group *)tree.root]];
     [document.rootElement addChild:element];
 
-    return document;
+    return [document autorelease];
 }
 
 - (DDXMLElement *)persistCustomIcon:(CustomIcon *)customIcon {
     DDXMLElement *root = [DDXMLNode elementWithName:@"Icon"];
 
-    [root addAttributeWithName:@"UUID" stringValue:[self persistUuid:customIcon.uuid]];
-    [root addAttributeWithName:@"Data" stringValue:customIcon.data];
+    [root addChild:[DDXMLNode elementWithName:@"UUID" stringValue:[self persistUuid:customIcon.uuid]]];
+    [root addChild:[DDXMLNode elementWithName:@"Data" stringValue:customIcon.data]];
 
     return root;
 }
