@@ -33,4 +33,5 @@
 
 @protocol TextFieldCellDelegate <NSObject>
 - (void)textFieldCellWillReturn:(TextFieldCell*)textFieldCell;
+- (void)textFieldCellDidEndEditing:(TextFieldCell*)textFieldCell;
 @end

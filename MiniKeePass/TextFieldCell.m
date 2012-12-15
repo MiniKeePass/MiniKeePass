@@ -78,7 +78,9 @@
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
-    // Do nothing
+    if ([self.textFieldCellDelegate respondsToSelector:@selector(textFieldCellDidEndEditing:)]) {
+        [self.textFieldCellDelegate textFieldCellDidEndEditing:self];
+    }
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)field {

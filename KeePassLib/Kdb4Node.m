@@ -34,17 +34,25 @@
 - (id)initWithKey:(NSString *)key andValue:(NSString *)value andProtected:(BOOL)protected {
     self = [super init];
     if (self) {
-        _key = key;
-        _value = value;
+        _key = [key copy];
+        _value = [value copy];
         _protected = protected;
     }
     return self;
+}
+
++ (id)stringFieldWithKey:(NSString *)key andValue:(NSString *)value {
+    return [[[StringField alloc] initWithKey:key andValue:value] autorelease];
 }
 
 - (void)dealloc {
     [_key release];
     [_value release];
     [super dealloc];
+}
+
+- (id)copyWithZone:(NSZone *)zone {
+    return [[StringField alloc] initWithKey:self.key andValue:self.value andProtected:self.protected];
 }
 
 @end

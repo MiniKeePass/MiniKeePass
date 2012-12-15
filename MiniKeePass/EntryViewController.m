@@ -34,6 +34,8 @@
 }
 
 @property (nonatomic) BOOL isKdb4;
+@property (nonatomic, retain) NSMutableArray *editingStringFields;
+@property (nonatomic, readonly) NSArray *currentStringFields;
 
 @end
 
@@ -153,6 +155,18 @@
     commentsCell.textView.text = self.entry.notes;
 }
 
+- (NSArray *)currentStringFields {
+    if (!self.isKdb4) {
+        return nil;
+    }
+
+    if (self.editing) {
+        return self.editingStringFields;
+    } else {
+        return ((Kdb4Entry *)self.entry).stringFields;
+    }
+}
+
 - (void)cancelPressed {
     canceled = YES;
     [self setEditing:NO animated:YES];
@@ -166,6 +180,9 @@
         return;
     }
 
+    // Ensure that all updates happen at once
+    [self.tableView beginUpdates];
+
     [super setEditing:editing animated:animated];
     
     // Save the database or reset the entry
@@ -176,7 +193,22 @@
         self.entry.password = passwordCell.textField.text;
         self.entry.url = urlCell.textField.text;
         self.entry.notes = commentsCell.textView.text;
-        
+
+        // Save string fields
+        if (self.isKdb4) {
+            // Ensure any textfield currently being edited is saved
+            int count = self.editingStringFields.count;
+            for (int i = 0; i < count; i++) {
+                TextFieldCell *cell = (TextFieldCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:1]];
+                [cell.textField resignFirstResponder];
+            }
+
+            Kdb4Entry *kdb4Entry = (Kdb4Entry *)self.entry;
+            [kdb4Entry.stringFields removeAllObjects];
+            [kdb4Entry.stringFields addObjectsFromArray:self.editingStringFields];
+            self.editingStringFields = nil;
+        }
+
         appDelegate.databaseDocument.dirty = YES;
         
         // Save the database document
@@ -185,34 +217,37 @@
         [self setEntry:self.entry];
     }
 
-    // Ensure that all updates happen at once
-    [self.tableView beginUpdates];
-
     // Index paths for cells to be added or removed
     NSMutableArray *paths = [NSMutableArray arrayWithCapacity:3];
 
-    // Set editing state for all cells
+    // Manage default cells
     for (TextFieldCell *cell in defaultCells) {
         cell.textField.enabled = editing;
+
+        // Add empty cells to the list of cells that need to be added when editing
         if (cell.textField.text.length == 0) {
-            // Add empty cells to the list of cells that need to be added when editing
             [paths addObject:[NSIndexPath indexPathForRow:[defaultCells indexOfObject:cell] inSection:0]];
         }
     }
     commentsCell.textView.editable = editing;
 
+    // Manage custom field cells
     if (self.isKdb4) {
-        int count = [((Kdb4Entry *)self.entry).stringFields count];
+        NSArray *stringFields = ((Kdb4Entry *)self.entry).stringFields;
+        int count = stringFields.count;
+        if (editing) {
+            self.editingStringFields = [[[NSMutableArray alloc] initWithArray:stringFields copyItems:YES] autorelease];
+        }
 
         // Reset the custom string cells
         for (int i = 0; i < count; i++) {
             TextFieldCell *cell = (TextFieldCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:1]];
-            cell.textField.enabled = editing;
             [cell.textField resignFirstResponder];
+            cell.textField.enabled = editing;
         }
 
         if (count == 0) {
-            // Special case where Custom section was not visable
+            // Special case where Custom section was not/will not be visable
             [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationFade];
         } else {
             // Add New cell added to list of cells to update
@@ -248,14 +283,40 @@
 }
 
 - (void)textFieldCellWillReturn:(TextFieldCell *)textFieldCell {
-    if (textFieldCell == titleCell) {
-        [usernameCell.textField becomeFirstResponder];
-    } else if (textFieldCell == usernameCell) {
-        [passwordCell.textField becomeFirstResponder];
-    } else if (textFieldCell == passwordCell) {
-        [urlCell.textField becomeFirstResponder];
-    } else if (textFieldCell == urlCell) {
-        [self setEditing:NO animated:YES];
+    NSIndexPath *indexPath = [self.tableView indexPathForCell:textFieldCell];
+
+    switch (indexPath.section) {
+        case 0: {
+            if (textFieldCell == titleCell) {
+                [usernameCell.textField becomeFirstResponder];
+            } else if (textFieldCell == usernameCell) {
+                [passwordCell.textField becomeFirstResponder];
+            } else if (textFieldCell == passwordCell) {
+                [urlCell.textField becomeFirstResponder];
+            } else if (textFieldCell == urlCell) {
+                [self setEditing:NO animated:YES];
+            }
+            break;
+        }
+        case 1: {
+            [textFieldCell.textField resignFirstResponder];
+        }
+        default:
+            break;
+    }
+}
+
+- (void)textFieldCellDidEndEditing:(TextFieldCell *)textFieldCell {
+    NSIndexPath *indexPath = [self.tableView indexPathForCell:textFieldCell];
+
+    switch (indexPath.section) {
+        case 1: {
+            StringField *stringField = [self.editingStringFields objectAtIndex:indexPath.row];
+            stringField.value = textFieldCell.textField.text;
+            break;
+        }
+        default:
+            break;
     }
 }
 
@@ -283,7 +344,7 @@
             return filledCells;
         case 1:
             if (self.isKdb4) {
-                int numCells = [((Kdb4Entry*)self.entry).stringFields count];
+                int numCells = self.currentStringFields.count;
                 // Additional cell for Add cell
                 return self.editing ? numCells + 1 : numCells;
             } else {
@@ -301,15 +362,12 @@
         case 0:
             break;
         case 1: {
-            Kdb4Entry *entry = (Kdb4Entry *)self.entry;
             switch (editingStyle) {
                 case UITableViewCellEditingStyleInsert:
-                    [entry.stringFields addObject:[[StringField alloc] initWithKey:@"Name" andValue:@""]];
-                    [tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationBottom];
+                    [self addPressed];
                     break;
                 case UITableViewCellEditingStyleDelete: {
-                    StringField *stringField = [entry.stringFields objectAtIndex:indexPath.row];
-                    [entry.stringFields removeObject:stringField];
+                    [self.editingStringFields removeObjectAtIndex:indexPath.row];
                     [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationBottom];
                     break;
                 }
@@ -321,6 +379,12 @@
         case 2:
             break;
     }
+}
+
+- (void)addPressed {
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:self.editingStringFields.count inSection:1];
+    [self.editingStringFields addObject:[StringField stringFieldWithKey:@"Name" andValue:@""]];
+    [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationBottom];
 }
 
 # pragma mark - Table view delegate
@@ -359,7 +423,6 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-
     // Special case for top section with no section title
     if (section == 0) {
         return 10.0f;
@@ -378,10 +441,10 @@
             return UITableViewCellEditingStyleNone;
         case 1:
             if (self.isKdb4) {
-                if (indexPath.row >= ((Kdb4Entry *)self.entry).stringFields.count) {
-                    return UITableViewCellEditingStyleInsert;
-                } else {
+                if (indexPath.row < self.currentStringFields.count) {
                     return UITableViewCellEditingStyleDelete;
+                } else {
+                    return UITableViewCellEditingStyleInsert;
                 }
             }
             return UITableViewCellEditingStyleNone;
@@ -420,14 +483,16 @@
             }
         }
         case 1: {
-            NSArray *stringFields = ((Kdb4Entry*)self.entry).stringFields;
-            if (indexPath.row == stringFields.count) {
+            if (indexPath.row == self.currentStringFields.count) {
                 // Return "Add new..." cell
                 UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:AddFieldCellIdentifier];
                 if (cell == nil) {
                     cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:AddFieldCellIdentifier] autorelease];
                     cell.textLabel.textAlignment = NSTextAlignmentLeft;
                     cell.textLabel.text = @"Add new...";
+
+                    // Add new cell when this cell is tapped
+                    [cell addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(addPressed)]];
                 }
 
                 return cell;
@@ -435,8 +500,11 @@
                 TextFieldCell *cell = [tableView dequeueReusableCellWithIdentifier:TextFieldCellIdentifier];
                 if (cell == nil) {
                     cell = [[[TextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:TextFieldCellIdentifier] autorelease];
+                    cell.textFieldCellDelegate = self;
+                    cell.textField.returnKeyType = UIReturnKeyDone;
                 }
-                StringField *stringField = [((Kdb4Entry*)self.entry).stringFields objectAtIndex:indexPath.row];
+
+                StringField *stringField = [self.currentStringFields objectAtIndex:indexPath.row];
 
                 cell.textLabel.text = stringField.key;
                 cell.textField.text = stringField.value;

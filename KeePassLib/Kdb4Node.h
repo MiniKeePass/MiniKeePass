@@ -54,7 +54,7 @@
 @end
 
 
-@interface StringField : NSObject
+@interface StringField : NSObject <NSCopying>
 
 @property(nonatomic, copy) NSString *key;
 @property(nonatomic, copy) NSString *value;
@@ -62,6 +62,8 @@
 
 - (id)initWithKey:(NSString *)key andValue:(NSString *)value;
 - (id)initWithKey:(NSString *)key andValue:(NSString *)value andProtected:(BOOL)protected;
+
++ (id)stringFieldWithKey:(NSString *)key andValue:(NSString *)value;
 
 @end
 
