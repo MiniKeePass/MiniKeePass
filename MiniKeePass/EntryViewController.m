@@ -409,7 +409,7 @@
         case 1:
             return 40;
         case 2:
-            return 104;
+            return 228;
     }
     
     return 40;

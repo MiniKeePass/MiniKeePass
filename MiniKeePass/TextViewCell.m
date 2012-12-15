@@ -29,7 +29,6 @@
         
         textView = [[UITextView alloc] initWithFrame:CGRectZero];
         textView.font = [UIFont systemFontOfSize:16];
-        textView.contentSize = CGSizeMake(320, 150);
         textView.delegate = self;
         [self addSubview:textView];
     }
