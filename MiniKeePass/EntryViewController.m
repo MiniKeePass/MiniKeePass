@@ -18,6 +18,8 @@
 #import "EntryViewController.h"
 #import "Kdb4Node.h"
 
+#import <MBProgressHUD/MBProgressHUD.h>
+
 #define SECTION_HEADER_HEIGHT 46.0f
 
 @interface EntryViewController() {
@@ -492,7 +494,7 @@
                     cell.textLabel.text = @"Add new...";
 
                     // Add new cell when this cell is tapped
-                    [cell addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(addPressed)]];
+                    [cell addGestureRecognizer:[[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(addPressed)] autorelease]];
                 }
 
                 return cell;
@@ -591,33 +593,14 @@
 #pragma mark - Password Display
 
 - (void)showPasswordPressed {
-    ATMHud *hud = [[ATMHud alloc] initWithDelegate:self];
-    NSString *caption = self.entry.password;
-    UIFont *captionFont = [UIFont fontWithName:@"Andale Mono" size:24];
-    CGSize captionSize;
-    
-    [hud setCaption:caption];
-    [hud setCaptionFont:captionFont];
-    
-    CGFloat size = 300 - hud.padding;
-    captionSize = [caption sizeWithFont:captionFont constrainedToSize:CGSizeMake(size, size) lineBreakMode:UILineBreakModeWordWrap];
-    
-    captionSize.width += 2 * hud.padding;
-    captionSize.height += 2 * hud.padding;
+	MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
 
-    [hud setFixedSize:captionSize];
-    
-    [appDelegate.window addSubview:hud.view];
-    [hud show];
-    [hud release];
-}
-
-- (void)userDidTapHud:(ATMHud *)_hud {
-    [_hud hide];
-}
-
-- (void)hudDidDisappear:(ATMHud *)_hud {
-    [_hud.view removeFromSuperview];
+	hud.mode = MBProgressHUDModeText;
+    hud.detailsLabelText = self.entry.password;
+    hud.detailsLabelFont = [UIFont fontWithName:@"Andale Mono" size:24];
+	hud.margin = 10.f;
+	hud.removeFromSuperViewOnHide = YES;
+    [hud addGestureRecognizer:[[[UITapGestureRecognizer alloc] initWithTarget:hud action:@selector(hide:)] autorelease]];
 }
 
 #pragma mark - Password Generation

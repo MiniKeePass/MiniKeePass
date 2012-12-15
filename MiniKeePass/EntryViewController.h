@@ -16,8 +16,6 @@
  */
 
 #import <Foundation/Foundation.h>
-#import <ATMHud/ATMHud.h>
-#import <ATMHud/ATMHudDelegate.h>
 
 #import "TextFieldCell.h"
 #import "TitleFieldCell.h"
@@ -30,7 +28,7 @@
 #import "PasswordGeneratorViewController.h"
 #import "AutorotatingTableViewController.h"
 
-@interface EntryViewController : AutorotatingTableViewController <UIGestureRecognizerDelegate, ImagesViewControllerDelegate, TextFieldCellDelegate, PasswordGeneratorDelegate, ATMHudDelegate>
+@interface EntryViewController : AutorotatingTableViewController <UIGestureRecognizerDelegate, ImagesViewControllerDelegate, TextFieldCellDelegate, PasswordGeneratorDelegate>
 
 @property (nonatomic, assign) NSUInteger selectedImageIndex;
 @property (nonatomic, retain) KdbEntry *entry;

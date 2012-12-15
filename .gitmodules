@@ -1,6 +1,3 @@
-[submodule "SSToolkit"]
-	path = SSToolkit
-	url = git://github.com/samsoffes/sstoolkit.git
-[submodule "ATMHud"]
-	path = ATMHud
-	url = git@github.com:MiniKeePass/ATMHud.git
+[submodule "MBProgressHUD"]
+	path = MBProgressHUD
+	url = git@github.com:MiniKeePass/MBProgressHUD.git
