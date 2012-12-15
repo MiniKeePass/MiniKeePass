@@ -220,7 +220,7 @@
     uint16_t fieldType;
     uint32_t fieldSize;
     uint8_t buffer[16];
-    uint32_t groupId;
+    uint32_t groupId = 0;
     BOOL eos;
 
     // Parse the entries
