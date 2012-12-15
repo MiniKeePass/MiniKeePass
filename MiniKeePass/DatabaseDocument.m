@@ -18,6 +18,10 @@
 #import "DatabaseDocument.h"
 #import "AppSettings.h"
 
+@interface DatabaseDocument ()
+- (BOOL)matchesEntry:(KdbEntry *)entry searchText:(NSString *)searchText;
+@end
+
 @implementation DatabaseDocument
 
 @synthesize kdbTree;
@@ -53,14 +57,14 @@
     return documentInteractionController;
 }
 
-- (void)open:(NSString*)newFilename password:(NSString*)password keyFile:(NSString*)keyFile {
+- (void)open:(NSString *)newFilename password:(NSString *)password keyFile:(NSString *)keyFile {
     [kdbTree release];
     [filename release];
     [kdbPassword release];
-    
+
     filename = [newFilename retain];
     dirty = NO;
-    
+
     NSStringEncoding passwordEncoding = [[AppSettings sharedInstance] passwordEncoding];
 
     if (password != nil && keyFile != nil) {
@@ -83,17 +87,32 @@
     }
 }
 
-- (void)searchGroup:(KdbGroup*)group searchText:(NSString*)searchText results:(NSMutableArray*)results {
+- (void)searchGroup:(KdbGroup *)group searchText:(NSString *)searchText results:(NSMutableArray *)results {
     for (KdbEntry *entry in group.entries) {
-        NSRange range = [entry.title rangeOfString:searchText options:NSCaseInsensitiveSearch];
-        if (range.location != NSNotFound) {
+        if ([self matchesEntry:entry searchText:searchText]) {
             [results addObject:entry];
         }
     }
-    
+
     for (KdbGroup *g in group.groups) {
         [self searchGroup:g searchText:searchText results:results];
     }
+}
+
+- (BOOL)matchesEntry:(KdbEntry *)entry searchText:(NSString *)searchText {
+    if ([entry.title rangeOfString:searchText options:NSCaseInsensitiveSearch].length > 0) {
+        return YES;
+    }
+    if ([entry.username rangeOfString:searchText options:NSCaseInsensitiveSearch].length > 0) {
+        return YES;
+    }
+    if ([entry.url rangeOfString:searchText options:NSCaseInsensitiveSearch].length > 0) {
+        return YES;
+    }
+    if ([entry.notes rangeOfString:searchText options:NSCaseInsensitiveSearch].length > 0) {
+        return YES;
+    }
+    return NO;
 }
 
 @end

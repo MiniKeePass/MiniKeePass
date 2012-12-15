@@ -33,8 +33,9 @@
 @property (nonatomic) BOOL dirty;
 @property (nonatomic, readonly) UIDocumentInteractionController *documentInteractionController;
 
-- (void)open:(NSString*)newFilename password:(NSString*)password keyFile:(NSString*)keyFile;
+- (void)open:(NSString *)newFilename password:(NSString *)password keyFile:(NSString *)keyFile;
 - (void)save;
-- (void)searchGroup:(KdbGroup*)group searchText:(NSString*)searchText results:(NSMutableArray*)results;
+
+- (void)searchGroup:(KdbGroup *)group searchText:(NSString *)searchText results:(NSMutableArray *)results;
 
 @end
