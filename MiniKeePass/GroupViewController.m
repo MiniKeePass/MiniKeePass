@@ -379,11 +379,9 @@
 }
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated {
-    NSLog(@"setEditing: %d", editing);
     if (self.selectMultipleWhileEditing) {
         self.tableView.allowsMultipleSelectionDuringEditing = editing;
     }
-    NSLog(@"multiple? %d", self.tableView.allowsMultipleSelectionDuringEditing);
     
     [super setEditing:editing animated:animated];
     
