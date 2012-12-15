@@ -61,6 +61,23 @@
 @property(nonatomic, assign) BOOL protected;
 
 - (id)initWithKey:(NSString *)key andValue:(NSString *)value;
+- (id)initWithKey:(NSString *)key andValue:(NSString *)value andProtected:(BOOL)protected;
+
+@end
+
+
+@interface CustomIcon : NSObject
+
+@property(nonatomic, retain) UUID *uuid;
+@property(nonatomic, copy) NSString *data;
+
+@end
+
+
+@interface CustomItem : NSObject
+
+@property(nonatomic, copy) NSString *key;
+@property(nonatomic, copy) NSString *value;
 
 @end
 
@@ -94,6 +111,7 @@
 
 @property(nonatomic, assign) BOOL enabled;
 @property(nonatomic, assign) NSInteger dataTransferObfuscation;
+@property(nonatomic, copy) NSString *defaultSequence;
 @property(nonatomic, readonly) NSMutableArray *associations;
 
 @end
@@ -102,6 +120,12 @@
 @interface Kdb4Entry : KdbEntry
 
 @property(nonatomic, retain) UUID *uuid;
+@property(nonatomic, retain) StringField *titleStringField;
+@property(nonatomic, retain) StringField *usernameStringField;
+@property(nonatomic, retain) StringField *passwordStringField;
+@property(nonatomic, retain) StringField *urlStringField;
+@property(nonatomic, retain) StringField *notesStringField;
+@property(nonatomic, retain) UUID *customIconUuid;
 @property(nonatomic, copy) NSString *foregroundColor;
 @property(nonatomic, copy) NSString *backgroundColor;
 @property(nonatomic, copy) NSString *overrideUrl;
@@ -112,6 +136,7 @@
 @property(nonatomic, readonly) NSMutableArray *stringFields;
 @property(nonatomic, readonly) NSMutableArray *binaries;
 @property(nonatomic, retain) AutoType *autoType;
+@property(nonatomic, readonly) NSMutableArray *history;
 
 @end
 
@@ -138,6 +163,7 @@
 @property(nonatomic, assign) BOOL protectPassword;
 @property(nonatomic, assign) BOOL protectUrl;
 @property(nonatomic, assign) BOOL protectNotes;
+@property(nonatomic, readonly) NSMutableArray *customIcons;
 @property(nonatomic, assign) BOOL recycleBinEnabled;
 @property(nonatomic, retain) UUID *recycleBinUuid;
 @property(nonatomic, retain) NSDate *recycleBinChanged;
@@ -148,5 +174,6 @@
 @property(nonatomic, retain) UUID *lastSelectedGroup;
 @property(nonatomic, retain) UUID *lastTopVisibleGroup;
 @property(nonatomic, readonly) NSMutableArray *binaries;
+@property(nonatomic, readonly) NSMutableArray *customData;
 
 @end

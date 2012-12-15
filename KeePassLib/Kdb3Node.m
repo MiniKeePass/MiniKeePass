@@ -54,11 +54,21 @@
 @implementation Kdb3Entry
 
 @synthesize uuid;
+@synthesize title;
+@synthesize username;
+@synthesize password;
+@synthesize url;
+@synthesize notes;
 @synthesize binaryDesc;
 @synthesize binary;
 
 - (void)dealloc {
     [uuid release];
+    [title release];
+    [username release];
+    [password release];
+    [url release];
+    [notes release];
     [binaryDesc release];
     [binary release];
     [super dealloc];

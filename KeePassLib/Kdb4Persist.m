@@ -23,8 +23,9 @@
 @interface Kdb4Persist (PrivateMethods)
 - (DDXMLDocument *)persistTree;
 - (DDXMLElement *)persistBinary:(Binary *)binary;
+- (DDXMLElement *)persistCustomItem:(CustomItem *)customItem;
 - (DDXMLElement *)persistGroup:(Kdb4Group *)group;
-- (DDXMLElement *)persistEntry:(Kdb4Entry *)entry;
+- (DDXMLElement *)persistEntry:(Kdb4Entry *)entry includeHistory:(BOOL)includeHistory;
 - (DDXMLElement *)persistStringField:(StringField *)stringField;
 - (DDXMLElement *)persistBinaryRef:(BinaryRef *)binaryRef;
 - (DDXMLElement *)persistAutoType:(AutoType *)autoType;
@@ -64,7 +65,7 @@
     [self encodeProtected:document.rootElement];
 
     // Serialize the DOM to XML
-    [outputStream write:[document XMLData]];
+    [outputStream write:[document XMLDataWithOptions:DDXMLNodeCompactEmptyElement]];
 }
 
 - (DDXMLDocument *)persistTree {
@@ -111,6 +112,14 @@
                                                stringValue:tree.protectNotes ? @"True" : @"False"]];
     [element addChild:protectionElement];
 
+    if ([tree.customIcons count] > 0) {
+        DDXMLElement *customIconsElements = [DDXMLElement elementWithName:@"CustomIcons"];
+        for (CustomIcon *customIcon in tree.customIcons) {
+            [customIconsElements addChild:[self persistCustomIcon:customIcon]];
+        }
+        [element addChild:customIconsElements];
+    }
+
     [element addChild:[DDXMLNode elementWithName:@"RecycleBinEnabled"
                                      stringValue:tree.recycleBinEnabled ? @"True" : @"False"]];
     [element addChild:[DDXMLNode elementWithName:@"RecycleBinUUID"
@@ -136,7 +145,11 @@
     }
     [element addChild:binaryElements];
 
-    // FIXME Custom Data
+    DDXMLElement *customDataElements = [DDXMLElement elementWithName:@"CustomData"];
+    for (CustomItem *customItem in tree.customData) {
+        [customDataElements addChild:[self persistCustomItem:customItem]];
+    }
+    [element addChild:customDataElements];
 
     [document.rootElement addChild:element];
 
@@ -144,7 +157,16 @@
     [element addChild:[self persistGroup:(Kdb4Group *)tree.root]];
     [document.rootElement addChild:element];
 
-    return document;
+    return [document autorelease];
+}
+
+- (DDXMLElement *)persistCustomIcon:(CustomIcon *)customIcon {
+    DDXMLElement *root = [DDXMLNode elementWithName:@"Icon"];
+
+    [root addChild:[DDXMLNode elementWithName:@"UUID" stringValue:[self persistUuid:customIcon.uuid]]];
+    [root addChild:[DDXMLNode elementWithName:@"Data" stringValue:customIcon.data]];
+
+    return root;
 }
 
 - (DDXMLElement *)persistBinary:(Binary *)binary {
@@ -153,6 +175,15 @@
     [root addAttributeWithName:@"ID" stringValue:[NSString stringWithFormat:@"%d", binary.binaryId]];
     [root addAttributeWithName:@"Compressed" stringValue:binary.compressed ? @"True" : @"False"];
     root.stringValue = binary.data;
+
+    return root;
+}
+
+- (DDXMLElement *)persistCustomItem:(CustomItem *)customItem {
+    DDXMLElement *root = [DDXMLNode elementWithName:@"Item"];
+
+    [root addAttributeWithName:@"Key" stringValue:customItem.key];
+    [root addAttributeWithName:@"Value" stringValue:customItem.value];
 
     return root;
 }
@@ -201,7 +232,7 @@
                                   stringValue:[self persistUuid:group.lastTopVisibleEntry]]];
 
     for (Kdb4Entry *entry in group.entries) {
-        [root addChild:[self persistEntry:entry]];
+        [root addChild:[self persistEntry:entry includeHistory:YES]];
     }
 
     for (Kdb4Group *subGroup in group.groups) {
@@ -211,7 +242,7 @@
     return root;
 }
 
-- (DDXMLElement *)persistEntry:(Kdb4Entry *)entry {
+- (DDXMLElement *)persistEntry:(Kdb4Entry *)entry includeHistory:(BOOL)includeHistory {
     DDXMLElement *root = [DDXMLNode elementWithName:@"Entry"];
 
     // Add the standard properties
@@ -219,6 +250,10 @@
                                   stringValue:[self persistUuid:entry.uuid]]];
     [root addChild:[DDXMLNode elementWithName:@"IconID"
                                   stringValue:[NSString stringWithFormat:@"%d", entry.image]]];
+    if (entry.customIconUuid != nil) {
+        [root addChild:[DDXMLNode elementWithName:@"CustomIconUUID"
+                                      stringValue:[self persistUuid:entry.customIconUuid]]];
+    }
     [root addChild:[DDXMLNode elementWithName:@"ForegroundColor"
                                   stringValue:entry.foregroundColor]];
     [root addChild:[DDXMLNode elementWithName:@"BackgroundColor"
@@ -247,11 +282,11 @@
     [root addChild:timesElement];
 
     // Add the standard string fields
-    [root addChild:[self persistStringFieldWithKey:@"Title" andValue:entry.title andProtected:false]];
-    [root addChild:[self persistStringFieldWithKey:@"UserName" andValue:entry.username andProtected:false]];
-    [root addChild:[self persistStringFieldWithKey:@"Password" andValue:entry.password andProtected:true]];
-    [root addChild:[self persistStringFieldWithKey:@"URL" andValue:entry.url andProtected:false]];
-    [root addChild:[self persistStringFieldWithKey:@"Notes" andValue:entry.notes andProtected:false]];
+    [root addChild:[self persistStringField:entry.titleStringField]];
+    [root addChild:[self persistStringField:entry.usernameStringField]];
+    [root addChild:[self persistStringField:entry.passwordStringField]];
+    [root addChild:[self persistStringField:entry.urlStringField]];
+    [root addChild:[self persistStringField:entry.notesStringField]];
 
     // Add the string fields
     for (StringField *stringField in entry.stringFields) {
@@ -266,28 +301,30 @@
     // Add the auto-type
     [root addChild:[self persistAutoType:entry.autoType]];
 
-    // Add a blank History element
-    [root addChild:[DDXMLElement elementWithName:@"History"]];
-
-    return root;
-}
-
-- (DDXMLElement *)persistStringFieldWithKey:(NSString *)key andValue:(NSString *)value andProtected:(BOOL)protected {
-    DDXMLElement *root = [DDXMLNode elementWithName:@"String"];
-
-    [root addChild:[DDXMLElement elementWithName:@"Key" stringValue:key]];
-
-    DDXMLElement *element = [DDXMLElement elementWithName:@"Value" stringValue:value];
-    if (protected) {
-        [element addAttributeWithName:@"Protected" stringValue:@"True"];
+    // Add the history entries
+    if (includeHistory) {
+        DDXMLElement *historyElement = [DDXMLElement elementWithName:@"History"];
+        for (Kdb4Entry *oldEntry in entry.history) {
+            [historyElement addChild:[self persistEntry:oldEntry includeHistory:NO]];
+        }
+        [root addChild:historyElement];
     }
-    [root addChild:element];
 
     return root;
 }
 
 - (DDXMLElement *)persistStringField:(StringField *)stringField {
-    return [self persistStringFieldWithKey:stringField.key andValue:stringField.value andProtected:stringField.protected];
+    DDXMLElement *root = [DDXMLNode elementWithName:@"String"];
+
+    [root addChild:[DDXMLElement elementWithName:@"Key" stringValue:stringField.key]];
+
+    DDXMLElement *element = [DDXMLElement elementWithName:@"Value" stringValue:stringField.value];
+    if (stringField.protected) {
+        [element addAttributeWithName:@"Protected" stringValue:@"True"];
+    }
+    [root addChild:element];
+
+    return root;
 }
 
 - (DDXMLElement *)persistBinaryRef:(BinaryRef *)binaryRef {
@@ -309,6 +346,10 @@
                                      stringValue:autoType.enabled ? @"True" : @"False"]];
     [root addChild:[DDXMLElement elementWithName:@"DataTransferObfuscation"
                                      stringValue:[NSString stringWithFormat:@"%d", autoType.dataTransferObfuscation]]];
+
+    if (autoType.defaultSequence != nil) {
+        [root addChild:[DDXMLElement elementWithName:@"DefaultSequence" stringValue:autoType.defaultSequence]];
+    }
 
     // Add the associations
     for (Association *association in autoType.associations) {

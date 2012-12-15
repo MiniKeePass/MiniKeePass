@@ -28,14 +28,40 @@
 @implementation StringField
 
 - (id)initWithKey:(NSString *)key andValue:(NSString *)value {
+    return [self initWithKey:key andValue:value andProtected:NO];
+}
+
+- (id)initWithKey:(NSString *)key andValue:(NSString *)value andProtected:(BOOL)protected {
     self = [super init];
     if (self) {
         _key = key;
         _value = value;
-        _protected = false;
+        _protected = protected;
     }
     return self;
 }
+
+- (void)dealloc {
+    [_key release];
+    [_value release];
+    [super dealloc];
+}
+
+@end
+
+
+@implementation CustomIcon
+
+- (void)dealloc {
+    [_uuid release];
+    [_data release];
+    [super dealloc];
+}
+
+@end
+
+
+@implementation CustomItem
 
 - (void)dealloc {
     [_key release];
@@ -88,6 +114,7 @@
 }
 
 - (void)dealloc {
+    [_defaultSequence release];
     [_associations release];
     [super dealloc];
 }
@@ -102,12 +129,19 @@
     if (self) {
         _stringFields = [[NSMutableArray alloc] init];
         _binaries = [[NSMutableArray alloc] init];
+        _history = [[NSMutableArray alloc] init];
     }
     return self;
 }
 
 - (void)dealloc {
     [_uuid release];
+    [_titleStringField release];
+    [_usernameStringField release];
+    [_passwordStringField release];
+    [_urlStringField release];
+    [_notesStringField release];
+    [_customIconUuid release];
     [_foregroundColor release];
     [_backgroundColor release];
     [_overrideUrl release];
@@ -116,7 +150,48 @@
     [_stringFields release];
     [_binaries release];
     [_autoType release];
+    [_history release];
     [super dealloc];
+}
+
+- (NSString *)title {
+    return _titleStringField.value;
+}
+
+- (void)setTitle:(NSString *)title {
+    _titleStringField.value = title;
+}
+
+- (NSString *)username {
+    return _usernameStringField.value;
+}
+
+- (void)setUsername:(NSString *)username {
+    _usernameStringField.value = username;
+}
+
+- (NSString *)password {
+    return _passwordStringField.value;
+}
+
+- (void)setPassword:(NSString *)password {
+    _passwordStringField.value = password;
+}
+
+- (NSString *)url {
+    return _urlStringField.value;
+}
+
+- (void)setUrl:(NSString *)url {
+    _urlStringField.value = url;
+}
+
+- (NSString *)notes {
+    return _notesStringField.value;
+}
+
+- (void)setNotes:(NSString *)notes {
+    _notesStringField.value = notes;
 }
 
 @end
@@ -129,7 +204,9 @@
     if (self) {
         _rounds = DEFAULT_TRANSFORMATION_ROUNDS;
         _compressionAlgorithm = COMPRESSION_GZIP;
+        _customIcons = [[NSMutableArray alloc] init];
         _binaries = [[NSMutableArray alloc] init];
+        _customData = [[NSMutableArray alloc] init];
     }
     return self;
 }
@@ -144,6 +221,7 @@
     [_defaultUserNameChanged release];
     [_color release];
     [_masterKeyChanged release];
+    [_customIcons release];
     [_recycleBinUuid release];
     [_recycleBinChanged release];
     [_entryTemplatesGroup release];
@@ -151,6 +229,7 @@
     [_lastSelectedGroup release];
     [_lastTopVisibleGroup release];
     [_binaries release];
+    [_customData release];
     [super dealloc];
 }
 
@@ -183,6 +262,11 @@
 
     entry.uuid = [UUID uuid];
     entry.image = 0;
+    entry.titleStringField = [[[StringField alloc] initWithKey:@"Title" andValue:@"New Entry"] autorelease];
+    entry.usernameStringField = [[[StringField alloc] initWithKey:@"Username" andValue:@""] autorelease];
+    entry.passwordStringField = [[[StringField alloc] initWithKey:@"Password" andValue:@"" andProtected:YES] autorelease];
+    entry.urlStringField = [[[StringField alloc] initWithKey:@"URL" andValue:@""] autorelease];
+    entry.notesStringField = [[[StringField alloc] initWithKey:@"Notes" andValue:@""] autorelease];
     entry.foregroundColor = @"";
     entry.backgroundColor = @"";
     entry.overrideUrl = @"";
