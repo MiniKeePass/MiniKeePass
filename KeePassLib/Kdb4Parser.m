@@ -72,7 +72,11 @@ int closeCallback(void *context) {
 }
 
 - (Kdb4Tree *)parse:(InputStream *)inputStream {
-    DDXMLDocument *document = [[DDXMLDocument alloc] initWithReadIO:readCallback closeIO:closeCallback context:inputStream options:0 error:nil];
+    DDXMLDocument *document = [[[DDXMLDocument alloc] initWithReadIO:readCallback
+                                                             closeIO:closeCallback
+                                                             context:inputStream
+                                                             options:0
+                                                               error:nil] autorelease];
     if (document == nil) {
         @throw [NSException exceptionWithName:@"ParseError" reason:@"Failed to parse database" userInfo:nil];
     }
@@ -83,7 +87,7 @@ int closeCallback(void *context) {
     // Decode all the protected entries
     [self decodeProtected:rootElement];
 
-    Kdb4Tree *tree = [[Kdb4Tree alloc] init];
+    Kdb4Tree *tree = [[[Kdb4Tree alloc] init] autorelease];
 
     DDXMLElement *meta = [rootElement elementForName:@"Meta"];
     if (meta != nil) {
@@ -92,21 +96,17 @@ int closeCallback(void *context) {
 
     DDXMLElement *root = [rootElement elementForName:@"Root"];
     if (root == nil) {
-        [document release];
         @throw [NSException exceptionWithName:@"ParseError" reason:@"Failed to parse database" userInfo:nil];
     }
 
     DDXMLElement *element = [root elementForName:@"Group"];
     if (element == nil) {
-        [document release];
         @throw [NSException exceptionWithName:@"ParseError" reason:@"Failed to parse database" userInfo:nil];
     }
 
     tree.root = [self parseGroup:element];
 
-    [document release];
-
-    return [tree autorelease];
+    return tree;
 }
 
 - (void)decodeProtected:(DDXMLElement *)root {

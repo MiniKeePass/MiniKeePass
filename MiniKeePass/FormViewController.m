@@ -64,6 +64,7 @@
 
 - (void)dealloc {
     [controls release];
+    [cells release];
     [infoBar release];
     [headerTitle release];
     [footerTitle release];
@@ -139,7 +140,6 @@
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             
             controlView.frame = [self calculateNewFrameForView:controlView inOrientation:[[UIApplication sharedApplication] statusBarOrientation]];
-            //            NSLog(@"%@", controlView);
             [cell addSubview:controlView];
         }
         [cells addObject:cell];

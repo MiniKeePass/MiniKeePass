@@ -75,7 +75,7 @@
         
         CGFloat textFieldViewWidth = PINTEXTFIELDWIDTH * 4 + TEXTFIELDSPACE * 3;
         
-        UIView *textFieldsView = [[UIView alloc] initWithFrame:CGRectMake((frameWidth - textFieldViewWidth) / 2, 22, textFieldViewWidth, PINTEXTFIELDHEIGHT)];
+        UIView *textFieldsView = [[[UIView alloc] initWithFrame:CGRectMake((frameWidth - textFieldViewWidth) / 2, 22, textFieldViewWidth, PINTEXTFIELDHEIGHT)] autorelease];
         textFieldsView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
         
         CGFloat xOrigin = 0;
@@ -187,7 +187,7 @@
 }
 
 - (BOOL)textField:(UITextField *)field shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
-    if ([field.text length] >= 4 && range.length > 0) {
+    if ([field.text length] >= 4 && range.length == 0) {
         return NO;
     } else {
         return YES;

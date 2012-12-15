@@ -32,7 +32,7 @@
     UIImage *images[NUM_IMAGES];
 }
 
-@property (copy, nonatomic) NSString *fileToOpen;
+@property (nonatomic, copy) NSString *fileToOpen;
 
 @end
 
