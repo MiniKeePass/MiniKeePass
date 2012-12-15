@@ -65,4 +65,7 @@
 - (NSInteger)pwGenCharSets;
 - (void)setPwGenCharSets:(NSInteger)pwGenCharSets;
 
+- (NSArray *)customLabels;
+- (void)setCustomLabels:(NSArray *)customLabels;
+
 @end

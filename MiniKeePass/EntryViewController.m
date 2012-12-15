@@ -47,6 +47,7 @@
     self = [super initWithStyle:style];
     if (self) {
         self.tableView.delaysContentTouches = YES;
+        self.tableView.allowsSelectionDuringEditing = YES;
 
         self.navigationItem.rightBarButtonItem = self.editButtonItem;
         
@@ -246,6 +247,7 @@
             TextFieldCell *cell = (TextFieldCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:1]];
             [cell.textField resignFirstResponder];
             cell.textField.enabled = editing;
+            cell.showGrayBar = editing;
         }
 
         if (count == 0) {
@@ -262,6 +264,11 @@
         self.navigationItem.leftBarButtonItem = cancelButton;
         [cancelButton release];
 
+        titleCell.selectionStyle = UITableViewCellSelectionStyleNone;
+        usernameCell.selectionStyle = UITableViewCellSelectionStyleNone;
+        passwordCell.selectionStyle = UITableViewCellSelectionStyleNone;
+        urlCell.selectionStyle = UITableViewCellSelectionStyleNone;
+
         titleCell.imageButton.adjustsImageWhenHighlighted = YES;
         canceled = NO;
 
@@ -274,6 +281,11 @@
         [passwordCell.textField resignFirstResponder];
         [urlCell.textField resignFirstResponder];
         [commentsCell.textView resignFirstResponder];
+
+        titleCell.selectionStyle = UITableViewCellSelectionStyleBlue;
+        usernameCell.selectionStyle = UITableViewCellSelectionStyleBlue;
+        passwordCell.selectionStyle = UITableViewCellSelectionStyleBlue;
+        urlCell.selectionStyle = UITableViewCellSelectionStyleBlue;
 
         titleCell.imageButton.adjustsImageWhenHighlighted = NO;
 
@@ -507,6 +519,7 @@
                 }
 
                 StringField *stringField = [self.currentStringFields objectAtIndex:indexPath.row];
+                [cell setShowGrayBar:self.editing];
 
                 cell.textLabel.text = stringField.key;
                 cell.textField.text = stringField.value;
@@ -524,6 +537,26 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (self.editing) {
+        if (indexPath.section != 1) {
+            return;
+        }
+
+        StringField *stringField = [self.editingStringFields objectAtIndex:indexPath.row];
+        SelectLabelViewController *slvc = [[SelectLabelViewController alloc] initWithStyle:UITableViewStyleGrouped];
+        slvc.object = indexPath;
+        [slvc setCurrentLabel:stringField.key];
+        slvc.delegate = self;
+
+        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:slvc];
+        [slvc release];
+
+        [self.navigationController presentViewController:navController animated:YES completion:nil];
+        [navController release];
+
+        return;
+    }
+
     tableView.allowsSelection = NO;
     UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
     TextFieldCell *cell = (TextFieldCell *)[tableView cellForRowAtIndexPath:indexPath];
@@ -566,6 +599,19 @@
             tableView.allowsSelection = YES;
         }];
     });
+}
+
+#pragma mark - Select label delegate
+
+- (void)selectionLabelViewController:(SelectLabelViewController *)controller selectedLabel:(NSString *)label forObject:(id)object {
+    NSIndexPath *indexPath = object;
+    StringField *stringField = [self.editingStringFields objectAtIndex:indexPath.row];
+    stringField.key = label;
+
+    TextFieldCell *cell = (TextFieldCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+    cell.textLabel.text = label;
+
+    [controller dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - Image related

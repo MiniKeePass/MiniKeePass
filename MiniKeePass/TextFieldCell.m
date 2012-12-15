@@ -20,6 +20,10 @@
 
 #define INSET 83
 
+@interface TextFieldCell()
+@property (nonatomic, retain) UIView *grayBar;
+@end
+
 @implementation TextFieldCell
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
@@ -42,17 +46,34 @@
         _textField.textColor = [UIColor blackColor];
         
         [self.contentView addSubview:self.textField];
+
+        CGFloat grayIntensity = 202.0 / 255.0;
+        UIColor *color = [UIColor colorWithRed:grayIntensity green:grayIntensity blue:grayIntensity alpha:1];
+
+        _grayBar = [[UIView alloc] initWithFrame:CGRectMake(79, -1, 1, self.contentView.frame.size.height - 4)];
+        _grayBar.backgroundColor = color;
+        _grayBar.hidden = YES;
+        [self.contentView addSubview:_grayBar];
     }
     return self;
 }
 
 - (void)dealloc {
     [_textField release];
+    [_grayBar release];
     _textFieldCellDelegate = nil;
     
     [_accessoryButton release];
     [_editAccessoryButton release];
     [super dealloc];
+}
+
+- (BOOL)showGrayBar {
+    return !self.grayBar.hidden;
+}
+
+- (void)setShowGrayBar:(BOOL)showGrayBar {
+    self.grayBar.hidden = !showGrayBar;
 }
 
 - (void)setAccessoryButton:(UIButton *)accessoryButton {

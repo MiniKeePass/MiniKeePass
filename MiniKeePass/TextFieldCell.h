@@ -29,6 +29,8 @@
 @property (nonatomic, retain) UIButton *accessoryButton;
 @property (nonatomic, retain) UIButton *editAccessoryButton;
 
+@property (nonatomic, assign) BOOL showGrayBar;
+
 @end
 
 @protocol TextFieldCellDelegate <NSObject>
