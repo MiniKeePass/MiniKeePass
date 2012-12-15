@@ -32,7 +32,7 @@
     UIImage *images[NUM_IMAGES];
 }
 
-@property (copy, nonatomic) NSString *fileToOpen;
+@property (nonatomic, copy) NSString *fileToOpen;
 
 @end
 
@@ -147,7 +147,7 @@
     
     // Store the filename to open if it's a database
     if ([filename hasSuffix:@".kdb"] || [filename hasSuffix:@".kdbx"]) {
-        self.fileToOpen = [filename copy];
+        self.fileToOpen = filename;
     } else {
         self.fileToOpen = nil;
         FilesViewController *fileView = [[navigationController viewControllers] objectAtIndex:0];
