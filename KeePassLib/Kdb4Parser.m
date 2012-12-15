@@ -20,7 +20,6 @@
 #import "DDXML.h"
 #import "DDXMLElementAdditions.h"
 #import "DDXMLDocument+MKPAdditions.h"
-#import "DDXMLElement+MKPAdditions.h"
 #import "Base64.h"
 
 #define FIELD_TITLE     @"Title"

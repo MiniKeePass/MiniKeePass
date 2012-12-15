@@ -7,7 +7,6 @@
 //
 
 #import "Kdb4Node.h"
-#import "DDXMLElement+MKPAdditions.h"
 
 @implementation Kdb4Group
 
