@@ -65,7 +65,7 @@
     [self encodeProtected:document.rootElement];
 
     // Serialize the DOM to XML
-    [outputStream write:[document XMLData]];
+    [outputStream write:[document XMLDataWithOptions:DDXMLNodeCompactEmptyElement]];
 }
 
 - (DDXMLDocument *)persistTree {
