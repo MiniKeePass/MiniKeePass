@@ -186,7 +186,7 @@
 }
 
 - (BOOL)textField:(UITextField *)field shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
-    if ([field.text length] >= 4 && range.length > 0) {
+    if ([field.text length] >= 4 && range.length == 0) {
         return NO;
     } else {
         return YES;
