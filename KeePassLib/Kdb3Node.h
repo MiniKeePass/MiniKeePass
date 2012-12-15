@@ -39,29 +39,16 @@ typedef struct {
 	uint32_t keyEncRounds;
 } kdb3_header_t;
 
-@interface Kdb3Group : KdbGroup {
-    uint32_t groupId;
-    uint32_t flags;
-    NSMutableArray *metaEntries;
-}
+@interface Kdb3Group : KdbGroup
 
 @property(nonatomic, assign) uint32_t groupId;
 @property(nonatomic, assign) uint32_t flags;
-@property(nonatomic, readonly) NSArray *metaEntries;
+@property(nonatomic, readonly) NSMutableArray *metaEntries;
 
 @end
 
 
-@interface Kdb3Entry : KdbEntry {
-    UUID *uuid;
-    NSString *title;
-    NSString *username;
-    NSString *password;
-    NSString *url;
-    NSString *notes;
-    NSString *binaryDesc;
-    NSData *binary;
-}
+@interface Kdb3Entry : KdbEntry
 
 @property(nonatomic, retain) UUID *uuid;
 @property(nonatomic, copy) NSString *title;
@@ -77,9 +64,7 @@ typedef struct {
 @end
 
 
-@interface Kdb3Tree : KdbTree {
-    uint32_t rounds;
-}
+@interface Kdb3Tree : KdbTree
 
 @property(nonatomic, assign) uint32_t rounds;
 
