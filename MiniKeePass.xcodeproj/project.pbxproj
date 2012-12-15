@@ -46,7 +46,6 @@
 		52E7AF6316252D7C00DCB00A /* ChooseGroupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52E7AF6216252D7C00DCB00A /* ChooseGroupViewController.m */; };
 		6802F9C614EC9C1D00ACD4C1 /* wrench.png in Resources */ = {isa = PBXBuildFile; fileRef = 6802F9C314EC9C1D00ACD4C1 /* wrench.png */; };
 		6802F9C814EC9C1D00ACD4C1 /* wrench@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6802F9C514EC9C1D00ACD4C1 /* wrench@2x.png */; };
-		680C277216050B76009403DE /* DDXMLElement+MKPAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 680C277116050B76009403DE /* DDXMLElement+MKPAdditions.m */; };
 		680C277616050C7A009403DE /* DDXMLDocument+MKPAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 680C277516050C7A009403DE /* DDXMLDocument+MKPAdditions.m */; };
 		682D450D1603883900156830 /* AesInputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 682D44F21603883900156830 /* AesInputStream.m */; };
 		682D450E1603883900156830 /* AesOutputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 682D44F41603883900156830 /* AesOutputStream.m */; };
@@ -354,8 +353,6 @@
 		52E7AF6216252D7C00DCB00A /* ChooseGroupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ChooseGroupViewController.m; path = ../ChooseGroupViewController.m; sourceTree = "<group>"; };
 		6802F9C314EC9C1D00ACD4C1 /* wrench.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wrench.png; sourceTree = "<group>"; };
 		6802F9C514EC9C1D00ACD4C1 /* wrench@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "wrench@2x.png"; sourceTree = "<group>"; };
-		680C277016050B76009403DE /* DDXMLElement+MKPAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "DDXMLElement+MKPAdditions.h"; sourceTree = "<group>"; };
-		680C277116050B76009403DE /* DDXMLElement+MKPAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "DDXMLElement+MKPAdditions.m"; sourceTree = "<group>"; };
 		680C277416050C7A009403DE /* DDXMLDocument+MKPAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "DDXMLDocument+MKPAdditions.h"; sourceTree = "<group>"; };
 		680C277516050C7A009403DE /* DDXMLDocument+MKPAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "DDXMLDocument+MKPAdditions.m"; sourceTree = "<group>"; };
 		682D44F11603883900156830 /* AesInputStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AesInputStream.h; sourceTree = "<group>"; };
@@ -1001,8 +998,6 @@
 				689D02B813A42B63005EBD36 /* Base64.m */,
 				680C277416050C7A009403DE /* DDXMLDocument+MKPAdditions.h */,
 				680C277516050C7A009403DE /* DDXMLDocument+MKPAdditions.m */,
-				680C277016050B76009403DE /* DDXMLElement+MKPAdditions.h */,
-				680C277116050B76009403DE /* DDXMLElement+MKPAdditions.m */,
 				689D02C713A42B63005EBD36 /* Kdb.h */,
 				689D02C813A42B63005EBD36 /* Kdb.m */,
 				689D02C913A42B63005EBD36 /* Kdb3Date.h */,
@@ -1655,7 +1650,6 @@
 				682D45191603883900156830 /* OutputStream.m in Sources */,
 				682D451A1603883900156830 /* Sha256OutputStream.m in Sources */,
 				685D9D951603F8EE00D739D3 /* Kdb3Utils.m in Sources */,
-				680C277216050B76009403DE /* DDXMLElement+MKPAdditions.m in Sources */,
 				680C277616050C7A009403DE /* DDXMLDocument+MKPAdditions.m in Sources */,
 				6859176F1615DE1D005FECA5 /* AppSettings.m in Sources */,
 				52E7AF5816251EA700DCB00A /* RenameItemViewController.m in Sources */,
