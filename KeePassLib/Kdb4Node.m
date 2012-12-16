@@ -269,11 +269,11 @@
 
     entry.uuid = [UUID uuid];
     entry.image = 0;
-    entry.titleStringField = [[[StringField alloc] initWithKey:@"Title" andValue:@"New Entry"] autorelease];
-    entry.usernameStringField = [[[StringField alloc] initWithKey:@"UserName" andValue:@""] autorelease];
-    entry.passwordStringField = [[[StringField alloc] initWithKey:@"Password" andValue:@"" andProtected:YES] autorelease];
-    entry.urlStringField = [[[StringField alloc] initWithKey:@"URL" andValue:@""] autorelease];
-    entry.notesStringField = [[[StringField alloc] initWithKey:@"Notes" andValue:@""] autorelease];
+    entry.titleStringField = [[[StringField alloc] initWithKey:FIELD_TITLE andValue:@"New Entry"] autorelease];
+    entry.usernameStringField = [[[StringField alloc] initWithKey:FIELD_USER_NAME andValue:@""] autorelease];
+    entry.passwordStringField = [[[StringField alloc] initWithKey:FIELD_PASSWORD andValue:@"" andProtected:YES] autorelease];
+    entry.urlStringField = [[[StringField alloc] initWithKey:FIELD_URL andValue:@""] autorelease];
+    entry.notesStringField = [[[StringField alloc] initWithKey:FIELD_NOTES andValue:@""] autorelease];
     entry.foregroundColor = @"";
     entry.backgroundColor = @"";
     entry.overrideUrl = @"";

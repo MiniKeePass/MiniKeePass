@@ -22,12 +22,6 @@
 #import "DDXMLDocument+MKPAdditions.h"
 #import "Base64.h"
 
-#define FIELD_TITLE     @"Title"
-#define FIELD_USER_NAME @"UserName"
-#define FIELD_PASSWORD  @"Password"
-#define FIELD_URL       @"URL"
-#define FIELD_NOTES     @"Notes"
-
 @interface Kdb4Parser (PrivateMethods)
 - (void)decodeProtected:(DDXMLElement *)root;
 - (void)parseMeta:(DDXMLElement *)root;
