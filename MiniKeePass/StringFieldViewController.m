@@ -13,7 +13,11 @@
 - (id)initWithStringField:(StringField *)stringField {
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
-        _stringField = [stringField retain];
+        if (stringField) {
+            _stringField = [stringField retain];
+        } else {
+            _stringField = [[StringField stringFieldWithKey:@"" andValue:@""] retain];
+        }
 
         self.title = NSLocalizedString(@"Custom Field", nil);
 
@@ -59,6 +63,20 @@
 
     return YES;
 }
+/*
+- (void)okPressed:(id)sender {
+    if (self.keyTextField.text.length == 0) {
+        NSString *title = NSLocalizedString(@"Name cannot be empty", nil);
+        NSString *ok = NSLocalizedString(@"Ok", nil);
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:nil delegate:nil cancelButtonTitle:ok otherButtonTitles:nil];
+        [alert show];
+        [alert release];
+        return;
+    }
+
+    [super okPressed:sender];
+}
+ */
 
 - (void)formViewController:(FormViewController *)controller button:(FormViewControllerButton)button {
     if (button == FormViewControllerButtonOk) {

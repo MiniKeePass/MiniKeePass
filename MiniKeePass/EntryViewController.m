@@ -396,9 +396,14 @@
 }
 
 - (void)addPressed {
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:self.editingStringFields.count inSection:1];
-    [self.editingStringFields addObject:[StringField stringFieldWithKey:@"Name" andValue:@""]];
-    [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationBottom];
+    StringFieldViewController *stringFieldViewController = [[StringFieldViewController alloc] initWithStringField:nil];
+    stringFieldViewController.stringFieldViewDelegate = self;
+
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:stringFieldViewController];
+    [stringFieldViewController release];
+
+    [self.navigationController presentViewController:navController animated:YES completion:nil];
+    [navController release];
 }
 
 # pragma mark - Table view delegate
@@ -603,11 +608,17 @@
 #pragma mark - StringFieldViewDelegate
 
 - (void)stringFieldViewController:(StringFieldViewController *)controller updateStringField:(StringField *)stringField {
-    NSIndexPath *indexPath = (NSIndexPath *)controller.object;
+    if (controller.object == nil) {
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:self.editingStringFields.count inSection:1];
+        [self.editingStringFields addObject:stringField];
+        [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+    } else {
+        NSIndexPath *indexPath = (NSIndexPath *)controller.object;
 
-    TextFieldCell *cell = (TextFieldCell *)[self.tableView cellForRowAtIndexPath:indexPath];
-    cell.textLabel.text = stringField.key;
-    cell.textField.text = stringField.value;
+        TextFieldCell *cell = (TextFieldCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+        cell.textLabel.text = stringField.key;
+        cell.textField.text = stringField.value;
+    }
 }
 
 #pragma mark - Image related
