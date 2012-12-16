@@ -543,13 +543,12 @@
         }
 
         StringField *stringField = [self.editingStringFields objectAtIndex:indexPath.row];
-        SelectLabelViewController *slvc = [[SelectLabelViewController alloc] initWithStyle:UITableViewStyleGrouped];
-        slvc.object = indexPath;
-        [slvc setCurrentLabel:stringField.key];
-        slvc.delegate = self;
+        StringFieldViewController *stringFieldViewController = [[StringFieldViewController alloc] initWithStringField:stringField];
+        stringFieldViewController.object = indexPath;
+        stringFieldViewController.stringFieldViewDelegate = self;
 
-        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:slvc];
-        [slvc release];
+        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:stringFieldViewController];
+        [stringFieldViewController release];
 
         [self.navigationController presentViewController:navController animated:YES completion:nil];
         [navController release];
@@ -601,17 +600,14 @@
     });
 }
 
-#pragma mark - Select label delegate
+#pragma mark - StringFieldViewDelegate
 
-- (void)selectionLabelViewController:(SelectLabelViewController *)controller selectedLabel:(NSString *)label forObject:(id)object {
-    NSIndexPath *indexPath = object;
-    StringField *stringField = [self.editingStringFields objectAtIndex:indexPath.row];
-    stringField.key = label;
+- (void)stringFieldViewController:(StringFieldViewController *)controller updateStringField:(StringField *)stringField {
+    NSIndexPath *indexPath = (NSIndexPath *)controller.object;
 
     TextFieldCell *cell = (TextFieldCell *)[self.tableView cellForRowAtIndexPath:indexPath];
-    cell.textLabel.text = label;
-
-    [controller dismissViewControllerAnimated:YES completion:nil];
+    cell.textLabel.text = stringField.key;
+    cell.textField.text = stringField.value;
 }
 
 #pragma mark - Image related

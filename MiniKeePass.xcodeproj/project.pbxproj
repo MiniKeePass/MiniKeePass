@@ -61,6 +61,7 @@
 		682D45181603883900156830 /* InputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 682D45081603883900156830 /* InputStream.m */; };
 		682D45191603883900156830 /* OutputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 682D450A1603883900156830 /* OutputStream.m */; };
 		682D451A1603883900156830 /* Sha256OutputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 682D450C1603883900156830 /* Sha256OutputStream.m */; };
+		684846B6167E1E460040C4EE /* StringFieldViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 684846B5167E1E460040C4EE /* StringFieldViewController.m */; };
 		6859176F1615DE1D005FECA5 /* AppSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 6859176E1615DE1D005FECA5 /* AppSettings.m */; };
 		685D9D951603F8EE00D739D3 /* Kdb3Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 685D9D941603F8EE00D739D3 /* Kdb3Utils.m */; };
 		6876F67813B2D8F500A05C7A /* ImagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6876F67713B2D8F400A05C7A /* ImagesViewController.m */; };
@@ -383,6 +384,8 @@
 		682D450A1603883900156830 /* OutputStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OutputStream.m; sourceTree = "<group>"; };
 		682D450B1603883900156830 /* Sha256OutputStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Sha256OutputStream.h; sourceTree = "<group>"; };
 		682D450C1603883900156830 /* Sha256OutputStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Sha256OutputStream.m; sourceTree = "<group>"; };
+		684846B4167E1E460040C4EE /* StringFieldViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StringFieldViewController.h; sourceTree = "<group>"; };
+		684846B5167E1E460040C4EE /* StringFieldViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StringFieldViewController.m; sourceTree = "<group>"; };
 		6859176D1615DE1D005FECA5 /* AppSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppSettings.h; sourceTree = "<group>"; };
 		6859176E1615DE1D005FECA5 /* AppSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppSettings.m; sourceTree = "<group>"; };
 		685D9D931603F8EE00D739D3 /* Kdb3Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Kdb3Utils.h; sourceTree = "<group>"; };
@@ -1274,6 +1277,8 @@
 				689D044113A42C82005EBD36 /* SettingsViewController.m */,
 				689D044413A42C82005EBD36 /* TextEntryController.h */,
 				689D044513A42C82005EBD36 /* TextEntryController.m */,
+				684846B4167E1E460040C4EE /* StringFieldViewController.h */,
+				684846B5167E1E460040C4EE /* StringFieldViewController.m */,
 				689D046313A42CA8005EBD36 /* Cells */,
 				52370CB314F2CDC3003DC64C /* Lock Screen */,
 				68F19D1B14EB3A3900B772CB /* Password Generator */,
@@ -1657,6 +1662,7 @@
 				52E7AF6316252D7C00DCB00A /* ChooseGroupViewController.m in Sources */,
 				526D9FC0167D04DC0097213E /* SelectLabelViewController.m in Sources */,
 				526D9FC3167D0ED20097213E /* CreateCustomLabelViewController.m in Sources */,
+				684846B6167E1E460040C4EE /* StringFieldViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
