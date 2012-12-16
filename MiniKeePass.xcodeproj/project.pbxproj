@@ -16,8 +16,6 @@
 		525B7C3916481731004DC489 /* arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 525B7C3716481731004DC489 /* arrow.png */; };
 		525B7C3A16481731004DC489 /* arrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 525B7C3816481731004DC489 /* arrow@2x.png */; };
 		526D9FAD167CDC2E0097213E /* libMBProgressHUD.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 526D9FAB167CDC010097213E /* libMBProgressHUD.a */; };
-		526D9FC0167D04DC0097213E /* SelectLabelViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 526D9FBF167D04DC0097213E /* SelectLabelViewController.m */; };
-		526D9FC3167D0ED20097213E /* CreateCustomLabelViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 526D9FC2167D0ED10097213E /* CreateCustomLabelViewController.m */; };
 		526FC10215FF9568001294BB /* eye.png in Resources */ = {isa = PBXBuildFile; fileRef = 526FC10015FF9568001294BB /* eye.png */; };
 		526FC10315FF9568001294BB /* eye@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 526FC10115FF9568001294BB /* eye@2x.png */; };
 		52709AB9150141D9008AB6C9 /* info.png in Resources */ = {isa = PBXBuildFile; fileRef = 52709AB7150141D9008AB6C9 /* info.png */; };
@@ -310,10 +308,6 @@
 		525B7C3716481731004DC489 /* arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arrow.png; sourceTree = "<group>"; };
 		525B7C3816481731004DC489 /* arrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "arrow@2x.png"; sourceTree = "<group>"; };
 		526D9FA3167CDC010097213E /* MBProgressHUD.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MBProgressHUD.xcodeproj; path = MBProgressHUD/MBProgressHUD.xcodeproj; sourceTree = "<group>"; };
-		526D9FBE167D04DC0097213E /* SelectLabelViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SelectLabelViewController.h; path = ../SelectLabelViewController.h; sourceTree = "<group>"; };
-		526D9FBF167D04DC0097213E /* SelectLabelViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SelectLabelViewController.m; path = ../SelectLabelViewController.m; sourceTree = "<group>"; };
-		526D9FC1167D0ED10097213E /* CreateCustomLabelViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreateCustomLabelViewController.h; sourceTree = "<group>"; };
-		526D9FC2167D0ED10097213E /* CreateCustomLabelViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreateCustomLabelViewController.m; sourceTree = "<group>"; };
 		526FC0FD15FF9269001294BB /* ImageButtonCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageButtonCell.h; sourceTree = "<group>"; };
 		526FC0FE15FF9269001294BB /* ImageButtonCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageButtonCell.m; sourceTree = "<group>"; };
 		526FC10015FF9568001294BB /* eye.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = eye.png; sourceTree = "<group>"; };
@@ -1269,10 +1263,6 @@
 				68D991E513F3EAAE00F6ED1F /* PasswordViewController.m */,
 				689D043E13A42C82005EBD36 /* SelectionListViewController.h */,
 				689D043F13A42C82005EBD36 /* SelectionListViewController.m */,
-				526D9FBE167D04DC0097213E /* SelectLabelViewController.h */,
-				526D9FBF167D04DC0097213E /* SelectLabelViewController.m */,
-				526D9FC1167D0ED10097213E /* CreateCustomLabelViewController.h */,
-				526D9FC2167D0ED10097213E /* CreateCustomLabelViewController.m */,
 				689D044013A42C82005EBD36 /* SettingsViewController.h */,
 				689D044113A42C82005EBD36 /* SettingsViewController.m */,
 				689D044413A42C82005EBD36 /* TextEntryController.h */,
@@ -1660,8 +1650,6 @@
 				52E7AF5816251EA700DCB00A /* RenameItemViewController.m in Sources */,
 				52E7AF5C162523F800DCB00A /* EditGroupViewController.m in Sources */,
 				52E7AF6316252D7C00DCB00A /* ChooseGroupViewController.m in Sources */,
-				526D9FC0167D04DC0097213E /* SelectLabelViewController.m in Sources */,
-				526D9FC3167D0ED20097213E /* CreateCustomLabelViewController.m in Sources */,
 				684846B6167E1E460040C4EE /* StringFieldViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

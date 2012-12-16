@@ -25,7 +25,6 @@
 #define CLEAR_CLIPBOARD_TIMEOUT    @"clearClipboardTimeout"
 #define PW_GEN_LENGTH              @"pwGenLength"
 #define PW_GEN_CHAR_SETS           @"pwGenCharSets"
-#define CUSTOM_LABELS              @"customLabels"
 
 @interface AppSettings () {
     NSUserDefaults *userDefaults;
@@ -110,7 +109,6 @@ static AppSettings *sharedInstance;
         [defaultsDict setValue:[NSNumber numberWithInt:NO] forKey:CLEAR_CLIPBOARD_TIMEOUT];
         [defaultsDict setValue:[NSNumber numberWithInt:10] forKey:PW_GEN_LENGTH];
         [defaultsDict setValue:[NSNumber numberWithInt:CHARACTER_SET_DEFAULT] forKey:PW_GEN_CHAR_SETS];
-        [defaultsDict setObject:@[@"One", @"Two", @"Three"] forKey:CUSTOM_LABELS];
         [userDefaults registerDefaults:defaultsDict];
     }
     return self;
@@ -267,14 +265,6 @@ static AppSettings *sharedInstance;
 
 - (void)setPwGenCharSets:(NSInteger)pwGenCharSets {
     [userDefaults setInteger:pwGenCharSets forKey:PW_GEN_CHAR_SETS];
-}
-
-- (NSArray *)customLabels {
-    return [userDefaults arrayForKey:CUSTOM_LABELS];
-}
-
-- (void)setCustomLabels:(NSArray *)customLabels {
-    [userDefaults setObject:customLabels forKey:CUSTOM_LABELS];
 }
 
 @end
