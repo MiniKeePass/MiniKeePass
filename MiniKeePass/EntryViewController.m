@@ -38,6 +38,7 @@
 @property (nonatomic) BOOL isKdb4;
 @property (nonatomic, retain) NSMutableArray *editingStringFields;
 @property (nonatomic, readonly) NSArray *currentStringFields;
+@property (nonatomic, retain) NSMutableArray *filledCells;
 
 @end
 
@@ -89,6 +90,8 @@
         
         commentsCell = [[TextViewCell alloc] init];
         commentsCell.textView.editable = NO;
+
+        _filledCells = [[NSMutableArray alloc] initWithCapacity:4];
     }
     return self;
 }
@@ -101,6 +104,7 @@
     [commentsCell release];
     [defaultCells release];
     [_entry release];
+    [_filledCells release];
 
     [super dealloc];
 }
@@ -156,6 +160,18 @@
     passwordCell.textField.text = self.entry.password;
     urlCell.textField.text = self.entry.url;
     commentsCell.textView.text = self.entry.notes;
+
+    // Track what cells are filled out
+    [self updateFilledCells];
+}
+
+- (void)updateFilledCells {
+    [self.filledCells removeAllObjects];
+    for (TextFieldCell *cell in defaultCells) {
+        if (cell.textField.text.length > 0) {
+            [self.filledCells addObject:cell];
+        }
+    }
 }
 
 - (NSArray *)currentStringFields {
@@ -197,6 +213,8 @@
         self.entry.url = urlCell.textField.text;
         self.entry.notes = commentsCell.textView.text;
         self.entry.lastModificationTime = [NSDate date];
+
+        [self updateFilledCells];
 
         // Save string fields
         if (self.isKdb4) {
@@ -342,21 +360,13 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    int filledCells = 1; // Title is always filled out
-
     switch (section) {
         case 0:
             if (tableView.isEditing) {
                 return [defaultCells count];
             }
-            
-            for (TextFieldCell* cell in @[usernameCell, passwordCell, urlCell]) {
-                if (cell.textField.text.length > 0) {
-                    filledCells++;
-                }
-            }
-            
-            return filledCells;
+
+            return self.filledCells.count;
         case 1:
             if (self.isKdb4) {
                 int numCells = self.currentStringFields.count;
@@ -489,19 +499,10 @@
     static NSString *AddFieldCellIdentifier = @"AddFieldCell";
     switch (indexPath.section) {
         case 0: {
-            switch (indexPath.row) {
-                case 0:
-                    return titleCell;
-                case 1:
-                    if ((tableView.isEditing || usernameCell.textField.text.length > 0) && [usernameCell superview] == nil) {
-                        return usernameCell;
-                    }
-                case 2:
-                    if ((tableView.isEditing || passwordCell.textField.text.length > 0) && [passwordCell superview] == nil) {
-                        return passwordCell;
-                    }
-                case 3:
-                    return urlCell;
+            if (self.editing) {
+                return [defaultCells objectAtIndex:indexPath.row];
+            } else {
+                return [self.filledCells objectAtIndex:indexPath.row];
             }
         }
         case 1: {
