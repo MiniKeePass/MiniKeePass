@@ -13,11 +13,7 @@
 - (id)initWithStringField:(StringField *)stringField {
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
-        if (stringField) {
-            _stringField = [stringField retain];
-        } else {
-            _stringField = [[StringField stringFieldWithKey:@"" andValue:@""] retain];
-        }
+        _stringField = [stringField retain];
 
         self.title = NSLocalizedString(@"Custom Field", nil);
 
@@ -63,6 +59,7 @@
 
     return YES;
 }
+
 /*
 - (void)okPressed:(id)sender {
     if (self.keyTextField.text.length == 0) {
@@ -76,7 +73,7 @@
 
     [super okPressed:sender];
 }
- */
+*/
 
 - (void)formViewController:(FormViewController *)controller button:(FormViewControllerButton)button {
     if (button == FormViewControllerButtonOk) {

@@ -396,7 +396,9 @@
 }
 
 - (void)addPressed {
-    StringFieldViewController *stringFieldViewController = [[StringFieldViewController alloc] initWithStringField:nil];
+    StringField *stringField = [StringField stringFieldWithKey:@"" andValue:@""];
+    
+    StringFieldViewController *stringFieldViewController = [[StringFieldViewController alloc] initWithStringField:stringField];
     stringFieldViewController.stringFieldViewDelegate = self;
 
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:stringFieldViewController];
@@ -548,6 +550,7 @@
         }
 
         StringField *stringField = [self.editingStringFields objectAtIndex:indexPath.row];
+
         StringFieldViewController *stringFieldViewController = [[StringFieldViewController alloc] initWithStringField:stringField];
         stringFieldViewController.object = indexPath;
         stringFieldViewController.stringFieldViewDelegate = self;
