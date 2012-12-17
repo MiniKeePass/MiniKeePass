@@ -196,6 +196,7 @@
         self.entry.password = passwordCell.textField.text;
         self.entry.url = urlCell.textField.text;
         self.entry.notes = commentsCell.textView.text;
+        self.entry.lastModificationTime = [NSDate date];
 
         // Save string fields
         if (self.isKdb4) {
