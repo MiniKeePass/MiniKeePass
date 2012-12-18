@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		523747941680B10D00BEFF6E /* MKPDocumentProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 523747931680B10D00BEFF6E /* MKPDocumentProvider.m */; };
+		523747991680B1F400BEFF6E /* MKPDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 523747981680B1F400BEFF6E /* MKPDocument.m */; };
+		5237479C1680B25700BEFF6E /* LocalDocumentProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 5237479B1680B25700BEFF6E /* LocalDocumentProvider.m */; };
 		5248970C1641961600D96AD5 /* ImageButtonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 526FC0FE15FF9269001294BB /* ImageButtonCell.m */; };
 		52491D0C14D8F3FB00F8CBC8 /* de-createdb.html in Resources */ = {isa = PBXBuildFile; fileRef = 52491D0714D8F3FB00F8CBC8 /* de-createdb.html */; };
 		52491D0D14D8F3FB00F8CBC8 /* de-dropbox.html in Resources */ = {isa = PBXBuildFile; fileRef = 52491D0814D8F3FB00F8CBC8 /* de-dropbox.html */; };
@@ -305,6 +308,12 @@
 		52051E981524EAD100D217B8 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		52051E991524EB2600D217B8 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/Localizable.strings; sourceTree = "<group>"; };
 		52051E9A1524EB2D00D217B8 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		523747921680B10D00BEFF6E /* MKPDocumentProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MKPDocumentProvider.h; sourceTree = "<group>"; };
+		523747931680B10D00BEFF6E /* MKPDocumentProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MKPDocumentProvider.m; sourceTree = "<group>"; };
+		523747971680B1F400BEFF6E /* MKPDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MKPDocument.h; sourceTree = "<group>"; };
+		523747981680B1F400BEFF6E /* MKPDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MKPDocument.m; sourceTree = "<group>"; };
+		5237479A1680B25700BEFF6E /* LocalDocumentProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocalDocumentProvider.h; sourceTree = "<group>"; };
+		5237479B1680B25700BEFF6E /* LocalDocumentProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocalDocumentProvider.m; sourceTree = "<group>"; };
 		52491D0714D8F3FB00F8CBC8 /* de-createdb.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "de-createdb.html"; sourceTree = "<group>"; };
 		52491D0814D8F3FB00F8CBC8 /* de-dropbox.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "de-dropbox.html"; sourceTree = "<group>"; };
 		52491D0914D8F3FB00F8CBC8 /* de-itunes.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "de-itunes.html"; sourceTree = "<group>"; };
@@ -1251,6 +1260,12 @@
 				689D042913A42C81005EBD36 /* DatabaseManager.m */,
 				52491D1514D9F71F00F8CBC8 /* DirectoryChoiceViewController.h */,
 				52491D1614D9F71F00F8CBC8 /* DirectoryChoiceViewController.m */,
+				523747971680B1F400BEFF6E /* MKPDocument.h */,
+				523747981680B1F400BEFF6E /* MKPDocument.m */,
+				523747921680B10D00BEFF6E /* MKPDocumentProvider.h */,
+				523747931680B10D00BEFF6E /* MKPDocumentProvider.m */,
+				5237479A1680B25700BEFF6E /* LocalDocumentProvider.h */,
+				5237479B1680B25700BEFF6E /* LocalDocumentProvider.m */,
 				52E7AF5A162523F800DCB00A /* EditGroupViewController.h */,
 				52E7AF5B162523F800DCB00A /* EditGroupViewController.m */,
 				52E7AF5616251EA700DCB00A /* RenameItemViewController.h */,
@@ -1675,6 +1690,9 @@
 				52E7AF5C162523F800DCB00A /* EditGroupViewController.m in Sources */,
 				52E7AF6316252D7C00DCB00A /* ChooseGroupViewController.m in Sources */,
 				684846B6167E1E460040C4EE /* StringFieldViewController.m in Sources */,
+				523747941680B10D00BEFF6E /* MKPDocumentProvider.m in Sources */,
+				523747991680B1F400BEFF6E /* MKPDocument.m in Sources */,
+				5237479C1680B25700BEFF6E /* LocalDocumentProvider.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

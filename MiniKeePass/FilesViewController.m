@@ -24,12 +24,20 @@
 #import "SFHFKeychainUtils.h"
 #import "Kdb3Writer.h"
 #import "Kdb4Writer.h"
+#import "MKPDocumentProvider.h"
+#import "LocalDocumentProvider.h"
 
 enum {
     SECTION_DATABASE,
     SECTION_KEYFILE,
     SECTION_NUMBER
 };
+
+@interface FilesViewController ()
+
+@property (nonatomic, readonly) MKPDocumentProvider *localDocumentProvider;
+
+@end
 
 @implementation FilesViewController
 
@@ -63,14 +71,15 @@ enum {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         self.title = NSLocalizedString(@"Files", nil);
+
+        _localDocumentProvider = [[LocalDocumentProvider alloc] init];
     }
     return self;
 }
 
 - (void)dealloc {
     [filesInfoView release];
-    [databaseFiles release];
-    [keyFiles release];
+    [_localDocumentProvider release];
     [selectedFile release];
     [super dealloc];
 }
@@ -115,44 +124,7 @@ enum {
 }
 
 - (void)updateFiles {
-    [databaseFiles release];
-    [keyFiles release];
-    
-    // Get the document's directory
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
-    
-    // Get the contents of the documents directory
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSArray *dirContents = [fileManager contentsOfDirectoryAtPath:documentsDirectory error:nil];
-    
-    // Strip out all the directories
-    NSMutableArray *files = [[NSMutableArray alloc] init];
-    for (NSString *file in dirContents) {
-        if (![file hasPrefix:@"."]) {
-            NSString *path = [documentsDirectory stringByAppendingPathComponent:file];
-            
-            BOOL dir = NO;
-            [fileManager fileExistsAtPath:path isDirectory:&dir];
-            if (!dir) {
-                [files addObject:file];
-            }
-        }
-    }
-    
-    // Sort the list of files
-    [files sortUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
-    
-    // Filter the list of files into everything ending with .kdb or .kdbx
-    NSArray *databaseFilenames = [files filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"(self ENDSWITH[c] '.kdb') OR (self ENDSWITH[c] '.kdbx')"]];
-    
-    // Filter the list of files into everything not ending with .kdb or .kdbx
-    NSArray *keyFilenames = [files filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"!((self ENDSWITH[c] '.kdb') OR (self ENDSWITH[c] '.kdbx'))"]];
-    
-    databaseFiles = [[NSMutableArray arrayWithArray:databaseFilenames] retain];
-    keyFiles = [[NSMutableArray arrayWithArray:keyFilenames] retain];
-    
-    [files release];
+    [self.localDocumentProvider updateFiles];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -161,24 +133,28 @@ enum {
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     switch (section) {
-        case SECTION_DATABASE:
-            if ([databaseFiles count] != 0) {
+        case SECTION_DATABASE: {
+            int count = self.localDocumentProvider.documents.count;
+            if (count != 0) {
                 return NSLocalizedString(@"Databases", nil);
             }
             break;
-        case SECTION_KEYFILE:
-            if ([keyFiles count] != 0) {
+        }
+        case SECTION_KEYFILE: {
+            int count = self.localDocumentProvider.keyFiles.count;
+            if (count != 0) {
                 return NSLocalizedString(@"Key Files", nil);
             }
             break;
+        }
     }
     
     return nil;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    int databaseCount = [databaseFiles count];
-    int keyCount = [keyFiles count];
+    int databaseCount = self.localDocumentProvider.documents.count;
+    int keyCount = self.localDocumentProvider.keyFiles.count;
     
     int n;
     switch (section) {
@@ -214,18 +190,20 @@ enum {
     
     // Configure the cell
     switch (indexPath.section) {
-        case SECTION_DATABASE:
-            filename = [databaseFiles objectAtIndex:indexPath.row];
-            cell.textLabel.text = filename;
+        case SECTION_DATABASE: {
+            MKPDocument *document = [self.localDocumentProvider.documents objectAtIndex:indexPath.row];
+            cell.textLabel.text = document.filename;
             cell.textLabel.textColor = [UIColor blackColor];
             cell.selectionStyle = UITableViewCellSelectionStyleBlue;
             break;
-        case SECTION_KEYFILE:
-            filename = [keyFiles objectAtIndex:indexPath.row];
-            cell.textLabel.text = filename;
+        }
+        case SECTION_KEYFILE: {
+            MKPDocument *keyfile = [self.localDocumentProvider.keyFiles objectAtIndex:indexPath.row];
+            cell.textLabel.text = keyfile.filename;
             cell.textLabel.textColor = [UIColor grayColor];
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             break;
+        }
         default:
             return nil;
     }
@@ -257,7 +235,7 @@ enum {
         case SECTION_DATABASE:
             if (self.editing == NO) {
                 // Load the database
-                [[DatabaseManager sharedInstance] openDatabaseDocument:[databaseFiles objectAtIndex:indexPath.row] animated:YES];
+                [self.localDocumentProvider openDocument:[self.localDocumentProvider.documents objectAtIndex:indexPath.row]];
             } else {
                 TextEntryController *textEntryController = [[TextEntryController alloc] initWithStyle:UITableViewStyleGrouped];
                 textEntryController.title = NSLocalizedString(@"Rename", nil);
@@ -266,7 +244,7 @@ enum {
                 textEntryController.textEntryDelegate = self;
                 textEntryController.textField.placeholder = NSLocalizedString(@"Name", nil);
                 
-                NSString *filename = [databaseFiles objectAtIndex:indexPath.row];
+                NSString *filename = [self.localDocumentProvider.documents objectAtIndex:indexPath.row];
                 textEntryController.textField.text = [filename stringByDeletingPathExtension];
                 
                 UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:textEntryController];
@@ -289,18 +267,20 @@ enum {
 
     NSString *filename;
     switch (indexPath.section) {
-        case SECTION_DATABASE:
-            filename = [[databaseFiles objectAtIndex:indexPath.row] copy];
-            [databaseFiles removeObject:filename];
+        case SECTION_DATABASE: {
+            MKPDocument *document = [self.localDocumentProvider.documents objectAtIndex:indexPath.row];
+            filename = [document.filename copy];
+            [self.localDocumentProvider deleteDocument:document];
 
             // Delete the keychain entries for the old filename
             [SFHFKeychainUtils deleteItemForUsername:filename andServiceName:@"com.jflan.MiniKeePass.passwords" error:nil];
             [SFHFKeychainUtils deleteItemForUsername:filename andServiceName:@"com.jflan.MiniKeePass.keychains" error:nil];
             break;
-        case SECTION_KEYFILE:
-            filename = [[keyFiles objectAtIndex:indexPath.row] copy];
-            [keyFiles removeObject:filename];
+        }
+        case SECTION_KEYFILE: {
+            [self.localDocumentProvider deleteKeyFileAtIndex:indexPath.row];
             break;
+        }
         default:
             return;
     }
@@ -326,6 +306,7 @@ enum {
     [filename release];
 }
 
+/* FIXME
 - (void)textEntryController:(TextEntryController *)controller textEntered:(NSString *)string {
     if (string == nil || [string isEqualToString:@""]) {
         [controller showErrorMessage:NSLocalizedString(@"Filename is invalid", nil)];
@@ -376,6 +357,7 @@ enum {
     
     [appDelegate.window.rootViewController dismissModalViewControllerAnimated:YES];
 }
+*/
 
 - (void)textEntryControllerCancelButtonPressed:(TextEntryController *)controller {
     [appDelegate.window.rootViewController dismissModalViewControllerAnimated:YES];
@@ -401,6 +383,7 @@ enum {
     [helpViewController release];
 }
 
+/* FIXME
 - (void)formViewController:(FormViewController *)controller button:(FormViewControllerButton)button {
     if (button == FormViewControllerButtonOk) {
         NewKdbViewController *viewController = (NewKdbViewController*)controller;
@@ -488,5 +471,6 @@ enum {
     
     [appDelegate.window.rootViewController dismissModalViewControllerAnimated:YES];
 }
+*/
 
 @end
