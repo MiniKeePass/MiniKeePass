@@ -264,7 +264,6 @@
         if (count == 0) {
             // Special case where Custom section was not/will not be visable
             [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationFade];
-            return;
         }
 
         // Manage what cells to add/delete
