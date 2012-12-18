@@ -505,7 +505,7 @@
         case 0:
             return UITableViewCellEditingStyleNone;
         case 1:
-            if (self.isKdb4) {
+            if (self.isKdb4 && self.editing) {
                 if (indexPath.row < self.currentStringFields.count) {
                     return UITableViewCellEditingStyleDelete;
                 } else {
