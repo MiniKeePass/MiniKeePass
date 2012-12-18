@@ -268,92 +268,52 @@
         }
 
         // Manage what cells to add/delete
-        if (editing == NO && canceled) {
+        if (canceled && editing == NO) {
+            int shorterCount = count < self.editingStringFields.count ? count : self.editingStringFields.count;
+            int longerCount = count > self.editingStringFields.count ? count : self.editingStringFields.count;
             int difference = self.editingStringFields.count - count;
 
-/*            // Reset the text
-            for (int i = 0; i < self.editingStringFields.count; i++) {
-                TextFieldCell *cell = (TextFieldCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:1]];
-
-                NSLog(@"Resetting row %d %@", i, cell.textLabel.text);
-
+            // Reset cells that are staying
+            for (int i = 0; i < shorterCount; i++) {
+                NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:1];
+                TextFieldCell *cell = (TextFieldCell *)[self.tableView cellForRowAtIndexPath:indexPath];
                 StringField *stringField = [stringFields objectAtIndex:i];
+
                 cell.textLabel.text = stringField.key;
                 cell.textField.text = stringField.value;
+
+                [cell.textField resignFirstResponder];
+                cell.textField.enabled = editing;
+                cell.showGrayBar = editing;
             }
-*/
-            if (difference == 0) {
-                // Same number of cells, replace text with old text
-                for (UITableViewCell *cell in self.tableView.visibleCells) {
-                    NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
-                    if (indexPath.section == 1 && indexPath.row < count) {
-                        TextFieldCell *textFieldCell = (TextFieldCell *)cell;
-                        StringField *stringField = [stringFields objectAtIndex:indexPath.row];
 
-                        textFieldCell.textLabel.text = stringField.key;
-                        textFieldCell.textField.text = stringField.value;
-                    }
-                }
+            // Delete the "Add New" button
+            NSIndexPath *addButtonIndexPath = [NSIndexPath indexPathForRow:self.editingStringFields.count inSection:1];
+            [self.tableView deleteRowsAtIndexPaths:@[addButtonIndexPath] withRowAnimation:UITableViewRowAnimationFade];
 
-                // Remove "Add New" cell
-                [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:count inSection:1]] withRowAnimation:UITableViewRowAnimationTop];
-            } else if (difference < 0) {
-                // Relabel existing cells
-                for (UITableViewCell *cell in self.tableView.visibleCells) {
-                    NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
-                    if (indexPath.section == 1 && indexPath.row < self.editingStringFields.count) {
-                        TextFieldCell *textFieldCell = (TextFieldCell *)cell;
-                        StringField *stringField = [stringFields objectAtIndex:indexPath.row];
+            // Figure out what other cells are to be moved in/out
+            NSMutableArray *indexPathsToMove = [NSMutableArray arrayWithCapacity:abs(difference)];
+            for (int i = shorterCount; i < longerCount; i++) {
+                [indexPathsToMove addObject:[NSIndexPath indexPathForRow:i inSection:1]];
+            }
 
-                        textFieldCell.textLabel.text = stringField.key;
-                        textFieldCell.textField.text = stringField.value;
-                    }
-                }
-
-                // Add back old cells
-                NSMutableArray *indexPaths = [NSMutableArray arrayWithCapacity:abs(difference)];
-                for (int i = difference; i < 0; i++) {
-                    int row = count + i;
-                    [indexPaths addObject:[NSIndexPath indexPathForRow:row inSection:1]];
-                }
-                [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
-
-                // Still remove "Add New" cell
-                [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:self.editingStringFields.count inSection:1]] withRowAnimation:UITableViewRowAnimationTop];
+            // Move them
+            if (difference < 0) {
+                [self.tableView insertRowsAtIndexPaths:indexPathsToMove withRowAnimation:UITableViewRowAnimationFade];
             } else if (difference > 0) {
-                // Remove Extra cells
-                NSMutableArray *indexPaths = [NSMutableArray arrayWithCapacity:abs(difference)];
-                for (int i = count; i <= self.editingStringFields.count; i++) {
-                    [indexPaths addObject:[NSIndexPath indexPathForRow:i inSection:1]];
-                }
-                [self.tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationTop];
-
-                // Relabel remaining cells
-                for (UITableViewCell *cell in self.tableView.visibleCells) {
-                    NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
-                    if (indexPath.section == 1 && indexPath.row < count) {
-                        TextFieldCell *textFieldCell = (TextFieldCell *)cell;
-                        StringField *stringField = [stringFields objectAtIndex:indexPath.row];
-
-                        textFieldCell.textLabel.text = stringField.key;
-                        textFieldCell.textField.text = stringField.value;
-                    }
-                }
+                [self.tableView deleteRowsAtIndexPaths:indexPathsToMove withRowAnimation:UITableViewRowAnimationFade];
+            }
+        } else {
+            // Reset the custom string cells
+            for (int i = 0; i < count; i++) {
+                TextFieldCell *cell = (TextFieldCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:1]];
+                [cell.textField resignFirstResponder];
+                cell.textField.enabled = editing;
+                cell.showGrayBar = editing;
             }
 
-            count = count < self.editingStringFields.count ? count : self.editingStringFields.count;
-        } else {
             // "Add New" cell added to list of cells to update
             [paths addObject:[NSIndexPath indexPathForRow:count inSection:1]];
-        }
-
-        
-        // Reset the custom string cells
-        for (int i = 0; i < count; i++) {
-            TextFieldCell *cell = (TextFieldCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:1]];
-            [cell.textField resignFirstResponder];
-            cell.textField.enabled = editing;
-            cell.showGrayBar = editing;
         }
     }
 
