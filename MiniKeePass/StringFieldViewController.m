@@ -40,7 +40,7 @@
         _valueTextField.delegate = self;
         _valueTextField.text = stringField.value;
 
-        _protectedSwitchCell = [[SwitchCell alloc] initWithLabel:@"Protected"];
+        _protectedSwitchCell = [[SwitchCell alloc] initWithLabel:NSLocalizedString(@"In Memory Protection", nil)];
         _protectedSwitchCell.switchControl.on = stringField.protected;
 
         self.controls = @[_keyTextField, _valueTextField, _protectedSwitchCell];
@@ -69,7 +69,6 @@
     return YES;
 }
 
-/*
 - (void)okPressed:(id)sender {
     if (self.keyTextField.text.length == 0) {
         NSString *title = NSLocalizedString(@"Name cannot be empty", nil);
@@ -82,7 +81,6 @@
 
     [super okPressed:sender];
 }
-*/
 
 - (void)formViewController:(FormViewController *)controller button:(FormViewControllerButton)button {
     if (button == FormViewControllerButtonOk) {
