@@ -26,7 +26,6 @@
         // Initialization code
         self.textField.secureTextEntry = [[AppSettings sharedInstance] hidePasswords];
         self.textField.font = [UIFont fontWithName:@"Andale Mono" size:16];
-        self.textField.clearButtonMode = UITextFieldViewModeNever;
         
         UIImage *accessoryImage = [UIImage imageNamed:@"eye"];
         UIImage *editAccessoryImage = [UIImage imageNamed:@"wrench"];
