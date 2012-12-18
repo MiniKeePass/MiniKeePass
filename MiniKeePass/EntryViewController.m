@@ -29,9 +29,9 @@
     PasswordFieldCell *passwordCell;
     UrlFieldCell *urlCell;
     TextViewCell *commentsCell;
-    
+
     NSArray *defaultCells;
-    
+
     BOOL canceled;
 }
 
@@ -51,9 +51,9 @@
         self.tableView.allowsSelectionDuringEditing = YES;
 
         self.navigationItem.rightBarButtonItem = self.editButtonItem;
-        
+
         appDelegate = (MiniKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
-        
+
         titleCell = [[TitleFieldCell alloc] init];
         titleCell.textLabel.text = NSLocalizedString(@"Title", nil);
         titleCell.textField.placeholder = NSLocalizedString(@"Title", nil);
@@ -61,7 +61,7 @@
         titleCell.textFieldCellDelegate = self;
         titleCell.imageButton.adjustsImageWhenHighlighted = NO;
         [titleCell.imageButton addTarget:self action:@selector(imageButtonPressed) forControlEvents:UIControlEventTouchUpInside];
-        
+
         usernameCell = [[TextFieldCell alloc] init];
         usernameCell.textLabel.text = NSLocalizedString(@"Username", nil);
         usernameCell.textField.placeholder = NSLocalizedString(@"Username", nil);
@@ -69,7 +69,7 @@
         usernameCell.textField.autocorrectionType = UITextAutocorrectionTypeNo;
         usernameCell.textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
         usernameCell.textFieldCellDelegate = self;
-        
+
         passwordCell = [[PasswordFieldCell alloc] init];
         passwordCell.textLabel.text = NSLocalizedString(@"Password", nil);
         passwordCell.textField.placeholder = NSLocalizedString(@"Password", nil);
@@ -77,7 +77,7 @@
         passwordCell.textFieldCellDelegate = self;
         [passwordCell.accessoryButton addTarget:self action:@selector(showPasswordPressed) forControlEvents:UIControlEventTouchUpInside];
         [passwordCell.editAccessoryButton addTarget:self action:@selector(generatePasswordPressed) forControlEvents:UIControlEventTouchUpInside];
-        
+
         urlCell = [[UrlFieldCell alloc] init];
         urlCell.textLabel.text = NSLocalizedString(@"URL", nil);
         urlCell.textField.placeholder = NSLocalizedString(@"URL", nil);
@@ -85,9 +85,9 @@
         urlCell.textFieldCellDelegate = self;
         urlCell.textField.returnKeyType = UIReturnKeyDone;
         [urlCell.accessoryButton addTarget:self action:@selector(openUrlPressed) forControlEvents:UIControlEventTouchUpInside];
-        
+
         defaultCells = [@[titleCell, usernameCell, passwordCell, urlCell] retain];
-        
+
         commentsCell = [[TextViewCell alloc] init];
         commentsCell.textView.editable = NO;
 
@@ -116,14 +116,14 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    
+
     // Mark the view as not being canceled
     canceled = NO;
-    
+
     // Add listeners to the keyboard
     NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
     [notificationCenter addObserver:self selector:@selector(applicationWillResignActive:) name:UIApplicationWillResignActiveNotification object:nil];
-    
+
     if (self.isNewEntry) {
         [self setEditing:YES animated:NO];
         self.isNewEntry = NO;
@@ -132,7 +132,7 @@
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
-    
+
     // Remove listeners from the keyboard
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
@@ -148,10 +148,10 @@
 
 - (void)setEntry:(KdbEntry *)e {
     [_entry release];
-    
+
     _entry = [e retain];
     self.isKdb4 = [self.entry isKindOfClass:[Kdb4Entry class]];
-    
+
     // Update the fields
     self.title = self.entry.title;
     titleCell.textField.text = self.entry.title;
@@ -192,18 +192,11 @@
 }
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated {
-    if (titleCell.textField.text.length <= 0) {
-        NSString *title = NSLocalizedString(@"Title cannot be empty", nil);
-        UIAlertView  *alertView = [[[UIAlertView alloc] initWithTitle:title message:nil delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil] autorelease];
-        [alertView show];
-        return;
-    }
-
     // Ensure that all updates happen at once
     [self.tableView beginUpdates];
 
     [super setEditing:editing animated:animated];
-    
+
     // Save the database or reset the entry
     if (editing == NO && !canceled) {
         self.entry.title = titleCell.textField.text;
@@ -232,7 +225,7 @@
         }
 
         appDelegate.databaseDocument.dirty = YES;
-        
+
         // Save the database document
         [appDelegate.databaseDocument save];
     } else if (canceled) {
@@ -246,14 +239,15 @@
     for (TextFieldCell *cell in defaultCells) {
         cell.textField.enabled = editing;
 
-        // Add empty cells to the list of cells that need to be added when editing
+        // Add empty cells to the list of cells that need to be added/deleted when changing between editing
         if (cell.textField.text.length == 0) {
             [paths addObject:[NSIndexPath indexPathForRow:[defaultCells indexOfObject:cell] inSection:0]];
         }
     }
+
     commentsCell.textView.editable = editing;
 
-    // Manage custom field cells
+    // Manage string field cells
     if (self.isKdb4) {
         NSArray *stringFields = ((Kdb4Entry *)self.entry).stringFields;
         int count = stringFields.count;
@@ -332,7 +326,7 @@
         [self.tableView insertRowsAtIndexPaths:paths withRowAnimation:UITableViewRowAnimationTop];
     } else {
         self.navigationItem.leftBarButtonItem = nil;
-        
+
         [titleCell.textField resignFirstResponder];
         [usernameCell.textField resignFirstResponder];
         [passwordCell.textField resignFirstResponder];
@@ -402,9 +396,9 @@
         case 0:
             if (tableView.isEditing) {
                 return [defaultCells count];
+            } else {
+                return self.filledCells.count;
             }
-
-            return self.filledCells.count;
         case 1:
             if (self.isKdb4) {
                 int numCells = self.currentStringFields.count;
@@ -416,7 +410,7 @@
         case 2:
             return 1;
     }
-    
+
     return 0;
 }
 
@@ -426,9 +420,10 @@
             break;
         case 1: {
             switch (editingStyle) {
-                case UITableViewCellEditingStyleInsert:
+                case UITableViewCellEditingStyleInsert: {
                     [self addPressed];
                     break;
+                }
                 case UITableViewCellEditingStyleDelete: {
                     [self.editingStringFields removeObjectAtIndex:indexPath.row];
                     [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationBottom];
@@ -446,7 +441,7 @@
 
 - (void)addPressed {
     StringField *stringField = [StringField stringFieldWithKey:@"" andValue:@""];
-    
+
     StringFieldViewController *stringFieldViewController = [[StringFieldViewController alloc] initWithStringField:stringField];
     stringFieldViewController.stringFieldViewDelegate = self;
 
@@ -467,7 +462,7 @@
         case 2:
             return 228;
     }
-    
+
     return 40;
 }
 
@@ -488,7 +483,7 @@
         case 2:
             return NSLocalizedString(@"Comments", nil);
     }
-    
+
     return nil;
 }
 
@@ -497,7 +492,7 @@
     if (section == 0) {
         return 10.0f;
     }
-    
+
     return [self tableView:tableView titleForHeaderInSection:section] == nil ? 0.0f : SECTION_HEADER_HEIGHT;;
 }
 
@@ -535,6 +530,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *TextFieldCellIdentifier = @"TextFieldCell";
     static NSString *AddFieldCellIdentifier = @"AddFieldCell";
+
     switch (indexPath.section) {
         case 0: {
             if (self.editing) {
@@ -548,19 +544,22 @@
                 // Return "Add new..." cell
                 UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:AddFieldCellIdentifier];
                 if (cell == nil) {
-                    cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:AddFieldCellIdentifier] autorelease];
+                    cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2
+                                                   reuseIdentifier:AddFieldCellIdentifier] autorelease];
                     cell.textLabel.textAlignment = NSTextAlignmentLeft;
                     cell.textLabel.text = @"Add new...";
 
                     // Add new cell when this cell is tapped
-                    [cell addGestureRecognizer:[[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(addPressed)] autorelease]];
+                    [cell addGestureRecognizer:[[[UITapGestureRecognizer alloc] initWithTarget:self
+                                                                                        action:@selector(addPressed)] autorelease]];
                 }
 
                 return cell;
             } else {
                 TextFieldCell *cell = [tableView dequeueReusableCellWithIdentifier:TextFieldCellIdentifier];
                 if (cell == nil) {
-                    cell = [[[TextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:TextFieldCellIdentifier] autorelease];
+                    cell = [[[TextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault
+                                                 reuseIdentifier:TextFieldCellIdentifier] autorelease];
                     cell.textFieldCellDelegate = self;
                     cell.textField.returnKeyType = UIReturnKeyDone;
                 }
@@ -579,7 +578,7 @@
             return commentsCell;
         }
     }
-    
+
     return nil;
 }
 
@@ -589,33 +588,27 @@
             return;
         }
 
-        StringField *stringField = [self.editingStringFields objectAtIndex:indexPath.row];
-
-        StringFieldViewController *stringFieldViewController = [[StringFieldViewController alloc] initWithStringField:stringField];
-        stringFieldViewController.object = indexPath;
-        stringFieldViewController.stringFieldViewDelegate = self;
-
-        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:stringFieldViewController];
-        [stringFieldViewController release];
-
-        [self.navigationController presentViewController:navController animated:YES completion:nil];
-        [navController release];
-
-        return;
+        [self editStringField:indexPath];
+    } else {
+        [self copyCellContents:indexPath];
     }
+}
 
-    tableView.allowsSelection = NO;
+- (void)copyCellContents:(NSIndexPath *)indexPath {
+    self.tableView.allowsSelection = NO;
+
+    TextFieldCell *cell = (TextFieldCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+
     UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
-    TextFieldCell *cell = (TextFieldCell *)[tableView cellForRowAtIndexPath:indexPath];
     pasteboard.string = cell.textField.text;
-    
+
     // Figure out frame for copied label
     NSString *copiedString = NSLocalizedString(@"Coppied", nil);
     UIFont *font = [UIFont boldSystemFontOfSize:18];
     CGSize size = [copiedString sizeWithFont:font];
     CGFloat x = (cell.frame.size.width - size.width) / 2.0;
     CGFloat y = (cell.frame.size.height - size.height) / 2.0;
-    
+
     // Contruct label
     UILabel *copiedLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, y, size.width, size.height)];
     copiedLabel.text = copiedString;
@@ -643,24 +636,36 @@
             cell.accessoryView.hidden = NO;
             [copiedLabel removeFromSuperview];
             [copiedLabel release];
-            tableView.allowsSelection = YES;
+            self.tableView.allowsSelection = YES;
         }];
     });
 }
 
-#pragma mark - StringFieldViewDelegate
+#pragma mark - StringField related
+
+- (void)editStringField:(NSIndexPath *)indexPath {
+    StringField *stringField = [self.editingStringFields objectAtIndex:indexPath.row];
+
+    StringFieldViewController *stringFieldViewController = [[StringFieldViewController alloc] initWithStringField:stringField];
+    stringFieldViewController.object = indexPath;
+    stringFieldViewController.stringFieldViewDelegate = self;
+
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:stringFieldViewController];
+    [stringFieldViewController release];
+
+    [self.navigationController presentViewController:navController animated:YES completion:nil];
+    [navController release];
+
+}
 
 - (void)stringFieldViewController:(StringFieldViewController *)controller updateStringField:(StringField *)stringField {
     if (controller.object == nil) {
         NSIndexPath *indexPath = [NSIndexPath indexPathForRow:self.editingStringFields.count inSection:1];
         [self.editingStringFields addObject:stringField];
-        [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+        [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
     } else {
         NSIndexPath *indexPath = (NSIndexPath *)controller.object;
-
-        TextFieldCell *cell = (TextFieldCell *)[self.tableView cellForRowAtIndexPath:indexPath];
-        cell.textLabel.text = stringField.key;
-        cell.textField.text = stringField.value;
+        [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
     }
 }
 
@@ -704,9 +709,9 @@
 - (void)generatePasswordPressed {
     PasswordGeneratorViewController *passwordGeneratorViewController = [[PasswordGeneratorViewController alloc] init];
     passwordGeneratorViewController.delegate = self;
-    
+
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:passwordGeneratorViewController];
-    
+
     [self presentModalViewController:navigationController animated:YES];
 
     [navigationController release];
