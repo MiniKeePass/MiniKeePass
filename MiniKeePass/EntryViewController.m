@@ -425,6 +425,9 @@
                     break;
                 }
                 case UITableViewCellEditingStyleDelete: {
+                    TextFieldCell *cell = (TextFieldCell *)[tableView cellForRowAtIndexPath:indexPath];
+                    [cell.textField resignFirstResponder];
+
                     [self.editingStringFields removeObjectAtIndex:indexPath.row];
                     [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationBottom];
                     break;
