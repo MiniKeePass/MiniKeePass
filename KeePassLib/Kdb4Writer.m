@@ -88,9 +88,9 @@
     
     // Close the output stream
     [stream close];
-    
+
     // Write to the file
-    if (![outputStream.data writeToFile:filename atomically:YES]) {
+    if (![outputStream.data writeToFile:filename options:NSDataWritingFileProtectionComplete error:nil]) {
         @throw [NSException exceptionWithName:@"IOError" reason:@"Failed to write file" userInfo:nil];
     }
 }
