@@ -166,7 +166,7 @@
     tree.protectPassword = YES;
     tree.protectUrl = NO;
     tree.protectNotes = NO;
-    tree.recycleBinEnabled = NO;
+    tree.recycleBinEnabled = YES;
     tree.recycleBinUuid = [UUID nullUuid];
     tree.recycleBinChanged = currentTime;
     tree.entryTemplatesGroup = [UUID nullUuid];
