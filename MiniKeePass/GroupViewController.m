@@ -157,11 +157,6 @@
     
     searchDisplayController.searchBar.placeholder = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"Search", nil), self.title];
     
-    CGFloat searchBarHeight = searchDisplayController.searchBar.frame.size.height;
-    if (self.tableView.contentOffset.y < searchBarHeight) {
-        self.tableView.contentOffset = CGPointMake(0, searchBarHeight);
-    }
-    
     [super viewWillAppear:animated];
 }
 
