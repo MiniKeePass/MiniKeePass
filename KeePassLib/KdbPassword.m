@@ -14,8 +14,18 @@
 #import "DDXMLElementAdditions.h"
 #import "Base64.h"
 
-@interface KdbPassword (PrivateMethods)
-- (NSData*)loadKeyFile:(NSString*)filename;
+@interface KdbPassword () {
+    NSString *password;
+    NSStringEncoding passswordEncoding;
+    NSString *keyFile;
+}
+
+- (void)createMasterKeyV3:(uint8_t *)masterKey;
+- (void)createMasterKeyV4:(uint8_t *)masterKey;
+
+- (NSData*)loadKeyFileV3:(NSString*)filename;
+- (NSData*)loadKeyFileV4:(NSString*)filename;
+
 - (NSData*)loadXmlKeyFile:(NSString*)filename;
 - (NSData*)loadBinKeyFile32:(NSFileHandle*)fh;
 - (NSData*)loadHexKeyFile64:(NSFileHandle*)fh;
@@ -26,151 +36,175 @@ int hex2dec(char c);
 
 @implementation KdbPassword
 
-- (id)initWithPassword:(NSString*)password encoding:(NSStringEncoding)encoding {
+- (id)initWithPassword:(NSString*)inPassword
+      passwordEncoding:(NSStringEncoding)inPasswordEncoding
+               keyFile:(NSString*)inKeyFile {
     self = [super init];
     if (self) {
-        // Decode the string into bytes using the string encoding
-        NSData *pass = [password dataUsingEncoding:encoding];
-        
-        // Hash the password
-        uint8_t key[32];
-        CC_SHA256(pass.bytes, pass.length, key);
-        
-        // Create the master key
-        masterKey = [[NSData alloc] initWithBytes:key length:32];
-        
-        needsAdditionalHash = TRUE;
-    }
-    return self;
-}
-
-- (id)initWithKeyfile:(NSString*)filename {
-    self = [super init];
-    if (self) {
-        // Get the file key
-        masterKey = [[self loadKeyFile:filename] retain];
-        if (masterKey == nil) {
-            @throw [NSException exceptionWithName:@"IOException" reason:@"Failed to load keyfile" userInfo:nil];
-        }
-        
-        needsAdditionalHash = TRUE;
-    }
-    return self;
-}
-
-- (id)initWithPassword:(NSString*)password encoding:(NSStringEncoding)encoding keyfile:(NSString*)filename {
-    self = [super init];
-    if (self) {
-        // Decode the string into bytes using the string encoding
-        NSData *pass = [password dataUsingEncoding:encoding];
-        
-        // Hash the password
-        uint8_t passwordKey[32];
-        CC_SHA256(pass.bytes, pass.length, passwordKey);
-        
-        // Get the file key
-        NSData *fileKey = [self loadKeyFile:filename];
-        if (fileKey == nil) {
-            @throw [NSException exceptionWithName:@"IOException" reason:@"Failed to load keyfile" userInfo:nil];
-        }
-        
-        // Combine the two
-        uint8_t key[32];
-        CC_SHA256_CTX ctx;
-        CC_SHA256_Init(&ctx);
-        CC_SHA256_Update(&ctx, passwordKey, 32);
-        CC_SHA256_Update(&ctx, fileKey.bytes, 32);
-        CC_SHA256_Final(key, &ctx);
-        
-        masterKey = [[NSData alloc] initWithBytes:key length:32];
-        
-        needsAdditionalHash = FALSE;
+        password = [inPassword copy];
+        passswordEncoding = inPasswordEncoding;
+        keyFile = [inKeyFile copy];
     }
     return self;
 }
 
 - (void)dealloc {
-    [masterKey release];
+    [password release];
+    [keyFile release];
     [super dealloc];
 }
 
-- (NSData*)createFinalKeyForVersion:(uint8_t)version masterSeed:(NSData*)masterSeed transformSeed:(NSData*)transformSeed rounds:(uint64_t)rounds {
-    uint8_t keyHash[32];
-    
-    memcpy(keyHash, masterKey.bytes, masterKey.length);
-    
-    // Perform an additional hash if it's version 4 and required
-    if (version == 4 && needsAdditionalHash) {
-        CC_SHA256(keyHash, 32, keyHash);
+- (NSData*)createFinalKeyForVersion:(uint8_t)version
+                         masterSeed:(NSData*)masterSeed
+                      transformSeed:(NSData*)transformSeed
+                             rounds:(uint64_t)rounds {
+    // Generate the master key from the credentials
+    uint8_t masterKey[32];
+    if (version == 3) {
+        [self createMasterKeyV3:masterKey];
+    } else {
+        [self createMasterKeyV4:masterKey];
     }
 
-    // Step 1 transform the key
+    // Transform the key
     CCCryptorRef cryptorRef;
     CCCryptorCreate(kCCEncrypt, kCCAlgorithmAES128, kCCOptionECBMode, transformSeed.bytes, kCCKeySizeAES256, nil, &cryptorRef);
-    
+
     size_t tmp;
     for (int i = 0; i < rounds; i++) {
-        CCCryptorUpdate(cryptorRef, keyHash, 32, keyHash, 32, &tmp);
+        CCCryptorUpdate(cryptorRef, masterKey, 32, masterKey, 32, &tmp);
     }
-    
+
     CCCryptorRelease(cryptorRef);
-    
-    uint8_t transformed[32];
-    CC_SHA256(keyHash, 32, transformed);
-    
-    // Step 2 hash the transform result
+
+    uint8_t transformedKey[32];
+    CC_SHA256(masterKey, 32, transformedKey);
+
+    // Hash the master seed with the transformed key into the final key
+    uint8_t finalKey[32];
     CC_SHA256_CTX ctx;
     CC_SHA256_Init(&ctx);
     CC_SHA256_Update(&ctx, masterSeed.bytes, masterSeed.length);
-    CC_SHA256_Update(&ctx, transformed, 32);
-    
-    uint8_t finalKey[32];
+    CC_SHA256_Update(&ctx, transformedKey, 32);
     CC_SHA256_Final(finalKey, &ctx);
-    
+
     return [NSData dataWithBytes:finalKey length:32];
 }
 
-- (NSData*)loadKeyFile:(NSString*)filename {
-    // Try and load a 2.x XML keyfile first
-    @try {
-        return [self loadXmlKeyFile:filename];
-    } @catch (NSException *e) {
-        // Ignore the exception and try and load the file through a different mechanism
+- (void)createMasterKeyV3:(uint8_t *)masterKey {
+    if (password != nil && keyFile == nil) {
+        // Hash the password into the master key
+        NSData *passwordData = [password dataUsingEncoding:passswordEncoding];
+        CC_SHA256(passwordData.bytes, passwordData.length, masterKey);
+    } else if (password == nil && keyFile != nil) {
+        // Get the bytes from the keyfile
+        NSData *keyFileData = [self loadKeyFileV3:keyFile];
+        if (keyFileData == nil) {
+            @throw [NSException exceptionWithName:@"IOException" reason:@"Failed to load keyfile" userInfo:nil];
+        }
+
+        [keyFileData getBytes:masterKey length:32];
+    } else {
+        // Hash the password
+        uint8_t passwordHash[32];
+        NSData *passwordData = [password dataUsingEncoding:passswordEncoding];
+        CC_SHA256(passwordData.bytes, passwordData.length, passwordHash);
+
+        // Get the bytes from the keyfile
+        NSData *keyFileData = [self loadKeyFileV3:keyFile];
+        if (keyFileData == nil) {
+            @throw [NSException exceptionWithName:@"IOException" reason:@"Failed to load keyfile" userInfo:nil];
+        }
+
+        // Hash the password and keyfile into the master key
+        CC_SHA256_CTX ctx;
+        CC_SHA256_Init(&ctx);
+        CC_SHA256_Update(&ctx, passwordHash, 32);
+        CC_SHA256_Update(&ctx, keyFileData.bytes, 32);
+        CC_SHA256_Final(masterKey, &ctx);
     }
-    
+}
+
+- (void)createMasterKeyV4:(uint8_t *)masterKey {
+    // Initialize the master hash
+    CC_SHA256_CTX ctx;
+    CC_SHA256_Init(&ctx);
+
+    // Add the password to the master key if it was supplied
+    if (password != nil) {
+        // Get the bytes from the password using the supplied encoding
+        NSData *passwordData = [password dataUsingEncoding:passswordEncoding];
+
+        // Hash the password
+        uint8_t hash[32];
+        CC_SHA256(passwordData.bytes, passwordData.length, hash);
+
+        // Add the password hash to the master hash
+        CC_SHA256_Update(&ctx, hash, 32);
+    }
+
+    // Add the keyfile to the master key if it was supplied
+    if (keyFile != nil) {
+        // Get the bytes from the keyfile
+        NSData *keyFileData = [self loadKeyFileV4:keyFile];
+        if (keyFileData == nil) {
+            @throw [NSException exceptionWithName:@"IOException" reason:@"Failed to load keyfile" userInfo:nil];
+        }
+
+        // Add the keyfile hash to the master hash
+        CC_SHA256_Update(&ctx, keyFileData.bytes, keyFileData.length);
+    }
+
+    // Finish the hash into the master key
+    CC_SHA256_Final(masterKey, &ctx);
+}
+
+- (NSData*)loadKeyFileV3:(NSString*)filename {
     // Open the keyfile
     NSFileHandle *fh = [NSFileHandle fileHandleForReadingAtPath:filename];
     if (fh == nil) {
         return nil;
     }
-    
+
     // Get the size of the keyfile
     unsigned long long fileSize = [fh seekToEndOfFile];
     [fh seekToFileOffset:0];
-    
-    NSData *keyFile = nil;
+
+    NSData *data = nil;
     if (fileSize == 32) {
         // Load the binary key directly from the file
-        keyFile = [self loadBinKeyFile32:fh];
+        data = [self loadBinKeyFile32:fh];
     } else if (fileSize == 64) {
         // Try and load the hex encoded key from the file
-        keyFile = [self loadHexKeyFile64:fh];
+        data = [self loadHexKeyFile64:fh];
     }
-    
-    if (keyFile == nil) {
+
+    if (data == nil) {
         // The hex encoded file failed to load, so try and hash the file
         [fh seekToFileOffset:0];
-        keyFile = [self loadHashKeyFile:fh];
+        data = [self loadHashKeyFile:fh];
     }
-    
+
+    if (data == nil) {
+        // The hex encoded file failed to load, so try and hash the file
+        [fh seekToFileOffset:0];
+        data = [self loadHashKeyFile:fh];
+    }
+
     [fh closeFile];
-    if (keyFile == nil) {
-        // The hex encoded file failed to load, so try and hash the file
-        [fh seekToFileOffset:0];
-        keyFile = [self loadHashKeyFile:fh];
+
+    return data;
+}
+
+- (NSData*)loadKeyFileV4:(NSString*)filename {
+    // Try and load a 2.x XML keyfile first
+    @try {
+        return [self loadXmlKeyFile:filename];
+    } @catch (NSException *e) {
+        // Ignore the exception and try and load the file through a different mechanism    NSData *data = nil;
     }
- 
-    return keyFile;
+
+    return [self loadKeyFileV3:filename];
 }
 
 - (NSData*)loadXmlKeyFile:(NSString*)filename {
@@ -178,35 +212,35 @@ int hex2dec(char c);
     if (xmlString == nil) {
         @throw [NSException exceptionWithName:@"IOException" reason:@"Failed to open keyfile" userInfo:nil];
     }
-    
+
     DDXMLDocument *document = [[DDXMLDocument alloc] initWithXMLString:xmlString options:0 error:nil];
     if (document == nil) {
         @throw [NSException exceptionWithName:@"ParseError" reason:@"Failed to parse keyfile" userInfo:nil];
     }
-    
+
     // Get the root document element
     DDXMLElement *rootElement = [document rootElement];
-    
+
     DDXMLElement *keyElement = [rootElement elementForName:@"Key"];
     if (keyElement == nil) {
         [document release];
         @throw [NSException exceptionWithName:@"ParseError" reason:@"Failed to parse keyfile" userInfo:nil];
     }
-    
+
     DDXMLElement *dataElement = [keyElement elementForName:@"Data"];
     if (dataElement == nil) {
         [document release];
         @throw [NSException exceptionWithName:@"ParseError" reason:@"Failed to parse keyfile" userInfo:nil];
     }
-    
+
     NSString *dataString = [dataElement stringValue];
     if (dataString == nil) {
         [document release];
         @throw [NSException exceptionWithName:@"ParseError" reason:@"Failed to parse keyfile" userInfo:nil];
     }
-    
+
     [document release];
-    
+
     return [Base64 decode:[dataString dataUsingEncoding:NSASCIIStringEncoding]];
 }
 
@@ -215,7 +249,7 @@ int hex2dec(char c);
 }
 
 - (NSData*)loadHexKeyFile64:(NSFileHandle *)fh {
-    uint8_t keyFile[32];
+    uint8_t buffer[32];
     int value1;
     int value2;
 
@@ -223,7 +257,7 @@ int hex2dec(char c);
     if (data == nil) {
         return nil;
     }
-    
+
     const char *ptr = data.bytes;
     for (int i = 0; i < 32; i++) {
         if ((value1 = hex2dec(ptr[i * 2])) == -1) {
@@ -232,20 +266,20 @@ int hex2dec(char c);
         if ((value2 = hex2dec(ptr[i * 2 + 1])) == -1) {
             return nil;
         }
-        
-        keyFile[i] = value1 << 4 | value2;
+
+        buffer[i] = value1 << 4 | value2;
     }
-    
-    return [NSData dataWithBytes:keyFile length:32];
+
+    return [NSData dataWithBytes:buffer length:32];
 }
 
 - (NSData*)loadHashKeyFile:(NSFileHandle*)fh {
-    uint8_t keyFile[32];
+    uint8_t buffer[32];
     NSData *data;
-    
+
     CC_SHA256_CTX ctx;
     CC_SHA256_Init(&ctx);
-    
+
     while (TRUE) {
         data = [fh readDataOfLength:2048];
         if (data.length == 0) {
@@ -253,10 +287,10 @@ int hex2dec(char c);
         }
         CC_SHA256_Update(&ctx, data.bytes, data.length);
     }
-    
-    CC_SHA256_Final(keyFile, &ctx);
-    
-    return [NSData dataWithBytes:keyFile length:32];
+
+    CC_SHA256_Final(buffer, &ctx);
+
+    return [NSData dataWithBytes:buffer length:32];
 }
 
 int hex2dec(char c) {

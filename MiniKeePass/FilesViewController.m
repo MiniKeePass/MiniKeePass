@@ -452,7 +452,9 @@ enum {
         }
         
         // Create the KdbPassword
-        KdbPassword *kdbPassword = [[KdbPassword alloc] initWithPassword:password1 encoding:NSUTF8StringEncoding];
+        KdbPassword *kdbPassword = [[KdbPassword alloc] initWithPassword:password1
+                                                        passwordEncoding:NSUTF8StringEncoding
+                                                                 keyFile:nil];
         
         // Create the new database
         [writer newFile:path withPassword:kdbPassword];

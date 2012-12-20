@@ -58,24 +58,21 @@
 }
 
 - (void)open:(NSString *)newFilename password:(NSString *)password keyFile:(NSString *)keyFile {
+    if (password == nil && keyFile == nil) {
+        @throw [NSException exceptionWithName:@"IllegalArgument" reason:@"No password or keyfile specified" userInfo:nil];
+    }
+    
     [kdbTree release];
     [filename release];
     [kdbPassword release];
 
-    filename = [newFilename retain];
+    filename = [newFilename copy];
     dirty = NO;
 
     NSStringEncoding passwordEncoding = [[AppSettings sharedInstance] passwordEncoding];
-
-    if (password != nil && keyFile != nil) {
-        kdbPassword = [[KdbPassword alloc] initWithPassword:password encoding:passwordEncoding keyfile:keyFile];
-    } else if (password != nil) {
-        kdbPassword = [[KdbPassword alloc] initWithPassword:password encoding:passwordEncoding];
-    } else if (keyFile != nil) {
-        kdbPassword = [[KdbPassword alloc] initWithKeyfile:keyFile];
-    } else {
-        @throw [NSException exceptionWithName:@"IllegalArgument" reason:@"No password or keyfile specified" userInfo:nil];
-    }
+    kdbPassword = [[KdbPassword alloc] initWithPassword:password
+                                       passwordEncoding:passwordEncoding
+                                                keyFile:keyFile];
 
     self.kdbTree = [KdbReaderFactory load:filename withPassword:kdbPassword];
 }
