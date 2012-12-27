@@ -37,6 +37,7 @@
 		52CF7D8D1542516300D681C1 /* Default-Portrait~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 52CF7D8C1542516300D681C1 /* Default-Portrait~ipad.png */; };
 		52CF7D8F1542516900D681C1 /* icon@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 52CF7D8E1542516900D681C1 /* icon@2x~ipad.png */; };
 		52CF7D911542516D00D681C1 /* icon~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 52CF7D901542516D00D681C1 /* icon~ipad.png */; };
+		52D9E99F168CEA7D0038150C /* DropboxDocumentProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D9E99E168CEA7D0038150C /* DropboxDocumentProvider.m */; };
 		52E3342D161E0F310049F4A1 /* stretchme.png in Resources */ = {isa = PBXBuildFile; fileRef = 52E3342B161E0F310049F4A1 /* stretchme.png */; };
 		52E3342E161E0F310049F4A1 /* stretchme@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52E3342C161E0F310049F4A1 /* stretchme@2x.png */; };
 		52E43F4C15B59C890029F979 /* ru-createdb.html in Resources */ = {isa = PBXBuildFile; fileRef = 52E43F4715B59C880029F979 /* ru-createdb.html */; };
@@ -349,6 +350,8 @@
 		52CF7D8C1542516300D681C1 /* Default-Portrait~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Portrait~ipad.png"; sourceTree = "<group>"; };
 		52CF7D8E1542516900D681C1 /* icon@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon@2x~ipad.png"; sourceTree = "<group>"; };
 		52CF7D901542516D00D681C1 /* icon~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon~ipad.png"; sourceTree = "<group>"; };
+		52D9E99D168CEA7D0038150C /* DropboxDocumentProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DropboxDocumentProvider.h; sourceTree = "<group>"; };
+		52D9E99E168CEA7D0038150C /* DropboxDocumentProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DropboxDocumentProvider.m; sourceTree = "<group>"; };
 		52E3342B161E0F310049F4A1 /* stretchme.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = stretchme.png; sourceTree = SOURCE_ROOT; };
 		52E3342C161E0F310049F4A1 /* stretchme@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "stretchme@2x.png"; sourceTree = SOURCE_ROOT; };
 		52E43F4715B59C880029F979 /* ru-createdb.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "ru-createdb.html"; sourceTree = "<group>"; };
@@ -1266,6 +1269,8 @@
 				523747931680B10D00BEFF6E /* MKPDocumentProvider.m */,
 				5237479A1680B25700BEFF6E /* LocalDocumentProvider.h */,
 				5237479B1680B25700BEFF6E /* LocalDocumentProvider.m */,
+				52D9E99D168CEA7D0038150C /* DropboxDocumentProvider.h */,
+				52D9E99E168CEA7D0038150C /* DropboxDocumentProvider.m */,
 				52E7AF5A162523F800DCB00A /* EditGroupViewController.h */,
 				52E7AF5B162523F800DCB00A /* EditGroupViewController.m */,
 				52E7AF5616251EA700DCB00A /* RenameItemViewController.h */,
@@ -1693,6 +1698,7 @@
 				523747941680B10D00BEFF6E /* MKPDocumentProvider.m in Sources */,
 				523747991680B1F400BEFF6E /* MKPDocument.m in Sources */,
 				5237479C1680B25700BEFF6E /* LocalDocumentProvider.m in Sources */,
+				52D9E99F168CEA7D0038150C /* DropboxDocumentProvider.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

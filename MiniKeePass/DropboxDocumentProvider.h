@@ -17,6 +17,6 @@
 
 #import "MKPDocumentProvider.h"
 
-@interface LocalDocumentProvider : MKPDocumentProvider
+@interface DropboxDocumentProvider : MKPDocumentProvider
 
 @end

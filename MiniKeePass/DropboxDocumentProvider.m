@@ -15,16 +15,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#import "LocalDocumentProvider.h"
+#import "DropboxDocumentProvider.h"
 #import "DatabaseManager.h"
 
-@interface LocalDocumentProvider () {
+@interface DropboxDocumentProvider () {
     NSMutableArray *_documents;
     NSMutableArray *_keyFiles;
 }
 @end
 
-@implementation LocalDocumentProvider
+@implementation DropboxDocumentProvider
 
 @synthesize documents = _documents;
 @synthesize keyFiles = _keyFiles;
