@@ -60,7 +60,7 @@
         label.textColor = [UIColor grayColor];
         label.text = NSLocalizedString(@"You do not have any KeePass files available for MiniKeePass to open.", nil);
         
-        CGFloat y = UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? 240.0f : 40.0f;
+        CGFloat y = [[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad ? 240.0f : 40.0f;
         containerView = [[UIView alloc] initWithFrame:CGRectMake((viewWidth - containerWidth) / 2.0f, y, containerWidth, containerHeight)];
         containerView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
         [containerView addSubview:imageView];
@@ -77,7 +77,7 @@
     [super layoutSubviews];
 
     // Nothing to be done for iPad; return
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) return;
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) return;
     
     UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
     CGRect newFrame = containerView.frame;

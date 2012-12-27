@@ -139,7 +139,7 @@
 
 - (void)resizeToolbarsToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
     // Nothing needs to be done for the iPad; return
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) return;
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) return;
 
     CGRect newFrame = topBar.frame;
     newFrame.size.height = UIInterfaceOrientationIsPortrait(toInterfaceOrientation) ? 95 : 68;

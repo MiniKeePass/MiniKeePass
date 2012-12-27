@@ -22,7 +22,7 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     BOOL shouldRotate;
     
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
         shouldRotate = YES;
     } else {
         shouldRotate = interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown;
