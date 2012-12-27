@@ -25,6 +25,9 @@
 #define GROUPS_SECTION  0
 #define ENTRIES_SECTION 1
 
+#define PORTRAIT_BUTTON_WIDTH  ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone ? 97.0f : 244.0f)
+#define LANDSCAPE_BUTTON_WIDTH ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone ? 186.0f : 330.0f)
+
 #define SORTED_INSERTION_FAILED NSUIntegerMax
 
 @interface GroupViewController ()
@@ -42,6 +45,7 @@
 @property (nonatomic, copy) NSString *moveButtonTitle;
 @property (nonatomic, retain) UIBarButtonItem *renameButton;
 @property (nonatomic, copy) NSString *renameButtonTitle;
+@property (nonatomic, assign) CGFloat currentButtonWidth;
 
 @end
 
@@ -156,6 +160,13 @@
     }
     
     searchDisplayController.searchBar.placeholder = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"Search", nil), self.title];
+
+    UIInterfaceOrientation currentOrientation = [[UIApplication sharedApplication] statusBarOrientation];
+    if (UIInterfaceOrientationIsPortrait(currentOrientation)) {
+        self.currentButtonWidth = PORTRAIT_BUTTON_WIDTH;
+    } else {
+        self.currentButtonWidth = LANDSCAPE_BUTTON_WIDTH;
+    }
     
     [super viewWillAppear:animated];
 }
@@ -175,6 +186,20 @@
     [_renameButton release];
     [_renameButtonTitle release];
     [super dealloc];
+}
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+    if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) {
+        self.currentButtonWidth = PORTRAIT_BUTTON_WIDTH;
+    } else {
+        self.currentButtonWidth = LANDSCAPE_BUTTON_WIDTH;
+    }
+
+    self.deleteButton.width = self.currentButtonWidth;
+    self.moveButton.width = self.currentButtonWidth;
+    self.renameButton.width = self.currentButtonWidth;
+
+    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
 }
 
 - (void)deleteElementsFromModelAtIndexPaths:(NSArray *)indexPaths {
@@ -347,6 +372,7 @@
     static UIView *overlayView = nil;
     if (overlayView == nil) {
         overlayView = [[UIView alloc] initWithFrame:searchBar.frame];
+        overlayView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         overlayView.backgroundColor = [UIColor darkGrayColor];
         overlayView.alpha = 0.0;
     }
@@ -390,17 +416,17 @@
         self.deleteButtonTitle = NSLocalizedString(@"Delete", nil);
         self.deleteButton = [[[UIBarButtonItem alloc] initWithTitle:self.deleteButtonTitle style:UIBarButtonItemStyleBordered target:self action:@selector(deleteSelectedItems)] autorelease];
         self.deleteButton.tintColor = [UIColor colorWithRed:0.8 green:0.15 blue:0.15 alpha:1];
-        self.deleteButton.width = 97;
+        self.deleteButton.width = self.currentButtonWidth;
         self.deleteButton.enabled = NO;
         
         self.moveButtonTitle = NSLocalizedString(@"Move", nil);
         self.moveButton = [[[UIBarButtonItem alloc] initWithTitle:self.moveButtonTitle style:UIBarButtonItemStyleBordered target:self action:@selector(moveSelectedItems)] autorelease];
-        self.moveButton.width = 97;
+        self.moveButton.width = self.currentButtonWidth;
         self.moveButton.enabled = NO;
         
         self.renameButtonTitle = NSLocalizedString(@"Rename", nil);
         self.renameButton = [[[UIBarButtonItem alloc] initWithTitle:self.renameButtonTitle style:UIBarButtonItemStyleBordered target:self action:@selector(renameSelectedItem)] autorelease];
-        self.renameButton.width = 97;
+        self.renameButton.width = self.currentButtonWidth;
         self.renameButton.enabled = NO;
         
         UIBarButtonItem *spacer = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease];
