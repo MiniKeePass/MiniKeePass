@@ -332,15 +332,10 @@
     DatabaseDocument *databaseDocument = appDelegate.databaseDocument;
     databaseDocument.dirty = YES;
     [databaseDocument save];
-    
+
     // Update the table
-    if ([groupsToMove count]) {
-        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:GROUPS_SECTION] withRowAnimation:UITableViewRowAnimationAutomatic];
-    }
-    if ([enteriesToMove count]) {
-        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:ENTRIES_SECTION] withRowAnimation:UITableViewRowAnimationAutomatic];
-    }
-    
+    [self.tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
+
     [self setEditing:NO animated:YES];
 }
 
