@@ -47,6 +47,10 @@
 @property (nonatomic, copy) NSString *renameButtonTitle;
 @property (nonatomic, assign) CGFloat currentButtonWidth;
 
+@property (nonatomic, retain) UIBarButtonItem *settingsButton;
+@property (nonatomic, retain) UIBarButtonItem *actionButton;
+@property (nonatomic, retain) UIBarButtonItem *addButton;
+
 @end
 
 @implementation GroupViewController
@@ -73,19 +77,19 @@
     
     [searchBar release];
     
-    UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"gear"] style:UIBarButtonItemStylePlain target:appDelegate action:@selector(showSettingsView)];
-    settingsButton.imageInsets = UIEdgeInsetsMake(2, 0, -2, 0);
-    UIBarButtonItem *actionButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(exportFilePressed)];
-    UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addPressed)];
+    self.settingsButton = [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"gear"] style:UIBarButtonItemStylePlain target:appDelegate action:@selector(showSettingsView)] autorelease];
+    self.settingsButton.imageInsets = UIEdgeInsetsMake(2, 0, -2, 0);
+
+    self.actionButton = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(exportFilePressed)] autorelease];
+
+    self.addButton = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addPressed)] autorelease];
+
     UIBarButtonItem *spacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-    
-    self.standardToolbarItems = @[settingsButton, spacer, actionButton, spacer, addButton];
+
+    self.standardToolbarItems = @[self.settingsButton, spacer, self.actionButton, spacer, self.addButton];
     self.toolbarItems = self.standardToolbarItems;
     self.navigationItem.rightBarButtonItem = self.editButtonItem;
     
-    [settingsButton release];
-    [actionButton release];
-    [addButton release];
     [spacer release];
     
     results = [[NSMutableArray alloc] init];
@@ -185,7 +189,15 @@
     [_moveButtonTitle release];
     [_renameButton release];
     [_renameButtonTitle release];
+    [_settingsButton release];
+    [_actionButton release];
+    [_addButton release];
     [super dealloc];
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+    [appDelegate.databaseDocument.documentInteractionController dismissMenuAnimated:NO];
+    [super viewDidDisappear:animated];
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
@@ -755,7 +767,7 @@
 }
 
 - (void)exportFilePressed {
-    BOOL didShow = [appDelegate.databaseDocument.documentInteractionController presentOpenInMenuFromRect:CGRectZero inView:self.view.window.rootViewController.view animated:YES];
+    BOOL didShow = [appDelegate.databaseDocument.documentInteractionController presentOpenInMenuFromBarButtonItem:self.actionButton animated:YES];
     if (!didShow) {
         NSString *prompt = NSLocalizedString(@"There are no applications installed capable of importing KeePass files", nil);
         UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:prompt delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", nil) destructiveButtonTitle:nil otherButtonTitles:nil];
