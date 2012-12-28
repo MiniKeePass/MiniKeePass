@@ -24,9 +24,7 @@
 #import "DatabaseManager.h"
 #import "SFHFKeychainUtils.h"
 #import "LockScreenController.h"
-
-#define APP_KEY @"1cml57v07lqm5xu"
-#define APP_SECRET @"sao1iiuox8urrai"
+#import "secrets.h"
 
 @interface MiniKeePassAppDelegate ()  {
     UINavigationController *navigationController;
@@ -44,7 +42,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     //Dropbox code
-    DBSession* dbSession = [[DBSession alloc] initWithAppKey:APP_KEY appSecret:APP_SECRET root:kDBRootDropbox];
+    DBSession* dbSession = [[DBSession alloc] initWithAppKey:DROPBOX_APP_KEY appSecret:DROPBOX_APP_SECRET root:kDBRootDropbox];
     [DBSession setSharedSession:dbSession];
 
     // Initialize the images array
