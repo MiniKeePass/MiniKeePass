@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Jason Rush and John Flanagan. All rights reserved.
+ * Copyright 2011-2012 Jason Rush and John Flanagan. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,52 +23,18 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
-        textField.textColor = [UIColor blueColor];
-        textField.autocorrectionType = UITextAutocorrectionTypeNo;
-        textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
-        textField.keyboardType = UIKeyboardTypeURL;
+        self.textField.textColor = [UIColor blueColor];
+        self.textField.autocorrectionType = UITextAutocorrectionTypeNo;
+        self.textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+        self.textField.keyboardType = UIKeyboardTypeURL;
+        
+        self.accessoryButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        self.accessoryButton.frame = CGRectMake(0.0, 0.0, 40, 40);
+        [self.accessoryButton setImage:[UIImage imageNamed:@"arrow"] forState:UIControlStateNormal];
+        
+        self.accessoryView = self.accessoryButton;
     }
     return self;
-}
-
-- (void)tapPressed {
-    if (self.textField.text == nil || [self.textField.text isEqualToString:@""]) {
-        [self.textField becomeFirstResponder];
-    } else {
-        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", nil) destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"Open", nil), NSLocalizedString(@"Copy", nil), NSLocalizedString(@"Edit", nil), nil];
-        [appDelegate showActionSheet:actionSheet];
-        [actionSheet release];        
-    }
-}
-
-- (void)actionSheet:(UIActionSheet*)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-    switch (buttonIndex) {
-        case 0: {
-            NSString *text = textField.text;
-
-            NSURL *url = [NSURL URLWithString:text];
-            if (url.scheme == nil) {
-                url = [NSURL URLWithString:[@"http://" stringByAppendingString:text]];
-            }
-
-            [[UIApplication sharedApplication] openURL:url];
-            break;
-        }
-
-        case 1: {
-            UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
-            pasteboard.string = textField.text;
-            break;
-        }
-
-        case 2: {
-            [textField becomeFirstResponder];
-            break;
-        }
-
-        default:
-            break;
-    }
 }
 
 @end

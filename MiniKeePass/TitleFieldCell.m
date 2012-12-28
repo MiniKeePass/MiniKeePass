@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Jason Rush and John Flanagan. All rights reserved.
+ * Copyright 2011-2012 Jason Rush and John Flanagan. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,7 +20,23 @@
 
 @implementation TitleFieldCell
 
--(void)textFieldDidEndEditing:(UITextField *)inTextField {
+- (id)initWithFrame:(CGRect)frame {
+    self = [super initWithFrame:frame];
+    if (self) {
+        _imageButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
+        
+        self.accessoryButton = self.imageButton;
+        self.editAccessoryButton = self.imageButton;
+    }
+    return self;
+}
+
+- (void)dealloc {
+    [_imageButton release];
+    [super dealloc];
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)inTextField {
     [super textFieldDidEndEditing:inTextField];
     
     UITableView *tableView = (UITableView*)self.superview;

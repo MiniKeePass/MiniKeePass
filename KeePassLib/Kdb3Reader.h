@@ -6,10 +6,6 @@
 //   Copyright 2009 Qiang Yu. All rights reserved.
 //
 
-/**
- * KDB3 Support
- */
-
 #import <Foundation/Foundation.h>
 #import <CommonCrypto/CommonDigest.h>
 #import <CommonCrypto/CommonCryptor.h>

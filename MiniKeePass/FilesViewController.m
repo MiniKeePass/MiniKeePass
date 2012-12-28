@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Jason Rush and John Flanagan. All rights reserved.
+ * Copyright 2011-2012 Jason Rush and John Flanagan. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -249,6 +249,8 @@ enum {
             cell.accessoryView = nil;
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             break;
+        default:
+            return nil;
     }
 
     // Format the last modified time as the subtitle of the cell
@@ -483,7 +485,9 @@ enum {
         }
         
         // Create the KdbPassword
-        KdbPassword *kdbPassword = [[KdbPassword alloc] initWithPassword:password1 encoding:NSUTF8StringEncoding];
+        KdbPassword *kdbPassword = [[KdbPassword alloc] initWithPassword:password1
+                                                        passwordEncoding:NSUTF8StringEncoding
+                                                                 keyFile:nil];
         
         // Create the new database
         [writer newFile:path withPassword:kdbPassword];
@@ -546,7 +550,7 @@ enum {
                 }
             } else {
                 [dropboxFiles addObject:file];
-                [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:tableIndex inSection:0]] withRowAnimation:UITableViewRowAnimationTop];
+//                [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:tableIndex inSection:0]] withRowAnimation:UITableViewRowAnimationTop];
             }
         }
         index++;

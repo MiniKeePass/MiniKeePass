@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Jason Rush and John Flanagan. All rights reserved.
+ * Copyright 2011-2012 Jason Rush and John Flanagan. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,7 +36,7 @@
     UIImage *images[NUM_IMAGES];
 }
 
-@property (copy, nonatomic) NSString *fileToOpen;
+@property (nonatomic, copy) NSString *fileToOpen;
 
 @end
 
@@ -185,7 +185,7 @@
     
     // Store the filename to open if it's a database
     if ([filename hasSuffix:@".kdb"] || [filename hasSuffix:@".kdbx"]) {
-        self.fileToOpen = [filename copy];
+        self.fileToOpen = filename;
     } else {
         self.fileToOpen = nil;
         FilesViewController *fileView = [[navigationController viewControllers] objectAtIndex:0];

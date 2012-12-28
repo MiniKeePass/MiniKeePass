@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Jason Rush and John Flanagan. All rights reserved.
+ * Copyright 2011-2012 Jason Rush and John Flanagan. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,6 +17,10 @@
 
 #import "DatabaseDocument.h"
 #import "AppSettings.h"
+
+@interface DatabaseDocument ()
+- (BOOL)matchesEntry:(KdbEntry *)entry searchText:(NSString *)searchText;
+@end
 
 @implementation DatabaseDocument
 
@@ -53,25 +57,22 @@
     return documentInteractionController;
 }
 
-- (void)open:(NSString*)newFilename password:(NSString*)password keyFile:(NSString*)keyFile {
+- (void)open:(NSString *)newFilename password:(NSString *)password keyFile:(NSString *)keyFile {
+    if (password == nil && keyFile == nil) {
+        @throw [NSException exceptionWithName:@"IllegalArgument" reason:@"No password or keyfile specified" userInfo:nil];
+    }
+    
     [kdbTree release];
     [filename release];
     [kdbPassword release];
-    
-    filename = [newFilename retain];
-    dirty = NO;
-    
-    NSStringEncoding passwordEncoding = [[AppSettings sharedInstance] passwordEncoding];
 
-    if (password != nil && keyFile != nil) {
-        kdbPassword = [[KdbPassword alloc] initWithPassword:password encoding:passwordEncoding keyfile:keyFile];
-    } else if (password != nil) {
-        kdbPassword = [[KdbPassword alloc] initWithPassword:password encoding:passwordEncoding];
-    } else if (keyFile != nil) {
-        kdbPassword = [[KdbPassword alloc] initWithKeyfile:keyFile];
-    } else {
-        @throw [NSException exceptionWithName:@"IllegalArgument" reason:@"No password or keyfile specified" userInfo:nil];
-    }
+    filename = [newFilename copy];
+    dirty = NO;
+
+    NSStringEncoding passwordEncoding = [[AppSettings sharedInstance] passwordEncoding];
+    kdbPassword = [[KdbPassword alloc] initWithPassword:password
+                                       passwordEncoding:passwordEncoding
+                                                keyFile:keyFile];
 
     self.kdbTree = [KdbReaderFactory load:filename withPassword:kdbPassword];
 }
@@ -83,17 +84,32 @@
     }
 }
 
-- (void)searchGroup:(KdbGroup*)group searchText:(NSString*)searchText results:(NSMutableArray*)results {
+- (void)searchGroup:(KdbGroup *)group searchText:(NSString *)searchText results:(NSMutableArray *)results {
     for (KdbEntry *entry in group.entries) {
-        NSRange range = [entry.title rangeOfString:searchText options:NSCaseInsensitiveSearch];
-        if (range.location != NSNotFound) {
+        if ([self matchesEntry:entry searchText:searchText]) {
             [results addObject:entry];
         }
     }
-    
+
     for (KdbGroup *g in group.groups) {
         [self searchGroup:g searchText:searchText results:results];
     }
+}
+
+- (BOOL)matchesEntry:(KdbEntry *)entry searchText:(NSString *)searchText {
+    if ([entry.title rangeOfString:searchText options:NSCaseInsensitiveSearch].length > 0) {
+        return YES;
+    }
+    if ([entry.username rangeOfString:searchText options:NSCaseInsensitiveSearch].length > 0) {
+        return YES;
+    }
+    if ([entry.url rangeOfString:searchText options:NSCaseInsensitiveSearch].length > 0) {
+        return YES;
+    }
+    if ([entry.notes rangeOfString:searchText options:NSCaseInsensitiveSearch].length > 0) {
+        return YES;
+    }
+    return NO;
 }
 
 @end

@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Jason Rush and John Flanagan. All rights reserved.
+ * Copyright 2011-2012 Jason Rush and John Flanagan. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,39 +16,23 @@
  */
 
 #import <Foundation/Foundation.h>
+
 #import "TextFieldCell.h"
 #import "TitleFieldCell.h"
 #import "UrlFieldCell.h"
 #import "TextViewCell.h"
 #import "PasswordFieldCell.h"
-#import "ImageButtonCell.h"
 #import "ImagesViewController.h"
 #import "KdbLib.h"
 #import "MiniKeePassAppDelegate.h"
 #import "PasswordGeneratorViewController.h"
+#import "StringFieldViewController.h"
 #import "AutorotatingTableViewController.h"
 
-@interface EntryViewController : AutorotatingTableViewController <UIGestureRecognizerDelegate, ImagesViewControllerDelegate, TextFieldCellDelegate, PasswordGeneratorDelegate> {
-    MiniKeePassAppDelegate *appDelegate;
-    TitleFieldCell *titleCell;
-    ImageButtonCell *imageButtonCell;
-    TextFieldCell *usernameCell;
-    PasswordFieldCell *passwordCell;
-    UrlFieldCell *urlCell;
-    TextViewCell *commentsCell;
-    
-    NSUInteger selectedImageIndex;
-    CGFloat originalHeight;
-    BOOL canceled;
-    
-    KdbEntry *entry;
-    BOOL isNewEntry;
-}
+@interface EntryViewController : AutorotatingTableViewController <UIGestureRecognizerDelegate, ImagesViewControllerDelegate, TextFieldCellDelegate, PasswordGeneratorDelegate, StringFieldViewDelegate>
 
 @property (nonatomic, assign) NSUInteger selectedImageIndex;
-@property (nonatomic, assign) KdbEntry *entry;
+@property (nonatomic, retain) KdbEntry *entry;
 @property (nonatomic) BOOL isNewEntry;
-
-- (BOOL)isDirty;
 
 @end

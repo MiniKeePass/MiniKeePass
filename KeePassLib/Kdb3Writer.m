@@ -111,6 +111,11 @@
         [fileOutputStream seek:56];
         [fileOutputStream write:[shaOutputStream getHash] length:32];
         [fileOutputStream close];
+
+        // Turn on file protection
+        [[NSFileManager defaultManager] setAttributes:@{NSFileProtectionKey: NSFileProtectionComplete}
+                                         ofItemAtPath:filename
+                                                error:nil];
     } @finally {
         [shaOutputStream release];
         [aesOutputStream release];

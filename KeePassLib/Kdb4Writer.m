@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Jason Rush and John Flanagan. All rights reserved.
+ * Copyright 2011-2012 Jason Rush and John Flanagan. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -88,9 +88,9 @@
     
     // Close the output stream
     [stream close];
-    
+
     // Write to the file
-    if (![outputStream.data writeToFile:filename atomically:YES]) {
+    if (![outputStream.data writeToFile:filename options:NSDataWritingFileProtectionComplete error:nil]) {
         @throw [NSException exceptionWithName:@"IOError" reason:@"Failed to write file" userInfo:nil];
     }
 }
@@ -146,15 +146,39 @@
 }
 
 - (void)newFile:(NSString*)fileName withPassword:(KdbPassword*)kdbPassword {
-    DDXMLDocument *document = [[DDXMLDocument alloc] initWithXMLString:@"<KeePassFile><Root></Root></KeePassFile>" options:0 error:nil];
-    DDXMLElement *rootElement = [[document rootElement] elementForName:@"Root"];
-    Kdb4Tree *tree = [[Kdb4Tree alloc] initWithDocument:document];
-    [document release];
-    
+    NSDate *currentTime = [NSDate date];
+
+    Kdb4Tree *tree = [[Kdb4Tree alloc] init];
+    tree.generator = @"MiniKeePass";
+    tree.databaseName = @"";
+    tree.databaseNameChanged = currentTime;
+    tree.databaseDescription = @"";
+    tree.databaseDescriptionChanged = currentTime;
+    tree.defaultUserName = @"";
+    tree.defaultUserNameChanged = currentTime;
+    tree.maintenanceHistoryDays = 365;
+    tree.color = @"";
+    tree.masterKeyChanged = currentTime;
+    tree.masterKeyChangeRec = -1;
+    tree.masterKeyChangeForce = -1;
+    tree.protectTitle = NO;
+    tree.protectUserName = NO;
+    tree.protectPassword = YES;
+    tree.protectUrl = NO;
+    tree.protectNotes = NO;
+    tree.recycleBinEnabled = YES;
+    tree.recycleBinUuid = [UUID nullUuid];
+    tree.recycleBinChanged = currentTime;
+    tree.entryTemplatesGroup = [UUID nullUuid];
+    tree.entryTemplatesGroupChanged = currentTime;
+    tree.historyMaxItems = 10;
+    tree.historyMaxSize = 6 * 1024 * 1024; // 6 MB
+    tree.lastSelectedGroup = [UUID nullUuid];
+    tree.lastTopVisibleGroup = [UUID nullUuid];
+
     KdbGroup *parentGroup = [tree createGroup:nil];
     parentGroup.name = @"General";
     parentGroup.image = 48;
-    [rootElement addChild:((Kdb4Group*)parentGroup).element];
     tree.root = parentGroup;
     
     KdbGroup *group = [tree createGroup:parentGroup];
@@ -166,22 +190,22 @@
     group.name = @"Network";
     group.image = 3;
     [parentGroup addGroup:group];
-    
+
     group = [tree createGroup:parentGroup];
     group.name = @"Internet";
     group.image = 1;
     [parentGroup addGroup:group];
-    
+
     group = [tree createGroup:parentGroup];
     group.name = @"eMail";
     group.image = 19;
     [parentGroup addGroup:group];
-    
+
     group = [tree createGroup:parentGroup];
     group.name = @"Homebanking";
     group.image = 37;
     [parentGroup addGroup:group];
-    
+
     [self persist:tree file:fileName withPassword:kdbPassword];
     
     [tree release];

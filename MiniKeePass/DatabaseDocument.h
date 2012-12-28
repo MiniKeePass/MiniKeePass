@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Jason Rush and John Flanagan. All rights reserved.
+ * Copyright 2011-2012 Jason Rush and John Flanagan. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,12 +29,13 @@
 }
 
 @property (nonatomic, retain) KdbTree *kdbTree;
-@property (nonatomic, retain) NSString *filename;
+@property (nonatomic, copy) NSString *filename;
 @property (nonatomic) BOOL dirty;
 @property (nonatomic, readonly) UIDocumentInteractionController *documentInteractionController;
 
-- (void)open:(NSString*)newFilename password:(NSString*)password keyFile:(NSString*)keyFile;
+- (void)open:(NSString *)newFilename password:(NSString *)password keyFile:(NSString *)keyFile;
 - (void)save;
-- (void)searchGroup:(KdbGroup*)group searchText:(NSString*)searchText results:(NSMutableArray*)results;
+
+- (void)searchGroup:(KdbGroup *)group searchText:(NSString *)searchText results:(NSMutableArray *)results;
 
 @end

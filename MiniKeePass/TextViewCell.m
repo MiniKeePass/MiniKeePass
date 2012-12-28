@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Jason Rush and John Flanagan. All rights reserved.
+ * Copyright 2011-2012 Jason Rush and John Flanagan. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,7 +29,6 @@
         
         textView = [[UITextView alloc] initWithFrame:CGRectZero];
         textView.font = [UIFont systemFontOfSize:16];
-        textView.contentSize = CGSizeMake(320, 150);
         textView.delegate = self;
         [self addSubview:textView];
     }

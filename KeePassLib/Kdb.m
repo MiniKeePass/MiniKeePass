@@ -42,24 +42,49 @@
     [super dealloc];
 }
 
-- (void)addGroup:(KdbGroup*)group {
+- (void)addGroup:(KdbGroup *)group {
     group.parent = self;
     [groups addObject:group];
 }
 
-- (void)removeGroup:(KdbGroup*)group {
+- (void)removeGroup:(KdbGroup *)group {
     group.parent = nil;
     [groups removeObject:group];
 }
 
-- (void)addEntry:(KdbEntry*)entry {
+- (void)moveGroup:(KdbGroup *)group toGroup:(KdbGroup *)toGroup {
+    [self removeGroup:group];
+    [toGroup addGroup:group];
+}
+
+- (void)addEntry:(KdbEntry *)entry {
     entry.parent = self;
     [entries addObject:entry];
 }
 
-- (void)removeEntry:(KdbEntry*)entry {
+- (void)removeEntry:(KdbEntry *)entry {
     entry.parent = nil;
     [entries removeObject:entry];
+}
+
+- (void)moveEntry:(KdbEntry *)entry toGroup:(KdbGroup *)toGroup {
+    [self removeEntry:entry];
+    [toGroup addEntry:entry];
+}
+
+- (BOOL)containsGroup:(KdbGroup *)group {
+    // Check trivial case where group is passed to itself
+    if (self == group) {
+        return YES;
+    } else {
+        // Check subgroups
+        for (KdbGroup *subGroup in groups) {
+            if ([subGroup containsGroup:group]) {
+                return YES;
+            }
+        }
+        return NO;
+    }
 }
 
 - (NSString*)description {
@@ -73,22 +98,12 @@
 
 @synthesize parent;
 @synthesize image;
-@synthesize title;
-@synthesize username;
-@synthesize password;
-@synthesize url;
-@synthesize notes;
 @synthesize creationTime;
 @synthesize lastModificationTime;
 @synthesize lastAccessTime;
 @synthesize expiryTime;
 
 - (void)dealloc {
-    [title release];
-    [username release];
-    [password release];
-    [url release];
-    [notes release];
     [creationTime release];
     [lastModificationTime release];
     [lastAccessTime release];
@@ -96,8 +111,53 @@
     [super dealloc];
 }
 
+- (NSString *)title {
+    [self doesNotRecognizeSelector:_cmd];
+    return nil;
+}
+
+- (void)setTitle:(NSString *)title {
+    [self doesNotRecognizeSelector:_cmd];
+}
+
+- (NSString *)username {
+    [self doesNotRecognizeSelector:_cmd];
+    return nil;
+}
+
+- (void)setUsername:(NSString *)username {
+    [self doesNotRecognizeSelector:_cmd];
+}
+
+- (NSString *)password {
+    [self doesNotRecognizeSelector:_cmd];
+    return nil;
+}
+
+- (void)setPassword:(NSString *)password {
+    [self doesNotRecognizeSelector:_cmd];
+}
+
+- (NSString *)url {
+    [self doesNotRecognizeSelector:_cmd];
+    return nil;
+}
+
+- (void)setUrl:(NSString *)url {
+    [self doesNotRecognizeSelector:_cmd];
+}
+
+- (NSString *)notes {
+    [self doesNotRecognizeSelector:_cmd];
+    return nil;
+}
+
+- (void)setNotes:(NSString *)notes {
+    [self doesNotRecognizeSelector:_cmd];
+}
+
 - (NSString*)description {
-    return [NSString stringWithFormat:@"KdbEntry [image=%d, title=%@, username=%@, password=%@, url=%@, notes=%@, creationTime=%@, lastModificationTime=%@, lastAccessTime=%@, expiryTime=%@]", image, title, username, password, url, notes, creationTime, lastModificationTime, lastAccessTime, expiryTime];
+    return [NSString stringWithFormat:@"KdbEntry [image=%d, title=%@, username=%@, password=%@, url=%@, notes=%@, creationTime=%@, lastModificationTime=%@, lastAccessTime=%@, expiryTime=%@]", image, self.title, self.username, self.password, self.url, self.notes, creationTime, lastModificationTime, lastAccessTime, expiryTime];
 }
 
 @end

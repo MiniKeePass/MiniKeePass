@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Jason Rush and John Flanagan. All rights reserved.
+ * Copyright 2011-2012 Jason Rush and John Flanagan. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,23 +20,26 @@
 
 @implementation PasswordFieldCell
 
-@synthesize accessoryButton;
-
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
-        textField.secureTextEntry = [[AppSettings sharedInstance] hidePasswords];
-        textField.font = [UIFont fontWithName:@"Andale Mono" size:16];
-        textField.clearButtonMode = UITextFieldViewModeNever;
+        self.textField.secureTextEntry = [[AppSettings sharedInstance] hidePasswords];
+        self.textField.font = [UIFont fontWithName:@"Andale Mono" size:16];
         
-        UIImage *image = [UIImage imageNamed:@"wrench"];
+        UIImage *accessoryImage = [UIImage imageNamed:@"eye"];
+        UIImage *editAccessoryImage = [UIImage imageNamed:@"wrench"];
         
-        accessoryButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        accessoryButton.frame = CGRectMake(0.0, 0.0, image.size.width, image.size.height);
-        [accessoryButton setImage:image forState:UIControlStateNormal];
-        
-        self.accessoryView = accessoryButton;
+        self.accessoryButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        self.accessoryButton.frame = CGRectMake(0.0, 0.0, 40, 40);
+        [self.accessoryButton setImage:accessoryImage forState:UIControlStateNormal];
+
+        self.editAccessoryButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        self.editAccessoryButton.frame = CGRectMake(0.0, 0.0, 40, 40);
+        [self.editAccessoryButton setImage:editAccessoryImage forState:UIControlStateNormal];
+
+        self.accessoryView = self.accessoryButton;
+        self.editingAccessoryView = self.editAccessoryButton;
     }
     return self;
 }
@@ -44,18 +47,18 @@
 - (void)textFieldDidBeginEditing:(UITextField *)field {
     [super textFieldDidBeginEditing:field];
     
-    textField.secureTextEntry = NO;
-    textField.autocorrectionType = UITextAutocorrectionTypeNo;
-    textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
-    textField.returnKeyType = UIReturnKeyNext;
+    self.textField.secureTextEntry = NO;
+    self.textField.autocorrectionType = UITextAutocorrectionTypeNo;
+    self.textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    self.textField.returnKeyType = UIReturnKeyNext;
     
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)field {
     [super textFieldDidEndEditing:field];
     
-    textField.secureTextEntry = [[AppSettings sharedInstance] hidePasswords];
-    textField.returnKeyType = UIReturnKeyDone;
+    self.textField.secureTextEntry = [[AppSettings sharedInstance] hidePasswords];
+    self.textField.returnKeyType = UIReturnKeyDone;
 }
 
 @end
