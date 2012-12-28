@@ -229,6 +229,8 @@ enum {
     [rememberPasswordsEnabledCell release];
     [hidePasswordsCell release];
     [dropboxLinkCell release];
+    [dropboxUnlinkCell release];
+    [dropboxDirectoryCell release];
     [passwordEncodingCell release];
     [clearClipboardEnabledCell release];
     [clearClipboardTimeoutCell release];
