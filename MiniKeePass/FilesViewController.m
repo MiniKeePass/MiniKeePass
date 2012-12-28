@@ -191,14 +191,14 @@ enum {
     // Configure the cell
     switch (indexPath.section) {
         case SECTION_DATABASE: {
-            MKPDocument *document = [self.localDocumentProvider.documents objectAtIndex:indexPath.row];
-            cell.textLabel.text = document.filename;
+            DatabaseFile *database = [self.localDocumentProvider.documents objectAtIndex:indexPath.row];
+            cell.textLabel.text = database.filename;
             cell.textLabel.textColor = [UIColor blackColor];
             cell.selectionStyle = UITableViewCellSelectionStyleBlue;
             break;
         }
         case SECTION_KEYFILE: {
-            MKPDocument *keyfile = [self.localDocumentProvider.keyFiles objectAtIndex:indexPath.row];
+            DatabaseFile *keyfile = [self.localDocumentProvider.keyFiles objectAtIndex:indexPath.row];
             cell.textLabel.text = keyfile.filename;
             cell.textLabel.textColor = [UIColor grayColor];
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -268,9 +268,9 @@ enum {
     NSString *filename;
     switch (indexPath.section) {
         case SECTION_DATABASE: {
-            MKPDocument *document = [self.localDocumentProvider.documents objectAtIndex:indexPath.row];
-            filename = [document.filename copy];
-            [self.localDocumentProvider deleteDocument:document];
+            DatabaseFile *database = [self.localDocumentProvider.documents objectAtIndex:indexPath.row];
+            filename = [database.filename copy];
+            [self.localDocumentProvider deleteDocument:database];
 
             // Delete the keychain entries for the old filename
             [SFHFKeychainUtils deleteItemForUsername:filename andServiceName:@"com.jflan.MiniKeePass.passwords" error:nil];
@@ -306,8 +306,8 @@ enum {
     [filename release];
 }
 
-/* FIXME
 - (void)textEntryController:(TextEntryController *)controller textEntered:(NSString *)string {
+/* FIXME
     if (string == nil || [string isEqualToString:@""]) {
         [controller showErrorMessage:NSLocalizedString(@"Filename is invalid", nil)];
         return;
@@ -356,8 +356,8 @@ enum {
     [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
     
     [appDelegate.window.rootViewController dismissModalViewControllerAnimated:YES];
+ */
 }
-*/
 
 - (void)textEntryControllerCancelButtonPressed:(TextEntryController *)controller {
     [appDelegate.window.rootViewController dismissModalViewControllerAnimated:YES];
@@ -383,8 +383,8 @@ enum {
     [helpViewController release];
 }
 
-/* FIXME
 - (void)formViewController:(FormViewController *)controller button:(FormViewControllerButton)button {
+    /* FIXME
     if (button == FormViewControllerButtonOk) {
         NewKdbViewController *viewController = (NewKdbViewController*)controller;
         
@@ -470,7 +470,7 @@ enum {
     }
     
     [appDelegate.window.rootViewController dismissModalViewControllerAnimated:YES];
+     */
 }
-*/
 
 @end

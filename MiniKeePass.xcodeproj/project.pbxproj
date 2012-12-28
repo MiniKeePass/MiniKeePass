@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		523747941680B10D00BEFF6E /* MKPDocumentProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 523747931680B10D00BEFF6E /* MKPDocumentProvider.m */; };
-		523747991680B1F400BEFF6E /* MKPDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 523747981680B1F400BEFF6E /* MKPDocument.m */; };
 		5237479C1680B25700BEFF6E /* LocalDocumentProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 5237479B1680B25700BEFF6E /* LocalDocumentProvider.m */; };
 		5248970C1641961600D96AD5 /* ImageButtonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 526FC0FE15FF9269001294BB /* ImageButtonCell.m */; };
 		52491D0C14D8F3FB00F8CBC8 /* de-createdb.html in Resources */ = {isa = PBXBuildFile; fileRef = 52491D0714D8F3FB00F8CBC8 /* de-createdb.html */; };
@@ -311,8 +310,6 @@
 		52051E9A1524EB2D00D217B8 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		523747921680B10D00BEFF6E /* MKPDocumentProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MKPDocumentProvider.h; sourceTree = "<group>"; };
 		523747931680B10D00BEFF6E /* MKPDocumentProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MKPDocumentProvider.m; sourceTree = "<group>"; };
-		523747971680B1F400BEFF6E /* MKPDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MKPDocument.h; sourceTree = "<group>"; };
-		523747981680B1F400BEFF6E /* MKPDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MKPDocument.m; sourceTree = "<group>"; };
 		5237479A1680B25700BEFF6E /* LocalDocumentProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocalDocumentProvider.h; sourceTree = "<group>"; };
 		5237479B1680B25700BEFF6E /* LocalDocumentProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocalDocumentProvider.m; sourceTree = "<group>"; };
 		52491D0714D8F3FB00F8CBC8 /* de-createdb.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "de-createdb.html"; sourceTree = "<group>"; };
@@ -369,7 +366,7 @@
 		52E7AF5B162523F800DCB00A /* EditGroupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditGroupViewController.m; sourceTree = "<group>"; };
 		52E7AF6116252D7C00DCB00A /* ChooseGroupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ChooseGroupViewController.h; path = ../ChooseGroupViewController.h; sourceTree = "<group>"; };
 		52E7AF6216252D7C00DCB00A /* ChooseGroupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ChooseGroupViewController.m; path = ../ChooseGroupViewController.m; sourceTree = "<group>"; };
-		52F5A5D214E77E7000811C3A /* dropbox.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = dropbox.png; path = images/dropbox.png; sourceTree = "<group>"; };
+		52F5A5D214E77E7000811C3A /* dropbox.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dropbox.png; sourceTree = "<group>"; };
 		6802F9C314EC9C1D00ACD4C1 /* wrench.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wrench.png; sourceTree = "<group>"; };
 		6802F9C514EC9C1D00ACD4C1 /* wrench@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "wrench@2x.png"; sourceTree = "<group>"; };
 		680C277416050C7A009403DE /* DDXMLDocument+MKPAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "DDXMLDocument+MKPAdditions.h"; sourceTree = "<group>"; };
@@ -999,6 +996,7 @@
 				689D02A913A42B63005EBD36 /* box@2x.png */,
 				6876F67913B2F2DB00A05C7A /* checkmark.png */,
 				6876F67A13B2F2DB00A05C7A /* checkmark@2x.png */,
+				52F5A5D214E77E7000811C3A /* dropbox.png */,
 				526FC10015FF9568001294BB /* eye.png */,
 				526FC10115FF9568001294BB /* eye@2x.png */,
 				68FE79B11428C17F00818EE4 /* gear.png */,
@@ -1208,7 +1206,6 @@
 		689DFFCA13A4273F005EBD36 = {
 			isa = PBXGroup;
 			children = (
-				52F5A5D214E77E7000811C3A /* dropbox.png */,
 				689D030313A42B63005EBD36 /* LICENSE.txt */,
 				689D030413A42B63005EBD36 /* README.md */,
 				689DFFDF13A4273F005EBD36 /* MiniKeePass */,
@@ -1263,8 +1260,6 @@
 				689D042913A42C81005EBD36 /* DatabaseManager.m */,
 				52491D1514D9F71F00F8CBC8 /* DirectoryChoiceViewController.h */,
 				52491D1614D9F71F00F8CBC8 /* DirectoryChoiceViewController.m */,
-				523747971680B1F400BEFF6E /* MKPDocument.h */,
-				523747981680B1F400BEFF6E /* MKPDocument.m */,
 				523747921680B10D00BEFF6E /* MKPDocumentProvider.h */,
 				523747931680B10D00BEFF6E /* MKPDocumentProvider.m */,
 				5237479A1680B25700BEFF6E /* LocalDocumentProvider.h */,
@@ -1696,7 +1691,6 @@
 				52E7AF6316252D7C00DCB00A /* ChooseGroupViewController.m in Sources */,
 				684846B6167E1E460040C4EE /* StringFieldViewController.m in Sources */,
 				523747941680B10D00BEFF6E /* MKPDocumentProvider.m in Sources */,
-				523747991680B1F400BEFF6E /* MKPDocument.m in Sources */,
 				5237479C1680B25700BEFF6E /* LocalDocumentProvider.m in Sources */,
 				52D9E99F168CEA7D0038150C /* DropboxDocumentProvider.m in Sources */,
 			);

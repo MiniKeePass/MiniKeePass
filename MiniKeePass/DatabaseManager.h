@@ -28,6 +28,7 @@ typedef NS_ENUM(NSInteger, DatabaseType) {
 @property (nonatomic, copy) NSString *path;
 @property (nonatomic, retain) NSDate *modificationDate;
 @property (nonatomic, readonly) NSString *filename;
+@property (nonatomic, retain) UIImage *customImage;
 
 + (DatabaseFile*)databaseWithType:(DatabaseType)type andPath:(NSString *)path;
 + (DatabaseFile*)databaseWithType:(DatabaseType)type path:(NSString *)path andModificationDate:(NSDate*)date;

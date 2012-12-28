@@ -72,28 +72,28 @@
     [_documents release];
     _documents = [[NSMutableArray alloc] initWithCapacity:databaseFilenames.count];
     for (NSString *filename in databaseFilenames) {
-        MKPDocument *document = [[MKPDocument alloc] init];
-        document.filename = filename;
-        document.type = MKPLocalDocument;
+        DatabaseFile *database = [[DatabaseFile alloc] init];
+        database.path = [documentsDirectory stringByAppendingPathComponent:filename];
+        database.type = DatabaseTypeLocal;
 
-        [_documents addObject:document];
+        [_documents addObject:database];
     }
 
     [_keyFiles release];
     _keyFiles = [[NSMutableArray alloc] initWithCapacity:keyFilenames.count];
     for (NSString *filename in databaseFilenames) {
-        MKPDocument *document = [[MKPDocument alloc] init];
-        document.filename = filename;
-        document.type = MKPLocalDocument;
+        DatabaseFile *keyFile = [[DatabaseFile alloc] init];
+        keyFile.path = [documentsDirectory stringByAppendingPathComponent:filename];
+        keyFile.type = DatabaseTypeLocal;
 
-        [_keyFiles addObject:document];
+        [_keyFiles addObject:keyFile];
     }
 
     [files release];
 }
 
-- (void)openDocument:(MKPDocument *)document {
-    [[DatabaseManager sharedInstance] openDatabaseDocument:document.filename animated:YES];
+- (void)openDocument:(DatabaseFile *)database {
+    [[DatabaseManager sharedInstance] openDatabaseDocument:database animated:YES];
 }
 
 @end
