@@ -16,7 +16,8 @@
  */
 
 #import "MKPDocumentProvider.h"
+#import <DropboxSDK/DropboxSDK.h>
 
-@interface DropboxDocumentProvider : MKPDocumentProvider
+@interface DropboxDocumentProvider : MKPDocumentProvider <DBRestClientDelegate>
 
 @end

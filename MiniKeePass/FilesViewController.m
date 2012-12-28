@@ -26,6 +26,7 @@
 #import "Kdb4Writer.h"
 #import "MKPDocumentProvider.h"
 #import "LocalDocumentProvider.h"
+#import "DropboxDocumentProvider.h"
 
 enum {
     SECTION_DATABASE,
@@ -36,6 +37,14 @@ enum {
 @interface FilesViewController ()
 
 @property (nonatomic, readonly) MKPDocumentProvider *localDocumentProvider;
+@property (nonatomic, readonly) MKPDocumentProvider *dropboxDocumentProvider;
+@property (nonatomic, readonly) NSArray *documentProviders;
+@property (nonatomic, retain) NSArray *localDatabases;
+@property (nonatomic, retain) NSArray *dropboxDatabases;
+@property (nonatomic, readonly) NSMutableArray *databases;
+@property (nonatomic, retain) NSArray *localKeyFiles;
+@property (nonatomic, retain) NSArray *dropboxKeyFiles;
+@property (nonatomic, readonly) NSMutableArray *keyFiles;
 
 @end
 
@@ -73,6 +82,15 @@ enum {
         self.title = NSLocalizedString(@"Files", nil);
 
         _localDocumentProvider = [[LocalDocumentProvider alloc] init];
+        _localDocumentProvider.delegate = self;
+
+        _dropboxDocumentProvider = [[DropboxDocumentProvider alloc] init];
+        _dropboxDocumentProvider.delegate = self;
+
+        _documentProviders = [[NSArray alloc] initWithObjects:_localDocumentProvider, _dropboxDocumentProvider, nil];
+
+        _databases = [[NSMutableArray alloc] initWithCapacity:10];
+        _keyFiles = [[NSMutableArray alloc] initWithCapacity:10];
     }
     return self;
 }
@@ -80,6 +98,10 @@ enum {
 - (void)dealloc {
     [filesInfoView release];
     [_localDocumentProvider release];
+    [_dropboxDocumentProvider release];
+    [_documentProviders release];
+    [_databases release];
+    [_keyFiles release];
     [selectedFile release];
     [super dealloc];
 }
@@ -124,7 +146,33 @@ enum {
 }
 
 - (void)updateFiles {
-    [self.localDocumentProvider updateFiles];
+    for (MKPDocumentProvider *documentProvider in self.documentProviders) {
+        [documentProvider updateFiles];
+    }
+}
+
+- (void)documentProviderDidFinishUpdate:(MKPDocumentProvider *)inDocumentProvider {
+    if ([inDocumentProvider isKindOfClass:[LocalDocumentProvider class]]) {
+        self.localDatabases = inDocumentProvider.documents;
+        self.localKeyFiles = inDocumentProvider.keyFiles;
+    } else if ([inDocumentProvider isKindOfClass:[DropboxDocumentProvider class]]) {
+        self.dropboxDatabases = inDocumentProvider.documents;
+        self.dropboxKeyFiles = inDocumentProvider.keyFiles;
+    } else {
+        return;
+    }
+
+    [self.databases removeAllObjects];
+    [self.databases addObjectsFromArray:self.localDatabases];
+    [self.databases addObjectsFromArray:self.dropboxDatabases];
+
+    [self.keyFiles removeAllObjects];
+    [self.keyFiles addObjectsFromArray:self.localKeyFiles];
+    [self.keyFiles addObjectsFromArray:self.dropboxKeyFiles];
+
+    NSLog(@"%@", self.databases);
+
+    [self.tableView reloadData];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -134,14 +182,14 @@ enum {
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     switch (section) {
         case SECTION_DATABASE: {
-            int count = self.localDocumentProvider.documents.count;
+            int count = self.databases.count;
             if (count != 0) {
                 return NSLocalizedString(@"Databases", nil);
             }
             break;
         }
         case SECTION_KEYFILE: {
-            int count = self.localDocumentProvider.keyFiles.count;
+            int count = self.keyFiles.count;
             if (count != 0) {
                 return NSLocalizedString(@"Key Files", nil);
             }
@@ -153,8 +201,8 @@ enum {
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    int databaseCount = self.localDocumentProvider.documents.count;
-    int keyCount = self.localDocumentProvider.keyFiles.count;
+    int databaseCount = self.databases.count;
+    int keyCount = self.keyFiles.count;
     
     int n;
     switch (section) {
@@ -191,16 +239,18 @@ enum {
     // Configure the cell
     switch (indexPath.section) {
         case SECTION_DATABASE: {
-            DatabaseFile *database = [self.localDocumentProvider.documents objectAtIndex:indexPath.row];
+            DatabaseFile *database = [self.databases objectAtIndex:indexPath.row];
             cell.textLabel.text = database.filename;
             cell.textLabel.textColor = [UIColor blackColor];
+            cell.accessoryView = [[[UIImageView alloc] initWithImage:database.customImage] autorelease];
             cell.selectionStyle = UITableViewCellSelectionStyleBlue;
             break;
         }
         case SECTION_KEYFILE: {
-            DatabaseFile *keyfile = [self.localDocumentProvider.keyFiles objectAtIndex:indexPath.row];
+            DatabaseFile *keyfile = [self.keyFiles objectAtIndex:indexPath.row];
             cell.textLabel.text = keyfile.filename;
             cell.textLabel.textColor = [UIColor grayColor];
+            cell.accessoryView = [[[UIImageView alloc] initWithImage:keyfile.customImage] autorelease];
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             break;
         }
@@ -234,8 +284,18 @@ enum {
         // Database file section
         case SECTION_DATABASE:
             if (self.editing == NO) {
-                // Load the database
-                [self.localDocumentProvider openDocument:[self.localDocumentProvider.documents objectAtIndex:indexPath.row]];
+                DatabaseFile *database = [self.databases objectAtIndex:indexPath.row];
+
+                switch (database.type) {
+                    case DatabaseTypeLocal: {
+                        [self.localDocumentProvider openDocument:database];
+                        break;
+                    }
+                    case DatabaseTypeDropbox: {
+                        [self.dropboxDocumentProvider openDocument:database];
+                        break;
+                    }
+                }
             } else {
                 TextEntryController *textEntryController = [[TextEntryController alloc] initWithStyle:UITableViewStyleGrouped];
                 textEntryController.title = NSLocalizedString(@"Rename", nil);
@@ -244,7 +304,8 @@ enum {
                 textEntryController.textEntryDelegate = self;
                 textEntryController.textField.placeholder = NSLocalizedString(@"Name", nil);
                 
-                NSString *filename = [self.localDocumentProvider.documents objectAtIndex:indexPath.row];
+                DatabaseFile *database = [self.databases objectAtIndex:indexPath.row];
+                NSString *filename = database.filename;
                 textEntryController.textField.text = [filename stringByDeletingPathExtension];
                 
                 UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:textEntryController];
@@ -268,9 +329,16 @@ enum {
     NSString *filename;
     switch (indexPath.section) {
         case SECTION_DATABASE: {
-            DatabaseFile *database = [self.localDocumentProvider.documents objectAtIndex:indexPath.row];
+            DatabaseFile *database = [self.databases objectAtIndex:indexPath.row];
             filename = [database.filename copy];
-            [self.localDocumentProvider deleteDocument:database];
+            switch (database.type) {
+                case DatabaseTypeLocal:
+                    [self.localDocumentProvider deleteDocument:database];
+                    break;
+                case DatabaseTypeDropbox:
+                    [self.dropboxDocumentProvider deleteDocument:database];
+                    break;
+            }
 
             // Delete the keychain entries for the old filename
             [SFHFKeychainUtils deleteItemForUsername:filename andServiceName:@"com.jflan.MiniKeePass.passwords" error:nil];
@@ -278,7 +346,15 @@ enum {
             break;
         }
         case SECTION_KEYFILE: {
-            [self.localDocumentProvider deleteKeyFileAtIndex:indexPath.row];
+            DatabaseFile *keyFile = [self.keyFiles objectAtIndex:indexPath.row];
+            switch (keyFile.type) {
+                case DatabaseTypeLocal:
+                    [self.localDocumentProvider deleteKeyFile:keyFile];
+                    break;
+                case DatabaseTypeDropbox:
+                    [self.dropboxDocumentProvider deleteKeyFile:keyFile];
+                    break;
+            }
             break;
         }
         default:

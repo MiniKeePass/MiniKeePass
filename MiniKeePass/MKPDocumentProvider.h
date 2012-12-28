@@ -18,10 +18,13 @@
 #import <Foundation/Foundation.h>
 #import "DatabaseManager.h"
 
+@protocol MKPDocumentProviderDelegate;
+
 @interface MKPDocumentProvider : NSObject
 
 @property (nonatomic, readonly) NSArray *documents;
 @property (nonatomic, readonly) NSArray *keyFiles;
+@property (nonatomic, assign) id<MKPDocumentProviderDelegate> delegate;
 
 - (void)updateFiles;
 
@@ -34,4 +37,8 @@
 - (void)deleteKeyFile:(DatabaseFile *)database;
 - (void)deleteKeyFileAtIndex:(NSInteger)index;
 
+@end
+
+@protocol MKPDocumentProviderDelegate <NSObject>
+- (void)documentProviderDidFinishUpdate:(MKPDocumentProvider *)documentProvider;
 @end

@@ -17,11 +17,16 @@
 
 #import "DropboxDocumentProvider.h"
 #import "DatabaseManager.h"
+#import "AppSettings.h"
 
 @interface DropboxDocumentProvider () {
     NSMutableArray *_documents;
     NSMutableArray *_keyFiles;
 }
+
+@property (nonatomic, retain) DBRestClient *restClient;
+@property (nonatomic, copy) NSString *localDir;
+
 @end
 
 @implementation DropboxDocumentProvider
@@ -33,67 +38,78 @@
     self = [super init];
     if (self) {
         [self updateFiles];
+
+        _restClient = [[DBRestClient alloc] initWithSession:[DBSession sharedSession]];
+        _restClient.delegate = self;
+
+        _documents = nil;
+        _keyFiles = nil;
+
+        // Get the document's directory
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *documentsDirectory = [paths objectAtIndex:0];
+        _localDir = [[documentsDirectory stringByAppendingPathComponent:@"DropBox"] copy];
+
+        NSFileManager *fileManager= [NSFileManager defaultManager];
+        if(![fileManager fileExistsAtPath:self.localDir isDirectory:nil]) {
+            if(![fileManager createDirectoryAtPath:self.localDir withIntermediateDirectories:YES attributes:nil error:NULL]) {
+                NSLog(@"Error: Create folder failed %@", self.localDir);
+            }
+        }
     }
     return self;
 }
 
-- (void)updateFiles {
-    // Get the document's directory
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
-
-    // Get the contents of the documents directory
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSArray *dirContents = [fileManager contentsOfDirectoryAtPath:documentsDirectory error:nil];
-
-    // Strip out all the directories
-    NSMutableArray *files = [[NSMutableArray alloc] init];
-    for (NSString *file in dirContents) {
-        if (![file hasPrefix:@"."]) {
-            NSString *path = [documentsDirectory stringByAppendingPathComponent:file];
-
-            BOOL dir = NO;
-            [fileManager fileExistsAtPath:path isDirectory:&dir];
-            if (!dir) {
-                [files addObject:file];
-            }
-        }
-    }
-
-    // Sort the list of files
-    [files sortUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
-
-    // Filter the list of files into everything ending with .kdb or .kdbx
-    NSArray *databaseFilenames = [files filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"(self ENDSWITH[c] '.kdb') OR (self ENDSWITH[c] '.kdbx')"]];
-
-    // Filter the list of files into everything not ending with .kdb or .kdbx
-    NSArray *keyFilenames = [files filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"!((self ENDSWITH[c] '.kdb') OR (self ENDSWITH[c] '.kdbx'))"]];
-
+- (void)dealloc {
+    [_restClient release];
     [_documents release];
-    _documents = [[NSMutableArray alloc] initWithCapacity:databaseFilenames.count];
-    for (NSString *filename in databaseFilenames) {
-        DatabaseFile *database = [[DatabaseFile alloc] init];
-        database.path = [documentsDirectory stringByAppendingPathComponent:filename];
-        database.type = DatabaseTypeLocal;
-
-        [_documents addObject:database];
-    }
-
     [_keyFiles release];
-    _keyFiles = [[NSMutableArray alloc] initWithCapacity:keyFilenames.count];
-    for (NSString *filename in databaseFilenames) {
-        DatabaseFile *keyFile = [[DatabaseFile alloc] init];
-        keyFile.path = [documentsDirectory stringByAppendingPathComponent:filename];
-        keyFile.type = DatabaseTypeLocal;
+    [_localDir release];
+    [super dealloc];
+}
 
-        [_keyFiles addObject:keyFile];
-    }
-
-    [files release];
+- (void)updateFiles {
+    [self.restClient loadMetadata:[[AppSettings sharedInstance] dropboxDirectory]];
 }
 
 - (void)openDocument:(DatabaseFile *)database {
-    [[DatabaseManager sharedInstance] openDatabaseDocument:database animated:YES];
+    NSString *dropboxDirectory = [[AppSettings sharedInstance] dropboxDirectory];
+    NSString *remotePath = [dropboxDirectory stringByAppendingPathComponent:database.filename];
+    NSLog(@"%@", remotePath);
+    [self.restClient loadFile:remotePath intoPath:[self.localDir stringByAppendingPathComponent:database.filename]];
+}
+
+- (void) restClient:(DBRestClient *)client loadedMetadata:(DBMetadata *)metadata {
+    //[_documents release];
+    _documents = [NSMutableArray arrayWithCapacity:metadata.contents.count];
+
+    //[_keyFiles release];
+    _keyFiles = [NSMutableArray arrayWithCapacity:metadata.contents.count];
+
+    for (DBMetadata *file in [metadata contents]) {
+        NSURL *fileUrl = [NSURL fileURLWithPath:file.path];
+        NSString *extension = fileUrl.pathExtension;
+
+        if ([extension isEqualToString:@"kdb"] || [extension isEqualToString:@"kdbx"]) {
+            NSString *path = [self.localDir stringByAppendingPathComponent:file.filename];
+            NSLog(@"%@", file.path);
+            DatabaseFile *database = [DatabaseFile databaseWithType:DatabaseTypeDropbox andPath:path];
+            database.customImage = [UIImage imageNamed:@"dropbox"];
+            [_documents addObject:database];
+        } else {
+            NSString *path = [self.localDir stringByAppendingPathComponent:file.filename];
+            DatabaseFile *keyFile = [DatabaseFile databaseWithType:DatabaseTypeDropbox andPath:path];
+            keyFile.customImage = [UIImage imageNamed:@"dropbox"];
+            [_keyFiles addObject:keyFile];
+        }
+    }
+
+    [self.delegate documentProviderDidFinishUpdate:self];
+}
+
+- (void)restClient:(DBRestClient *)client loadedFile:(NSString *)destPath {
+    DatabaseFile *file = [DatabaseFile databaseWithType:DatabaseTypeDropbox andPath:destPath];
+    [[DatabaseManager sharedInstance] openDatabaseDocument:file animated:YES];
 }
 
 @end
