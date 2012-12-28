@@ -16,7 +16,6 @@
  */
 
 #import <Foundation/Foundation.h>
-#import <DropboxSDK/DropboxSDK.h>
 #import "FilesInfoView.h"
 #import "TextEntryController.h"
 #import "NewKdbViewController.h"
@@ -24,17 +23,13 @@
 
 @class MiniKeePassAppDelegate;
 
-@interface FilesViewController : AutorotatingTableViewController <TextEntryControllerDelegate, FormViewControllerDelegate, DBRestClientDelegate> {
+@interface FilesViewController : AutorotatingTableViewController <TextEntryControllerDelegate, FormViewControllerDelegate> {
     FilesInfoView *filesInfoView;
     MiniKeePassAppDelegate *appDelegate;
     
     NSMutableArray *databaseFiles;
     NSMutableArray *keyFiles;
-    NSMutableArray *dropboxFiles;
     NSString *selectedFile;
-    
-    DBSession *sharedSession;
-    DBRestClient *restClient;
 }
 
 - (void)updateFiles;
