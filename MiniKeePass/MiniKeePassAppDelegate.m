@@ -42,15 +42,6 @@
 
 @implementation MiniKeePassAppDelegate
 
-- (UIViewController *) frontmostViewController {
-    UIViewController *frontmostViewController = self.window.rootViewController;
-    while (frontmostViewController.modalViewController != nil) {
-        frontmostViewController = frontmostViewController.modalViewController;
-    }
-    
-    return frontmostViewController;
-}
-
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     //Dropbox code
     DBSession* dbSession = [[DBSession alloc] initWithAppKey:APP_KEY appSecret:APP_SECRET root:kDBRootDropbox];
@@ -63,26 +54,6 @@
     }
     
     _databaseDocument = nil;
-    
-    // Set the user defaults
-    NSMutableDictionary *defaultsDict = [NSMutableDictionary dictionary];
-    [defaultsDict setValue:[NSNumber numberWithBool:NO] forKey:@"pinEnabled"];
-    [defaultsDict setValue:[NSNumber numberWithInt:1] forKey:@"pinLockTimeout"];
-    [defaultsDict setValue:[NSNumber numberWithBool:NO] forKey:@"deleteOnFailureEnabled"];
-    [defaultsDict setValue:[NSNumber numberWithInt:1] forKey:@"deleteOnFailureAttempts"];
-    [defaultsDict setValue:[NSNumber numberWithBool:YES] forKey:@"closeEnabled"];
-    [defaultsDict setValue:[NSNumber numberWithInt:4] forKey:@"closeTimeout"];
-    [defaultsDict setValue:[NSNumber numberWithBool:NO] forKey:@"rememberPasswordsEnabled"];
-    [defaultsDict setValue:[NSNumber numberWithBool:YES] forKey:@"hidePasswords"];
-    [defaultsDict setValue:[NSNumber numberWithBool:YES] forKey:@"sortAlphabetically"];
-    [defaultsDict setValue:[NSNumber numberWithInt:0] forKey:@"passwordEncoding"];
-    [defaultsDict setValue:[NSNumber numberWithBool:NO] forKey:@"clearClipboardEnabled"];
-    [defaultsDict setValue:@"/" forKey:@"dropboxDirectory"];
-    [defaultsDict setValue:[NSNumber numberWithInt:10] forKey:@"pwGenLength"];
-    [defaultsDict setValue:[NSNumber numberWithInt:CHARACTER_SET_DEFAULT] forKey:@"pwGenCharSets"];
-    
-    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
-    [userDefaults registerDefaults:defaultsDict];
     
     // Create the files view
     FilesViewController *filesViewController = [[[FilesViewController alloc] initWithStyle:UITableViewStylePlain] autorelease];
@@ -194,20 +165,6 @@
     }
 }
 
-- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
-    if ([[DBSession sharedSession] handleOpenURL:url]) {
-        if ([[DBSession sharedSession] isLinked]) {
-            NSLog(@"App linked successfully!");
-        }
-        return YES;
-    }
-    
-    [self openUrl:url];
-    return YES;
-}
-
-// FIXME I shouldn't need the DB code in two places
-
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
     if ([[DBSession sharedSession] handleOpenURL:url]) {
         if ([[DBSession sharedSession] isLinked]) {
@@ -301,7 +258,6 @@
         NSInteger clearClipboardTimeout = [appSettings clearClipboardTimeout];
         
         // Initiate a background task
-        // FIXME there's a bug here that bgTask is being passed into the block being used to create bgTask
         UIApplication *application = [UIApplication sharedApplication];
         UIBackgroundTaskIdentifier bgTask = [application beginBackgroundTaskWithExpirationHandler:^{
             // End the background task

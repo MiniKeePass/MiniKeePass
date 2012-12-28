@@ -27,7 +27,6 @@
 @property (nonatomic, retain) DatabaseDocument *databaseDocument;
 @property (nonatomic, assign) BOOL locked;
 @property (nonatomic, readonly) BOOL backgroundSupported;
-@property (nonatomic, readonly) UIViewController *frontmostViewController;
 
 - (CGFloat)currentScreenWidth;
 - (void)closeDatabase;
