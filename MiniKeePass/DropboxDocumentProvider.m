@@ -87,27 +87,27 @@
 }
 
 - (void) restClient:(DBRestClient *)client loadedMetadata:(DBMetadata *)metadata {
-    //[_documents release];
+    [_documents release];
     _documents = [NSMutableArray arrayWithCapacity:metadata.contents.count];
 
-    //[_keyFiles release];
+    [_keyFiles release];
     _keyFiles = [NSMutableArray arrayWithCapacity:metadata.contents.count];
 
     for (DBMetadata *file in [metadata contents]) {
         NSURL *fileUrl = [NSURL fileURLWithPath:file.path];
         NSString *extension = fileUrl.pathExtension;
 
+        NSString *path = [self.localDir stringByAppendingPathComponent:file.filename];
+        NSDate *modificationDate = file.lastModifiedDate;
+        DatabaseFile *document = [DatabaseFile databaseWithType:DatabaseTypeDropbox
+                                                           path:path
+                                            andModificationDate:modificationDate];
+        document.customImage = [UIImage imageNamed:@"dropbox"];
+
         if ([extension isEqualToString:@"kdb"] || [extension isEqualToString:@"kdbx"]) {
-            NSString *path = [self.localDir stringByAppendingPathComponent:file.filename];
-            NSLog(@"%@", file.path);
-            DatabaseFile *database = [DatabaseFile databaseWithType:DatabaseTypeDropbox andPath:path];
-            database.customImage = [UIImage imageNamed:@"dropbox"];
-            [_documents addObject:database];
+            [_documents addObject:document];
         } else {
-            NSString *path = [self.localDir stringByAppendingPathComponent:file.filename];
-            DatabaseFile *keyFile = [DatabaseFile databaseWithType:DatabaseTypeDropbox andPath:path];
-            keyFile.customImage = [UIImage imageNamed:@"dropbox"];
-            [_keyFiles addObject:keyFile];
+            [_keyFiles addObject:document];
         }
     }
 

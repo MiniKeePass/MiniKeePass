@@ -229,13 +229,13 @@ enum {
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *CellIdentifier = @"Cell";
-    NSString *filename = @"";
-    
+    NSDate *modificationDate = nil;
+
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier] autorelease];
     }
-    
+
     // Configure the cell
     switch (indexPath.section) {
         case SECTION_DATABASE: {
@@ -244,6 +244,7 @@ enum {
             cell.textLabel.textColor = [UIColor blackColor];
             cell.accessoryView = [[[UIImageView alloc] initWithImage:database.customImage] autorelease];
             cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+            modificationDate = database.modificationDate;
             break;
         }
         case SECTION_KEYFILE: {
@@ -252,29 +253,26 @@ enum {
             cell.textLabel.textColor = [UIColor grayColor];
             cell.accessoryView = [[[UIImageView alloc] initWithImage:keyfile.customImage] autorelease];
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            modificationDate = keyfile.modificationDate;
             break;
         }
         default:
             return nil;
     }
 
-    // Retrieve the Document directory
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
-    NSString *path = [documentsDirectory stringByAppendingPathComponent:filename];
-
-    // Get the file's modification date
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSDate *modificationDate = [[fileManager attributesOfItemAtPath:path error:nil] fileModificationDate];
-
-    // Format the last modified time as the subtitle of the cell
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateStyle:NSDateFormatterShortStyle];
-    [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-    cell.detailTextLabel.text = [NSString stringWithFormat:@"%@: %@",
-                                 NSLocalizedString(@"Last Modified", nil),
-                                 [dateFormatter stringFromDate:modificationDate]];
-    [dateFormatter release];
+    if (modificationDate != nil) {
+        // Format the last modified time as the subtitle of the cell
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateStyle:NSDateFormatterShortStyle];
+        [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+        cell.detailTextLabel.text = [NSString stringWithFormat:@"%@: %@",
+                                     NSLocalizedString(@"Last Modified", nil),
+                                     [dateFormatter stringFromDate:modificationDate]];
+        [dateFormatter release];
+    } else {
+        cell.detailTextLabel.text = [NSString stringWithFormat:@"%@: %@",
+                                     NSLocalizedString(@"Last Modified", nil), NSLocalizedString(@"Unknown", nil)];
+    }
 
     return cell;
 }

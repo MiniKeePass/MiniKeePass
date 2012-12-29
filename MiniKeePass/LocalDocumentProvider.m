@@ -73,8 +73,9 @@
     _documents = [[NSMutableArray alloc] initWithCapacity:databaseFilenames.count];
     for (NSString *filename in databaseFilenames) {
         NSString *path = [documentsDirectory stringByAppendingPathComponent:filename];
-        DatabaseFile *database = [DatabaseFile databaseWithType:DatabaseTypeLocal andPath:path];
+        NSDate *modificationDate = [[fileManager attributesOfItemAtPath:path error:nil] fileModificationDate];
 
+        DatabaseFile *database = [DatabaseFile databaseWithType:DatabaseTypeLocal path:path andModificationDate:modificationDate];
         [_documents addObject:database];
     }
 
