@@ -145,7 +145,7 @@
 
         if ([extension isEqualToString:@"kdb"] || [extension isEqualToString:@"kdbx"]) {
             [_documents addObject:document];
-        } else {
+        } else if (!file.isDirectory) {
             [_keyFiles addObject:document];
         }
     }
