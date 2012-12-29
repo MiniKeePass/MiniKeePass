@@ -515,9 +515,9 @@ enum {
             [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationRight];
         }
     }
-    
-    [appDelegate.window.rootViewController dismissModalViewControllerAnimated:YES];
      */
+
+    [appDelegate.window.rootViewController dismissModalViewControllerAnimated:YES];
 }
 
 @end

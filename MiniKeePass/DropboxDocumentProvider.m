@@ -18,6 +18,7 @@
 #import "DropboxDocumentProvider.h"
 #import "DatabaseManager.h"
 #import "AppSettings.h"
+#import "SFHFKeychainUtils.h"
 #import "secrets.h"
 
 @interface DropboxDocumentProvider () {
@@ -97,6 +98,33 @@
     [self.restClient loadFile:remotePath intoPath:[self.localDir stringByAppendingPathComponent:database.filename]];
 }
 
+- (NSError *)renameDocument:(DatabaseFile *)database to:(NSString *)newFilename {
+    NSString *oldFilename = [database.filename copy];
+    newFilename = [newFilename stringByAppendingPathExtension:[oldFilename pathExtension]];
+
+    NSString *dropboxDirectory = [[AppSettings sharedInstance] dropboxDirectory];
+    NSString *oldPath = [dropboxDirectory stringByAppendingPathComponent:oldFilename];
+    NSString *newPath = [dropboxDirectory stringByAppendingPathComponent:newFilename];
+
+    [self.restClient moveFrom:oldPath toPath:newPath];
+
+    // Load the password and keyfile from the keychain under the old filename
+    NSString *password = [SFHFKeychainUtils getPasswordForUsername:oldFilename andServiceName:@"com.jflan.MiniKeePass.passwords" error:nil];
+    NSString *keyFile = [SFHFKeychainUtils getPasswordForUsername:oldFilename andServiceName:@"com.jflan.MiniKeePass.keyfiles" error:nil];
+
+    // Store the password and keyfile into the keychain under the new filename
+    [SFHFKeychainUtils storeUsername:newFilename andPassword:password forServiceName:@"com.jflan.MiniKeePass.passwords" updateExisting:YES error:nil];
+    [SFHFKeychainUtils storeUsername:newFilename andPassword:keyFile forServiceName:@"com.jflan.MiniKeePass.keyfiles" updateExisting:YES error:nil];
+
+    // Delete the keychain entries for the old filename
+    [SFHFKeychainUtils deleteItemForUsername:oldFilename andServiceName:@"com.jflan.MiniKeePass.passwords" error:nil];
+    [SFHFKeychainUtils deleteItemForUsername:oldFilename andServiceName:@"com.jflan.MiniKeePass.keychains" error:nil];
+
+    [oldFilename release];
+    
+    return nil;
+}
+
 - (void) restClient:(DBRestClient *)client loadedMetadata:(DBMetadata *)metadata {
     [_documents release];
     _documents = [[NSMutableArray arrayWithCapacity:metadata.contents.count] retain];
@@ -128,6 +156,10 @@
 - (void)restClient:(DBRestClient *)client loadedFile:(NSString *)destPath {
     DatabaseFile *file = [DatabaseFile databaseWithType:DatabaseTypeDropbox andPath:destPath];
     [[DatabaseManager sharedInstance] openDatabaseDocument:file animated:YES];
+}
+
+- (void)restClient:(DBRestClient *)client movedPath:(NSString *)from_path to:(DBMetadata *)result {
+    [self updateFiles];
 }
 
 @end
