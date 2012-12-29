@@ -49,9 +49,6 @@
         _restClient = [[DBRestClient alloc] initWithSession:[DBSession sharedSession]];
         _restClient.delegate = self;
 
-        _documents = nil;
-        _keyFiles = nil;
-
         // Get the document's directory
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
         NSString *documentsDirectory = [paths objectAtIndex:0];
@@ -88,10 +85,10 @@
 
 - (void) restClient:(DBRestClient *)client loadedMetadata:(DBMetadata *)metadata {
     [_documents release];
-    _documents = [NSMutableArray arrayWithCapacity:metadata.contents.count];
+    _documents = [[NSMutableArray arrayWithCapacity:metadata.contents.count] retain];
 
     [_keyFiles release];
-    _keyFiles = [NSMutableArray arrayWithCapacity:metadata.contents.count];
+    _keyFiles = [[NSMutableArray arrayWithCapacity:metadata.contents.count] retain];
 
     for (DBMetadata *file in [metadata contents]) {
         NSURL *fileUrl = [NSURL fileURLWithPath:file.path];

@@ -151,13 +151,13 @@ enum {
     }
 }
 
-- (void)documentProviderDidFinishUpdate:(MKPDocumentProvider *)inDocumentProvider {
-    if ([inDocumentProvider isKindOfClass:[LocalDocumentProvider class]]) {
-        self.localDatabases = inDocumentProvider.documents;
-        self.localKeyFiles = inDocumentProvider.keyFiles;
-    } else if ([inDocumentProvider isKindOfClass:[DropboxDocumentProvider class]]) {
-        self.dropboxDatabases = inDocumentProvider.documents;
-        self.dropboxKeyFiles = inDocumentProvider.keyFiles;
+- (void)documentProviderDidFinishUpdate:(MKPDocumentProvider *)documentProvider {
+    if ([documentProvider isKindOfClass:[LocalDocumentProvider class]]) {
+        self.localDatabases = documentProvider.documents;
+        self.localKeyFiles = documentProvider.keyFiles;
+    } else if ([documentProvider isKindOfClass:[DropboxDocumentProvider class]]) {
+        self.dropboxDatabases = documentProvider.documents;
+        self.dropboxKeyFiles = documentProvider.keyFiles;
     } else {
         return;
     }
