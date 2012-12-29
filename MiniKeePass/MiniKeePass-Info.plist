@@ -115,9 +115,11 @@
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>db-1cml57v07lqm5xu</string>
+				<string>db-awiyjmhprc7gnbm</string>
 			</array>
 		</dict>
 	</array>

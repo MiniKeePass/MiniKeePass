@@ -18,6 +18,7 @@
 #import "DropboxDocumentProvider.h"
 #import "DatabaseManager.h"
 #import "AppSettings.h"
+#import "secrets.h"
 
 @interface DropboxDocumentProvider () {
     NSMutableArray *_documents;
@@ -38,6 +39,12 @@
     self = [super init];
     if (self) {
         [self updateFiles];
+
+        DBSession* dbSession = [DBSession sharedSession];
+        if (dbSession == nil) {
+            dbSession = [[DBSession alloc] initWithAppKey:DROPBOX_APP_KEY appSecret:DROPBOX_APP_SECRET root:kDBRootDropbox];
+        }
+        [DBSession setSharedSession:dbSession];
 
         _restClient = [[DBRestClient alloc] initWithSession:[DBSession sharedSession]];
         _restClient.delegate = self;

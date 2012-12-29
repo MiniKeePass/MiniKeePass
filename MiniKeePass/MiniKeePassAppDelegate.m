@@ -15,7 +15,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#import <DropboxSDK/DropboxSDK.h>
 #import "MiniKeePassAppDelegate.h"
 #import "GroupViewController.h"
 #import "SettingsViewController.h"
@@ -24,7 +23,6 @@
 #import "DatabaseManager.h"
 #import "SFHFKeychainUtils.h"
 #import "LockScreenController.h"
-#import "secrets.h"
 
 @interface MiniKeePassAppDelegate ()  {
     UINavigationController *navigationController;
@@ -41,10 +39,6 @@
 @implementation MiniKeePassAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    //Dropbox code
-    DBSession* dbSession = [[DBSession alloc] initWithAppKey:DROPBOX_APP_KEY appSecret:DROPBOX_APP_SECRET root:kDBRootDropbox];
-    [DBSession setSharedSession:dbSession];
-
     // Initialize the images array
     int i;
     for (i = 0; i < NUM_IMAGES; i++) {
