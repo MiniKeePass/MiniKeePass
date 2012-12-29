@@ -17,6 +17,7 @@
 
 #import "LocalDocumentProvider.h"
 #import "DatabaseManager.h"
+#import "SFHFKeychainUtils.h"
 
 @interface LocalDocumentProvider () {
     NSMutableArray *_documents;
@@ -95,6 +96,49 @@
 
 - (void)openDocument:(DatabaseFile *)database {
     [[DatabaseManager sharedInstance] openDatabaseDocument:database animated:YES];
+}
+
+- (NSError *)renameDocument:(DatabaseFile *)database to:(NSString *)newFilename {
+    NSString *oldFilename = [database.filename copy];
+    newFilename = [newFilename stringByAppendingPathExtension:[oldFilename pathExtension]];
+
+    // Get the full path of where we're going to move the file
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+
+    NSString *oldPath = [documentsDirectory stringByAppendingPathComponent:oldFilename];
+    NSString *newPath = [documentsDirectory stringByAppendingPathComponent:newFilename];
+
+    // Check if the file already exists
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    if ([fileManager fileExistsAtPath:newPath]) {
+        NSDictionary *userInfo = @{@"errorMessage" : NSLocalizedString(@"A file already exists with this name", nil)};
+        NSError *error = [NSError errorWithDomain:@"DocumentProvider" code:1 userInfo:userInfo];
+        [oldFilename release];
+        return error;
+    }
+
+    // Move input file into documents directory
+    [fileManager moveItemAtPath:oldPath toPath:newPath error:nil];
+
+    database.path = [database.path stringByReplacingOccurrencesOfString:oldFilename withString:newFilename];
+
+    // Load the password and keyfile from the keychain under the old filename
+    NSString *password = [SFHFKeychainUtils getPasswordForUsername:oldFilename andServiceName:@"com.jflan.MiniKeePass.passwords" error:nil];
+    NSString *keyFile = [SFHFKeychainUtils getPasswordForUsername:oldFilename andServiceName:@"com.jflan.MiniKeePass.keyfiles" error:nil];
+
+    // Store the password and keyfile into the keychain under the new filename
+    [SFHFKeychainUtils storeUsername:newFilename andPassword:password forServiceName:@"com.jflan.MiniKeePass.passwords" updateExisting:YES error:nil];
+    [SFHFKeychainUtils storeUsername:newFilename andPassword:keyFile forServiceName:@"com.jflan.MiniKeePass.keyfiles" updateExisting:YES error:nil];
+
+    // Delete the keychain entries for the old filename
+    [SFHFKeychainUtils deleteItemForUsername:oldFilename andServiceName:@"com.jflan.MiniKeePass.passwords" error:nil];
+    [SFHFKeychainUtils deleteItemForUsername:oldFilename andServiceName:@"com.jflan.MiniKeePass.keychains" error:nil];
+
+    [oldFilename release];
+
+    [self.delegate documentProviderDidFinishUpdate:self];
+    return nil;
 }
 
 @end

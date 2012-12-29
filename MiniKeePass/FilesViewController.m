@@ -381,56 +381,29 @@ enum {
 }
 
 - (void)textEntryController:(TextEntryController *)controller textEntered:(NSString *)string {
-/* FIXME
-    if (string == nil || [string isEqualToString:@""]) {
+    if (string.length == 0) {
         [controller showErrorMessage:NSLocalizedString(@"Filename is invalid", nil)];
         return;
     }
-    
+
+    NSError *error;
     NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-    NSString *oldFilename = [[databaseFiles objectAtIndex:indexPath.row] retain];
-    NSString *newFilename = [string stringByAppendingPathExtension:[oldFilename pathExtension]];
-    
-    // Get the full path of where we're going to move the file
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
-    
-    NSString *oldPath = [documentsDirectory stringByAppendingPathComponent:oldFilename];
-    NSString *newPath = [documentsDirectory stringByAppendingPathComponent:newFilename];
-    
-    // Check if the file already exists
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    if ([fileManager fileExistsAtPath:newPath]) {
-        [controller showErrorMessage:NSLocalizedString(@"A file already exists with this name", nil)];
-        [oldFilename release];
+    DatabaseFile *database = [self.databases objectAtIndex:indexPath.row];
+    switch (database.type) {
+        case DatabaseTypeLocal:
+            error = [self.localDocumentProvider renameDocument:database to:string];
+            break;
+        case DatabaseTypeDropbox:
+            error = [self.dropboxDocumentProvider renameDocument:database to:string];
+            break;
+    }
+
+    if (error != nil) {
+        [controller showErrorMessage:[error.userInfo objectForKey:@"errorMessage"]];
         return;
     }
-    
-    // Move input file into documents directory
-    [fileManager moveItemAtPath:oldPath toPath:newPath error:nil];
-    
-    // Update the filename in the files list
-    [databaseFiles replaceObjectAtIndex:indexPath.row withObject:newFilename];
-    
-    // Load the password and keyfile from the keychain under the old filename
-    NSString *password = [SFHFKeychainUtils getPasswordForUsername:oldFilename andServiceName:@"com.jflan.MiniKeePass.passwords" error:nil];
-    NSString *keyFile = [SFHFKeychainUtils getPasswordForUsername:oldFilename andServiceName:@"com.jflan.MiniKeePass.keyfiles" error:nil];
-    
-    // Store the password and keyfile into the keychain under the new filename
-    [SFHFKeychainUtils storeUsername:newFilename andPassword:password forServiceName:@"com.jflan.MiniKeePass.passwords" updateExisting:YES error:nil];
-    [SFHFKeychainUtils storeUsername:newFilename andPassword:keyFile forServiceName:@"com.jflan.MiniKeePass.keyfiles" updateExisting:YES error:nil];
-    
-    // Delete the keychain entries for the old filename
-    [SFHFKeychainUtils deleteItemForUsername:oldFilename andServiceName:@"com.jflan.MiniKeePass.passwords" error:nil];
-    [SFHFKeychainUtils deleteItemForUsername:oldFilename andServiceName:@"com.jflan.MiniKeePass.keychains" error:nil];
-    
-    [oldFilename release];
-    
-    // Reload the table row
-    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    
+
     [appDelegate.window.rootViewController dismissModalViewControllerAnimated:YES];
- */
 }
 
 - (void)textEntryControllerCancelButtonPressed:(TextEntryController *)controller {

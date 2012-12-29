@@ -30,5 +30,6 @@
 - (void)deleteKeyFile:(DatabaseFile *)database {}
 - (void)deleteKeyFileAtIndex:(NSInteger)index {}
 
+- (NSError *)renameDocument:(DatabaseFile *)database to:(NSString *)newFilename {return nil;}
 
 @end

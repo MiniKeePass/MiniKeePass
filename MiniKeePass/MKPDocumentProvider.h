@@ -37,6 +37,8 @@
 - (void)deleteKeyFile:(DatabaseFile *)database;
 - (void)deleteKeyFileAtIndex:(NSInteger)index;
 
+- (NSError *)renameDocument:(DatabaseFile *)database to:(NSString *)newFilename;
+
 @end
 
 @protocol MKPDocumentProviderDelegate <NSObject>
