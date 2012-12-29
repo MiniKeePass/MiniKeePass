@@ -113,6 +113,7 @@ static AppSettings *sharedInstance;
         [defaultsDict setValue:[NSNumber numberWithInt:4] forKey:CLOSE_TIMEOUT];
         [defaultsDict setValue:[NSNumber numberWithBool:NO] forKey:REMEMBER_PASSWORDS_ENABLED];
         [defaultsDict setValue:[NSNumber numberWithBool:YES] forKey:HIDE_PASSWORDS];
+        [defaultsDict setValue:@"/" forKey:DROPBOX_DIRECTORY];
         [defaultsDict setValue:[NSNumber numberWithBool:YES] forKey:SORT_ALPHABETICALLY];
         [defaultsDict setValue:[NSNumber numberWithInt:0] forKey:PASSWORD_ENCODING];
         [defaultsDict setValue:[NSNumber numberWithBool:NO] forKey:CLEAR_CLIPBOARD_ENABLED];

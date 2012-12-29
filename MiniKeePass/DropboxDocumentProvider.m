@@ -25,7 +25,7 @@
     NSMutableArray *_keyFiles;
 }
 
-@property (nonatomic, retain) DBRestClient *restClient;
+@property (nonatomic, readonly) DBRestClient *restClient;
 @property (nonatomic, copy) NSString *localDir;
 
 @end
@@ -34,6 +34,7 @@
 
 @synthesize documents = _documents;
 @synthesize keyFiles = _keyFiles;
+@synthesize restClient = _restClient;
 
 - (id)init {
     self = [super init];
@@ -45,9 +46,6 @@
             dbSession = [[DBSession alloc] initWithAppKey:DROPBOX_APP_KEY appSecret:DROPBOX_APP_SECRET root:kDBRootDropbox];
         }
         [DBSession setSharedSession:dbSession];
-
-        _restClient = [[DBRestClient alloc] initWithSession:[DBSession sharedSession]];
-        _restClient.delegate = self;
 
         // Get the document's directory
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
@@ -72,8 +70,24 @@
     [super dealloc];
 }
 
+- (DBRestClient *)restClient {
+    DBSession *sharedSession = [DBSession sharedSession];
+    if (_restClient == nil && sharedSession.userIds.count > 0) {
+        _restClient = [[DBRestClient alloc] initWithSession:[DBSession sharedSession]];
+        _restClient.delegate = self;
+    }
+
+    return _restClient;
+}
+
 - (void)updateFiles {
-    [self.restClient loadMetadata:[[AppSettings sharedInstance] dropboxDirectory]];
+    if ([[DBSession sharedSession] isLinked]) {
+        [self.restClient loadMetadata:[[AppSettings sharedInstance] dropboxDirectory]];
+    } else {
+        [_documents removeAllObjects];
+        [_keyFiles removeAllObjects];
+        [self.delegate documentProviderDidFinishUpdate:self];
+    }
 }
 
 - (void)openDocument:(DatabaseFile *)database {
