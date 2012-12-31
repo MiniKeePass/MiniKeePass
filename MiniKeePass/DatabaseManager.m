@@ -91,7 +91,7 @@ static DatabaseManager *sharedInstance;
         // Load the database
         DatabaseDocument *dd = [[DatabaseDocument alloc] init];
         @try {
-            [dd open:document.path password:password keyFile:keyFilePath];
+            [dd open:document password:password keyFile:keyFilePath];
             
             databaseLoaded = YES;
             
@@ -168,7 +168,7 @@ static DatabaseManager *sharedInstance;
         DatabaseDocument *dd = [[DatabaseDocument alloc] init];
         @try {
             // Open the database
-            [dd open:self.selectedDatabaseFile.path password:password keyFile:keyFilePath];
+            [dd open:self.selectedDatabaseFile password:password keyFile:keyFilePath];
             
             // Store the password in the keychain
             if ([[AppSettings sharedInstance] rememberPasswordsEnabled]) {

@@ -17,70 +17,76 @@
 
 #import "DatabaseDocument.h"
 #import "AppSettings.h"
+#import "MKPDocumentProvider.h"
+#import "LocalDocumentProvider.h"
+#import "DropboxDocumentProvider.h"
 
 @interface DatabaseDocument ()
+@property (nonatomic, retain) KdbPassword *kdbPassword;
 - (BOOL)matchesEntry:(KdbEntry *)entry searchText:(NSString *)searchText;
 @end
 
 @implementation DatabaseDocument
 
-@synthesize kdbTree;
-@synthesize filename;
-@synthesize dirty;
+@synthesize documentInteractionController = _documentInteractionController;
 
 - (id)init {
     self = [super init];
     if (self) {
-        kdbTree = nil;
-        filename = nil;
-        dirty = NO;
-        kdbPassword = nil;
-        documentInteractionController = nil;
     }
     return self;
 }
 
 
 - (void)dealloc {
-    [kdbTree release];
-    [filename release];
-    [kdbPassword release];
-    [documentInteractionController release];
+    [_kdbTree release];
+    [_kdbPassword release];
+    [_documentInteractionController release];
     [super dealloc];
 }
 
 - (UIDocumentInteractionController *)documentInteractionController {
-    if (documentInteractionController == nil) {
-        NSURL *url = [NSURL fileURLWithPath:filename];
-        documentInteractionController = [[UIDocumentInteractionController interactionControllerWithURL:url] retain];
+    if (_documentInteractionController == nil) {
+        NSURL *url = [NSURL fileURLWithPath:self.filename];
+        _documentInteractionController = [[UIDocumentInteractionController interactionControllerWithURL:url] retain];
     }
-    return documentInteractionController;
+    return _documentInteractionController;
 }
 
-- (void)open:(NSString *)newFilename password:(NSString *)password keyFile:(NSString *)keyFile {
+- (NSString *)filename {
+    return self.file.filename;
+}
+
+- (void)open:(DatabaseFile *)newFile password:(NSString *)password keyFile:(NSString *)keyFile {
     if (password == nil && keyFile == nil) {
         @throw [NSException exceptionWithName:@"IllegalArgument" reason:@"No password or keyfile specified" userInfo:nil];
     }
-    
-    [kdbTree release];
-    [filename release];
-    [kdbPassword release];
 
-    filename = [newFilename copy];
-    dirty = NO;
+    self.dirty = NO;
+    self.file = newFile;
 
     NSStringEncoding passwordEncoding = [[AppSettings sharedInstance] passwordEncoding];
-    kdbPassword = [[KdbPassword alloc] initWithPassword:password
-                                       passwordEncoding:passwordEncoding
-                                                keyFile:keyFile];
+    self.kdbPassword = [[KdbPassword alloc] initWithPassword:password
+                                            passwordEncoding:passwordEncoding
+                                                     keyFile:keyFile];
 
-    self.kdbTree = [KdbReaderFactory load:filename withPassword:kdbPassword];
+    self.kdbTree = [KdbReaderFactory load:self.file.path withPassword:self.kdbPassword];
 }
 
 - (void)save {
-    if (dirty) {
-        dirty = NO;
-        [KdbWriterFactory persist:kdbTree file:filename withPassword:kdbPassword];
+    if (self.dirty) {
+        self.dirty = NO;
+        [KdbWriterFactory persist:self.kdbTree file:self.file.path withPassword:self.kdbPassword];
+        MKPDocumentProvider *documentProvider = nil;
+        switch (self.file.type) {
+            case DatabaseTypeLocal:
+                documentProvider = [[[LocalDocumentProvider alloc] init] autorelease];
+                break;
+            case DatabaseTypeDropbox:
+                documentProvider = [[[DropboxDocumentProvider alloc] init] autorelease];
+                break;
+        }
+        [documentProvider saveDocument:self.file];
     }
 }
 

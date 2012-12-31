@@ -98,6 +98,13 @@
     [self.restClient loadFile:remotePath intoPath:[self.localDir stringByAppendingPathComponent:database.filename]];
 }
 
+- (void)saveDocument:(DatabaseFile *)database {
+    NSString *dropboxDirectory = [[AppSettings sharedInstance] dropboxDirectory];
+
+    // FIXME we should store and provide the parentRev
+    [self.restClient uploadFile:database.filename toPath:dropboxDirectory withParentRev:nil fromPath:database.path];
+}
+
 - (NSError *)renameDocument:(DatabaseFile *)database to:(NSString *)newFilename {
     NSString *oldFilename = [database.filename copy];
     newFilename = [newFilename stringByAppendingPathExtension:[oldFilename pathExtension]];

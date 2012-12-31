@@ -17,23 +17,17 @@
 
 #import <Foundation/Foundation.h>
 #import "KdbLib.h"
+#import "DatabaseManager.h"
 
-@interface DatabaseDocument : NSObject {
-    KdbTree *kdbTree;
-    NSString *filename;
-    BOOL dirty;
-    
-    KdbPassword *kdbPassword;
-    
-    UIDocumentInteractionController *documentInteractionController;
-}
+@interface DatabaseDocument : NSObject
 
 @property (nonatomic, retain) KdbTree *kdbTree;
-@property (nonatomic, copy) NSString *filename;
+@property (nonatomic, retain) DatabaseFile *file;
+@property (nonatomic, readonly) NSString *filename;
 @property (nonatomic) BOOL dirty;
 @property (nonatomic, readonly) UIDocumentInteractionController *documentInteractionController;
 
-- (void)open:(NSString *)newFilename password:(NSString *)password keyFile:(NSString *)keyFile;
+- (void)open:(DatabaseFile *)newFile password:(NSString *)password keyFile:(NSString *)keyFile;
 - (void)save;
 
 - (void)searchGroup:(KdbGroup *)group searchText:(NSString *)searchText results:(NSMutableArray *)results;
