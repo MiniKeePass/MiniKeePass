@@ -53,9 +53,9 @@
         NSString *documentsDirectory = [paths objectAtIndex:0];
         _localDir = [[documentsDirectory stringByAppendingPathComponent:@"DropBox"] copy];
 
-        NSFileManager *fileManager= [NSFileManager defaultManager];
-        if(![fileManager fileExistsAtPath:self.localDir isDirectory:nil]) {
-            if(![fileManager createDirectoryAtPath:self.localDir withIntermediateDirectories:YES attributes:nil error:NULL]) {
+        NSFileManager *fileManager = [NSFileManager defaultManager];
+        if (![fileManager fileExistsAtPath:self.localDir isDirectory:nil]) {
+            if (![fileManager createDirectoryAtPath:self.localDir withIntermediateDirectories:YES attributes:nil error:NULL]) {
                 NSLog(@"Error: Create folder failed %@", self.localDir);
             }
         }
@@ -125,7 +125,7 @@
     return nil;
 }
 
-- (void) restClient:(DBRestClient *)client loadedMetadata:(DBMetadata *)metadata {
+- (void)restClient:(DBRestClient *)client loadedMetadata:(DBMetadata *)metadata {
     [_documents release];
     _documents = [[NSMutableArray arrayWithCapacity:metadata.contents.count] retain];
 
