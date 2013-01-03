@@ -44,7 +44,9 @@
 
         DBSession* dbSession = [DBSession sharedSession];
         if (dbSession == nil) {
-            dbSession = [[DBSession alloc] initWithAppKey:DROPBOX_APP_KEY appSecret:DROPBOX_APP_SECRET root:kDBRootDropbox];
+            dbSession = [[DBSession alloc] initWithAppKey:DROPBOX_APP_KEY
+                                                appSecret:DROPBOX_APP_SECRET
+                                                     root:kDBRootDropbox];
         }
         [DBSession setSharedSession:dbSession];
 
