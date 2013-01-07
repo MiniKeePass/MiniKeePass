@@ -691,6 +691,8 @@
 		68CE37F41404A86600E4A5E1 /* safariemail.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = safariemail.html; sourceTree = "<group>"; };
 		68CE868D14EDF4C300D34A61 /* LengthCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LengthCell.h; sourceTree = "<group>"; };
 		68CE868E14EDF4C300D34A61 /* LengthCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LengthCell.m; sourceTree = "<group>"; };
+		68D0C29B169A4F1C0002812A /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		68D0C29C169A4F1C0002812A /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		68D991E413F3EAAE00F6ED1F /* PasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasswordViewController.h; sourceTree = "<group>"; };
 		68D991E513F3EAAE00F6ED1F /* PasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PasswordViewController.m; sourceTree = "<group>"; };
 		68DDC3721405160300FC8BD8 /* keyfiles.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = keyfiles.html; sourceTree = "<group>"; };
@@ -1340,6 +1342,7 @@
 				ru,
 				it,
 				"zh-Hans",
+				"pt-BR",
 			);
 			mainGroup = 689DFFCA13A4273F005EBD36;
 			productRefGroup = 689DFFD613A4273F005EBD36 /* Products */;
@@ -1664,6 +1667,7 @@
 				52051E971524EAAE00D217B8 /* ru */,
 				52051E991524EB2600D217B8 /* it */,
 				EFD785BA15B3D02600B9A276 /* zh-Hans */,
+				68D0C29C169A4F1C0002812A /* pt-BR */,
 			);
 			name = Localizable.strings;
 			path = ..;
@@ -1678,6 +1682,7 @@
 				52051E981524EAD100D217B8 /* ru */,
 				52051E9A1524EB2D00D217B8 /* it */,
 				EFD785BB15B3D03F00B9A276 /* zh-Hans */,
+				68D0C29B169A4F1C0002812A /* pt-BR */,
 			);
 			name = InfoPlist.strings;
 			path = ..;
