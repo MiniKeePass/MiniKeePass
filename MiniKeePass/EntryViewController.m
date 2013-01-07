@@ -606,7 +606,7 @@
     pasteboard.string = cell.textField.text;
 
     // Figure out frame for copied label
-    NSString *copiedString = NSLocalizedString(@"Coppied", nil);
+    NSString *copiedString = NSLocalizedString(@"Copied", nil);
     UIFont *font = [UIFont boldSystemFontOfSize:18];
     CGSize size = [copiedString sizeWithFont:font];
     CGFloat x = (cell.frame.size.width - size.width) / 2.0;

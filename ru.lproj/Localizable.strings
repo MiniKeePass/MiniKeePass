@@ -50,6 +50,8 @@
 "Rename" = "Переименовать";
 "Database Name" = "Имя базы данных";
 "Last Modified" = "Последнее изменение";
+"Copied" = "Скопировано";
+"In Memory Protection" = "In Memory Protection"; // FIXME Needs translation
 
 // General Messages
 "Enter your PIN to unlock" = "Введите PIN-код для разблокировки";
@@ -85,12 +87,12 @@
 "Settings" = "Настройки";
 "PIN Enabled" = "PIN-код включен";
 "Lock Timeout" = "Тайм-аут блокировки";
-"Immediately" = "Мгновенно";
-"30 Seconds" = "30 секунд";
-"1 Minute" = "1 минута";
-"2 Minutes" = "2 минуты";
-"3 Minutes" = "3 минуты";
-"5 Minutes" = "5 минут";
+"Immediately" = "Сразу";
+"30 Seconds" = "30 сек.";
+"1 Minute" = "1 мин.";
+"2 Minutes" = "2 мин.";
+"3 Minutes" = "3 мин.";
+"5 Minutes" = "5 мин.";
 "Enabled" = "Включено";
 "Attempts" = "Попытки";
 "Close Enabled" = "Закрытие включено"; // Not sure on this one, will test after translation released
