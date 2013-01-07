@@ -56,7 +56,7 @@
 // General Messages
 "Enter your PIN to unlock" = "Введите PIN-код для разблокировки";
 "Enter the password and/or select the keyfile for the %@ database." = "Введите пароль и/или выберите файл ключа для базы данных %@.";
-"Enter a new name for the password database.  The correct file extension will automatically be appended." = "Введите новое имя для базы данных.  Правильное расширение файла будет автоматически добавлено.";
+"Enter a new name for the password database. The correct file extension will automatically be appended." = "Введите новое имя для базы данных. Правильное расширение файла будет автоматически добавлено.";
 
 // Error Messages
 "Group name is invalid" = "Имя группы недействительно";
