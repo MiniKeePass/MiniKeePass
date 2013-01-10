@@ -174,7 +174,7 @@
     _databaseDocument = [newDatabaseDocument retain];
     
     // Create and push on the root group view controller
-    GroupViewController *groupViewController = [[GroupViewController alloc] initWithStyle:UITableViewStylePlain];
+    GroupViewController *groupViewController = [[GroupViewController alloc] init];
     groupViewController.title = [[_databaseDocument.filename lastPathComponent] stringByDeletingPathExtension];
     groupViewController.group = _databaseDocument.kdbTree.root;
     [navigationController pushViewController:groupViewController animated:YES];
