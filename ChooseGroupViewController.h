@@ -29,7 +29,7 @@
 
 @protocol ChooseGroupDelegate <NSObject>
 
-- (BOOL)checkChoiceValidity:(KdbGroup *)chosenGroup success:(void (^)(void))success failure:(void (^)(NSString *errorMessage))failure;
+- (BOOL)checkChoiceValidity:(KdbGroup *)chosenGroup;
 - (void)chooseGroup:(KdbGroup *)chosenGroup;
 
 @end

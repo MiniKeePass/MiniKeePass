@@ -20,7 +20,7 @@
 #import "ChooseGroupViewController.h"
 #import "AppSettings.h"
 #import "RenameItemViewController.h"
-#import "Kdb4Node.h"
+#import "Kdb3Node.h"
 
 #define GROUPS_SECTION  0
 #define ENTRIES_SECTION 1
@@ -271,63 +271,50 @@
     [appDelegate.window.rootViewController presentModalViewController:navController animated:YES];
 }
 
-- (BOOL)checkChoiceValidity:(KdbGroup *)chosenGroup success:(void (^)(void))success failure:(void (^)(NSString *))failure {
+- (BOOL)checkChoiceValidity:(KdbGroup *)chosenGroup {
     BOOL validGroup = YES;
-    NSArray *indexPaths = self.tableView.indexPathsForSelectedRows;
-    NSString *errorMessage;
+    BOOL containsEntry = NO;
     KdbGroup *movingGroup;
     KdbGroup *movingEntry;
-    BOOL containsEntry = NO;
-    
+
     // Check if chosen group is a subgroup of any groups to be moved
-    int count = indexPaths.count;
-    NSIndexPath *indexPath;
-    for (int i = 0; i < count && validGroup; i++) {
-        indexPath = [indexPaths objectAtIndex:i];
+    for (NSIndexPath *indexPath in self.tableView.indexPathsForSelectedRows) {
         switch (indexPath.section) {
             case GROUPS_SECTION:
                 movingGroup = [groupsArray objectAtIndex:indexPath.row];
                 if (movingGroup.parent == chosenGroup) {
                     validGroup = NO;
-                    errorMessage = [NSString stringWithFormat:@"Items are already in %@", chosenGroup.name];
                 }
                 if ([movingGroup containsGroup:chosenGroup]) {
                     validGroup = NO;
-                    errorMessage = [NSString stringWithFormat:@"%@ cannot be moved into %@", movingGroup.name, chosenGroup.name];
                 }
                 break;
+                
             case ENTRIES_SECTION:
                 containsEntry = YES;
                 movingEntry = [enteriesArray objectAtIndex:indexPath.row];
                 if (movingEntry.parent == chosenGroup) {
                     validGroup = NO;
-                    errorMessage = [NSString stringWithFormat:@"Items are already in %@", chosenGroup.name];                    
                 }
                 break;
+        }
+
+        if (!validGroup) {
+            break;
         }
     }
     
     // Failed subgroup check
     if (!validGroup) {
-        if (failure) {
-            failure(errorMessage);
-        }
         return NO;
     }
     
     // Check if trying to move entries to top level in 1.x database
     KdbTree *tree = appDelegate.databaseDocument.kdbTree;
-    if (![tree isKindOfClass:[Kdb4Tree class]] && tree.root == chosenGroup && containsEntry) {
-        if (failure) {
-            failure(@"Cannot move entries to top level in 1.x database");
-        }
+    if (containsEntry && chosenGroup == tree.root && [tree isKindOfClass:[Kdb3Tree class]]) {
         return NO;
     }
     
-    // All tests passsed
-    if (success) {
-        success();
-    }
     return YES;
 }
 
