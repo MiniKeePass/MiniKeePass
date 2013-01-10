@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2012 Jason Rush and John Flanagan. All rights reserved.
+ * Copyright 2011-2013 Jason Rush and John Flanagan. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,14 +22,14 @@
 #import "UrlFieldCell.h"
 #import "TextViewCell.h"
 #import "PasswordFieldCell.h"
-#import "ImagesViewController.h"
+#import "ImageSelectionViewController.h"
 #import "KdbLib.h"
 #import "MiniKeePassAppDelegate.h"
 #import "PasswordGeneratorViewController.h"
 #import "StringFieldViewController.h"
 #import "AutorotatingTableViewController.h"
 
-@interface EntryViewController : AutorotatingTableViewController <UIGestureRecognizerDelegate, ImagesViewControllerDelegate, TextFieldCellDelegate, PasswordGeneratorDelegate, StringFieldViewDelegate>
+@interface EntryViewController : AutorotatingTableViewController <UIGestureRecognizerDelegate, ImageSelectionViewDelegate, TextFieldCellDelegate, PasswordGeneratorDelegate, StringFieldViewDelegate>
 
 @property (nonatomic, assign) NSUInteger selectedImageIndex;
 @property (nonatomic, retain) KdbEntry *entry;

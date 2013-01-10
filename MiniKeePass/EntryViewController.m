@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2012 Jason Rush and John Flanagan. All rights reserved.
+ * Copyright 2011-2013 Jason Rush and John Flanagan. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -51,6 +51,13 @@
         self.tableView.allowsSelectionDuringEditing = YES;
 
         self.navigationItem.rightBarButtonItem = self.editButtonItem;
+
+        UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Entry", nil)
+                                                                              style:UIBarButtonItemStyleBordered
+                                                                             target:nil
+                                                                             action:nil];
+        self.navigationItem.backBarButtonItem = backBarButtonItem;
+        [backBarButtonItem release];
 
         appDelegate = (MiniKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
 
@@ -200,7 +207,7 @@
     // Save the database or reset the entry
     if (editing == NO && !canceled) {
         self.entry.title = titleCell.textField.text;
-        self.entry.image = self.selectedImageIndex;
+        self.entry.image = _selectedImageIndex;
         self.entry.username = usernameCell.textField.text;
         self.entry.password = passwordCell.textField.text;
         self.entry.url = urlCell.textField.text;
@@ -682,16 +689,16 @@
 
 - (void)imageButtonPressed {
     if (self.tableView.isEditing) {
-        ImagesViewController *imagesViewController = [[ImagesViewController alloc] init];
-        imagesViewController.delegate = self;
-        [imagesViewController setSelectedImage:self.selectedImageIndex];
-        [self.navigationController pushViewController:imagesViewController animated:YES];
-        [imagesViewController release];
+        ImageSelectionViewController *imageSelectionViewController = [[ImageSelectionViewController alloc] init];
+        imageSelectionViewController.imageSelectionView.delegate = self;
+        imageSelectionViewController.imageSelectionView.selectedImageIndex = _selectedImageIndex;
+        [self.navigationController pushViewController:imageSelectionViewController animated:YES];
+        [imageSelectionViewController release];
     }
 }
 
-- (void)imagesViewController:(ImagesViewController *)controller imageSelected:(NSUInteger)index {
-    [self setSelectedImageIndex:index];
+- (void)imageSelectionView:(ImageSelectionView *)imageSelectionView selectedImageIndex:(NSUInteger)imageIndex {
+    [self setSelectedImageIndex:imageIndex];
 }
 
 #pragma mark - Password Display
