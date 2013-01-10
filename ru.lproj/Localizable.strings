@@ -31,6 +31,7 @@
 "Edit Group" = "Изменить группу";
 "Title" = "Название";
 "Image" = "Значок";
+"Images" = "Images"; // FIXME Needs translation
 "Username" = "Логин";
 "Password" = "Пароль";
 "Confirm Password" = "Подтв. пароль";
@@ -47,11 +48,12 @@
 "Version 2.x" = "Версия 2.x";
 "None" = "Нет";
 "Name" = "Имя";
+"Value" = "Значение";
 "Rename" = "Переименовать";
 "Database Name" = "Имя базы данных";
 "Last Modified" = "Последнее изменение";
 "Copied" = "Скопировано";
-"In Memory Protection" = "In Memory Protection"; // FIXME Needs translation
+"In Memory Protection" = "Защита в памяти";
 
 // General Messages
 "Enter your PIN to unlock" = "Введите PIN-код для разблокировки";
