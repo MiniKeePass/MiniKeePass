@@ -31,7 +31,7 @@
 "Edit Group" = "Изменить группу";
 "Title" = "Название";
 "Image" = "Значок";
-"Images" = "Images"; // FIXME Needs translation
+"Images" = "Значки";
 "Username" = "Логин";
 "Password" = "Пароль";
 "Confirm Password" = "Подтв. пароль";
