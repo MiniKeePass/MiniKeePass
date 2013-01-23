@@ -49,11 +49,15 @@
 "None" = "Нет";
 "Name" = "Имя";
 "Value" = "Значение";
+"Delete" = "Удалить";
+"Move" = "Переместить";
 "Rename" = "Переименовать";
 "Database Name" = "Имя базы данных";
 "Last Modified" = "Последнее изменение";
 "Copied" = "Скопировано";
 "In Memory Protection" = "Защита в памяти";
+"Custom Fields" = "Пользовательские поля";
+"Add new..." = "Добавить новое...";
 
 // General Messages
 "Enter your PIN to unlock" = "Введите PIN-код для разблокировки";
