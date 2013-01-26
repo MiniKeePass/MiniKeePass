@@ -26,7 +26,8 @@ German Translation - Florian Holzapfel<br />
 Japanese Translation - Katherine Lake<br />
 Russian Translation - Roman Azarenko<br />
 Italian Translation - Emanuele Di Vita<br />
-Simplified Chinese Translation - Caspar Zhang and David Wong
+Simplified Chinese Translation - Caspar Zhang and David Wong<br />
+French Translation - Patrice Lachance<br />
 
 Nuvola Icons
 Copyright (c)  2003-2004  David Vignoni. All rights reserved.
