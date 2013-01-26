@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4E8C169316B3E871004195A1 /* fr-createdb.html in Resources */ = {isa = PBXBuildFile; fileRef = 4E8C168E16B3E871004195A1 /* fr-createdb.html */; };
+		4E8C169416B3E871004195A1 /* fr-dropbox.html in Resources */ = {isa = PBXBuildFile; fileRef = 4E8C168F16B3E871004195A1 /* fr-dropbox.html */; };
+		4E8C169516B3E871004195A1 /* fr-itunes.html in Resources */ = {isa = PBXBuildFile; fileRef = 4E8C169016B3E871004195A1 /* fr-itunes.html */; };
+		4E8C169616B3E871004195A1 /* fr-keyfiles.html in Resources */ = {isa = PBXBuildFile; fileRef = 4E8C169116B3E871004195A1 /* fr-keyfiles.html */; };
+		4E8C169716B3E871004195A1 /* fr-safariemail.html in Resources */ = {isa = PBXBuildFile; fileRef = 4E8C169216B3E871004195A1 /* fr-safariemail.html */; };
+		4E8C169A16B3E888004195A1 /* MiniKeePass-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 689DFFE113A4273F005EBD36 /* MiniKeePass-Info.plist */; };
 		5248970C1641961600D96AD5 /* ImageButtonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 526FC0FE15FF9269001294BB /* ImageButtonCell.m */; };
 		52491D0C14D8F3FB00F8CBC8 /* de-createdb.html in Resources */ = {isa = PBXBuildFile; fileRef = 52491D0714D8F3FB00F8CBC8 /* de-createdb.html */; };
 		52491D0D14D8F3FB00F8CBC8 /* de-dropbox.html in Resources */ = {isa = PBXBuildFile; fileRef = 52491D0814D8F3FB00F8CBC8 /* de-dropbox.html */; };
@@ -296,6 +302,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4E8C168E16B3E871004195A1 /* fr-createdb.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "fr-createdb.html"; sourceTree = "<group>"; };
+		4E8C168F16B3E871004195A1 /* fr-dropbox.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "fr-dropbox.html"; sourceTree = "<group>"; };
+		4E8C169016B3E871004195A1 /* fr-itunes.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "fr-itunes.html"; sourceTree = "<group>"; };
+		4E8C169116B3E871004195A1 /* fr-keyfiles.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "fr-keyfiles.html"; sourceTree = "<group>"; };
+		4E8C169216B3E871004195A1 /* fr-safariemail.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "fr-safariemail.html"; sourceTree = "<group>"; };
+		4E8C169816B3E888004195A1 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		4E8C169916B3E888004195A1 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		52051E971524EAAE00D217B8 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		52051E981524EAD100D217B8 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		52051E991524EB2600D217B8 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -679,7 +692,7 @@
 		689DFFD913A4273F005EBD36 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		689DFFDB13A4273F005EBD36 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		689DFFDD13A4273F005EBD36 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		689DFFE113A4273F005EBD36 /* MiniKeePass-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "MiniKeePass-Info.plist"; sourceTree = "<group>"; };
+		689DFFE113A4273F005EBD36 /* MiniKeePass-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "MiniKeePass-Info.plist"; sourceTree = "<group>"; };
 		689DFFE513A4273F005EBD36 /* MiniKeePass-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MiniKeePass-Prefix.pch"; sourceTree = "<group>"; };
 		689DFFE613A4273F005EBD36 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		68A3E1AD13A8C9D1006881CA /* FormViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FormViewController.h; sourceTree = "<group>"; };
@@ -729,6 +742,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4E8C168D16B3E871004195A1 /* fr */ = {
+			isa = PBXGroup;
+			children = (
+				4E8C168E16B3E871004195A1 /* fr-createdb.html */,
+				4E8C168F16B3E871004195A1 /* fr-dropbox.html */,
+				4E8C169016B3E871004195A1 /* fr-itunes.html */,
+				4E8C169116B3E871004195A1 /* fr-keyfiles.html */,
+				4E8C169216B3E871004195A1 /* fr-safariemail.html */,
+			);
+			path = fr;
+			sourceTree = "<group>";
+		};
 		52370CB314F2CDC3003DC64C /* Lock Screen */ = {
 			isa = PBXGroup;
 			children = (
@@ -814,6 +839,7 @@
 		689D021313A42B63005EBD36 /* help */ = {
 			isa = PBXGroup;
 			children = (
+				4E8C168D16B3E871004195A1 /* fr */,
 				52E43F4615B59C880029F979 /* ru */,
 				52491D0614D8F3FB00F8CBC8 /* de */,
 				52A177BB13EB698E00CEEFCE /* createdb.html */,
@@ -1343,6 +1369,7 @@
 				it,
 				"zh-Hans",
 				"pt-BR",
+				fr,
 			);
 			mainGroup = 689DFFCA13A4273F005EBD36;
 			productRefGroup = 689DFFD613A4273F005EBD36 /* Products */;
@@ -1563,6 +1590,12 @@
 				52E3342E161E0F310049F4A1 /* stretchme@2x.png in Resources */,
 				525B7C3916481731004DC489 /* arrow.png in Resources */,
 				525B7C3A16481731004DC489 /* arrow@2x.png in Resources */,
+				4E8C169316B3E871004195A1 /* fr-createdb.html in Resources */,
+				4E8C169416B3E871004195A1 /* fr-dropbox.html in Resources */,
+				4E8C169516B3E871004195A1 /* fr-itunes.html in Resources */,
+				4E8C169616B3E871004195A1 /* fr-keyfiles.html in Resources */,
+				4E8C169716B3E871004195A1 /* fr-safariemail.html in Resources */,
+				4E8C169A16B3E888004195A1 /* MiniKeePass-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1668,6 +1701,7 @@
 				52051E991524EB2600D217B8 /* it */,
 				EFD785BA15B3D02600B9A276 /* zh-Hans */,
 				68D0C29C169A4F1C0002812A /* pt-BR */,
+				4E8C169916B3E888004195A1 /* fr */,
 			);
 			name = Localizable.strings;
 			path = ..;
@@ -1683,6 +1717,7 @@
 				52051E9A1524EB2D00D217B8 /* it */,
 				EFD785BB15B3D03F00B9A276 /* zh-Hans */,
 				68D0C29B169A4F1C0002812A /* pt-BR */,
+				4E8C169816B3E888004195A1 /* fr */,
 			);
 			name = InfoPlist.strings;
 			path = ..;
