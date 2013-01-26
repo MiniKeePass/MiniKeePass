@@ -12,7 +12,6 @@
 		4E8C169516B3E871004195A1 /* fr-itunes.html in Resources */ = {isa = PBXBuildFile; fileRef = 4E8C169016B3E871004195A1 /* fr-itunes.html */; };
 		4E8C169616B3E871004195A1 /* fr-keyfiles.html in Resources */ = {isa = PBXBuildFile; fileRef = 4E8C169116B3E871004195A1 /* fr-keyfiles.html */; };
 		4E8C169716B3E871004195A1 /* fr-safariemail.html in Resources */ = {isa = PBXBuildFile; fileRef = 4E8C169216B3E871004195A1 /* fr-safariemail.html */; };
-		4E8C169A16B3E888004195A1 /* MiniKeePass-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 689DFFE113A4273F005EBD36 /* MiniKeePass-Info.plist */; };
 		5248970C1641961600D96AD5 /* ImageButtonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 526FC0FE15FF9269001294BB /* ImageButtonCell.m */; };
 		52491D0C14D8F3FB00F8CBC8 /* de-createdb.html in Resources */ = {isa = PBXBuildFile; fileRef = 52491D0714D8F3FB00F8CBC8 /* de-createdb.html */; };
 		52491D0D14D8F3FB00F8CBC8 /* de-dropbox.html in Resources */ = {isa = PBXBuildFile; fileRef = 52491D0814D8F3FB00F8CBC8 /* de-dropbox.html */; };
@@ -1595,7 +1594,6 @@
 				4E8C169516B3E871004195A1 /* fr-itunes.html in Resources */,
 				4E8C169616B3E871004195A1 /* fr-keyfiles.html in Resources */,
 				4E8C169716B3E871004195A1 /* fr-safariemail.html in Resources */,
-				4E8C169A16B3E888004195A1 /* MiniKeePass-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
