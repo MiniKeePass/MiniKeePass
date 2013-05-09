@@ -298,7 +298,7 @@ enum {
                 TextEntryController *textEntryController = [[TextEntryController alloc] initWithStyle:UITableViewStyleGrouped];
                 textEntryController.title = NSLocalizedString(@"Rename", nil);
                 textEntryController.headerTitle = NSLocalizedString(@"Database Name", nil);
-                textEntryController.footerTitle = NSLocalizedString(@"Enter a new name for the password database.  The correct file extension will automatically be appended.", nil);
+                textEntryController.footerTitle = NSLocalizedString(@"Enter a new name for the password database. The correct file extension will automatically be appended.", nil);
                 textEntryController.textEntryDelegate = self;
                 textEntryController.textField.placeholder = NSLocalizedString(@"Name", nil);
                 

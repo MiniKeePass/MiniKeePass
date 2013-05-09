@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2012 Jason Rush and John Flanagan. All rights reserved.
+ * Copyright 2011-2013 Jason Rush and John Flanagan. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,11 +17,17 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ImageContainerView : UIView {
-    NSMutableArray *imageViews;
-    UIImageView *selectedImageView;
-}
+@protocol ImageSelectionViewDelegate;
 
-- (void)setSelectedImage:(NSUInteger)index;
+@interface ImageSelectionView : UIView
+
+@property (nonatomic, assign) NSUInteger selectedImageIndex;
+@property (nonatomic, assign) id<ImageSelectionViewDelegate> delegate;
+
+@end
+
+@protocol ImageSelectionViewDelegate <NSObject>
+
+- (void)imageSelectionView:(ImageSelectionView *)imageSelectionView selectedImageIndex:(NSUInteger)selectedImageIndex;
 
 @end

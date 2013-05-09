@@ -72,7 +72,7 @@
 - (void)okPressed:(id)sender {
     if (self.keyTextField.text.length == 0) {
         NSString *title = NSLocalizedString(@"Name cannot be empty", nil);
-        NSString *ok = NSLocalizedString(@"Ok", nil);
+        NSString *ok = NSLocalizedString(@"OK", nil);
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:nil delegate:nil cancelButtonTitle:ok otherButtonTitles:nil];
         [alert show];
         [alert release];

@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2012 Jason Rush and John Flanagan. All rights reserved.
+ * Copyright 2011-2013 Jason Rush and John Flanagan. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,14 +17,10 @@
 
 #import <UIKit/UIKit.h>
 #import "FormViewController.h"
-#import "ImagesViewController.h"
+#import "ImageSelectionViewController.h"
 #import "ImageButtonCell.h"
 
-@interface EditGroupViewController : FormViewController <ImagesViewControllerDelegate> {
-    UITextField *nameTextField;
-    ImageButtonCell *imageButtonCell;
-    NSUInteger selectedImageIndex;
-}
+@interface EditGroupViewController : FormViewController <ImageSelectionViewDelegate>
 
 @property (nonatomic, readonly) UITextField *nameTextField;
 @property (nonatomic, assign) NSUInteger selectedImageIndex;

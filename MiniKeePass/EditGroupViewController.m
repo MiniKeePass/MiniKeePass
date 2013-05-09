@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2012 Jason Rush and John Flanagan. All rights reserved.
+ * Copyright 2011-2013 Jason Rush and John Flanagan. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,55 +18,56 @@
 #import "EditGroupViewController.h"
 #import "MiniKeePassAppDelegate.h"
 
-@implementation EditGroupViewController
+@interface EditGroupViewController () {
+    ImageButtonCell *imageButtonCell;
+}
+@end
 
-@synthesize nameTextField;
+@implementation EditGroupViewController
 
 - (id)initWithStyle:(UITableViewStyle)style {
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
         self.title = NSLocalizedString(@"Edit Group", nil);
         
-        nameTextField = [[UITextField alloc] init];
-        nameTextField.placeholder = NSLocalizedString(@"Name", nil);
-        nameTextField.delegate = self;
-        nameTextField.returnKeyType = UIReturnKeyDone;
-        nameTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
+        _nameTextField = [[UITextField alloc] init];
+        _nameTextField.placeholder = NSLocalizedString(@"Name", nil);
+        _nameTextField.delegate = self;
+        _nameTextField.returnKeyType = UIReturnKeyDone;
+        _nameTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
         
         imageButtonCell = [[ImageButtonCell alloc] initWithLabel:NSLocalizedString(@"Image", nil)];
-        [imageButtonCell.imageButton addTarget:self action:@selector(imageButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+        [imageButtonCell.imageButton addTarget:self
+                                        action:@selector(imageButtonPressed)
+                              forControlEvents:UIControlEventTouchUpInside];
         
-        self.controls = [NSArray arrayWithObjects:nameTextField, imageButtonCell, nil];
+        self.controls = [NSArray arrayWithObjects:_nameTextField, imageButtonCell, nil];
     }
     return self;
 }
 
 - (void)dealloc {
-    [nameTextField release];
+    [_nameTextField release];
     [super dealloc];
 }
 
-- (NSUInteger)selectedImageIndex {
-    return selectedImageIndex;
-}
-
-- (void)setSelectedImageIndex:(NSUInteger)index {
-    selectedImageIndex = index;
+- (void)setSelectedImageIndex:(NSUInteger)selectedImageIndex {
+    _selectedImageIndex = selectedImageIndex;
     
-    MiniKeePassAppDelegate *appDelegate = (MiniKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
-    [imageButtonCell.imageButton setImage:[appDelegate loadImage:index] forState:UIControlStateNormal];
+    MiniKeePassAppDelegate *appDelegate = (MiniKeePassAppDelegate *)[[UIApplication sharedApplication] delegate];
+    [imageButtonCell.imageButton setImage:[appDelegate loadImage:_selectedImageIndex] forState:UIControlStateNormal];
 }
 
 - (void)imageButtonPressed {
-    ImagesViewController *imagesViewController = [[ImagesViewController alloc] init];
-    imagesViewController.delegate = self;
-    [imagesViewController setSelectedImage:selectedImageIndex];
-    [self.navigationController pushViewController:imagesViewController animated:YES];
-    [imagesViewController release];
+    ImageSelectionViewController *imageSelectionViewController = [[ImageSelectionViewController alloc] init];
+    imageSelectionViewController.imageSelectionView.delegate = self;
+    imageSelectionViewController.imageSelectionView.selectedImageIndex = _selectedImageIndex;
+    [self.navigationController pushViewController:imageSelectionViewController animated:YES];
+    [imageSelectionViewController release];
 }
 
-- (void)imagesViewController:(ImagesViewController *)controller imageSelected:(NSUInteger)index {
-    [self setSelectedImageIndex:index];
+- (void)imageSelectionView:(ImageSelectionView *)imageSelectionView selectedImageIndex:(NSUInteger)imageIndex {
+    self.selectedImageIndex = imageIndex;
 }
 
 @end

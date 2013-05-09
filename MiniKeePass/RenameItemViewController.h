@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2012 Jason Rush and John Flanagan. All rights reserved.
+ * Copyright 2011-2013 Jason Rush and John Flanagan. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@ typedef enum {
     RenameItemTypeEntry
 } RenameItemType;
 
-@interface RenameItemViewController : EditGroupViewController <ImagesViewControllerDelegate>
+@interface RenameItemViewController : EditGroupViewController <ImageSelectionViewDelegate>
 
 @property (nonatomic, assign) RenameItemType type;
 
