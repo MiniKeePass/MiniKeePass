@@ -66,6 +66,9 @@
         [notificationCenter addObserver:self selector:@selector(handlePasteboardNotification:) name:UIPasteboardChangedNotification object:nil];
     }
 
+    // Check file protection
+    [self checkFileProtection];
+
     [LockScreenController present];
 
     return YES;
@@ -93,6 +96,9 @@
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
+    // Check file protection
+    [self checkFileProtection];
+
     // Check if we're supposed to open a file
     if (self.fileToOpen != nil) {
         // Close the current database
@@ -137,14 +143,17 @@
     NSString *documentsDirectory = [paths objectAtIndex:0];
     NSString *path = [documentsDirectory stringByAppendingPathComponent:filename];
     
-    NSURL *newUrl = [NSURL fileURLWithPath:path];
-    
     // Move input file into documents directory
     NSFileManager *fileManager = [NSFileManager defaultManager];
-    [fileManager removeItemAtURL:newUrl error:nil];
-    [fileManager moveItemAtURL:url toURL:newUrl error:nil];
+    [fileManager removeItemAtPath:path error:nil];
+    [fileManager moveItemAtURL:url toURL:[NSURL fileURLWithPath:path] error:nil];
+
+    // Set file protection on the new file
+    [fileManager setAttributes:@{NSFileProtectionKey:NSFileProtectionComplete} ofItemAtPath:path error:nil];
+
+    // Delete the Inbox folder if it exists
     [fileManager removeItemAtPath:[documentsDirectory stringByAppendingPathComponent:@"Inbox"] error:nil];
-    
+
     // Store the filename to open if it's a database
     if ([filename hasSuffix:@".kdb"] || [filename hasSuffix:@".kdbx"]) {
         self.fileToOpen = filename;
@@ -214,6 +223,34 @@
     // Delete all the files in the Documents directory
     for (NSString *file in files) {
         [fileManager removeItemAtPath:[documentsDirectory stringByAppendingPathComponent:file] error:nil];
+    }
+}
+
+- (void)checkFileProtection {
+    // Get the document's directory
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+
+    // Get the contents of the documents directory
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSArray *dirContents = [fileManager contentsOfDirectoryAtPath:documentsDirectory error:nil];
+
+    // Strip out all the directories
+    for (NSString *file in dirContents) {
+        if (![file hasPrefix:@"."]) {
+            NSString *path = [documentsDirectory stringByAppendingPathComponent:file];
+
+            BOOL dir = NO;
+            [fileManager fileExistsAtPath:path isDirectory:&dir];
+            if (!dir) {
+                // Make sure file protecten is turned on
+                NSDictionary *attributes = [fileManager attributesOfItemAtPath:path error:nil];
+                NSString *fileProtection = [attributes valueForKey:NSFileProtectionKey];
+                if (![fileProtection isEqualToString:NSFileProtectionComplete]) {
+                    [fileManager setAttributes:@{NSFileProtectionKey:NSFileProtectionComplete} ofItemAtPath:path error:nil];
+                }
+            }
+        }
     }
 }
 
