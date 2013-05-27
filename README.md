@@ -25,9 +25,11 @@ Copyright 2011 Jason Rush and John Flanagan. All rights reserved.
 German Translation - Florian Holzapfel<br />
 Japanese Translation - Katherine Lake<br />
 Russian Translation - Roman Azarenko<br />
-Italian Translation - Emanuele Di Vita<br />
+Italian Translation - Emanuele Di Vita and Gabriele Cirulli<br />
 Simplified Chinese Translation - Caspar Zhang and David Wong<br />
 French Translation - Patrice Lachance<br />
+
+MiniKeePass Icon - Gabriele Cirulli
 
 Nuvola Icons
 Copyright (c)  2003-2004  David Vignoni. All rights reserved.
