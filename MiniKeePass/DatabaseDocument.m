@@ -92,7 +92,9 @@
     }
 
     for (KdbGroup *g in group.groups) {
-        [self searchGroup:g searchText:searchText results:results];
+        if (![g.name isEqualToString:@"Backup"] && ![g.name isEqualToString:NSLocalizedString(@"Backup", nil)]) {
+            [self searchGroup:g searchText:searchText results:results];
+        }
     }
 }
 
