@@ -140,6 +140,9 @@
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
 
+    // Hide the password HUD if it's visible
+    [MBProgressHUD hideHUDForView:self.view animated:NO];
+
     // Remove listeners from the keyboard
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
@@ -704,7 +707,7 @@
 #pragma mark - Password Display
 
 - (void)showPasswordPressed {
-	MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+	MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
 
 	hud.mode = MBProgressHUDModeText;
     hud.detailsLabelText = self.entry.password;
