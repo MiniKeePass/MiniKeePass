@@ -18,7 +18,7 @@
 #import <AudioToolbox/AudioToolbox.h>
 #import <QuartzCore/QuartzCore.h>
 #import "MiniKeePassAppDelegate.h"
-#import "SFHFKeychainUtils.h"
+#import "KeychainUtils.h"
 #import "LockScreenController.h"
 #import "AppSettings.h"
 
@@ -129,7 +129,7 @@
 }
 
 - (void)pinViewController:(PinViewController *)controller pinEntered:(NSString *)pin {
-    NSString *validPin = [SFHFKeychainUtils getPasswordForUsername:@"PIN" andServiceName:@"com.jflan.MiniKeePass.pin" error:nil];
+    NSString *validPin = [KeychainUtils stringForKey:@"PIN" andServiceName:@"com.jflan.MiniKeePass.pin"];
     if (validPin == nil) {
         // Delete all data
         [appDelegate deleteAllData];

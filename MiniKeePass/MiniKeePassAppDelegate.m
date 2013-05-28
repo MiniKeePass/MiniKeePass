@@ -21,7 +21,7 @@
 #import "EntryViewController.h"
 #import "AppSettings.h"
 #import "DatabaseManager.h"
-#import "SFHFKeychainUtils.h"
+#import "KeychainUtils.h"
 #import "LockScreenController.h"
 
 @interface MiniKeePassAppDelegate ()  {
@@ -208,11 +208,11 @@
     [appSettings setPinEnabled:NO];
     
     // Delete the PIN from the keychain
-    [SFHFKeychainUtils deleteItemForUsername:@"PIN" andServiceName:@"com.jflan.MiniKeePass.pin" error:nil];
+    [KeychainUtils deleteStringForKey:@"PIN" andServiceName:@"com.jflan.MiniKeePass.pin"];
     
     // Delete all database passwords from the keychain
-    [SFHFKeychainUtils deleteAllItemForServiceName:@"com.jflan.MiniKeePass.passwords" error:nil];
-    [SFHFKeychainUtils deleteAllItemForServiceName:@"com.jflan.MiniKeePass.keyfiles" error:nil];
+    [KeychainUtils deleteAllForServiceName:@"com.jflan.MiniKeePass.passwords"];
+    [KeychainUtils deleteAllForServiceName:@"com.jflan.MiniKeePass.keyfiles"];
     
     // Get the files in the Documents directory
     NSFileManager *fileManager = [NSFileManager defaultManager];

@@ -21,7 +21,7 @@
 #import "DatabaseManager.h"
 #import "NewKdbViewController.h"
 #import "AppSettings.h"
-#import "SFHFKeychainUtils.h"
+#import "KeychainUtils.h"
 #import "Kdb3Writer.h"
 #import "Kdb4Writer.h"
 
@@ -294,8 +294,8 @@ enum {
             [databaseFiles removeObject:filename];
 
             // Delete the keychain entries for the old filename
-            [SFHFKeychainUtils deleteItemForUsername:filename andServiceName:@"com.jflan.MiniKeePass.passwords" error:nil];
-            [SFHFKeychainUtils deleteItemForUsername:filename andServiceName:@"com.jflan.MiniKeePass.keychains" error:nil];
+            [KeychainUtils deleteStringForKey:filename andServiceName:@"com.jflan.MiniKeePass.passwords"];
+            [KeychainUtils deleteStringForKey:filename andServiceName:@"com.jflan.MiniKeePass.keychains"];
             break;
         case SECTION_KEYFILE:
             filename = [[keyFiles objectAtIndex:indexPath.row] copy];
@@ -358,16 +358,16 @@ enum {
     [databaseFiles replaceObjectAtIndex:indexPath.row withObject:newFilename];
     
     // Load the password and keyfile from the keychain under the old filename
-    NSString *password = [SFHFKeychainUtils getPasswordForUsername:oldFilename andServiceName:@"com.jflan.MiniKeePass.passwords" error:nil];
-    NSString *keyFile = [SFHFKeychainUtils getPasswordForUsername:oldFilename andServiceName:@"com.jflan.MiniKeePass.keyfiles" error:nil];
+    NSString *password = [KeychainUtils stringForKey:oldFilename andServiceName:@"com.jflan.MiniKeePass.passwords"];
+    NSString *keyFile = [KeychainUtils stringForKey:oldFilename andServiceName:@"com.jflan.MiniKeePass.keyfiles"];
     
     // Store the password and keyfile into the keychain under the new filename
-    [SFHFKeychainUtils storeUsername:newFilename andPassword:password forServiceName:@"com.jflan.MiniKeePass.passwords" updateExisting:YES error:nil];
-    [SFHFKeychainUtils storeUsername:newFilename andPassword:keyFile forServiceName:@"com.jflan.MiniKeePass.keyfiles" updateExisting:YES error:nil];
+    [KeychainUtils setString:password forKey:newFilename andServiceName:@"com.jflan.MiniKeePass.passwords"];
+    [KeychainUtils setString:keyFile forKey:newFilename andServiceName:@"com.jflan.MiniKeePass.keyfiles"];
     
     // Delete the keychain entries for the old filename
-    [SFHFKeychainUtils deleteItemForUsername:oldFilename andServiceName:@"com.jflan.MiniKeePass.passwords" error:nil];
-    [SFHFKeychainUtils deleteItemForUsername:oldFilename andServiceName:@"com.jflan.MiniKeePass.keychains" error:nil];
+    [KeychainUtils deleteStringForKey:oldFilename andServiceName:@"com.jflan.MiniKeePass.passwords"];
+    [KeychainUtils deleteStringForKey:oldFilename andServiceName:@"com.jflan.MiniKeePass.keyfiles"];
     
     [oldFilename release];
     
@@ -464,8 +464,7 @@ enum {
         
         // Store the password in the keychain
         if ([[AppSettings sharedInstance] rememberPasswordsEnabled]) {
-            NSError *error;
-            [SFHFKeychainUtils storeUsername:filename andPassword:password1 forServiceName:@"com.jflan.MiniKeePass.passwords" updateExisting:YES error:&error];
+            [KeychainUtils setString:password1 forKey:filename andServiceName:@"com.jflan.MiniKeePass.passwords"];
         }
         
         // Add the file to the list of files

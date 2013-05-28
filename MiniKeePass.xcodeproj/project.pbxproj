@@ -249,7 +249,7 @@
 		689D03EB13A42B63005EBD36 /* DDXMLDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D02FC13A42B63005EBD36 /* DDXMLDocument.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		689D03EC13A42B63005EBD36 /* DDXMLElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D02FE13A42B63005EBD36 /* DDXMLElement.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		689D03ED13A42B63005EBD36 /* DDXMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D030013A42B63005EBD36 /* DDXMLNode.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
-		689D041313A42B63005EBD36 /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D032B13A42B63005EBD36 /* SFHFKeychainUtils.m */; };
+		689D041313A42B63005EBD36 /* KeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D032B13A42B63005EBD36 /* KeychainUtils.m */; };
 		689D044E13A42C82005EBD36 /* ChoiceCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D042513A42C81005EBD36 /* ChoiceCell.m */; };
 		689D044F13A42C82005EBD36 /* DatabaseDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D042713A42C81005EBD36 /* DatabaseDocument.m */; };
 		689D045013A42C82005EBD36 /* DatabaseManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D042913A42C81005EBD36 /* DatabaseManager.m */; };
@@ -645,8 +645,8 @@
 		689D032613A42B63005EBD36 /* sample.2.13.kdbx */ = {isa = PBXFileReference; lastKnownFileType = file; path = sample.2.13.kdbx; sourceTree = "<group>"; };
 		689D032713A42B63005EBD36 /* sample.2.14.kdbx */ = {isa = PBXFileReference; lastKnownFileType = file; path = sample.2.14.kdbx; sourceTree = "<group>"; };
 		689D032813A42B63005EBD36 /* sample.2.15.kdbx */ = {isa = PBXFileReference; lastKnownFileType = file; path = sample.2.15.kdbx; sourceTree = "<group>"; };
-		689D032A13A42B63005EBD36 /* SFHFKeychainUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFHFKeychainUtils.h; sourceTree = "<group>"; };
-		689D032B13A42B63005EBD36 /* SFHFKeychainUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFHFKeychainUtils.m; sourceTree = "<group>"; };
+		689D032A13A42B63005EBD36 /* KeychainUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeychainUtils.h; sourceTree = "<group>"; };
+		689D032B13A42B63005EBD36 /* KeychainUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeychainUtils.m; sourceTree = "<group>"; };
 		689D042413A42C81005EBD36 /* ChoiceCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChoiceCell.h; sourceTree = "<group>"; };
 		689D042513A42C81005EBD36 /* ChoiceCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChoiceCell.m; sourceTree = "<group>"; };
 		689D042613A42C81005EBD36 /* DatabaseDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DatabaseDocument.h; sourceTree = "<group>"; };
@@ -1152,8 +1152,8 @@
 		689D032913A42B63005EBD36 /* Security */ = {
 			isa = PBXGroup;
 			children = (
-				689D032A13A42B63005EBD36 /* SFHFKeychainUtils.h */,
-				689D032B13A42B63005EBD36 /* SFHFKeychainUtils.m */,
+				689D032A13A42B63005EBD36 /* KeychainUtils.h */,
+				689D032B13A42B63005EBD36 /* KeychainUtils.m */,
 			);
 			path = Security;
 			sourceTree = "<group>";
@@ -1628,7 +1628,7 @@
 				689D03EB13A42B63005EBD36 /* DDXMLDocument.m in Sources */,
 				689D03EC13A42B63005EBD36 /* DDXMLElement.m in Sources */,
 				689D03ED13A42B63005EBD36 /* DDXMLNode.m in Sources */,
-				689D041313A42B63005EBD36 /* SFHFKeychainUtils.m in Sources */,
+				689D041313A42B63005EBD36 /* KeychainUtils.m in Sources */,
 				689D044E13A42C82005EBD36 /* ChoiceCell.m in Sources */,
 				689D044F13A42C82005EBD36 /* DatabaseDocument.m in Sources */,
 				689D045013A42C82005EBD36 /* DatabaseManager.m in Sources */,

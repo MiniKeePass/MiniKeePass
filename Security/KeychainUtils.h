@@ -29,14 +29,11 @@
 
 #import <UIKit/UIKit.h>
 
+@interface KeychainUtils : NSObject
 
-@interface SFHFKeychainUtils : NSObject {
-  
-}
-
-+ (NSString *) getPasswordForUsername: (NSString *) username andServiceName: (NSString *) serviceName error: (NSError **) error;
-+ (BOOL) storeUsername: (NSString *) username andPassword: (NSString *) password forServiceName: (NSString *) serviceName updateExisting: (BOOL) updateExisting error: (NSError **) error;
-+ (BOOL) deleteItemForUsername: (NSString *) username andServiceName: (NSString *) serviceName error: (NSError **) error;
-+ (BOOL) deleteAllItemForServiceName: (NSString *) serviceName error: (NSError **) error;
++ (NSString *)stringForKey:(NSString *)key andServiceName:(NSString *)serviceName;
++ (BOOL)setString:(NSString *)string forKey:(NSString *)key andServiceName:(NSString *)serviceName;
++ (BOOL)deleteStringForKey:(NSString *)key andServiceName:(NSString *)serviceName;
++ (BOOL)deleteAllForServiceName:(NSString *)serviceName;
 
 @end

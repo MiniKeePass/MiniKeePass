@@ -17,7 +17,7 @@
 
 #import "DatabaseManager.h"
 #import "MiniKeePassAppDelegate.h"
-#import "SFHFKeychainUtils.h"
+#import "KeychainUtils.h"
 #import "PasswordViewController.h"
 #import "AppSettings.h"
 
@@ -59,8 +59,8 @@ static DatabaseManager *sharedInstance;
     NSString *documentsDirectory = [paths objectAtIndex:0];
     
     // Load the password and keyfile from the keychain
-    NSString *password = [SFHFKeychainUtils getPasswordForUsername:selectedFilename andServiceName:@"com.jflan.MiniKeePass.passwords" error:nil];
-    NSString *keyFile = [SFHFKeychainUtils getPasswordForUsername:selectedFilename andServiceName:@"com.jflan.MiniKeePass.keyfiles" error:nil];
+    NSString *password = [KeychainUtils stringForKey:selectedFilename andServiceName:@"com.jflan.MiniKeePass.passwords"];
+    NSString *keyFile = [KeychainUtils stringForKey:selectedFilename andServiceName:@"com.jflan.MiniKeePass.keyfiles"];
     
     // Try and load the database with the cached password from the keychain
     if (password != nil || keyFile != nil) {
@@ -161,14 +161,14 @@ static DatabaseManager *sharedInstance;
             
             // Store the password in the keychain
             if ([[AppSettings sharedInstance] rememberPasswordsEnabled]) {
-                NSError *error;
-                [SFHFKeychainUtils storeUsername:selectedFilename andPassword:password forServiceName:@"com.jflan.MiniKeePass.passwords" updateExisting:YES error:&error];
-                [SFHFKeychainUtils storeUsername:selectedFilename andPassword:keyFile forServiceName:@"com.jflan.MiniKeePass.keyfiles" updateExisting:YES error:&error];
+                [KeychainUtils setString:password forKey:selectedFilename andServiceName:@"com.jflan.MiniKeePass.passwords"];
+                [KeychainUtils setString:keyFile forKey:selectedFilename andServiceName:@"com.jflan.MiniKeePass.keyfiles"];
             }
             
             // Load the database after a short delay so the push animation is visible
             [self performSelector:@selector(loadDatabaseDocument:) withObject:dd afterDelay:0.01];
         } @catch (NSException *exception) {
+            NSLog(@"%@", exception);
             shouldDismiss = NO;
             [passwordViewController showErrorMessage:exception.reason];
             [dd release];
