@@ -113,6 +113,26 @@
     return self;
 }
 
+- (void)dealloc {
+    [searchDisplayController release];
+    [groupsArray release];
+    [enteriesArray release];
+    [pushedKdbTitle release];
+    [results release];
+    [group release];
+    [_standardToolbarItems release];
+    [_deleteButton release];
+    [_deleteButtonTitle release];
+    [_moveButton release];
+    [_moveButtonTitle release];
+    [_renameButton release];
+    [_renameButtonTitle release];
+    [_settingsButton release];
+    [_actionButton release];
+    [_addButton release];
+    [super dealloc];
+}
+
 - (void)viewWillAppear:(BOOL)animated {
     NSArray *selectedIndexPaths = [self.tableView indexPathsForSelectedRows];
     if ([selectedIndexPaths count] > 1) {
@@ -175,29 +195,12 @@
     [super viewWillAppear:animated];
 }
 
-- (void)dealloc {
-    [searchDisplayController release];
-    [groupsArray release];
-    [enteriesArray release];
-    [pushedKdbTitle release];
-    [results release];
-    [group release];
-    [_standardToolbarItems release];
-    [_deleteButton release];
-    [_deleteButtonTitle release];
-    [_moveButton release];
-    [_moveButtonTitle release];
-    [_renameButton release];
-    [_renameButtonTitle release];
-    [_settingsButton release];
-    [_actionButton release];
-    [_addButton release];
-    [super dealloc];
-}
-
 - (void)viewDidDisappear:(BOOL)animated {
-    [appDelegate.databaseDocument.documentInteractionController dismissMenuAnimated:NO];
     [super viewDidDisappear:animated];
+
+    searchDisplayController.active = NO;
+    
+    [appDelegate.databaseDocument.documentInteractionController dismissMenuAnimated:NO];
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
