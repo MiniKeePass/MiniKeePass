@@ -22,7 +22,7 @@
 @interface ImageSelectionView : UIView
 
 @property (nonatomic, assign) NSUInteger selectedImageIndex;
-@property (nonatomic, assign) id<ImageSelectionViewDelegate> delegate;
+@property (nonatomic, unsafe_unretained) id<ImageSelectionViewDelegate> delegate;
 
 @end
 

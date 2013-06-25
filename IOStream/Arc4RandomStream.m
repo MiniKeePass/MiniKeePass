@@ -60,10 +60,6 @@
     return self;
 }
 
-- (void)dealloc {
-    [super dealloc];
-}
-
 - (void)updateState {
     uint8_t t = 0;
     for (uint32_t w = 0; w < ARC_BUFFER_SIZE; w++) {

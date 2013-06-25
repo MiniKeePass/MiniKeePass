@@ -71,14 +71,6 @@
     return self;
 }
 
-- (void)dealloc {
-    [nameTextField release];
-    [passwordTextField1 release];
-    [passwordTextField2 release];
-    [versionSegmentedControl release];
-    [super dealloc];
-}
-
 - (void)textFieldDidBeginEditing:(UITextField *)textField {    
     CGPoint point = [self.tableView convertPoint:CGPointZero fromView:textField];
      UITableViewCell *cell =[self.tableView cellForRowAtIndexPath:[self.tableView indexPathForRowAtPoint:point]];

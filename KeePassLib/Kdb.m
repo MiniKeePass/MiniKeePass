@@ -31,17 +31,6 @@
     return self;
 }
 
-- (void)dealloc {
-    [name release];
-    [groups release];
-    [entries release];
-    [creationTime release];
-    [lastModificationTime release];
-    [lastAccessTime release];
-    [expiryTime release];
-    [super dealloc];
-}
-
 - (void)addGroup:(KdbGroup *)group {
     group.parent = self;
     [groups addObject:group];
@@ -103,14 +92,6 @@
 @synthesize lastAccessTime;
 @synthesize expiryTime;
 
-- (void)dealloc {
-    [creationTime release];
-    [lastModificationTime release];
-    [lastAccessTime release];
-    [expiryTime release];
-    [super dealloc];
-}
-
 - (NSString *)title {
     [self doesNotRecognizeSelector:_cmd];
     return nil;
@@ -166,11 +147,6 @@
 @implementation KdbTree
 
 @synthesize root;
-
-- (void)dealloc {
-    [root release];
-    [super dealloc];
-}
 
 - (KdbGroup*)createGroup:(KdbGroup*)parent {
     [self doesNotRecognizeSelector:_cmd];

@@ -32,7 +32,6 @@
 
 - (void)dealloc {
     [self close];
-    [super dealloc];
 }
 
 - (NSUInteger)write:(const void *)bytes length:(NSUInteger)bytesLength {

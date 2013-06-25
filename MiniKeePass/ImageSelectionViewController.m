@@ -34,14 +34,8 @@
         scrollView.alwaysBounceHorizontal = NO;
         [scrollView addSubview:_imageSelectionView];
         self.view = scrollView;
-        [scrollView release];
     }
     return self;
-}
-
-- (void)dealloc {
-    [_imageSelectionView release];
-    [super dealloc];
 }
 
 - (ImageSelectionView *)imageSelectionView {

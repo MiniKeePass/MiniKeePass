@@ -34,7 +34,6 @@
 
 - (void)dealloc {
     [self close];
-    [super dealloc];
 }
 
 - (NSUInteger)read:(void*)bytes length:(NSUInteger)bytesLength {

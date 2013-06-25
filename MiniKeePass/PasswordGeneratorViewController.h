@@ -33,7 +33,7 @@
     NSInteger charSets;
 }
 
-@property (nonatomic, retain) id<PasswordGeneratorDelegate> delegate;
+@property (nonatomic, strong) id<PasswordGeneratorDelegate> delegate;
 
 - (id)init;
 - (void)generatePassword;

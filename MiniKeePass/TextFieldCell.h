@@ -23,11 +23,11 @@
 @interface TextFieldCell : UITableViewCell <UITextFieldDelegate, UIActionSheetDelegate>
 
 @property (nonatomic, copy) NSString *title;
-@property (nonatomic, retain) UITextField *textField;
-@property (nonatomic, assign) id<TextFieldCellDelegate> textFieldCellDelegate;
+@property (nonatomic, strong) UITextField *textField;
+@property (nonatomic, unsafe_unretained) id<TextFieldCellDelegate> textFieldCellDelegate;
 
-@property (nonatomic, retain) UIButton *accessoryButton;
-@property (nonatomic, retain) UIButton *editAccessoryButton;
+@property (nonatomic, strong) UIButton *accessoryButton;
+@property (nonatomic, strong) UIButton *editAccessoryButton;
 
 @property (nonatomic, assign) BOOL showGrayBar;
 

@@ -43,11 +43,6 @@
     return self;
 }
 
-- (void)dealloc {
-    [label release];
-    [super dealloc];
-}
-
 - (void)showBar {
     if (self.hidden) {
         self.hidden = NO;

@@ -22,15 +22,10 @@
 - (id)initWithData:(NSData*)d {
     self = [super init];
     if (self) {
-        data = [d retain];
+        data = d;
         dataOffset = 0;
     }
     return self;
-}
-
-- (void)dealloc {
-    [data release];
-    [super dealloc];
 }
 
 - (NSUInteger)read:(void*)bytes length:(NSUInteger)bytesLength {

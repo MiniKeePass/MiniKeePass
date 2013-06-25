@@ -28,7 +28,7 @@
     UIDocumentInteractionController *documentInteractionController;
 }
 
-@property (nonatomic, retain) KdbTree *kdbTree;
+@property (nonatomic, strong) KdbTree *kdbTree;
 @property (nonatomic, copy) NSString *filename;
 @property (nonatomic) BOOL dirty;
 @property (nonatomic, readonly) UIDocumentInteractionController *documentInteractionController;

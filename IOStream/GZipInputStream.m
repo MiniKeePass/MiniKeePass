@@ -26,7 +26,7 @@
 - (id)initWithInputStream:(InputStream*)stream {
     self = [super init];
     if (self) {
-        inputStream = [stream retain];
+        inputStream = stream;
         
         zstream.zalloc = Z_NULL;
         zstream.zfree = Z_NULL;
@@ -40,11 +40,6 @@
         }
     }
     return self;
-}
-
-- (void)dealloc {
-    [inputStream release];
-    [super dealloc];
 }
 
 - (NSUInteger)read:(void*)bytes length:(NSUInteger)bytesLength {

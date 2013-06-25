@@ -57,12 +57,6 @@
     return self;
 }
 
-- (void)dealloc {
-    [passwordTextField release];
-    [keyFileCell release];
-    [super dealloc];
-}
-
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
@@ -77,7 +71,6 @@
         selectionListViewController.selectedIndex = keyFileCell.selectedIndex;
         selectionListViewController.delegate = self;
         [self.navigationController pushViewController:selectionListViewController animated:YES];
-        [selectionListViewController release];
     }
 }
 

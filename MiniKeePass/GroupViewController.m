@@ -37,19 +37,19 @@
 - (NSUInteger)updatePositionOfObject:object inArray:array;
 
 @property (nonatomic, assign) BOOL selectMultipleWhileEditing;
-@property (nonatomic, retain) NSArray *standardToolbarItems;
+@property (nonatomic, strong) NSArray *standardToolbarItems;
 
-@property (nonatomic, retain) UIBarButtonItem *deleteButton;
+@property (nonatomic, strong) UIBarButtonItem *deleteButton;
 @property (nonatomic, copy) NSString *deleteButtonTitle;
-@property (nonatomic, retain) UIBarButtonItem *moveButton;
+@property (nonatomic, strong) UIBarButtonItem *moveButton;
 @property (nonatomic, copy) NSString *moveButtonTitle;
-@property (nonatomic, retain) UIBarButtonItem *renameButton;
+@property (nonatomic, strong) UIBarButtonItem *renameButton;
 @property (nonatomic, copy) NSString *renameButtonTitle;
 @property (nonatomic, assign) CGFloat currentButtonWidth;
 
-@property (nonatomic, retain) UIBarButtonItem *settingsButton;
-@property (nonatomic, retain) UIBarButtonItem *actionButton;
-@property (nonatomic, retain) UIBarButtonItem *addButton;
+@property (nonatomic, strong) UIBarButtonItem *settingsButton;
+@property (nonatomic, strong) UIBarButtonItem *actionButton;
+@property (nonatomic, strong) UIBarButtonItem *addButton;
 
 @end
 
@@ -76,22 +76,18 @@
         searchDisplayController.searchResultsDelegate = self;
         searchDisplayController.delegate = self;
 
-        [searchBar release];
-
-        self.settingsButton = [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"gear"] style:UIBarButtonItemStylePlain target:appDelegate action:@selector(showSettingsView)] autorelease];
+        self.settingsButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"gear"] style:UIBarButtonItemStylePlain target:appDelegate action:@selector(showSettingsView)];
         self.settingsButton.imageInsets = UIEdgeInsetsMake(2, 0, -2, 0);
 
-        self.actionButton = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(exportFilePressed)] autorelease];
+        self.actionButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(exportFilePressed)];
 
-        self.addButton = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addPressed)] autorelease];
+        self.addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addPressed)];
 
         UIBarButtonItem *spacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
 
         self.standardToolbarItems = @[self.settingsButton, spacer, self.actionButton, spacer, self.addButton];
         self.toolbarItems = self.standardToolbarItems;
         self.navigationItem.rightBarButtonItem = self.editButtonItem;
-
-        [spacer release];
 
         results = [[NSMutableArray alloc] init];
 
@@ -111,26 +107,6 @@
 
     }
     return self;
-}
-
-- (void)dealloc {
-    [searchDisplayController release];
-    [groupsArray release];
-    [enteriesArray release];
-    [pushedKdbTitle release];
-    [results release];
-    [group release];
-    [_standardToolbarItems release];
-    [_deleteButton release];
-    [_deleteButtonTitle release];
-    [_moveButton release];
-    [_moveButtonTitle release];
-    [_renameButton release];
-    [_renameButtonTitle release];
-    [_settingsButton release];
-    [_actionButton release];
-    [_addButton release];
-    [super dealloc];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -267,9 +243,9 @@
 }
 
 - (void)moveSelectedItems {
-    ChooseGroupViewController *chooseGroupViewController = [[[ChooseGroupViewController alloc] initWithStyle:UITableViewStylePlain] autorelease];
+    ChooseGroupViewController *chooseGroupViewController = [[ChooseGroupViewController alloc] initWithStyle:UITableViewStylePlain];
     chooseGroupViewController.delegate = self;
-    UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:chooseGroupViewController] autorelease];
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:chooseGroupViewController];
 
     [appDelegate.window.rootViewController presentModalViewController:navController animated:YES];
 }
@@ -385,7 +361,6 @@
             overlayView.alpha = 0.0;
         } completion:^(BOOL finished) {
             [overlayView removeFromSuperview];
-            [overlayView release];
             overlayView = nil;
         }];
     } else {
@@ -416,22 +391,22 @@
         [self setSeachBar:self.searchDisplayController.searchBar enabled:NO];
 
         self.deleteButtonTitle = NSLocalizedString(@"Delete", nil);
-        self.deleteButton = [[[UIBarButtonItem alloc] initWithTitle:self.deleteButtonTitle style:UIBarButtonItemStyleBordered target:self action:@selector(deleteSelectedItems)] autorelease];
+        self.deleteButton = [[UIBarButtonItem alloc] initWithTitle:self.deleteButtonTitle style:UIBarButtonItemStyleBordered target:self action:@selector(deleteSelectedItems)];
         self.deleteButton.tintColor = [UIColor colorWithRed:0.8 green:0.15 blue:0.15 alpha:1];
         self.deleteButton.width = self.currentButtonWidth;
         self.deleteButton.enabled = NO;
 
         self.moveButtonTitle = NSLocalizedString(@"Move", nil);
-        self.moveButton = [[[UIBarButtonItem alloc] initWithTitle:self.moveButtonTitle style:UIBarButtonItemStyleBordered target:self action:@selector(moveSelectedItems)] autorelease];
+        self.moveButton = [[UIBarButtonItem alloc] initWithTitle:self.moveButtonTitle style:UIBarButtonItemStyleBordered target:self action:@selector(moveSelectedItems)];
         self.moveButton.width = self.currentButtonWidth;
         self.moveButton.enabled = NO;
 
         self.renameButtonTitle = NSLocalizedString(@"Rename", nil);
-        self.renameButton = [[[UIBarButtonItem alloc] initWithTitle:self.renameButtonTitle style:UIBarButtonItemStyleBordered target:self action:@selector(renameSelectedItem)] autorelease];
+        self.renameButton = [[UIBarButtonItem alloc] initWithTitle:self.renameButtonTitle style:UIBarButtonItemStyleBordered target:self action:@selector(renameSelectedItem)];
         self.renameButton.width = self.currentButtonWidth;
         self.renameButton.enabled = NO;
 
-        UIBarButtonItem *spacer = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease];
+        UIBarButtonItem *spacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
 
         self.toolbarItems = @[self.deleteButton, spacer, self.moveButton, spacer, self.renameButton];
     } else {
@@ -473,8 +448,7 @@
 
 - (void)setGroup:(KdbGroup *)newGroup {
     if (group != newGroup) {
-        [group release];
-        group = [newGroup retain];
+        group = newGroup;
 
         [self updateLocalArrays];
 
@@ -483,9 +457,6 @@
 }
 
 - (void)updateLocalArrays {
-    [groupsArray release];
-    [enteriesArray release];
-
     groupsArray = [[NSMutableArray alloc] initWithArray:group.groups];
     enteriesArray = [[NSMutableArray alloc] initWithArray:group.entries];
 
@@ -574,7 +545,7 @@
 
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
 
@@ -627,9 +598,6 @@
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:renameItemViewController];
 
     [appDelegate.window.rootViewController presentModalViewController:navigationController animated:YES];
-
-    [navigationController release];
-    [renameItemViewController release];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -641,7 +609,6 @@
         entryViewController.entry = e;
         entryViewController.title = e.title;
         [self.navigationController pushViewController:entryViewController animated:YES];
-        [entryViewController release];
     } else {
         if (self.editing == NO) {
             if (indexPath.section == GROUPS_SECTION) {
@@ -651,11 +618,9 @@
                 groupViewController.group = g;
                 groupViewController.title = g.name;
 
-                [pushedKdbTitle release];
                 pushedKdbTitle = [g.name copy];
 
                 [self.navigationController pushViewController:groupViewController animated:YES];
-                [groupViewController release];
             } else if (indexPath.section == ENTRIES_SECTION) {
                 KdbEntry *e = [enteriesArray objectAtIndex:indexPath.row];
 
@@ -663,11 +628,9 @@
                 entryViewController.entry = e;
                 entryViewController.title = e.title;
 
-                [pushedKdbTitle release];
                 pushedKdbTitle = [e.title copy];
 
                 [self.navigationController pushViewController:entryViewController animated:YES];
-                [entryViewController release];
             }
         } else if (indexPath.section == GROUPS_SECTION && !self.selectMultipleWhileEditing) {
             [self renameItemAtIndexPath:indexPath];
@@ -764,7 +727,6 @@
         NSString *prompt = NSLocalizedString(@"There are no applications installed capable of importing KeePass files", nil);
         UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:prompt delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", nil) destructiveButtonTitle:nil otherButtonTitles:nil];
         [appDelegate showActionSheet:actionSheet];
-        [actionSheet release];
     }
 }
 
@@ -778,7 +740,6 @@
 
     actionSheet.delegate = self;
     [appDelegate showActionSheet:actionSheet];
-    [actionSheet release];
 }
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
@@ -806,9 +767,6 @@
         UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:editGroupViewController];
 
         [appDelegate.window.rootViewController presentModalViewController:navigationController animated:YES];
-
-        [navigationController release];
-        [editGroupViewController release];
 
         // Notify the table of the new row
         NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:GROUPS_SECTION];
@@ -838,7 +796,6 @@
         entryViewController.title = e.title;
         entryViewController.isNewEntry = YES;
         [self.navigationController pushViewController:entryViewController animated:YES];
-        [entryViewController release];
 
         // Notify the table of the new row
         NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:ENTRIES_SECTION];
@@ -887,7 +844,7 @@
         return index;
     }
 
-    id object = [[array objectAtIndex:index] retain];
+    id object = [array objectAtIndex:index];
     [array removeObjectAtIndex:index];
     
     NSUInteger newIndex = [self addObject:object toArray:array];
@@ -897,7 +854,6 @@
         [array insertObject:object atIndex:index];
     }
     
-    [object release];    
     return newIndex;
 }
 

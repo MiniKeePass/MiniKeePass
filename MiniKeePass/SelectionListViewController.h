@@ -27,10 +27,10 @@
     id<NSObject> reference;
 }
 
-@property (nonatomic, retain) NSArray *items;
+@property (nonatomic, strong) NSArray *items;
 @property (nonatomic) NSInteger selectedIndex;
-@property (nonatomic, retain) id<SelectionListViewControllerDelegate> delegate;
-@property (nonatomic, retain) id<NSObject> reference;
+@property (nonatomic, strong) id<SelectionListViewControllerDelegate> delegate;
+@property (nonatomic, strong) id<NSObject> reference;
 
 @end
 

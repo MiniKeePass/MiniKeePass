@@ -37,12 +37,6 @@
     return self;
 }
 
-- (void)dealloc {
-    [textField release];
-    [textEntryDelegate release];
-    [super dealloc];
-}
-
 - (void)formViewController:(FormViewController *)controller button:(FormViewControllerButton)button {
     if (button == FormViewControllerButtonOk) {
         if ([textEntryDelegate respondsToSelector:@selector(textEntryController:textEntered:)]) {

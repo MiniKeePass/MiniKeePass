@@ -45,10 +45,6 @@ static uint32_t SIGMA[4] = {0x61707865, 0x3320646E, 0x79622D32, 0x6B206574};
     return self;
 }
 
-- (void)dealloc {
-    [super dealloc];
-}
-
 - (uint)uint8To32Little:(uint8_t*)buffer offset:(uint32_t)offset {
     return ((uint)buffer[offset] | ((uint)buffer[offset + 1] << 8) |
             ((uint)buffer[offset + 2] << 16) | ((uint)buffer[offset + 3] << 24));

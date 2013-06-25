@@ -21,7 +21,7 @@
     UISwitch *switchControl;
 }
 
-@property (nonatomic, retain) UISwitch *switchControl;
+@property (nonatomic, strong) UISwitch *switchControl;
 
 - (id)initWithLabel:(NSString*)labelText;
 - (void)setEnabled:(BOOL)enabled;

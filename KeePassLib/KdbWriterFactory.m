@@ -33,7 +33,6 @@
     }
     
     [writer persist:tree file:filename withPassword:kdbPassword];
-    [writer release];
 }
 
 @end

@@ -46,11 +46,6 @@
     return self;
 }
 
-- (void)dealloc {
-    [_nameTextField release];
-    [super dealloc];
-}
-
 - (void)setSelectedImageIndex:(NSUInteger)selectedImageIndex {
     _selectedImageIndex = selectedImageIndex;
     
@@ -63,7 +58,6 @@
     imageSelectionViewController.imageSelectionView.delegate = self;
     imageSelectionViewController.imageSelectionView.selectedImageIndex = _selectedImageIndex;
     [self.navigationController pushViewController:imageSelectionViewController animated:YES];
-    [imageSelectionViewController release];
 }
 
 - (void)imageSelectionView:(ImageSelectionView *)imageSelectionView selectedImageIndex:(NSUInteger)imageIndex {

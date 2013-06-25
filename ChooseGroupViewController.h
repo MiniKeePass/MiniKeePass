@@ -22,8 +22,8 @@
 
 @interface ChooseGroupViewController : AutorotatingTableViewController
 
-@property (nonatomic, retain) KdbGroup *group;
-@property (nonatomic, assign) id<ChooseGroupDelegate> delegate;
+@property (nonatomic, strong) KdbGroup *group;
+@property (nonatomic, unsafe_unretained) id<ChooseGroupDelegate> delegate;
 
 @end
 

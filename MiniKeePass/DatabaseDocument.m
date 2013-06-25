@@ -40,19 +40,10 @@
     return self;
 }
 
-
-- (void)dealloc {
-    [kdbTree release];
-    [filename release];
-    [kdbPassword release];
-    [documentInteractionController release];
-    [super dealloc];
-}
-
 - (UIDocumentInteractionController *)documentInteractionController {
     if (documentInteractionController == nil) {
         NSURL *url = [NSURL fileURLWithPath:filename];
-        documentInteractionController = [[UIDocumentInteractionController interactionControllerWithURL:url] retain];
+        documentInteractionController = [UIDocumentInteractionController interactionControllerWithURL:url];
     }
     return documentInteractionController;
 }
@@ -61,10 +52,6 @@
     if (password == nil && keyFile == nil) {
         @throw [NSException exceptionWithName:@"IllegalArgument" reason:@"No password or keyfile specified" userInfo:nil];
     }
-    
-    [kdbTree release];
-    [filename release];
-    [kdbPassword release];
 
     filename = [newFilename copy];
     dirty = NO;

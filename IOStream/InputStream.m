@@ -71,7 +71,7 @@
     
     [self read:bytes length:length];
     
-    return [[[NSString alloc] initWithBytes:bytes length:length encoding:encoding] autorelease];
+    return [[NSString alloc] initWithBytes:bytes length:length encoding:encoding];
 }
 
 - (NSString*)readCString:(NSUInteger)length encoding:(NSStringEncoding)encoding {

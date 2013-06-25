@@ -56,18 +56,6 @@
     return self;
 }
 
-- (void)dealloc {
-    [upperCaseSwitchCell release];
-    [lowerCaseSwitchCell release];
-    [digitsSwitchCell release];
-    [minusSwitchCell release];
-    [underlineSwitchCell release];
-    [spaceSwitchCell release];
-    [specialSwitchCell release];
-    [bracketsSwitchCell release];
-    [super dealloc];
-}
-
 - (void)viewWillDisappear:(BOOL)animated {
     NSInteger charSets = 0;
     if (upperCaseSwitchCell.switchControl.on) {

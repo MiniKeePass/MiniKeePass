@@ -52,11 +52,6 @@ enum {
     
     self.toolbarItems = [NSArray arrayWithObjects:settingsButton, spacer, helpButton, spacer, addButton, nil];
     self.navigationItem.rightBarButtonItem = self.editButtonItem;
-    
-    [settingsButton release];
-    [helpButton release];
-    [addButton release];
-    [spacer release];
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
@@ -65,14 +60,6 @@ enum {
         self.title = NSLocalizedString(@"Files", nil);
     }
     return self;
-}
-
-- (void)dealloc {
-    [filesInfoView release];
-    [databaseFiles release];
-    [keyFiles release];
-    [selectedFile release];
-    [super dealloc];
 }
 
 - (void)displayInfoPage {
@@ -115,9 +102,6 @@ enum {
 }
 
 - (void)updateFiles {
-    [databaseFiles release];
-    [keyFiles release];
-    
     // Get the document's directory
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
@@ -149,10 +133,8 @@ enum {
     // Filter the list of files into everything not ending with .kdb or .kdbx
     NSArray *keyFilenames = [files filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"!((self ENDSWITH[c] '.kdb') OR (self ENDSWITH[c] '.kdbx'))"]];
     
-    databaseFiles = [[NSMutableArray arrayWithArray:databaseFilenames] retain];
-    keyFiles = [[NSMutableArray arrayWithArray:keyFilenames] retain];
-    
-    [files release];
+    databaseFiles = [NSMutableArray arrayWithArray:databaseFilenames];
+    keyFiles = [NSMutableArray arrayWithArray:keyFilenames];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -209,7 +191,7 @@ enum {
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier] autorelease];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
     }
     
     // Configure the cell
@@ -246,7 +228,6 @@ enum {
     cell.detailTextLabel.text = [NSString stringWithFormat:@"%@: %@",
                                  NSLocalizedString(@"Last Modified", nil),
                                  [dateFormatter stringFromDate:modificationDate]];
-    [dateFormatter release];
 
     return cell;
 }
@@ -272,9 +253,6 @@ enum {
                 UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:textEntryController];
                 
                 [appDelegate.window.rootViewController presentModalViewController:navigationController animated:YES];
-                
-                [navigationController release];
-                [textEntryController release];
             }
             break;
         default:
@@ -322,8 +300,6 @@ enum {
     // Update the table
     [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
     [tableView reloadSections:[NSIndexSet indexSetWithIndex:indexPath.section] withRowAnimation:UITableViewRowAnimationNone];
-    
-    [filename release];
 }
 
 - (void)textEntryController:(TextEntryController *)controller textEntered:(NSString *)string {
@@ -333,7 +309,7 @@ enum {
     }
     
     NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-    NSString *oldFilename = [[databaseFiles objectAtIndex:indexPath.row] retain];
+    NSString *oldFilename = [databaseFiles objectAtIndex:indexPath.row];
     NSString *newFilename = [string stringByAppendingPathExtension:[oldFilename pathExtension]];
     
     // Get the full path of where we're going to move the file
@@ -347,7 +323,6 @@ enum {
     NSFileManager *fileManager = [NSFileManager defaultManager];
     if ([fileManager fileExistsAtPath:newPath]) {
         [controller showErrorMessage:NSLocalizedString(@"A file already exists with this name", nil)];
-        [oldFilename release];
         return;
     }
     
@@ -369,8 +344,6 @@ enum {
     [KeychainUtils deleteStringForKey:oldFilename andServiceName:@"com.jflan.MiniKeePass.passwords"];
     [KeychainUtils deleteStringForKey:oldFilename andServiceName:@"com.jflan.MiniKeePass.keyfiles"];
     
-    [oldFilename release];
-    
     // Reload the table row
     [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
     
@@ -388,17 +361,12 @@ enum {
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:newKdbViewController];
     
     [appDelegate.window.rootViewController presentModalViewController:navigationController animated:YES];
-    
-    [navigationController release];
-    [newKdbViewController release];
 }
 
 - (void)helpPressed {
     HelpViewController *helpViewController = [[HelpViewController alloc] init];
     
     [self.navigationController pushViewController:helpViewController animated:YES];
-    
-    [helpViewController release];
 }
 
 - (void)formViewController:(FormViewController *)controller button:(FormViewControllerButton)button {
@@ -458,9 +426,6 @@ enum {
         
         // Create the new database
         [writer newFile:path withPassword:kdbPassword];
-        [writer release];
-        
-        [kdbPassword release];
         
         // Store the password in the keychain
         if ([[AppSettings sharedInstance] rememberPasswordsEnabled]) {

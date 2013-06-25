@@ -57,11 +57,9 @@ enum {
         
         UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(donePressed)];
         self.navigationItem.rightBarButtonItem = doneButton;
-        [doneButton release];
 
         UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", nil) style:UIBarButtonItemStylePlain target:self action:@selector(cancelPressed)];
         self.navigationItem.leftBarButtonItem = cancelButton;
-        [cancelButton release];
 
         lengthCell = [[LengthCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:nil];
         lengthCell.delegate = self;
@@ -83,13 +81,6 @@ enum {
         passwordCell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     return self;
-}
-
-- (void)dealloc {
-    [lengthCell release];
-    [characterSetsCell release];
-    [passwordCell release];
-    [super dealloc];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -161,8 +152,6 @@ enum {
         NSUInteger idx = [cryptoRandomStream getInt] % [charSet length];
 	        [password appendString:[charSet substringWithRange:NSMakeRange(idx, 1)]];
     }
-    
-    [cryptoRandomStream release];
     
     passwordCell.textLabel.text = password;
     [passwordCell setNeedsLayout];
@@ -240,7 +229,7 @@ enum {
         [str appendString:NSLocalizedString(@"None Selected", nil)];
     }
     
-    return [str autorelease];
+    return str;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -295,7 +284,6 @@ enum {
     if (indexPath.section == SECTION_SETTINGS && indexPath.row == ROW_SETTINGS_CHARSET) {
         CharacterSetsViewController *characterSetViewController = [[CharacterSetsViewController alloc] init];
         [self.navigationController pushViewController:characterSetViewController animated:YES];
-        [characterSetViewController release];
     }
 }
 

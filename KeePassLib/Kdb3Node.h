@@ -50,14 +50,14 @@ typedef struct {
 
 @interface Kdb3Entry : KdbEntry
 
-@property(nonatomic, retain) UUID *uuid;
+@property(nonatomic, strong) UUID *uuid;
 @property(nonatomic, copy) NSString *title;
 @property(nonatomic, copy) NSString *username;
 @property(nonatomic, copy) NSString *password;
 @property(nonatomic, copy) NSString *url;
 @property(nonatomic, copy) NSString *notes;
 @property(nonatomic, copy) NSString *binaryDesc;
-@property(nonatomic, retain) NSData *binary;
+@property(nonatomic, strong) NSData *binary;
 
 - (BOOL)isMeta;
 

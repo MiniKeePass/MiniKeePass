@@ -46,7 +46,6 @@
             UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
             [self addSubview:imageView];                
             [imageViews addObject:imageView];
-            [imageView release];
         }
         
         UIImage *selectedImage = [UIImage imageNamed:@"checkmark"];
@@ -56,15 +55,8 @@
         UITapGestureRecognizer *tapGestureRecgonizer = [[UITapGestureRecognizer alloc] initWithTarget:self
                                                                                                action:@selector(handleTapGesture:)];
         [self addGestureRecognizer:tapGestureRecgonizer];
-        [tapGestureRecgonizer release];
     }
     return self;
-}
-
-- (void)dealloc {
-    [imageViews release];
-    [selectedImageView release];
-    [super dealloc];
 }
 
 - (void)layoutSubviews {

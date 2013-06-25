@@ -95,18 +95,12 @@
         PinTextField *pinTextField4 = [[PinTextField alloc] initWithFrame:CGRectMake(xOrigin, 0, PINTEXTFIELDWIDTH, PINTEXTFIELDHEIGHT)];
         [textFieldsView addSubview:pinTextField4];
         
-        pinTextFields = [[NSArray arrayWithObjects:pinTextField1, pinTextField2, pinTextField3, pinTextField4, nil] retain];
-        
-        [pinTextField1 release];
-        [pinTextField2 release];
-        [pinTextField3 release];
-        [pinTextField4 release];
+        pinTextFields = [NSArray arrayWithObjects:pinTextField1, pinTextField2, pinTextField3, pinTextField4, nil];
         
         pinBar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, frameWidth, 95)];
         pinBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         [pinBar setBarStyle:UIBarStyleBlackTranslucent];
         [pinBar addSubview:textFieldsView];
-        [textFieldsView release];
 
         textField.inputAccessoryView = pinBar;
 
@@ -118,15 +112,6 @@
     }
     
     return self;
-}
-
-- (void)dealloc {
-    [topBar release];
-    [pinBar release];
-    [textField release];
-    [pinTextFields release];
-    [_textLabel release];
-    [super dealloc];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {

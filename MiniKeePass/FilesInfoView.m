@@ -65,8 +65,6 @@
         containerView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
         [containerView addSubview:imageView];
         [containerView addSubview:label];
-        [imageView release];
-        [label release];
         
         [self addSubview:containerView];
     }
@@ -89,11 +87,6 @@
         newFrame.size.height = containerHeight;
     }
     containerView.frame = newFrame;
-}
-
-- (void)dealloc {
-    [containerView dealloc];
-    [super dealloc];
 }
 
 @end

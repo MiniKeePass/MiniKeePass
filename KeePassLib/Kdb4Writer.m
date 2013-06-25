@@ -39,51 +39,42 @@
 - init {
     self = [super init];
     if (self) {
-        masterSeed = [[Utils randomBytes:32] retain];
-        transformSeed = [[Utils randomBytes:32] retain];
-        encryptionIv = [[Utils randomBytes:16] retain];
-        protectedStreamKey = [[Utils randomBytes:32] retain];
-        streamStartBytes = [[Utils randomBytes:32] retain];
+        masterSeed = [Utils randomBytes:32];
+        transformSeed = [Utils randomBytes:32];
+        encryptionIv = [Utils randomBytes:16];
+        protectedStreamKey = [Utils randomBytes:32];
+        streamStartBytes = [Utils randomBytes:32];
     }
     return self;
 }
 
-- (void)dealloc {
-    [masterSeed release];
-    [transformSeed release];
-    [encryptionIv release];
-    [protectedStreamKey release];
-    [streamStartBytes release];
-    [super dealloc];
-}
-
 - (void)persist:(Kdb4Tree*)tree file:(NSString*)filename withPassword:(KdbPassword*)kdbPassword {
     // Configure the output stream
-    DataOutputStream *outputStream = [[[DataOutputStream alloc] init] autorelease];
+    DataOutputStream *outputStream = [[DataOutputStream alloc] init];
     
     // Write the header
     [self writeHeader:outputStream withTree:tree];
     
     // Create the encryption output stream
     NSData *key = [kdbPassword createFinalKeyForVersion:4 masterSeed:masterSeed transformSeed:transformSeed rounds:tree.rounds];
-    AesOutputStream *aesOutputStream = [[[AesOutputStream alloc] initWithOutputStream:outputStream key:key iv:encryptionIv] autorelease];
+    AesOutputStream *aesOutputStream = [[AesOutputStream alloc] initWithOutputStream:outputStream key:key iv:encryptionIv];
     
     // Write the stream start bytes
     [aesOutputStream write:streamStartBytes];
     
     // Create the hashed output stream
-    OutputStream *stream = [[[HashedOutputStream alloc] initWithOutputStream:aesOutputStream blockSize:1024*1024] autorelease];
+    OutputStream *stream = [[HashedOutputStream alloc] initWithOutputStream:aesOutputStream blockSize:1024*1024];
     
     // Create the gzip output stream
     if (tree.compressionAlgorithm == COMPRESSION_GZIP) {
-        stream = [[[GZipOutputStream alloc] initWithOutputStream:stream] autorelease];
+        stream = [[GZipOutputStream alloc] initWithOutputStream:stream];
     }
     
     // Create the random stream
-    RandomStream *randomStream = [[[Salsa20RandomStream alloc] init:protectedStreamKey] autorelease];
+    RandomStream *randomStream = [[Salsa20RandomStream alloc] init:protectedStreamKey];
     
     // Serialize the XML
-    Kdb4Persist *persist = [[[Kdb4Persist alloc] initWithTree:tree outputStream:stream randomStream:randomStream] autorelease];
+    Kdb4Persist *persist = [[Kdb4Persist alloc] initWithTree:tree outputStream:stream randomStream:randomStream];
     [persist persist];
     
     // Close the output stream
@@ -208,7 +199,6 @@
 
     [self persist:tree file:fileName withPassword:kdbPassword];
     
-    [tree release];
 }
 
 @end

@@ -26,7 +26,7 @@
 }
 
 @property (nonatomic, readonly) UITextField *textField;
-@property (nonatomic, retain) id<TextEntryControllerDelegate> textEntryDelegate;
+@property (nonatomic, strong) id<TextEntryControllerDelegate> textEntryDelegate;
 
 @end
 

@@ -29,11 +29,6 @@
     return self;
 }
 
-- (void)dealloc {
-    [data release];
-    [super dealloc];
-}
-
 - (NSUInteger)write:(const void *)bytes length:(NSUInteger)bytesLength {
     [data appendBytes:bytes length:bytesLength];
     return bytesLength;

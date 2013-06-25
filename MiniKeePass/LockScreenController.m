@@ -44,7 +44,6 @@
         UIImageView *imageView = [[UIImageView alloc] initWithFrame:self.view.frame];
         imageView.image = [[UIImage imageNamed:@"stretchme"] stretchableImageWithLeftCapWidth:0 topCapHeight:44];
         self.view = imageView;
-        [imageView release];
 
         NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
         [notificationCenter addObserver:self
@@ -57,8 +56,6 @@
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [pinViewController release];
-    [super dealloc];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
@@ -86,7 +83,6 @@
 + (void)present {
     LockScreenController *pinScreen = [[LockScreenController alloc] init];
     [pinScreen show];
-    [pinScreen release];
 }
 
 - (void)hide {

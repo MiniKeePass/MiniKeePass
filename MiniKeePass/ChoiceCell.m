@@ -36,12 +36,6 @@
     return self;
 }
 
-- (void)dealloc {
-    [prefix release];
-    [choices release];
-    [super dealloc];
-}
-
 - (void)setEnabled:(BOOL)enabled {
     self.selectionStyle = enabled ? UITableViewCellSelectionStyleBlue : UITableViewCellSelectionStyleNone;
     self.textLabel.enabled = enabled;

@@ -22,7 +22,7 @@
 - (id)initWithStringField:(StringField *)stringField {
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
-        _stringField = [stringField retain];
+        _stringField = stringField;
 
         self.title = NSLocalizedString(@"Custom Field", nil);
 
@@ -49,16 +49,6 @@
     return self;
 }
 
-- (void)dealloc {
-    [_stringField release];
-    [_keyTextField release];
-    [_valueTextField release];
-    [_protectedSwitchCell release];
-    [_object release];
-    [_stringFieldViewDelegate release];
-    [super dealloc];
-}
-
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     if (textField == _keyTextField) {
         [_valueTextField becomeFirstResponder];
@@ -75,7 +65,6 @@
         NSString *ok = NSLocalizedString(@"OK", nil);
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:nil delegate:nil cancelButtonTitle:ok otherButtonTitles:nil];
         [alert show];
-        [alert release];
         return;
     }
 

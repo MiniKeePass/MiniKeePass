@@ -36,11 +36,6 @@
     return self;
 }
 
-- (void)dealloc {
-    [switchControl release];
-    [super dealloc];
-}
-
 - (void)setEnabled:(BOOL)enabled {
     self.textLabel.enabled = enabled;
     self.switchControl.enabled = enabled;

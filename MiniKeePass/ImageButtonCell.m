@@ -36,9 +36,4 @@
     return self;
 }
 
-- (void)dealloc {
-    [imageButton release];
-    [super dealloc];
-}
-
 @end

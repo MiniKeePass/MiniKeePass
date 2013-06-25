@@ -21,7 +21,7 @@
 #define INSET 83
 
 @interface TextFieldCell()
-@property (nonatomic, retain) UIView *grayBar;
+@property (nonatomic, strong) UIView *grayBar;
 @end
 
 @implementation TextFieldCell
@@ -58,16 +58,6 @@
     return self;
 }
 
-- (void)dealloc {
-    [_textField release];
-    [_grayBar release];
-    _textFieldCellDelegate = nil;
-    
-    [_accessoryButton release];
-    [_editAccessoryButton release];
-    [super dealloc];
-}
-
 - (BOOL)showGrayBar {
     return !self.grayBar.hidden;
 }
@@ -77,18 +67,12 @@
 }
 
 - (void)setAccessoryButton:(UIButton *)accessoryButton {
-    if (self.accessoryButton != nil) {
-        [_accessoryButton release];
-    }
-    _accessoryButton = [accessoryButton retain];
+    _accessoryButton = accessoryButton;
     self.accessoryView = accessoryButton;
 }
 
 - (void)setEditAccessoryButton:(UIButton *)editAccessoryButton {
-    if (self.editAccessoryButton != nil) {
-        [_editAccessoryButton release];
-    }
-    _editAccessoryButton = [editAccessoryButton retain];
+    _editAccessoryButton = editAccessoryButton;
     self.editingAccessoryView = editAccessoryButton;
 }
 

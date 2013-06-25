@@ -21,7 +21,7 @@
     UIButton *imageButton;
 }
 
-@property (nonatomic, retain) UIButton *imageButton;
+@property (nonatomic, strong) UIButton *imageButton;
 
 - (id)initWithLabel:(NSString*)labelText;
 

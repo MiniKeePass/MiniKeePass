@@ -40,7 +40,7 @@
 - (id)initWithRandomStream:(RandomStream *)cryptoRandomStream {
     self = [super init];
     if (self) {
-        randomStream = [cryptoRandomStream retain];
+        randomStream = cryptoRandomStream;
 
         dateFormatter = [[NSDateFormatter alloc] init];
         dateFormatter.timeZone = [NSTimeZone timeZoneWithName:@"GMT"];
@@ -49,14 +49,8 @@
     return self;
 }
 
-- (void)dealloc {
-    [randomStream release];
-    [dateFormatter release];
-    [super dealloc];
-}
-
 int	readCallback(void *context, char *buffer, int len) {
-    InputStream *inputStream = (InputStream*)context;
+    InputStream *inputStream = (__bridge InputStream*)context;
     return [inputStream read:buffer length:len];
 }
 
@@ -65,11 +59,11 @@ int closeCallback(void *context) {
 }
 
 - (Kdb4Tree *)parse:(InputStream *)inputStream {
-    DDXMLDocument *document = [[[DDXMLDocument alloc] initWithReadIO:readCallback
+    DDXMLDocument *document = [[DDXMLDocument alloc] initWithReadIO:readCallback
                                                              closeIO:closeCallback
-                                                             context:inputStream
+                                                             context:(__bridge void *)(inputStream)
                                                              options:0
-                                                               error:nil] autorelease];
+                                                               error:nil];
     if (document == nil) {
         @throw [NSException exceptionWithName:@"ParseError" reason:@"Failed to parse database" userInfo:nil];
     }
@@ -80,7 +74,7 @@ int closeCallback(void *context) {
     // Decode all the protected entries
     [self decodeProtected:rootElement];
 
-    Kdb4Tree *tree = [[[Kdb4Tree alloc] init] autorelease];
+    Kdb4Tree *tree = [[Kdb4Tree alloc] init];
 
     DDXMLElement *meta = [rootElement elementForName:@"Meta"];
     if (meta != nil) {
@@ -115,7 +109,6 @@ int closeCallback(void *context) {
 
         NSString *unprotected = [[NSString alloc] initWithBytes:data.bytes length:data.length encoding:NSUTF8StringEncoding];
         [root setStringValue:unprotected];
-        [unprotected release];
     }
 
     for (DDXMLNode *node in [root children]) {
@@ -173,7 +166,7 @@ int closeCallback(void *context) {
 }
 
 - (CustomIcon *)parseCustomIcon:(DDXMLElement *)root {
-    CustomIcon *customIcon = [[[CustomIcon alloc] init] autorelease];
+    CustomIcon *customIcon = [[CustomIcon alloc] init];
 
     customIcon.uuid = [self parseUuidString:[[root elementForName:@"UUID"] stringValue]];
     customIcon.data = [[root elementForName:@"Data"] stringValue];
@@ -182,7 +175,7 @@ int closeCallback(void *context) {
 }
 
 - (Binary *)parseBinary:(DDXMLElement *)root {
-    Binary *binary = [[[Binary alloc] init] autorelease];
+    Binary *binary = [[Binary alloc] init];
 
     binary.binaryId = [[[root attributeForName:@"ID"] stringValue] integerValue];
     binary.compressed = [[[root attributeForName:@"Compressed"] stringValue] boolValue];
@@ -192,7 +185,7 @@ int closeCallback(void *context) {
 }
 
 - (CustomItem *)parseCustomItem:(DDXMLElement *)root {
-    CustomItem *customItem = [[[CustomItem alloc] init] autorelease];
+    CustomItem *customItem = [[CustomItem alloc] init];
 
     customItem.key = [[root attributeForName:@"ID"] stringValue];
     customItem.value = [[root attributeForName:@"Compressed"] stringValue];
@@ -201,7 +194,7 @@ int closeCallback(void *context) {
 }
 
 - (Kdb4Group *)parseGroup:(DDXMLElement *)root {
-    Kdb4Group *group = [[[Kdb4Group alloc] init] autorelease];
+    Kdb4Group *group = [[Kdb4Group alloc] init];
 
     group.uuid = [self parseUuidString:[[root elementForName:@"UUID"] stringValue]];
     if (group.uuid == nil) {
@@ -245,7 +238,7 @@ int closeCallback(void *context) {
 }
 
 - (Kdb4Entry *)parseEntry:(DDXMLElement *)root {
-    Kdb4Entry *entry = [[[Kdb4Entry alloc] init] autorelease];
+    Kdb4Entry *entry = [[Kdb4Entry alloc] init];
 
     entry.uuid = [self parseUuidString:[[root elementForName:@"UUID"] stringValue]];
     if (entry.uuid == nil) {
@@ -308,7 +301,7 @@ int closeCallback(void *context) {
 }
 
 - (StringField *)parseStringField:(DDXMLElement *)root {
-    StringField *stringField = [[[StringField alloc] init] autorelease];
+    StringField *stringField = [[StringField alloc] init];
 
     stringField.key = [[root elementForName:@"Key"] stringValue];
 
@@ -320,7 +313,7 @@ int closeCallback(void *context) {
 }
 
 - (BinaryRef *)parseBinaryRef:(DDXMLElement *)root {
-    BinaryRef *binaryRef = [[[BinaryRef alloc] init] autorelease];
+    BinaryRef *binaryRef = [[BinaryRef alloc] init];
 
     binaryRef.key = [[root elementForName:@"Key"] stringValue];
     binaryRef.ref = [[[[root elementForName:@"Value"] attributeForName:@"Ref"] stringValue] integerValue];
@@ -329,7 +322,7 @@ int closeCallback(void *context) {
 }
 
 - (AutoType *)parseAutoType:(DDXMLElement *)root {
-    AutoType *autoType = [[[AutoType alloc] init] autorelease];
+    AutoType *autoType = [[AutoType alloc] init];
 
     autoType.enabled = [[[root elementForName:@"Enabled"] stringValue] boolValue];
     autoType.dataTransferObfuscation = [[[root elementForName:@"DataTransferObfuscation"] stringValue] integerValue];
@@ -340,7 +333,7 @@ int closeCallback(void *context) {
     }
 
     for (DDXMLElement *element in [root elementsForName:@"Association"]) {
-        Association *association = [[[Association alloc] init] autorelease];
+        Association *association = [[Association alloc] init];
 
         association.window = [[element elementForName:@"Window"] stringValue];
         association.keystrokeSequence = [[element elementForName:@"KeystrokeSequence"] stringValue];
@@ -357,7 +350,7 @@ int closeCallback(void *context) {
     }
 
     NSData *data = [Base64 decode:[uuidString dataUsingEncoding:NSUTF8StringEncoding]];
-    return [[[UUID alloc] initWithData:data] autorelease];
+    return [[UUID alloc] initWithData:data];
 }
 
 @end

@@ -77,7 +77,7 @@
         [string appendString:@"|\n"];
     }
     
-    return [string autorelease];
+    return string;
 }
 
 @end

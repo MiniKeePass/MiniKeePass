@@ -22,7 +22,7 @@
 - (id)initWithOutputStream:(OutputStream*)stream {
     self = [super init];
     if (self) {
-        outputStream = [stream retain];
+        outputStream = stream;
         
         zstream.zalloc = Z_NULL;
         zstream.zfree = Z_NULL;
@@ -36,11 +36,6 @@
         }
     }
     return self;
-}
-
-- (void)dealloc {
-    [outputStream release];
-    [super dealloc];
 }
 
 - (NSUInteger)write:(const void *)bytes length:(NSUInteger)bytesLength {

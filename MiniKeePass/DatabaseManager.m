@@ -40,11 +40,6 @@ static DatabaseManager *sharedInstance;
     return sharedInstance;
 }
 
-- (void)dealloc {
-    [selectedFilename release];
-    [super dealloc];
-}
-
 - (void)openDatabaseDocument:(NSString*)filename animated:(BOOL)newAnimated {
     BOOL databaseLoaded = NO;
     
@@ -85,8 +80,6 @@ static DatabaseManager *sharedInstance;
         } @catch (NSException * exception) {
             // Ignore
         }
-        
-        [dd release];
     }
     
     // Prompt the user for the password if we haven't loaded the database yet
@@ -109,9 +102,6 @@ static DatabaseManager *sharedInstance;
         UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:passwordViewController];
         
         [appDelegate.window.rootViewController presentModalViewController:navigationController animated:animated];
-        
-        [navigationController release];
-        [passwordViewController release];
     }
 }
 
@@ -119,8 +109,6 @@ static DatabaseManager *sharedInstance;
     // Set the database document in the application delegate
     MiniKeePassAppDelegate *appDelegate = (MiniKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
     appDelegate.databaseDocument = databaseDocument;
-    
-    [databaseDocument release];
 }
 
 - (void)formViewController:(FormViewController *)controller button:(FormViewControllerButton)button {
@@ -171,7 +159,6 @@ static DatabaseManager *sharedInstance;
             NSLog(@"%@", exception);
             shouldDismiss = NO;
             [passwordViewController showErrorMessage:exception.reason];
-            [dd release];
         }
     }
     

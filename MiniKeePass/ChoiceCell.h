@@ -25,7 +25,7 @@
 
 @property (nonatomic, copy) NSString *prefix;
 @property (nonatomic, assign) NSInteger selectedIndex;
-@property (nonatomic, retain) NSArray *choices;
+@property (nonatomic, strong) NSArray *choices;
 
 - (id)initWithLabel:(NSString*)labelText choices:(NSArray*)newChoices selectedIndex:(NSInteger)selectedIndex;
 - (void)setEnabled:(BOOL)enabled;

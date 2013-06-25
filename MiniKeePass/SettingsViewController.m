@@ -187,32 +187,14 @@ enum {
     versionLabel.shadowOffset = CGSizeMake(0.0, 1.0);
 
     [tableFooterView addSubview:versionLabel];
-    [versionLabel release];
     
     self.tableView.tableFooterView = tableFooterView;
-    [tableFooterView release];
-}
-
-- (void)dealloc {
-    [pinEnabledCell release];
-    [pinLockTimeoutCell release];
-    [deleteOnFailureEnabledCell release];
-    [deleteOnFailureAttemptsCell release];
-    [closeEnabledCell release];
-    [closeTimeoutCell release];
-    [rememberPasswordsEnabledCell release];
-    [hidePasswordsCell release];
-    [passwordEncodingCell release];
-    [clearClipboardEnabledCell release];
-    [clearClipboardTimeoutCell release];
-    [super dealloc];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
     // Delete the temp pin
-    [tempPin release];
     tempPin = nil;
     
     // Initialize all the controls with their settings
@@ -429,7 +411,6 @@ enum {
         selectionListViewController.delegate = self;
         selectionListViewController.reference = indexPath;
         [self.navigationController pushViewController:selectionListViewController animated:YES];
-        [selectionListViewController release];
     } else if (indexPath.section == SECTION_DELETE_ON_FAILURE && indexPath.row == ROW_DELETE_ON_FAILURE_ATTEMPTS && deleteOnFailureEnabledCell.switchControl.on) {
         SelectionListViewController *selectionListViewController = [[SelectionListViewController alloc] initWithStyle:UITableViewStyleGrouped];
         selectionListViewController.title = NSLocalizedString(@"Attempts", nil);
@@ -438,7 +419,6 @@ enum {
         selectionListViewController.delegate = self;
         selectionListViewController.reference = indexPath;
         [self.navigationController pushViewController:selectionListViewController animated:YES];
-        [selectionListViewController release];
     } else if (indexPath.section == SECTION_CLOSE && indexPath.row == ROW_CLOSE_TIMEOUT && closeEnabledCell.switchControl.on) {
         SelectionListViewController *selectionListViewController = [[SelectionListViewController alloc] initWithStyle:UITableViewStyleGrouped];
         selectionListViewController.title = NSLocalizedString(@"Close Timeout", nil);
@@ -447,7 +427,6 @@ enum {
         selectionListViewController.delegate = self;
         selectionListViewController.reference = indexPath;
         [self.navigationController pushViewController:selectionListViewController animated:YES];
-        [selectionListViewController release];
     } else if (indexPath.section == SECTION_PASSWORD_ENCODING && indexPath.row == ROW_PASSWORD_ENCODING_VALUE) {
         SelectionListViewController *selectionListViewController = [[SelectionListViewController alloc] initWithStyle:UITableViewStyleGrouped];
         selectionListViewController.title = NSLocalizedString(@"Password Encoding", nil);
@@ -456,7 +435,6 @@ enum {
         selectionListViewController.delegate = self;
         selectionListViewController.reference = indexPath;
         [self.navigationController pushViewController:selectionListViewController animated:YES];
-        [selectionListViewController release];
     } else if (indexPath.section == SECTION_CLEAR_CLIPBOARD && indexPath.row == ROW_CLEAR_CLIPBOARD_TIMEOUT && clearClipboardEnabledCell.switchControl.on) {
         SelectionListViewController *selectionListViewController = [[SelectionListViewController alloc] initWithStyle:UITableViewStyleGrouped];
         selectionListViewController.title = NSLocalizedString(@"Clear Clipboard Timeout", nil);
@@ -465,7 +443,6 @@ enum {
         selectionListViewController.delegate = self;
         selectionListViewController.reference = indexPath;
         [self.navigationController pushViewController:selectionListViewController animated:YES];
-        [selectionListViewController release];
     }
 }
 
@@ -510,7 +487,6 @@ enum {
         [pinViewController becomeFirstResponder];
         pinViewController.delegate = self;
         [self presentModalViewController:pinViewController animated:YES];
-        [pinViewController release];
     } else {
         // Delete the PIN and disable the PIN enabled setting
         [KeychainUtils deleteStringForKey:@"PIN" andServiceName:@"com.jflan.MiniKeePass.pin"];
@@ -573,7 +549,6 @@ enum {
         // Clear the PIN entry for confirmation
         [controller clearEntry];
     } else if ([tempPin isEqualToString:pin]) {
-        [tempPin release];
         tempPin = nil;
         
         // Set the PIN and enable the PIN enabled setting
@@ -586,7 +561,6 @@ enum {
         // Remove the PIN view
         [self dismissModalViewControllerAnimated:YES];
     } else {
-        [tempPin release];
         tempPin = nil;
         
         // Notify the user the PINs they entered did not match

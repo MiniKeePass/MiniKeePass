@@ -35,6 +35,6 @@
     NSComparisonResult (^entryComparator) (id obj1, id obj2);
 }
 
-@property (nonatomic, assign) KdbGroup *group;
+@property (nonatomic, weak) KdbGroup *group;
 
 @end

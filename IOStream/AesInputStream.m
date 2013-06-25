@@ -25,7 +25,7 @@
 - (id)initWithInputStream:(InputStream*)stream key:(NSData*)key iv:(NSData*)iv {
     self = [super init];
     if (self) {
-        inputStream = [stream retain];
+        inputStream = stream;
         
         CCCryptorCreate(kCCDecrypt, kCCAlgorithmAES128, kCCOptionPKCS7Padding, key.bytes, kCCKeySizeAES256, iv.bytes, &cryptorRef);
         
@@ -37,9 +37,7 @@
 }
 
 - (void)dealloc {
-    [inputStream release];
     CCCryptorRelease(cryptorRef);
-    [super dealloc];
 }
 
 - (NSUInteger)read:(void*)bytes length:(NSUInteger)bytesLength {

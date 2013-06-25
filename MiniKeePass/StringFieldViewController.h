@@ -23,13 +23,13 @@
 
 @interface StringFieldViewController : FormViewController <FormViewControllerDelegate>
 
-@property (nonatomic, retain) StringField *stringField;
+@property (nonatomic, strong) StringField *stringField;
 @property (nonatomic, readonly) UITextField *keyTextField;
 @property (nonatomic, readonly) UITextField *valueTextField;
 @property (nonatomic, readonly) SwitchCell *protectedSwitchCell;
 
-@property (nonatomic, retain) id object;
-@property (nonatomic, retain) id<StringFieldViewDelegate> stringFieldViewDelegate;
+@property (nonatomic, strong) id object;
+@property (nonatomic, strong) id<StringFieldViewDelegate> stringFieldViewDelegate; // FIXME should this be weak / unretained_whatever?
 
 - (id)initWithStringField:(StringField *)stringField;
 

@@ -36,9 +36,4 @@
     return self;
 }
 
-- (void)dealloc {
-    [label release];
-    [super dealloc];
-}
-
 @end

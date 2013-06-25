@@ -52,16 +52,16 @@
 
 @interface Kdb4Group : KdbGroup
 
-@property(nonatomic, retain) UUID *uuid;
+@property(nonatomic, strong) UUID *uuid;
 @property(nonatomic, copy) NSString *notes;
 @property(nonatomic, assign) BOOL isExpanded;
 @property(nonatomic, copy) NSString *defaultAutoTypeSequence;
 @property(nonatomic, copy) NSString *enableAutoType;
 @property(nonatomic, copy) NSString *enableSearching;
-@property(nonatomic, retain) UUID *lastTopVisibleEntry;
+@property(nonatomic, strong) UUID *lastTopVisibleEntry;
 @property(nonatomic, assign) BOOL expires;
 @property(nonatomic, assign) NSInteger usageCount;
-@property(nonatomic, retain) NSDate *locationChanged;
+@property(nonatomic, strong) NSDate *locationChanged;
 
 @end
 
@@ -82,7 +82,7 @@
 
 @interface CustomIcon : NSObject
 
-@property(nonatomic, retain) UUID *uuid;
+@property(nonatomic, strong) UUID *uuid;
 @property(nonatomic, copy) NSString *data;
 
 @end
@@ -100,14 +100,14 @@
 
 @property(nonatomic, assign) NSInteger binaryId;
 @property(nonatomic, assign) BOOL compressed;
-@property(nonatomic, retain) NSString *data;
+@property(nonatomic, strong) NSString *data;
 
 @end
 
 
 @interface BinaryRef : NSObject
 
-@property(nonatomic, retain) NSString *key;
+@property(nonatomic, strong) NSString *key;
 @property(nonatomic, assign) NSInteger ref;
 
 @end
@@ -133,23 +133,23 @@
 
 @interface Kdb4Entry : KdbEntry
 
-@property(nonatomic, retain) UUID *uuid;
-@property(nonatomic, retain) StringField *titleStringField;
-@property(nonatomic, retain) StringField *usernameStringField;
-@property(nonatomic, retain) StringField *passwordStringField;
-@property(nonatomic, retain) StringField *urlStringField;
-@property(nonatomic, retain) StringField *notesStringField;
-@property(nonatomic, retain) UUID *customIconUuid;
+@property(nonatomic, strong) UUID *uuid;
+@property(nonatomic, strong) StringField *titleStringField;
+@property(nonatomic, strong) StringField *usernameStringField;
+@property(nonatomic, strong) StringField *passwordStringField;
+@property(nonatomic, strong) StringField *urlStringField;
+@property(nonatomic, strong) StringField *notesStringField;
+@property(nonatomic, strong) UUID *customIconUuid;
 @property(nonatomic, copy) NSString *foregroundColor;
 @property(nonatomic, copy) NSString *backgroundColor;
 @property(nonatomic, copy) NSString *overrideUrl;
 @property(nonatomic, copy) NSString *tags;
 @property(nonatomic, assign) BOOL expires;
 @property(nonatomic, assign) NSInteger usageCount;
-@property(nonatomic, retain) NSDate *locationChanged;
+@property(nonatomic, strong) NSDate *locationChanged;
 @property(nonatomic, readonly) NSMutableArray *stringFields;
 @property(nonatomic, readonly) NSMutableArray *binaries;
-@property(nonatomic, retain) AutoType *autoType;
+@property(nonatomic, strong) AutoType *autoType;
 @property(nonatomic, readonly) NSMutableArray *history;
 
 @end
@@ -162,14 +162,14 @@
 
 @property(nonatomic, copy) NSString *generator;
 @property(nonatomic, copy) NSString *databaseName;
-@property(nonatomic, retain) NSDate *databaseNameChanged;
+@property(nonatomic, strong) NSDate *databaseNameChanged;
 @property(nonatomic, copy) NSString *databaseDescription;
-@property(nonatomic, retain) NSDate *databaseDescriptionChanged;
+@property(nonatomic, strong) NSDate *databaseDescriptionChanged;
 @property(nonatomic, copy) NSString *defaultUserName;
-@property(nonatomic, retain) NSDate *defaultUserNameChanged;
+@property(nonatomic, strong) NSDate *defaultUserNameChanged;
 @property(nonatomic, assign) NSInteger maintenanceHistoryDays;
 @property(nonatomic, copy) NSString *color;
-@property(nonatomic, retain) NSDate *masterKeyChanged;
+@property(nonatomic, strong) NSDate *masterKeyChanged;
 @property(nonatomic, assign) NSInteger masterKeyChangeRec;
 @property(nonatomic, assign) NSInteger masterKeyChangeForce;
 @property(nonatomic, assign) BOOL protectTitle;
@@ -179,14 +179,14 @@
 @property(nonatomic, assign) BOOL protectNotes;
 @property(nonatomic, readonly) NSMutableArray *customIcons;
 @property(nonatomic, assign) BOOL recycleBinEnabled;
-@property(nonatomic, retain) UUID *recycleBinUuid;
-@property(nonatomic, retain) NSDate *recycleBinChanged;
-@property(nonatomic, retain) UUID *entryTemplatesGroup;
-@property(nonatomic, retain) NSDate *entryTemplatesGroupChanged;
+@property(nonatomic, strong) UUID *recycleBinUuid;
+@property(nonatomic, strong) NSDate *recycleBinChanged;
+@property(nonatomic, strong) UUID *entryTemplatesGroup;
+@property(nonatomic, strong) NSDate *entryTemplatesGroupChanged;
 @property(nonatomic, assign) NSInteger historyMaxItems;
 @property(nonatomic, assign) NSInteger historyMaxSize;
-@property(nonatomic, retain) UUID *lastSelectedGroup;
-@property(nonatomic, retain) UUID *lastTopVisibleGroup;
+@property(nonatomic, strong) UUID *lastSelectedGroup;
+@property(nonatomic, strong) UUID *lastTopVisibleGroup;
 @property(nonatomic, readonly) NSMutableArray *binaries;
 @property(nonatomic, readonly) NSMutableArray *customData;
 

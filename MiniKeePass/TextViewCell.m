@@ -35,11 +35,6 @@
     return self;
 }
 
-- (void)dealloc {
-    [textView release];
-    [super dealloc];
-}
-
 - (void)layoutSubviews {
     [super layoutSubviews];
     

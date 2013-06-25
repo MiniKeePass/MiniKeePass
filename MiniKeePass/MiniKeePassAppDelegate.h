@@ -23,8 +23,8 @@
 
 @interface MiniKeePassAppDelegate : NSObject <UIApplicationDelegate, UIActionSheetDelegate>
 
-@property (nonatomic, retain) UIWindow *window;
-@property (nonatomic, retain) DatabaseDocument *databaseDocument;
+@property (nonatomic, strong) UIWindow *window;
+@property (nonatomic, strong) DatabaseDocument *databaseDocument;
 @property (nonatomic, assign) BOOL locked;
 @property (nonatomic, readonly) BOOL backgroundSupported;
 

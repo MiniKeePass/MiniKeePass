@@ -38,23 +38,15 @@
 - (id)initWithTree:(Kdb4Tree*)t outputStream:(OutputStream*)stream randomStream:(RandomStream*)cryptoRandomStream {
     self = [super init];
     if (self) {
-        tree = [t retain];
-        outputStream = [stream retain];
-        randomStream = [cryptoRandomStream retain];
+        tree = t;
+        outputStream = stream;
+        randomStream = cryptoRandomStream;
 
         dateFormatter = [[NSDateFormatter alloc] init];
         dateFormatter.timeZone = [NSTimeZone timeZoneWithName:@"GMT"];
         dateFormatter.dateFormat = @"yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'";
     }
     return self;
-}
-
-- (void)dealloc {
-    [tree release];
-    [outputStream release];
-    [randomStream release];
-    [dateFormatter release];
-    [super dealloc];
 }
 
 - (void)persist {
@@ -157,7 +149,7 @@
     [element addChild:[self persistGroup:(Kdb4Group *)tree.root]];
     [document.rootElement addChild:element];
 
-    return [document autorelease];
+    return document;
 }
 
 - (DDXMLElement *)persistCustomIcon:(CustomIcon *)customIcon {
@@ -366,7 +358,7 @@
 
 - (NSString *)persistUuid:(UUID *)uuid {
     NSData *data = [Base64 encode:[uuid getData]];
-    return [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
+    return [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 }
 
 - (void)encodeProtected:(DDXMLElement*)root {
@@ -381,11 +373,9 @@
         // Base64 encode the string
         NSData *data = [Base64 encode:mutableData];
 
-        [mutableData release];
 
         NSString *protected = [[NSString alloc] initWithBytes:data.bytes length:data.length encoding:NSUTF8StringEncoding];
         [root setStringValue:protected];
-        [protected release];
     }
     
     for (DDXMLNode *node in [root children]) {

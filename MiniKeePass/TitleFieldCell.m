@@ -31,11 +31,6 @@
     return self;
 }
 
-- (void)dealloc {
-    [_imageButton release];
-    [super dealloc];
-}
-
 - (void)textFieldDidEndEditing:(UITextField *)inTextField {
     [super textFieldDidEndEditing:inTextField];
     

@@ -13,7 +13,7 @@
 @class KdbEntry;
 
 @interface KdbGroup : NSObject {
-    KdbGroup *parent;
+    KdbGroup *__unsafe_unretained parent;
 
     NSInteger image;
     NSString *name;
@@ -28,17 +28,17 @@
     BOOL canAddEntries;
 }
 
-@property(nonatomic, assign) KdbGroup *parent;
+@property(nonatomic, unsafe_unretained) KdbGroup *parent;
 
 @property(nonatomic, assign) NSInteger image;
 @property(nonatomic, copy) NSString *name;
 @property(nonatomic, readonly) NSArray *groups;
 @property(nonatomic, readonly) NSArray *entries;
 
-@property(nonatomic, retain) NSDate *creationTime;
-@property(nonatomic, retain) NSDate *lastModificationTime;
-@property(nonatomic, retain) NSDate *lastAccessTime;
-@property(nonatomic, retain) NSDate *expiryTime;
+@property(nonatomic, strong) NSDate *creationTime;
+@property(nonatomic, strong) NSDate *lastModificationTime;
+@property(nonatomic, strong) NSDate *lastAccessTime;
+@property(nonatomic, strong) NSDate *expiryTime;
 
 @property(nonatomic, assign) BOOL canAddEntries;
 
@@ -55,7 +55,7 @@
 @end
 
 @interface KdbEntry : NSObject {
-    KdbGroup *parent;
+    KdbGroup *__unsafe_unretained parent;
 
     NSInteger image;
 
@@ -65,7 +65,7 @@
     NSDate *expiryTime;
 }
 
-@property(nonatomic, assign) KdbGroup *parent;
+@property(nonatomic, unsafe_unretained) KdbGroup *parent;
 
 @property(nonatomic, assign) NSInteger image;
 
@@ -84,10 +84,10 @@
 - (NSString *)notes;
 - (void)setNotes:(NSString *)notes;
 
-@property(nonatomic, retain) NSDate *creationTime;
-@property(nonatomic, retain) NSDate *lastModificationTime;
-@property(nonatomic, retain) NSDate *lastAccessTime;
-@property(nonatomic, retain) NSDate *expiryTime;
+@property(nonatomic, strong) NSDate *creationTime;
+@property(nonatomic, strong) NSDate *lastModificationTime;
+@property(nonatomic, strong) NSDate *lastAccessTime;
+@property(nonatomic, strong) NSDate *expiryTime;
 
 @end
 
@@ -95,7 +95,7 @@
     KdbGroup *root;
 }
 
-@property(nonatomic, retain) KdbGroup *root;
+@property(nonatomic, strong) KdbGroup *root;
 
 - (KdbGroup*)createGroup:(KdbGroup*)parent;
 - (KdbEntry*)createEntry:(KdbGroup*)parent;

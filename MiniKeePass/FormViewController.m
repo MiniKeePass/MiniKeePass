@@ -35,11 +35,9 @@
         
         UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(okPressed:)];
         self.navigationItem.rightBarButtonItem = doneButton;
-        [doneButton release];
         
         UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelPressed:)];
         self.navigationItem.leftBarButtonItem = cancelButton;
-        [cancelButton release];
         
         infoBar = [[InfoBar alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 20)];
         infoBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
@@ -60,15 +58,6 @@
     
     NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
     [notificationCenter removeObserver:self name:UIApplicationWillResignActiveNotification object:nil];
-}
-
-- (void)dealloc {
-    [controls release];
-    [cells release];
-    [infoBar release];
-    [headerTitle release];
-    [footerTitle release];
-    [super dealloc];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -122,8 +111,7 @@
 // Create a local array of pre-generated cells.
 // This has potential memory issues if a large number of cells are created, but it solves a probem with scrolling the form
 - (void)setControls:(NSArray *)newControls {
-    [controls release];
-    controls = [newControls retain];
+    controls = newControls;
     
     if (cells == nil) {
         cells = [[NSMutableArray alloc] initWithCapacity:[controls count]];
@@ -136,7 +124,7 @@
         if ([controlView isKindOfClass:[UITableViewCell class]]) {
             cell = (UITableViewCell*)controlView;
         } else {
-            cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil] autorelease];
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             
             controlView.frame = [self calculateNewFrameForView:controlView inOrientation:[[UIApplication sharedApplication] statusBarOrientation]];

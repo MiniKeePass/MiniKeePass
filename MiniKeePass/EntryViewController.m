@@ -36,9 +36,9 @@
 }
 
 @property (nonatomic) BOOL isKdb4;
-@property (nonatomic, retain) NSMutableArray *editingStringFields;
+@property (nonatomic, strong) NSMutableArray *editingStringFields;
 @property (nonatomic, readonly) NSArray *currentStringFields;
-@property (nonatomic, retain) NSMutableArray *filledCells;
+@property (nonatomic, strong) NSMutableArray *filledCells;
 
 @end
 
@@ -57,7 +57,6 @@
                                                                              target:nil
                                                                              action:nil];
         self.navigationItem.backBarButtonItem = backBarButtonItem;
-        [backBarButtonItem release];
 
         appDelegate = (MiniKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
 
@@ -93,7 +92,7 @@
         urlCell.textField.returnKeyType = UIReturnKeyDone;
         [urlCell.accessoryButton addTarget:self action:@selector(openUrlPressed) forControlEvents:UIControlEventTouchUpInside];
 
-        defaultCells = [@[titleCell, usernameCell, passwordCell, urlCell] retain];
+        defaultCells = @[titleCell, usernameCell, passwordCell, urlCell];
 
         commentsCell = [[TextViewCell alloc] init];
         commentsCell.textView.editable = NO;
@@ -101,19 +100,6 @@
         _filledCells = [[NSMutableArray alloc] initWithCapacity:4];
     }
     return self;
-}
-
-- (void)dealloc {
-    [titleCell release];
-    [usernameCell release];
-    [passwordCell release];
-    [urlCell release];
-    [commentsCell release];
-    [defaultCells release];
-    [_entry release];
-    [_filledCells release];
-
-    [super dealloc];
 }
 
 - (void)viewDidLoad {
@@ -157,9 +143,7 @@
 }
 
 - (void)setEntry:(KdbEntry *)e {
-    [_entry release];
-
-    _entry = [e retain];
+    _entry = e;
     self.isKdb4 = [self.entry isKindOfClass:[Kdb4Entry class]];
 
     // Update the fields
@@ -262,7 +246,7 @@
         NSArray *stringFields = ((Kdb4Entry *)self.entry).stringFields;
         int count = stringFields.count;
         if (editing) {
-            self.editingStringFields = [[[NSMutableArray alloc] initWithArray:stringFields copyItems:YES] autorelease];
+            self.editingStringFields = [[NSMutableArray alloc] initWithArray:stringFields copyItems:YES];
         }
 
         if (count == 0) {
@@ -323,7 +307,6 @@
     if (editing) {
         UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", nil) style:UIBarButtonItemStylePlain target:self action:@selector(cancelPressed)];
         self.navigationItem.leftBarButtonItem = cancelButton;
-        [cancelButton release];
 
         titleCell.selectionStyle = UITableViewCellSelectionStyleNone;
         usernameCell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -459,10 +442,8 @@
     stringFieldViewController.stringFieldViewDelegate = self;
 
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:stringFieldViewController];
-    [stringFieldViewController release];
 
     [self.navigationController presentViewController:navController animated:YES completion:nil];
-    [navController release];
 }
 
 # pragma mark - Table view delegate
@@ -557,22 +538,22 @@
                 // Return "Add new..." cell
                 UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:AddFieldCellIdentifier];
                 if (cell == nil) {
-                    cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2
-                                                   reuseIdentifier:AddFieldCellIdentifier] autorelease];
+                    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2
+                                                   reuseIdentifier:AddFieldCellIdentifier];
                     cell.textLabel.textAlignment = NSTextAlignmentLeft;
                     cell.textLabel.text = NSLocalizedString(@"Add new...", nil);
 
                     // Add new cell when this cell is tapped
-                    [cell addGestureRecognizer:[[[UITapGestureRecognizer alloc] initWithTarget:self
-                                                                                        action:@selector(addPressed)] autorelease]];
+                    [cell addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self
+                                                                                        action:@selector(addPressed)]];
                 }
 
                 return cell;
             } else {
                 TextFieldCell *cell = [tableView dequeueReusableCellWithIdentifier:TextFieldCellIdentifier];
                 if (cell == nil) {
-                    cell = [[[TextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault
-                                                 reuseIdentifier:TextFieldCellIdentifier] autorelease];
+                    cell = [[TextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault
+                                                 reuseIdentifier:TextFieldCellIdentifier];
                     cell.textFieldCellDelegate = self;
                     cell.textField.returnKeyType = UIReturnKeyDone;
                 }
@@ -648,7 +629,6 @@
         } completion:^(BOOL finished) {
             cell.accessoryView.hidden = NO;
             [copiedLabel removeFromSuperview];
-            [copiedLabel release];
             self.tableView.allowsSelection = YES;
         }];
     });
@@ -664,10 +644,8 @@
     stringFieldViewController.stringFieldViewDelegate = self;
 
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:stringFieldViewController];
-    [stringFieldViewController release];
 
     [self.navigationController presentViewController:navController animated:YES completion:nil];
-    [navController release];
 
 }
 
@@ -696,7 +674,6 @@
         imageSelectionViewController.imageSelectionView.delegate = self;
         imageSelectionViewController.imageSelectionView.selectedImageIndex = _selectedImageIndex;
         [self.navigationController pushViewController:imageSelectionViewController animated:YES];
-        [imageSelectionViewController release];
     }
 }
 
@@ -714,7 +691,7 @@
     hud.detailsLabelFont = [UIFont fontWithName:@"Andale Mono" size:24];
 	hud.margin = 10.f;
 	hud.removeFromSuperViewOnHide = YES;
-    [hud addGestureRecognizer:[[[UITapGestureRecognizer alloc] initWithTarget:hud action:@selector(hide:)] autorelease]];
+    [hud addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:hud action:@selector(hide:)]];
 }
 
 #pragma mark - Password Generation
@@ -726,9 +703,6 @@
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:passwordGeneratorViewController];
 
     [self presentModalViewController:navigationController animated:YES];
-
-    [navigationController release];
-    [passwordGeneratorViewController release];
 }
 
 - (void)passwordGeneratorViewController:(PasswordGeneratorViewController *)controller password:(NSString *)password {

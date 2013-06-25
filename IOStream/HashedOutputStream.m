@@ -27,7 +27,7 @@
 - (id)initWithOutputStream:(OutputStream*)stream blockSize:(uint32_t)blockSize {
     self = [super init];
     if (self) {
-        outputStream = [stream retain];
+        outputStream = stream;
         
         blockIndex = 0;
         
@@ -39,9 +39,7 @@
 }
 
 - (void)dealloc {
-    [outputStream release];
     free(buffer);
-    [super dealloc];
 }
 
 - (NSUInteger)write:(const void *)bytes length:(NSUInteger)bytesLength {

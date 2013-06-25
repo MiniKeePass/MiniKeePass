@@ -27,7 +27,7 @@
 - (id)initWithInputStream:(InputStream*)stream {
     self = [super init];
     if (self) {
-        inputStream = [stream retain];
+        inputStream = stream;
         
         buffer = NULL;
         bufferOffset = 0;
@@ -37,13 +37,9 @@
 }
 
 - (void)dealloc {
-    [inputStream release];
-    
     if (buffer != NULL) {
         free(buffer);
     }
-    
-    [super dealloc];
 }
 
 - (NSUInteger)read:(void*)bytes length:(NSUInteger)bytesLength {
