@@ -37,19 +37,14 @@
 }
 
 + (HelpTopic *)helpTopicWithTitle:(NSString *)title andResource:(NSString *)resource {
-    return [[[HelpTopic alloc] initWithTitle:title andResource:resource] autorelease];
+    return [[HelpTopic alloc] initWithTitle:title andResource:resource];
 }
 
-- (void)dealloc {
-    [_title release];
-    [_resource release];
-    [super dealloc];
-}
 
 @end
 
 @interface HelpViewController ()
-@property (nonatomic, retain) NSArray *helpTopics;
+@property (nonatomic, strong) NSArray *helpTopics;
 @end
 
 @implementation HelpViewController
@@ -58,20 +53,15 @@
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
         self.title = NSLocalizedString(@"Help", nil);
-        _helpTopics = [@[
+        _helpTopics = @[
                          [HelpTopic helpTopicWithTitle:@"iTunes Import/Export" andResource:@"itunes"],
                          [HelpTopic helpTopicWithTitle:@"Dropbox Import/Export" andResource:@"dropbox"],
                          [HelpTopic helpTopicWithTitle:@"Safari/Email Import" andResource:@"safariemail"],
                          [HelpTopic helpTopicWithTitle:@"Create New Database" andResource:@"createdb"],
                          [HelpTopic helpTopicWithTitle:@"Key Files" andResource:@"keyfiles"]
-                        ] retain];
+                        ];
     }
     return self;
-}
-
-- (void)dealloc {
-    [_helpTopics release];
-    [super dealloc];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -83,7 +73,7 @@
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     
@@ -117,11 +107,8 @@
     UIViewController *viewController = [[AutorotatingViewController alloc] init];
     viewController.title = NSLocalizedString(title, nil);
     viewController.view = webView;
-    [webView release];
     
     [self.navigationController pushViewController:viewController animated:YES];
-    
-    [viewController release];
 }
 
 @end
