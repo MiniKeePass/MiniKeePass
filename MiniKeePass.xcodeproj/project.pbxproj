@@ -249,7 +249,7 @@
 		689D03EB13A42B63005EBD36 /* DDXMLDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D02FC13A42B63005EBD36 /* DDXMLDocument.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		689D03EC13A42B63005EBD36 /* DDXMLElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D02FE13A42B63005EBD36 /* DDXMLElement.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		689D03ED13A42B63005EBD36 /* DDXMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D030013A42B63005EBD36 /* DDXMLNode.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
-		689D041313A42B63005EBD36 /* KeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D032B13A42B63005EBD36 /* KeychainUtils.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		689D041313A42B63005EBD36 /* KeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D032B13A42B63005EBD36 /* KeychainUtils.m */; };
 		689D044E13A42C82005EBD36 /* ChoiceCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D042513A42C81005EBD36 /* ChoiceCell.m */; };
 		689D044F13A42C82005EBD36 /* DatabaseDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D042713A42C81005EBD36 /* DatabaseDocument.m */; };
 		689D045013A42C82005EBD36 /* DatabaseManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D042913A42C81005EBD36 /* DatabaseManager.m */; };
