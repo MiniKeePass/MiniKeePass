@@ -18,31 +18,64 @@
 #import "HelpViewController.h"
 #import "AutorotatingViewController.h"
 
+@interface HelpTopic : NSObject
+- (HelpTopic *)initWithTitle:(NSString *)title andResource:(NSString *)resource;
++ (HelpTopic *)helpTopicWithTitle:(NSString *)title andResource:(NSString *)resource;
+@property (nonatomic, copy) NSString* title;
+@property (nonatomic, copy) NSString* resource;
+@end
+
+@implementation HelpTopic
+
+- (HelpTopic *)initWithTitle:(NSString *)title andResource:(NSString *)resource {
+    self = [super init];
+    if (self) {
+        _title = [title copy];
+        _resource = [resource copy];
+    }
+    return self;
+}
+
++ (HelpTopic *)helpTopicWithTitle:(NSString *)title andResource:(NSString *)resource {
+    return [[[HelpTopic alloc] initWithTitle:title andResource:resource] autorelease];
+}
+
+- (void)dealloc {
+    [_title release];
+    [_resource release];
+    [super dealloc];
+}
+
+@end
+
+@interface HelpViewController ()
+@property (nonatomic, retain) NSArray *helpTopics;
+@end
+
 @implementation HelpViewController
-
-typedef struct {
-    NSString *title;
-    NSString *resource;
-} help_topic_t;
-
-help_topic_t help_topics[] = {
-    {@"iTunes Import/Export", @"itunes"},
-    {@"Dropbox Import/Export", @"dropbox"},
-    {@"Safari/Email Import", @"safariemail"},
-    {@"Create New Database", @"createdb"},
-    {@"Key Files", @"keyfiles"}
-};
 
 - (id)init {
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
         self.title = NSLocalizedString(@"Help", nil);
+        _helpTopics = [@[
+                         [HelpTopic helpTopicWithTitle:@"iTunes Import/Export" andResource:@"itunes"],
+                         [HelpTopic helpTopicWithTitle:@"Dropbox Import/Export" andResource:@"dropbox"],
+                         [HelpTopic helpTopicWithTitle:@"Safari/Email Import" andResource:@"safariemail"],
+                         [HelpTopic helpTopicWithTitle:@"Create New Database" andResource:@"createdb"],
+                         [HelpTopic helpTopicWithTitle:@"Key Files" andResource:@"keyfiles"]
+                        ] retain];
     }
     return self;
 }
 
+- (void)dealloc {
+    [_helpTopics release];
+    [super dealloc];
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return sizeof(help_topics) / sizeof(help_topic_t);
+    return _helpTopics.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -55,15 +88,15 @@ help_topic_t help_topics[] = {
     }
     
     // Configure the cell
-    cell.textLabel.text = NSLocalizedString(help_topics[indexPath.row].title, nil);
+    cell.textLabel.text = NSLocalizedString(((HelpTopic *)_helpTopics[indexPath.row]).title, nil);
     
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     // Get the title and resource of the selected help page
-    NSString *title = help_topics[indexPath.row].title;
-    NSString *resource = help_topics[indexPath.row].resource;
+    NSString *title = ((HelpTopic *)_helpTopics[indexPath.row]).title;
+    NSString *resource = ((HelpTopic *)_helpTopics[indexPath.row]).resource;
     
     NSString *language = [[NSLocale preferredLanguages] objectAtIndex:0];
     NSString *localizedResource = [NSString stringWithFormat:@"%@-%@", language, resource];
