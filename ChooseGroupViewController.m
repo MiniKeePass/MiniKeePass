@@ -72,7 +72,7 @@
     for (KdbGroup *group in sortedGroups) {
         // Add this group
         BOOL valid = [self.delegate checkChoiceValidity:group];
-        [array addObject:@{KEY_GROUP : group, KEY_LEVEL : [NSNumber numberWithUnsignedInteger:level], KEY_VALID : [NSNumber numberWithBool:valid]}];
+        [array addObject:@{KEY_GROUP : group, KEY_LEVEL : [NSNumber numberWithInteger:level], KEY_VALID : [NSNumber numberWithBool:valid]}];
 
         // Add its subgroups
         [self addGroups:group.groups toArray:array atLevel:level + INDENT_LEVEL];
