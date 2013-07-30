@@ -174,8 +174,10 @@
 - (DDXMLElement *)persistCustomItem:(CustomItem *)customItem {
     DDXMLElement *root = [DDXMLNode elementWithName:@"Item"];
 
-    [root addAttributeWithName:@"Key" stringValue:customItem.key];
-    [root addAttributeWithName:@"Value" stringValue:customItem.value];
+    [root addChild:[DDXMLNode elementWithName:@"Key"
+                                  stringValue:customItem.key]];
+    [root addChild:[DDXMLNode elementWithName:@"Value"
+                                  stringValue:customItem.value]];
 
     return root;
 }

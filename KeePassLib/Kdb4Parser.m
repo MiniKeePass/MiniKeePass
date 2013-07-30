@@ -187,8 +187,8 @@ int closeCallback(void *context) {
 - (CustomItem *)parseCustomItem:(DDXMLElement *)root {
     CustomItem *customItem = [[CustomItem alloc] init];
 
-    customItem.key = [[root attributeForName:@"Key"] stringValue];
-    customItem.value = [[root attributeForName:@"Value"] stringValue];
+    customItem.key = [[root elementForName:@"Key"] stringValue];
+    customItem.value = [[root elementForName:@"Value"] stringValue];
 
     return customItem;
 }
