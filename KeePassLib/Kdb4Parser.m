@@ -91,6 +91,8 @@ int closeCallback(void *context) {
         @throw [NSException exceptionWithName:@"ParseError" reason:@"Failed to parse database" userInfo:nil];
     }
 
+    // FIXME DeletedObjects
+
     tree.root = [self parseGroup:element];
 
     return tree;
@@ -120,6 +122,7 @@ int closeCallback(void *context) {
 
 - (void)parseMeta:(DDXMLElement *)root tree:(Kdb4Tree *)tree {
     tree.generator = [[root elementForName:@"Generator"] stringValue];
+    // FIXME HeaderHash
     tree.databaseName = [[root elementForName:@"DatabaseName"] stringValue];
     tree.databaseNameChanged = [dateFormatter dateFromString:[[root elementForName:@"DatabaseNameChanged"] stringValue]];
     tree.databaseDescription = [[root elementForName:@"DatabaseDescription"] stringValue];
@@ -204,6 +207,11 @@ int closeCallback(void *context) {
     group.name = [[root elementForName:@"Name"] stringValue];
     group.notes = [[root elementForName:@"Notes"] stringValue];
     group.image = [[[root elementForName:@"IconID"] stringValue] integerValue];
+
+    DDXMLElement *customIconUuidElement = [root elementForName:@"CustomIconUUID"];
+    if (customIconUuidElement != nil) {
+        group.customIconUuid = [self parseUuidString:[customIconUuidElement stringValue]];
+    }
 
     DDXMLElement *timesElement = [root elementForName:@"Times"];
     group.lastModificationTime = [dateFormatter dateFromString:[[timesElement elementForName:@"LastModificationTime"] stringValue]];

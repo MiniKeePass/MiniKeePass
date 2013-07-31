@@ -54,6 +54,7 @@
 
 @property(nonatomic, strong) UUID *uuid;
 @property(nonatomic, copy) NSString *notes;
+@property(nonatomic, strong) UUID *customIconUuid;
 @property(nonatomic, assign) BOOL isExpanded;
 @property(nonatomic, copy) NSString *defaultAutoTypeSequence;
 @property(nonatomic, copy) NSString *enableAutoType;

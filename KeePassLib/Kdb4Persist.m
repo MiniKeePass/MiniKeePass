@@ -68,6 +68,7 @@
     element = [DDXMLNode elementWithName:@"Meta"];
     [element addChild:[DDXMLNode elementWithName:@"Generator"
                                      stringValue:tree.generator]];
+    // FIXME HeaderHash
     [element addChild:[DDXMLNode elementWithName:@"DatabaseName"
                                      stringValue:tree.databaseName]];
     [element addChild:[DDXMLNode elementWithName:@"DatabaseNameChanged"
@@ -149,6 +150,8 @@
     [element addChild:[self persistGroup:(Kdb4Group *)tree.root]];
     [document.rootElement addChild:element];
 
+    // FIXME DeletedObjects
+
     return document;
 }
 
@@ -194,6 +197,10 @@
                                   stringValue:group.notes]];
     [root addChild:[DDXMLNode elementWithName:@"IconID"
                                   stringValue:[NSString stringWithFormat:@"%d", group.image]]];
+    if (group.customIconUuid != nil) {
+        [root addChild:[DDXMLNode elementWithName:@"CustomIconUUID"
+                                      stringValue:[self persistUuid:group.customIconUuid]]];
+    }
 
     // Add the Times element
     DDXMLElement *timesElement = [DDXMLNode elementWithName:@"Times"];
