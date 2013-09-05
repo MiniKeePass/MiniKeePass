@@ -18,12 +18,15 @@
 #import <UIKit/UIKit.h>
 #import "FormViewController.h"
 #import "ChoiceCell.h"
+#import "SwitchCell.h"
 
 @interface PasswordViewController : FormViewController <SelectionListViewControllerDelegate> {
+    SwitchCell *showPassword;
     UITextField *passwordTextField;
     ChoiceCell *keyFileCell;
 }
 
+@property (nonatomic, readonly) SwitchCell *showPassword;
 @property (nonatomic, readonly) UITextField *passwordTextField;
 @property (nonatomic, readonly) ChoiceCell *keyFileCell;
 
