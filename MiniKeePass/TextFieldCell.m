@@ -18,8 +18,6 @@
 #import "TextFieldCell.h"
 #import <UIKit/UIPasteboard.h>
 
-#define INSET 83
-
 @interface TextFieldCell()
 @property (nonatomic, strong) UIView *grayBar;
 @end
@@ -29,10 +27,15 @@
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:reuseIdentifier];
     if (self) {
-        
+        int inset = 83;
+
+        if ([[UIDevice currentDevice].systemVersion hasPrefix:@"7"]) {
+            inset = 115;
+        }
+
         CGRect frame = self.contentView.frame;
-        frame.origin.x = INSET;
-        frame.size.width -= INSET;
+        frame.origin.x = inset;
+        frame.size.width -= inset;
         
         _textField = [[UITextField alloc] initWithFrame:frame];
         _textField.delegate = self;
@@ -50,7 +53,7 @@
         CGFloat grayIntensity = 202.0 / 255.0;
         UIColor *color = [UIColor colorWithRed:grayIntensity green:grayIntensity blue:grayIntensity alpha:1];
 
-        _grayBar = [[UIView alloc] initWithFrame:CGRectMake(79, -1, 1, self.contentView.frame.size.height - 4)];
+        _grayBar = [[UIView alloc] initWithFrame:CGRectMake(inset - 4, -1, 1, self.contentView.frame.size.height - 4)];
         _grayBar.backgroundColor = color;
         _grayBar.hidden = YES;
         [self.contentView addSubview:_grayBar];
@@ -76,10 +79,8 @@
     self.editingAccessoryView = editAccessoryButton;
 }
 
-- (void)textFieldDidBeginEditing:(UITextField *)field {
-    // Keep cell visable
-    UITableView *tableView = (UITableView*)self.superview;
-    [tableView scrollRectToVisible:self.frame animated:YES];
+- (void)textFieldDidBeginEditing:(UITextField *)textField {
+    // No-op
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {

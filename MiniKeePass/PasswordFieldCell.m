@@ -46,12 +46,11 @@
 
 - (void)textFieldDidBeginEditing:(UITextField *)field {
     [super textFieldDidBeginEditing:field];
-    
+
     self.textField.secureTextEntry = NO;
     self.textField.autocorrectionType = UITextAutocorrectionTypeNo;
     self.textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
     self.textField.returnKeyType = UIReturnKeyNext;
-    
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)field {

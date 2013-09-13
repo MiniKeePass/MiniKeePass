@@ -29,7 +29,7 @@
 #import "StringFieldViewController.h"
 #import "AutorotatingTableViewController.h"
 
-@interface EntryViewController : AutorotatingTableViewController <UIGestureRecognizerDelegate, ImageSelectionViewDelegate, TextFieldCellDelegate, PasswordGeneratorDelegate, StringFieldViewDelegate>
+@interface EntryViewController : AutorotatingTableViewController <UIGestureRecognizerDelegate, ImageSelectionViewDelegate, TextFieldCellDelegate, PasswordGeneratorDelegate, StringFieldViewDelegate, TitleFieldCellDelegate>
 
 @property (nonatomic, assign) NSUInteger selectedImageIndex;
 @property (nonatomic, strong) KdbEntry *entry;

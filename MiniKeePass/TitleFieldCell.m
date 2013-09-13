@@ -20,6 +20,8 @@
 
 @implementation TitleFieldCell
 
+@synthesize delegate;
+
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
@@ -33,10 +35,8 @@
 
 - (void)textFieldDidEndEditing:(UITextField *)inTextField {
     [super textFieldDidEndEditing:inTextField];
-    
-    UITableView *tableView = (UITableView*)self.superview;
-    UITableViewController *tableViewController = (UITableViewController*)tableView.delegate;
-    tableViewController.title = self.textField.text;
+
+    [delegate titleFieldCell:self updatedTitle:self.textField.text];
 }
 
 @end

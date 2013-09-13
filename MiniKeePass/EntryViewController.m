@@ -61,6 +61,7 @@
         appDelegate = (MiniKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
 
         titleCell = [[TitleFieldCell alloc] init];
+        titleCell.delegate = self;
         titleCell.textLabel.text = NSLocalizedString(@"Title", nil);
         titleCell.textField.placeholder = NSLocalizedString(@"Title", nil);
         titleCell.textField.enabled = NO;
@@ -338,6 +339,10 @@
 
     // Commit all updates
     [self.tableView endUpdates];
+}
+
+- (void)titleFieldCell:(TitleFieldCell *)cell updatedTitle:(NSString *)title {
+    self.title = title;
 }
 
 - (void)textFieldCellWillReturn:(TextFieldCell *)textFieldCell {

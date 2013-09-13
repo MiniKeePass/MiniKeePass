@@ -43,11 +43,4 @@
     textView.frame = CGRectMake(rect.origin.x + 3, rect.origin.y + 3, rect.size.width - 6, rect.size.height - 6);
 }
 
-- (void)textViewDidBeginEditing:(UITextView *)view {
-    UITableView *tableView = (UITableView*)self.superview;
-    
-    NSIndexPath *indexPath = [tableView indexPathForCell:self];
-    [tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
-}
-
 @end

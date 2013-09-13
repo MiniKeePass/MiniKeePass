@@ -17,8 +17,15 @@
 
 #import "TextFieldCell.h"
 
+@protocol TitleFieldCellDelegate;
+
 @interface TitleFieldCell : TextFieldCell
 
 @property (nonatomic, readonly) UIButton *imageButton;
+@property (nonatomic, unsafe_unretained) id<TitleFieldCellDelegate> delegate;
 
+@end
+
+@protocol TitleFieldCellDelegate <NSObject>
+- (void)titleFieldCell:(TitleFieldCell*)cell updatedTitle:(NSString*)title;
 @end
