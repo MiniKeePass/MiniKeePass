@@ -541,33 +541,59 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *CellIdentifier = @"Cell";
+    static NSString *CellIdentifierGroup = @"CellGroup";
+    static NSString *CellIdentifierEntry = @"CellEntry";
 
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    BOOL searching = tableView == self.searchDisplayController.searchResultsTableView;
+    NSString *theCellIdentifier;
+    UITableViewCellStyle theCellStyle;
+    
+    if (searching || indexPath.section == ENTRIES_SECTION) {
+        theCellIdentifier = CellIdentifierEntry;
+        theCellStyle = UITableViewCellStyleSubtitle;
+    } else {
+        theCellIdentifier = CellIdentifierGroup;
+        theCellStyle = UITableViewCellStyleDefault;
+    }
+    
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:theCellIdentifier];
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        cell = [[UITableViewCell alloc] initWithStyle:theCellStyle reuseIdentifier:theCellIdentifier];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
 
     appDelegate = (MiniKeePassAppDelegate *)[[UIApplication sharedApplication] delegate];
 
     // Configure the cell
-    if (tableView == self.searchDisplayController.searchResultsTableView) {
-        // Handle search results
-        KdbEntry *e = [results objectAtIndex:indexPath.row];
+    if (searching || indexPath.section == ENTRIES_SECTION) {
+        KdbEntry * e;
+        if (tableView == self.searchDisplayController.searchResultsTableView) {
+            // Handle search results
+            e = [results objectAtIndex:indexPath.row];
+        } else {
+            // Handle regular entries
+            e = [enteriesArray objectAtIndex:indexPath.row];
+        }
         cell.textLabel.text = e.title;
+        // Detail text is a combination of username and url
+        NSString *detailText = @"";
+        if (e.username != nil && e.username.length > 0) {
+            detailText = e.username;
+        }
+        if (e.url != nil && e.url.length > 0) {
+            if (detailText.length > 0) {
+                detailText = [NSString stringWithFormat:@"%@ @ %@", detailText, e.url];
+            } else {
+                detailText = e.url;
+            }
+        }
+        cell.detailTextLabel.text = detailText;
         cell.imageView.image = [appDelegate loadImage:e.image];
     } else {
-        // Child group/entry
-        if (indexPath.section == GROUPS_SECTION) {
-            KdbGroup *g = [groupsArray objectAtIndex:indexPath.row];
-            cell.textLabel.text = g.name;
-            cell.imageView.image = [appDelegate loadImage:g.image];
-        } else if (indexPath.section == ENTRIES_SECTION) {
-            KdbEntry *e = [enteriesArray objectAtIndex:indexPath.row];
-            cell.textLabel.text = e.title;
-            cell.imageView.image = [appDelegate loadImage:e.image];
-        }
+        // Child group
+        KdbGroup *g = [groupsArray objectAtIndex:indexPath.row];
+        cell.textLabel.text = g.name;
+        cell.imageView.image = [appDelegate loadImage:g.image];
     }
 
     return cell;
