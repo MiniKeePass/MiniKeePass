@@ -222,7 +222,7 @@ enum {
             [str appendString:@", "];
         }
         [str appendString:NSLocalizedString(@"Brackets", nil)];
-        prefix = YES;
+//        prefix = YES;
     }
     
     if ([str length] == 0) {
