@@ -277,8 +277,9 @@
         NSInteger clearClipboardTimeout = [appSettings clearClipboardTimeout];
         
         // Initiate a background task
+        __block UIBackgroundTaskIdentifier bgTask;
         UIApplication *application = [UIApplication sharedApplication];
-        UIBackgroundTaskIdentifier bgTask = [application beginBackgroundTaskWithExpirationHandler:^{
+        bgTask = [application beginBackgroundTaskWithExpirationHandler:^{
             // End the background task
             [application endBackgroundTask:bgTask];
         }];
