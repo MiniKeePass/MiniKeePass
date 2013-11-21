@@ -562,11 +562,11 @@
         if (indexPath.section == GROUPS_SECTION) {
             KdbGroup *g = [groupsArray objectAtIndex:indexPath.row];
             cell.textLabel.text = g.name;
-            cell.imageView.image = [appDelegate loadImage:g.image];
+            cell.imageView.image = [appDelegate loadImageForGroup:g];
         } else if (indexPath.section == ENTRIES_SECTION) {
             KdbEntry *e = [enteriesArray objectAtIndex:indexPath.row];
             cell.textLabel.text = e.title;
-            cell.imageView.image = [appDelegate loadImage:e.image];
+            cell.imageView.image = [appDelegate loadImageForEntry:e];
         }
     }
 

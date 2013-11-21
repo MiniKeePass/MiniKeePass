@@ -247,11 +247,43 @@
     }
 }
 
+- (UIImage *)loadImageForGroup:(KdbGroup *)group {
+    if ([group isKindOfClass:[Kdb4Group class]]) {
+        UUID *customIconUuid = ((Kdb4Group *)group).customIconUuid;
+        if (customIconUuid != nil) {
+            Kdb4Tree *kdbTree = (Kdb4Tree *)self.databaseDocument.kdbTree;
+            for (CustomIcon *customIcon in kdbTree.customIcons) {
+                if ([customIcon.uuid isEqual:customIconUuid]) {
+                    return customIcon.image;
+                }
+            }
+        }
+    }
+
+    return [self loadImage:group.image];
+}
+
+- (UIImage *)loadImageForEntry:(KdbEntry *)entry {
+    if ([entry isKindOfClass:[Kdb4Entry class]]) {
+        UUID *customIconUuid = ((Kdb4Entry *)entry).customIconUuid;
+        if (customIconUuid != nil) {
+            Kdb4Tree *kdbTree = (Kdb4Tree *)self.databaseDocument.kdbTree;
+            for (CustomIcon *customIcon in kdbTree.customIcons) {
+                if ([customIcon.uuid isEqual:customIconUuid]) {
+                    return customIcon.image;
+                }
+            }
+        }
+    }
+
+    return [self loadImage:entry.image];
+}
+
 - (UIImage *)loadImage:(NSUInteger)index {
     if (index >= NUM_IMAGES) {
         return nil;
     }
-    
+
     if (images[index] == nil) {
         images[index] = [UIImage imageNamed:[NSString stringWithFormat:@"%d", index]];
     }

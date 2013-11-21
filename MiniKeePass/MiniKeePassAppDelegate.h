@@ -31,6 +31,9 @@
 - (CGFloat)currentScreenWidth;
 - (void)closeDatabase;
 - (void)deleteAllData;
+
+- (UIImage *)loadImageForGroup:(KdbGroup *)group;
+- (UIImage *)loadImageForEntry:(KdbEntry *)entry;
 - (UIImage*)loadImage:(NSUInteger)index;
 
 - (void)showSettingsView;

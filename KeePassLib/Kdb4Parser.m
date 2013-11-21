@@ -174,6 +174,10 @@ int closeCallback(void *context) {
     customIcon.uuid = [self parseUuidString:[[root elementForName:@"UUID"] stringValue]];
     customIcon.data = [[root elementForName:@"Data"] stringValue];
 
+    // FIXME Just for testing
+    NSMutableData *data = [Base64 decode:[customIcon.data dataUsingEncoding:NSASCIIStringEncoding]];
+    customIcon.image = [UIImage imageWithData:data];
+
     return customIcon;
 }
 
