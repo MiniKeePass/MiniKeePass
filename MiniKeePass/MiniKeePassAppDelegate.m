@@ -275,10 +275,11 @@
 
         // Get the clear clipboard timeout (in seconds)
         NSInteger clearClipboardTimeout = [appSettings clearClipboardTimeout];
-        
+
+        UIApplication *application = [UIApplication sharedApplication];
+
         // Initiate a background task
         __block UIBackgroundTaskIdentifier bgTask;
-        UIApplication *application = [UIApplication sharedApplication];
         bgTask = [application beginBackgroundTaskWithExpirationHandler:^{
             // End the background task
             [application endBackgroundTask:bgTask];
