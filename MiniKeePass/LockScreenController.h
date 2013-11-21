@@ -17,7 +17,6 @@
 
 #import <UIKit/UIKit.h>
 #import "PinViewController.h"
-#import "AutorotatingViewController.h"
 
 @interface LockScreenController : UIViewController <PinViewControllerDelegate>
 

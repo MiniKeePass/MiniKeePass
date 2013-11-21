@@ -19,11 +19,10 @@
 #import "FilesInfoView.h"
 #import "TextEntryController.h"
 #import "NewKdbViewController.h"
-#import "AutorotatingTableViewController.h"
 
 @class MiniKeePassAppDelegate;
 
-@interface FilesViewController : AutorotatingTableViewController <TextEntryControllerDelegate, FormViewControllerDelegate> {
+@interface FilesViewController : UITableViewController <TextEntryControllerDelegate, FormViewControllerDelegate> {
     FilesInfoView *filesInfoView;
     MiniKeePassAppDelegate *appDelegate;
     

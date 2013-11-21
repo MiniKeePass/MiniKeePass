@@ -16,9 +16,8 @@
  */
 
 #import <UIKit/UIKit.h>
-#import "AutorotatingTableViewController.h"
 
-@interface HelpViewController : AutorotatingTableViewController {
+@interface HelpViewController : UITableViewController {
 }
 
 @end

@@ -31,8 +31,6 @@
 		52E43F4E15B59C890029F979 /* ru-itunes.html in Resources */ = {isa = PBXBuildFile; fileRef = 52E43F4915B59C890029F979 /* ru-itunes.html */; };
 		52E43F4F15B59C890029F979 /* ru-keyfiles.html in Resources */ = {isa = PBXBuildFile; fileRef = 52E43F4A15B59C890029F979 /* ru-keyfiles.html */; };
 		52E43F5015B59C890029F979 /* ru-safariemail.html in Resources */ = {isa = PBXBuildFile; fileRef = 52E43F4B15B59C890029F979 /* ru-safariemail.html */; };
-		52E6C88715431C7700A91CD3 /* AutorotatingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52E6C88615431C7700A91CD3 /* AutorotatingViewController.m */; };
-		52E6C88B15431D6C00A91CD3 /* AutorotatingTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52E6C88A15431D6C00A91CD3 /* AutorotatingTableViewController.m */; };
 		52E7AF5816251EA700DCB00A /* RenameItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52E7AF5716251EA700DCB00A /* RenameItemViewController.m */; };
 		52E7AF5C162523F800DCB00A /* EditGroupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52E7AF5B162523F800DCB00A /* EditGroupViewController.m */; };
 		52E7AF6316252D7C00DCB00A /* ChooseGroupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52E7AF6216252D7C00DCB00A /* ChooseGroupViewController.m */; };
@@ -170,10 +168,6 @@
 		52E43F4915B59C890029F979 /* ru-itunes.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "ru-itunes.html"; sourceTree = "<group>"; };
 		52E43F4A15B59C890029F979 /* ru-keyfiles.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "ru-keyfiles.html"; sourceTree = "<group>"; };
 		52E43F4B15B59C890029F979 /* ru-safariemail.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "ru-safariemail.html"; sourceTree = "<group>"; };
-		52E6C88515431C7700A91CD3 /* AutorotatingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AutorotatingViewController.h; sourceTree = "<group>"; };
-		52E6C88615431C7700A91CD3 /* AutorotatingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AutorotatingViewController.m; sourceTree = "<group>"; };
-		52E6C88915431D6C00A91CD3 /* AutorotatingTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AutorotatingTableViewController.h; sourceTree = "<group>"; };
-		52E6C88A15431D6C00A91CD3 /* AutorotatingTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AutorotatingTableViewController.m; sourceTree = "<group>"; };
 		52E7AF5616251EA700DCB00A /* RenameItemViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RenameItemViewController.h; sourceTree = "<group>"; };
 		52E7AF5716251EA700DCB00A /* RenameItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RenameItemViewController.m; sourceTree = "<group>"; };
 		52E7AF5A162523F800DCB00A /* EditGroupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditGroupViewController.h; sourceTree = "<group>"; };
@@ -742,10 +736,6 @@
 			children = (
 				6859176D1615DE1D005FECA5 /* AppSettings.h */,
 				6859176E1615DE1D005FECA5 /* AppSettings.m */,
-				52E6C88515431C7700A91CD3 /* AutorotatingViewController.h */,
-				52E6C88615431C7700A91CD3 /* AutorotatingViewController.m */,
-				52E6C88915431D6C00A91CD3 /* AutorotatingTableViewController.h */,
-				52E6C88A15431D6C00A91CD3 /* AutorotatingTableViewController.m */,
 				52E7AF6116252D7C00DCB00A /* ChooseGroupViewController.h */,
 				52E7AF6216252D7C00DCB00A /* ChooseGroupViewController.m */,
 				689D042613A42C81005EBD36 /* DatabaseDocument.h */,
@@ -987,8 +977,6 @@
 				52A7E1A914EDF1CB0041F950 /* LockScreenController.m in Sources */,
 				68F19D1F14EB3A9C00B772CB /* CharacterSetsViewController.m in Sources */,
 				68CE868F14EDF4C300D34A61 /* LengthCell.m in Sources */,
-				52E6C88715431C7700A91CD3 /* AutorotatingViewController.m in Sources */,
-				52E6C88B15431D6C00A91CD3 /* AutorotatingTableViewController.m in Sources */,
 				52A512B1159CE7540009F82F /* ImageSelectionView.m in Sources */,
 				682D450D1603883900156830 /* AesInputStream.m in Sources */,
 				682D450E1603883900156830 /* AesOutputStream.m in Sources */,

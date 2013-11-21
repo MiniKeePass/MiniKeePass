@@ -15,12 +15,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#import "AutorotatingTableViewController.h"
+#import <UIKit/UIKit.h>
 #import "Kdb.h"
 
 @protocol ChooseGroupDelegate;
 
-@interface ChooseGroupViewController : AutorotatingTableViewController
+@interface ChooseGroupViewController : UITableViewController
 
 @property (nonatomic, strong) KdbGroup *group;
 @property (nonatomic, unsafe_unretained) id<ChooseGroupDelegate> delegate;

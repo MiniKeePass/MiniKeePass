@@ -16,7 +16,6 @@
  */
 
 #import "HelpViewController.h"
-#import "AutorotatingViewController.h"
 
 @interface HelpTopic : NSObject
 - (HelpTopic *)initWithTitle:(NSString *)title andResource:(NSString *)resource;
@@ -104,7 +103,7 @@
     webView.backgroundColor = [UIColor whiteColor];
     [webView loadRequest:[NSURLRequest requestWithURL:url]];
     
-    UIViewController *viewController = [[AutorotatingViewController alloc] init];
+    UIViewController *viewController = [[UIViewController alloc] init];
     viewController.title = NSLocalizedString(title, nil);
     viewController.view = webView;
     

@@ -16,10 +16,9 @@
  */
 
 #import <UIKit/UIKit.h>
-#import "AutorotatingViewController.h"
 #import "ImageSelectionView.h"
 
-@interface ImageSelectionViewController : AutorotatingViewController
+@interface ImageSelectionViewController : UIViewController
 
 @property (nonatomic, readonly) ImageSelectionView *imageSelectionView;
 
