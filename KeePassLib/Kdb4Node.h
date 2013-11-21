@@ -132,6 +132,14 @@
 @end
 
 
+@interface DeletedObject : NSObject
+
+@property(nonatomic, strong) UUID *uuid;
+@property(nonatomic, strong) NSDate *deletionTime;
+
+@end
+
+
 @interface Kdb4Entry : KdbEntry
 
 @property(nonatomic, strong) UUID *uuid;
@@ -190,5 +198,6 @@
 @property(nonatomic, strong) UUID *lastTopVisibleGroup;
 @property(nonatomic, readonly) NSMutableArray *binaries;
 @property(nonatomic, readonly) NSMutableArray *customData;
+@property(nonatomic, strong) NSMutableArray *deletedObjects;
 
 @end

@@ -30,6 +30,7 @@
 - (DDXMLElement *)persistBinaryRef:(BinaryRef *)binaryRef;
 - (DDXMLElement *)persistAutoType:(AutoType *)autoType;
 - (NSString *)persistUuid:(UUID *)uuid;
+- (DDXMLElement *)persistDeletedObject:(DeletedObject *)deletedObject;
 - (void)encodeProtected:(DDXMLElement*)root;
 @end
 
@@ -148,9 +149,14 @@
 
     element = [DDXMLNode elementWithName:@"Root"];
     [element addChild:[self persistGroup:(Kdb4Group *)tree.root]];
+    if ([tree.deletedObjects count] > 0) {
+        DDXMLElement *deletedObjectsElement = [DDXMLElement elementWithName:@"DeletedObjects"];
+        for (DeletedObject *deletedObject in tree.deletedObjects) {
+            [deletedObjectsElement addChild:[self persistDeletedObject:deletedObject]];
+        }
+        [element addChild:deletedObjectsElement];
+    }
     [document.rootElement addChild:element];
-
-    // FIXME DeletedObjects
 
     return document;
 }
@@ -369,6 +375,18 @@
     NSData *data = [Base64 encode:[uuid getData]];
     return [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 }
+
+- (DDXMLElement *)persistDeletedObject:(DeletedObject *)deletedObject {
+    DDXMLElement *element = [DDXMLElement elementWithName:@"DeletedObject"];
+
+    [element addChild:[DDXMLElement elementWithName:@"UUID"
+                                        stringValue:[self persistUuid:deletedObject.uuid]]];
+    [element addChild:[DDXMLElement elementWithName:@"DeletionTime"
+                                        stringValue:[dateFormatter stringFromDate:deletedObject.deletionTime]]];
+
+    return element;
+}
+
 
 - (void)encodeProtected:(DDXMLElement*)root {
     DDXMLNode *protectedAttribute = [root attributeForName:@"Protected"];

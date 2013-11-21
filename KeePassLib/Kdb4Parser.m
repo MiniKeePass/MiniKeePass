@@ -33,6 +33,7 @@
 - (BinaryRef *)parseBinaryRef:(DDXMLElement *)root;
 - (AutoType *)parseAutoType:(DDXMLElement *)root;
 - (UUID *)parseUuidString:(NSString *)uuidString;
+- (NSMutableArray *)parseDeletedObjects:(DDXMLElement *)root;
 @end
 
 @implementation Kdb4Parser
@@ -91,9 +92,13 @@ int closeCallback(void *context) {
         @throw [NSException exceptionWithName:@"ParseError" reason:@"Failed to parse database" userInfo:nil];
     }
 
-    // FIXME DeletedObjects
-
     tree.root = [self parseGroup:element];
+
+    // FIXME DeletedObjects
+    DDXMLElement *deletedObjects = [rootElement elementForName:@"DeletedObjects"];
+    if (deletedObjects != nil) {
+        tree.deletedObjects = [self parseDeletedObjects:deletedObjects];
+    }
 
     return tree;
 }
@@ -359,6 +364,20 @@ int closeCallback(void *context) {
 
     NSData *data = [Base64 decode:[uuidString dataUsingEncoding:NSUTF8StringEncoding]];
     return [[UUID alloc] initWithData:data];
+}
+
+- (NSMutableArray *)parseDeletedObjects:(DDXMLElement *)root {
+    NSMutableArray *deletedObjects = [[NSMutableArray alloc] init];
+
+    for (DDXMLElement *element in [root elementsForName:@"DeletedObject"]) {
+        DeletedObject *deletedObject = [[DeletedObject alloc] init];
+        deletedObject.uuid = [self parseUuidString:[[element elementForName:@"UUID"] stringValue]];
+        deletedObject.deletionTime = [dateFormatter dateFromString:[[element elementForName:@"DeletionTime"] stringValue]];
+
+        [deletedObjects addObject:deletedObjects];
+    }
+
+    return deletedObjects;
 }
 
 @end

@@ -73,6 +73,8 @@
 
 @end
 
+@implementation DeletedObject
+@end
 
 @implementation Kdb4Entry
 
