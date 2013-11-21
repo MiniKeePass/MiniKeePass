@@ -33,7 +33,7 @@
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
         self.headerTitle = NSLocalizedString(@"New Database", nil);
-        self.footerTitle = NSLocalizedString(@"Do not forget your paster password, it cannot be recovered", nil);
+        self.footerTitle = NSLocalizedString(@"Do not forget your database password, it cannot be recovered.", nil);
 
 
         nameTextField = [[UITextField alloc] init];
