@@ -21,6 +21,7 @@
 
 @implementation PasswordViewController
 
+@synthesize showPassword;
 @synthesize passwordTextField;
 @synthesize keyFileCell;
 
@@ -29,6 +30,9 @@
     if (self) {
         self.title = NSLocalizedString(@"Password", nil);
         self.footerTitle = [NSString stringWithFormat:NSLocalizedString(@"Enter the password and/or select the keyfile for the %@ database.", nil), filename];
+        
+        showPassword = [[SwitchCell alloc] initWithLabel:NSLocalizedString(@"Show Password", nil)];
+        [showPassword.switchControl addTarget:self action:@selector(passwordSwitchChanged:) forControlEvents:UIControlEventValueChanged];
         
         passwordTextField = [[UITextField alloc] init];
         passwordTextField.placeholder = NSLocalizedString(@"Password", nil);
@@ -51,7 +55,7 @@
         
         keyFileCell = [[ChoiceCell alloc] initWithLabel:NSLocalizedString(@"Key File", nil) choices:keyFileChoices selectedIndex:0];
         
-        self.controls = [NSArray arrayWithObjects:passwordTextField, keyFileCell, nil];
+        self.controls = [NSArray arrayWithObjects:showPassword, passwordTextField, keyFileCell, nil];
         self.navigationItem.rightBarButtonItem = nil;
     }
     return self;
@@ -77,6 +81,24 @@
 - (void)selectionListViewController:(SelectionListViewController *)controller selectedIndex:(NSInteger)selectedIndex withReference:(id<NSObject>)reference {
     // Update the cell text
     [keyFileCell setSelectedIndex:selectedIndex];
+}
+
+-(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    textField.text = [textField.text stringByReplacingCharactersInRange:range withString:string];
+    return NO;
+}
+
+- (void)passwordSwitchChanged:(UISwitch *)passwordSwitch {
+    BOOL hidePass = ![passwordSwitch isOn];
+    if (hidePass) {
+        passwordTextField.enabled = NO;
+        passwordTextField.secureTextEntry = YES;
+        passwordTextField.enabled = YES;
+        [passwordTextField becomeFirstResponder];
+    } else {
+        passwordTextField.secureTextEntry = NO;
+    }
 }
 
 @end
