@@ -30,6 +30,7 @@
 - (DDXMLElement *)persistBinaryRef:(BinaryRef *)binaryRef;
 - (DDXMLElement *)persistAutoType:(AutoType *)autoType;
 - (NSString *)persistUuid:(UUID *)uuid;
+- (NSString *)persistBase64Data:(NSData *)data;
 - (DDXMLElement *)persistDeletedObject:(DeletedObject *)deletedObject;
 - (void)encodeProtected:(DDXMLElement*)root;
 @end
@@ -69,7 +70,8 @@
     element = [DDXMLNode elementWithName:@"Meta"];
     [element addChild:[DDXMLNode elementWithName:@"Generator"
                                      stringValue:tree.generator]];
-    // FIXME HeaderHash
+    [element addChild:[DDXMLNode elementWithName:@"HeaderHash"
+                                    stringValue:[self persistBase64Data:tree.headerHash]]];
     [element addChild:[DDXMLNode elementWithName:@"DatabaseName"
                                      stringValue:tree.databaseName]];
     [element addChild:[DDXMLNode elementWithName:@"DatabaseNameChanged"
@@ -372,8 +374,13 @@
 }
 
 - (NSString *)persistUuid:(UUID *)uuid {
-    NSData *data = [Base64 encode:[uuid getData]];
-    return [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    NSData *data = [uuid getData];
+    return [self persistBase64Data:data];
+}
+
+- (NSString *)persistBase64Data:(NSData *)data {
+    NSData *encodedData = [Base64 encode:data];
+    return [[NSString alloc] initWithData:encodedData encoding:NSASCIIStringEncoding];
 }
 
 - (DDXMLElement *)persistDeletedObject:(DeletedObject *)deletedObject {
@@ -398,10 +405,8 @@
         [randomStream xor:mutableData];
 
         // Base64 encode the string
-        NSData *data = [Base64 encode:mutableData];
+        NSString *protected = [self persistBase64Data:mutableData];
 
-
-        NSString *protected = [[NSString alloc] initWithBytes:data.bytes length:data.length encoding:NSUTF8StringEncoding];
         [root setStringValue:protected];
     }
     

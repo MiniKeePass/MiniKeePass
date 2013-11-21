@@ -170,6 +170,7 @@
 @property(nonatomic, assign) uint32_t compressionAlgorithm;
 
 @property(nonatomic, copy) NSString *generator;
+@property(nonatomic, strong) NSData *headerHash;
 @property(nonatomic, copy) NSString *databaseName;
 @property(nonatomic, strong) NSDate *databaseNameChanged;
 @property(nonatomic, copy) NSString *databaseDescription;
