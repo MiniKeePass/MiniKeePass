@@ -33,7 +33,9 @@
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
         self.headerTitle = NSLocalizedString(@"New Database", nil);
-        
+        self.footerTitle = NSLocalizedString(@"Do not forget your paster password, it cannot be recovered", nil);
+
+
         nameTextField = [[UITextField alloc] init];
         nameTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
         nameTextField.placeholder = NSLocalizedString(@"Name", nil);
@@ -62,7 +64,6 @@
         versionSegmentedControl.selectedSegmentIndex = 0;
         versionSegmentedControl.segmentedControlStyle = UISegmentedControlStyleBar;
         versionSegmentedControl.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-	  	
         self.navigationItem.titleView = versionSegmentedControl;
         
         self.controls = [NSArray arrayWithObjects:nameTextField, passwordTextField1, passwordTextField2, nil];
