@@ -159,70 +159,61 @@ enum {
 
 - (NSString *)createCharSetsDescription {
     NSMutableString *str = [[NSMutableString alloc] init];
-    BOOL prefix = NO;
-    
+
     if (charSets & CHARACTER_SET_UPPER_CASE) {
-        if (prefix) {
+        if ([str length] != 0) {
             [str appendString:@", "];
         }
         [str appendString:NSLocalizedString(@"Upper", nil)];
-        prefix = YES;
     }
     
     if (charSets & CHARACTER_SET_LOWER_CASE) {
-        if (prefix) {
+        if ([str length] != 0) {
             [str appendString:@", "];
         }
         [str appendString:NSLocalizedString(@"Lower", nil)];
-        prefix = YES;
     }
     
     if (charSets & CHARACTER_SET_DIGITS) {
-        if (prefix) {
+        if ([str length] != 0) {
             [str appendString:@", "];
         }
         [str appendString:NSLocalizedString(@"Digits", nil)];
-        prefix = YES;
     }
     
     if (charSets & CHARACTER_SET_MINUS) {
-        if (prefix) {
+        if ([str length] != 0) {
             [str appendString:@", "];
         }
         [str appendString:NSLocalizedString(@"Minus", nil)];
-        prefix = YES;
     }
     
     if (charSets & CHARACTER_SET_UNDERLINE) {
-        if (prefix) {
+        if ([str length] != 0) {
             [str appendString:@", "];
         }
         [str appendString:NSLocalizedString(@"Underline", nil)];
-        prefix = YES;
     }
     
     if (charSets & CHARACTER_SET_SPACE) {
-        if (prefix) {
+        if ([str length] != 0) {
             [str appendString:@", "];
         }
         [str appendString:NSLocalizedString(@"Space", nil)];
-        prefix = YES;
     }
     
     if (charSets & CHARACTER_SET_SPECIAL) {
-        if (prefix) {
+        if ([str length] != 0) {
             [str appendString:@", "];
         }
         [str appendString:NSLocalizedString(@"Special", nil)];
-        prefix = YES;
     }
     
     if (charSets & CHARACTER_SET_BRACKETS) {
-        if (prefix) {
+        if ([str length] != 0) {
             [str appendString:@", "];
         }
         [str appendString:NSLocalizedString(@"Brackets", nil)];
-//        prefix = YES;
     }
     
     if ([str length] == 0) {
