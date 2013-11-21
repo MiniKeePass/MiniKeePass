@@ -113,17 +113,15 @@ enum {
     // Strip out all the directories
     NSMutableArray *files = [[NSMutableArray alloc] init];
     for (NSString *file in dirContents) {
-        if (![file hasPrefix:@"."]) {
-            NSString *path = [documentsDirectory stringByAppendingPathComponent:file];
-            
-            BOOL dir = NO;
-            [fileManager fileExistsAtPath:path isDirectory:&dir];
-            if (!dir) {
-                [files addObject:file];
-            }
+        NSString *path = [documentsDirectory stringByAppendingPathComponent:file];
+
+        BOOL dir = NO;
+        [fileManager fileExistsAtPath:path isDirectory:&dir];
+        if (!dir) {
+            [files addObject:file];
         }
     }
-    
+
     // Sort the list of files
     [files sortUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
     
