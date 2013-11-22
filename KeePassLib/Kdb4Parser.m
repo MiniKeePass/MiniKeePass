@@ -34,7 +34,7 @@
 - (AutoType *)parseAutoType:(DDXMLElement *)root;
 - (UUID *)parseUuidString:(NSString *)uuidString;
 - (NSMutableData *)parseBase64String:(NSString *)base64String;
-- (NSMutableArray *)parseDeletedObjects:(DDXMLElement *)root;
+- (DeletedObject *)parseDeletedObject:(DDXMLElement *)root;
 @end
 
 @implementation Kdb4Parser
@@ -95,10 +95,10 @@ int closeCallback(void *context) {
 
     tree.root = [self parseGroup:element];
 
-    // FIXME DeletedObjects
     DDXMLElement *deletedObjects = [rootElement elementForName:@"DeletedObjects"];
-    if (deletedObjects != nil) {
-        tree.deletedObjects = [self parseDeletedObjects:deletedObjects];
+    for (DDXMLElement *deletedObjectElement in [deletedObjects elementsForName:@"DeletedObject"]) {
+        DeletedObject *deletecObject = [self parseDeletedObject:deletedObjectElement];
+        [tree.deletedObjects addObject:deletecObject];
     }
 
     return tree;
@@ -376,18 +376,12 @@ int closeCallback(void *context) {
     return [Base64 decode:[base64String dataUsingEncoding:NSASCIIStringEncoding]];
 }
 
-- (NSMutableArray *)parseDeletedObjects:(DDXMLElement *)root {
-    NSMutableArray *deletedObjects = [[NSMutableArray alloc] init];
+- (DeletedObject *)parseDeletedObject:(DDXMLElement *)root {
+    DeletedObject *deletedObject = [[DeletedObject alloc] init];
+    deletedObject.uuid = [self parseUuidString:[[root elementForName:@"UUID"] stringValue]];
+    deletedObject.deletionTime = [dateFormatter dateFromString:[[root elementForName:@"DeletionTime"] stringValue]];
 
-    for (DDXMLElement *element in [root elementsForName:@"DeletedObject"]) {
-        DeletedObject *deletedObject = [[DeletedObject alloc] init];
-        deletedObject.uuid = [self parseUuidString:[[element elementForName:@"UUID"] stringValue]];
-        deletedObject.deletionTime = [dateFormatter dateFromString:[[element elementForName:@"DeletionTime"] stringValue]];
-
-        [deletedObjects addObject:deletedObjects];
-    }
-
-    return deletedObjects;
+    return deletedObject;
 }
 
 @end

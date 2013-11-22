@@ -151,13 +151,13 @@
 
     element = [DDXMLNode elementWithName:@"Root"];
     [element addChild:[self persistGroup:(Kdb4Group *)tree.root]];
-    if ([tree.deletedObjects count] > 0) {
-        DDXMLElement *deletedObjectsElement = [DDXMLElement elementWithName:@"DeletedObjects"];
-        for (DeletedObject *deletedObject in tree.deletedObjects) {
-            [deletedObjectsElement addChild:[self persistDeletedObject:deletedObject]];
-        }
-        [element addChild:deletedObjectsElement];
+
+    DDXMLElement *deletedObjectsElement = [DDXMLElement elementWithName:@"DeletedObjects"];
+    for (DeletedObject *deletedObject in tree.deletedObjects) {
+        [deletedObjectsElement addChild:[self persistDeletedObject:deletedObject]];
     }
+    [element addChild:deletedObjectsElement];
+
     [document.rootElement addChild:element];
 
     return document;

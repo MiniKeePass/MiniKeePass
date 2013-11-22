@@ -141,6 +141,7 @@
         _customIcons = [[NSMutableArray alloc] init];
         _binaries = [[NSMutableArray alloc] init];
         _customData = [[NSMutableArray alloc] init];
+        _deletedObjects = [[NSMutableArray alloc] init];
     }
     return self;
 }
