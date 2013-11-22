@@ -50,6 +50,9 @@
 }
 
 - (void)persist:(Kdb4Tree*)tree file:(NSString*)filename withPassword:(KdbPassword*)kdbPassword {
+    // Update the generator
+    tree.generator = @"MiniKeePass";
+
     // Configure the output stream
     DataOutputStream *outputStream = [[DataOutputStream alloc] init];
     
