@@ -617,6 +617,7 @@
 		689D041413A42B85005EBD36 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				68E0830E146F24E3001C4EDF /* Localizable.strings */,
 				689D021313A42B63005EBD36 /* Help */,
 				522D8F9D17E35B0E00BCA329 /* Images.xcassets */,
 				529708AD14FEEFD3003547FB /* Andale Mono.ttf */,
@@ -748,7 +749,6 @@
 			isa = PBXGroup;
 			children = (
 				68E08314146F2749001C4EDF /* InfoPlist.strings */,
-				68E0830E146F24E3001C4EDF /* Localizable.strings */,
 				689DFFE113A4273F005EBD36 /* MiniKeePass-Info.plist */,
 				689DFFE513A4273F005EBD36 /* MiniKeePass-Prefix.pch */,
 				689DFFE613A4273F005EBD36 /* main.m */,
@@ -999,6 +999,7 @@
 				4E8C169916B3E888004195A1 /* fr */,
 			);
 			name = Localizable.strings;
+			path = MiniKeePass;
 			sourceTree = "<group>";
 		};
 		68E08314146F2749001C4EDF /* InfoPlist.strings */ = {
