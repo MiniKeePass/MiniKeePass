@@ -308,7 +308,6 @@
     settingsViewController.navigationItem.rightBarButtonItem = doneButton;
     
     UINavigationController *settingsNavController = [[UINavigationController alloc] initWithRootViewController:settingsViewController];
-    settingsNavController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
     
     [self.window.rootViewController presentModalViewController:settingsNavController animated:YES];
 }
