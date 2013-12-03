@@ -17,7 +17,7 @@
 
 #import "PasswordViewController.h"
 
-#define ROW_KEY_FILE 1
+#define ROW_KEY_FILE 2
 
 @implementation PasswordViewController
 
