@@ -34,7 +34,6 @@
 		52E7AF5816251EA700DCB00A /* RenameItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52E7AF5716251EA700DCB00A /* RenameItemViewController.m */; };
 		52E7AF5C162523F800DCB00A /* EditGroupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52E7AF5B162523F800DCB00A /* EditGroupViewController.m */; };
 		52E7AF6316252D7C00DCB00A /* ChooseGroupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52E7AF6216252D7C00DCB00A /* ChooseGroupViewController.m */; };
-		680C277616050C7A009403DE /* DDXMLDocument+MKPAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 680C277516050C7A009403DE /* DDXMLDocument+MKPAdditions.m */; };
 		682D450D1603883900156830 /* AesInputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 682D44F21603883900156830 /* AesInputStream.m */; };
 		682D450E1603883900156830 /* AesOutputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 682D44F41603883900156830 /* AesOutputStream.m */; };
 		682D450F1603883900156830 /* Arc4RandomStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 682D44F61603883900156830 /* Arc4RandomStream.m */; };
@@ -51,10 +50,8 @@
 		682D451A1603883900156830 /* Sha256OutputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 682D450C1603883900156830 /* Sha256OutputStream.m */; };
 		684846B6167E1E460040C4EE /* StringFieldViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 684846B5167E1E460040C4EE /* StringFieldViewController.m */; };
 		6859176F1615DE1D005FECA5 /* AppSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 6859176E1615DE1D005FECA5 /* AppSettings.m */; };
-		685D9D951603F8EE00D739D3 /* Kdb3Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 685D9D941603F8EE00D739D3 /* Kdb3Utils.m */; };
 		6876F67813B2D8F500A05C7A /* ImageSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6876F67713B2D8F400A05C7A /* ImageSelectionViewController.m */; };
 		68915A0B13A6F6C200A408B0 /* InfoBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 68915A0A13A6F6C200A408B0 /* InfoBar.m */; };
-		689A4D1314046B8200AA897D /* RandomStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 689A4D1214046B8200AA897D /* RandomStream.m */; };
 		689A4D171404759700AA897D /* PasswordGeneratorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 689A4D161404759700AA897D /* PasswordGeneratorViewController.m */; };
 		689D000D13A42765005EBD36 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 689D000C13A42765005EBD36 /* AudioToolbox.framework */; };
 		689D000F13A42777005EBD36 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 689D000E13A42776005EBD36 /* Security.framework */; };
@@ -63,23 +60,6 @@
 		689D032F13A42B63005EBD36 /* dropbox.html in Resources */ = {isa = PBXBuildFile; fileRef = 689D021413A42B63005EBD36 /* dropbox.html */; };
 		689D033013A42B63005EBD36 /* itunes.html in Resources */ = {isa = PBXBuildFile; fileRef = 689D021513A42B63005EBD36 /* itunes.html */; };
 		689D033113A42B63005EBD36 /* style.css in Resources */ = {isa = PBXBuildFile; fileRef = 689D021613A42B63005EBD36 /* style.css */; };
-		689D03CD13A42B63005EBD36 /* Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D02B813A42B63005EBD36 /* Base64.m */; };
-		689D03D513A42B63005EBD36 /* Kdb.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D02C813A42B63005EBD36 /* Kdb.m */; };
-		689D03D613A42B63005EBD36 /* Kdb3Date.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D02CA13A42B63005EBD36 /* Kdb3Date.m */; };
-		689D03D713A42B63005EBD36 /* Kdb3Node.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D02CC13A42B63005EBD36 /* Kdb3Node.m */; };
-		689D03DA13A42B63005EBD36 /* Kdb3Reader.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D02D213A42B63005EBD36 /* Kdb3Reader.m */; };
-		689D03DB13A42B63005EBD36 /* Kdb3Writer.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D02D413A42B63005EBD36 /* Kdb3Writer.m */; };
-		689D03DC13A42B63005EBD36 /* Kdb4Node.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D02D613A42B63005EBD36 /* Kdb4Node.m */; };
-		689D03DD13A42B63005EBD36 /* Kdb4Parser.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D02D813A42B63005EBD36 /* Kdb4Parser.m */; };
-		689D03DE13A42B63005EBD36 /* Kdb4Persist.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D02DA13A42B63005EBD36 /* Kdb4Persist.m */; };
-		689D03DF13A42B63005EBD36 /* Kdb4Reader.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D02DC13A42B63005EBD36 /* Kdb4Reader.m */; };
-		689D03E013A42B63005EBD36 /* Kdb4Writer.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D02DE13A42B63005EBD36 /* Kdb4Writer.m */; };
-		689D03E113A42B63005EBD36 /* KdbPassword.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D02E113A42B63005EBD36 /* KdbPassword.m */; };
-		689D03E213A42B63005EBD36 /* KdbReaderFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D02E413A42B63005EBD36 /* KdbReaderFactory.m */; };
-		689D03E313A42B63005EBD36 /* KdbWriterFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D02E713A42B63005EBD36 /* KdbWriterFactory.m */; };
-		689D03E513A42B63005EBD36 /* Salsa20RandomStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D02EC13A42B63005EBD36 /* Salsa20RandomStream.m */; };
-		689D03E713A42B63005EBD36 /* Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D02F013A42B63005EBD36 /* Utils.m */; };
-		689D03E813A42B63005EBD36 /* UUID.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D02F213A42B63005EBD36 /* UUID.m */; };
 		689D041313A42B63005EBD36 /* KeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D032B13A42B63005EBD36 /* KeychainUtils.m */; };
 		689D044E13A42C82005EBD36 /* ChoiceCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D042513A42C81005EBD36 /* ChoiceCell.m */; };
 		689D044F13A42C82005EBD36 /* DatabaseDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D042713A42C81005EBD36 /* DatabaseDocument.m */; };
@@ -120,6 +100,26 @@
 		CA451781184E52DA007C8EC4 /* DDXMLDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = CA451778184E52DA007C8EC4 /* DDXMLDocument.m */; };
 		CA451782184E52DA007C8EC4 /* DDXMLElement.m in Sources */ = {isa = PBXBuildFile; fileRef = CA45177A184E52DA007C8EC4 /* DDXMLElement.m */; };
 		CA451783184E52DA007C8EC4 /* DDXMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = CA45177C184E52DA007C8EC4 /* DDXMLNode.m */; };
+		CA451833184E544A007C8EC4 /* Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = CA451808184E544A007C8EC4 /* Base64.m */; };
+		CA451834184E544A007C8EC4 /* DDXMLDocument+MKPAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = CA45180A184E544A007C8EC4 /* DDXMLDocument+MKPAdditions.m */; };
+		CA451835184E544A007C8EC4 /* Kdb.m in Sources */ = {isa = PBXBuildFile; fileRef = CA45180C184E544A007C8EC4 /* Kdb.m */; };
+		CA451836184E544A007C8EC4 /* Kdb3Date.m in Sources */ = {isa = PBXBuildFile; fileRef = CA45180E184E544A007C8EC4 /* Kdb3Date.m */; };
+		CA451837184E544A007C8EC4 /* Kdb3Node.m in Sources */ = {isa = PBXBuildFile; fileRef = CA451810184E544A007C8EC4 /* Kdb3Node.m */; };
+		CA451838184E544A007C8EC4 /* Kdb3Reader.m in Sources */ = {isa = PBXBuildFile; fileRef = CA451812184E544A007C8EC4 /* Kdb3Reader.m */; };
+		CA451839184E544A007C8EC4 /* Kdb3Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = CA451814184E544A007C8EC4 /* Kdb3Utils.m */; };
+		CA45183A184E544A007C8EC4 /* Kdb3Writer.m in Sources */ = {isa = PBXBuildFile; fileRef = CA451816184E544A007C8EC4 /* Kdb3Writer.m */; };
+		CA45183B184E544A007C8EC4 /* Kdb4Node.m in Sources */ = {isa = PBXBuildFile; fileRef = CA451818184E544A007C8EC4 /* Kdb4Node.m */; };
+		CA45183C184E544A007C8EC4 /* Kdb4Parser.m in Sources */ = {isa = PBXBuildFile; fileRef = CA45181A184E544A007C8EC4 /* Kdb4Parser.m */; };
+		CA45183D184E544A007C8EC4 /* Kdb4Persist.m in Sources */ = {isa = PBXBuildFile; fileRef = CA45181C184E544A007C8EC4 /* Kdb4Persist.m */; };
+		CA45183E184E544A007C8EC4 /* Kdb4Reader.m in Sources */ = {isa = PBXBuildFile; fileRef = CA45181E184E544A007C8EC4 /* Kdb4Reader.m */; };
+		CA45183F184E544A007C8EC4 /* Kdb4Writer.m in Sources */ = {isa = PBXBuildFile; fileRef = CA451820184E544A007C8EC4 /* Kdb4Writer.m */; };
+		CA451840184E544A007C8EC4 /* KdbPassword.m in Sources */ = {isa = PBXBuildFile; fileRef = CA451823184E544A007C8EC4 /* KdbPassword.m */; };
+		CA451841184E544A007C8EC4 /* KdbReaderFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = CA451826184E544A007C8EC4 /* KdbReaderFactory.m */; };
+		CA451842184E544A007C8EC4 /* KdbWriterFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = CA451829184E544A007C8EC4 /* KdbWriterFactory.m */; };
+		CA451843184E544A007C8EC4 /* RandomStream.m in Sources */ = {isa = PBXBuildFile; fileRef = CA45182B184E544A007C8EC4 /* RandomStream.m */; };
+		CA451844184E544A007C8EC4 /* Salsa20RandomStream.m in Sources */ = {isa = PBXBuildFile; fileRef = CA45182D184E544A007C8EC4 /* Salsa20RandomStream.m */; };
+		CA451845184E544A007C8EC4 /* Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = CA45182F184E544A007C8EC4 /* Utils.m */; };
+		CA451846184E544A007C8EC4 /* UUID.m in Sources */ = {isa = PBXBuildFile; fileRef = CA451831184E544A007C8EC4 /* UUID.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -174,8 +174,6 @@
 		52E7AF5B162523F800DCB00A /* EditGroupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditGroupViewController.m; sourceTree = "<group>"; };
 		52E7AF6116252D7C00DCB00A /* ChooseGroupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ChooseGroupViewController.h; path = ../ChooseGroupViewController.h; sourceTree = "<group>"; };
 		52E7AF6216252D7C00DCB00A /* ChooseGroupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ChooseGroupViewController.m; path = ../ChooseGroupViewController.m; sourceTree = "<group>"; };
-		680C277416050C7A009403DE /* DDXMLDocument+MKPAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "DDXMLDocument+MKPAdditions.h"; sourceTree = "<group>"; };
-		680C277516050C7A009403DE /* DDXMLDocument+MKPAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "DDXMLDocument+MKPAdditions.m"; sourceTree = "<group>"; };
 		682D44F11603883900156830 /* AesInputStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AesInputStream.h; sourceTree = "<group>"; };
 		682D44F21603883900156830 /* AesInputStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AesInputStream.m; sourceTree = "<group>"; };
 		682D44F31603883900156830 /* AesOutputStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AesOutputStream.h; sourceTree = "<group>"; };
@@ -208,13 +206,10 @@
 		684846B5167E1E460040C4EE /* StringFieldViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StringFieldViewController.m; sourceTree = "<group>"; };
 		6859176D1615DE1D005FECA5 /* AppSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppSettings.h; sourceTree = "<group>"; };
 		6859176E1615DE1D005FECA5 /* AppSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppSettings.m; sourceTree = "<group>"; };
-		685D9D931603F8EE00D739D3 /* Kdb3Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Kdb3Utils.h; sourceTree = "<group>"; };
-		685D9D941603F8EE00D739D3 /* Kdb3Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Kdb3Utils.m; sourceTree = "<group>"; };
 		6876F67613B2D8F400A05C7A /* ImageSelectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageSelectionViewController.h; sourceTree = "<group>"; };
 		6876F67713B2D8F400A05C7A /* ImageSelectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageSelectionViewController.m; sourceTree = "<group>"; };
 		68915A0913A6F6C200A408B0 /* InfoBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfoBar.h; sourceTree = "<group>"; };
 		68915A0A13A6F6C200A408B0 /* InfoBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfoBar.m; sourceTree = "<group>"; };
-		689A4D1214046B8200AA897D /* RandomStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RandomStream.m; sourceTree = "<group>"; };
 		689A4D151404759700AA897D /* PasswordGeneratorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasswordGeneratorViewController.h; sourceTree = "<group>"; };
 		689A4D161404759700AA897D /* PasswordGeneratorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PasswordGeneratorViewController.m; sourceTree = "<group>"; };
 		689D000C13A42765005EBD36 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
@@ -224,44 +219,6 @@
 		689D021413A42B63005EBD36 /* dropbox.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = dropbox.html; sourceTree = "<group>"; };
 		689D021513A42B63005EBD36 /* itunes.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = itunes.html; sourceTree = "<group>"; };
 		689D021613A42B63005EBD36 /* style.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = style.css; sourceTree = "<group>"; };
-		689D02B713A42B63005EBD36 /* Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Base64.h; sourceTree = "<group>"; };
-		689D02B813A42B63005EBD36 /* Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Base64.m; sourceTree = "<group>"; };
-		689D02C713A42B63005EBD36 /* Kdb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Kdb.h; sourceTree = "<group>"; };
-		689D02C813A42B63005EBD36 /* Kdb.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Kdb.m; sourceTree = "<group>"; };
-		689D02C913A42B63005EBD36 /* Kdb3Date.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Kdb3Date.h; sourceTree = "<group>"; };
-		689D02CA13A42B63005EBD36 /* Kdb3Date.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Kdb3Date.m; sourceTree = "<group>"; };
-		689D02CB13A42B63005EBD36 /* Kdb3Node.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Kdb3Node.h; sourceTree = "<group>"; };
-		689D02CC13A42B63005EBD36 /* Kdb3Node.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Kdb3Node.m; sourceTree = "<group>"; };
-		689D02D113A42B63005EBD36 /* Kdb3Reader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Kdb3Reader.h; sourceTree = "<group>"; };
-		689D02D213A42B63005EBD36 /* Kdb3Reader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Kdb3Reader.m; sourceTree = "<group>"; };
-		689D02D313A42B63005EBD36 /* Kdb3Writer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Kdb3Writer.h; sourceTree = "<group>"; };
-		689D02D413A42B63005EBD36 /* Kdb3Writer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Kdb3Writer.m; sourceTree = "<group>"; };
-		689D02D513A42B63005EBD36 /* Kdb4Node.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Kdb4Node.h; sourceTree = "<group>"; };
-		689D02D613A42B63005EBD36 /* Kdb4Node.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Kdb4Node.m; sourceTree = "<group>"; };
-		689D02D713A42B63005EBD36 /* Kdb4Parser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Kdb4Parser.h; sourceTree = "<group>"; };
-		689D02D813A42B63005EBD36 /* Kdb4Parser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Kdb4Parser.m; sourceTree = "<group>"; };
-		689D02D913A42B63005EBD36 /* Kdb4Persist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Kdb4Persist.h; sourceTree = "<group>"; };
-		689D02DA13A42B63005EBD36 /* Kdb4Persist.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Kdb4Persist.m; sourceTree = "<group>"; };
-		689D02DB13A42B63005EBD36 /* Kdb4Reader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Kdb4Reader.h; sourceTree = "<group>"; };
-		689D02DC13A42B63005EBD36 /* Kdb4Reader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Kdb4Reader.m; sourceTree = "<group>"; };
-		689D02DD13A42B63005EBD36 /* Kdb4Writer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Kdb4Writer.h; sourceTree = "<group>"; };
-		689D02DE13A42B63005EBD36 /* Kdb4Writer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Kdb4Writer.m; sourceTree = "<group>"; };
-		689D02DF13A42B63005EBD36 /* KdbLib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KdbLib.h; sourceTree = "<group>"; };
-		689D02E013A42B63005EBD36 /* KdbPassword.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KdbPassword.h; sourceTree = "<group>"; };
-		689D02E113A42B63005EBD36 /* KdbPassword.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KdbPassword.m; sourceTree = "<group>"; };
-		689D02E213A42B63005EBD36 /* KdbReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KdbReader.h; sourceTree = "<group>"; };
-		689D02E313A42B63005EBD36 /* KdbReaderFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KdbReaderFactory.h; sourceTree = "<group>"; };
-		689D02E413A42B63005EBD36 /* KdbReaderFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KdbReaderFactory.m; sourceTree = "<group>"; };
-		689D02E513A42B63005EBD36 /* KdbWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KdbWriter.h; sourceTree = "<group>"; };
-		689D02E613A42B63005EBD36 /* KdbWriterFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KdbWriterFactory.h; sourceTree = "<group>"; };
-		689D02E713A42B63005EBD36 /* KdbWriterFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KdbWriterFactory.m; sourceTree = "<group>"; };
-		689D02EA13A42B63005EBD36 /* RandomStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RandomStream.h; sourceTree = "<group>"; };
-		689D02EB13A42B63005EBD36 /* Salsa20RandomStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Salsa20RandomStream.h; sourceTree = "<group>"; };
-		689D02EC13A42B63005EBD36 /* Salsa20RandomStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Salsa20RandomStream.m; sourceTree = "<group>"; };
-		689D02EF13A42B63005EBD36 /* Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utils.h; sourceTree = "<group>"; };
-		689D02F013A42B63005EBD36 /* Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Utils.m; sourceTree = "<group>"; };
-		689D02F113A42B63005EBD36 /* UUID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UUID.h; sourceTree = "<group>"; };
-		689D02F213A42B63005EBD36 /* UUID.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UUID.m; sourceTree = "<group>"; };
 		689D030313A42B63005EBD36 /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
 		689D030413A42B63005EBD36 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 		689D030613A42B63005EBD36 /* sample.1.00.kdb */ = {isa = PBXFileReference; lastKnownFileType = file; path = sample.1.00.kdb; sourceTree = "<group>"; };
@@ -379,6 +336,49 @@
 		CA45177B184E52DA007C8EC4 /* DDXMLNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DDXMLNode.h; path = KissXML/DDXMLNode.h; sourceTree = "<group>"; };
 		CA45177C184E52DA007C8EC4 /* DDXMLNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DDXMLNode.m; path = KissXML/DDXMLNode.m; sourceTree = "<group>"; };
 		CA45177E184E52DA007C8EC4 /* DDXMLPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDXMLPrivate.h; sourceTree = "<group>"; };
+		CA451807184E544A007C8EC4 /* Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Base64.h; sourceTree = "<group>"; };
+		CA451808184E544A007C8EC4 /* Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Base64.m; sourceTree = "<group>"; };
+		CA451809184E544A007C8EC4 /* DDXMLDocument+MKPAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "DDXMLDocument+MKPAdditions.h"; sourceTree = "<group>"; };
+		CA45180A184E544A007C8EC4 /* DDXMLDocument+MKPAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "DDXMLDocument+MKPAdditions.m"; sourceTree = "<group>"; };
+		CA45180B184E544A007C8EC4 /* Kdb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Kdb.h; sourceTree = "<group>"; };
+		CA45180C184E544A007C8EC4 /* Kdb.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Kdb.m; sourceTree = "<group>"; };
+		CA45180D184E544A007C8EC4 /* Kdb3Date.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Kdb3Date.h; sourceTree = "<group>"; };
+		CA45180E184E544A007C8EC4 /* Kdb3Date.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Kdb3Date.m; sourceTree = "<group>"; };
+		CA45180F184E544A007C8EC4 /* Kdb3Node.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Kdb3Node.h; sourceTree = "<group>"; };
+		CA451810184E544A007C8EC4 /* Kdb3Node.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Kdb3Node.m; sourceTree = "<group>"; };
+		CA451811184E544A007C8EC4 /* Kdb3Reader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Kdb3Reader.h; sourceTree = "<group>"; };
+		CA451812184E544A007C8EC4 /* Kdb3Reader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Kdb3Reader.m; sourceTree = "<group>"; };
+		CA451813184E544A007C8EC4 /* Kdb3Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Kdb3Utils.h; sourceTree = "<group>"; };
+		CA451814184E544A007C8EC4 /* Kdb3Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Kdb3Utils.m; sourceTree = "<group>"; };
+		CA451815184E544A007C8EC4 /* Kdb3Writer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Kdb3Writer.h; sourceTree = "<group>"; };
+		CA451816184E544A007C8EC4 /* Kdb3Writer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Kdb3Writer.m; sourceTree = "<group>"; };
+		CA451817184E544A007C8EC4 /* Kdb4Node.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Kdb4Node.h; sourceTree = "<group>"; };
+		CA451818184E544A007C8EC4 /* Kdb4Node.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Kdb4Node.m; sourceTree = "<group>"; };
+		CA451819184E544A007C8EC4 /* Kdb4Parser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Kdb4Parser.h; sourceTree = "<group>"; };
+		CA45181A184E544A007C8EC4 /* Kdb4Parser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Kdb4Parser.m; sourceTree = "<group>"; };
+		CA45181B184E544A007C8EC4 /* Kdb4Persist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Kdb4Persist.h; sourceTree = "<group>"; };
+		CA45181C184E544A007C8EC4 /* Kdb4Persist.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Kdb4Persist.m; sourceTree = "<group>"; };
+		CA45181D184E544A007C8EC4 /* Kdb4Reader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Kdb4Reader.h; sourceTree = "<group>"; };
+		CA45181E184E544A007C8EC4 /* Kdb4Reader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Kdb4Reader.m; sourceTree = "<group>"; };
+		CA45181F184E544A007C8EC4 /* Kdb4Writer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Kdb4Writer.h; sourceTree = "<group>"; };
+		CA451820184E544A007C8EC4 /* Kdb4Writer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Kdb4Writer.m; sourceTree = "<group>"; };
+		CA451821184E544A007C8EC4 /* KdbLib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KdbLib.h; sourceTree = "<group>"; };
+		CA451822184E544A007C8EC4 /* KdbPassword.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KdbPassword.h; sourceTree = "<group>"; };
+		CA451823184E544A007C8EC4 /* KdbPassword.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KdbPassword.m; sourceTree = "<group>"; };
+		CA451824184E544A007C8EC4 /* KdbReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KdbReader.h; sourceTree = "<group>"; };
+		CA451825184E544A007C8EC4 /* KdbReaderFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KdbReaderFactory.h; sourceTree = "<group>"; };
+		CA451826184E544A007C8EC4 /* KdbReaderFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KdbReaderFactory.m; sourceTree = "<group>"; };
+		CA451827184E544A007C8EC4 /* KdbWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KdbWriter.h; sourceTree = "<group>"; };
+		CA451828184E544A007C8EC4 /* KdbWriterFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KdbWriterFactory.h; sourceTree = "<group>"; };
+		CA451829184E544A007C8EC4 /* KdbWriterFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KdbWriterFactory.m; sourceTree = "<group>"; };
+		CA45182A184E544A007C8EC4 /* RandomStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RandomStream.h; sourceTree = "<group>"; };
+		CA45182B184E544A007C8EC4 /* RandomStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RandomStream.m; sourceTree = "<group>"; };
+		CA45182C184E544A007C8EC4 /* Salsa20RandomStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Salsa20RandomStream.h; sourceTree = "<group>"; };
+		CA45182D184E544A007C8EC4 /* Salsa20RandomStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Salsa20RandomStream.m; sourceTree = "<group>"; };
+		CA45182E184E544A007C8EC4 /* Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utils.h; sourceTree = "<group>"; };
+		CA45182F184E544A007C8EC4 /* Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Utils.m; sourceTree = "<group>"; };
+		CA451830184E544A007C8EC4 /* UUID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UUID.h; sourceTree = "<group>"; };
+		CA451831184E544A007C8EC4 /* UUID.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UUID.m; sourceTree = "<group>"; };
 		EFD785BA15B3D02600B9A276 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		EFD785BB15B3D03F00B9A276 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -516,49 +516,49 @@
 		689D02B013A42B63005EBD36 /* KeePassLib */ = {
 			isa = PBXGroup;
 			children = (
-				689D02B713A42B63005EBD36 /* Base64.h */,
-				689D02B813A42B63005EBD36 /* Base64.m */,
-				680C277416050C7A009403DE /* DDXMLDocument+MKPAdditions.h */,
-				680C277516050C7A009403DE /* DDXMLDocument+MKPAdditions.m */,
-				689D02C713A42B63005EBD36 /* Kdb.h */,
-				689D02C813A42B63005EBD36 /* Kdb.m */,
-				689D02C913A42B63005EBD36 /* Kdb3Date.h */,
-				689D02CA13A42B63005EBD36 /* Kdb3Date.m */,
-				689D02CB13A42B63005EBD36 /* Kdb3Node.h */,
-				689D02CC13A42B63005EBD36 /* Kdb3Node.m */,
-				689D02D113A42B63005EBD36 /* Kdb3Reader.h */,
-				689D02D213A42B63005EBD36 /* Kdb3Reader.m */,
-				685D9D931603F8EE00D739D3 /* Kdb3Utils.h */,
-				685D9D941603F8EE00D739D3 /* Kdb3Utils.m */,
-				689D02D313A42B63005EBD36 /* Kdb3Writer.h */,
-				689D02D413A42B63005EBD36 /* Kdb3Writer.m */,
-				689D02D513A42B63005EBD36 /* Kdb4Node.h */,
-				689D02D613A42B63005EBD36 /* Kdb4Node.m */,
-				689D02D713A42B63005EBD36 /* Kdb4Parser.h */,
-				689D02D813A42B63005EBD36 /* Kdb4Parser.m */,
-				689D02D913A42B63005EBD36 /* Kdb4Persist.h */,
-				689D02DA13A42B63005EBD36 /* Kdb4Persist.m */,
-				689D02DB13A42B63005EBD36 /* Kdb4Reader.h */,
-				689D02DC13A42B63005EBD36 /* Kdb4Reader.m */,
-				689D02DD13A42B63005EBD36 /* Kdb4Writer.h */,
-				689D02DE13A42B63005EBD36 /* Kdb4Writer.m */,
-				689D02DF13A42B63005EBD36 /* KdbLib.h */,
-				689D02E013A42B63005EBD36 /* KdbPassword.h */,
-				689D02E113A42B63005EBD36 /* KdbPassword.m */,
-				689D02E213A42B63005EBD36 /* KdbReader.h */,
-				689D02E313A42B63005EBD36 /* KdbReaderFactory.h */,
-				689D02E413A42B63005EBD36 /* KdbReaderFactory.m */,
-				689D02E513A42B63005EBD36 /* KdbWriter.h */,
-				689D02E613A42B63005EBD36 /* KdbWriterFactory.h */,
-				689D02E713A42B63005EBD36 /* KdbWriterFactory.m */,
-				689D02EA13A42B63005EBD36 /* RandomStream.h */,
-				689A4D1214046B8200AA897D /* RandomStream.m */,
-				689D02EB13A42B63005EBD36 /* Salsa20RandomStream.h */,
-				689D02EC13A42B63005EBD36 /* Salsa20RandomStream.m */,
-				689D02EF13A42B63005EBD36 /* Utils.h */,
-				689D02F013A42B63005EBD36 /* Utils.m */,
-				689D02F113A42B63005EBD36 /* UUID.h */,
-				689D02F213A42B63005EBD36 /* UUID.m */,
+				CA451807184E544A007C8EC4 /* Base64.h */,
+				CA451808184E544A007C8EC4 /* Base64.m */,
+				CA451809184E544A007C8EC4 /* DDXMLDocument+MKPAdditions.h */,
+				CA45180A184E544A007C8EC4 /* DDXMLDocument+MKPAdditions.m */,
+				CA45180B184E544A007C8EC4 /* Kdb.h */,
+				CA45180C184E544A007C8EC4 /* Kdb.m */,
+				CA45180D184E544A007C8EC4 /* Kdb3Date.h */,
+				CA45180E184E544A007C8EC4 /* Kdb3Date.m */,
+				CA45180F184E544A007C8EC4 /* Kdb3Node.h */,
+				CA451810184E544A007C8EC4 /* Kdb3Node.m */,
+				CA451811184E544A007C8EC4 /* Kdb3Reader.h */,
+				CA451812184E544A007C8EC4 /* Kdb3Reader.m */,
+				CA451813184E544A007C8EC4 /* Kdb3Utils.h */,
+				CA451814184E544A007C8EC4 /* Kdb3Utils.m */,
+				CA451815184E544A007C8EC4 /* Kdb3Writer.h */,
+				CA451816184E544A007C8EC4 /* Kdb3Writer.m */,
+				CA451817184E544A007C8EC4 /* Kdb4Node.h */,
+				CA451818184E544A007C8EC4 /* Kdb4Node.m */,
+				CA451819184E544A007C8EC4 /* Kdb4Parser.h */,
+				CA45181A184E544A007C8EC4 /* Kdb4Parser.m */,
+				CA45181B184E544A007C8EC4 /* Kdb4Persist.h */,
+				CA45181C184E544A007C8EC4 /* Kdb4Persist.m */,
+				CA45181D184E544A007C8EC4 /* Kdb4Reader.h */,
+				CA45181E184E544A007C8EC4 /* Kdb4Reader.m */,
+				CA45181F184E544A007C8EC4 /* Kdb4Writer.h */,
+				CA451820184E544A007C8EC4 /* Kdb4Writer.m */,
+				CA451821184E544A007C8EC4 /* KdbLib.h */,
+				CA451822184E544A007C8EC4 /* KdbPassword.h */,
+				CA451823184E544A007C8EC4 /* KdbPassword.m */,
+				CA451824184E544A007C8EC4 /* KdbReader.h */,
+				CA451825184E544A007C8EC4 /* KdbReaderFactory.h */,
+				CA451826184E544A007C8EC4 /* KdbReaderFactory.m */,
+				CA451827184E544A007C8EC4 /* KdbWriter.h */,
+				CA451828184E544A007C8EC4 /* KdbWriterFactory.h */,
+				CA451829184E544A007C8EC4 /* KdbWriterFactory.m */,
+				CA45182A184E544A007C8EC4 /* RandomStream.h */,
+				CA45182B184E544A007C8EC4 /* RandomStream.m */,
+				CA45182C184E544A007C8EC4 /* Salsa20RandomStream.h */,
+				CA45182D184E544A007C8EC4 /* Salsa20RandomStream.m */,
+				CA45182E184E544A007C8EC4 /* Utils.h */,
+				CA45182F184E544A007C8EC4 /* Utils.m */,
+				CA451830184E544A007C8EC4 /* UUID.h */,
+				CA451831184E544A007C8EC4 /* UUID.m */,
 			);
 			path = KeePassLib;
 			sourceTree = "<group>";
@@ -928,59 +928,55 @@
 			files = (
 				5248970C1641961600D96AD5 /* ImageButtonCell.m in Sources */,
 				689DFFE713A4273F005EBD36 /* main.m in Sources */,
-				689D03CD13A42B63005EBD36 /* Base64.m in Sources */,
-				689D03D513A42B63005EBD36 /* Kdb.m in Sources */,
-				689D03D613A42B63005EBD36 /* Kdb3Date.m in Sources */,
 				CA451782184E52DA007C8EC4 /* DDXMLElement.m in Sources */,
-				689D03D713A42B63005EBD36 /* Kdb3Node.m in Sources */,
-				689D03DA13A42B63005EBD36 /* Kdb3Reader.m in Sources */,
-				689D03DB13A42B63005EBD36 /* Kdb3Writer.m in Sources */,
-				689D03DC13A42B63005EBD36 /* Kdb4Node.m in Sources */,
-				689D03DD13A42B63005EBD36 /* Kdb4Parser.m in Sources */,
-				689D03DE13A42B63005EBD36 /* Kdb4Persist.m in Sources */,
-				689D03DF13A42B63005EBD36 /* Kdb4Reader.m in Sources */,
-				689D03E013A42B63005EBD36 /* Kdb4Writer.m in Sources */,
-				689D03E113A42B63005EBD36 /* KdbPassword.m in Sources */,
 				CA45177F184E52DA007C8EC4 /* DDXMLElementAdditions.m in Sources */,
-				689D03E213A42B63005EBD36 /* KdbReaderFactory.m in Sources */,
-				689D03E313A42B63005EBD36 /* KdbWriterFactory.m in Sources */,
-				689D03E513A42B63005EBD36 /* Salsa20RandomStream.m in Sources */,
 				CA451783184E52DA007C8EC4 /* DDXMLNode.m in Sources */,
-				689D03E713A42B63005EBD36 /* Utils.m in Sources */,
-				689D03E813A42B63005EBD36 /* UUID.m in Sources */,
 				689D041313A42B63005EBD36 /* KeychainUtils.m in Sources */,
 				689D044E13A42C82005EBD36 /* ChoiceCell.m in Sources */,
 				689D044F13A42C82005EBD36 /* DatabaseDocument.m in Sources */,
 				689D045013A42C82005EBD36 /* DatabaseManager.m in Sources */,
 				689D045113A42C82005EBD36 /* EntryViewController.m in Sources */,
 				CA451780184E52DA007C8EC4 /* NSString+DDXML.m in Sources */,
+				CA451842184E544A007C8EC4 /* KdbWriterFactory.m in Sources */,
+				CA451845184E544A007C8EC4 /* Utils.m in Sources */,
 				689D045213A42C82005EBD36 /* FilesInfoView.m in Sources */,
+				CA45183A184E544A007C8EC4 /* Kdb3Writer.m in Sources */,
 				689D045313A42C82005EBD36 /* FilesViewController.m in Sources */,
+				CA451839184E544A007C8EC4 /* Kdb3Utils.m in Sources */,
+				CA45183D184E544A007C8EC4 /* Kdb4Persist.m in Sources */,
 				689D045413A42C82005EBD36 /* GroupViewController.m in Sources */,
 				689D045513A42C82005EBD36 /* MiniKeePassAppDelegate.m in Sources */,
 				689D045613A42C82005EBD36 /* NewKdbViewController.m in Sources */,
+				CA45183B184E544A007C8EC4 /* Kdb4Node.m in Sources */,
 				689D045713A42C82005EBD36 /* PasswordFieldCell.m in Sources */,
 				689D045813A42C82005EBD36 /* PinTextField.m in Sources */,
 				689D045913A42C82005EBD36 /* PinViewController.m in Sources */,
 				689D045B13A42C82005EBD36 /* SelectionListViewController.m in Sources */,
+				CA451846184E544A007C8EC4 /* UUID.m in Sources */,
 				689D045C13A42C82005EBD36 /* SettingsViewController.m in Sources */,
+				CA451833184E544A007C8EC4 /* Base64.m in Sources */,
 				689D045D13A42C82005EBD36 /* SwitchCell.m in Sources */,
 				689D045E13A42C82005EBD36 /* TextEntryController.m in Sources */,
 				689D045F13A42C82005EBD36 /* TextFieldCell.m in Sources */,
+				CA45183E184E544A007C8EC4 /* Kdb4Reader.m in Sources */,
 				689D046013A42C82005EBD36 /* TextViewCell.m in Sources */,
+				CA451841184E544A007C8EC4 /* KdbReaderFactory.m in Sources */,
 				689D046113A42C82005EBD36 /* TitleFieldCell.m in Sources */,
+				CA451843184E544A007C8EC4 /* RandomStream.m in Sources */,
 				689D046213A42C82005EBD36 /* UrlFieldCell.m in Sources */,
 				68915A0B13A6F6C200A408B0 /* InfoBar.m in Sources */,
 				68A3E1AF13A8C9D1006881CA /* FormViewController.m in Sources */,
 				6876F67813B2D8F500A05C7A /* ImageSelectionViewController.m in Sources */,
 				68D991E613F3EAAE00F6ED1F /* PasswordViewController.m in Sources */,
-				689A4D1314046B8200AA897D /* RandomStream.m in Sources */,
 				689A4D171404759700AA897D /* PasswordGeneratorViewController.m in Sources */,
 				68CE37F214049BC900E4A5E1 /* HelpViewController.m in Sources */,
 				52A7E1A914EDF1CB0041F950 /* LockScreenController.m in Sources */,
 				68F19D1F14EB3A9C00B772CB /* CharacterSetsViewController.m in Sources */,
+				CA451835184E544A007C8EC4 /* Kdb.m in Sources */,
 				68CE868F14EDF4C300D34A61 /* LengthCell.m in Sources */,
+				CA45183C184E544A007C8EC4 /* Kdb4Parser.m in Sources */,
 				52A512B1159CE7540009F82F /* ImageSelectionView.m in Sources */,
+				CA451836184E544A007C8EC4 /* Kdb3Date.m in Sources */,
 				682D450D1603883900156830 /* AesInputStream.m in Sources */,
 				682D450E1603883900156830 /* AesOutputStream.m in Sources */,
 				682D450F1603883900156830 /* Arc4RandomStream.m in Sources */,
@@ -994,14 +990,18 @@
 				682D45161603883900156830 /* HashedInputStream.m in Sources */,
 				682D45171603883900156830 /* HashedOutputStream.m in Sources */,
 				682D45181603883900156830 /* InputStream.m in Sources */,
+				CA451844184E544A007C8EC4 /* Salsa20RandomStream.m in Sources */,
+				CA451840184E544A007C8EC4 /* KdbPassword.m in Sources */,
 				682D45191603883900156830 /* OutputStream.m in Sources */,
+				CA45183F184E544A007C8EC4 /* Kdb4Writer.m in Sources */,
 				682D451A1603883900156830 /* Sha256OutputStream.m in Sources */,
-				685D9D951603F8EE00D739D3 /* Kdb3Utils.m in Sources */,
-				680C277616050C7A009403DE /* DDXMLDocument+MKPAdditions.m in Sources */,
 				6859176F1615DE1D005FECA5 /* AppSettings.m in Sources */,
+				CA451837184E544A007C8EC4 /* Kdb3Node.m in Sources */,
 				52E7AF5816251EA700DCB00A /* RenameItemViewController.m in Sources */,
 				52E7AF5C162523F800DCB00A /* EditGroupViewController.m in Sources */,
+				CA451834184E544A007C8EC4 /* DDXMLDocument+MKPAdditions.m in Sources */,
 				52E7AF6316252D7C00DCB00A /* ChooseGroupViewController.m in Sources */,
+				CA451838184E544A007C8EC4 /* Kdb3Reader.m in Sources */,
 				684846B6167E1E460040C4EE /* StringFieldViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
