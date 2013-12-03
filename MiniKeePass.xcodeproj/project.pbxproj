@@ -695,16 +695,15 @@
 			children = (
 				689D030313A42B63005EBD36 /* LICENSE.txt */,
 				689D030413A42B63005EBD36 /* README.md */,
-				689DFFDF13A4273F005EBD36 /* MiniKeePass */,
+				689DFFDF13A4273F005EBD36 /* Source */,
+				689D041413A42B85005EBD36 /* Resources */,
 				682D44F01603883900156830 /* IOStream */,
 				689D02B013A42B63005EBD36 /* KeePassLib */,
 				689D02F313A42B63005EBD36 /* KissXML */,
 				689D032913A42B63005EBD36 /* Security */,
 				689DFFD813A4273F005EBD36 /* Frameworks */,
-				689D041413A42B85005EBD36 /* Resources */,
 				689D030513A42B63005EBD36 /* Samples */,
 				689DFFD613A4273F005EBD36 /* Products */,
-				526D9FA3167CDC010097213E /* MBProgressHUD.xcodeproj */,
 			);
 			sourceTree = "<group>";
 		};
@@ -719,6 +718,7 @@
 		689DFFD813A4273F005EBD36 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				526D9FA3167CDC010097213E /* MBProgressHUD.xcodeproj */,
 				689D000C13A42765005EBD36 /* AudioToolbox.framework */,
 				689DFFDD13A4273F005EBD36 /* CoreGraphics.framework */,
 				689DFFDB13A4273F005EBD36 /* Foundation.framework */,
@@ -731,7 +731,7 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		689DFFDF13A4273F005EBD36 /* MiniKeePass */ = {
+		689DFFDF13A4273F005EBD36 /* Source */ = {
 			isa = PBXGroup;
 			children = (
 				6859176D1615DE1D005FECA5 /* AppSettings.h */,
@@ -783,6 +783,7 @@
 				68F19D1B14EB3A3900B772CB /* Password Generator */,
 				689DFFE013A4273F005EBD36 /* Supporting Files */,
 			);
+			name = Source;
 			path = MiniKeePass;
 			sourceTree = "<group>";
 		};
