@@ -157,12 +157,24 @@
     }
 
     [self clearEntry];
+    
+    if([[UIDevice currentDevice].systemVersion floatValue] >= 7) {
+        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     if ([self.delegate respondsToSelector:@selector(pinViewControllerDidShow:)]) {
         [self.delegate pinViewControllerDidShow:self];
     }
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    if([[UIDevice currentDevice].systemVersion floatValue] >= 7) {
+        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
+    }
+    
+    [super viewWillDisappear:animated];
 }
 
 - (void)viewDidUnload {
