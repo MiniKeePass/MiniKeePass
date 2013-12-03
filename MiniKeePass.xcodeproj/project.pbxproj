@@ -150,8 +150,8 @@
 		52A512B0159CE7540009F82F /* ImageSelectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageSelectionView.m; sourceTree = "<group>"; };
 		52A7E1A714EDF1CB0041F950 /* LockScreenController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LockScreenController.h; sourceTree = "<group>"; };
 		52A7E1A814EDF1CB0041F950 /* LockScreenController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LockScreenController.m; sourceTree = "<group>"; };
-		52E3342B161E0F310049F4A1 /* stretchme.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = stretchme.png; sourceTree = SOURCE_ROOT; };
-		52E3342C161E0F310049F4A1 /* stretchme@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "stretchme@2x.png"; sourceTree = SOURCE_ROOT; };
+		52E3342B161E0F310049F4A1 /* stretchme.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = stretchme.png; path = MiniKeePass/stretchme.png; sourceTree = SOURCE_ROOT; };
+		52E3342C161E0F310049F4A1 /* stretchme@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "stretchme@2x.png"; path = "MiniKeePass/stretchme@2x.png"; sourceTree = SOURCE_ROOT; };
 		52E43F4715B59C880029F979 /* ru-createdb.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "ru-createdb.html"; sourceTree = "<group>"; };
 		52E43F4815B59C880029F979 /* ru-dropbox.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "ru-dropbox.html"; sourceTree = "<group>"; };
 		52E43F4915B59C890029F979 /* ru-itunes.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "ru-itunes.html"; sourceTree = "<group>"; };
@@ -479,7 +479,7 @@
 			path = IOStream;
 			sourceTree = "<group>";
 		};
-		689D021313A42B63005EBD36 /* help */ = {
+		689D021313A42B63005EBD36 /* Help */ = {
 			isa = PBXGroup;
 			children = (
 				4E8C168D16B3E871004195A1 /* fr */,
@@ -492,7 +492,8 @@
 				68CE37F41404A86600E4A5E1 /* safariemail.html */,
 				689D021613A42B63005EBD36 /* style.css */,
 			);
-			path = help;
+			name = Help;
+			path = Additional/Help;
 			sourceTree = "<group>";
 		};
 		689D02B013A42B63005EBD36 /* KeePassLib */ = {
@@ -616,7 +617,7 @@
 		689D041413A42B85005EBD36 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				689D021313A42B63005EBD36 /* help */,
+				689D021313A42B63005EBD36 /* Help */,
 				522D8F9D17E35B0E00BCA329 /* Images.xcassets */,
 				529708AD14FEEFD3003547FB /* Andale Mono.ttf */,
 			);
