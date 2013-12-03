@@ -80,11 +80,6 @@
 		689D03E513A42B63005EBD36 /* Salsa20RandomStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D02EC13A42B63005EBD36 /* Salsa20RandomStream.m */; };
 		689D03E713A42B63005EBD36 /* Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D02F013A42B63005EBD36 /* Utils.m */; };
 		689D03E813A42B63005EBD36 /* UUID.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D02F213A42B63005EBD36 /* UUID.m */; };
-		689D03E913A42B63005EBD36 /* DDXMLElementAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D02F613A42B63005EBD36 /* DDXMLElementAdditions.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
-		689D03EA13A42B63005EBD36 /* NSString+DDXML.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D02F913A42B63005EBD36 /* NSString+DDXML.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
-		689D03EB13A42B63005EBD36 /* DDXMLDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D02FC13A42B63005EBD36 /* DDXMLDocument.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
-		689D03EC13A42B63005EBD36 /* DDXMLElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D02FE13A42B63005EBD36 /* DDXMLElement.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
-		689D03ED13A42B63005EBD36 /* DDXMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D030013A42B63005EBD36 /* DDXMLNode.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		689D041313A42B63005EBD36 /* KeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D032B13A42B63005EBD36 /* KeychainUtils.m */; };
 		689D044E13A42C82005EBD36 /* ChoiceCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D042513A42C81005EBD36 /* ChoiceCell.m */; };
 		689D044F13A42C82005EBD36 /* DatabaseDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D042713A42C81005EBD36 /* DatabaseDocument.m */; };
@@ -120,6 +115,11 @@
 		68E08316146F2749001C4EDF /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 68E08314146F2749001C4EDF /* InfoPlist.strings */; };
 		68EBC2D61613394D00E8E799 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68EBC2D51613394D00E8E799 /* QuartzCore.framework */; };
 		68F19D1F14EB3A9C00B772CB /* CharacterSetsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F19D1E14EB3A9C00B772CB /* CharacterSetsViewController.m */; };
+		CA45177F184E52DA007C8EC4 /* DDXMLElementAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = CA451772184E52DA007C8EC4 /* DDXMLElementAdditions.m */; };
+		CA451780184E52DA007C8EC4 /* NSString+DDXML.m in Sources */ = {isa = PBXBuildFile; fileRef = CA451775184E52DA007C8EC4 /* NSString+DDXML.m */; };
+		CA451781184E52DA007C8EC4 /* DDXMLDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = CA451778184E52DA007C8EC4 /* DDXMLDocument.m */; };
+		CA451782184E52DA007C8EC4 /* DDXMLElement.m in Sources */ = {isa = PBXBuildFile; fileRef = CA45177A184E52DA007C8EC4 /* DDXMLElement.m */; };
+		CA451783184E52DA007C8EC4 /* DDXMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = CA45177C184E52DA007C8EC4 /* DDXMLNode.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -262,18 +262,6 @@
 		689D02F013A42B63005EBD36 /* Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Utils.m; sourceTree = "<group>"; };
 		689D02F113A42B63005EBD36 /* UUID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UUID.h; sourceTree = "<group>"; };
 		689D02F213A42B63005EBD36 /* UUID.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UUID.m; sourceTree = "<group>"; };
-		689D02F513A42B63005EBD36 /* DDXMLElementAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDXMLElementAdditions.h; sourceTree = "<group>"; };
-		689D02F613A42B63005EBD36 /* DDXMLElementAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDXMLElementAdditions.m; sourceTree = "<group>"; };
-		689D02F813A42B63005EBD36 /* NSString+DDXML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+DDXML.h"; sourceTree = "<group>"; };
-		689D02F913A42B63005EBD36 /* NSString+DDXML.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+DDXML.m"; sourceTree = "<group>"; };
-		689D02FA13A42B63005EBD36 /* DDXML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDXML.h; sourceTree = "<group>"; };
-		689D02FB13A42B63005EBD36 /* DDXMLDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDXMLDocument.h; sourceTree = "<group>"; };
-		689D02FC13A42B63005EBD36 /* DDXMLDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDXMLDocument.m; sourceTree = "<group>"; };
-		689D02FD13A42B63005EBD36 /* DDXMLElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDXMLElement.h; sourceTree = "<group>"; };
-		689D02FE13A42B63005EBD36 /* DDXMLElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDXMLElement.m; sourceTree = "<group>"; };
-		689D02FF13A42B63005EBD36 /* DDXMLNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDXMLNode.h; sourceTree = "<group>"; };
-		689D030013A42B63005EBD36 /* DDXMLNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDXMLNode.m; sourceTree = "<group>"; };
-		689D030213A42B63005EBD36 /* DDXMLPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDXMLPrivate.h; sourceTree = "<group>"; };
 		689D030313A42B63005EBD36 /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
 		689D030413A42B63005EBD36 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 		689D030613A42B63005EBD36 /* sample.1.00.kdb */ = {isa = PBXFileReference; lastKnownFileType = file; path = sample.1.00.kdb; sourceTree = "<group>"; };
@@ -379,6 +367,18 @@
 		68EBC2D51613394D00E8E799 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		68F19D1D14EB3A9C00B772CB /* CharacterSetsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CharacterSetsViewController.h; sourceTree = "<group>"; };
 		68F19D1E14EB3A9C00B772CB /* CharacterSetsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CharacterSetsViewController.m; sourceTree = "<group>"; };
+		CA451771184E52DA007C8EC4 /* DDXMLElementAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDXMLElementAdditions.h; sourceTree = "<group>"; };
+		CA451772184E52DA007C8EC4 /* DDXMLElementAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDXMLElementAdditions.m; sourceTree = "<group>"; };
+		CA451774184E52DA007C8EC4 /* NSString+DDXML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+DDXML.h"; sourceTree = "<group>"; };
+		CA451775184E52DA007C8EC4 /* NSString+DDXML.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+DDXML.m"; sourceTree = "<group>"; };
+		CA451776184E52DA007C8EC4 /* DDXML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DDXML.h; path = KissXML/DDXML.h; sourceTree = "<group>"; };
+		CA451777184E52DA007C8EC4 /* DDXMLDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DDXMLDocument.h; path = KissXML/DDXMLDocument.h; sourceTree = "<group>"; };
+		CA451778184E52DA007C8EC4 /* DDXMLDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DDXMLDocument.m; path = KissXML/DDXMLDocument.m; sourceTree = "<group>"; };
+		CA451779184E52DA007C8EC4 /* DDXMLElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DDXMLElement.h; path = KissXML/DDXMLElement.h; sourceTree = "<group>"; };
+		CA45177A184E52DA007C8EC4 /* DDXMLElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DDXMLElement.m; path = KissXML/DDXMLElement.m; sourceTree = "<group>"; };
+		CA45177B184E52DA007C8EC4 /* DDXMLNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DDXMLNode.h; path = KissXML/DDXMLNode.h; sourceTree = "<group>"; };
+		CA45177C184E52DA007C8EC4 /* DDXMLNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DDXMLNode.m; path = KissXML/DDXMLNode.m; sourceTree = "<group>"; };
+		CA45177E184E52DA007C8EC4 /* DDXMLPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDXMLPrivate.h; sourceTree = "<group>"; };
 		EFD785BA15B3D02600B9A276 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		EFD785BB15B3D03F00B9A276 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -566,44 +566,18 @@
 		689D02F313A42B63005EBD36 /* KissXML */ = {
 			isa = PBXGroup;
 			children = (
-				689D02F413A42B63005EBD36 /* Additions */,
-				689D02F713A42B63005EBD36 /* Categories */,
-				689D02FA13A42B63005EBD36 /* DDXML.h */,
-				689D02FB13A42B63005EBD36 /* DDXMLDocument.h */,
-				689D02FC13A42B63005EBD36 /* DDXMLDocument.m */,
-				689D02FD13A42B63005EBD36 /* DDXMLElement.h */,
-				689D02FE13A42B63005EBD36 /* DDXMLElement.m */,
-				689D02FF13A42B63005EBD36 /* DDXMLNode.h */,
-				689D030013A42B63005EBD36 /* DDXMLNode.m */,
-				689D030113A42B63005EBD36 /* Private */,
+				CA451770184E52DA007C8EC4 /* Additions */,
+				CA451773184E52DA007C8EC4 /* Categories */,
+				CA451776184E52DA007C8EC4 /* DDXML.h */,
+				CA451777184E52DA007C8EC4 /* DDXMLDocument.h */,
+				CA451778184E52DA007C8EC4 /* DDXMLDocument.m */,
+				CA451779184E52DA007C8EC4 /* DDXMLElement.h */,
+				CA45177A184E52DA007C8EC4 /* DDXMLElement.m */,
+				CA45177B184E52DA007C8EC4 /* DDXMLNode.h */,
+				CA45177C184E52DA007C8EC4 /* DDXMLNode.m */,
+				CA45177D184E52DA007C8EC4 /* Private */,
 			);
 			path = KissXML;
-			sourceTree = "<group>";
-		};
-		689D02F413A42B63005EBD36 /* Additions */ = {
-			isa = PBXGroup;
-			children = (
-				689D02F513A42B63005EBD36 /* DDXMLElementAdditions.h */,
-				689D02F613A42B63005EBD36 /* DDXMLElementAdditions.m */,
-			);
-			path = Additions;
-			sourceTree = "<group>";
-		};
-		689D02F713A42B63005EBD36 /* Categories */ = {
-			isa = PBXGroup;
-			children = (
-				689D02F813A42B63005EBD36 /* NSString+DDXML.h */,
-				689D02F913A42B63005EBD36 /* NSString+DDXML.m */,
-			);
-			path = Categories;
-			sourceTree = "<group>";
-		};
-		689D030113A42B63005EBD36 /* Private */ = {
-			isa = PBXGroup;
-			children = (
-				689D030213A42B63005EBD36 /* DDXMLPrivate.h */,
-			);
-			path = Private;
 			sourceTree = "<group>";
 		};
 		689D030513A42B63005EBD36 /* Samples */ = {
@@ -699,7 +673,6 @@
 				689D041413A42B85005EBD36 /* Resources */,
 				682D44F01603883900156830 /* IOStream */,
 				689D02B013A42B63005EBD36 /* KeePassLib */,
-				689D02F313A42B63005EBD36 /* KissXML */,
 				689D032913A42B63005EBD36 /* Security */,
 				689DFFD813A4273F005EBD36 /* Frameworks */,
 				689D030513A42B63005EBD36 /* Samples */,
@@ -719,6 +692,7 @@
 			isa = PBXGroup;
 			children = (
 				526D9FA3167CDC010097213E /* MBProgressHUD.xcodeproj */,
+				689D02F313A42B63005EBD36 /* KissXML */,
 				689D000C13A42765005EBD36 /* AudioToolbox.framework */,
 				689DFFDD13A4273F005EBD36 /* CoreGraphics.framework */,
 				689DFFDB13A4273F005EBD36 /* Foundation.framework */,
@@ -810,6 +784,35 @@
 				689A4D161404759700AA897D /* PasswordGeneratorViewController.m */,
 			);
 			name = "Password Generator";
+			sourceTree = "<group>";
+		};
+		CA451770184E52DA007C8EC4 /* Additions */ = {
+			isa = PBXGroup;
+			children = (
+				CA451771184E52DA007C8EC4 /* DDXMLElementAdditions.h */,
+				CA451772184E52DA007C8EC4 /* DDXMLElementAdditions.m */,
+			);
+			name = Additions;
+			path = KissXML/Additions;
+			sourceTree = "<group>";
+		};
+		CA451773184E52DA007C8EC4 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				CA451774184E52DA007C8EC4 /* NSString+DDXML.h */,
+				CA451775184E52DA007C8EC4 /* NSString+DDXML.m */,
+			);
+			name = Categories;
+			path = KissXML/Categories;
+			sourceTree = "<group>";
+		};
+		CA45177D184E52DA007C8EC4 /* Private */ = {
+			isa = PBXGroup;
+			children = (
+				CA45177E184E52DA007C8EC4 /* DDXMLPrivate.h */,
+			);
+			name = Private;
+			path = KissXML/Private;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -928,6 +931,7 @@
 				689D03CD13A42B63005EBD36 /* Base64.m in Sources */,
 				689D03D513A42B63005EBD36 /* Kdb.m in Sources */,
 				689D03D613A42B63005EBD36 /* Kdb3Date.m in Sources */,
+				CA451782184E52DA007C8EC4 /* DDXMLElement.m in Sources */,
 				689D03D713A42B63005EBD36 /* Kdb3Node.m in Sources */,
 				689D03DA13A42B63005EBD36 /* Kdb3Reader.m in Sources */,
 				689D03DB13A42B63005EBD36 /* Kdb3Writer.m in Sources */,
@@ -937,21 +941,19 @@
 				689D03DF13A42B63005EBD36 /* Kdb4Reader.m in Sources */,
 				689D03E013A42B63005EBD36 /* Kdb4Writer.m in Sources */,
 				689D03E113A42B63005EBD36 /* KdbPassword.m in Sources */,
+				CA45177F184E52DA007C8EC4 /* DDXMLElementAdditions.m in Sources */,
 				689D03E213A42B63005EBD36 /* KdbReaderFactory.m in Sources */,
 				689D03E313A42B63005EBD36 /* KdbWriterFactory.m in Sources */,
 				689D03E513A42B63005EBD36 /* Salsa20RandomStream.m in Sources */,
+				CA451783184E52DA007C8EC4 /* DDXMLNode.m in Sources */,
 				689D03E713A42B63005EBD36 /* Utils.m in Sources */,
 				689D03E813A42B63005EBD36 /* UUID.m in Sources */,
-				689D03E913A42B63005EBD36 /* DDXMLElementAdditions.m in Sources */,
-				689D03EA13A42B63005EBD36 /* NSString+DDXML.m in Sources */,
-				689D03EB13A42B63005EBD36 /* DDXMLDocument.m in Sources */,
-				689D03EC13A42B63005EBD36 /* DDXMLElement.m in Sources */,
-				689D03ED13A42B63005EBD36 /* DDXMLNode.m in Sources */,
 				689D041313A42B63005EBD36 /* KeychainUtils.m in Sources */,
 				689D044E13A42C82005EBD36 /* ChoiceCell.m in Sources */,
 				689D044F13A42C82005EBD36 /* DatabaseDocument.m in Sources */,
 				689D045013A42C82005EBD36 /* DatabaseManager.m in Sources */,
 				689D045113A42C82005EBD36 /* EntryViewController.m in Sources */,
+				CA451780184E52DA007C8EC4 /* NSString+DDXML.m in Sources */,
 				689D045213A42C82005EBD36 /* FilesInfoView.m in Sources */,
 				689D045313A42C82005EBD36 /* FilesViewController.m in Sources */,
 				689D045413A42C82005EBD36 /* GroupViewController.m in Sources */,
@@ -987,6 +989,7 @@
 				682D45121603883900156830 /* FileInputStream.m in Sources */,
 				682D45131603883900156830 /* FileOutputStream.m in Sources */,
 				682D45141603883900156830 /* GZipInputStream.m in Sources */,
+				CA451781184E52DA007C8EC4 /* DDXMLDocument.m in Sources */,
 				682D45151603883900156830 /* GZipOutputStream.m in Sources */,
 				682D45161603883900156830 /* HashedInputStream.m in Sources */,
 				682D45171603883900156830 /* HashedOutputStream.m in Sources */,

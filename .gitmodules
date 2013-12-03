@@ -1,3 +1,6 @@
 [submodule "MBProgressHUD"]
 	path = MBProgressHUD
 	url = https://github.com/jdg/MBProgressHUD.git
+[submodule "KissXML"]
+	path = KissXML
+	url = https://github.com/robbiehanson/KissXML.git
