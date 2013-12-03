@@ -148,6 +148,9 @@
     CGFloat currentWidth = UIInterfaceOrientationIsPortrait(orientation) ? CGRectGetWidth(screenBounds) : CGRectGetHeight(screenBounds);
     
     CGFloat xOrigin = [[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad ? 56.0f : 20.0f;
+    if([[UIDevice currentDevice].systemVersion floatValue] >= 7) {
+        xOrigin = 15.0f;
+    }
     CGFloat yOrigin = 11;
     CGFloat width = currentWidth - 2 * xOrigin;
     CGFloat height = 22;
