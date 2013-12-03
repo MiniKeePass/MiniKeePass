@@ -42,7 +42,11 @@
         appDelegate = (MiniKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
         
         UIImageView *imageView = [[UIImageView alloc] initWithFrame:self.view.frame];
-        imageView.image = [[UIImage imageNamed:@"stretchme"] stretchableImageWithLeftCapWidth:0 topCapHeight:44];
+        if([[UIDevice currentDevice].systemVersion floatValue] >= 7) {
+            imageView.image = [[UIImage imageNamed:@"stretchme-7"] resizableImageWithCapInsets:UIEdgeInsetsMake(65, 0, 45, 0)];
+        } else {
+            imageView.image = [[UIImage imageNamed:@"stretchme"] stretchableImageWithLeftCapWidth:0 topCapHeight:44];
+        }
         self.view = imageView;
 
         NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];

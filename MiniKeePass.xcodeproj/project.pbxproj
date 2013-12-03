@@ -120,6 +120,7 @@
 		CA4518CD184E5879007C8EC4 /* InputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = CA4518BD184E5879007C8EC4 /* InputStream.m */; };
 		CA4518CE184E5879007C8EC4 /* OutputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = CA4518BF184E5879007C8EC4 /* OutputStream.m */; };
 		CA4518CF184E5879007C8EC4 /* Sha256OutputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = CA4518C1184E5879007C8EC4 /* Sha256OutputStream.m */; };
+		CAE2EDB8184E681500FBF712 /* stretchme-7@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CAE2EDB7184E681500FBF712 /* stretchme-7@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -370,6 +371,7 @@
 		CA4518BF184E5879007C8EC4 /* OutputStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = OutputStream.m; path = External/IOStream/OutputStream.m; sourceTree = SOURCE_ROOT; };
 		CA4518C0184E5879007C8EC4 /* Sha256OutputStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Sha256OutputStream.h; path = External/IOStream/Sha256OutputStream.h; sourceTree = SOURCE_ROOT; };
 		CA4518C1184E5879007C8EC4 /* Sha256OutputStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Sha256OutputStream.m; path = External/IOStream/Sha256OutputStream.m; sourceTree = SOURCE_ROOT; };
+		CAE2EDB7184E681500FBF712 /* stretchme-7@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "stretchme-7@2x.png"; sourceTree = "<group>"; };
 		EFD785BA15B3D02600B9A276 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		EFD785BB15B3D03F00B9A276 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -410,6 +412,7 @@
 			children = (
 				52E3342B161E0F310049F4A1 /* stretchme.png */,
 				52E3342C161E0F310049F4A1 /* stretchme@2x.png */,
+				CAE2EDB7184E681500FBF712 /* stretchme-7@2x.png */,
 				689D043813A42C81005EBD36 /* PinTextField.h */,
 				689D043913A42C81005EBD36 /* PinTextField.m */,
 				689D043A13A42C81005EBD36 /* PinViewController.h */,
@@ -889,6 +892,7 @@
 				52E3342E161E0F310049F4A1 /* stretchme@2x.png in Resources */,
 				4E8C169316B3E871004195A1 /* fr-createdb.html in Resources */,
 				4E8C169416B3E871004195A1 /* fr-dropbox.html in Resources */,
+				CAE2EDB8184E681500FBF712 /* stretchme-7@2x.png in Resources */,
 				4E8C169516B3E871004195A1 /* fr-itunes.html in Resources */,
 				4E8C169616B3E871004195A1 /* fr-keyfiles.html in Resources */,
 				4E8C169716B3E871004195A1 /* fr-safariemail.html in Resources */,
