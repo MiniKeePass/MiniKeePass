@@ -73,8 +73,8 @@
 
 - (UIViewController *)frontMostViewController {
     UIViewController *frontViewController = appDelegate.window.rootViewController;
-    while (frontViewController.modalViewController != nil) {
-        frontViewController = frontViewController.modalViewController;
+    while (frontViewController.presentedViewController != nil) {
+        frontViewController = frontViewController.presentedViewController;
     }
     return frontViewController;
 }
