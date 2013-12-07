@@ -357,14 +357,14 @@ enum {
     newKdbViewController.delegate = self;
     
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:newKdbViewController];
-    
     [appDelegate.window.rootViewController presentModalViewController:navigationController animated:YES];
 }
 
 - (void)helpPressed {
     HelpViewController *helpViewController = [[HelpViewController alloc] init];
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:helpViewController];
     
-    [self.navigationController pushViewController:helpViewController animated:YES];
+    [self presentViewController:navigationController animated:YES completion:nil];
 }
 
 - (void)formViewController:(FormViewController *)controller button:(FormViewControllerButton)button {

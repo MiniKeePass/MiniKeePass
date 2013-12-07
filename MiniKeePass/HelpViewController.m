@@ -63,6 +63,16 @@
     return self;
 }
 
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(closeHelp)];
+}
+
+- (void)closeHelp {
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return _helpTopics.count;
 }
