@@ -32,7 +32,7 @@
         
         label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
         label.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-        label.textAlignment = UITextAlignmentCenter;
+        label.textAlignment = NSTextAlignmentCenter;
         label.text = @"Finished";
         label.textColor = [UIColor whiteColor];
         label.backgroundColor = [UIColor clearColor];

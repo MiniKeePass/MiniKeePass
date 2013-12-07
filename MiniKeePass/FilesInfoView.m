@@ -54,9 +54,9 @@
         UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, imageHeight + spacerHeight, labelWidth, labelHeight)];
         label.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
         label.backgroundColor = [UIColor clearColor];
-        label.textAlignment = UITextAlignmentCenter;
+        label.textAlignment = NSTextAlignmentCenter;
         label.numberOfLines = 0;
-        label.lineBreakMode = UILineBreakModeWordWrap;
+        label.lineBreakMode = NSLineBreakByWordWrapping;
         label.textColor = [UIColor grayColor];
         label.text = NSLocalizedString(@"You do not have any KeePass files available for MiniKeePass to open.", nil);
         

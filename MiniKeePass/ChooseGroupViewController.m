@@ -126,7 +126,7 @@
     if (valid) {
         KdbGroup *chosenGroup = [groupDict objectForKey:KEY_GROUP];
         [self.delegate chooseGroup:chosenGroup];
-        [self dismissModalViewControllerAnimated:YES];
+        [self dismissViewControllerAnimated:YES completion:nil];
     }
 }
 

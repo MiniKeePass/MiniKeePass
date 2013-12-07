@@ -62,7 +62,7 @@
         self.textLabel.textColor = [UIColor whiteColor];
         self.textLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:25];
         self.textLabel.numberOfLines = 0;
-        self.textLabel.textAlignment = UITextAlignmentCenter;
+        self.textLabel.textAlignment = NSTextAlignmentCenter;
         self.textLabel.text = text;
         
         topBar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, frameWidth, 95)];
@@ -152,9 +152,7 @@
     [self becomeFirstResponder];
     
     UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
-    if ([self shouldAutorotateToInterfaceOrientation:orientation]) {
-        [self resizeToolbarsToInterfaceOrientation:orientation];
-    }
+    [self resizeToolbarsToInterfaceOrientation:orientation];
 
     [self clearEntry];
     

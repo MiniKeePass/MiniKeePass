@@ -612,7 +612,7 @@
     UILabel *copiedLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, y, size.width, size.height)];
     copiedLabel.text = copiedString;
     copiedLabel.font = font;
-    copiedLabel.textAlignment = UITextAlignmentCenter;
+    copiedLabel.textAlignment = NSTextAlignmentCenter;
     copiedLabel.textColor = [UIColor whiteColor];
     copiedLabel.backgroundColor = [UIColor clearColor];
 
@@ -707,7 +707,7 @@
 
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:passwordGeneratorViewController];
 
-    [self presentModalViewController:navigationController animated:YES];
+    [self presentViewController:navigationController animated:YES completion:nil];
 }
 
 - (void)passwordGeneratorViewController:(PasswordGeneratorViewController *)controller password:(NSString *)password {

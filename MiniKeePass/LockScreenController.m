@@ -68,7 +68,7 @@
 }
 
 -(BOOL)pinViewControllerShouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
-    return [self shouldAutorotateToInterfaceOrientation:toInterfaceOrientation];
+    return YES;
 }
 
 - (UIViewController *)frontMostViewController {
@@ -81,7 +81,7 @@
 
 - (void)show {
     previousViewController = [self frontMostViewController];
-    [previousViewController presentModalViewController:self animated:NO];
+    [previousViewController presentViewController:self animated:NO completion:nil];
 }
 
 + (void)present {
@@ -90,19 +90,19 @@
 }
 
 - (void)hide {
-    [self dismissModalViewControllerAnimated:NO];
+    [self dismissViewControllerAnimated:NO completion:nil];
 }
 
 - (void)lock {
     if (!appDelegate.locked) {
         pinViewController.textLabel.text = NSLocalizedString(@"Enter your PIN to unlock", nil);
-        [self presentModalViewController:pinViewController animated:NO];
+        [self presentViewController:pinViewController animated:NO completion:nil];
     }
 }
 
 - (void)unlock {
     appDelegate.locked = NO;
-    [previousViewController dismissModalViewControllerAnimated:YES];
+    [previousViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)pinViewControllerDidShow:(PinViewController *)controller {
