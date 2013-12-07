@@ -628,7 +628,7 @@
 			name = Resources;
 			sourceTree = "<group>";
 		};
-		689D046313A42CA8005EBD36 /* Cells */ = {
+		689D046313A42CA8005EBD36 /* Table View Cells */ = {
 			isa = PBXGroup;
 			children = (
 				689D042413A42C81005EBD36 /* ChoiceCell.h */,
@@ -648,7 +648,7 @@
 				689D044C13A42C82005EBD36 /* UrlFieldCell.h */,
 				689D044D13A42C82005EBD36 /* UrlFieldCell.m */,
 			);
-			name = Cells;
+			name = "Table View Cells";
 			sourceTree = "<group>";
 		};
 		689DFFCA13A4273F005EBD36 = {
@@ -658,6 +658,7 @@
 				689D030413A42B63005EBD36 /* README.md */,
 				689DFFDF13A4273F005EBD36 /* Source */,
 				689D041413A42B85005EBD36 /* Resources */,
+				689DFFE013A4273F005EBD36 /* Supporting Files */,
 				689DFFD813A4273F005EBD36 /* Frameworks */,
 				689D030513A42B63005EBD36 /* Samples */,
 				689DFFD613A4273F005EBD36 /* Products */,
@@ -695,54 +696,23 @@
 		689DFFDF13A4273F005EBD36 /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				6859176D1615DE1D005FECA5 /* AppSettings.h */,
-				6859176E1615DE1D005FECA5 /* AppSettings.m */,
-				52E7AF6116252D7C00DCB00A /* ChooseGroupViewController.h */,
-				52E7AF6216252D7C00DCB00A /* ChooseGroupViewController.m */,
-				689D042613A42C81005EBD36 /* DatabaseDocument.h */,
-				689D042713A42C81005EBD36 /* DatabaseDocument.m */,
-				689D042813A42C81005EBD36 /* DatabaseManager.h */,
-				689D042913A42C81005EBD36 /* DatabaseManager.m */,
-				52E7AF5A162523F800DCB00A /* EditGroupViewController.h */,
-				52E7AF5B162523F800DCB00A /* EditGroupViewController.m */,
-				689D042A13A42C81005EBD36 /* EntryViewController.h */,
-				689D042B13A42C81005EBD36 /* EntryViewController.m */,
-				689D042C13A42C81005EBD36 /* FilesInfoView.h */,
-				689D042D13A42C81005EBD36 /* FilesInfoView.m */,
-				689D042E13A42C81005EBD36 /* FilesViewController.h */,
-				689D042F13A42C81005EBD36 /* FilesViewController.m */,
-				68A3E1AD13A8C9D1006881CA /* FormViewController.h */,
-				68A3E1AE13A8C9D1006881CA /* FormViewController.m */,
-				689D043013A42C81005EBD36 /* GroupViewController.h */,
-				689D043113A42C81005EBD36 /* GroupViewController.m */,
-				68CE37F014049BC900E4A5E1 /* HelpViewController.h */,
-				68CE37F114049BC900E4A5E1 /* HelpViewController.m */,
-				52A512AF159CE7540009F82F /* ImageSelectionView.h */,
-				52A512B0159CE7540009F82F /* ImageSelectionView.m */,
-				6876F67613B2D8F400A05C7A /* ImageSelectionViewController.h */,
-				6876F67713B2D8F400A05C7A /* ImageSelectionViewController.m */,
-				68915A0913A6F6C200A408B0 /* InfoBar.h */,
-				68915A0A13A6F6C200A408B0 /* InfoBar.m */,
+				CA2F735B18533DED0019D7D9 /* Databases */,
+				CA2F735C18533E2B0019D7D9 /* Items */,
+				CA2F735918533D880019D7D9 /* Settings */,
+				CA2F735A18533D900019D7D9 /* Help */,
+				52370CB314F2CDC3003DC64C /* Lock Screen */,
+				68F19D1B14EB3A3900B772CB /* Password Generator */,
+				CA2F735E18533ED10019D7D9 /* FormViewController */,
+				CA2F735818533D550019D7D9 /* Helper Classes */,
+				689D046313A42CA8005EBD36 /* Table View Cells */,
 				689D043213A42C81005EBD36 /* MiniKeePassAppDelegate.h */,
 				689D043313A42C81005EBD36 /* MiniKeePassAppDelegate.m */,
-				689D043413A42C81005EBD36 /* NewKdbViewController.h */,
-				689D043513A42C81005EBD36 /* NewKdbViewController.m */,
-				68D991E413F3EAAE00F6ED1F /* PasswordViewController.h */,
-				68D991E513F3EAAE00F6ED1F /* PasswordViewController.m */,
-				52E7AF5616251EA700DCB00A /* RenameItemViewController.h */,
-				52E7AF5716251EA700DCB00A /* RenameItemViewController.m */,
 				689D043E13A42C82005EBD36 /* SelectionListViewController.h */,
 				689D043F13A42C82005EBD36 /* SelectionListViewController.m */,
-				689D044013A42C82005EBD36 /* SettingsViewController.h */,
-				689D044113A42C82005EBD36 /* SettingsViewController.m */,
 				684846B4167E1E460040C4EE /* StringFieldViewController.h */,
 				684846B5167E1E460040C4EE /* StringFieldViewController.m */,
 				689D044413A42C82005EBD36 /* TextEntryController.h */,
 				689D044513A42C82005EBD36 /* TextEntryController.m */,
-				689D046313A42CA8005EBD36 /* Cells */,
-				52370CB314F2CDC3003DC64C /* Lock Screen */,
-				68F19D1B14EB3A3900B772CB /* Password Generator */,
-				689DFFE013A4273F005EBD36 /* Supporting Files */,
 			);
 			name = Source;
 			path = MiniKeePass;
@@ -757,6 +727,7 @@
 				689DFFE613A4273F005EBD36 /* main.m */,
 			);
 			name = "Supporting Files";
+			path = MiniKeePass;
 			sourceTree = "<group>";
 		};
 		68F19D1B14EB3A3900B772CB /* Password Generator */ = {
@@ -770,6 +741,92 @@
 				689A4D161404759700AA897D /* PasswordGeneratorViewController.m */,
 			);
 			name = "Password Generator";
+			sourceTree = "<group>";
+		};
+		CA2F735818533D550019D7D9 /* Helper Classes */ = {
+			isa = PBXGroup;
+			children = (
+				6859176D1615DE1D005FECA5 /* AppSettings.h */,
+				6859176E1615DE1D005FECA5 /* AppSettings.m */,
+			);
+			name = "Helper Classes";
+			sourceTree = "<group>";
+		};
+		CA2F735918533D880019D7D9 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				689D044013A42C82005EBD36 /* SettingsViewController.h */,
+				689D044113A42C82005EBD36 /* SettingsViewController.m */,
+			);
+			name = Settings;
+			sourceTree = "<group>";
+		};
+		CA2F735A18533D900019D7D9 /* Help */ = {
+			isa = PBXGroup;
+			children = (
+				68CE37F014049BC900E4A5E1 /* HelpViewController.h */,
+				68CE37F114049BC900E4A5E1 /* HelpViewController.m */,
+			);
+			name = Help;
+			sourceTree = "<group>";
+		};
+		CA2F735B18533DED0019D7D9 /* Databases */ = {
+			isa = PBXGroup;
+			children = (
+				CA2F735D18533E420019D7D9 /* Helper */,
+				689D042E13A42C81005EBD36 /* FilesViewController.h */,
+				689D042F13A42C81005EBD36 /* FilesViewController.m */,
+				689D042C13A42C81005EBD36 /* FilesInfoView.h */,
+				689D042D13A42C81005EBD36 /* FilesInfoView.m */,
+				689D043413A42C81005EBD36 /* NewKdbViewController.h */,
+				689D043513A42C81005EBD36 /* NewKdbViewController.m */,
+				68D991E413F3EAAE00F6ED1F /* PasswordViewController.h */,
+				68D991E513F3EAAE00F6ED1F /* PasswordViewController.m */,
+				52E7AF5616251EA700DCB00A /* RenameItemViewController.h */,
+				52E7AF5716251EA700DCB00A /* RenameItemViewController.m */,
+			);
+			name = Databases;
+			sourceTree = "<group>";
+		};
+		CA2F735C18533E2B0019D7D9 /* Items */ = {
+			isa = PBXGroup;
+			children = (
+				689D043013A42C81005EBD36 /* GroupViewController.h */,
+				689D043113A42C81005EBD36 /* GroupViewController.m */,
+				52E7AF5A162523F800DCB00A /* EditGroupViewController.h */,
+				52E7AF5B162523F800DCB00A /* EditGroupViewController.m */,
+				689D042A13A42C81005EBD36 /* EntryViewController.h */,
+				689D042B13A42C81005EBD36 /* EntryViewController.m */,
+				52E7AF6116252D7C00DCB00A /* ChooseGroupViewController.h */,
+				52E7AF6216252D7C00DCB00A /* ChooseGroupViewController.m */,
+				52A512AF159CE7540009F82F /* ImageSelectionView.h */,
+				52A512B0159CE7540009F82F /* ImageSelectionView.m */,
+				6876F67613B2D8F400A05C7A /* ImageSelectionViewController.h */,
+				6876F67713B2D8F400A05C7A /* ImageSelectionViewController.m */,
+			);
+			name = Items;
+			sourceTree = "<group>";
+		};
+		CA2F735D18533E420019D7D9 /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+				689D042613A42C81005EBD36 /* DatabaseDocument.h */,
+				689D042713A42C81005EBD36 /* DatabaseDocument.m */,
+				689D042813A42C81005EBD36 /* DatabaseManager.h */,
+				689D042913A42C81005EBD36 /* DatabaseManager.m */,
+			);
+			name = Helper;
+			sourceTree = "<group>";
+		};
+		CA2F735E18533ED10019D7D9 /* FormViewController */ = {
+			isa = PBXGroup;
+			children = (
+				68A3E1AD13A8C9D1006881CA /* FormViewController.h */,
+				68A3E1AE13A8C9D1006881CA /* FormViewController.m */,
+				68915A0913A6F6C200A408B0 /* InfoBar.h */,
+				68915A0A13A6F6C200A408B0 /* InfoBar.m */,
+			);
+			name = FormViewController;
 			sourceTree = "<group>";
 		};
 		CA45184C184E5727007C8EC4 /* Additions */ = {
