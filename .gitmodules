@@ -1,3 +1,6 @@
-[submodule "MBProgressHUD"]
-	path = MBProgressHUD
-	url = git@github.com:MiniKeePass/MBProgressHUD.git
+[submodule "External/MBProgressHUD"]
+	path = External/MBProgressHUD
+	url = https://github.com/jdg/MBProgressHUD.git
+[submodule "External/KissXML"]
+	path = External/KissXML
+	url = https://github.com/robbiehanson/KissXML.git

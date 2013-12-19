@@ -17,6 +17,12 @@
 
 #import "DDXMLDocument.h"
 
+@interface DDXMLDocument ()
+
+- (id)initWithDocPrimitive:(xmlDocPtr)doc owner:(DDXMLNode *)inOwner;
+
+@end
+
 @interface DDXMLDocument (MKPAdditions)
 
 - (id)initWithReadIO:(xmlInputReadCallback)ioread closeIO:(xmlInputCloseCallback)ioclose context:(void*)ioctx options:(NSUInteger)mask error:(NSError **)error;

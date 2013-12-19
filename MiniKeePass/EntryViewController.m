@@ -18,7 +18,7 @@
 #import "EntryViewController.h"
 #import "Kdb4Node.h"
 
-#import <MBProgressHUD/MBProgressHUD.h>
+#import "MBProgressHUD.h"
 
 #define SECTION_HEADER_HEIGHT 46.0f
 
@@ -602,9 +602,11 @@
     pasteboard.string = cell.textField.text;
 
     // Figure out frame for copied label
-    NSString *copiedString = NSLocalizedString(@"Copied", nil);
     UIFont *font = [UIFont boldSystemFontOfSize:18];
-    CGSize size = [copiedString sizeWithFont:font];
+    NSDictionary *stringAttributes = [NSDictionary dictionaryWithObject:font forKey: NSFontAttributeName];
+    NSString *copiedString = NSLocalizedString(@"Copied", nil);
+    
+    CGSize size = [copiedString boundingRectWithSize:CGSizeMake(99999, 99999) options:NSStringDrawingTruncatesLastVisibleLine|NSStringDrawingUsesLineFragmentOrigin attributes:stringAttributes context:nil].size;
     CGFloat x = (cell.frame.size.width - size.width) / 2.0;
     CGFloat y = (cell.frame.size.height - size.height) / 2.0;
 
@@ -612,7 +614,7 @@
     UILabel *copiedLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, y, size.width, size.height)];
     copiedLabel.text = copiedString;
     copiedLabel.font = font;
-    copiedLabel.textAlignment = UITextAlignmentCenter;
+    copiedLabel.textAlignment = NSTextAlignmentCenter;
     copiedLabel.textColor = [UIColor whiteColor];
     copiedLabel.backgroundColor = [UIColor clearColor];
 
@@ -707,7 +709,7 @@
 
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:passwordGeneratorViewController];
 
-    [self presentModalViewController:navigationController animated:YES];
+    [self presentViewController:navigationController animated:YES completion:nil];
 }
 
 - (void)passwordGeneratorViewController:(PasswordGeneratorViewController *)controller password:(NSString *)password {

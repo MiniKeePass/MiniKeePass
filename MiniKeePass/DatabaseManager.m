@@ -101,7 +101,7 @@ static DatabaseManager *sharedInstance;
         
         UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:passwordViewController];
         
-        [appDelegate.window.rootViewController presentModalViewController:navigationController animated:animated];
+        [appDelegate.window.rootViewController presentViewController:navigationController animated:animated completion:nil];
     }
 }
 
@@ -163,7 +163,7 @@ static DatabaseManager *sharedInstance;
     }
     
     if (shouldDismiss) {
-        [passwordViewController dismissModalViewControllerAnimated:YES];
+        [passwordViewController dismissViewControllerAnimated:YES completion:nil];
     }
 }
 

@@ -42,7 +42,11 @@
         appDelegate = (MiniKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
         
         UIImageView *imageView = [[UIImageView alloc] initWithFrame:self.view.frame];
-        imageView.image = [[UIImage imageNamed:@"stretchme"] stretchableImageWithLeftCapWidth:0 topCapHeight:44];
+        if([[UIDevice currentDevice].systemVersion floatValue] >= 7) {
+            imageView.image = [[UIImage imageNamed:@"stretchme-7"] resizableImageWithCapInsets:UIEdgeInsetsMake(65, 0, 45, 0)];
+        } else {
+            imageView.image = [[UIImage imageNamed:@"stretchme"] stretchableImageWithLeftCapWidth:0 topCapHeight:44];
+        }
         self.view = imageView;
 
         NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
@@ -64,20 +68,20 @@
 }
 
 -(BOOL)pinViewControllerShouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
-    return [self shouldAutorotateToInterfaceOrientation:toInterfaceOrientation];
+    return YES;
 }
 
 - (UIViewController *)frontMostViewController {
     UIViewController *frontViewController = appDelegate.window.rootViewController;
-    while (frontViewController.modalViewController != nil) {
-        frontViewController = frontViewController.modalViewController;
+    while (frontViewController.presentedViewController != nil) {
+        frontViewController = frontViewController.presentedViewController;
     }
     return frontViewController;
 }
 
 - (void)show {
     previousViewController = [self frontMostViewController];
-    [previousViewController presentModalViewController:self animated:NO];
+    [previousViewController presentViewController:self animated:NO completion:nil];
 }
 
 + (void)present {
@@ -86,19 +90,19 @@
 }
 
 - (void)hide {
-    [self dismissModalViewControllerAnimated:NO];
+    [self dismissViewControllerAnimated:NO completion:nil];
 }
 
 - (void)lock {
     if (!appDelegate.locked) {
         pinViewController.textLabel.text = NSLocalizedString(@"Enter your PIN to unlock", nil);
-        [self presentModalViewController:pinViewController animated:NO];
+        [self presentViewController:pinViewController animated:NO completion:nil];
     }
 }
 
 - (void)unlock {
     appDelegate.locked = NO;
-    [previousViewController dismissModalViewControllerAnimated:YES];
+    [previousViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)pinViewControllerDidShow:(PinViewController *)controller {

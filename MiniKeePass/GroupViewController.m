@@ -247,7 +247,7 @@
     chooseGroupViewController.delegate = self;
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:chooseGroupViewController];
 
-    [appDelegate.window.rootViewController presentModalViewController:navController animated:YES];
+    [appDelegate.window.rootViewController presentViewController:navController animated:YES completion:nil];
 }
 
 - (BOOL)checkChoiceValidity:(KdbGroup *)chosenGroup {
@@ -623,7 +623,7 @@
 
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:renameItemViewController];
 
-    [appDelegate.window.rootViewController presentModalViewController:navigationController animated:YES];
+    [appDelegate.window.rootViewController presentViewController:navigationController animated:YES completion:nil];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -742,7 +742,7 @@
         [appDelegate.databaseDocument save];
     }
 
-    [appDelegate.window.rootViewController dismissModalViewControllerAnimated:YES];
+    [appDelegate.window.rootViewController dismissViewControllerAnimated:YES completion:nil];
 
     [self setEditing:NO animated:YES];
 }
@@ -792,7 +792,7 @@
 
         UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:editGroupViewController];
 
-        [appDelegate.window.rootViewController presentModalViewController:navigationController animated:YES];
+        [appDelegate.window.rootViewController presentViewController:navigationController animated:YES completion:nil];
 
         // Notify the table of the new row
         NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:GROUPS_SECTION];

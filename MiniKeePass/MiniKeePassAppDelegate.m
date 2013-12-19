@@ -308,13 +308,12 @@
     settingsViewController.navigationItem.rightBarButtonItem = doneButton;
     
     UINavigationController *settingsNavController = [[UINavigationController alloc] initWithRootViewController:settingsViewController];
-    settingsNavController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
     
-    [self.window.rootViewController presentModalViewController:settingsNavController animated:YES];
+    [self.window.rootViewController presentViewController:settingsNavController animated:YES completion:nil];
 }
 
 - (void)dismissSettingsView {
-    [self.window.rootViewController dismissModalViewControllerAnimated:YES];
+    [self.window.rootViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)showActionSheet:(UIActionSheet *)actionSheet {

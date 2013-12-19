@@ -62,7 +62,7 @@
         self.textLabel.textColor = [UIColor whiteColor];
         self.textLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:25];
         self.textLabel.numberOfLines = 0;
-        self.textLabel.textAlignment = UITextAlignmentCenter;
+        self.textLabel.textAlignment = NSTextAlignmentCenter;
         self.textLabel.text = text;
         
         topBar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, frameWidth, 95)];
@@ -152,17 +152,27 @@
     [self becomeFirstResponder];
     
     UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
-    if ([self shouldAutorotateToInterfaceOrientation:orientation]) {
-        [self resizeToolbarsToInterfaceOrientation:orientation];
-    }
+    [self resizeToolbarsToInterfaceOrientation:orientation];
 
     [self clearEntry];
+    
+    if([[UIDevice currentDevice].systemVersion floatValue] >= 7) {
+        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     if ([self.delegate respondsToSelector:@selector(pinViewControllerDidShow:)]) {
         [self.delegate pinViewControllerDidShow:self];
     }
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    if([[UIDevice currentDevice].systemVersion floatValue] >= 7) {
+        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
+    }
+    
+    [super viewWillDisappear:animated];
 }
 
 - (void)viewDidUnload {
