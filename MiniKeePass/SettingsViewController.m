@@ -172,7 +172,7 @@ enum {
     CGFloat viewWidth = CGRectGetWidth(self.tableView.frame);
     UIView *tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, viewWidth, 40)];
     
-    NSString *text = [NSString stringWithFormat:@"MiniKeePass version %@", 
+    NSString *text = [NSString stringWithFormat:NSLocalizedString(@"MiniKeePass version %@", nil),
                     [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]];
     UIFont *font = [UIFont boldSystemFontOfSize:17];
     
