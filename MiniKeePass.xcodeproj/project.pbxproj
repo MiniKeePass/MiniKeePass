@@ -24,6 +24,7 @@
 		52A177BC13EB698E00CEEFCE /* createdb.html in Resources */ = {isa = PBXBuildFile; fileRef = 52A177BB13EB698E00CEEFCE /* createdb.html */; };
 		52A512B1159CE7540009F82F /* ImageSelectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 52A512B0159CE7540009F82F /* ImageSelectionView.m */; };
 		52A7E1A914EDF1CB0041F950 /* LockScreenController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52A7E1A814EDF1CB0041F950 /* LockScreenController.m */; };
+		52C7FD7D18693D9900D498A2 /* GroupSearchController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52C7FD7C18693D9900D498A2 /* GroupSearchController.m */; };
 		52E3342D161E0F310049F4A1 /* stretchme.png in Resources */ = {isa = PBXBuildFile; fileRef = 52E3342B161E0F310049F4A1 /* stretchme.png */; };
 		52E3342E161E0F310049F4A1 /* stretchme@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52E3342C161E0F310049F4A1 /* stretchme@2x.png */; };
 		52E43F4C15B59C890029F979 /* ru-createdb.html in Resources */ = {isa = PBXBuildFile; fileRef = 52E43F4715B59C880029F979 /* ru-createdb.html */; };
@@ -161,6 +162,8 @@
 		52A512B0159CE7540009F82F /* ImageSelectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageSelectionView.m; sourceTree = "<group>"; };
 		52A7E1A714EDF1CB0041F950 /* LockScreenController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LockScreenController.h; sourceTree = "<group>"; };
 		52A7E1A814EDF1CB0041F950 /* LockScreenController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LockScreenController.m; sourceTree = "<group>"; };
+		52C7FD7B18693D9900D498A2 /* GroupSearchController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupSearchController.h; sourceTree = "<group>"; };
+		52C7FD7C18693D9900D498A2 /* GroupSearchController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupSearchController.m; sourceTree = "<group>"; };
 		52E3342B161E0F310049F4A1 /* stretchme.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = stretchme.png; sourceTree = SOURCE_ROOT; };
 		52E3342C161E0F310049F4A1 /* stretchme@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "stretchme@2x.png"; sourceTree = SOURCE_ROOT; };
 		52E43F4715B59C880029F979 /* ru-createdb.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "ru-createdb.html"; sourceTree = "<group>"; };
@@ -754,6 +757,8 @@
 				68A3E1AE13A8C9D1006881CA /* FormViewController.m */,
 				689D043013A42C81005EBD36 /* GroupViewController.h */,
 				689D043113A42C81005EBD36 /* GroupViewController.m */,
+				52C7FD7B18693D9900D498A2 /* GroupSearchController.h */,
+				52C7FD7C18693D9900D498A2 /* GroupSearchController.m */,
 				68CE37F014049BC900E4A5E1 /* HelpViewController.h */,
 				68CE37F114049BC900E4A5E1 /* HelpViewController.m */,
 				52A512AF159CE7540009F82F /* ImageSelectionView.h */,
@@ -925,6 +930,7 @@
 				5248970C1641961600D96AD5 /* ImageButtonCell.m in Sources */,
 				689DFFE713A4273F005EBD36 /* main.m in Sources */,
 				689D03CD13A42B63005EBD36 /* Base64.m in Sources */,
+				52C7FD7D18693D9900D498A2 /* GroupSearchController.m in Sources */,
 				689D03D513A42B63005EBD36 /* Kdb.m in Sources */,
 				689D03D613A42B63005EBD36 /* Kdb3Date.m in Sources */,
 				689D03D713A42B63005EBD36 /* Kdb3Node.m in Sources */,

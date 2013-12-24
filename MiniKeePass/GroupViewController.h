@@ -23,16 +23,15 @@
 
 @interface GroupViewController : UITableViewController <UIActionSheetDelegate, UISearchDisplayDelegate, FormViewControllerDelegate, ChooseGroupDelegate> {
     MiniKeePassAppDelegate *appDelegate;
-    UISearchDisplayController *searchDisplayController;
-    NSMutableArray *results;
-    KdbGroup *group;
-    NSString *pushedKdbTitle;
     BOOL sortingEnabled;
     NSMutableArray *groupsArray;
     NSMutableArray *enteriesArray;
     NSComparisonResult (^groupComparator) (id obj1, id obj2);
     NSComparisonResult (^entryComparator) (id obj1, id obj2);
 }
+
+- (void)pushViewControllerForGroup:(KdbGroup *)group;
+- (void)pushViewControllerForEntry:(KdbEntry *)entry;
 
 @property (nonatomic, weak) KdbGroup *group;
 
