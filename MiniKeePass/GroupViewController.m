@@ -16,6 +16,7 @@
  */
 
 #import "GroupViewController.h"
+#import "GroupSearchController.h"
 #import "EntryViewController.h"
 #import "ChooseGroupViewController.h"
 #import "AppSettings.h"
@@ -54,6 +55,9 @@ enum {
 @property (nonatomic, strong) UIBarButtonItem *actionButton;
 @property (nonatomic, strong) UIBarButtonItem *addButton;
 
+@property (nonatomic, strong) GroupSearchController *searchController;
+@property (nonatomic, strong) UISearchDisplayController *mySearchDisplayController;
+
 @end
 
 @implementation GroupViewController
@@ -74,10 +78,13 @@ enum {
 
         self.tableView.tableHeaderView = searchBar;
 
-        searchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:searchBar contentsController:self];
-        searchDisplayController.searchResultsDataSource = self;
-        searchDisplayController.searchResultsDelegate = self;
-        searchDisplayController.delegate = self;
+        _searchController = [[GroupSearchController alloc] init];
+        _searchController.groupViewController = self;
+
+        _mySearchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:searchBar contentsController:self];
+        self.searchDisplayController.searchResultsDataSource = _searchController;
+        self.searchDisplayController.searchResultsDelegate = _searchController;
+        self.searchDisplayController.delegate = _searchController;
 
         self.settingsButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"gear"] style:UIBarButtonItemStylePlain target:appDelegate action:@selector(showSettingsView)];
         self.settingsButton.imageInsets = UIEdgeInsetsMake(2, 0, -2, 0);
@@ -92,8 +99,6 @@ enum {
         self.toolbarItems = self.standardToolbarItems;
         self.navigationItem.rightBarButtonItem = self.editButtonItem;
 
-        results = [[NSMutableArray alloc] init];
-
         sortingEnabled = [[AppSettings sharedInstance] sortAlphabetically];
 
         groupComparator = ^(id obj1, id obj2) {
@@ -107,7 +112,6 @@ enum {
             NSString *string2 = ((KdbEntry*)obj2).title;
             return [string1 localizedCaseInsensitiveCompare:string2];
         };
-
     }
     return self;
 }
@@ -162,7 +166,7 @@ enum {
         }
     }
 
-    searchDisplayController.searchBar.placeholder = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"Search", nil), self.title];
+    self.searchDisplayController.searchBar.placeholder = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"Search", nil), self.title];
 
     UIInterfaceOrientation currentOrientation = [[UIApplication sharedApplication] statusBarOrientation];
     if (UIInterfaceOrientationIsPortrait(currentOrientation)) {
@@ -176,9 +180,6 @@ enum {
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
-
-    searchDisplayController.active = NO;
-    
     [appDelegate.databaseDocument.documentInteractionController dismissMenuAnimated:NO];
 }
 
@@ -256,14 +257,12 @@ enum {
 - (BOOL)checkChoiceValidity:(KdbGroup *)chosenGroup {
     BOOL validGroup = YES;
     BOOL containsEntry = NO;
-    KdbGroup *movingGroup;
-    KdbGroup *movingEntry;
 
     // Check if chosen group is a subgroup of any groups to be moved
     for (NSIndexPath *indexPath in self.tableView.indexPathsForSelectedRows) {
         switch (indexPath.section) {
-            case SECTION_GROUPS:
-                movingGroup = [groupsArray objectAtIndex:indexPath.row];
+            case SECTION_GROUPS: {
+                KdbGroup *movingGroup = [groupsArray objectAtIndex:indexPath.row];
                 if (movingGroup.parent == chosenGroup) {
                     validGroup = NO;
                 }
@@ -271,14 +270,16 @@ enum {
                     validGroup = NO;
                 }
                 break;
+            }
 
-            case SECTION_ENTRIES:
+            case SECTION_ENTRIES: {
                 containsEntry = YES;
-                movingEntry = [enteriesArray objectAtIndex:indexPath.row];
+                KdbEntry *movingEntry = [enteriesArray objectAtIndex:indexPath.row];
                 if (movingEntry.parent == chosenGroup) {
                     validGroup = NO;
                 }
                 break;
+            }
         }
 
         if (!validGroup) {
@@ -448,6 +449,7 @@ enum {
 - (void)setGroup:(KdbGroup *)newGroup {
     if (_group != newGroup) {
         _group = newGroup;
+        _searchController.group = newGroup;
 
         [self updateLocalArrays];
 
@@ -465,36 +467,11 @@ enum {
     }
 }
 
-- (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString {
-    [results removeAllObjects];
-
-    DatabaseDocument *databaseDocument = appDelegate.databaseDocument;
-    if (databaseDocument != nil) {
-        // Perform the search
-        [databaseDocument searchGroup:_group searchText:searchString results:results];
-    }
-
-    // Sort the results
-    [results sortUsingComparator:^(id a, id b) {
-        return [((KdbEntry*)a).title localizedCompare:((KdbEntry*)b).title];
-    }];
-
-    return YES;
-}
-
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    if (tableView == self.searchDisplayController.searchResultsTableView) {
-        return 1;
-    } else {
-        return NUM_SECTIONS;
-    }
+    return NUM_SECTIONS;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    if (tableView == self.searchDisplayController.searchResultsTableView) {
-        return nil;
-    }
-
     switch (section) {
         case SECTION_GROUPS:
             if ([groupsArray count] != 0) {
@@ -513,18 +490,13 @@ enum {
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if (tableView == self.searchDisplayController.searchResultsTableView) {
-        return [results count];
-    } else {
-        switch (section) {
-            case SECTION_GROUPS:
-                return [groupsArray count];
-            case SECTION_ENTRIES:
-                return [enteriesArray count];
-        }
-
-        return 0;
+    switch (section) {
+        case SECTION_GROUPS:
+            return [groupsArray count];
+        case SECTION_ENTRIES:
+            return [enteriesArray count];
     }
+    return 0;
 }
 
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -543,11 +515,10 @@ enum {
     static NSString *CellIdentifierGroup = @"CellGroup";
     static NSString *CellIdentifierEntry = @"CellEntry";
 
-    BOOL searching = tableView == self.searchDisplayController.searchResultsTableView;
     NSString *theCellIdentifier;
     UITableViewCellStyle theCellStyle;
     
-    if (searching || indexPath.section == SECTION_ENTRIES) {
+    if (indexPath.section == SECTION_ENTRIES) {
         theCellIdentifier = CellIdentifierEntry;
         theCellStyle = UITableViewCellStyleSubtitle;
     } else {
@@ -564,35 +535,33 @@ enum {
     appDelegate = (MiniKeePassAppDelegate *)[[UIApplication sharedApplication] delegate];
 
     // Configure the cell
-    if (searching || indexPath.section == SECTION_ENTRIES) {
-        KdbEntry * e;
-        if (tableView == self.searchDisplayController.searchResultsTableView) {
-            // Handle search results
-            e = [results objectAtIndex:indexPath.row];
-        } else {
-            // Handle regular entries
-            e = [enteriesArray objectAtIndex:indexPath.row];
-        }
-        cell.textLabel.text = e.title;
-        // Detail text is a combination of username and url
-        NSString *detailText = @"";
-        if (e.username != nil && e.username.length > 0) {
-            detailText = e.username;
-        }
-        if (e.url != nil && e.url.length > 0) {
-            if (detailText.length > 0) {
-                detailText = [NSString stringWithFormat:@"%@ @ %@", detailText, e.url];
-            } else {
-                detailText = e.url;
+    switch (indexPath.section) {
+        case SECTION_ENTRIES: {
+            KdbEntry *e = [enteriesArray objectAtIndex:indexPath.row];
+            cell.textLabel.text = e.title;
+
+            // Detail text is a combination of username and url
+            NSString *detailText = @"";
+            if (e.username.length > 0) {
+                detailText = e.username;
             }
+            if (e.url.length > 0) {
+                if (detailText.length > 0) {
+                    detailText = [NSString stringWithFormat:@"%@ @ %@", detailText, e.url];
+                } else {
+                    detailText = e.url;
+                }
+            }
+            cell.detailTextLabel.text = detailText;
+            cell.imageView.image = [appDelegate loadImage:e.image];
+            break;
         }
-        cell.detailTextLabel.text = detailText;
-        cell.imageView.image = [appDelegate loadImage:e.image];
-    } else {
-        // Child group
-        KdbGroup *g = [groupsArray objectAtIndex:indexPath.row];
-        cell.textLabel.text = g.name;
-        cell.imageView.image = [appDelegate loadImage:g.image];
+        case SECTION_GROUPS: {
+            KdbGroup *g = [groupsArray objectAtIndex:indexPath.row];
+            cell.textLabel.text = g.name;
+            cell.imageView.image = [appDelegate loadImage:g.image];
+            break;
+        }
     }
 
     return cell;
@@ -625,39 +594,38 @@ enum {
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (tableView == self.searchDisplayController.searchResultsTableView) {
-        // Handle search results
-        KdbEntry *e = [results objectAtIndex:indexPath.row];
-
-        EntryViewController *entryViewController = [[EntryViewController alloc] initWithStyle:UITableViewStyleGrouped];
-        entryViewController.entry = e;
-        entryViewController.title = e.title;
-        [self.navigationController pushViewController:entryViewController animated:YES];
-    } else {
-        if (self.editing == NO) {
-            if (indexPath.section == SECTION_GROUPS) {
-                KdbGroup *g = [groupsArray objectAtIndex:indexPath.row];
-
-                GroupViewController *groupViewController = [[GroupViewController alloc] init];
-                groupViewController.group = g;
-                groupViewController.title = g.name;
-
-                [self.navigationController pushViewController:groupViewController animated:YES];
-            } else if (indexPath.section == SECTION_ENTRIES) {
-                KdbEntry *e = [enteriesArray objectAtIndex:indexPath.row];
-
-                EntryViewController *entryViewController = [[EntryViewController alloc] initWithStyle:UITableViewStyleGrouped];
-                entryViewController.entry = e;
-                entryViewController.title = e.title;
-
-                [self.navigationController pushViewController:entryViewController animated:YES];
+    if (self.editing == NO) {
+        switch (indexPath.section) {
+            case SECTION_GROUPS: {
+                [self pushViewControllerForGroup:[groupsArray objectAtIndex:indexPath.row]];
+                break;
             }
-        } else if (indexPath.section == SECTION_GROUPS && !self.selectMultipleWhileEditing) {
-            [self renameItemAtIndexPath:indexPath];
-        } else if (self.selectMultipleWhileEditing) {
-            [self updateEditingButtons];
+            case SECTION_ENTRIES: {
+                [self pushViewControllerForEntry:[enteriesArray objectAtIndex:indexPath.row]];
+                break;
+            }
         }
+    } else if (indexPath.section == SECTION_GROUPS && !self.selectMultipleWhileEditing) {
+        [self renameItemAtIndexPath:indexPath];
+    } else if (self.selectMultipleWhileEditing) {
+        [self updateEditingButtons];
     }
+}
+
+- (void)pushViewControllerForGroup:(KdbGroup *)group {
+    GroupViewController *groupViewController = [[GroupViewController alloc] init];
+    groupViewController.group = group;
+    groupViewController.title = group.name;
+
+    [self.navigationController pushViewController:groupViewController animated:YES];
+}
+
+- (void)pushViewControllerForEntry:(KdbEntry *)entry {
+    EntryViewController *entryViewController = [[EntryViewController alloc] initWithStyle:UITableViewStyleGrouped];
+    entryViewController.entry = entry;
+    entryViewController.title = entry.title;
+
+    [self.navigationController pushViewController:entryViewController animated:YES];
 }
 
 - (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -667,11 +635,7 @@ enum {
 }
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (tableView == searchDisplayController.searchResultsTableView) {
-        return UITableViewCellEditingStyleNone;
-    } else {
-        return UITableViewCellEditingStyleDelete;
-    }
+    return UITableViewCellEditingStyleDelete;
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
