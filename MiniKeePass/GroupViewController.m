@@ -208,13 +208,13 @@
 
     // Remove groups
     for (KdbGroup *g in groupsToRemove) {
-        [group removeGroup:g];
+        [_group removeGroup:g];
         [groupsArray removeObject:g];
     }
 
     // Remote Enteries
     for (KdbEntry *e in enteriesToRemove) {
-        [group removeEntry:e];
+        [_group removeEntry:e];
         [enteriesArray removeObject:e];
     }
 
@@ -442,13 +442,9 @@
 
 }
 
-- (KdbGroup *)group {
-    return group;
-}
-
 - (void)setGroup:(KdbGroup *)newGroup {
-    if (group != newGroup) {
-        group = newGroup;
+    if (_group != newGroup) {
+        _group = newGroup;
 
         [self updateLocalArrays];
 
@@ -457,8 +453,8 @@
 }
 
 - (void)updateLocalArrays {
-    groupsArray = [[NSMutableArray alloc] initWithArray:group.groups];
-    enteriesArray = [[NSMutableArray alloc] initWithArray:group.entries];
+    groupsArray = [[NSMutableArray alloc] initWithArray:_group.groups];
+    enteriesArray = [[NSMutableArray alloc] initWithArray:_group.entries];
 
     if (sortingEnabled) {
         [groupsArray sortUsingComparator:groupComparator];
@@ -472,7 +468,7 @@
     DatabaseDocument *databaseDocument = appDelegate.databaseDocument;
     if (databaseDocument != nil) {
         // Perform the search
-        [databaseDocument searchGroup:group searchText:searchString results:results];
+        [databaseDocument searchGroup:_group searchText:searchString results:results];
     }
 
     // Sort the results
@@ -758,7 +754,7 @@
 
 - (void)addPressed {
     UIActionSheet *actionSheet;
-    if (group.canAddEntries) {
+    if (_group.canAddEntries) {
         actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Add", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"Cancel", nil) destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"Group", nil), NSLocalizedString(@"Entry", nil), nil];
     } else {
         actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Add", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"Cancel", nil) destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"Group", nil), nil];
@@ -776,10 +772,10 @@
     DatabaseDocument *databaseDocument = appDelegate.databaseDocument;
     if (buttonIndex == 0) {
         // Create and add a group
-        KdbGroup *g = [databaseDocument.kdbTree createGroup:group];
+        KdbGroup *g = [databaseDocument.kdbTree createGroup:_group];
         g.name = NSLocalizedString(@"New Group", nil);
-        g.image = group.image;
-        [group addGroup:g];
+        g.image = _group.image;
+        [_group addGroup:g];
         NSUInteger index = [self addObject:g toArray:groupsArray];
 
         databaseDocument.dirty = YES;
@@ -809,10 +805,10 @@
         [self.tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionTop];
     } else if (buttonIndex == 1) {
         // Create and add an entry
-        KdbEntry *e = [databaseDocument.kdbTree createEntry:group];
+        KdbEntry *e = [databaseDocument.kdbTree createEntry:_group];
         e.title = NSLocalizedString(@"New Entry", nil);
-        e.image = group.image;
-        [group addEntry:e];
+        e.image = _group.image;
+        [_group addEntry:e];
         NSUInteger index = [self addObject:e toArray:enteriesArray];
         databaseDocument.dirty = YES;
         [databaseDocument save];
