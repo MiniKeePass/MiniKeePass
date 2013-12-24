@@ -643,8 +643,6 @@ enum {
                 groupViewController.group = g;
                 groupViewController.title = g.name;
 
-                pushedKdbTitle = [g.name copy];
-
                 [self.navigationController pushViewController:groupViewController animated:YES];
             } else if (indexPath.section == SECTION_ENTRIES) {
                 KdbEntry *e = [enteriesArray objectAtIndex:indexPath.row];
@@ -652,8 +650,6 @@ enum {
                 EntryViewController *entryViewController = [[EntryViewController alloc] initWithStyle:UITableViewStyleGrouped];
                 entryViewController.entry = e;
                 entryViewController.title = e.title;
-
-                pushedKdbTitle = [e.title copy];
 
                 [self.navigationController pushViewController:entryViewController animated:YES];
             }

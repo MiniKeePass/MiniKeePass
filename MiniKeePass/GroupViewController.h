@@ -25,7 +25,6 @@
     MiniKeePassAppDelegate *appDelegate;
     UISearchDisplayController *searchDisplayController;
     NSMutableArray *results;
-    NSString *pushedKdbTitle;
     BOOL sortingEnabled;
     NSMutableArray *groupsArray;
     NSMutableArray *enteriesArray;
