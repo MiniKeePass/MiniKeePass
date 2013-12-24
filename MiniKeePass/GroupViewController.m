@@ -22,13 +22,16 @@
 #import "RenameItemViewController.h"
 #import "Kdb3Node.h"
 
-#define GROUPS_SECTION  0
-#define ENTRIES_SECTION 1
-
 #define PORTRAIT_BUTTON_WIDTH  ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone ? 97.0f : 244.0f)
 #define LANDSCAPE_BUTTON_WIDTH ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone ? 186.0f : 330.0f)
 
 #define SORTED_INSERTION_FAILED NSUIntegerMax
+
+enum {
+    SECTION_GROUPS,
+    SECTION_ENTRIES,
+    NUM_SECTIONS
+};
 
 @interface GroupViewController ()
 - (void)updateLocalArrays;
@@ -128,10 +131,10 @@
         if (selectedIndexPath != nil) {
             NSMutableArray *array;
             switch (selectedIndexPath.section) {
-                case ENTRIES_SECTION:
+                case SECTION_ENTRIES:
                     array = enteriesArray;
                     break;
-                case GROUPS_SECTION:
+                case SECTION_GROUPS:
                     array = groupsArray;
                     break;
                 default:
@@ -199,9 +202,9 @@
 
     // Find items to remove
     for (NSIndexPath *indexPath in indexPaths) {
-        if (indexPath.section == GROUPS_SECTION) {
+        if (indexPath.section == SECTION_GROUPS) {
             [groupsToRemove addObject:[groupsArray objectAtIndex:indexPath.row]];
-        } else if (indexPath.section == ENTRIES_SECTION) {
+        } else if (indexPath.section == SECTION_ENTRIES) {
             [enteriesToRemove addObject:[enteriesArray objectAtIndex:indexPath.row]];
         }
     }
@@ -232,10 +235,10 @@
     // Clean up section headers
     NSMutableIndexSet *indexSet = [NSMutableIndexSet indexSet];
     if ([groupsArray count] == 0) {
-        [indexSet addIndex:GROUPS_SECTION];
+        [indexSet addIndex:SECTION_GROUPS];
     }
     if ([enteriesArray count] == 0) {
-        [indexSet addIndex:ENTRIES_SECTION];
+        [indexSet addIndex:SECTION_ENTRIES];
     }
     [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationFade];
 
@@ -259,7 +262,7 @@
     // Check if chosen group is a subgroup of any groups to be moved
     for (NSIndexPath *indexPath in self.tableView.indexPathsForSelectedRows) {
         switch (indexPath.section) {
-            case GROUPS_SECTION:
+            case SECTION_GROUPS:
                 movingGroup = [groupsArray objectAtIndex:indexPath.row];
                 if (movingGroup.parent == chosenGroup) {
                     validGroup = NO;
@@ -269,7 +272,7 @@
                 }
                 break;
 
-            case ENTRIES_SECTION:
+            case SECTION_ENTRIES:
                 containsEntry = YES;
                 movingEntry = [enteriesArray objectAtIndex:indexPath.row];
                 if (movingEntry.parent == chosenGroup) {
@@ -306,10 +309,10 @@
 
     for (NSIndexPath *indexPath in indexPaths) {
         switch (indexPath.section) {
-            case GROUPS_SECTION:
+            case SECTION_GROUPS:
                 [groupsToMove addObject:[groupsArray objectAtIndex:indexPath.row]];
                 break;
-            case ENTRIES_SECTION:
+            case SECTION_ENTRIES:
                 [enteriesToMove addObject:[enteriesArray objectAtIndex:indexPath.row]];
                 break;
         }
@@ -483,7 +486,7 @@
     if (tableView == self.searchDisplayController.searchResultsTableView) {
         return 1;
     } else {
-        return 2;
+        return NUM_SECTIONS;
     }
 }
 
@@ -493,13 +496,13 @@
     }
 
     switch (section) {
-        case GROUPS_SECTION:
+        case SECTION_GROUPS:
             if ([groupsArray count] != 0) {
                 return NSLocalizedString(@"Groups", nil);
             }
             break;
 
-        case ENTRIES_SECTION:
+        case SECTION_ENTRIES:
             if ([enteriesArray count] != 0) {
                 return NSLocalizedString(@"Entries", nil);
             }
@@ -514,9 +517,9 @@
         return [results count];
     } else {
         switch (section) {
-            case GROUPS_SECTION:
+            case SECTION_GROUPS:
                 return [groupsArray count];
-            case ENTRIES_SECTION:
+            case SECTION_ENTRIES:
                 return [enteriesArray count];
         }
 
@@ -526,7 +529,7 @@
 
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (tableView.editing && !self.selectMultipleWhileEditing) {
-        if (indexPath.section == GROUPS_SECTION) {
+        if (indexPath.section == SECTION_GROUPS) {
             return indexPath;
         }
     } else {
@@ -544,7 +547,7 @@
     NSString *theCellIdentifier;
     UITableViewCellStyle theCellStyle;
     
-    if (searching || indexPath.section == ENTRIES_SECTION) {
+    if (searching || indexPath.section == SECTION_ENTRIES) {
         theCellIdentifier = CellIdentifierEntry;
         theCellStyle = UITableViewCellStyleSubtitle;
     } else {
@@ -561,7 +564,7 @@
     appDelegate = (MiniKeePassAppDelegate *)[[UIApplication sharedApplication] delegate];
 
     // Configure the cell
-    if (searching || indexPath.section == ENTRIES_SECTION) {
+    if (searching || indexPath.section == SECTION_ENTRIES) {
         KdbEntry * e;
         if (tableView == self.searchDisplayController.searchResultsTableView) {
             // Handle search results
@@ -603,13 +606,13 @@
     KdbEntry *e;
 
     switch (indexPath.section) {
-        case GROUPS_SECTION:
+        case SECTION_GROUPS:
             renameItemViewController.type = RenameItemTypeGroup;
             g = [groupsArray objectAtIndex:indexPath.row];
             renameItemViewController.nameTextField.text = g.name;
             [renameItemViewController setSelectedImageIndex:g.image];
             break;
-        case ENTRIES_SECTION:
+        case SECTION_ENTRIES:
             renameItemViewController.type = RenameItemTypeEntry;
             e = [enteriesArray objectAtIndex:indexPath.row];
             renameItemViewController.nameTextField.text = e.title;
@@ -633,7 +636,7 @@
         [self.navigationController pushViewController:entryViewController animated:YES];
     } else {
         if (self.editing == NO) {
-            if (indexPath.section == GROUPS_SECTION) {
+            if (indexPath.section == SECTION_GROUPS) {
                 KdbGroup *g = [groupsArray objectAtIndex:indexPath.row];
 
                 GroupViewController *groupViewController = [[GroupViewController alloc] init];
@@ -643,7 +646,7 @@
                 pushedKdbTitle = [g.name copy];
 
                 [self.navigationController pushViewController:groupViewController animated:YES];
-            } else if (indexPath.section == ENTRIES_SECTION) {
+            } else if (indexPath.section == SECTION_ENTRIES) {
                 KdbEntry *e = [enteriesArray objectAtIndex:indexPath.row];
 
                 EntryViewController *entryViewController = [[EntryViewController alloc] initWithStyle:UITableViewStyleGrouped];
@@ -654,7 +657,7 @@
 
                 [self.navigationController pushViewController:entryViewController animated:YES];
             }
-        } else if (indexPath.section == GROUPS_SECTION && !self.selectMultipleWhileEditing) {
+        } else if (indexPath.section == SECTION_GROUPS && !self.selectMultipleWhileEditing) {
             [self renameItemAtIndexPath:indexPath];
         } else if (self.selectMultipleWhileEditing) {
             [self updateEditingButtons];
@@ -685,10 +688,10 @@
 
     NSUInteger rows = 0;
     switch (indexPath.section) {
-        case GROUPS_SECTION:
+        case SECTION_GROUPS:
             rows = [groupsArray count];
             break;
-        case ENTRIES_SECTION:
+        case SECTION_ENTRIES:
             rows = [enteriesArray count];
     }
 
@@ -718,14 +721,14 @@
         KdbEntry *e;
 
         switch (indexPath.section) {
-            case GROUPS_SECTION:
+            case SECTION_GROUPS:
                 // Update the group
                 g = [groupsArray objectAtIndex:indexPath.row];
                 g.name = newName;
                 g.image = renameItemViewController.selectedImageIndex;
                 break;
 
-            case ENTRIES_SECTION:
+            case SECTION_ENTRIES:
                 // Update the entry
                 e = [enteriesArray objectAtIndex:indexPath.row];
                 e.title = newName;
@@ -791,10 +794,10 @@
         [appDelegate.window.rootViewController presentModalViewController:navigationController animated:YES];
 
         // Notify the table of the new row
-        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:GROUPS_SECTION];
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:SECTION_GROUPS];
         if ([groupsArray count] == 1) {
             // Reload the section if it's the first item
-            NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:GROUPS_SECTION];
+            NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:SECTION_GROUPS];
             [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationAutomatic];
         } else {
             // Insert the new row
@@ -820,10 +823,10 @@
         [self.navigationController pushViewController:entryViewController animated:YES];
 
         // Notify the table of the new row
-        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:ENTRIES_SECTION];
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:SECTION_ENTRIES];
         if ([enteriesArray count] == 1) {
             // Reload the section if it's the first item
-            NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:ENTRIES_SECTION];
+            NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:SECTION_ENTRIES];
             [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationAutomatic];
         } else {
             // Insert the new row
