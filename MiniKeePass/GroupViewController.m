@@ -602,22 +602,21 @@ enum {
     RenameItemViewController *renameItemViewController = [[RenameItemViewController alloc] initWithStyle:UITableViewStyleGrouped];
     renameItemViewController.delegate = self;
 
-    KdbGroup *g;
-    KdbEntry *e;
-
     switch (indexPath.section) {
-        case SECTION_GROUPS:
+        case SECTION_GROUPS: {
             renameItemViewController.type = RenameItemTypeGroup;
-            g = [groupsArray objectAtIndex:indexPath.row];
+            KdbGroup *g = [groupsArray objectAtIndex:indexPath.row];
             renameItemViewController.nameTextField.text = g.name;
             [renameItemViewController setSelectedImageIndex:g.image];
             break;
-        case SECTION_ENTRIES:
+        }
+        case SECTION_ENTRIES: {
             renameItemViewController.type = RenameItemTypeEntry;
-            e = [enteriesArray objectAtIndex:indexPath.row];
+            KdbEntry *e = [enteriesArray objectAtIndex:indexPath.row];
             renameItemViewController.nameTextField.text = e.title;
             [renameItemViewController setSelectedImageIndex:e.image];
             break;
+        }
     }
 
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:renameItemViewController];
@@ -689,6 +688,7 @@ enum {
             break;
         case SECTION_ENTRIES:
             rows = [enteriesArray count];
+            break;
     }
 
     if (rows == 0) {
@@ -713,23 +713,22 @@ enum {
 
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
 
-        KdbGroup *g;
-        KdbEntry *e;
-
         switch (indexPath.section) {
-            case SECTION_GROUPS:
+            case SECTION_GROUPS: {
                 // Update the group
-                g = [groupsArray objectAtIndex:indexPath.row];
+                KdbGroup *g = [groupsArray objectAtIndex:indexPath.row];
                 g.name = newName;
                 g.image = renameItemViewController.selectedImageIndex;
                 break;
+            }
 
-            case SECTION_ENTRIES:
+            case SECTION_ENTRIES: {
                 // Update the entry
-                e = [enteriesArray objectAtIndex:indexPath.row];
+                KdbEntry *e = [enteriesArray objectAtIndex:indexPath.row];
                 e.title = newName;
                 e.image = renameItemViewController.selectedImageIndex;
                 break;
+            }
         }
 
         // Save the document
