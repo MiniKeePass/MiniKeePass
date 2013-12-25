@@ -39,21 +39,14 @@ enum {
 - (NSUInteger)addObject:object toArray:array;
 - (NSUInteger)updatePositionOfObjectAtIndex:(NSUInteger)index inArray:(NSMutableArray *)array;
 
-@property (nonatomic, assign) BOOL selectMultipleWhileEditing;
 @property (nonatomic, strong) NSArray *standardToolbarItems;
 @property (nonatomic, strong) NSArray *editingToolbarItems;
 
-@property (nonatomic, strong) UIBarButtonItem *deleteButton;
-@property (nonatomic, copy) NSString *deleteButtonTitle;
-@property (nonatomic, strong) UIBarButtonItem *moveButton;
-@property (nonatomic, copy) NSString *moveButtonTitle;
-@property (nonatomic, strong) UIBarButtonItem *renameButton;
-@property (nonatomic, copy) NSString *renameButtonTitle;
-@property (nonatomic, assign) CGFloat currentButtonWidth;
-
-@property (nonatomic, strong) UIBarButtonItem *settingsButton;
 @property (nonatomic, strong) UIBarButtonItem *actionButton;
-@property (nonatomic, strong) UIBarButtonItem *addButton;
+@property (nonatomic, strong) UIBarButtonItem *deleteButton;
+@property (nonatomic, strong) UIBarButtonItem *moveButton;
+@property (nonatomic, strong) UIBarButtonItem *renameButton;
+@property (nonatomic, assign) CGFloat currentButtonWidth;
 
 @property (nonatomic, strong) GroupSearchController *searchController;
 @property (nonatomic, strong) UISearchDisplayController *mySearchDisplayController;
@@ -68,11 +61,7 @@ enum {
         appDelegate = (MiniKeePassAppDelegate *)[[UIApplication sharedApplication] delegate];
 
         self.tableView.allowsSelectionDuringEditing = YES;
-        if ([self.tableView respondsToSelector:@selector(setAllowsMultipleSelectionDuringEditing:)]) {
-            self.selectMultipleWhileEditing = YES;
-        } else {
-            self.selectMultipleWhileEditing = NO;
-        }
+        self.tableView.allowsMultipleSelectionDuringEditing = YES;
 
         UISearchBar *searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
 
@@ -86,16 +75,25 @@ enum {
         self.searchDisplayController.searchResultsDelegate = _searchController;
         self.searchDisplayController.delegate = _searchController;
 
-        self.settingsButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"gear"] style:UIBarButtonItemStylePlain target:appDelegate action:@selector(showSettingsView)];
-        self.settingsButton.imageInsets = UIEdgeInsetsMake(2, 0, -2, 0);
+        UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"gear"]
+                                                                           style:UIBarButtonItemStylePlain
+                                                                          target:appDelegate
+                                                                          action:@selector(showSettingsView)];
+        settingsButton.imageInsets = UIEdgeInsetsMake(2, 0, -2, 0);
 
-        self.actionButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(exportFilePressed)];
+        self.actionButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction
+                                                                     target:self
+                                                                     action:@selector(exportFilePressed)];
 
-        self.addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addPressed)];
+        UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+                                                                                   target:self
+                                                                                   action:@selector(addPressed)];
 
-        UIBarButtonItem *spacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+        UIBarButtonItem *spacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+                                                                                target:nil
+                                                                                action:nil];
 
-        self.standardToolbarItems = @[self.settingsButton, spacer, self.actionButton, spacer, self.addButton];
+        self.standardToolbarItems = @[settingsButton, spacer, self.actionButton, spacer, addButton];
         self.toolbarItems = self.standardToolbarItems;
         self.navigationItem.rightBarButtonItem = self.editButtonItem;
 
@@ -369,23 +367,31 @@ enum {
 
 - (NSArray *)editingToolbarItems {
     if (_editingToolbarItems == nil) {
-        self.deleteButtonTitle = NSLocalizedString(@"Delete", nil);
-        self.deleteButton = [[UIBarButtonItem alloc] initWithTitle:self.deleteButtonTitle style:UIBarButtonItemStyleBordered target:self action:@selector(deleteSelectedItems)];
+        self.deleteButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Delete", nil)
+                                                             style:UIBarButtonItemStyleBordered
+                                                            target:self
+                                                            action:@selector(deleteSelectedItems)];
         self.deleteButton.tintColor = [UIColor colorWithRed:0.8 green:0.15 blue:0.15 alpha:1];
         self.deleteButton.width = self.currentButtonWidth;
         self.deleteButton.enabled = NO;
 
-        self.moveButtonTitle = NSLocalizedString(@"Move", nil);
-        self.moveButton = [[UIBarButtonItem alloc] initWithTitle:self.moveButtonTitle style:UIBarButtonItemStyleBordered target:self action:@selector(moveSelectedItems)];
+        self.moveButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Move", nil)
+                                                           style:UIBarButtonItemStyleBordered
+                                                          target:self
+                                                          action:@selector(moveSelectedItems)];
         self.moveButton.width = self.currentButtonWidth;
         self.moveButton.enabled = NO;
 
-        self.renameButtonTitle = NSLocalizedString(@"Rename", nil);
-        self.renameButton = [[UIBarButtonItem alloc] initWithTitle:self.renameButtonTitle style:UIBarButtonItemStyleBordered target:self action:@selector(renameSelectedItem)];
+        self.renameButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Rename", nil)
+                                                             style:UIBarButtonItemStyleBordered
+                                                            target:self
+                                                            action:@selector(renameSelectedItem)];
         self.renameButton.width = self.currentButtonWidth;
         self.renameButton.enabled = NO;
 
-        UIBarButtonItem *spacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+        UIBarButtonItem *spacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+                                                                                target:nil
+                                                                                action:nil];
 
         _editingToolbarItems = @[self.deleteButton, spacer, self.moveButton, spacer, self.renameButton];
     }
@@ -394,10 +400,6 @@ enum {
 }
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated {
-    if (self.selectMultipleWhileEditing) {
-        self.tableView.allowsMultipleSelectionDuringEditing = editing;
-    }
-
     [super setEditing:editing animated:animated];
 
     // If any cell is showing the delete confirmation swipe gesture was used, don't configure toolbar
@@ -408,11 +410,12 @@ enum {
         }
     }
 
-    if (editing && self.selectMultipleWhileEditing) {
+    if (editing) {
         [self.navigationItem setHidesBackButton:YES animated:YES];
         [self setSeachBar:self.searchDisplayController.searchBar enabled:NO];
 
         self.toolbarItems = self.editingToolbarItems;
+        [self updateEditingButtons];
     } else {
         [self.navigationItem setHidesBackButton:NO animated:YES];
         [self setSeachBar:self.searchDisplayController.searchBar enabled:YES];
@@ -425,22 +428,22 @@ enum {
     NSArray *selectedRows = [self.tableView indexPathsForSelectedRows];
     NSUInteger numSelectedRows = [selectedRows count];
     if (numSelectedRows != 0) {
-        self.deleteButton.title = [self.deleteButtonTitle stringByAppendingFormat:@" (%u)", numSelectedRows];
+        self.deleteButton.title = [NSLocalizedString(@"Delete", nil) stringByAppendingFormat:@" (%u)", numSelectedRows];
         self.deleteButton.enabled = YES;
 
-        self.moveButton.title = [self.moveButtonTitle stringByAppendingFormat:@" (%u)", numSelectedRows];
+        self.moveButton.title = [NSLocalizedString(@"Move", nil) stringByAppendingFormat:@" (%u)", numSelectedRows];
         self.moveButton.enabled = YES;
 
-        self.renameButton.title = [self.renameButtonTitle stringByAppendingFormat:@" (%u)", numSelectedRows];
+        self.renameButton.title = [NSLocalizedString(@"Rename", nil) stringByAppendingFormat:@" (%u)", numSelectedRows];
         self.renameButton.enabled = numSelectedRows == 1;
     } else {
-        self.deleteButton.title = self.deleteButtonTitle;
+        self.deleteButton.title = NSLocalizedString(@"Delete", nil);
         self.deleteButton.enabled = NO;
 
-        self.moveButton.title = self.moveButtonTitle;
+        self.moveButton.title = NSLocalizedString(@"Move", nil);
         self.moveButton.enabled = NO;
 
-        self.renameButton.title = self.renameButtonTitle;
+        self.renameButton.title = NSLocalizedString(@"Rename", nil);
         self.renameButton.enabled = NO;
     }
 }
@@ -602,10 +605,8 @@ enum {
                 break;
             }
         }
-    } else if (self.selectMultipleWhileEditing) {
-        [self updateEditingButtons];
     } else {
-        [self renameItemAtIndexPath:indexPath];
+        [self updateEditingButtons];
     }
 }
 
@@ -626,7 +627,7 @@ enum {
 }
 
 - (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (self.editing && self.selectMultipleWhileEditing) {
+    if (self.editing) {
         [self updateEditingButtons];
     }
 }
