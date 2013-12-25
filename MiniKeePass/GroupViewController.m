@@ -38,7 +38,6 @@ enum {
 - (void)updateLocalArrays;
 - (NSUInteger)addObject:object toArray:array;
 - (NSUInteger)updatePositionOfObjectAtIndex:(NSUInteger)index inArray:(NSMutableArray *)array;
-- (NSUInteger)updatePositionOfObject:object inArray:array;
 
 @property (nonatomic, assign) BOOL selectMultipleWhileEditing;
 @property (nonatomic, strong) NSArray *standardToolbarItems;
@@ -443,7 +442,6 @@ enum {
         self.renameButton.title = self.renameButtonTitle;
         self.renameButton.enabled = NO;
     }
-
 }
 
 - (void)setGroup:(KdbGroup *)newGroup {
@@ -499,70 +497,66 @@ enum {
     return 0;
 }
 
-- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (tableView.editing && !self.selectMultipleWhileEditing) {
-        if (indexPath.section == SECTION_GROUPS) {
-            return indexPath;
-        }
-    } else {
-        return indexPath;
-    }
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *cell = nil;
 
-    return nil;
+    // Create either a group or entry cell
+    switch (indexPath.section) {
+        case SECTION_GROUPS: {
+            KdbGroup *g = [groupsArray objectAtIndex:indexPath.row];
+            cell = [self tableView:tableView cellForGroup:g];
+        }
+        case SECTION_ENTRIES: {
+            KdbEntry *e = [enteriesArray objectAtIndex:indexPath.row];
+            cell = [self tableView:tableView cellForEntry:e];
+        }
+    }
+    
+    return cell;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *CellIdentifierGroup = @"CellGroup";
-    static NSString *CellIdentifierEntry = @"CellEntry";
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForGroup:(KdbGroup *)g {
+    static NSString *CellIdentifier = @"CellGroup";
 
-    NSString *theCellIdentifier;
-    UITableViewCellStyle theCellStyle;
-    
-    if (indexPath.section == SECTION_ENTRIES) {
-        theCellIdentifier = CellIdentifierEntry;
-        theCellStyle = UITableViewCellStyleSubtitle;
-    } else {
-        theCellIdentifier = CellIdentifierGroup;
-        theCellStyle = UITableViewCellStyleDefault;
-    }
-    
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:theCellIdentifier];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:theCellStyle reuseIdentifier:theCellIdentifier];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
 
-    appDelegate = (MiniKeePassAppDelegate *)[[UIApplication sharedApplication] delegate];
+    // Configure the cell
+    cell.textLabel.text = g.name;
+    cell.imageView.image = [appDelegate loadImage:g.image];
+
+    return cell;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForEntry:(KdbEntry *)e {
+    static NSString *CellIdentifier = @"CellEntry";
+
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    }
 
     // Configure the cell
-    switch (indexPath.section) {
-        case SECTION_ENTRIES: {
-            KdbEntry *e = [enteriesArray objectAtIndex:indexPath.row];
-            cell.textLabel.text = e.title;
+    cell.textLabel.text = e.title;
+    cell.imageView.image = [appDelegate loadImage:e.image];
 
-            // Detail text is a combination of username and url
-            NSString *detailText = @"";
-            if (e.username.length > 0) {
-                detailText = e.username;
-            }
-            if (e.url.length > 0) {
-                if (detailText.length > 0) {
-                    detailText = [NSString stringWithFormat:@"%@ @ %@", detailText, e.url];
-                } else {
-                    detailText = e.url;
-                }
-            }
-            cell.detailTextLabel.text = detailText;
-            cell.imageView.image = [appDelegate loadImage:e.image];
-            break;
-        }
-        case SECTION_GROUPS: {
-            KdbGroup *g = [groupsArray objectAtIndex:indexPath.row];
-            cell.textLabel.text = g.name;
-            cell.imageView.image = [appDelegate loadImage:g.image];
-            break;
+    // Detail text is a combination of username and url
+    NSString *detailText = @"";
+    if (e.username.length > 0) {
+        detailText = e.username;
+    }
+    if (e.url.length > 0) {
+        if (detailText.length > 0) {
+            detailText = [NSString stringWithFormat:@"%@ @ %@", detailText, e.url];
+        } else {
+            detailText = e.url;
         }
     }
+    cell.detailTextLabel.text = detailText;
 
     return cell;
 }
@@ -605,10 +599,10 @@ enum {
                 break;
             }
         }
-    } else if (indexPath.section == SECTION_GROUPS && !self.selectMultipleWhileEditing) {
-        [self renameItemAtIndexPath:indexPath];
     } else if (self.selectMultipleWhileEditing) {
         [self updateEditingButtons];
+    } else {
+        [self renameItemAtIndexPath:indexPath];
     }
 }
 
@@ -632,10 +626,6 @@ enum {
     if (self.editing && self.selectMultipleWhileEditing) {
         [self updateEditingButtons];
     }
-}
-
-- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return UITableViewCellEditingStyleDelete;
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -700,7 +690,7 @@ enum {
         [appDelegate.databaseDocument save];
     }
 
-    [appDelegate.window.rootViewController dismissModalViewControllerAnimated:YES];
+    [renameItemViewController dismissViewControllerAnimated:YES completion:nil];
 
     [self setEditing:NO animated:YES];
 }
@@ -839,10 +829,6 @@ enum {
     }
     
     return newIndex;
-}
-
-- (NSUInteger)updatePositionOfObject:object inArray:array {
-    return [self updatePositionOfObjectAtIndex:[array indexOfObject:object] inArray:array];
 }
 
 @end
