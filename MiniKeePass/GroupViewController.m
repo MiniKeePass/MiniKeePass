@@ -41,6 +41,7 @@ enum {
 
 @property (nonatomic, assign) BOOL selectMultipleWhileEditing;
 @property (nonatomic, strong) NSArray *standardToolbarItems;
+@property (nonatomic, strong) NSArray *editingToolbarItems;
 
 @property (nonatomic, strong) UIBarButtonItem *deleteButton;
 @property (nonatomic, copy) NSString *deleteButtonTitle;
@@ -148,19 +149,11 @@ enum {
             // Move the group/entry to it's new index in the array
             NSUInteger index = [self updatePositionOfObjectAtIndex:selectedIndexPath.row inArray:array];
 
-            // Move or update the row
-            if (index != selectedIndexPath.row) {
-                NSIndexPath *newIndexPath = [NSIndexPath indexPathForRow:index inSection:selectedIndexPath.section];
+            // The row might have moved or changed contents, just reload the data
+            [self.tableView reloadData];
 
-                [self.tableView beginUpdates];
-                [self.tableView deleteRowsAtIndexPaths:@[selectedIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-                [self.tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-                [self.tableView endUpdates];
-            } else {
-                [self.tableView reloadRowsAtIndexPaths:@[selectedIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-            }
-
-            // Re-select the row
+            // Re-select the row (it might have changed)
+            selectedIndexPath = [NSIndexPath indexPathForRow:index inSection:selectedIndexPath.section];
             [self.tableView selectRowAtIndexPath:selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
         }
     }
@@ -197,8 +190,8 @@ enum {
 }
 
 - (void)deleteElementsFromModelAtIndexPaths:(NSArray *)indexPaths {
-    NSMutableArray *groupsToRemove = [NSMutableArray arrayWithCapacity:10];
-    NSMutableArray *enteriesToRemove = [NSMutableArray arrayWithCapacity:10];
+    NSMutableArray *groupsToRemove = [NSMutableArray array];
+    NSMutableArray *enteriesToRemove = [NSMutableArray array];
 
     // Find items to remove
     for (NSIndexPath *indexPath in indexPaths) {
@@ -374,6 +367,32 @@ enum {
     }
 }
 
+- (NSArray *)editingToolbarItems {
+    if (_editingToolbarItems == nil) {
+        self.deleteButtonTitle = NSLocalizedString(@"Delete", nil);
+        self.deleteButton = [[UIBarButtonItem alloc] initWithTitle:self.deleteButtonTitle style:UIBarButtonItemStyleBordered target:self action:@selector(deleteSelectedItems)];
+        self.deleteButton.tintColor = [UIColor colorWithRed:0.8 green:0.15 blue:0.15 alpha:1];
+        self.deleteButton.width = self.currentButtonWidth;
+        self.deleteButton.enabled = NO;
+
+        self.moveButtonTitle = NSLocalizedString(@"Move", nil);
+        self.moveButton = [[UIBarButtonItem alloc] initWithTitle:self.moveButtonTitle style:UIBarButtonItemStyleBordered target:self action:@selector(moveSelectedItems)];
+        self.moveButton.width = self.currentButtonWidth;
+        self.moveButton.enabled = NO;
+
+        self.renameButtonTitle = NSLocalizedString(@"Rename", nil);
+        self.renameButton = [[UIBarButtonItem alloc] initWithTitle:self.renameButtonTitle style:UIBarButtonItemStyleBordered target:self action:@selector(renameSelectedItem)];
+        self.renameButton.width = self.currentButtonWidth;
+        self.renameButton.enabled = NO;
+
+        UIBarButtonItem *spacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+
+        _editingToolbarItems = @[self.deleteButton, spacer, self.moveButton, spacer, self.renameButton];
+    }
+
+    return _editingToolbarItems;
+}
+
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated {
     if (self.selectMultipleWhileEditing) {
         self.tableView.allowsMultipleSelectionDuringEditing = editing;
@@ -393,25 +412,7 @@ enum {
         [self.navigationItem setHidesBackButton:YES animated:YES];
         [self setSeachBar:self.searchDisplayController.searchBar enabled:NO];
 
-        self.deleteButtonTitle = NSLocalizedString(@"Delete", nil);
-        self.deleteButton = [[UIBarButtonItem alloc] initWithTitle:self.deleteButtonTitle style:UIBarButtonItemStyleBordered target:self action:@selector(deleteSelectedItems)];
-        self.deleteButton.tintColor = [UIColor colorWithRed:0.8 green:0.15 blue:0.15 alpha:1];
-        self.deleteButton.width = self.currentButtonWidth;
-        self.deleteButton.enabled = NO;
-
-        self.moveButtonTitle = NSLocalizedString(@"Move", nil);
-        self.moveButton = [[UIBarButtonItem alloc] initWithTitle:self.moveButtonTitle style:UIBarButtonItemStyleBordered target:self action:@selector(moveSelectedItems)];
-        self.moveButton.width = self.currentButtonWidth;
-        self.moveButton.enabled = NO;
-
-        self.renameButtonTitle = NSLocalizedString(@"Rename", nil);
-        self.renameButton = [[UIBarButtonItem alloc] initWithTitle:self.renameButtonTitle style:UIBarButtonItemStyleBordered target:self action:@selector(renameSelectedItem)];
-        self.renameButton.width = self.currentButtonWidth;
-        self.renameButton.enabled = NO;
-
-        UIBarButtonItem *spacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-
-        self.toolbarItems = @[self.deleteButton, spacer, self.moveButton, spacer, self.renameButton];
+        self.toolbarItems = self.editingToolbarItems;
     } else {
         [self.navigationItem setHidesBackButton:NO animated:YES];
         [self setSeachBar:self.searchDisplayController.searchBar enabled:YES];
@@ -505,10 +506,12 @@ enum {
         case SECTION_GROUPS: {
             KdbGroup *g = [groupsArray objectAtIndex:indexPath.row];
             cell = [self tableView:tableView cellForGroup:g];
+            break;
         }
         case SECTION_ENTRIES: {
             KdbEntry *e = [enteriesArray objectAtIndex:indexPath.row];
             cell = [self tableView:tableView cellForEntry:e];
+            break;
         }
     }
     
