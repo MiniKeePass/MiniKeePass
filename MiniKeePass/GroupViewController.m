@@ -76,7 +76,6 @@ enum {
         // Configure the table
         self.title = self.group.name;
         self.tableView.allowsSelectionDuringEditing = YES;
-        self.tableView.allowsMultipleSelectionDuringEditing = YES;
 
         // Configure the search bar
         UISearchBar *searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
@@ -422,6 +421,9 @@ enum {
 }
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated {
+    // Disable multiple select to enable swipe to delete when not editing
+    self.tableView.allowsMultipleSelectionDuringEditing = editing;
+
     [super setEditing:editing animated:animated];
 
     // If any cell is showing the delete confirmation swipe gesture was used, don't configure toolbar
