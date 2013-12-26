@@ -219,8 +219,6 @@
             self.editingStringFields = nil;
         }
 
-        appDelegate.databaseDocument.dirty = YES;
-
         // Save the database document
         [appDelegate.databaseDocument save];
     } else if (canceled) {

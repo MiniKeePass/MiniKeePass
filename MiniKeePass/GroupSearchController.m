@@ -19,68 +19,37 @@
 - (id)init {
     self = [super init];
     if (self) {
-        _appDelegate = (MiniKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
-        _results = [[NSMutableArray alloc] init];
+        self.appDelegate = (MiniKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
+        self.results = [[NSMutableArray alloc] init];
     }
     return self;
 }
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
-}
-
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [_results count];
+    return [self.results count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *CellIdentifier = @"Cell";
-
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    }
-
     // Configure the cell
-    KdbEntry * e = [_results objectAtIndex:indexPath.row];
-    cell.textLabel.text = e.title;
-
-    // Detail text is a combination of username and url
-    NSString *detailText = @"";
-    if (e.username != nil && e.username.length > 0) {
-        detailText = e.username;
-    }
-    if (e.url != nil && e.url.length > 0) {
-        if (detailText.length > 0) {
-            detailText = [NSString stringWithFormat:@"%@ @ %@", detailText, e.url];
-        } else {
-            detailText = e.url;
-        }
-    }
-    cell.detailTextLabel.text = detailText;
-    cell.imageView.image = [_appDelegate loadImage:e.image];
-
-    return cell;
+    KdbEntry *entry = [_results objectAtIndex:indexPath.row];
+    return [self.groupViewController tableView:tableView cellForEntry:entry];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    [_groupViewController pushViewControllerForEntry:[_results objectAtIndex:indexPath.row]];
+    KdbEntry *entry = [_results objectAtIndex:indexPath.row];
+    [self.groupViewController pushViewControllerForEntry:entry];
 }
 
 - (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString {
-    [_results removeAllObjects];
+    [self.results removeAllObjects];
 
-    DatabaseDocument *databaseDocument = _appDelegate.databaseDocument;
-    if (databaseDocument != nil) {
-        // Perform the search
-        [databaseDocument searchGroup:self.groupViewController.group
-                           searchText:searchString
-                              results:self.results];
-    }
+    // Perform the search
+    [DatabaseDocument searchGroup:self.groupViewController.group
+                       searchText:searchString
+                          results:self.results];
 
     // Sort the results
-    [_results sortUsingComparator:^(id a, id b) {
+    [self.results sortUsingComparator:^(id a, id b) {
         return [((KdbEntry*)a).title localizedCompare:((KdbEntry*)b).title];
     }];
 

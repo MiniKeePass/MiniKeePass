@@ -212,7 +212,6 @@ enum {
 
     // Save the database
     DatabaseDocument *databaseDocument = self.appDelegate.databaseDocument;
-    databaseDocument.dirty = YES;
     [databaseDocument save];
 }
 
@@ -325,7 +324,6 @@ enum {
 
     // Save the database
     DatabaseDocument *databaseDocument = self.appDelegate.databaseDocument;
-    databaseDocument.dirty = YES;
     [databaseDocument save];
 
     // Update the table
@@ -650,17 +648,17 @@ enum {
 
     [self deleteElementsFromModelAtIndexPaths:@[indexPath]];
 
-    NSUInteger rows = 0;
+    NSUInteger numRows = 0;
     switch (indexPath.section) {
         case SECTION_GROUPS:
-            rows = [self.groupsArray count];
+            numRows = [self.groupsArray count];
             break;
         case SECTION_ENTRIES:
-            rows = [self.entriesArray count];
+            numRows = [self.entriesArray count];
             break;
     }
 
-    if (rows == 0) {
+    if (numRows == 0) {
         // Reload the section if there are no more rows
         NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:indexPath.section];
         [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationFade];
@@ -701,7 +699,6 @@ enum {
         }
 
         // Save the document
-        self.appDelegate.databaseDocument.dirty = YES;
         [self.appDelegate.databaseDocument save];
     }
 
@@ -714,7 +711,11 @@ enum {
     BOOL didShow = [self.appDelegate.databaseDocument.documentInteractionController presentOpenInMenuFromBarButtonItem:self.actionButton animated:YES];
     if (!didShow) {
         NSString *prompt = NSLocalizedString(@"There are no applications installed capable of importing KeePass files", nil);
-        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:prompt delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", nil) destructiveButtonTitle:nil otherButtonTitles:nil];
+        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:prompt
+                                                                 delegate:nil
+                                                        cancelButtonTitle:NSLocalizedString(@"OK", nil)
+                                                   destructiveButtonTitle:nil
+                                                        otherButtonTitles:nil];
         [self.appDelegate showActionSheet:actionSheet];
     }
 }
@@ -753,7 +754,8 @@ enum {
         [self.group addGroup:g];
         NSUInteger index = [self addObject:g toArray:self.groupsArray];
 
-        databaseDocument.dirty = YES;
+
+        // Save the database
         [databaseDocument save];
 
         EditGroupViewController *editGroupViewController = [[EditGroupViewController alloc] initWithStyle:UITableViewStyleGrouped];
@@ -785,7 +787,8 @@ enum {
         e.image = self.group.image;
         [self.group addEntry:e];
         NSUInteger index = [self addObject:e toArray:self.entriesArray];
-        databaseDocument.dirty = YES;
+
+        // Save the database
         [databaseDocument save];
 
         EntryViewController *entryViewController = [[EntryViewController alloc] initWithStyle:UITableViewStyleGrouped];
@@ -825,7 +828,10 @@ enum {
             return SORTED_INSERTION_FAILED;
         }
 
-        index = [array indexOfObject:object inSortedRange:NSMakeRange(0, [array count]) options:NSBinarySearchingInsertionIndex usingComparator:comparator];
+        index = [array indexOfObject:object
+                       inSortedRange:NSMakeRange(0, [array count])
+                             options:NSBinarySearchingInsertionIndex
+                     usingComparator:comparator];
     } else {
         index = [array count];
     }

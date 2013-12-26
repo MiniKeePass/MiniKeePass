@@ -18,22 +18,16 @@
 #import "DatabaseDocument.h"
 #import "AppSettings.h"
 
-@interface DatabaseDocument ()
-- (BOOL)matchesEntry:(KdbEntry *)entry searchText:(NSString *)searchText;
-@end
-
 @implementation DatabaseDocument
 
 @synthesize kdbTree;
 @synthesize filename;
-@synthesize dirty;
 
 - (id)init {
     self = [super init];
     if (self) {
         kdbTree = nil;
         filename = nil;
-        dirty = NO;
         kdbPassword = nil;
         documentInteractionController = nil;
     }
@@ -54,7 +48,6 @@
     }
 
     filename = [newFilename copy];
-    dirty = NO;
 
     NSStringEncoding passwordEncoding = [[AppSettings sharedInstance] passwordEncoding];
     kdbPassword = [[KdbPassword alloc] initWithPassword:password
@@ -65,13 +58,10 @@
 }
 
 - (void)save {
-    if (dirty) {
-        dirty = NO;
-        [KdbWriterFactory persist:kdbTree file:filename withPassword:kdbPassword];
-    }
+    [KdbWriterFactory persist:kdbTree file:filename withPassword:kdbPassword];
 }
 
-- (void)searchGroup:(KdbGroup *)group searchText:(NSString *)searchText results:(NSMutableArray *)results {
++ (void)searchGroup:(KdbGroup *)group searchText:(NSString *)searchText results:(NSMutableArray *)results {
     for (KdbEntry *entry in group.entries) {
         if ([self matchesEntry:entry searchText:searchText]) {
             [results addObject:entry];
@@ -85,7 +75,7 @@
     }
 }
 
-- (BOOL)matchesEntry:(KdbEntry *)entry searchText:(NSString *)searchText {
++ (BOOL)matchesEntry:(KdbEntry *)entry searchText:(NSString *)searchText {
     if ([entry.title rangeOfString:searchText options:NSCaseInsensitiveSearch].length > 0) {
         return YES;
     }

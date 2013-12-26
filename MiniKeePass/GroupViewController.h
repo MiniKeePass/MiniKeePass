@@ -18,8 +18,8 @@
 #import <UIKit/UIKit.h>
 #import "MiniKeePassAppDelegate.h"
 #import "EditGroupViewController.h"
-#import "KdbLib.h"
 #import "ChooseGroupViewController.h"
+#import "KdbLib.h"
 
 @interface GroupViewController : UITableViewController <UIActionSheetDelegate, FormViewControllerDelegate, ChooseGroupDelegate>
 
@@ -29,5 +29,8 @@
 
 - (void)pushViewControllerForGroup:(KdbGroup *)group;
 - (void)pushViewControllerForEntry:(KdbEntry *)entry;
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForGroup:(KdbGroup *)g;
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForEntry:(KdbEntry *)e;
 
 @end
