@@ -21,18 +21,20 @@
 #import "KdbLib.h"
 #import "ChooseGroupViewController.h"
 
-@interface GroupViewController : UITableViewController <UIActionSheetDelegate, UISearchDisplayDelegate, FormViewControllerDelegate, ChooseGroupDelegate> {
+@interface GroupViewController : UITableViewController <UIActionSheetDelegate, FormViewControllerDelegate, ChooseGroupDelegate> {
     MiniKeePassAppDelegate *appDelegate;
     BOOL sortingEnabled;
     NSMutableArray *groupsArray;
-    NSMutableArray *enteriesArray;
+    NSMutableArray *entriesArray;
     NSComparisonResult (^groupComparator) (id obj1, id obj2);
     NSComparisonResult (^entryComparator) (id obj1, id obj2);
 }
 
+@property (nonatomic, weak, readonly) KdbGroup *group;
+
+- (id)initWithGroup:(KdbGroup *)group;
+
 - (void)pushViewControllerForGroup:(KdbGroup *)group;
 - (void)pushViewControllerForEntry:(KdbEntry *)entry;
-
-@property (nonatomic, weak) KdbGroup *group;
 
 @end

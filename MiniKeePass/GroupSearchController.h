@@ -13,7 +13,6 @@
 
 @interface GroupSearchController : NSObject <UITableViewDataSource, UITableViewDelegate, UISearchDisplayDelegate>
 
-@property (nonatomic, weak) KdbGroup *group;
 @property (nonatomic, weak) GroupViewController *groupViewController;
 
 @end

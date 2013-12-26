@@ -74,7 +74,9 @@
     DatabaseDocument *databaseDocument = _appDelegate.databaseDocument;
     if (databaseDocument != nil) {
         // Perform the search
-        [databaseDocument searchGroup:_group searchText:searchString results:_results];
+        [databaseDocument searchGroup:self.groupViewController.group
+                           searchText:searchString
+                              results:self.results];
     }
 
     // Sort the results
