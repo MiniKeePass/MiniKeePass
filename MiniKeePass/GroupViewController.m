@@ -36,6 +36,15 @@ enum {
 
 @interface GroupViewController ()
 
+@property (nonatomic, strong) NSMutableArray *groupsArray;
+@property (nonatomic, strong) NSMutableArray *entriesArray;
+
+@property (nonatomic, weak) MiniKeePassAppDelegate *appDelegate;
+
+@property (nonatomic, assign) BOOL sortingEnabled;
+@property (nonatomic, strong) NSComparisonResult (^groupComparator) (id obj1, id obj2);
+@property (nonatomic, strong) NSComparisonResult (^entryComparator) (id obj1, id obj2);
+
 @property (nonatomic, strong) NSArray *standardToolbarItems;
 @property (nonatomic, strong) NSArray *editingToolbarItems;
 
@@ -58,7 +67,7 @@ enum {
         _group = group;
 
         // Get the app delegate
-        appDelegate = (MiniKeePassAppDelegate *)[[UIApplication sharedApplication] delegate];
+        self.appDelegate = (MiniKeePassAppDelegate *)[[UIApplication sharedApplication] delegate];
 
         // Configure the various buttons
         self.toolbarItems = self.standardToolbarItems;
@@ -82,15 +91,15 @@ enum {
         self.searchDisplayController.delegate = self.searchController;
 
         // Get sort settings, and create the sort comparators
-        sortingEnabled = [[AppSettings sharedInstance] sortAlphabetically];
+        self.sortingEnabled = [[AppSettings sharedInstance] sortAlphabetically];
 
-        groupComparator = ^(id obj1, id obj2) {
+        self.groupComparator = ^(id obj1, id obj2) {
             NSString *string1 = ((KdbGroup*)obj1).name;
             NSString *string2 = ((KdbGroup*)obj2).name;
             return [string1 localizedCaseInsensitiveCompare:string2];
         };
 
-        entryComparator = ^(id obj1, id obj2) {
+        self.entryComparator = ^(id obj1, id obj2) {
             NSString *string1 = ((KdbEntry*)obj1).title;
             NSString *string2 = ((KdbEntry*)obj2).title;
             return [string1 localizedCaseInsensitiveCompare:string2];
@@ -113,9 +122,9 @@ enum {
     }
 
     BOOL sortAlphabetically = [[AppSettings sharedInstance] sortAlphabetically];
-    if (sortingEnabled != sortAlphabetically) {
+    if (self.sortingEnabled != sortAlphabetically) {
         // The sorting option changed, reload the entire dataset
-        sortingEnabled = sortAlphabetically;
+        self.sortingEnabled = sortAlphabetically;
         [self updateViewModel];
         [self.tableView reloadData];
     } else {
@@ -125,10 +134,10 @@ enum {
             NSMutableArray *array;
             switch (selectedIndexPath.section) {
                 case SECTION_GROUPS:
-                    array = groupsArray;
+                    array = self.groupsArray;
                     break;
                 case SECTION_ENTRIES:
-                    array = entriesArray;
+                    array = self.entriesArray;
                     break;
                 default:
                     @throw [NSException exceptionWithName:@"RuntimeException" reason:@"Invalid Section" userInfo:nil];
@@ -159,7 +168,7 @@ enum {
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
-    [appDelegate.databaseDocument.documentInteractionController dismissMenuAnimated:NO];
+    [self.appDelegate.databaseDocument.documentInteractionController dismissMenuAnimated:NO];
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
@@ -183,26 +192,26 @@ enum {
     // Find items to remove
     for (NSIndexPath *indexPath in indexPaths) {
         if (indexPath.section == SECTION_GROUPS) {
-            [groupsToRemove addObject:[groupsArray objectAtIndex:indexPath.row]];
+            [groupsToRemove addObject:[self.groupsArray objectAtIndex:indexPath.row]];
         } else if (indexPath.section == SECTION_ENTRIES) {
-            [enteriesToRemove addObject:[entriesArray objectAtIndex:indexPath.row]];
+            [enteriesToRemove addObject:[self.entriesArray objectAtIndex:indexPath.row]];
         }
     }
 
     // Remove groups
     for (KdbGroup *g in groupsToRemove) {
         [self.group removeGroup:g];
-        [groupsArray removeObject:g];
+        [self.groupsArray removeObject:g];
     }
 
     // Remote Enteries
     for (KdbEntry *e in enteriesToRemove) {
         [self.group removeEntry:e];
-        [entriesArray removeObject:e];
+        [self.entriesArray removeObject:e];
     }
 
     // Save the database
-    DatabaseDocument *databaseDocument = appDelegate.databaseDocument;
+    DatabaseDocument *databaseDocument = self.appDelegate.databaseDocument;
     databaseDocument.dirty = YES;
     [databaseDocument save];
 }
@@ -214,10 +223,10 @@ enum {
 
     // Clean up section headers
     NSMutableIndexSet *indexSet = [NSMutableIndexSet indexSet];
-    if ([groupsArray count] == 0) {
+    if ([self.groupsArray count] == 0) {
         [indexSet addIndex:SECTION_GROUPS];
     }
-    if ([entriesArray count] == 0) {
+    if ([self.entriesArray count] == 0) {
         [indexSet addIndex:SECTION_ENTRIES];
     }
     [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationFade];
@@ -230,7 +239,7 @@ enum {
     chooseGroupViewController.delegate = self;
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:chooseGroupViewController];
 
-    [appDelegate.window.rootViewController presentModalViewController:navController animated:YES];
+    [self.appDelegate.window.rootViewController presentModalViewController:navController animated:YES];
 }
 
 - (BOOL)checkChoiceValidity:(KdbGroup *)chosenGroup {
@@ -241,7 +250,7 @@ enum {
     for (NSIndexPath *indexPath in self.tableView.indexPathsForSelectedRows) {
         switch (indexPath.section) {
             case SECTION_GROUPS: {
-                KdbGroup *movingGroup = [groupsArray objectAtIndex:indexPath.row];
+                KdbGroup *movingGroup = [self.groupsArray objectAtIndex:indexPath.row];
                 if (movingGroup.parent == chosenGroup) {
                     validGroup = NO;
                 }
@@ -253,7 +262,7 @@ enum {
 
             case SECTION_ENTRIES: {
                 containsEntry = YES;
-                KdbEntry *movingEntry = [entriesArray objectAtIndex:indexPath.row];
+                KdbEntry *movingEntry = [self.entriesArray objectAtIndex:indexPath.row];
                 if (movingEntry.parent == chosenGroup) {
                     validGroup = NO;
                 }
@@ -272,7 +281,7 @@ enum {
     }
 
     // Check if trying to move entries to top level in 1.x database
-    KdbTree *tree = appDelegate.databaseDocument.kdbTree;
+    KdbTree *tree = self.appDelegate.databaseDocument.kdbTree;
     if (containsEntry && chosenGroup == tree.root && [tree isKindOfClass:[Kdb3Tree class]]) {
         return NO;
     }
@@ -290,10 +299,10 @@ enum {
     for (NSIndexPath *indexPath in indexPaths) {
         switch (indexPath.section) {
             case SECTION_GROUPS:
-                [groupsToMove addObject:[groupsArray objectAtIndex:indexPath.row]];
+                [groupsToMove addObject:[self.groupsArray objectAtIndex:indexPath.row]];
                 break;
             case SECTION_ENTRIES:
-                [enteriesToMove addObject:[entriesArray objectAtIndex:indexPath.row]];
+                [enteriesToMove addObject:[self.entriesArray objectAtIndex:indexPath.row]];
                 break;
         }
     }
@@ -304,18 +313,18 @@ enum {
             continue;
         }
         [movingGroup.parent moveGroup:movingGroup toGroup:chosenGroup];
-        [groupsArray removeObject:movingGroup];
+        [self.groupsArray removeObject:movingGroup];
     }
     for (KdbEntry *movingEntry in enteriesToMove) {
         if (movingEntry.parent == chosenGroup) {
             continue;
         }
         [movingEntry.parent moveEntry:movingEntry toGroup:chosenGroup];
-        [entriesArray removeObject:movingEntry];
+        [self.entriesArray removeObject:movingEntry];
     }
 
     // Save the database
-    DatabaseDocument *databaseDocument = appDelegate.databaseDocument;
+    DatabaseDocument *databaseDocument = self.appDelegate.databaseDocument;
     databaseDocument.dirty = YES;
     [databaseDocument save];
 
@@ -358,7 +367,7 @@ enum {
     if (_standardToolbarItems == nil) {
         UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"gear"]
                                                                            style:UIBarButtonItemStylePlain
-                                                                          target:appDelegate
+                                                                          target:self.appDelegate
                                                                           action:@selector(showSettingsView)];
         settingsButton.imageInsets = UIEdgeInsetsMake(2, 0, -2, 0);
 
@@ -464,12 +473,12 @@ enum {
 }
 
 - (void)updateViewModel {
-    groupsArray = [[NSMutableArray alloc] initWithArray:self.group.groups];
-    entriesArray = [[NSMutableArray alloc] initWithArray:self.group.entries];
+    self.groupsArray = [[NSMutableArray alloc] initWithArray:self.group.groups];
+    self.entriesArray = [[NSMutableArray alloc] initWithArray:self.group.entries];
 
-    if (sortingEnabled) {
-        [groupsArray sortUsingComparator:groupComparator];
-        [entriesArray sortUsingComparator:entryComparator];
+    if (self.sortingEnabled) {
+        [self.groupsArray sortUsingComparator:self.groupComparator];
+        [self.entriesArray sortUsingComparator:self.entryComparator];
     }
 }
 
@@ -480,13 +489,13 @@ enum {
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     switch (section) {
         case SECTION_GROUPS:
-            if ([groupsArray count] != 0) {
+            if ([self.groupsArray count] != 0) {
                 return NSLocalizedString(@"Groups", nil);
             }
             break;
 
         case SECTION_ENTRIES:
-            if ([entriesArray count] != 0) {
+            if ([self.entriesArray count] != 0) {
                 return NSLocalizedString(@"Entries", nil);
             }
             break;
@@ -498,9 +507,9 @@ enum {
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     switch (section) {
         case SECTION_GROUPS:
-            return [groupsArray count];
+            return [self.groupsArray count];
         case SECTION_ENTRIES:
-            return [entriesArray count];
+            return [self.entriesArray count];
     }
     return 0;
 }
@@ -511,12 +520,12 @@ enum {
     // Create either a group or entry cell
     switch (indexPath.section) {
         case SECTION_GROUPS: {
-            KdbGroup *g = [groupsArray objectAtIndex:indexPath.row];
+            KdbGroup *g = [self.groupsArray objectAtIndex:indexPath.row];
             cell = [self tableView:tableView cellForGroup:g];
             break;
         }
         case SECTION_ENTRIES: {
-            KdbEntry *e = [entriesArray objectAtIndex:indexPath.row];
+            KdbEntry *e = [self.entriesArray objectAtIndex:indexPath.row];
             cell = [self tableView:tableView cellForEntry:e];
             break;
         }
@@ -536,7 +545,7 @@ enum {
 
     // Configure the cell
     cell.textLabel.text = g.name;
-    cell.imageView.image = [appDelegate loadImage:g.image];
+    cell.imageView.image = [self.appDelegate loadImage:g.image];
 
     return cell;
 }
@@ -552,7 +561,7 @@ enum {
 
     // Configure the cell
     cell.textLabel.text = e.title;
-    cell.imageView.image = [appDelegate loadImage:e.image];
+    cell.imageView.image = [self.appDelegate loadImage:e.image];
 
     // Detail text is a combination of username and url
     NSString *detailText = @"";
@@ -578,14 +587,14 @@ enum {
     switch (indexPath.section) {
         case SECTION_GROUPS: {
             renameItemViewController.type = RenameItemTypeGroup;
-            KdbGroup *g = [groupsArray objectAtIndex:indexPath.row];
+            KdbGroup *g = [self.groupsArray objectAtIndex:indexPath.row];
             renameItemViewController.nameTextField.text = g.name;
             [renameItemViewController setSelectedImageIndex:g.image];
             break;
         }
         case SECTION_ENTRIES: {
             renameItemViewController.type = RenameItemTypeEntry;
-            KdbEntry *e = [entriesArray objectAtIndex:indexPath.row];
+            KdbEntry *e = [self.entriesArray objectAtIndex:indexPath.row];
             renameItemViewController.nameTextField.text = e.title;
             [renameItemViewController setSelectedImageIndex:e.image];
             break;
@@ -594,18 +603,18 @@ enum {
 
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:renameItemViewController];
 
-    [appDelegate.window.rootViewController presentModalViewController:navigationController animated:YES];
+    [self.appDelegate.window.rootViewController presentModalViewController:navigationController animated:YES];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (self.editing == NO) {
         switch (indexPath.section) {
             case SECTION_GROUPS: {
-                [self pushViewControllerForGroup:[groupsArray objectAtIndex:indexPath.row]];
+                [self pushViewControllerForGroup:[self.groupsArray objectAtIndex:indexPath.row]];
                 break;
             }
             case SECTION_ENTRIES: {
-                [self pushViewControllerForEntry:[entriesArray objectAtIndex:indexPath.row]];
+                [self pushViewControllerForEntry:[self.entriesArray objectAtIndex:indexPath.row]];
                 break;
             }
         }
@@ -644,10 +653,10 @@ enum {
     NSUInteger rows = 0;
     switch (indexPath.section) {
         case SECTION_GROUPS:
-            rows = [groupsArray count];
+            rows = [self.groupsArray count];
             break;
         case SECTION_ENTRIES:
-            rows = [entriesArray count];
+            rows = [self.entriesArray count];
             break;
     }
 
@@ -676,7 +685,7 @@ enum {
         switch (indexPath.section) {
             case SECTION_GROUPS: {
                 // Update the group
-                KdbGroup *g = [groupsArray objectAtIndex:indexPath.row];
+                KdbGroup *g = [self.groupsArray objectAtIndex:indexPath.row];
                 g.name = newName;
                 g.image = renameItemViewController.selectedImageIndex;
                 break;
@@ -684,7 +693,7 @@ enum {
 
             case SECTION_ENTRIES: {
                 // Update the entry
-                KdbEntry *e = [entriesArray objectAtIndex:indexPath.row];
+                KdbEntry *e = [self.entriesArray objectAtIndex:indexPath.row];
                 e.title = newName;
                 e.image = renameItemViewController.selectedImageIndex;
                 break;
@@ -692,8 +701,8 @@ enum {
         }
 
         // Save the document
-        appDelegate.databaseDocument.dirty = YES;
-        [appDelegate.databaseDocument save];
+        self.appDelegate.databaseDocument.dirty = YES;
+        [self.appDelegate.databaseDocument save];
     }
 
     [renameItemViewController dismissViewControllerAnimated:YES completion:nil];
@@ -702,11 +711,11 @@ enum {
 }
 
 - (void)exportFilePressed {
-    BOOL didShow = [appDelegate.databaseDocument.documentInteractionController presentOpenInMenuFromBarButtonItem:self.actionButton animated:YES];
+    BOOL didShow = [self.appDelegate.databaseDocument.documentInteractionController presentOpenInMenuFromBarButtonItem:self.actionButton animated:YES];
     if (!didShow) {
         NSString *prompt = NSLocalizedString(@"There are no applications installed capable of importing KeePass files", nil);
         UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:prompt delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", nil) destructiveButtonTitle:nil otherButtonTitles:nil];
-        [appDelegate showActionSheet:actionSheet];
+        [self.appDelegate showActionSheet:actionSheet];
     }
 }
 
@@ -727,7 +736,7 @@ enum {
     }
 
     actionSheet.delegate = self;
-    [appDelegate showActionSheet:actionSheet];
+    [self.appDelegate showActionSheet:actionSheet];
 }
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
@@ -735,14 +744,14 @@ enum {
         return;
     }
 
-    DatabaseDocument *databaseDocument = appDelegate.databaseDocument;
+    DatabaseDocument *databaseDocument = self.appDelegate.databaseDocument;
     if (buttonIndex == 0) {
         // Create and add a group
         KdbGroup *g = [databaseDocument.kdbTree createGroup:self.group];
         g.name = NSLocalizedString(@"New Group", nil);
         g.image = self.group.image;
         [self.group addGroup:g];
-        NSUInteger index = [self addObject:g toArray:groupsArray];
+        NSUInteger index = [self addObject:g toArray:self.groupsArray];
 
         databaseDocument.dirty = YES;
         [databaseDocument save];
@@ -754,11 +763,11 @@ enum {
 
         UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:editGroupViewController];
 
-        [appDelegate.window.rootViewController presentModalViewController:navigationController animated:YES];
+        [self.appDelegate.window.rootViewController presentModalViewController:navigationController animated:YES];
 
         // Notify the table of the new row
         NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:SECTION_GROUPS];
-        if ([groupsArray count] == 1) {
+        if ([self.groupsArray count] == 1) {
             // Reload the section if it's the first item
             NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:SECTION_GROUPS];
             [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationAutomatic];
@@ -775,7 +784,7 @@ enum {
         e.title = NSLocalizedString(@"New Entry", nil);
         e.image = self.group.image;
         [self.group addEntry:e];
-        NSUInteger index = [self addObject:e toArray:entriesArray];
+        NSUInteger index = [self addObject:e toArray:self.entriesArray];
         databaseDocument.dirty = YES;
         [databaseDocument save];
 
@@ -787,7 +796,7 @@ enum {
 
         // Notify the table of the new row
         NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:SECTION_ENTRIES];
-        if ([entriesArray count] == 1) {
+        if ([self.entriesArray count] == 1) {
             // Reload the section if it's the first item
             NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:SECTION_ENTRIES];
             [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationAutomatic];
@@ -803,16 +812,14 @@ enum {
 
 - (NSUInteger)addObject:object toArray:array {
     NSUInteger index;
-    if (sortingEnabled) {
+    if (self.sortingEnabled) {
         NSComparisonResult (^comparator) (id obj1, id obj2);
         if ([object isKindOfClass:[KdbGroup class]]) {
             // Object is a KdbGroup, use groupComparator
-            comparator = groupComparator;
-
+            comparator = self.groupComparator;
         } else if ([object isKindOfClass:[KdbEntry class]]) {
             // Object is a KdbEntry, use entryComparator
-            comparator = entryComparator;
-
+            comparator = self.entryComparator;
         } else {
             // This should be an error some how
             return SORTED_INSERTION_FAILED;
@@ -828,7 +835,7 @@ enum {
 }
 
 - (NSUInteger)updatePositionOfObjectAtIndex:(NSUInteger)index inArray:(NSMutableArray *)array {
-    if (!sortingEnabled) {
+    if (!self.sortingEnabled) {
         return index;
     }
 
