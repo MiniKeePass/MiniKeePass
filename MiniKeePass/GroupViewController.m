@@ -662,11 +662,12 @@ enum {
 
     if (numRows == 0) {
         // Reload the section if there are no more rows
-        NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:indexPath.section];
-        [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationFade];
+        [tableView reloadSections:[NSIndexSet indexSetWithIndex:indexPath.section]
+                 withRowAnimation:UITableViewRowAnimationAutomatic];
     } else {
         // Delete the row
-        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath]
+                         withRowAnimation:UITableViewRowAnimationAutomatic];
     }
 }
 
