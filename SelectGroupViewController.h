@@ -18,18 +18,20 @@
 #import <UIKit/UIKit.h>
 #import "Kdb.h"
 
-@protocol ChooseGroupDelegate;
+@protocol SelectGroupDelegate;
 
-@interface ChooseGroupViewController : UITableViewController
+@interface SelectGroupViewController : UITableViewController
 
 @property (nonatomic, strong) KdbGroup *group;
-@property (nonatomic, unsafe_unretained) id<ChooseGroupDelegate> delegate;
+@property (nonatomic, unsafe_unretained) id<SelectGroupDelegate> delegate;
 
 @end
 
-@protocol ChooseGroupDelegate <NSObject>
+@protocol SelectGroupDelegate <NSObject>
 
-- (BOOL)checkChoiceValidity:(KdbGroup *)chosenGroup;
-- (void)chooseGroup:(KdbGroup *)chosenGroup;
+- (BOOL)selectGroupViewController:(SelectGroupViewController *)selectGroupViewController
+                   canSelectGroup:(KdbGroup *)group;
+- (void)selectGroupViewController:(SelectGroupViewController *)selectGroupViewController
+                    selectedGroup:(KdbGroup *)selectedGroup;
 
 @end
