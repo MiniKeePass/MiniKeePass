@@ -48,7 +48,6 @@ enum {
 @property (nonatomic, strong) NSArray *standardToolbarItems;
 @property (nonatomic, strong) NSArray *editingToolbarItems;
 
-@property (nonatomic, strong) UIBarButtonItem *actionButton;
 @property (nonatomic, strong) UIBarButtonItem *deleteButton;
 @property (nonatomic, strong) UIBarButtonItem *moveButton;
 @property (nonatomic, strong) UIBarButtonItem *renameButton;
@@ -368,9 +367,9 @@ enum {
                                                                           action:@selector(showSettingsView)];
         settingsButton.imageInsets = UIEdgeInsetsMake(2, 0, -2, 0);
 
-        self.actionButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction
-                                                                          target:self
-                                                                          action:@selector(exportFilePressed)];
+        UIBarButtonItem *actionButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction
+                                                                                      target:self
+                                                                                      action:@selector(exportFilePressed:)];
 
         UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
                                                                                    target:self
@@ -380,7 +379,7 @@ enum {
                                                                                 target:nil
                                                                                 action:nil];
 
-        _standardToolbarItems = @[settingsButton, spacer, self.actionButton, spacer, addButton];
+        _standardToolbarItems = @[settingsButton, spacer, actionButton, spacer, addButton];
     }
 
     return _standardToolbarItems;
@@ -710,8 +709,10 @@ enum {
     [self setEditing:NO animated:YES];
 }
 
-- (void)exportFilePressed {
-    BOOL didShow = [self.appDelegate.databaseDocument.documentInteractionController presentOpenInMenuFromBarButtonItem:self.actionButton animated:YES];
+- (void)exportFilePressed:(id)sender {
+    UIBarButtonItem *actionButton = sender;
+    BOOL didShow = [self.appDelegate.databaseDocument.documentInteractionController presentOpenInMenuFromBarButtonItem:actionButton
+                                                                                                              animated:YES];
     if (!didShow) {
         NSString *prompt = NSLocalizedString(@"There are no applications installed capable of importing KeePass files", nil);
         UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:prompt
@@ -756,7 +757,6 @@ enum {
         g.image = self.group.image;
         [self.group addGroup:g];
         NSUInteger index = [self addObject:g toArray:self.groupsArray];
-
 
         // Save the database
         [databaseDocument save];
