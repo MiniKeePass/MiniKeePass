@@ -122,13 +122,6 @@
     }
 }
 
-- (CGFloat)currentScreenWidth {
-    CGRect screenRect = [[UIScreen mainScreen] bounds];
-    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
-    
-    return UIInterfaceOrientationIsPortrait(orientation) ? CGRectGetWidth(screenRect) : CGRectGetHeight(screenRect);
-}
-
 - (void)openUrl:(NSURL *)url {
     // Get the filename
     NSString *filename = [url lastPathComponent];
