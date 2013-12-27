@@ -70,7 +70,7 @@
     if (!self.selected) {
         UIView *newView = self.editing ? _editAccessoryButton : _accessoryButton;
         if (newView == nil) {
-            return nil;
+            return hitView;
         }
 
         CGPoint newPoint = [self convertPoint:point toView:newView];
