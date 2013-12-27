@@ -122,15 +122,15 @@
     }
 }
 
-- (void)openUrl:(NSURL *)url {
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
     // Get the filename
     NSString *filename = [url lastPathComponent];
-    
+
     // Get the full path of where we're going to move the file
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
     NSString *path = [documentsDirectory stringByAppendingPathComponent:filename];
-    
+
     // Move input file into documents directory
     NSFileManager *fileManager = [NSFileManager defaultManager];
     [fileManager removeItemAtPath:path error:nil];
@@ -151,15 +151,7 @@
         [fileView updateFiles];
         [fileView.tableView reloadData];
     }
-}
 
-- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
-    [self openUrl:url];
-    return YES;
-}
-
-- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
-    [self openUrl:url];
     return YES;
 }
 
