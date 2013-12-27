@@ -21,6 +21,7 @@
 #import "SelectGroupViewController.h"
 #import "AppSettings.h"
 #import "RenameItemViewController.h"
+#import "UIActionSheetAutoDismiss.h"
 #import "Kdb3Node.h"
 
 #define PORTRAIT_BUTTON_WIDTH  ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone ? 97.0f : 244.0f)
@@ -520,35 +521,35 @@ enum {
     BOOL didShow = [self.documentInteractionController presentOpenInMenuFromBarButtonItem:actionButton animated:YES];
     if (!didShow) {
         NSString *prompt = NSLocalizedString(@"There are no applications installed capable of importing KeePass files", nil);
-        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:prompt
-                                                                 delegate:nil
-                                                        cancelButtonTitle:NSLocalizedString(@"OK", nil)
-                                                   destructiveButtonTitle:nil
-                                                        otherButtonTitles:nil];
-        [self.appDelegate showActionSheet:actionSheet];
+        UIActionSheetAutoDismiss *actionSheet = [[UIActionSheetAutoDismiss alloc] initWithTitle:prompt
+                                                                                       delegate:nil
+                                                                              cancelButtonTitle:NSLocalizedString(@"OK", nil)
+                                                                         destructiveButtonTitle:nil
+                                                                              otherButtonTitles:nil];
+        [actionSheet showInView:self.view];
     }
 }
 
 #pragma mark - Add Group/Entry
 
 - (void)addPressed {
-    UIActionSheet *actionSheet;
+    UIActionSheetAutoDismiss *actionSheet;
+
     if (self.group.canAddEntries) {
-        actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Add", nil)
-                                                  delegate:nil
+        actionSheet = [[UIActionSheetAutoDismiss alloc] initWithTitle:NSLocalizedString(@"Add", nil)
+                                                  delegate:self
                                          cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
                                     destructiveButtonTitle:nil
                                          otherButtonTitles:NSLocalizedString(@"Group", nil), NSLocalizedString(@"Entry", nil), nil];
     } else {
-        actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Add", nil)
-                                                  delegate:nil
+        actionSheet = [[UIActionSheetAutoDismiss alloc] initWithTitle:NSLocalizedString(@"Add", nil)
+                                                  delegate:self
                                          cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
                                     destructiveButtonTitle:nil
                                          otherButtonTitles:NSLocalizedString(@"Group", nil), nil];
     }
 
-    actionSheet.delegate = self;
-    [self.appDelegate showActionSheet:actionSheet];
+    [actionSheet showInView:self.view];
 }
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {

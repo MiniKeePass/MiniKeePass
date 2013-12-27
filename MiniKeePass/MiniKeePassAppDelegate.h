@@ -21,7 +21,7 @@
 
 #define NUM_IMAGES 69
 
-@interface MiniKeePassAppDelegate : NSObject <UIApplicationDelegate, UIActionSheetDelegate>
+@interface MiniKeePassAppDelegate : NSObject <UIApplicationDelegate>
 
 @property (nonatomic, strong) UIWindow *window;
 @property (nonatomic, strong) DatabaseDocument *databaseDocument;
@@ -34,8 +34,5 @@
 
 - (void)showSettingsView;
 - (void)dismissSettingsView;
-
-- (void)showActionSheet:(UIActionSheet*)actionSheet;
-- (void)dismissActionSheet;
 
 @end
