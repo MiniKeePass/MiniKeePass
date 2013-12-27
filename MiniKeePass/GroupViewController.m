@@ -562,6 +562,8 @@ enum {
         indexPath = [self addNewGroup];
     } else if (buttonIndex == 1) {
         indexPath = [self addNewEntry];
+    } else {
+        @throw [NSException exceptionWithName:@"RuntimeException" reason:@"Illegal buttonIndex" userInfo:nil];
     }
 
     // Notify the table of the new row
