@@ -22,8 +22,8 @@
 
 @synthesize delegate;
 
-- (id)initWithFrame:(CGRect)frame {
-    self = [super initWithFrame:frame];
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         _imageButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
         

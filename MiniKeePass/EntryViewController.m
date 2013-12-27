@@ -60,7 +60,7 @@
 
         appDelegate = (MiniKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
 
-        titleCell = [[TitleFieldCell alloc] init];
+        titleCell = [[TitleFieldCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:nil];
         titleCell.delegate = self;
         titleCell.textLabel.text = NSLocalizedString(@"Title", nil);
         titleCell.textField.placeholder = NSLocalizedString(@"Title", nil);
@@ -69,7 +69,7 @@
         titleCell.imageButton.adjustsImageWhenHighlighted = NO;
         [titleCell.imageButton addTarget:self action:@selector(imageButtonPressed) forControlEvents:UIControlEventTouchUpInside];
 
-        usernameCell = [[TextFieldCell alloc] init];
+        usernameCell = [[TextFieldCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:nil];
         usernameCell.textLabel.text = NSLocalizedString(@"Username", nil);
         usernameCell.textField.placeholder = NSLocalizedString(@"Username", nil);
         usernameCell.textField.enabled = NO;
@@ -77,7 +77,7 @@
         usernameCell.textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
         usernameCell.textFieldCellDelegate = self;
 
-        passwordCell = [[PasswordFieldCell alloc] init];
+        passwordCell = [[PasswordFieldCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:nil];
         passwordCell.textLabel.text = NSLocalizedString(@"Password", nil);
         passwordCell.textField.placeholder = NSLocalizedString(@"Password", nil);
         passwordCell.textField.enabled = NO;
@@ -85,7 +85,7 @@
         [passwordCell.accessoryButton addTarget:self action:@selector(showPasswordPressed) forControlEvents:UIControlEventTouchUpInside];
         [passwordCell.editAccessoryButton addTarget:self action:@selector(generatePasswordPressed) forControlEvents:UIControlEventTouchUpInside];
 
-        urlCell = [[UrlFieldCell alloc] init];
+        urlCell = [[UrlFieldCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:nil];
         urlCell.textLabel.text = NSLocalizedString(@"URL", nil);
         urlCell.textField.placeholder = NSLocalizedString(@"URL", nil);
         urlCell.textField.enabled = NO;
@@ -555,7 +555,7 @@
             } else {
                 TextFieldCell *cell = [tableView dequeueReusableCellWithIdentifier:TextFieldCellIdentifier];
                 if (cell == nil) {
-                    cell = [[TextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault
+                    cell = [[TextFieldCell alloc] initWithStyle:UITableViewCellStyleValue2
                                                  reuseIdentifier:TextFieldCellIdentifier];
                     cell.textFieldCellDelegate = self;
                     cell.textField.returnKeyType = UIReturnKeyDone;
