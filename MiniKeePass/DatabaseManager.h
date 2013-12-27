@@ -18,13 +18,9 @@
 #import <Foundation/Foundation.h>
 #import "FormViewController.h"
 
-@interface DatabaseManager : NSObject <FormViewControllerDelegate> {
-    NSString *selectedFilename;
-    BOOL animated;
-}
+@interface DatabaseManager : NSObject <FormViewControllerDelegate>
 
 @property (nonatomic, copy) NSString *selectedFilename;
-@property (nonatomic) BOOL animated;
 
 + (DatabaseManager*)sharedInstance;
 - (void)openDatabaseDocument:(NSString*)path animated:(BOOL)newAnimated;
