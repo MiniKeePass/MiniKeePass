@@ -63,16 +63,22 @@
 
 - (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event {
     UIView *hitView = [super hitTest:point withEvent:event];
-    UIView *newView = self.editing ? _editAccessoryButton : _accessoryButton;
-    if (hitView == NULL || newView == NULL) {
-        return hitView;
+    if (hitView == nil) {
+        return nil;
     }
 
-    CGPoint newPoint = [hitView convertPoint:point toView:newView];
+    if (!self.selected) {
+        UIView *newView = self.editing ? _editAccessoryButton : _accessoryButton;
+        if (newView == nil) {
+            return nil;
+        }
 
-    // Pass along touch events that occur to the right of the accessory view to the accessory view
-    if (!self.selected && newPoint.x >= 0.0f) {
-        return newView;
+        CGPoint newPoint = [self convertPoint:point toView:newView];
+
+        // Pass along touch events that occur to the right of the accessory view to the accessory view
+        if (newPoint.x >= 0.0f) {
+            hitView = newView;
+        }
     }
 
     return hitView;
