@@ -119,7 +119,7 @@ static DatabaseManager *sharedInstance;
         NSString *path = [documentsDirectory stringByAppendingPathComponent:self.selectedFilename];
         
         // Get the password
-        NSString *password = passwordViewController.passwordTextField.text;
+        NSString *password = passwordViewController.masterPasswordFieldCell.textField.text;
         if ([password isEqualToString:@""]) {
             password = nil;
         }

@@ -15,19 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#import <UIKit/UIKit.h>
-#import "FormViewController.h"
-#import "ChoiceCell.h"
-#import "MasterPasswordFieldCell.h"
+#import "TextFieldCell.h"
 
-@interface PasswordViewController : FormViewController <SelectionListViewControllerDelegate> {
-    MasterPasswordFieldCell *masterPasswordFieldCell;
-    ChoiceCell *keyFileCell;
-}
-
-@property (nonatomic, readonly) MasterPasswordFieldCell *masterPasswordFieldCell;
-@property (nonatomic, readonly) ChoiceCell *keyFileCell;
-
-- (id)initWithFilename:(NSString*)filename;
+@interface MasterPasswordFieldCell : TextFieldCell
 
 @end

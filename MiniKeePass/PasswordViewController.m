@@ -17,12 +17,11 @@
 
 #import "PasswordViewController.h"
 
-#define ROW_KEY_FILE 2
+#define ROW_KEY_FILE 1
 
 @implementation PasswordViewController
 
-@synthesize showPassword;
-@synthesize passwordTextField;
+@synthesize masterPasswordFieldCell;
 @synthesize keyFileCell;
 
 - (id)initWithFilename:(NSString*)filename {
@@ -31,15 +30,8 @@
         self.title = NSLocalizedString(@"Password", nil);
         self.footerTitle = [NSString stringWithFormat:NSLocalizedString(@"Enter the password and/or select the keyfile for the %@ database.", nil), filename];
         
-        showPassword = [[SwitchCell alloc] initWithLabel:NSLocalizedString(@"Show Password", nil)];
-        [showPassword.switchControl addTarget:self action:@selector(passwordSwitchChanged:) forControlEvents:UIControlEventValueChanged];
-        
-        passwordTextField = [[UITextField alloc] init];
-        passwordTextField.placeholder = NSLocalizedString(@"Password", nil);
-        passwordTextField.secureTextEntry = YES;
-        passwordTextField.returnKeyType = UIReturnKeyDone;
-        passwordTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
-        passwordTextField.delegate = self;
+        masterPasswordFieldCell = [[MasterPasswordFieldCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+        masterPasswordFieldCell.textField.delegate = self;
         
         // Create an array to hold the possible keyfile choices
         NSMutableArray *keyFileChoices = [NSMutableArray arrayWithObject:NSLocalizedString(@"None", nil)];
@@ -55,7 +47,7 @@
         
         keyFileCell = [[ChoiceCell alloc] initWithLabel:NSLocalizedString(@"Key File", nil) choices:keyFileChoices selectedIndex:0];
         
-        self.controls = [NSArray arrayWithObjects:showPassword, passwordTextField, keyFileCell, nil];
+        self.controls = [NSArray arrayWithObjects:masterPasswordFieldCell, keyFileCell, nil];
         self.navigationItem.rightBarButtonItem = nil;
     }
     return self;
@@ -66,7 +58,7 @@
     
     [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
     
-    [self.passwordTextField becomeFirstResponder];
+    [self.masterPasswordFieldCell becomeFirstResponder];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -85,22 +77,10 @@
     [keyFileCell setSelectedIndex:selectedIndex];
 }
 
--(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
-{
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    // This makes it so the password text field doesn't clear the field when you toggle the password visible
     textField.text = [textField.text stringByReplacingCharactersInRange:range withString:string];
     return NO;
-}
-
-- (void)passwordSwitchChanged:(UISwitch *)passwordSwitch {
-    BOOL hidePass = ![passwordSwitch isOn];
-    if (hidePass) {
-        passwordTextField.enabled = NO;
-        passwordTextField.secureTextEntry = YES;
-        passwordTextField.enabled = YES;
-        [passwordTextField becomeFirstResponder];
-    } else {
-        passwordTextField.secureTextEntry = NO;
-    }
 }
 
 @end

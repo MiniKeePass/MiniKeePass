@@ -55,6 +55,7 @@
 		6859176F1615DE1D005FECA5 /* AppSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 6859176E1615DE1D005FECA5 /* AppSettings.m */; };
 		685D9D951603F8EE00D739D3 /* Kdb3Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 685D9D941603F8EE00D739D3 /* Kdb3Utils.m */; };
 		6876F67813B2D8F500A05C7A /* ImageSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6876F67713B2D8F400A05C7A /* ImageSelectionViewController.m */; };
+		68884F10186E1C5600C222D4 /* MasterPasswordFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68884F0F186E1C5600C222D4 /* MasterPasswordFieldCell.m */; };
 		68915A0B13A6F6C200A408B0 /* InfoBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 68915A0A13A6F6C200A408B0 /* InfoBar.m */; };
 		689A4D1314046B8200AA897D /* RandomStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 689A4D1214046B8200AA897D /* RandomStream.m */; };
 		689A4D171404759700AA897D /* PasswordGeneratorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 689A4D161404759700AA897D /* PasswordGeneratorViewController.m */; };
@@ -218,6 +219,8 @@
 		685D9D941603F8EE00D739D3 /* Kdb3Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Kdb3Utils.m; sourceTree = "<group>"; };
 		6876F67613B2D8F400A05C7A /* ImageSelectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageSelectionViewController.h; sourceTree = "<group>"; };
 		6876F67713B2D8F400A05C7A /* ImageSelectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageSelectionViewController.m; sourceTree = "<group>"; };
+		68884F0E186E1C5600C222D4 /* MasterPasswordFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MasterPasswordFieldCell.h; sourceTree = "<group>"; };
+		68884F0F186E1C5600C222D4 /* MasterPasswordFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MasterPasswordFieldCell.m; sourceTree = "<group>"; };
 		68915A0913A6F6C200A408B0 /* InfoBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfoBar.h; sourceTree = "<group>"; };
 		68915A0A13A6F6C200A408B0 /* InfoBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfoBar.m; sourceTree = "<group>"; };
 		689A4D1214046B8200AA897D /* RandomStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RandomStream.m; sourceTree = "<group>"; };
@@ -680,6 +683,8 @@
 				689D042513A42C81005EBD36 /* ChoiceCell.m */,
 				526FC0FD15FF9269001294BB /* ImageButtonCell.h */,
 				526FC0FE15FF9269001294BB /* ImageButtonCell.m */,
+				68884F0E186E1C5600C222D4 /* MasterPasswordFieldCell.h */,
+				68884F0F186E1C5600C222D4 /* MasterPasswordFieldCell.m */,
 				689D043613A42C81005EBD36 /* PasswordFieldCell.h */,
 				689D043713A42C81005EBD36 /* PasswordFieldCell.m */,
 				689D044213A42C82005EBD36 /* SwitchCell.h */,
@@ -1003,6 +1008,7 @@
 				682D45181603883900156830 /* InputStream.m in Sources */,
 				682D45191603883900156830 /* OutputStream.m in Sources */,
 				682D451A1603883900156830 /* Sha256OutputStream.m in Sources */,
+				68884F10186E1C5600C222D4 /* MasterPasswordFieldCell.m in Sources */,
 				685D9D951603F8EE00D739D3 /* Kdb3Utils.m in Sources */,
 				6851FAFD186DD11D00A53B0E /* UIActionSheetAutoDismiss.m in Sources */,
 				680C277616050C7A009403DE /* DDXMLDocument+MKPAdditions.m in Sources */,
@@ -1158,6 +1164,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MiniKeePass/MiniKeePass-Prefix.pch";
 				GCC_THUMB_SUPPORT = NO;
