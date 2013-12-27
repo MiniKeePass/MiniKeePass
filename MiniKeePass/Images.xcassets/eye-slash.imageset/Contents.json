@@ -3,12 +3,12 @@
     {
       "idiom" : "universal",
       "scale" : "1x",
-      "filename" : "reload.png"
+      "filename" : "eye-slash.png"
     },
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "reload@2x.png"
+      "filename" : "eye-slash@2x.png"
     }
   ],
   "info" : {

@@ -68,7 +68,7 @@ enum {
         characterSetsCell.textLabel.text = NSLocalizedString(@"Character Sets", nil);
         characterSetsCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         
-        UIImage *image = [UIImage imageNamed:@"reload"];
+        UIImage *image = [UIImage imageNamed:@"repeat"];
         
         UIButton *regenerateButton = [UIButton buttonWithType:UIButtonTypeCustom];
         regenerateButton.frame = CGRectMake(0.0, 0.0, image.size.width, image.size.height);
