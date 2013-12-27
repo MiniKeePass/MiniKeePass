@@ -120,6 +120,7 @@
 
     if (self.isNewEntry) {
         [self setEditing:YES animated:NO];
+        [titleCell.textField becomeFirstResponder];
         self.isNewEntry = NO;
     }
 }
