@@ -45,13 +45,18 @@
 - (void)togglePasswordVisible {
     if (self.textField.secureTextEntry) {
         self.textField.secureTextEntry = NO;
+
         [self.accessoryButton setImage:[UIImage imageNamed:@"eye-slash"] forState:UIControlStateNormal];
     } else {
+        BOOL wasFirstResponder = [self.textField isFirstResponder];
         self.textField.enabled = NO;
         self.textField.secureTextEntry = YES;
         self.textField.enabled = YES;
         self.textField.returnKeyType = UIReturnKeyDone;
-        [self.textField becomeFirstResponder];
+        if (wasFirstResponder) {
+            [self.textField becomeFirstResponder];
+        }
+
         [self.accessoryButton setImage:[UIImage imageNamed:@"eye"] forState:UIControlStateNormal];
     }
 }
