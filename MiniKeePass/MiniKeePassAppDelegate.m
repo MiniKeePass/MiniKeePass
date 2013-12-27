@@ -30,8 +30,6 @@
     UIImage *images[NUM_IMAGES];
 }
 
-@property (nonatomic, copy) NSString *fileToOpen;
-
 @end
 
 @implementation MiniKeePassAppDelegate
@@ -91,17 +89,6 @@
     // Check file protection
     [self checkFileProtection];
 
-    // Check if we're supposed to open a file
-    if (self.fileToOpen != nil) {
-        // Close the current database
-        [self closeDatabase];
-        
-        // Open the file
-        [[DatabaseManager sharedInstance] openDatabaseDocument:self.fileToOpen animated:NO];
-        
-        self.fileToOpen = nil;
-    }
-
     // Get the time when the application last exited
     AppSettings *appSettings = [AppSettings sharedInstance];
     NSDate *exitTime = [appSettings exitTime];
@@ -139,15 +126,9 @@
     // Delete the Inbox folder if it exists
     [fileManager removeItemAtPath:[documentsDirectory stringByAppendingPathComponent:@"Inbox"] error:nil];
 
-    // Store the filename to open if it's a database
-    if ([filename hasSuffix:@".kdb"] || [filename hasSuffix:@".kdbx"]) {
-        self.fileToOpen = filename;
-    } else {
-        self.fileToOpen = nil;
-        FilesViewController *fileView = [[navigationController viewControllers] objectAtIndex:0];
-        [fileView updateFiles];
-        [fileView.tableView reloadData];
-    }
+    FilesViewController *fileView = [[navigationController viewControllers] objectAtIndex:0];
+    [fileView updateFiles];
+    [fileView.tableView reloadData];
 
     return YES;
 }
