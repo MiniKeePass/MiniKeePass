@@ -54,6 +54,8 @@ enum {
 @property (nonatomic, strong) GroupSearchController *searchController;
 @property (nonatomic, strong) UISearchDisplayController *mySearchDisplayController;
 
+@property (nonatomic, strong) UIDocumentInteractionController *documentInteractionController;
+
 @end
 
 @implementation GroupViewController
@@ -169,7 +171,10 @@ enum {
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
-    [self.appDelegate.databaseDocument.documentInteractionController dismissMenuAnimated:NO];
+
+    if (_documentInteractionController != nil) {
+        [_documentInteractionController dismissMenuAnimated:NO];
+    }
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
@@ -244,6 +249,14 @@ enum {
     }
     
     return _editingToolbarItems;
+}
+
+- (UIDocumentInteractionController *)documentInteractionController {
+    if (_documentInteractionController == nil) {
+        NSURL *url = [NSURL fileURLWithPath:self.appDelegate.databaseDocument.filename];
+        _documentInteractionController = [UIDocumentInteractionController interactionControllerWithURL:url];
+    }
+    return _documentInteractionController;
 }
 
 - (void)setSeachBar:(UISearchBar *)searchBar enabled:(BOOL)enabled {
@@ -504,8 +517,7 @@ enum {
 
 - (void)exportFilePressed:(id)sender {
     UIBarButtonItem *actionButton = sender;
-    BOOL didShow = [self.appDelegate.databaseDocument.documentInteractionController presentOpenInMenuFromBarButtonItem:actionButton
-                                                                                                              animated:YES];
+    BOOL didShow = [self.documentInteractionController presentOpenInMenuFromBarButtonItem:actionButton animated:YES];
     if (!didShow) {
         NSString *prompt = NSLocalizedString(@"There are no applications installed capable of importing KeePass files", nil);
         UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:prompt

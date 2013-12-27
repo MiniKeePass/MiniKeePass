@@ -69,9 +69,8 @@ static DatabaseManager *sharedInstance;
         }
         
         // Load the database
-        DatabaseDocument *dd = [[DatabaseDocument alloc] init];
         @try {
-            [dd open:path password:password keyFile:keyFilePath];
+            DatabaseDocument *dd = [[DatabaseDocument alloc] initWithFilename:path password:password keyFile:keyFilePath];
             
             databaseLoaded = YES;
             
@@ -142,17 +141,16 @@ static DatabaseManager *sharedInstance;
         }
         
         // Load the database
-        DatabaseDocument *dd = [[DatabaseDocument alloc] init];
         @try {
             // Open the database
-            [dd open:path password:password keyFile:keyFilePath];
-            
+            DatabaseDocument *dd = [[DatabaseDocument alloc] initWithFilename:path password:password keyFile:keyFilePath];
+
             // Store the password in the keychain
             if ([[AppSettings sharedInstance] rememberPasswordsEnabled]) {
                 [KeychainUtils setString:password forKey:selectedFilename andServiceName:@"com.jflan.MiniKeePass.passwords"];
                 [KeychainUtils setString:keyFile forKey:selectedFilename andServiceName:@"com.jflan.MiniKeePass.keyfiles"];
             }
-            
+
             // Load the database after a short delay so the push animation is visible
             [self performSelector:@selector(loadDatabaseDocument:) withObject:dd afterDelay:0.01];
         } @catch (NSException *exception) {

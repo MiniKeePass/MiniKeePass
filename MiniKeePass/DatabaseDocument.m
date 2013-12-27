@@ -18,47 +18,33 @@
 #import "DatabaseDocument.h"
 #import "AppSettings.h"
 
+@interface DatabaseDocument ()
+@property (nonatomic, strong) KdbPassword *kdbPassword;
+@end
+
 @implementation DatabaseDocument
 
-@synthesize kdbTree;
-@synthesize filename;
-
-- (id)init {
+- (id)initWithFilename:(NSString *)filename password:(NSString *)password keyFile:(NSString *)keyFile {
     self = [super init];
     if (self) {
-        kdbTree = nil;
-        filename = nil;
-        kdbPassword = nil;
-        documentInteractionController = nil;
+        if (password == nil && keyFile == nil) {
+            @throw [NSException exceptionWithName:@"IllegalArgument" reason:@"No password or keyfile specified" userInfo:nil];
+        }
+
+        self.filename = filename;
+
+        NSStringEncoding passwordEncoding = [[AppSettings sharedInstance] passwordEncoding];
+        self.kdbPassword = [[KdbPassword alloc] initWithPassword:password
+                                                passwordEncoding:passwordEncoding
+                                                         keyFile:keyFile];
+
+        self.kdbTree = [KdbReaderFactory load:self.filename withPassword:self.kdbPassword];
     }
     return self;
 }
 
-- (UIDocumentInteractionController *)documentInteractionController {
-    if (documentInteractionController == nil) {
-        NSURL *url = [NSURL fileURLWithPath:filename];
-        documentInteractionController = [UIDocumentInteractionController interactionControllerWithURL:url];
-    }
-    return documentInteractionController;
-}
-
-- (void)open:(NSString *)newFilename password:(NSString *)password keyFile:(NSString *)keyFile {
-    if (password == nil && keyFile == nil) {
-        @throw [NSException exceptionWithName:@"IllegalArgument" reason:@"No password or keyfile specified" userInfo:nil];
-    }
-
-    filename = [newFilename copy];
-
-    NSStringEncoding passwordEncoding = [[AppSettings sharedInstance] passwordEncoding];
-    kdbPassword = [[KdbPassword alloc] initWithPassword:password
-                                       passwordEncoding:passwordEncoding
-                                                keyFile:keyFile];
-
-    self.kdbTree = [KdbReaderFactory load:filename withPassword:kdbPassword];
-}
-
 - (void)save {
-    [KdbWriterFactory persist:kdbTree file:filename withPassword:kdbPassword];
+    [KdbWriterFactory persist:self.kdbTree file:self.filename withPassword:self.kdbPassword];
 }
 
 + (void)searchGroup:(KdbGroup *)group searchText:(NSString *)searchText results:(NSMutableArray *)results {
