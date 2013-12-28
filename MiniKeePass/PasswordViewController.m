@@ -35,15 +35,7 @@
         
         // Create an array to hold the possible keyfile choices
         NSMutableArray *keyFileChoices = [NSMutableArray arrayWithObject:NSLocalizedString(@"None", nil)];
-        
-        // Get the documents directory
-        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-        NSString *documentsDirectory = [paths objectAtIndex:0];
-        
-        // Get the list of key files in the documents directory
-        NSArray *dirContents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:documentsDirectory error:nil];
-        NSArray *files = [dirContents filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"!(self ENDSWITH '.kdb') && !(self ENDSWITH '.kdbx') && !(self BEGINSWITH '.')"]];
-        [keyFileChoices addObjectsFromArray:files];
+        [keyFileChoices addObjectsFromArray:[self keyFiles]];
         
         keyFileCell = [[ChoiceCell alloc] initWithLabel:NSLocalizedString(@"Key File", nil) choices:keyFileChoices selectedIndex:0];
         
@@ -59,6 +51,30 @@
     [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
     
     [self.masterPasswordFieldCell.textField becomeFirstResponder];
+}
+
+- (NSArray *)keyFiles {
+    // Get the documents directory
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+
+    // Get the list of key files in the documents directory
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSArray *dirContents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:documentsDirectory error:nil];
+
+    // Strip out all the directories
+    NSMutableArray *files = [[NSMutableArray alloc] init];
+    for (NSString *file in dirContents) {
+        NSString *path = [documentsDirectory stringByAppendingPathComponent:file];
+
+        BOOL dir = NO;
+        [fileManager fileExistsAtPath:path isDirectory:&dir];
+        if (!dir) {
+            [files addObject:file];
+        }
+    }
+
+    return [files filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"!(self ENDSWITH '.kdb') && !(self ENDSWITH '.kdbx') && !(self BEGINSWITH '.')"]];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
