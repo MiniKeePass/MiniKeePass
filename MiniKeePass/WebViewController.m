@@ -85,7 +85,7 @@
     self.navigationItem.titleView = _urlTextField;
 
     // Create the autotype buttons
-    NSArray *items = @[[UIImage imageNamed:@"username"], [UIImage imageNamed:@"password"]];
+    NSArray *items = @[[UIImage imageNamed:@"user"], [UIImage imageNamed:@"asterisk"]];
     UISegmentedControl *segmentedControl = [[UISegmentedControl alloc] initWithItems:items];
     segmentedControl.segmentedControlStyle = UISegmentedControlStyleBar;
     segmentedControl.momentary = YES;

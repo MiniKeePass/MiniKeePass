@@ -3,12 +3,12 @@
     {
       "idiom" : "universal",
       "scale" : "1x",
-      "filename" : "password.png"
+      "filename" : "user.png"
     },
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "password@2x.png"
+      "filename" : "user@2x.png"
     }
   ],
   "info" : {
