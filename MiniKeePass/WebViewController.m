@@ -15,7 +15,7 @@
 @protocol MKPWebViewDelegate;
 
 @interface MKPWebView : UIWebView
-@property (nonatomic, assign)id<MKPWebViewDelegate> mkpDelegate;
+@property (nonatomic, assign) id<MKPWebViewDelegate> mkpDelegate;
 @end
 
 @protocol MKPWebViewDelegate <NSObject>
@@ -51,18 +51,17 @@
 
 @end
 
-@interface WebViewController () <UIWebViewDelegate, UITextFieldDelegate, MKPWebViewDelegate> {
-    UITextField *_urlTextField;
-    CGRect _originalUrlFrame;
+@interface WebViewController () <UIWebViewDelegate, UITextFieldDelegate, MKPWebViewDelegate>
+@property (nonatomic, strong) UITextField *urlTextField;
+@property (nonatomic, assign) CGRect originalUrlFrame;
 
-    UIBarButtonItem *_autotypeButton;
+@property (nonatomic, strong) UIBarButtonItem *autotypeButtons;
 
-    MKPWebView *_webView;
-    UIBarButtonItem *_backButton;
-    UIBarButtonItem *_forwardButton;
-    UIBarButtonItem *_reloadButton;
-    UIBarButtonItem *_openInButton;
-}
+@property (nonatomic, strong) MKPWebView *webView;
+@property (nonatomic, strong) UIBarButtonItem *backButton;
+@property (nonatomic, strong) UIBarButtonItem *forwardButton;
+@property (nonatomic, strong) UIBarButtonItem *reloadButton;
+@property (nonatomic, strong) UIBarButtonItem *openInButton;
 @end
 
 @implementation WebViewController
@@ -70,19 +69,19 @@
 - (void)viewDidLoad {
     // Create the URL text field
     CGFloat height = UrlFieldHeight(self.interfaceOrientation);
-    _urlTextField = [[UITextField alloc] initWithFrame:CGRectMake(0, 0, self.navigationController.navigationBar.bounds.size.width, height)];
-    _urlTextField.contentVerticalAlignment = UIViewContentModeCenter;
-    _urlTextField.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    _urlTextField.borderStyle = UITextBorderStyleRoundedRect;
-    _urlTextField.font = [UIFont systemFontOfSize:14.0f];
-    _urlTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
-    _urlTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
-    _urlTextField.autocorrectionType = UITextAutocorrectionTypeNo;
-    _urlTextField.keyboardType = UIKeyboardTypeURL;
-    _urlTextField.returnKeyType = UIReturnKeyGo;
-    [_urlTextField addTarget:self action:@selector(textFieldEditingDidEnd:) forControlEvents:UIControlEventEditingDidEndOnExit];
-    _urlTextField.delegate = self;
-    self.navigationItem.titleView = _urlTextField;
+    self.urlTextField = [[UITextField alloc] initWithFrame:CGRectMake(0, 0, self.navigationController.navigationBar.bounds.size.width, height)];
+    self.urlTextField.contentVerticalAlignment = UIViewContentModeCenter;
+    self.urlTextField.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    self.urlTextField.borderStyle = UITextBorderStyleRoundedRect;
+    self.urlTextField.font = [UIFont systemFontOfSize:14.0f];
+    self.urlTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
+    self.urlTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    self.urlTextField.autocorrectionType = UITextAutocorrectionTypeNo;
+    self.urlTextField.keyboardType = UIKeyboardTypeURL;
+    self.urlTextField.returnKeyType = UIReturnKeyGo;
+    [self.urlTextField addTarget:self action:@selector(textFieldEditingDidEnd:) forControlEvents:UIControlEventEditingDidEndOnExit];
+    self.urlTextField.delegate = self;
+    self.navigationItem.titleView = self.urlTextField;
 
     // Create the autotype buttons
     NSArray *items = @[[UIImage imageNamed:@"user"], [UIImage imageNamed:@"asterisk"]];
@@ -92,41 +91,43 @@
     [segmentedControl addTarget:self
                          action:@selector(autotypePressed:)
                forControlEvents:UIControlEventValueChanged];
-    _autotypeButton = [[UIBarButtonItem alloc] initWithCustomView:segmentedControl];
-    self.navigationItem.rightBarButtonItem = _autotypeButton;
+    self.autotypeButtons = [[UIBarButtonItem alloc] initWithCustomView:segmentedControl];
+    self.navigationItem.rightBarButtonItem = self.autotypeButtons;
 
     // Create the web view
-    _webView = [[MKPWebView alloc] init];
-    _webView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-	_webView.backgroundColor = [UIColor whiteColor];
-    _webView.scalesPageToFit = YES;
-	_webView.delegate = self;
-    _webView.mkpDelegate = self;
-    _webView.keyboardDisplayRequiresUserAction = NO;
-	[self.view addSubview:_webView];
+    self.webView = [[MKPWebView alloc] initWithFrame:self.view.bounds];
+    self.webView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+    self.webView.backgroundColor = [UIColor whiteColor];
+    self.webView.scalesPageToFit = YES;
+    self.webView.delegate = self;
+    self.webView.mkpDelegate = self;
+    self.webView.keyboardDisplayRequiresUserAction = NO;
+	[self.view addSubview:self.webView];
 
     // Create the toolbar button
-    _backButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"back"]
+    self.backButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"back"]
                                                    style:UIBarButtonItemStylePlain
                                                   target:self
                                                   action:@selector(backPressed)];
-    _backButton.enabled = NO;
+    self.backButton.enabled = NO;
 
-    _forwardButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"forward"]
+    self.forwardButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"forward"]
                                                       style:UIBarButtonItemStylePlain
                                                      target:self
                                                      action:@selector(forwardPressed)];
-    _forwardButton.enabled = NO;
+    self.forwardButton.enabled = NO;
 
-    _reloadButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh
+    self.reloadButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh
                                                                   target:self
                                                                   action:@selector(reloadPressed)];
 
-    _openInButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction
+    self.openInButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction
                                                                   target:self
                                                                   action:@selector(openInPressed)];
 
-    UIBarButtonItem *fixedSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+    UIBarButtonItem *fixedSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace
+                                                                                target:nil
+                                                                                action:nil];
     fixedSpace.width = 10.0f;
 
     UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
@@ -135,29 +136,25 @@
 
     self.toolbarItems = @[
                           fixedSpace,
-                          _backButton,
+                          self.backButton,
                           flexibleSpace,
-                          _forwardButton,
+                          self.forwardButton,
                           flexibleSpace,
-                          _reloadButton,
+                          self.reloadButton,
                           flexibleSpace,
-                          _openInButton,
+                          self.openInButton,
                           fixedSpace
                           ];
-}
 
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-
+    // Load the URL
     NSURL *url = [NSURL URLWithString:self.entry.url];
     if (url.scheme == nil) {
         url = [NSURL URLWithString:[@"http://" stringByAppendingString:self.entry.url]];
     }
 
-    _urlTextField.text = [url absoluteString];
+    self.urlTextField.text = [url absoluteString];
 
-    _webView.frame = self.view.bounds;
-    [_webView loadRequest:[NSURLRequest requestWithURL:url]];
+    [self.webView loadRequest:[NSURLRequest requestWithURL:url]];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -169,24 +166,24 @@
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
     CGFloat height = UrlFieldHeight(self.interfaceOrientation);
-    _urlTextField.frame = CGRectMake(0, 0, self.navigationController.navigationBar.bounds.size.width, height);
+    self.urlTextField.frame = CGRectMake(0, 0, self.navigationController.navigationBar.bounds.size.width, height);
 }
 
 #pragma mark - URL Text Field
 
 - (void)textFieldEditingDidEnd:(id)sender {
-    NSURL *url = [NSURL URLWithString:_urlTextField.text];
+    NSURL *url = [NSURL URLWithString:self.urlTextField.text];
     if (url.scheme == nil) {
-        url = [NSURL URLWithString:[@"http://" stringByAppendingString:_urlTextField.text]];
-        _urlTextField.text = [url absoluteString];
+        url = [NSURL URLWithString:[@"http://" stringByAppendingString:self.urlTextField.text]];
+        self.urlTextField.text = [url absoluteString];
     }
 
-    [_webView loadRequest:[NSURLRequest requestWithURL:url]];
+    [self.webView loadRequest:[NSURLRequest requestWithURL:url]];
 }
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
     // Save the original size of the url text field
-    _originalUrlFrame = _urlTextField.frame;
+    self.originalUrlFrame = self.urlTextField.frame;
 
     // Compute a new frame size
     CGFloat height = UrlFieldHeight(self.interfaceOrientation);
@@ -198,7 +195,7 @@
 
     // Animate the size of the url text field
     [UIView animateWithDuration:0.4 animations:^{
-        _urlTextField.frame = frame;
+        self.urlTextField.frame = frame;
     }];
 
     return YES;
@@ -208,10 +205,10 @@
     [UIView animateWithDuration:0.4 animations:^{
         // Display the buttons
         [self.navigationItem setHidesBackButton:NO animated:YES];
-        [self.navigationItem setRightBarButtonItem:_autotypeButton animated:YES];
+        [self.navigationItem setRightBarButtonItem:self.autotypeButtons animated:YES];
 
         // Restore the url text fields frame
-        _urlTextField.frame = _originalUrlFrame;
+        self.urlTextField.frame = self.originalUrlFrame;
     }];
 
     return YES;
@@ -220,29 +217,29 @@
 #pragma mark - Buttons
 
 - (void)updateButtons {
-    _backButton.enabled = _webView.canGoBack;
-    _forwardButton.enabled = _webView.canGoForward;
-    _openInButton.enabled = !_webView.isLoading;
+    self.backButton.enabled = self.webView.canGoBack;
+    self.forwardButton.enabled = self.webView.canGoForward;
+    self.openInButton.enabled = !self.webView.isLoading;
 }
 
 - (void)backPressed {
-    if (_webView.canGoBack) {
-        [_webView goBack];
+    if (self.webView.canGoBack) {
+        [self.webView goBack];
     }
 }
 
 - (void)forwardPressed {
-    if (_webView.canGoForward) {
-        [_webView goForward];
+    if (self.webView.canGoForward) {
+        [self.webView goForward];
     }
 }
 
 - (void)reloadPressed {
-    [_webView reload];
+    [self.webView reload];
 }
 
 - (void)openInPressed {
-    [[UIApplication sharedApplication] openURL:_webView.request.URL];
+    [[UIApplication sharedApplication] openURL:self.webView.request.URL];
 }
 
 - (void)autotypeString:(NSString *)string {
@@ -250,7 +247,7 @@
     NSString *escapedString = [string stringByReplacingOccurrencesOfString:@"\'" withString:@"\\'"];
 
     NSString *script = [NSString stringWithFormat:@"if (document.activeElement) { document.activeElement.value = '%@'; }", escapedString];
-    [_webView stringByEvaluatingJavaScriptFromString:script];
+    [self.webView stringByEvaluatingJavaScriptFromString:script];
 }
 
 - (void)autotypePressed:(UISegmentedControl *)segmentedControl {
@@ -287,7 +284,7 @@
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
     [self updateButtons];
-    _urlTextField.text = [webView.request.URL absoluteString];
+    self.urlTextField.text = [webView.request.URL absoluteString];
 
     // Stop the network activity indicator
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
