@@ -119,6 +119,7 @@
 		68CE37F214049BC900E4A5E1 /* HelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68CE37F114049BC900E4A5E1 /* HelpViewController.m */; };
 		68CE37F51404A86600E4A5E1 /* safariemail.html in Resources */ = {isa = PBXBuildFile; fileRef = 68CE37F41404A86600E4A5E1 /* safariemail.html */; };
 		68CE868F14EDF4C300D34A61 /* LengthCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68CE868E14EDF4C300D34A61 /* LengthCell.m */; };
+		68D7564D186E4D8A001AFB82 /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68D7564C186E4D8A001AFB82 /* WebViewController.m */; };
 		68D991E613F3EAAE00F6ED1F /* PasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68D991E513F3EAAE00F6ED1F /* PasswordViewController.m */; };
 		68DDC3731405160300FC8BD8 /* keyfiles.html in Resources */ = {isa = PBXBuildFile; fileRef = 68DDC3721405160300FC8BD8 /* keyfiles.html */; };
 		68E08310146F24E3001C4EDF /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 68E0830E146F24E3001C4EDF /* Localizable.strings */; };
@@ -382,6 +383,8 @@
 		68CE868E14EDF4C300D34A61 /* LengthCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LengthCell.m; sourceTree = "<group>"; };
 		68D0C29B169A4F1C0002812A /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		68D0C29C169A4F1C0002812A /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		68D7564B186E4D8A001AFB82 /* WebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewController.h; sourceTree = "<group>"; };
+		68D7564C186E4D8A001AFB82 /* WebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewController.m; sourceTree = "<group>"; };
 		68D991E413F3EAAE00F6ED1F /* PasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasswordViewController.h; sourceTree = "<group>"; };
 		68D991E513F3EAAE00F6ED1F /* PasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PasswordViewController.m; sourceTree = "<group>"; };
 		68DDC3721405160300FC8BD8 /* keyfiles.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = keyfiles.html; sourceTree = "<group>"; };
@@ -799,6 +802,8 @@
 				689D044513A42C82005EBD36 /* TextEntryController.m */,
 				6851FAFB186DD11D00A53B0E /* UIActionSheetAutoDismiss.h */,
 				6851FAFC186DD11D00A53B0E /* UIActionSheetAutoDismiss.m */,
+				68D7564B186E4D8A001AFB82 /* WebViewController.h */,
+				68D7564C186E4D8A001AFB82 /* WebViewController.m */,
 				689D046313A42CA8005EBD36 /* Cells */,
 				52370CB314F2CDC3003DC64C /* Lock Screen */,
 				68F19D1B14EB3A3900B772CB /* Password Generator */,
@@ -994,6 +999,7 @@
 				68915A0B13A6F6C200A408B0 /* InfoBar.m in Sources */,
 				68A3E1AF13A8C9D1006881CA /* FormViewController.m in Sources */,
 				6876F67813B2D8F500A05C7A /* ImageSelectionViewController.m in Sources */,
+				68D7564D186E4D8A001AFB82 /* WebViewController.m in Sources */,
 				68D991E613F3EAAE00F6ED1F /* PasswordViewController.m in Sources */,
 				689A4D1314046B8200AA897D /* RandomStream.m in Sources */,
 				689A4D171404759700AA897D /* PasswordGeneratorViewController.m in Sources */,
