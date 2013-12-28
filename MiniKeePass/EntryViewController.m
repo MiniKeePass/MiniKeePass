@@ -17,6 +17,7 @@
 
 #import "EntryViewController.h"
 #import "Kdb4Node.h"
+#import "AppSettings.h"
 #import "WebViewController.h"
 
 #import <MBProgressHUD/MBProgressHUD.h>
@@ -722,7 +723,10 @@
         url = [NSURL URLWithString:[@"http://" stringByAppendingString:text]];
     }
 
-    if ([url.scheme isEqualToString:@"http"] || [url.scheme isEqualToString:@"https"]) {
+    BOOL isHttp = [url.scheme isEqualToString:@"http"] || [url.scheme isEqualToString:@"https"];
+
+    BOOL webBrowserIntegrated = [[AppSettings sharedInstance] webBrowserIntegrated];
+    if (webBrowserIntegrated && isHttp) {
         WebViewController *webViewController = [[WebViewController alloc] init];
         webViewController.entry = self.entry;
         [self.navigationController pushViewController:webViewController animated:YES];

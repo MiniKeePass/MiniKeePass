@@ -34,7 +34,8 @@
     ChoiceCell *passwordEncodingCell;
     SwitchCell *clearClipboardEnabledCell;
     ChoiceCell *clearClipboardTimeoutCell;
-    
+    SwitchCell *webBrowserIntegratedCell;
+
     NSString *tempPin;
 }
 

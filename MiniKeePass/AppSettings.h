@@ -68,6 +68,9 @@
 - (NSInteger)clearClipboardTimeoutIndex;
 - (void)setClearClipboardTimeoutIndex:(NSInteger)clearClipboardTimeoutIndex;
 
+- (BOOL)webBrowserIntegrated;
+- (void)setWebBrowserIntegrated:(BOOL)webBrowserIntegrated;
+
 - (NSInteger)pwGenLength;
 - (void)setPwGenLength:(NSInteger)pwGenLength;
 
