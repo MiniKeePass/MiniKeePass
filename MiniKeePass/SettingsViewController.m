@@ -347,6 +347,9 @@ enum {
             
         case SECTION_CLEAR_CLIPBOARD:
             return NSLocalizedString(@"Clear the contents of the clipboard after a given timeout upon performing a copy.", nil);
+            
+        case SECTION_WEB_BROWSER:
+            return NSLocalizedString(@"Switch between an integrated web browser and Safari.", nil);
     }
     return nil;
 }
