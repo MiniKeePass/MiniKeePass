@@ -18,7 +18,7 @@
 #import <Foundation/Foundation.h>
 #import "FormViewController.h"
 
-@interface DatabaseManager : NSObject <FormViewControllerDelegate>
+@interface DatabaseManager : NSObject
 
 @property (nonatomic, copy) NSString *selectedFilename;
 

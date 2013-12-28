@@ -20,7 +20,7 @@
 #import "EntryViewController.h"
 #import "SelectGroupViewController.h"
 #import "AppSettings.h"
-#import "RenameItemViewController.h"
+#import "EditItemViewController.h"
 #import "UIActionSheetAutoDismiss.h"
 #import "Kdb3Node.h"
 
@@ -594,14 +594,17 @@ enum {
     // Save the database
     [databaseDocument save];
 
-    EditGroupViewController *editGroupViewController = [[EditGroupViewController alloc] initWithStyle:UITableViewStyleGrouped];
-    editGroupViewController.delegate = self;
-    editGroupViewController.nameTextField.text = g.name;
-    [editGroupViewController setSelectedImageIndex:g.image];
+    EditItemViewController *editItemViewController = [[EditItemViewController alloc] initWithGroup:g];
+    editItemViewController.donePressed = ^(FormViewController *formViewController) {
+        [self renameItem:(EditItemViewController *)formViewController];
+    };
+    editItemViewController.cancelPressed = ^(FormViewController *formViewController) {
+        [formViewController dismissViewControllerAnimated:YES completion:nil];
+        [self setEditing:NO animated:YES];
+    };
 
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:editGroupViewController];
-
-    [self.appDelegate.window.rootViewController presentModalViewController:navigationController animated:YES];
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:editItemViewController];
+    [self.appDelegate.window.rootViewController presentViewController:navigationController animated:YES completion:nil];
 
     return [NSIndexPath indexPathForRow:index inSection:SECTION_GROUPS];
 }
@@ -707,68 +710,66 @@ enum {
 #pragma mark - Rename Group/Entry
 
 - (void)renameSelectedItem {
-    RenameItemViewController *renameItemViewController = [[RenameItemViewController alloc] initWithStyle:UITableViewStyleGrouped];
-    renameItemViewController.delegate = self;
+    EditItemViewController *editItemViewController;
 
     NSIndexPath *indexPath = [self.tableView.indexPathsForSelectedRows objectAtIndex:0];
     switch (indexPath.section) {
         case SECTION_GROUPS: {
-            renameItemViewController.type = RenameItemTypeGroup;
             KdbGroup *g = [self.groupsArray objectAtIndex:indexPath.row];
-            renameItemViewController.nameTextField.text = g.name;
-            [renameItemViewController setSelectedImageIndex:g.image];
+            editItemViewController = [[EditItemViewController alloc] initWithGroup:g];
             break;
         }
         case SECTION_ENTRIES: {
-            renameItemViewController.type = RenameItemTypeEntry;
             KdbEntry *e = [self.entriesArray objectAtIndex:indexPath.row];
-            renameItemViewController.nameTextField.text = e.title;
-            [renameItemViewController setSelectedImageIndex:e.image];
+            editItemViewController = [[EditItemViewController alloc] initWithEntry:e];
             break;
         }
     }
 
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:renameItemViewController];
+    editItemViewController.donePressed = ^(FormViewController *formViewController) {
+        [self renameItem:(EditItemViewController *)formViewController];
+    };
+    editItemViewController.cancelPressed = ^(FormViewController *formViewController) {
+        [formViewController dismissViewControllerAnimated:YES completion:nil];
+        [self setEditing:NO animated:YES];
+    };
+
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:editItemViewController];
 
     [self.appDelegate.window.rootViewController presentModalViewController:navigationController animated:YES];
 }
 
-- (void)formViewController:(FormViewController *)controller button:(FormViewControllerButton)button {
-    RenameItemViewController *renameItemViewController = (RenameItemViewController*)controller;
-
-    if (button == FormViewControllerButtonOk) {
-        NSString *newName = renameItemViewController.nameTextField.text;
-        if (newName.length == 0) {
-            [controller showErrorMessage:NSLocalizedString(@"New name is invalid", nil)];
-            return;
-        }
-
-        NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-
-        switch (indexPath.section) {
-            case SECTION_GROUPS: {
-                // Update the group
-                KdbGroup *g = [self.groupsArray objectAtIndex:indexPath.row];
-                g.name = newName;
-                g.image = renameItemViewController.selectedImageIndex;
-                break;
-            }
-
-            case SECTION_ENTRIES: {
-                // Update the entry
-                KdbEntry *e = [self.entriesArray objectAtIndex:indexPath.row];
-                e.title = newName;
-                e.image = renameItemViewController.selectedImageIndex;
-                break;
-            }
-        }
-
-        // Save the document
-        [self.appDelegate.databaseDocument save];
+- (void)renameItem:(EditItemViewController *)editItemViewController {
+    NSString *newName = editItemViewController.nameTextField.text;
+    if (newName.length == 0) {
+        [editItemViewController showErrorMessage:NSLocalizedString(@"New name is invalid", nil)];
+        return;
     }
 
-    [renameItemViewController dismissViewControllerAnimated:YES completion:nil];
-    
+    NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+    switch (indexPath.section) {
+        case SECTION_GROUPS: {
+            // Update the group
+            KdbGroup *g = [self.groupsArray objectAtIndex:indexPath.row];
+            g.name = newName;
+            g.image = editItemViewController.selectedImageIndex;
+            break;
+        }
+
+        case SECTION_ENTRIES: {
+            // Update the entry
+            KdbEntry *e = [self.entriesArray objectAtIndex:indexPath.row];
+            e.title = newName;
+            e.image = editItemViewController.selectedImageIndex;
+            break;
+        }
+    }
+
+    // Save the document
+    [self.appDelegate.databaseDocument save];
+
+    [editItemViewController dismissViewControllerAnimated:YES completion:nil];
+
     [self setEditing:NO animated:YES];
 }
 

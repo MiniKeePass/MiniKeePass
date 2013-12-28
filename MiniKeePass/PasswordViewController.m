@@ -25,7 +25,7 @@
 @synthesize keyFileCell;
 
 - (id)initWithFilename:(NSString*)filename {
-    self = [super initWithStyle:UITableViewStyleGrouped];
+    self = [super init];
     if (self) {
         self.title = NSLocalizedString(@"Password", nil);
         self.footerTitle = [NSString stringWithFormat:NSLocalizedString(@"Enter the password and/or select the keyfile for the %@ database.", nil), filename];
@@ -40,7 +40,6 @@
         keyFileCell = [[ChoiceCell alloc] initWithLabel:NSLocalizedString(@"Key File", nil) choices:keyFileChoices selectedIndex:0];
         
         self.controls = [NSArray arrayWithObjects:masterPasswordFieldCell, keyFileCell, nil];
-        self.navigationItem.rightBarButtonItem = nil;
     }
     return self;
 }

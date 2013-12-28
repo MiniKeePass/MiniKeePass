@@ -29,8 +29,8 @@
 @synthesize passwordTextField2;
 @synthesize versionSegmentedControl;
 
-- (id)initWithStyle:(UITableViewStyle)style {
-    self = [super initWithStyle:UITableViewStyleGrouped];
+- (id)init {
+    self = [super init];
     if (self) {
         self.headerTitle = NSLocalizedString(@"New Database", nil);
         self.footerTitle = NSLocalizedString(@"Do not forget your database password, it cannot be recovered.", nil);
@@ -84,7 +84,7 @@
     } else if (textField == passwordTextField1) {
         [passwordTextField2 becomeFirstResponder];
     } else if (textField == passwordTextField2) {
-        [self okPressed:nil];
+        [self donePressed:nil];
     }
     
     return YES;

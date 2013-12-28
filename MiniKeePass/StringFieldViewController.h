@@ -19,9 +19,7 @@
 #import "Kdb4Node.h"
 #import "SwitchCell.h"
 
-@protocol StringFieldViewDelegate;
-
-@interface StringFieldViewController : FormViewController <FormViewControllerDelegate>
+@interface StringFieldViewController : FormViewController
 
 @property (nonatomic, strong) StringField *stringField;
 @property (nonatomic, readonly) UITextField *keyTextField;
@@ -29,13 +27,7 @@
 @property (nonatomic, readonly) SwitchCell *protectedSwitchCell;
 
 @property (nonatomic, strong) id object;
-@property (nonatomic, strong) id<StringFieldViewDelegate> stringFieldViewDelegate; // FIXME should this be weak / unretained_whatever?
 
 - (id)initWithStringField:(StringField *)stringField;
 
-@end
-
-@protocol StringFieldViewDelegate <NSObject>
-- (void)stringFieldViewController:(StringFieldViewController *)controller
-                updateStringField:(StringField *)stringField;
 @end

@@ -17,11 +17,10 @@
 
 #import <UIKit/UIKit.h>
 #import "MiniKeePassAppDelegate.h"
-#import "EditGroupViewController.h"
 #import "SelectGroupViewController.h"
 #import "KdbLib.h"
 
-@interface GroupViewController : UITableViewController <UIActionSheetDelegate, FormViewControllerDelegate, SelectGroupDelegate>
+@interface GroupViewController : UITableViewController <UIActionSheetDelegate, SelectGroupDelegate>
 
 @property (nonatomic, weak, readonly) KdbGroup *group;
 

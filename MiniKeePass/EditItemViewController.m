@@ -15,33 +15,53 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#import "EditGroupViewController.h"
+#import "EditItemViewController.h"
+#import "ImageButtonCell.h"
 #import "MiniKeePassAppDelegate.h"
 
-@interface EditGroupViewController () {
-    ImageButtonCell *imageButtonCell;
-}
+@interface EditItemViewController ()
+@property (nonatomic, strong) ImageButtonCell *imageButtonCell;
 @end
 
-@implementation EditGroupViewController
+@implementation EditItemViewController
 
-- (id)initWithStyle:(UITableViewStyle)style {
-    self = [super initWithStyle:UITableViewStyleGrouped];
+- (id)init {
+    self = [super init];
     if (self) {
-        self.title = NSLocalizedString(@"Edit Group", nil);
-        
         _nameTextField = [[UITextField alloc] init];
-        _nameTextField.placeholder = NSLocalizedString(@"Name", nil);
-        _nameTextField.delegate = self;
-        _nameTextField.returnKeyType = UIReturnKeyDone;
-        _nameTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
+        self.nameTextField.placeholder = NSLocalizedString(@"Name", nil);
+        self.nameTextField.delegate = self;
+        self.nameTextField.returnKeyType = UIReturnKeyDone;
+        self.nameTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
         
-        imageButtonCell = [[ImageButtonCell alloc] initWithLabel:NSLocalizedString(@"Image", nil)];
-        [imageButtonCell.imageButton addTarget:self
+        self.imageButtonCell = [[ImageButtonCell alloc] initWithLabel:NSLocalizedString(@"Image", nil)];
+        [self.imageButtonCell.imageButton addTarget:self
                                         action:@selector(imageButtonPressed)
                               forControlEvents:UIControlEventTouchUpInside];
         
-        self.controls = [NSArray arrayWithObjects:_nameTextField, imageButtonCell, nil];
+        self.controls = [NSArray arrayWithObjects:self.nameTextField, self.imageButtonCell, nil];
+    }
+    return self;
+}
+
+- (id)initWithEntry:(KdbEntry *)entry {
+    self = [self init];
+    if (self) {
+        self.title = NSLocalizedString(@"Edit Entry", nil);
+
+        self.nameTextField.text = entry.title;
+        [self setSelectedImageIndex:entry.image];
+    }
+    return self;
+}
+
+- (id)initWithGroup:(KdbGroup *)group {
+    self = [self init];
+    if (self) {
+        self.title = NSLocalizedString(@"Edit Group", nil);
+
+        self.nameTextField.text = group.name;
+        [self setSelectedImageIndex:group.image];
     }
     return self;
 }
@@ -50,7 +70,7 @@
     _selectedImageIndex = selectedImageIndex;
     
     MiniKeePassAppDelegate *appDelegate = (MiniKeePassAppDelegate *)[[UIApplication sharedApplication] delegate];
-    [imageButtonCell.imageButton setImage:[appDelegate loadImage:_selectedImageIndex] forState:UIControlStateNormal];
+    [self.imageButtonCell.imageButton setImage:[appDelegate loadImage:_selectedImageIndex] forState:UIControlStateNormal];
 }
 
 - (void)imageButtonPressed {

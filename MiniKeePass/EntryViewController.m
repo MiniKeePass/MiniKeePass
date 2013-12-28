@@ -445,7 +445,12 @@
     StringField *stringField = [StringField stringFieldWithKey:@"" andValue:@""];
 
     StringFieldViewController *stringFieldViewController = [[StringFieldViewController alloc] initWithStringField:stringField];
-    stringFieldViewController.stringFieldViewDelegate = self;
+    stringFieldViewController.donePressed = ^(FormViewController *formViewController) {
+        [self updateStringField:(StringFieldViewController *)formViewController];
+    };
+    stringFieldViewController.cancelPressed = ^(FormViewController *formViewController) {
+        [formViewController dismissViewControllerAnimated:YES completion:nil];
+    };
 
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:stringFieldViewController];
 
@@ -647,23 +652,29 @@
 
     StringFieldViewController *stringFieldViewController = [[StringFieldViewController alloc] initWithStringField:stringField];
     stringFieldViewController.object = indexPath;
-    stringFieldViewController.stringFieldViewDelegate = self;
+    stringFieldViewController.donePressed = ^(FormViewController *formViewController) {
+        [self updateStringField:(StringFieldViewController *)formViewController];
+    };
+    stringFieldViewController.cancelPressed = ^(FormViewController *formViewController) {
+        [formViewController dismissViewControllerAnimated:YES completion:nil];
+    };
 
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:stringFieldViewController];
 
     [self.navigationController presentViewController:navController animated:YES completion:nil];
-
 }
 
-- (void)stringFieldViewController:(StringFieldViewController *)controller updateStringField:(StringField *)stringField {
-    if (controller.object == nil) {
+- (void)updateStringField:(StringFieldViewController *)stringFieldController {
+    if (stringFieldController.object == nil) {
         NSIndexPath *indexPath = [NSIndexPath indexPathForRow:self.editingStringFields.count inSection:1];
-        [self.editingStringFields addObject:stringField];
+        [self.editingStringFields addObject:stringFieldController.stringField];
         [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
     } else {
-        NSIndexPath *indexPath = (NSIndexPath *)controller.object;
+        NSIndexPath *indexPath = (NSIndexPath *)stringFieldController.object;
         [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
     }
+
+    [stringFieldController dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - Image related

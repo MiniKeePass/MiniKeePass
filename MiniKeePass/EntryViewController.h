@@ -28,7 +28,7 @@
 #import "PasswordGeneratorViewController.h"
 #import "StringFieldViewController.h"
 
-@interface EntryViewController : UITableViewController <UIGestureRecognizerDelegate, ImageSelectionViewDelegate, TextFieldCellDelegate, PasswordGeneratorDelegate, StringFieldViewDelegate, TitleFieldCellDelegate>
+@interface EntryViewController : UITableViewController <UIGestureRecognizerDelegate, ImageSelectionViewDelegate, PasswordGeneratorDelegate, TitleFieldCellDelegate, TextFieldCellDelegate>
 
 @property (nonatomic, assign) NSUInteger selectedImageIndex;
 @property (nonatomic, strong) KdbEntry *entry;

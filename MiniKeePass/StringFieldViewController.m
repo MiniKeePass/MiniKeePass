@@ -20,7 +20,7 @@
 @implementation StringFieldViewController
 
 - (id)initWithStringField:(StringField *)stringField {
-    self = [super initWithStyle:UITableViewStyleGrouped];
+    self = [super init];
     if (self) {
         _stringField = stringField;
 
@@ -44,7 +44,6 @@
         _protectedSwitchCell.switchControl.on = stringField.protected;
 
         self.controls = @[_keyTextField, _valueTextField, _protectedSwitchCell];
-        self.delegate = self;
     }
     return self;
 }
@@ -53,13 +52,13 @@
     if (textField == _keyTextField) {
         [_valueTextField becomeFirstResponder];
     } else if (textField == _valueTextField) {
-        [self okPressed:nil];
+        [self donePressed:nil];
     }
 
     return YES;
 }
 
-- (void)okPressed:(id)sender {
+- (void)donePressed:(id)sender {
     if (self.keyTextField.text.length == 0) {
         NSString *title = NSLocalizedString(@"Name cannot be empty", nil);
         NSString *ok = NSLocalizedString(@"OK", nil);
@@ -68,21 +67,11 @@
         return;
     }
 
-    [super okPressed:sender];
-}
+    _stringField.key = _keyTextField.text;
+    _stringField.value = _valueTextField.text;
+    _stringField.protected = _protectedSwitchCell.switchControl.on;
 
-- (void)formViewController:(FormViewController *)controller button:(FormViewControllerButton)button {
-    if (button == FormViewControllerButtonOk) {
-        _stringField.key = _keyTextField.text;
-        _stringField.value = _valueTextField.text;
-        _stringField.protected = _protectedSwitchCell.switchControl.on;
-
-        if ([_stringFieldViewDelegate respondsToSelector:@selector(stringFieldViewController:updateStringField:)]) {
-            [_stringFieldViewDelegate stringFieldViewController:self updateStringField:_stringField];
-        }
-    }
-    
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [super donePressed:sender];
 }
 
 @end

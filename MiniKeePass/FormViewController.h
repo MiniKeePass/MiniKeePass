@@ -18,35 +18,21 @@
 #import <UIKit/UIKit.h>
 #import "InfoBar.h"
 
-@protocol FormViewControllerDelegate;
-
-@interface FormViewController : UITableViewController <UITextFieldDelegate> {
-    NSArray *controls;
-    NSMutableArray *cells;
-    NSString *headerTitle;
-    NSString *footerTitle;
-    
-    InfoBar *infoBar;
-    
-    id<FormViewControllerDelegate> delegate;
-}
+@interface FormViewController : UITableViewController <UITextFieldDelegate>
 
 @property (nonatomic, strong) NSArray *controls;
+
 @property (nonatomic, copy) NSString *headerTitle;
 @property (nonatomic, copy) NSString *footerTitle;
 
-@property (nonatomic, strong) id<FormViewControllerDelegate> delegate;
+@property (nonatomic, copy) void (^donePressed)(FormViewController *formViewController);
+@property (nonatomic, copy) void (^cancelPressed)(FormViewController *formViewController);
+
+- (id)init;
+
+- (void)donePressed:(id)sender;
+- (void)cancelPressed:(id)sender;
 
 - (void)showErrorMessage:(NSString*)message;
-- (void)okPressed:(id)sender;
 
-@end
-
-typedef enum {
-    FormViewControllerButtonCancel,
-    FormViewControllerButtonOk
-} FormViewControllerButton;
-
-@protocol FormViewControllerDelegate <NSObject>
-- (void)formViewController:(FormViewController *)controller button:(FormViewControllerButton)button;
 @end

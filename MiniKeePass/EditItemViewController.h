@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2012 Jason Rush and John Flanagan. All rights reserved.
+ * Copyright 2011-2013 Jason Rush and John Flanagan. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,22 +15,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#import "RenameItemViewController.h"
-#import "MiniKeePassAppDelegate.h"
+#import <UIKit/UIKit.h>
+#import "FormViewController.h"
+#import "ImageSelectionViewController.h"
+#import "Kdb.h"
 
-@implementation RenameItemViewController
+@interface EditItemViewController : FormViewController <ImageSelectionViewDelegate>
 
-- (void)setType:(RenameItemType)type {
-    _type = type;
-    switch (_type) {
-        case RenameItemTypeGroup:
-            self.title = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"Rename", nil), NSLocalizedString(@"Group", nil)];
-            break;
+@property (nonatomic, readonly) UITextField *nameTextField;
+@property (nonatomic, assign) NSUInteger selectedImageIndex;
 
-        case RenameItemTypeEntry:
-            self.title = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"Rename", nil), NSLocalizedString(@"Entry", nil)];
-            break;
-    }
-}
+- (id)initWithEntry:(KdbEntry *)entry;
+- (id)initWithGroup:(KdbGroup *)group;
 
 @end
