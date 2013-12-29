@@ -18,11 +18,10 @@
 #import <UIKit/UIKit.h>
 #import "LengthCell.h"
 #import "CharacterSetsViewController.h"
-#import "AutorotatingTableViewController.h"
 
 @protocol PasswordGeneratorDelegate;
 
-@interface PasswordGeneratorViewController : AutorotatingTableViewController <LengthCellDelegate> {
+@interface PasswordGeneratorViewController : UITableViewController <LengthCellDelegate> {
     LengthCell *lengthCell;
     UITableViewCell *characterSetsCell;
     UITableViewCell *passwordCell;

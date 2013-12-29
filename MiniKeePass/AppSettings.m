@@ -32,6 +32,7 @@
 #define PASSWORD_ENCODING          @"passwordEncoding"
 #define CLEAR_CLIPBOARD_ENABLED    @"clearClipboardEnabled"
 #define CLEAR_CLIPBOARD_TIMEOUT    @"clearClipboardTimeout"
+#define WEB_BROWSER_INTEGRATED     @"webBrowserIntegrated"
 #define PW_GEN_LENGTH              @"pwGenLength"
 #define PW_GEN_CHAR_SETS           @"pwGenCharSets"
 
@@ -116,6 +117,7 @@ static AppSettings *sharedInstance;
         [defaultsDict setValue:[NSNumber numberWithInt:0] forKey:PASSWORD_ENCODING];
         [defaultsDict setValue:[NSNumber numberWithBool:NO] forKey:CLEAR_CLIPBOARD_ENABLED];
         [defaultsDict setValue:[NSNumber numberWithInt:0] forKey:CLEAR_CLIPBOARD_TIMEOUT];
+        [defaultsDict setValue:[NSNumber numberWithBool:YES] forKey:WEB_BROWSER_INTEGRATED];
         [defaultsDict setValue:[NSNumber numberWithInt:10] forKey:PW_GEN_LENGTH];
         [defaultsDict setValue:[NSNumber numberWithInt:CHARACTER_SET_DEFAULT] forKey:PW_GEN_CHAR_SETS];
         [userDefaults registerDefaults:defaultsDict];
@@ -253,6 +255,14 @@ static AppSettings *sharedInstance;
 
 - (void)setClearClipboardTimeoutIndex:(NSInteger)clearClipboardTimeoutIndex {
     [userDefaults setInteger:clearClipboardTimeoutIndex forKey:CLEAR_CLIPBOARD_TIMEOUT];
+}
+
+- (BOOL)webBrowserIntegrated {
+    return [userDefaults boolForKey:WEB_BROWSER_INTEGRATED];
+}
+
+- (void)setWebBrowserIntegrated:(BOOL)webBrowserIntegrated {
+    [userDefaults setBool:webBrowserIntegrated forKey:WEB_BROWSER_INTEGRATED];
 }
 
 - (NSInteger)pwGenLength {

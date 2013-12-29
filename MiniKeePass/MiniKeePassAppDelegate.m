@@ -26,13 +26,9 @@
 
 @interface MiniKeePassAppDelegate ()  {
     UINavigationController *navigationController;
-    UIActionSheet* myActionSheet;
-    id<UIActionSheetDelegate> myActionSheetDelegate;
-    
+
     UIImage *images[NUM_IMAGES];
 }
-
-@property (nonatomic, copy) NSString *fileToOpen;
 
 @end
 
@@ -82,7 +78,6 @@
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
-    [self dismissActionSheet];
     if (!self.locked) {
         [LockScreenController present];
         NSDate *currentTime = [NSDate date];
@@ -93,17 +88,6 @@
 - (void)applicationWillEnterForeground:(UIApplication *)application {
     // Check file protection
     [self checkFileProtection];
-
-    // Check if we're supposed to open a file
-    if (self.fileToOpen != nil) {
-        // Close the current database
-        [self closeDatabase];
-        
-        // Open the file
-        [[DatabaseManager sharedInstance] openDatabaseDocument:self.fileToOpen animated:NO];
-        
-        self.fileToOpen = nil;
-    }
 
     // Get the time when the application last exited
     AppSettings *appSettings = [AppSettings sharedInstance];
@@ -122,22 +106,15 @@
     }
 }
 
-- (CGFloat)currentScreenWidth {
-    CGRect screenRect = [[UIScreen mainScreen] bounds];
-    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
-    
-    return UIInterfaceOrientationIsPortrait(orientation) ? CGRectGetWidth(screenRect) : CGRectGetHeight(screenRect);
-}
-
-- (void)openUrl:(NSURL *)url {
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
     // Get the filename
     NSString *filename = [url lastPathComponent];
-    
+
     // Get the full path of where we're going to move the file
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
     NSString *path = [documentsDirectory stringByAppendingPathComponent:filename];
-    
+
     // Move input file into documents directory
     NSFileManager *fileManager = [NSFileManager defaultManager];
     [fileManager removeItemAtPath:path error:nil];
@@ -149,24 +126,10 @@
     // Delete the Inbox folder if it exists
     [fileManager removeItemAtPath:[documentsDirectory stringByAppendingPathComponent:@"Inbox"] error:nil];
 
-    // Store the filename to open if it's a database
-    if ([filename hasSuffix:@".kdb"] || [filename hasSuffix:@".kdbx"]) {
-        self.fileToOpen = filename;
-    } else {
-        self.fileToOpen = nil;
-        FilesViewController *fileView = [[navigationController viewControllers] objectAtIndex:0];
-        [fileView updateFiles];
-        [fileView.tableView reloadData];
-    }
-}
+    FilesViewController *fileView = [[navigationController viewControllers] objectAtIndex:0];
+    [fileView updateFiles];
+    [fileView.tableView reloadData];
 
-- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
-    [self openUrl:url];
-    return YES;
-}
-
-- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
-    [self openUrl:url];
     return YES;
 }
 
@@ -178,9 +141,9 @@
     _databaseDocument = newDatabaseDocument;
     
     // Create and push on the root group view controller
-    GroupViewController *groupViewController = [[GroupViewController alloc] init];
+    GroupViewController *groupViewController = [[GroupViewController alloc] initWithGroup:_databaseDocument.kdbTree.root];
     groupViewController.title = [[_databaseDocument.filename lastPathComponent] stringByDeletingPathExtension];
-    groupViewController.group = _databaseDocument.kdbTree.root;
+    
     [navigationController pushViewController:groupViewController animated:YES];
 }
 
@@ -307,10 +270,12 @@
 
         // Get the clear clipboard timeout (in seconds)
         NSInteger clearClipboardTimeout = [appSettings clearClipboardTimeout];
-        
-        // Initiate a background task
+
         UIApplication *application = [UIApplication sharedApplication];
-        UIBackgroundTaskIdentifier bgTask = [application beginBackgroundTaskWithExpirationHandler:^{
+
+        // Initiate a background task
+        __block UIBackgroundTaskIdentifier bgTask;
+        bgTask = [application beginBackgroundTaskWithExpirationHandler:^{
             // End the background task
             [application endBackgroundTask:bgTask];
         }];
@@ -338,58 +303,12 @@
     settingsViewController.navigationItem.rightBarButtonItem = doneButton;
     
     UINavigationController *settingsNavController = [[UINavigationController alloc] initWithRootViewController:settingsViewController];
-    settingsNavController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
     
     [self.window.rootViewController presentModalViewController:settingsNavController animated:YES];
 }
 
 - (void)dismissSettingsView {
     [self.window.rootViewController dismissModalViewControllerAnimated:YES];
-}
-
-- (void)showActionSheet:(UIActionSheet *)actionSheet {
-    if (myActionSheet != nil) {
-        [myActionSheet dismissWithClickedButtonIndex:myActionSheet.cancelButtonIndex animated:NO];
-    }
-
-    myActionSheet = actionSheet;
-    myActionSheetDelegate = actionSheet.delegate;
-    
-    actionSheet.delegate = self;
-    [actionSheet showInView:self.window.rootViewController.view];
-}
-
-- (void)dismissActionSheet {
-    if (myActionSheet != nil) {
-        [myActionSheet dismissWithClickedButtonIndex:myActionSheet.cancelButtonIndex animated:YES];
-    }
-}
-
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if ([myActionSheetDelegate respondsToSelector:@selector(actionSheet:clickedButtonAtIndex:)]) {
-        [myActionSheetDelegate actionSheet:actionSheet clickedButtonAtIndex:buttonIndex];
-    }
-}
-
-- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
-    if ([myActionSheetDelegate respondsToSelector:@selector(actionSheet:didDismissWithButtonIndex:)]) {
-        [myActionSheetDelegate actionSheet:actionSheet didDismissWithButtonIndex:buttonIndex];
-    }
-    
-    myActionSheet = nil;
-    myActionSheetDelegate = nil;
-}
-
-- (void)actionSheet:(UIActionSheet *)actionSheet willDismissWithButtonIndex:(NSInteger)buttonIndex {
-    if ([myActionSheetDelegate respondsToSelector:@selector(actionSheet:willDismissWithButtonIndex:)]) {
-        [myActionSheetDelegate actionSheet:actionSheet willDismissWithButtonIndex:buttonIndex];
-    }
-}
-
-- (void)actionSheetCancel:(UIActionSheet *)actionSheet {
-    if ([myActionSheetDelegate respondsToSelector:@selector(actionSheetCancel:)]) {
-        [myActionSheetDelegate actionSheetCancel:actionSheet];
-    }
 }
 
 @end

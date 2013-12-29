@@ -33,6 +33,8 @@
 - (BinaryRef *)parseBinaryRef:(DDXMLElement *)root;
 - (AutoType *)parseAutoType:(DDXMLElement *)root;
 - (UUID *)parseUuidString:(NSString *)uuidString;
+- (NSMutableData *)parseBase64String:(NSString *)base64String;
+- (DeletedObject *)parseDeletedObject:(DDXMLElement *)root;
 @end
 
 @implementation Kdb4Parser
@@ -91,9 +93,13 @@ int closeCallback(void *context) {
         @throw [NSException exceptionWithName:@"ParseError" reason:@"Failed to parse database" userInfo:nil];
     }
 
-    // FIXME DeletedObjects
-
     tree.root = [self parseGroup:element];
+
+    DDXMLElement *deletedObjects = [rootElement elementForName:@"DeletedObjects"];
+    for (DDXMLElement *deletedObjectElement in [deletedObjects elementsForName:@"DeletedObject"]) {
+        DeletedObject *deletecObject = [self parseDeletedObject:deletedObjectElement];
+        [tree.deletedObjects addObject:deletecObject];
+    }
 
     return tree;
 }
@@ -104,7 +110,7 @@ int closeCallback(void *context) {
         NSString *str = [root stringValue];
 
         // Base64 decode the string
-        NSMutableData *data = [Base64 decode:[str dataUsingEncoding:NSASCIIStringEncoding]];
+        NSMutableData *data = [self parseBase64String:str];
 
         // Unprotect the password
         [randomStream xor:data];
@@ -122,7 +128,12 @@ int closeCallback(void *context) {
 
 - (void)parseMeta:(DDXMLElement *)root tree:(Kdb4Tree *)tree {
     tree.generator = [[root elementForName:@"Generator"] stringValue];
-    // FIXME HeaderHash
+
+    DDXMLElement *headerHashElement = [root elementForName:@"HeaderHash"];
+    if (headerHashElement != nil) {
+        tree.headerHash = [self parseBase64String:[headerHashElement stringValue]];
+    }
+
     tree.databaseName = [[root elementForName:@"DatabaseName"] stringValue];
     tree.databaseNameChanged = [dateFormatter dateFromString:[[root elementForName:@"DatabaseNameChanged"] stringValue]];
     tree.databaseDescription = [[root elementForName:@"DatabaseDescription"] stringValue];
@@ -361,8 +372,20 @@ int closeCallback(void *context) {
         return nil;
     }
 
-    NSData *data = [Base64 decode:[uuidString dataUsingEncoding:NSUTF8StringEncoding]];
+    NSData *data = [self parseBase64String:uuidString];
     return [[UUID alloc] initWithData:data];
+}
+
+- (NSMutableData *)parseBase64String:(NSString *)base64String {
+    return [Base64 decode:[base64String dataUsingEncoding:NSASCIIStringEncoding]];
+}
+
+- (DeletedObject *)parseDeletedObject:(DDXMLElement *)root {
+    DeletedObject *deletedObject = [[DeletedObject alloc] init];
+    deletedObject.uuid = [self parseUuidString:[[root elementForName:@"UUID"] stringValue]];
+    deletedObject.deletionTime = [dateFormatter dateFromString:[[root elementForName:@"DeletionTime"] stringValue]];
+
+    return deletedObject;
 }
 
 @end

@@ -20,8 +20,10 @@
 
 @implementation TitleFieldCell
 
-- (id)initWithFrame:(CGRect)frame {
-    self = [super initWithFrame:frame];
+@synthesize delegate;
+
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         _imageButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
         
@@ -33,10 +35,8 @@
 
 - (void)textFieldDidEndEditing:(UITextField *)inTextField {
     [super textFieldDidEndEditing:inTextField];
-    
-    UITableView *tableView = (UITableView*)self.superview;
-    UITableViewController *tableViewController = (UITableViewController*)tableView.delegate;
-    tableViewController.title = self.textField.text;
+
+    [delegate titleFieldCell:self updatedTitle:self.textField.text];
 }
 
 @end

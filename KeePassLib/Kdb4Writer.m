@@ -26,6 +26,7 @@
 #import "Salsa20RandomStream.h"
 #import "UUID.h"
 #import "Utils.h"
+#import <CommonCrypto/CommonDigest.h>
 
 #define DEFAULT_BIN_SIZE (32*1024)
 
@@ -49,11 +50,17 @@
 }
 
 - (void)persist:(Kdb4Tree*)tree file:(NSString*)filename withPassword:(KdbPassword*)kdbPassword {
+    // Update the generator
+    tree.generator = @"MiniKeePass";
+
     // Configure the output stream
     DataOutputStream *outputStream = [[DataOutputStream alloc] init];
     
     // Write the header
     [self writeHeader:outputStream withTree:tree];
+
+    // Compute a hash of the header data
+    tree.headerHash = [self computeHashOfHeaderData:outputStream.data];
     
     // Create the encryption output stream
     NSData *key = [kdbPassword createFinalKeyForVersion:4 masterSeed:masterSeed transformSeed:transformSeed rounds:tree.rounds];
@@ -134,6 +141,12 @@
     buffer[2] = '\r';
     buffer[3] = '\n';
     [self writeHeaderField:outputStream headerId:HEADER_EOH data:buffer length:4];
+}
+
+- (NSData *)computeHashOfHeaderData:(NSData *)headerData {
+    uint8_t hash[CC_SHA256_DIGEST_LENGTH];
+    CC_SHA256(headerData.bytes, headerData.length, hash);
+    return [NSData dataWithBytes:hash length:sizeof(hash)];
 }
 
 - (void)newFile:(NSString*)fileName withPassword:(KdbPassword*)kdbPassword {

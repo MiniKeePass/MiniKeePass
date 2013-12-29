@@ -16,7 +16,6 @@
  */
 
 #import "HelpViewController.h"
-#import "AutorotatingViewController.h"
 
 @interface HelpTopic : NSObject
 - (HelpTopic *)initWithTitle:(NSString *)title andResource:(NSString *)resource;
@@ -64,6 +63,16 @@
     return self;
 }
 
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(closeHelp)];
+}
+
+- (void)closeHelp {
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return _helpTopics.count;
 }
@@ -104,7 +113,7 @@
     webView.backgroundColor = [UIColor whiteColor];
     [webView loadRequest:[NSURLRequest requestWithURL:url]];
     
-    UIViewController *viewController = [[AutorotatingViewController alloc] init];
+    UIViewController *viewController = [[UIViewController alloc] init];
     viewController.title = NSLocalizedString(title, nil);
     viewController.view = webView;
     

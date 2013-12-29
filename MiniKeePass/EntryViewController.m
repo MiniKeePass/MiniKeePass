@@ -17,6 +17,8 @@
 
 #import "EntryViewController.h"
 #import "Kdb4Node.h"
+#import "AppSettings.h"
+#import "WebViewController.h"
 
 #import <MBProgressHUD/MBProgressHUD.h>
 
@@ -60,7 +62,8 @@
 
         appDelegate = (MiniKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
 
-        titleCell = [[TitleFieldCell alloc] init];
+        titleCell = [[TitleFieldCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:nil];
+        titleCell.delegate = self;
         titleCell.textLabel.text = NSLocalizedString(@"Title", nil);
         titleCell.textField.placeholder = NSLocalizedString(@"Title", nil);
         titleCell.textField.enabled = NO;
@@ -68,7 +71,7 @@
         titleCell.imageButton.adjustsImageWhenHighlighted = NO;
         [titleCell.imageButton addTarget:self action:@selector(imageButtonPressed) forControlEvents:UIControlEventTouchUpInside];
 
-        usernameCell = [[TextFieldCell alloc] init];
+        usernameCell = [[TextFieldCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:nil];
         usernameCell.textLabel.text = NSLocalizedString(@"Username", nil);
         usernameCell.textField.placeholder = NSLocalizedString(@"Username", nil);
         usernameCell.textField.enabled = NO;
@@ -76,7 +79,7 @@
         usernameCell.textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
         usernameCell.textFieldCellDelegate = self;
 
-        passwordCell = [[PasswordFieldCell alloc] init];
+        passwordCell = [[PasswordFieldCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:nil];
         passwordCell.textLabel.text = NSLocalizedString(@"Password", nil);
         passwordCell.textField.placeholder = NSLocalizedString(@"Password", nil);
         passwordCell.textField.enabled = NO;
@@ -84,7 +87,7 @@
         [passwordCell.accessoryButton addTarget:self action:@selector(showPasswordPressed) forControlEvents:UIControlEventTouchUpInside];
         [passwordCell.editAccessoryButton addTarget:self action:@selector(generatePasswordPressed) forControlEvents:UIControlEventTouchUpInside];
 
-        urlCell = [[UrlFieldCell alloc] init];
+        urlCell = [[UrlFieldCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:nil];
         urlCell.textLabel.text = NSLocalizedString(@"URL", nil);
         urlCell.textField.placeholder = NSLocalizedString(@"URL", nil);
         urlCell.textField.enabled = NO;
@@ -119,6 +122,7 @@
 
     if (self.isNewEntry) {
         [self setEditing:YES animated:NO];
+        [titleCell.textField becomeFirstResponder];
         self.isNewEntry = NO;
     }
 }
@@ -217,8 +221,6 @@
             [kdb4Entry.stringFields addObjectsFromArray:self.editingStringFields];
             self.editingStringFields = nil;
         }
-
-        appDelegate.databaseDocument.dirty = YES;
 
         // Save the database document
         [appDelegate.databaseDocument save];
@@ -340,6 +342,10 @@
     [self.tableView endUpdates];
 }
 
+- (void)titleFieldCell:(TitleFieldCell *)cell updatedTitle:(NSString *)title {
+    self.title = title;
+}
+
 - (void)textFieldCellWillReturn:(TextFieldCell *)textFieldCell {
     NSIndexPath *indexPath = [self.tableView indexPathForCell:textFieldCell];
 
@@ -439,7 +445,12 @@
     StringField *stringField = [StringField stringFieldWithKey:@"" andValue:@""];
 
     StringFieldViewController *stringFieldViewController = [[StringFieldViewController alloc] initWithStringField:stringField];
-    stringFieldViewController.stringFieldViewDelegate = self;
+    stringFieldViewController.donePressed = ^(FormViewController *formViewController) {
+        [self updateStringField:(StringFieldViewController *)formViewController];
+    };
+    stringFieldViewController.cancelPressed = ^(FormViewController *formViewController) {
+        [formViewController dismissViewControllerAnimated:YES completion:nil];
+    };
 
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:stringFieldViewController];
 
@@ -552,7 +563,7 @@
             } else {
                 TextFieldCell *cell = [tableView dequeueReusableCellWithIdentifier:TextFieldCellIdentifier];
                 if (cell == nil) {
-                    cell = [[TextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault
+                    cell = [[TextFieldCell alloc] initWithStyle:UITableViewCellStyleValue2
                                                  reuseIdentifier:TextFieldCellIdentifier];
                     cell.textFieldCellDelegate = self;
                     cell.textField.returnKeyType = UIReturnKeyDone;
@@ -641,23 +652,29 @@
 
     StringFieldViewController *stringFieldViewController = [[StringFieldViewController alloc] initWithStringField:stringField];
     stringFieldViewController.object = indexPath;
-    stringFieldViewController.stringFieldViewDelegate = self;
+    stringFieldViewController.donePressed = ^(FormViewController *formViewController) {
+        [self updateStringField:(StringFieldViewController *)formViewController];
+    };
+    stringFieldViewController.cancelPressed = ^(FormViewController *formViewController) {
+        [formViewController dismissViewControllerAnimated:YES completion:nil];
+    };
 
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:stringFieldViewController];
 
     [self.navigationController presentViewController:navController animated:YES completion:nil];
-
 }
 
-- (void)stringFieldViewController:(StringFieldViewController *)controller updateStringField:(StringField *)stringField {
-    if (controller.object == nil) {
+- (void)updateStringField:(StringFieldViewController *)stringFieldController {
+    if (stringFieldController.object == nil) {
         NSIndexPath *indexPath = [NSIndexPath indexPathForRow:self.editingStringFields.count inSection:1];
-        [self.editingStringFields addObject:stringField];
+        [self.editingStringFields addObject:stringFieldController.stringField];
         [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
     } else {
-        NSIndexPath *indexPath = (NSIndexPath *)controller.object;
+        NSIndexPath *indexPath = (NSIndexPath *)stringFieldController.object;
         [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
     }
+
+    [stringFieldController dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - Image related
@@ -716,8 +733,17 @@
     if (url.scheme == nil) {
         url = [NSURL URLWithString:[@"http://" stringByAppendingString:text]];
     }
-    
-    [[UIApplication sharedApplication] openURL:url];
+
+    BOOL isHttp = [url.scheme isEqualToString:@"http"] || [url.scheme isEqualToString:@"https"];
+
+    BOOL webBrowserIntegrated = [[AppSettings sharedInstance] webBrowserIntegrated];
+    if (webBrowserIntegrated && isHttp) {
+        WebViewController *webViewController = [[WebViewController alloc] init];
+        webViewController.entry = self.entry;
+        [self.navigationController pushViewController:webViewController animated:YES];
+    } else {
+        [[UIApplication sharedApplication] openURL:url];
+    }
 }
 
 @end

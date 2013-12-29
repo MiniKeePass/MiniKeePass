@@ -27,9 +27,8 @@
 #import "MiniKeePassAppDelegate.h"
 #import "PasswordGeneratorViewController.h"
 #import "StringFieldViewController.h"
-#import "AutorotatingTableViewController.h"
 
-@interface EntryViewController : AutorotatingTableViewController <UIGestureRecognizerDelegate, ImageSelectionViewDelegate, TextFieldCellDelegate, PasswordGeneratorDelegate, StringFieldViewDelegate>
+@interface EntryViewController : UITableViewController <UIGestureRecognizerDelegate, ImageSelectionViewDelegate, PasswordGeneratorDelegate, TitleFieldCellDelegate, TextFieldCellDelegate>
 
 @property (nonatomic, assign) NSUInteger selectedImageIndex;
 @property (nonatomic, strong) KdbEntry *entry;

@@ -19,59 +19,35 @@
 #import "AppSettings.h"
 
 @interface DatabaseDocument ()
-- (BOOL)matchesEntry:(KdbEntry *)entry searchText:(NSString *)searchText;
+@property (nonatomic, strong) KdbPassword *kdbPassword;
 @end
 
 @implementation DatabaseDocument
 
-@synthesize kdbTree;
-@synthesize filename;
-@synthesize dirty;
-
-- (id)init {
+- (id)initWithFilename:(NSString *)filename password:(NSString *)password keyFile:(NSString *)keyFile {
     self = [super init];
     if (self) {
-        kdbTree = nil;
-        filename = nil;
-        dirty = NO;
-        kdbPassword = nil;
-        documentInteractionController = nil;
+        if (password == nil && keyFile == nil) {
+            @throw [NSException exceptionWithName:@"IllegalArgument" reason:@"No password or keyfile specified" userInfo:nil];
+        }
+
+        self.filename = filename;
+
+        NSStringEncoding passwordEncoding = [[AppSettings sharedInstance] passwordEncoding];
+        self.kdbPassword = [[KdbPassword alloc] initWithPassword:password
+                                                passwordEncoding:passwordEncoding
+                                                         keyFile:keyFile];
+
+        self.kdbTree = [KdbReaderFactory load:self.filename withPassword:self.kdbPassword];
     }
     return self;
 }
 
-- (UIDocumentInteractionController *)documentInteractionController {
-    if (documentInteractionController == nil) {
-        NSURL *url = [NSURL fileURLWithPath:filename];
-        documentInteractionController = [UIDocumentInteractionController interactionControllerWithURL:url];
-    }
-    return documentInteractionController;
-}
-
-- (void)open:(NSString *)newFilename password:(NSString *)password keyFile:(NSString *)keyFile {
-    if (password == nil && keyFile == nil) {
-        @throw [NSException exceptionWithName:@"IllegalArgument" reason:@"No password or keyfile specified" userInfo:nil];
-    }
-
-    filename = [newFilename copy];
-    dirty = NO;
-
-    NSStringEncoding passwordEncoding = [[AppSettings sharedInstance] passwordEncoding];
-    kdbPassword = [[KdbPassword alloc] initWithPassword:password
-                                       passwordEncoding:passwordEncoding
-                                                keyFile:keyFile];
-
-    self.kdbTree = [KdbReaderFactory load:filename withPassword:kdbPassword];
-}
-
 - (void)save {
-    if (dirty) {
-        dirty = NO;
-        [KdbWriterFactory persist:kdbTree file:filename withPassword:kdbPassword];
-    }
+    [KdbWriterFactory persist:self.kdbTree file:self.filename withPassword:self.kdbPassword];
 }
 
-- (void)searchGroup:(KdbGroup *)group searchText:(NSString *)searchText results:(NSMutableArray *)results {
++ (void)searchGroup:(KdbGroup *)group searchText:(NSString *)searchText results:(NSMutableArray *)results {
     for (KdbEntry *entry in group.entries) {
         if ([self matchesEntry:entry searchText:searchText]) {
             [results addObject:entry];
@@ -85,7 +61,7 @@
     }
 }
 
-- (BOOL)matchesEntry:(KdbEntry *)entry searchText:(NSString *)searchText {
++ (BOOL)matchesEntry:(KdbEntry *)entry searchText:(NSString *)searchText {
     if ([entry.title rangeOfString:searchText options:NSCaseInsensitiveSearch].length > 0) {
         return YES;
     }

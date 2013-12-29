@@ -35,7 +35,7 @@
 }
 
 - (uint8_t)readInt8 {
-    uint8_t value;
+    uint8_t value = 0;
     
     [self read:&value length:1];
     
@@ -43,7 +43,7 @@
 }
 
 - (uint16_t)readInt16 {
-    uint16_t value;
+    uint16_t value = 0;
     
     [self read:&value length:2];
     
@@ -51,7 +51,7 @@
 }
 
 - (uint32_t)readInt32 {
-    uint32_t value;
+    uint32_t value = 0;
     
     [self read:&value length:4];
     
@@ -59,7 +59,7 @@
 }
 
 - (uint64_t)readInt64 {
-    uint64_t value;
+    uint64_t value = 0;
     
     [self read:&value length:8];
     

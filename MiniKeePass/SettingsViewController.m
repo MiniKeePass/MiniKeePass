@@ -31,6 +31,7 @@ enum {
     SECTION_SORTING,
     SECTION_PASSWORD_ENCODING,
     SECTION_CLEAR_CLIPBOARD,
+    SECTION_WEB_BROWSER,
     SECTION_NUMBER
 };
 
@@ -76,6 +77,11 @@ enum {
     ROW_CLEAR_CLIPBOARD_ENABLED,
     ROW_CLEAR_CLIPBOARD_TIMEOUT,
     ROW_CLEAR_CLIPBOARD_NUMBER
+};
+
+enum {
+    ROW_WEB_BROWSER_INTEGRATED,
+    ROW_WEB_BROWSER_NUMBER
 };
 
 @interface SettingsViewController () {
@@ -168,11 +174,16 @@ enum {
                                                                     NSLocalizedString(@"3 Minutes", nil)]
                                                     selectedIndex:0];
 
+    webBrowserIntegratedCell = [[SwitchCell alloc] initWithLabel:NSLocalizedString(@"Integrated", nil)];
+    [webBrowserIntegratedCell.switchControl addTarget:self
+                                           action:@selector(toggleWebBrowserIntegrated:)
+                                 forControlEvents:UIControlEventValueChanged];
+
     // Add version number to table view footer
     CGFloat viewWidth = CGRectGetWidth(self.tableView.frame);
     UIView *tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, viewWidth, 40)];
     
-    NSString *text = [NSString stringWithFormat:@"MiniKeePass version %@", 
+    NSString *text = [NSString stringWithFormat:NSLocalizedString(@"MiniKeePass version %@", nil),
                     [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]];
     UIFont *font = [UIFont boldSystemFontOfSize:17];
     
@@ -217,7 +228,9 @@ enum {
     
     clearClipboardEnabledCell.switchControl.on = [appSettings clearClipboardEnabled];
     [clearClipboardTimeoutCell setSelectedIndex:[appSettings clearClipboardTimeoutIndex]];
-    
+
+    webBrowserIntegratedCell.switchControl.on = [appSettings webBrowserIntegrated];
+
     // Update which controls are enabled
     [self updateEnabledControls];
 }
@@ -267,9 +280,12 @@ enum {
             
         case SECTION_PASSWORD_ENCODING:
             return ROW_PASSWORD_ENCODING_NUMBER;
-            
+
         case SECTION_CLEAR_CLIPBOARD:
             return ROW_CLEAR_CLIPBOARD_NUMBER;
+
+        case SECTION_WEB_BROWSER:
+            return ROW_WEB_BROWSER_NUMBER;
     }
     return 0;
 }
@@ -296,9 +312,12 @@ enum {
             
         case SECTION_PASSWORD_ENCODING:
             return NSLocalizedString(@"Password Encoding", nil);
-            
+
         case SECTION_CLEAR_CLIPBOARD:
             return NSLocalizedString(@"Clear Clipboard on Timeout", nil);
+
+        case SECTION_WEB_BROWSER:
+            return NSLocalizedString(@"Web Browser", nil);
     }
     return nil;
 }
@@ -328,6 +347,9 @@ enum {
             
         case SECTION_CLEAR_CLIPBOARD:
             return NSLocalizedString(@"Clear the contents of the clipboard after a given timeout upon performing a copy.", nil);
+            
+        case SECTION_WEB_BROWSER:
+            return NSLocalizedString(@"Switch between an integrated web browser and Safari.", nil);
     }
     return nil;
 }
@@ -395,6 +417,12 @@ enum {
                     return clearClipboardEnabledCell;
                 case ROW_CLEAR_CLIPBOARD_TIMEOUT:
                     return clearClipboardTimeoutCell;
+            }
+            break;
+        case SECTION_WEB_BROWSER:
+            switch (indexPath.row) {
+                case ROW_WEB_BROWSER_INTEGRATED:
+                    return webBrowserIntegratedCell;
             }
             break;
     }
@@ -535,9 +563,14 @@ enum {
 - (void)toggleClearClipboardEnabled:(id)sender {
     // Update the setting
     [appSettings setClearClipboardEnabled:clearClipboardEnabledCell.switchControl.on];
-    
+
     // Update which controls are enabled
     [self updateEnabledControls];
+}
+
+- (void)toggleWebBrowserIntegrated:(id)sender {
+    // Update the setting
+    [appSettings setWebBrowserIntegrated:webBrowserIntegratedCell.switchControl.on];
 }
 
 - (void)pinViewController:(PinViewController *)controller pinEntered:(NSString *)pin {        

@@ -17,7 +17,6 @@
 
 #import <UIKit/UIKit.h>
 #import "SwitchCell.h"
-#import "AutorotatingTableViewController.h"
 
 #define CHARACTER_SET_UPPER_CASE (1 << 0)
 #define CHARACTER_SET_LOWER_CASE (1 << 1)
@@ -30,7 +29,7 @@
 
 #define CHARACTER_SET_DEFAULT    (CHARACTER_SET_UPPER_CASE | CHARACTER_SET_LOWER_CASE | CHARACTER_SET_DIGITS)
 
-@interface CharacterSetsViewController : AutorotatingTableViewController {
+@interface CharacterSetsViewController : UITableViewController {
     SwitchCell *upperCaseSwitchCell;
     SwitchCell *lowerCaseSwitchCell;
     SwitchCell *digitsSwitchCell;

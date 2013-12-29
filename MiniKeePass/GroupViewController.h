@@ -17,24 +17,19 @@
 
 #import <UIKit/UIKit.h>
 #import "MiniKeePassAppDelegate.h"
-#import "EditGroupViewController.h"
+#import "SelectGroupViewController.h"
 #import "KdbLib.h"
-#import "AutorotatingTableViewController.h"
-#import "ChooseGroupViewController.h"
 
-@interface GroupViewController : AutorotatingTableViewController <UIActionSheetDelegate, UISearchDisplayDelegate, FormViewControllerDelegate, ChooseGroupDelegate> {
-    MiniKeePassAppDelegate *appDelegate;
-    UISearchDisplayController *searchDisplayController;
-    NSMutableArray *results;
-    KdbGroup *group;
-    NSString *pushedKdbTitle;
-    BOOL sortingEnabled;
-    NSMutableArray *groupsArray;
-    NSMutableArray *enteriesArray;
-    NSComparisonResult (^groupComparator) (id obj1, id obj2);
-    NSComparisonResult (^entryComparator) (id obj1, id obj2);
-}
+@interface GroupViewController : UITableViewController <UIActionSheetDelegate, SelectGroupDelegate>
 
-@property (nonatomic, weak) KdbGroup *group;
+@property (nonatomic, weak, readonly) KdbGroup *group;
+
+- (id)initWithGroup:(KdbGroup *)group;
+
+- (void)pushViewControllerForGroup:(KdbGroup *)group;
+- (void)pushViewControllerForEntry:(KdbEntry *)entry;
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForGroup:(KdbGroup *)g;
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForEntry:(KdbEntry *)e;
 
 @end

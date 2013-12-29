@@ -21,7 +21,7 @@
 
 #define KDB4_SIG1              0x9AA2D903
 #define KDB4_SIG2              0xB54BFB67
-#define KDB4_VERSION           0x00030000
+#define KDB4_VERSION           0x00030001
 
 #define HEADER_EOH             0
 #define HEADER_COMMENT         1
@@ -133,6 +133,14 @@
 @end
 
 
+@interface DeletedObject : NSObject
+
+@property(nonatomic, strong) UUID *uuid;
+@property(nonatomic, strong) NSDate *deletionTime;
+
+@end
+
+
 @interface Kdb4Entry : KdbEntry
 
 @property(nonatomic, strong) UUID *uuid;
@@ -163,6 +171,7 @@
 @property(nonatomic, assign) uint32_t compressionAlgorithm;
 
 @property(nonatomic, copy) NSString *generator;
+@property(nonatomic, strong) NSData *headerHash;
 @property(nonatomic, copy) NSString *databaseName;
 @property(nonatomic, strong) NSDate *databaseNameChanged;
 @property(nonatomic, copy) NSString *databaseDescription;
@@ -191,5 +200,6 @@
 @property(nonatomic, strong) UUID *lastTopVisibleGroup;
 @property(nonatomic, readonly) NSMutableArray *binaries;
 @property(nonatomic, readonly) NSMutableArray *customData;
+@property(nonatomic, strong) NSMutableArray *deletedObjects;
 
 @end

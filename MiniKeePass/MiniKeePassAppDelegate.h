@@ -21,14 +21,13 @@
 
 #define NUM_IMAGES 69
 
-@interface MiniKeePassAppDelegate : NSObject <UIApplicationDelegate, UIActionSheetDelegate>
+@interface MiniKeePassAppDelegate : NSObject <UIApplicationDelegate>
 
 @property (nonatomic, strong) UIWindow *window;
 @property (nonatomic, strong) DatabaseDocument *databaseDocument;
 @property (nonatomic, assign) BOOL locked;
 @property (nonatomic, readonly) BOOL backgroundSupported;
 
-- (CGFloat)currentScreenWidth;
 - (void)closeDatabase;
 - (void)deleteAllData;
 
@@ -38,8 +37,5 @@
 
 - (void)showSettingsView;
 - (void)dismissSettingsView;
-
-- (void)showActionSheet:(UIActionSheet*)actionSheet;
-- (void)dismissActionSheet;
 
 @end

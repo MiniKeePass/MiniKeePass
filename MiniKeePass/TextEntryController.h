@@ -18,19 +18,8 @@
 #import <UIKit/UIKit.h>
 #import "FormViewController.h"
 
-@protocol TextEntryControllerDelegate;
+@interface TextEntryController : FormViewController
 
-@interface TextEntryController : FormViewController <FormViewControllerDelegate> {
-    UITextField *textField;
-    id<TextEntryControllerDelegate> textEntryDelegate;
-}
+@property (nonatomic, strong) UITextField *textField;
 
-@property (nonatomic, readonly) UITextField *textField;
-@property (nonatomic, strong) id<TextEntryControllerDelegate> textEntryDelegate;
-
-@end
-
-@protocol TextEntryControllerDelegate <NSObject>
-- (void)textEntryController:(TextEntryController*)controller textEntered:(NSString*)string;
-- (void)textEntryControllerCancelButtonPressed:(TextEntryController*)controller;
 @end
