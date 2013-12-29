@@ -103,9 +103,8 @@ enum {
 
 - (void)updateFiles {
     // Get the document's directory
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
-    
+    NSString *documentsDirectory = [MiniKeePassAppDelegate documentsDirectory];
+
     // Get the contents of the documents directory
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSArray *dirContents = [fileManager contentsOfDirectoryAtPath:documentsDirectory error:nil];
@@ -211,8 +210,7 @@ enum {
     }
 
     // Retrieve the Document directory
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString *documentsDirectory = [MiniKeePassAppDelegate documentsDirectory];
     NSString *path = [documentsDirectory stringByAppendingPathComponent:filename];
 
     // Get the file's modification date
@@ -287,8 +285,7 @@ enum {
     }
     
     // Retrieve the Document directory
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString *documentsDirectory = [MiniKeePassAppDelegate documentsDirectory];
     NSString *path = [documentsDirectory stringByAppendingPathComponent:filename];
 
     // Close the current database if we're deleting it's file
@@ -317,9 +314,8 @@ enum {
     NSString *newFilename = [newName stringByAppendingPathExtension:[oldFilename pathExtension]];
     
     // Get the full path of where we're going to move the file
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
-    
+    NSString *documentsDirectory = [MiniKeePassAppDelegate documentsDirectory];
+
     NSString *oldPath = [documentsDirectory stringByAppendingPathComponent:oldFilename];
     NSString *newPath = [documentsDirectory stringByAppendingPathComponent:newFilename];
     
@@ -402,8 +398,7 @@ enum {
     }
 
     // Retrieve the Document directory
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString *documentsDirectory = [MiniKeePassAppDelegate documentsDirectory];
     NSString *path = [documentsDirectory stringByAppendingPathComponent:filename];
 
     // Check if the file already exists

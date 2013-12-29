@@ -111,8 +111,7 @@
     NSString *filename = [url lastPathComponent];
 
     // Get the full path of where we're going to move the file
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString *documentsDirectory = [MiniKeePassAppDelegate documentsDirectory];
     NSString *path = [documentsDirectory stringByAppendingPathComponent:filename];
 
     // Move input file into documents directory
@@ -135,6 +134,11 @@
 
 + (MiniKeePassAppDelegate *)appDelegate {
     return [[UIApplication sharedApplication] delegate];
+}
+
++ (NSString *)documentsDirectory {
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    return [paths objectAtIndex:0];
 }
 
 - (void)setDatabaseDocument:(DatabaseDocument *)newDatabaseDocument {
@@ -176,8 +180,7 @@
     
     // Get the files in the Documents directory
     NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString *documentsDirectory = [MiniKeePassAppDelegate documentsDirectory];
     NSArray *files = [fileManager contentsOfDirectoryAtPath:documentsDirectory error:nil];
     
     // Delete all the files in the Documents directory
@@ -188,8 +191,7 @@
 
 - (void)checkFileProtection {
     // Get the document's directory
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString *documentsDirectory = [MiniKeePassAppDelegate documentsDirectory];
 
     // Get the contents of the documents directory
     NSFileManager *fileManager = [NSFileManager defaultManager];

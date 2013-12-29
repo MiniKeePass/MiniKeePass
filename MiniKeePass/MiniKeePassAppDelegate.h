@@ -29,6 +29,7 @@
 @property (nonatomic, readonly) BOOL backgroundSupported;
 
 + (MiniKeePassAppDelegate *)appDelegate;
++ (NSString *)documentsDirectory;
 
 - (void)closeDatabase;
 - (void)deleteAllData;

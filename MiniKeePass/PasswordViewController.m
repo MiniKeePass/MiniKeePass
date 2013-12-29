@@ -54,8 +54,7 @@
 
 - (NSArray *)keyFiles {
     // Get the documents directory
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString *documentsDirectory = [MiniKeePassAppDelegate documentsDirectory];
 
     // Get the list of key files in the documents directory
     NSFileManager *fileManager = [NSFileManager defaultManager];
