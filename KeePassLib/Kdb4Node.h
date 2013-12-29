@@ -85,7 +85,7 @@
 
 @property(nonatomic, strong) UUID *uuid;
 @property(nonatomic, copy) NSString *data;
-@property(nonatomic, strong) UIImage *image;
+@property(nonatomic, readonly) UIImage *image;
 
 @end
 

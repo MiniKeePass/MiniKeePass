@@ -16,6 +16,7 @@
  */
 
 #import "Kdb4Node.h"
+#import "Base64.h"
 
 @implementation Kdb4Group
 @end
@@ -47,6 +48,18 @@
 @end
 
 @implementation CustomIcon
+
+@synthesize image = _image;
+
+- (UIImage *)image {
+    if (_image == nil) {
+        NSMutableData *data = [Base64 decode:[self.data dataUsingEncoding:NSASCIIStringEncoding]];
+        _image = [UIImage imageWithData:data];
+    }
+
+    return _image;
+}
+
 @end
 
 @implementation CustomItem
