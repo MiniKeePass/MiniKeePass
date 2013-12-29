@@ -55,7 +55,7 @@
 "In Memory Protection" = "In Memory Protection"; // FIXME
 "Custom Field" = "Custom Field"; // FIXME
 "Custom Fields" = "Custom Fields"; // FIXME
-"Add new..." = "Add new..."; // FIXME
+"Add new…" = "Add new…"; // FIXME
 "Choose Group" = "Choose Group"; // FIXME
 "Backup" = "Backup"; // FIXME
 
@@ -90,6 +90,7 @@
 "A file already exists with this name" = "已存在同名文件";
 "There are no applications installed capable of importing KeePass files" = "尚未安装支持导入 KeePass 文件的应用";
 "You do not have any KeePass files available for MiniKeePass to open." = "尚无可供 MiniKeePass 打开的 KeePass 文件";
+"No password or keyfile specified" = "No password or keyfile specified"; // FIXME
 
 // Settings Page
 "Settings" = "设置";

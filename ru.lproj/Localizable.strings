@@ -58,7 +58,7 @@
 "In Memory Protection" = "Защита в памяти";
 "Custom Field" = "Пользовательское поле";
 "Custom Fields" = "Пользовательские поля";
-"Add new..." = "Добавить";
+"Add new…" = "Добавить…";
 "Choose Group" = "Выбор группы";
 "Backup" = "Резервирование";
 
@@ -93,6 +93,7 @@
 "A file already exists with this name" = "Файл с этим именем уже существует";
 "There are no applications installed capable of importing KeePass files" = "Нет установленных приложений, способных импортировать файлы KeePass";
 "You do not have any KeePass files available for MiniKeePass to open." = "У вас нет файлов KeePass.";
+"No password or keyfile specified" = "Не указан ни пароль, ни файл ключа";
 
 // Settings Page
 "Settings" = "Настройки";
