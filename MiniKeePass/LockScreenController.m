@@ -39,7 +39,7 @@
         pinViewController = [[PinViewController alloc] init];
         pinViewController.delegate = self;
 
-        appDelegate = (MiniKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
+        appDelegate = [MiniKeePassAppDelegate appDelegate];
         
         UIImageView *imageView = [[UIImageView alloc] initWithFrame:self.view.frame];
 

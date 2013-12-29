@@ -69,7 +69,7 @@
 - (void)setSelectedImageIndex:(NSUInteger)selectedImageIndex {
     _selectedImageIndex = selectedImageIndex;
     
-    MiniKeePassAppDelegate *appDelegate = (MiniKeePassAppDelegate *)[[UIApplication sharedApplication] delegate];
+    MiniKeePassAppDelegate *appDelegate = [MiniKeePassAppDelegate appDelegate];
     [self.imageButtonCell.imageButton setImage:[appDelegate loadImage:_selectedImageIndex] forState:UIControlStateNormal];
 }
 

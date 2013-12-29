@@ -67,7 +67,7 @@ enum {
         _group = group;
 
         // Get the app delegate
-        self.appDelegate = (MiniKeePassAppDelegate *)[[UIApplication sharedApplication] delegate];
+        self.appDelegate = [MiniKeePassAppDelegate appDelegate];
 
         // Configure the various buttons
         self.toolbarItems = self.standardToolbarItems;

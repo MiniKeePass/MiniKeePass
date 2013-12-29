@@ -133,6 +133,10 @@
     return YES;
 }
 
++ (MiniKeePassAppDelegate *)appDelegate {
+    return [[UIApplication sharedApplication] delegate];
+}
+
 - (void)setDatabaseDocument:(DatabaseDocument *)newDatabaseDocument {
     if (_databaseDocument != nil) {
         [self closeDatabase];

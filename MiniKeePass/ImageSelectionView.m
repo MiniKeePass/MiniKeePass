@@ -36,7 +36,7 @@
 
     if (self) {
         // Get the application delegate
-        MiniKeePassAppDelegate *appDelegate = (MiniKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
+        MiniKeePassAppDelegate *appDelegate = [MiniKeePassAppDelegate appDelegate];
         
         // Load the images
         imageViews = [[NSMutableArray alloc] initWithCapacity:NUM_IMAGES];

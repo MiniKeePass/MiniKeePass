@@ -60,7 +60,7 @@
                                                                              action:nil];
         self.navigationItem.backBarButtonItem = backBarButtonItem;
 
-        appDelegate = (MiniKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
+        appDelegate = [MiniKeePassAppDelegate appDelegate];
 
         titleCell = [[TitleFieldCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:nil];
         titleCell.delegate = self;

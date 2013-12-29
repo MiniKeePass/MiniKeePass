@@ -77,7 +77,7 @@ static NSString *const kKeyName = @"name";
         self.title = NSLocalizedString(@"Choose Group", nil);
 
         self.allGroups = [[NSMutableArray alloc] init];
-        self.appDelegate = (MiniKeePassAppDelegate *)[[UIApplication sharedApplication] delegate];
+        self.appDelegate = [MiniKeePassAppDelegate appDelegate];
 
         UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(dismissModalViewControllerAnimated:)];
         self.navigationItem.leftBarButtonItem = cancelButton;

@@ -43,7 +43,7 @@ static DatabaseManager *sharedInstance;
     self.selectedFilename = filename;
     
     // Get the application delegate
-    MiniKeePassAppDelegate *appDelegate = (MiniKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
+    MiniKeePassAppDelegate *appDelegate = [MiniKeePassAppDelegate appDelegate];
     
     // Get the documents directory
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
@@ -148,7 +148,7 @@ static DatabaseManager *sharedInstance;
         // Dismiss the view controller, and after animation set the database document
         [passwordViewController dismissViewControllerAnimated:YES completion:^{
             // Set the database document in the application delegate
-            MiniKeePassAppDelegate *appDelegate = (MiniKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
+            MiniKeePassAppDelegate *appDelegate = [MiniKeePassAppDelegate appDelegate];
             appDelegate.databaseDocument = dd;
         }];
     } @catch (NSException *exception) {

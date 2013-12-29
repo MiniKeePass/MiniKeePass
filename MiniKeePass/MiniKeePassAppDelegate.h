@@ -28,6 +28,8 @@
 @property (nonatomic, assign) BOOL locked;
 @property (nonatomic, readonly) BOOL backgroundSupported;
 
++ (MiniKeePassAppDelegate *)appDelegate;
+
 - (void)closeDatabase;
 - (void)deleteAllData;
 - (UIImage*)loadImage:(NSUInteger)index;

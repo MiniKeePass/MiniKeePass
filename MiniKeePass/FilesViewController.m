@@ -36,7 +36,7 @@ enum {
 @synthesize selectedFile;
 
 - (void)viewDidLoad {
-    appDelegate = (MiniKeePassAppDelegate *)[[UIApplication sharedApplication] delegate];
+    appDelegate = [MiniKeePassAppDelegate appDelegate];
     
     self.tableView.allowsSelectionDuringEditing = YES;
     

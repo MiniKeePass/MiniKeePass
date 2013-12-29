@@ -19,7 +19,7 @@
 - (id)init {
     self = [super init];
     if (self) {
-        self.appDelegate = (MiniKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
+        self.appDelegate = [MiniKeePassAppDelegate appDelegate];
         self.results = [[NSMutableArray alloc] init];
     }
     return self;
