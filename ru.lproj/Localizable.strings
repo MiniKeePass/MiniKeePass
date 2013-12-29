@@ -30,7 +30,7 @@
 "New Group" = "Новая группа";
 "New Entry" = "Новая запись";
 "Edit Group" = "Изменить группу";
-"Edit Entry" = "Edit Entry"; // FIXME
+"Edit Entry" = "Изменить запись";
 "Title" = "Название";
 "Image" = "Значок";
 "Images" = "Значки";
@@ -50,8 +50,8 @@
 "Name" = "Имя";
 "Value" = "Значение";
 "Delete" = "Удалить";
-"Move" = "Переместить";
-"Rename" = "Переименовать";
+"Move" = "Перем.";
+"Rename" = "Переим.";
 "Database Name" = "Имя базы данных";
 "Last Modified" = "Последнее изменение";
 "Copied" = "Скопировано";
@@ -60,7 +60,7 @@
 "Custom Fields" = "Пользовательские поля";
 "Add new..." = "Добавить";
 "Choose Group" = "Выбор группы";
-"Backup" = "Backup"; // FIXME
+"Backup" = "Резервирование";
 
 // General Messages
 "Enter your PIN to unlock" = "Введите PIN-код для разблокировки";
