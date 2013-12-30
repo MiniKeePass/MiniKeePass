@@ -250,11 +250,6 @@ enum {
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    MiniKeePassAppDelegate *appDelegate = [MiniKeePassAppDelegate appDelegate];
-    if (!appDelegate.backgroundSupported) {
-        return SECTION_NUMBER - 1;
-    }
-    
     return SECTION_NUMBER;
 }
 

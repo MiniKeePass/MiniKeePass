@@ -18,6 +18,7 @@
 #import "EntryViewController.h"
 #import "Kdb4Node.h"
 #import "AppSettings.h"
+#import "ImageFactory.h"
 #import "WebViewController.h"
 
 #import <MBProgressHUD/MBProgressHUD.h>
@@ -682,7 +683,8 @@
 - (void)setSelectedImageIndex:(NSUInteger)index {
     _selectedImageIndex = index;
 
-    [titleCell.imageButton setImage:[appDelegate loadImage:index] forState:UIControlStateNormal];
+    UIImage *image = [[ImageFactory sharedInstance] imageForIndex:index];
+    [titleCell.imageButton setImage:image forState:UIControlStateNormal];
 }
 
 - (void)imageButtonPressed {

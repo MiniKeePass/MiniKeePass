@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2012 Jason Rush and John Flanagan. All rights reserved.
+ * Copyright 2011-2013 Jason Rush and John Flanagan. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,23 +15,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#import <UIKit/UIKit.h>
-#import "FilesViewController.h"
-#import "DatabaseDocument.h"
+#import <Foundation/Foundation.h>
+#import "Kdb.h"
 
-@interface MiniKeePassAppDelegate : NSObject <UIApplicationDelegate>
+@interface ImageFactory : NSObject
 
-@property (nonatomic, strong) UIWindow *window;
-@property (nonatomic, strong) DatabaseDocument *databaseDocument;
-@property (nonatomic, assign) BOOL locked;
++ (ImageFactory *)sharedInstance;
 
-+ (MiniKeePassAppDelegate *)appDelegate;
-+ (NSString *)documentsDirectory;
-
-- (void)closeDatabase;
-- (void)deleteAllData;
-
-- (void)showSettingsView;
-- (void)dismissSettingsView;
+- (NSArray *)images;
+- (UIImage *)imageForGroup:(KdbGroup *)group;
+- (UIImage *)imageForEntry:(KdbEntry *)entry;
+- (UIImage *)imageForIndex:(NSUInteger)index;
 
 @end
