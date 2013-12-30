@@ -24,43 +24,35 @@
 #import "KeychainUtils.h"
 #import "LockScreenController.h"
 
-@interface MiniKeePassAppDelegate ()  {
-    UINavigationController *navigationController;
+@interface MiniKeePassAppDelegate ()
 
-    UIImage *images[NUM_IMAGES];
-}
+@property (nonatomic, strong) FilesViewController *filesViewController;;
+@property (nonatomic, strong) UINavigationController *navigationController;
 
 @end
 
 @implementation MiniKeePassAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // Initialize the images array
-    int i;
-    for (i = 0; i < NUM_IMAGES; i++) {
-        images[i] = nil;
-    }
-    
     _databaseDocument = nil;
-    
+
     // Create the files view
-    FilesViewController *filesViewController = [[FilesViewController alloc] initWithStyle:UITableViewStylePlain];
-    navigationController = [[UINavigationController alloc] initWithRootViewController:filesViewController];
-    navigationController.toolbarHidden = NO;
-    
+    self.filesViewController = [[FilesViewController alloc] initWithStyle:UITableViewStylePlain];
+
+    self.navigationController = [[UINavigationController alloc] initWithRootViewController:self.filesViewController];
+    self.navigationController.toolbarHidden = NO;
+
     // Create the window
-    _window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    self.window.rootViewController = navigationController;
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    self.window.rootViewController = self.navigationController;
     [self.window makeKeyAndVisible];
-    
-    // Check if backgrounding is supported
-    _backgroundSupported = [[UIDevice currentDevice] isMultitaskingSupported];
-    
-    // Add a pasteboard notification listener is backgrounding is supported
-    if (self.backgroundSupported) {
+
+    // Add a pasteboard notification listener to support clearing the clipboard
     NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
-        [notificationCenter addObserver:self selector:@selector(handlePasteboardNotification:) name:UIPasteboardChangedNotification object:nil];
-    }
+    [notificationCenter addObserver:self
+                           selector:@selector(handlePasteboardNotification:)
+                               name:UIPasteboardChangedNotification
+                             object:nil];
 
     // Check file protection
     [self checkFileProtection];
@@ -68,13 +60,6 @@
     [LockScreenController present];
 
     return YES;
-}
-
-- (void)dealloc {
-    int i;
-    for (i = 0; i < NUM_IMAGES; i++) {
-        images[i] = nil; // FIXME ARC converter recommened deleting this logic, but it seemed unsafe to me -JFF
-    }
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
@@ -111,13 +96,14 @@
     NSString *filename = [url lastPathComponent];
 
     // Get the full path of where we're going to move the file
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString *documentsDirectory = [MiniKeePassAppDelegate documentsDirectory];
     NSString *path = [documentsDirectory stringByAppendingPathComponent:filename];
 
     // Move input file into documents directory
     NSFileManager *fileManager = [NSFileManager defaultManager];
-    [fileManager removeItemAtPath:path error:nil];
+    if ([fileManager fileExistsAtPath:path]) {
+        [fileManager removeItemAtPath:path error:nil];
+    }
     [fileManager moveItemAtURL:url toURL:[NSURL fileURLWithPath:path] error:nil];
 
     // Set file protection on the new file
@@ -126,11 +112,19 @@
     // Delete the Inbox folder if it exists
     [fileManager removeItemAtPath:[documentsDirectory stringByAppendingPathComponent:@"Inbox"] error:nil];
 
-    FilesViewController *fileView = [[navigationController viewControllers] objectAtIndex:0];
-    [fileView updateFiles];
-    [fileView.tableView reloadData];
+    [self.filesViewController updateFiles];
+    [self.filesViewController.tableView reloadData];
 
     return YES;
+}
+
++ (MiniKeePassAppDelegate *)appDelegate {
+    return [[UIApplication sharedApplication] delegate];
+}
+
++ (NSString *)documentsDirectory {
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    return [paths objectAtIndex:0];
 }
 
 - (void)setDatabaseDocument:(DatabaseDocument *)newDatabaseDocument {
@@ -144,12 +138,12 @@
     GroupViewController *groupViewController = [[GroupViewController alloc] initWithGroup:_databaseDocument.kdbTree.root];
     groupViewController.title = [[_databaseDocument.filename lastPathComponent] stringByDeletingPathExtension];
     
-    [navigationController pushViewController:groupViewController animated:YES];
+    [self.navigationController pushViewController:groupViewController animated:YES];
 }
 
 - (void)closeDatabase {
     // Close any open database views
-    [navigationController popToRootViewControllerAnimated:NO];
+    [self.navigationController popToRootViewControllerAnimated:NO];
     
     _databaseDocument = nil;
 }
@@ -172,8 +166,7 @@
     
     // Get the files in the Documents directory
     NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString *documentsDirectory = [MiniKeePassAppDelegate documentsDirectory];
     NSArray *files = [fileManager contentsOfDirectoryAtPath:documentsDirectory error:nil];
     
     // Delete all the files in the Documents directory
@@ -184,14 +177,13 @@
 
 - (void)checkFileProtection {
     // Get the document's directory
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString *documentsDirectory = [MiniKeePassAppDelegate documentsDirectory];
 
     // Get the contents of the documents directory
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSArray *dirContents = [fileManager contentsOfDirectoryAtPath:documentsDirectory error:nil];
 
-    // Strip out all the directories
+    // Check all files to see if protection is enabled
     for (NSString *file in dirContents) {
         if (![file hasPrefix:@"."]) {
             NSString *path = [documentsDirectory stringByAppendingPathComponent:file];
@@ -208,18 +200,6 @@
             }
         }
     }
-}
-
-- (UIImage *)loadImage:(NSUInteger)index {
-    if (index >= NUM_IMAGES) {
-        return nil;
-    }
-    
-    if (images[index] == nil) {
-        images[index] = [UIImage imageNamed:[NSString stringWithFormat:@"%d", index]];
-    }
-    
-    return images[index];
 }
 
 - (void)handlePasteboardNotification:(NSNotification *)notification {

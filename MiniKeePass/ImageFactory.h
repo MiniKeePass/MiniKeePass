@@ -16,12 +16,15 @@
  */
 
 #import <Foundation/Foundation.h>
+#import "Kdb.h"
 
-#import "KdbLib.h"
-#import "GroupViewController.h"
+@interface ImageFactory : NSObject
 
-@interface GroupSearchController : NSObject <UITableViewDataSource, UITableViewDelegate, UISearchDisplayDelegate>
++ (ImageFactory *)sharedInstance;
 
-@property (nonatomic, weak) GroupViewController *groupViewController;
+- (NSArray *)images;
+- (UIImage *)imageForGroup:(KdbGroup *)group;
+- (UIImage *)imageForEntry:(KdbEntry *)entry;
+- (UIImage *)imageForIndex:(NSUInteger)index;
 
 @end

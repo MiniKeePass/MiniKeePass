@@ -17,7 +17,7 @@
 
 #import "EditItemViewController.h"
 #import "ImageButtonCell.h"
-#import "MiniKeePassAppDelegate.h"
+#import "ImageFactory.h"
 
 @interface EditItemViewController ()
 @property (nonatomic, strong) ImageButtonCell *imageButtonCell;
@@ -69,8 +69,8 @@
 - (void)setSelectedImageIndex:(NSUInteger)selectedImageIndex {
     _selectedImageIndex = selectedImageIndex;
     
-    MiniKeePassAppDelegate *appDelegate = (MiniKeePassAppDelegate *)[[UIApplication sharedApplication] delegate];
-    [self.imageButtonCell.imageButton setImage:[appDelegate loadImage:_selectedImageIndex] forState:UIControlStateNormal];
+    UIImage *image = [[ImageFactory sharedInstance] imageForIndex:index];
+    [self.imageButtonCell.imageButton setImage:image forState:UIControlStateNormal];
 }
 
 - (void)imageButtonPressed {

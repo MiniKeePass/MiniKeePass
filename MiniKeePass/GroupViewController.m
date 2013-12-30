@@ -19,9 +19,10 @@
 #import "GroupSearchController.h"
 #import "EntryViewController.h"
 #import "SelectGroupViewController.h"
-#import "AppSettings.h"
 #import "EditItemViewController.h"
 #import "UIActionSheetAutoDismiss.h"
+#import "AppSettings.h"
+#import "ImageFactory.h"
 #import "Kdb3Node.h"
 
 #define PORTRAIT_BUTTON_WIDTH  ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone ? 97.0f : 244.0f)
@@ -67,7 +68,7 @@ enum {
         _group = group;
 
         // Get the app delegate
-        self.appDelegate = (MiniKeePassAppDelegate *)[[UIApplication sharedApplication] delegate];
+        self.appDelegate = [MiniKeePassAppDelegate appDelegate];
 
         // Configure the various buttons
         self.toolbarItems = self.standardToolbarItems;
@@ -426,7 +427,7 @@ enum {
 
     // Configure the cell
     cell.textLabel.text = g.name;
-    cell.imageView.image = [self.appDelegate loadImage:g.image];
+    cell.imageView.image = [[ImageFactory sharedInstance] imageForGroup:g];
 
     return cell;
 }
@@ -442,7 +443,7 @@ enum {
 
     // Configure the cell
     cell.textLabel.text = e.title;
-    cell.imageView.image = [self.appDelegate loadImage:e.image];
+    cell.imageView.image = [[ImageFactory sharedInstance] imageForEntry:e];
 
     // Detail text is a combination of username and url
     NSString *detailText = @"";

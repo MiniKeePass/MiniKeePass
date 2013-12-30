@@ -16,12 +16,13 @@
  */
 
 #import "ImageSelectionView.h"
-#import "MiniKeePassAppDelegate.h"
+#import "ImageFactory.h"
 
 #define IMAGE_SIZE  24.0f
 #define MIN_SPACING 10.5f
 
 @interface ImageSelectionView () {
+    NSUInteger numImages;
     NSMutableArray *imageViews;
     UIImageView *selectedImageView;
     CGFloat spacing;
@@ -36,15 +37,14 @@
 
     if (self) {
         // Get the application delegate
-        MiniKeePassAppDelegate *appDelegate = (MiniKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
-        
-        // Load the images
-        imageViews = [[NSMutableArray alloc] initWithCapacity:NUM_IMAGES];
-        for (int i = 0; i < NUM_IMAGES; i++) {
-            UIImage *image = [appDelegate loadImage:i];
-                
+        ImageFactory *imageFactory = [ImageFactory sharedInstance];
+        numImages = [imageFactory.images count];
+
+        // Create an image view for each image
+        imageViews = [[NSMutableArray alloc] initWithCapacity:numImages];
+        for (UIImage *image in imageFactory.images) {
             UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
-            [self addSubview:imageView];                
+            [self addSubview:imageView];
             [imageViews addObject:imageView];
         }
         
@@ -69,10 +69,10 @@
     // Layout the images
     int numberOfRows = 0;
     CGRect imageFrame = CGRectMake(spacing, spacing, IMAGE_SIZE, IMAGE_SIZE);
-    for (int i = 0; i < NUM_IMAGES; i += imagesPerRow) {
+    for (int i = 0; i < numImages; i += imagesPerRow) {
         numberOfRows++;
         for (int j = 0; j < imagesPerRow; j++) {
-            if (i + j >= NUM_IMAGES) {
+            if (i + j >= numImages) {
                 break;
             }
             
@@ -98,7 +98,7 @@
 }
 
 - (void)setSelectedImageIndex:(NSUInteger)selectedImageIndex {
-    if (selectedImageIndex >= NUM_IMAGES) {
+    if (selectedImageIndex >= numImages) {
         return;
     }
     

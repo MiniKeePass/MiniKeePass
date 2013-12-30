@@ -115,6 +115,7 @@
 		689DFFDE13A4273F005EBD36 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 689DFFDD13A4273F005EBD36 /* CoreGraphics.framework */; };
 		689DFFE713A4273F005EBD36 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 689DFFE613A4273F005EBD36 /* main.m */; };
 		68A3E1AF13A8C9D1006881CA /* FormViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68A3E1AE13A8C9D1006881CA /* FormViewController.m */; };
+		68A4E29A18711983003117A4 /* ImageFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 68A4E29918711983003117A4 /* ImageFactory.m */; };
 		68CE37F214049BC900E4A5E1 /* HelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68CE37F114049BC900E4A5E1 /* HelpViewController.m */; };
 		68CE37F51404A86600E4A5E1 /* safariemail.html in Resources */ = {isa = PBXBuildFile; fileRef = 68CE37F41404A86600E4A5E1 /* safariemail.html */; };
 		68CE868F14EDF4C300D34A61 /* LengthCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68CE868E14EDF4C300D34A61 /* LengthCell.m */; };
@@ -373,6 +374,8 @@
 		689DFFE613A4273F005EBD36 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		68A3E1AD13A8C9D1006881CA /* FormViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FormViewController.h; sourceTree = "<group>"; };
 		68A3E1AE13A8C9D1006881CA /* FormViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FormViewController.m; sourceTree = "<group>"; };
+		68A4E29818711983003117A4 /* ImageFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageFactory.h; sourceTree = "<group>"; };
+		68A4E29918711983003117A4 /* ImageFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageFactory.m; sourceTree = "<group>"; };
 		68CE37F014049BC900E4A5E1 /* HelpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelpViewController.h; sourceTree = "<group>"; };
 		68CE37F114049BC900E4A5E1 /* HelpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelpViewController.m; sourceTree = "<group>"; };
 		68CE37F41404A86600E4A5E1 /* safariemail.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = safariemail.html; sourceTree = "<group>"; };
@@ -773,6 +776,8 @@
 				52C7FD7C18693D9900D498A2 /* GroupSearchController.m */,
 				68CE37F014049BC900E4A5E1 /* HelpViewController.h */,
 				68CE37F114049BC900E4A5E1 /* HelpViewController.m */,
+				68A4E29818711983003117A4 /* ImageFactory.h */,
+				68A4E29918711983003117A4 /* ImageFactory.m */,
 				52A512AF159CE7540009F82F /* ImageSelectionView.h */,
 				52A512B0159CE7540009F82F /* ImageSelectionView.m */,
 				6876F67613B2D8F400A05C7A /* ImageSelectionViewController.h */,
@@ -993,6 +998,7 @@
 				689D046213A42C82005EBD36 /* UrlFieldCell.m in Sources */,
 				68915A0B13A6F6C200A408B0 /* InfoBar.m in Sources */,
 				68A3E1AF13A8C9D1006881CA /* FormViewController.m in Sources */,
+				68A4E29A18711983003117A4 /* ImageFactory.m in Sources */,
 				6876F67813B2D8F500A05C7A /* ImageSelectionViewController.m in Sources */,
 				68D7564D186E4D8A001AFB82 /* WebViewController.m in Sources */,
 				68D991E613F3EAAE00F6ED1F /* PasswordViewController.m in Sources */,
