@@ -25,8 +25,8 @@
 
 @implementation MKPWebView
 
-- (id)init {
-    self = [super init];
+- (id)initWithFrame:(CGRect)frame {
+    self = [super initWithFrame:frame];
     if (self) {
         UIMenuItem *username = [[UIMenuItem alloc] initWithTitle:NSLocalizedString(@"Username", nil) action:@selector(pasteUsername:)];
         UIMenuItem *password = [[UIMenuItem alloc] initWithTitle:NSLocalizedString(@"Password", nil) action:@selector(pastePassword:)];
