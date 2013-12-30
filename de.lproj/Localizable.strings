@@ -26,8 +26,8 @@
 "New Database" = "Neue Datenbank";
 "New Group" = "Neue Gruppe";
 "New Entry" = "Neuer Eintrag";
-"Edit Group" = "Edit Group";
-"Edit Entry" = "Edit Entry"; // FIXME
+"Edit Group" = "Gruppe ändern";
+"Edit Entry" = "Eintrag ändern";
 "Title" = "Titel";
 "Image" = "Bild";
 "Images" = "Bilder";
@@ -57,7 +57,7 @@
 "Custom Fields" = "Benutzerdefiniert";
 "Add new…" = "Hinzufügen…";
 "Choose Group" = "Gruppe auswählen";
-"Backup" = "Backup"; // FIXME
+"Backup" = "Backup";
 
 // General Messages
 "Enter your PIN to unlock" = "Geben Sie zum Entsperren Ihre PIN ein";
@@ -135,13 +135,13 @@
 "Clear the contents of the clipboard after a given timeout upon performing a copy." = "Inhalt der Zwischenablage nach Zeitübeschreitung löschen nachdem kopiert wurde.";
 "Close Timeout" = "Close Timeout";
 "Clear Clipboard Timeout" = "Timeout zum Löschen der Zwischenablage";
-"Web Browser" = "Web Browser"; // FIXME
-"Integrated" = "Integrated"; // FIXME
+"Web Browser" = "Web Browser";
+"Integrated" = "Intigriert";
 "Switch between an integrated web browser and Safari." = "Switch between an integrated web browser and Safari."; // FIXME
 "Set PIN" = "PIN setzen";
 "Confirm PIN" = "PIN bestätigen";
 "PINs did not match. Try again" = "PINs stimmen nicht überein. Bitte erneut versuchen.";
-"MiniKeePass version %@" = "MiniKeePass Version %@"; // FIXME
+"MiniKeePass version %@" = "MiniKeePass Version %@";
 
 // Help Titles
 "iTunes Import/Export" = "iTunes Im- und Export";
