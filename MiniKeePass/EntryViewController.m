@@ -18,6 +18,7 @@
 #import "EntryViewController.h"
 #import "Kdb4Node.h"
 #import "AppSettings.h"
+#import "ImageFactory.h"
 #import "WebViewController.h"
 
 #import <MBProgressHUD/MBProgressHUD.h>
@@ -60,7 +61,7 @@
                                                                              action:nil];
         self.navigationItem.backBarButtonItem = backBarButtonItem;
 
-        appDelegate = (MiniKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
+        appDelegate = [MiniKeePassAppDelegate appDelegate];
 
         titleCell = [[TitleFieldCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:nil];
         titleCell.delegate = self;
@@ -150,10 +151,13 @@
     _entry = e;
     self.isKdb4 = [self.entry isKindOfClass:[Kdb4Entry class]];
 
+    _selectedImageIndex = NSUIntegerMax;
+
     // Update the fields
     self.title = self.entry.title;
     titleCell.textField.text = self.entry.title;
-    [self setSelectedImageIndex:self.entry.image];
+    UIImage *image = [[ImageFactory sharedInstance] imageForEntry:e];
+    [titleCell.imageButton setImage:image forState:UIControlStateNormal];
     usernameCell.textField.text = self.entry.username;
     passwordCell.textField.text = self.entry.password;
     urlCell.textField.text = self.entry.url;
@@ -198,7 +202,9 @@
     // Save the database or reset the entry
     if (editing == NO && !canceled) {
         self.entry.title = titleCell.textField.text;
-        self.entry.image = _selectedImageIndex;
+        if (_selectedImageIndex != NSUIntegerMax) {
+            self.entry.image = _selectedImageIndex;
+        }
         self.entry.username = usernameCell.textField.text;
         self.entry.password = passwordCell.textField.text;
         self.entry.url = urlCell.textField.text;
@@ -207,8 +213,14 @@
 
         [self updateFilledCells];
 
-        // Save string fields
         if (self.isKdb4) {
+            Kdb4Entry *kdb4Entry = (Kdb4Entry *)self.entry;
+
+            // Reset the custom icon if a new image was selected
+            if (_selectedImageIndex != NSUIntegerMax) {
+                kdb4Entry.customIconUuid = nil;
+            }
+
             // Ensure any textfield currently being edited is saved
             int count = self.editingStringFields.count;
             for (int i = 0; i < count; i++) {
@@ -216,7 +228,7 @@
                 [cell.textField resignFirstResponder];
             }
 
-            Kdb4Entry *kdb4Entry = (Kdb4Entry *)self.entry;
+            // Replace all the string fields
             [kdb4Entry.stringFields removeAllObjects];
             [kdb4Entry.stringFields addObjectsFromArray:self.editingStringFields];
             self.editingStringFields = nil;
@@ -679,23 +691,20 @@
 
 #pragma mark - Image related
 
-- (void)setSelectedImageIndex:(NSUInteger)index {
-    _selectedImageIndex = index;
-
-    [titleCell.imageButton setImage:[appDelegate loadImage:index] forState:UIControlStateNormal];
-}
-
 - (void)imageButtonPressed {
     if (self.tableView.isEditing) {
         ImageSelectionViewController *imageSelectionViewController = [[ImageSelectionViewController alloc] init];
         imageSelectionViewController.imageSelectionView.delegate = self;
-        imageSelectionViewController.imageSelectionView.selectedImageIndex = _selectedImageIndex;
+        imageSelectionViewController.imageSelectionView.selectedImageIndex = self.entry.image;
         [self.navigationController pushViewController:imageSelectionViewController animated:YES];
     }
 }
 
 - (void)imageSelectionView:(ImageSelectionView *)imageSelectionView selectedImageIndex:(NSUInteger)imageIndex {
-    [self setSelectedImageIndex:imageIndex];
+    _selectedImageIndex = imageIndex;
+
+    UIImage *image = [[ImageFactory sharedInstance] imageForIndex:imageIndex];
+    [titleCell.imageButton setImage:image forState:UIControlStateNormal];
 }
 
 #pragma mark - Password Display

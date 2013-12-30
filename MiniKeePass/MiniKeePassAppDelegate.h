@@ -19,21 +19,17 @@
 #import "FilesViewController.h"
 #import "DatabaseDocument.h"
 
-#define NUM_IMAGES 69
-
 @interface MiniKeePassAppDelegate : NSObject <UIApplicationDelegate>
 
 @property (nonatomic, strong) UIWindow *window;
 @property (nonatomic, strong) DatabaseDocument *databaseDocument;
 @property (nonatomic, assign) BOOL locked;
-@property (nonatomic, readonly) BOOL backgroundSupported;
+
++ (MiniKeePassAppDelegate *)appDelegate;
++ (NSString *)documentsDirectory;
 
 - (void)closeDatabase;
 - (void)deleteAllData;
-
-- (UIImage *)loadImageForGroup:(KdbGroup *)group;
-- (UIImage *)loadImageForEntry:(KdbEntry *)entry;
-- (UIImage*)loadImage:(NSUInteger)index;
 
 - (void)showSettingsView;
 - (void)dismissSettingsView;

@@ -17,6 +17,7 @@
 
 #import "SelectGroupViewController.h"
 #import "MiniKeePassAppDelegate.h"
+#import "ImageFactory.h"
 
 #define DEFAULT_SPACER_WIDTH 10.0f
 
@@ -77,7 +78,7 @@ static NSString *const kKeyName = @"name";
         self.title = NSLocalizedString(@"Choose Group", nil);
 
         self.allGroups = [[NSMutableArray alloc] init];
-        self.appDelegate = (MiniKeePassAppDelegate *)[[UIApplication sharedApplication] delegate];
+        self.appDelegate = [MiniKeePassAppDelegate appDelegate];
 
         UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(dismissModalViewControllerAnimated:)];
         self.navigationItem.leftBarButtonItem = cancelButton;
@@ -130,7 +131,7 @@ static NSString *const kKeyName = @"name";
     KdbGroup *group = [dict objectForKey:kKeyGroup];
 
     cell.textLabel.text = [dict objectForKey:kKeyName];
-    cell.imageView.image = [self.appDelegate loadImage:group.image];
+    cell.imageView.image = [[ImageFactory sharedInstance] imageForGroup:group];
     cell.level = [[dict objectForKey:kKeyLevel] integerValue];
 
     if ([tableView respondsToSelector:@selector(setSeparatorInset:)]) {

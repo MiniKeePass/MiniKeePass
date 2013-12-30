@@ -43,11 +43,10 @@ static DatabaseManager *sharedInstance;
     self.selectedFilename = filename;
     
     // Get the application delegate
-    MiniKeePassAppDelegate *appDelegate = (MiniKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
+    MiniKeePassAppDelegate *appDelegate = [MiniKeePassAppDelegate appDelegate];
     
     // Get the documents directory
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString *documentsDirectory = [MiniKeePassAppDelegate documentsDirectory];
     
     // Load the password and keyfile from the keychain
     NSString *password = [KeychainUtils stringForKey:self.selectedFilename
@@ -108,8 +107,7 @@ static DatabaseManager *sharedInstance;
 }
 
 - (void)openDatabaseWithPasswordViewController:(PasswordViewController *)passwordViewController {
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString *documentsDirectory = [MiniKeePassAppDelegate documentsDirectory];
     NSString *path = [documentsDirectory stringByAppendingPathComponent:self.selectedFilename];
 
     // Get the password
@@ -127,8 +125,7 @@ static DatabaseManager *sharedInstance;
     // Get the absolute path to the keyfile
     NSString *keyFilePath = nil;
     if (keyFile != nil) {
-        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-        NSString *documentsDirectory = [paths objectAtIndex:0];
+        NSString *documentsDirectory = [MiniKeePassAppDelegate documentsDirectory];
         keyFilePath = [documentsDirectory stringByAppendingPathComponent:keyFile];
     }
 
@@ -148,7 +145,7 @@ static DatabaseManager *sharedInstance;
         // Dismiss the view controller, and after animation set the database document
         [passwordViewController dismissViewControllerAnimated:YES completion:^{
             // Set the database document in the application delegate
-            MiniKeePassAppDelegate *appDelegate = (MiniKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
+            MiniKeePassAppDelegate *appDelegate = [MiniKeePassAppDelegate appDelegate];
             appDelegate.databaseDocument = dd;
         }];
     } @catch (NSException *exception) {
