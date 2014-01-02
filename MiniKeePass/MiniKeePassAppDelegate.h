@@ -34,4 +34,6 @@
 - (void)showSettingsView;
 - (void)dismissSettingsView;
 
++ (MiniKeePassAppDelegate *)appDelegate;
+
 @end
