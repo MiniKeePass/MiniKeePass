@@ -263,10 +263,6 @@ enum {
 
     [self.editingStringFields removeAllObjects];
     [self.editingStringFields addObjectsFromArray:[self.entryStringFields copy]];
-    for (StringField *field in self.editingStringFields) {
-        NSLog(@"%@", field.value);
-    }
-
     [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:SECTION_CUSTOM_FIELDS] withRowAnimation:UITableViewRowAnimationFade];
 
     if (editing) {
