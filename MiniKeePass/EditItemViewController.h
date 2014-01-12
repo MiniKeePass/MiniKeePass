@@ -23,7 +23,7 @@
 @interface EditItemViewController : FormViewController <ImageSelectionViewDelegate>
 
 @property (nonatomic, readonly) UITextField *nameTextField;
-@property (nonatomic, assign) NSUInteger selectedImageIndex;
+@property (nonatomic, strong) KdbImage *selectedImage;
 
 - (id)initWithEntry:(KdbEntry *)entry;
 - (id)initWithGroup:(KdbGroup *)group;

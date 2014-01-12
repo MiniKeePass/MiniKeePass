@@ -38,6 +38,8 @@
     BOOL canceled;
 }
 
+@property (nonatomic, strong) KdbImage *selectedImage;
+
 @property (nonatomic) BOOL isKdb4;
 @property (nonatomic, strong) NSMutableArray *editingStringFields;
 @property (nonatomic, readonly) NSArray *currentStringFields;
@@ -151,7 +153,7 @@
     _entry = e;
     self.isKdb4 = [self.entry isKindOfClass:[Kdb4Entry class]];
 
-    _selectedImageIndex = NSUIntegerMax;
+    _selectedImage = nil;
 
     // Update the fields
     self.title = self.entry.title;
@@ -202,8 +204,8 @@
     // Save the database or reset the entry
     if (editing == NO && !canceled) {
         self.entry.title = titleCell.textField.text;
-        if (_selectedImageIndex != NSUIntegerMax) {
-            self.entry.image = _selectedImageIndex;
+        if (_selectedImage != nil && _selectedImage.index != NSUIntegerMax) {
+            self.entry.image = _selectedImage.index;
         }
         self.entry.username = usernameCell.textField.text;
         self.entry.password = passwordCell.textField.text;
@@ -217,7 +219,7 @@
             Kdb4Entry *kdb4Entry = (Kdb4Entry *)self.entry;
 
             // Reset the custom icon if a new image was selected
-            if (_selectedImageIndex != NSUIntegerMax) {
+            if (_selectedImage != nil && _selectedImage.index != NSUIntegerMax) {
                 kdb4Entry.customIconUuid = nil;
             }
 
@@ -695,16 +697,15 @@
     if (self.tableView.isEditing) {
         ImageSelectionViewController *imageSelectionViewController = [[ImageSelectionViewController alloc] init];
         imageSelectionViewController.imageSelectionView.delegate = self;
-        imageSelectionViewController.imageSelectionView.selectedImageIndex = self.entry.image;
+        imageSelectionViewController.imageSelectionView.selectedImage = [KdbImage kdbImageForEntry:self.entry];
         [self.navigationController pushViewController:imageSelectionViewController animated:YES];
     }
 }
 
-- (void)imageSelectionView:(ImageSelectionView *)imageSelectionView selectedImageIndex:(NSUInteger)imageIndex {
-    _selectedImageIndex = imageIndex;
+- (void)imageSelectionView:(ImageSelectionView *)imageSelectionView selectedKdbImage:(KdbImage *)kdbImage {
+    _selectedImage = kdbImage;
 
-    UIImage *image = [[ImageFactory sharedInstance] imageForIndex:imageIndex];
-    [titleCell.imageButton setImage:image forState:UIControlStateNormal];
+    [titleCell.imageButton setImage:kdbImage.image forState:UIControlStateNormal];
 }
 
 #pragma mark - Password Display

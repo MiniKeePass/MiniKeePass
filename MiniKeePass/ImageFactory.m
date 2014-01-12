@@ -21,6 +21,86 @@
 
 #define NUM_IMAGES 69
 
+@implementation KdbImage
+
++ (KdbImage *)kdbImageWithImage:(UIImage *)image andIndex:(NSUInteger)index {
+    KdbImage *kdbImage = [[KdbImage alloc] init];
+    kdbImage.image = image;
+    kdbImage.index = index;
+    kdbImage.uuid = nil;
+    return kdbImage;
+}
+
++ (KdbImage *)kdbImageWithImage:(UIImage *)image andUuid:(UUID *)uuid {
+    KdbImage *kdbImage = [[KdbImage alloc] init];
+    kdbImage.image = image;
+    kdbImage.index = NSUIntegerMax;
+    kdbImage.uuid = uuid;
+    return kdbImage;
+}
+
++ (KdbImage *)kdbImageForEntry:(KdbEntry *)entry {
+    KdbImage *kdbImage = [[KdbImage alloc] init];
+
+    if ([entry isKindOfClass:[Kdb4Entry class]]) {
+        kdbImage.uuid = ((Kdb4Entry *)entry).customIconUuid;
+    }
+
+    if (kdbImage.uuid == nil) {
+        kdbImage.index = entry.image;
+    }
+
+    ImageFactory *imageFactory = [ImageFactory sharedInstance];
+    if (kdbImage.uuid != nil) {
+        kdbImage.image = [imageFactory imageForUuid:kdbImage.uuid];
+    } else if (kdbImage.index != NSUIntegerMax) {
+        kdbImage.image = [imageFactory imageForIndex:kdbImage.index];
+    }
+
+    return kdbImage;
+}
+
++ (KdbImage *)kdbImageForGroup:(KdbGroup *)group {
+    KdbImage *kdbImage = [[KdbImage alloc] init];
+
+    if ([group isKindOfClass:[Kdb4Group class]]) {
+        kdbImage.uuid = ((Kdb4Group *)group).customIconUuid;
+    }
+
+    if (kdbImage.uuid == nil) {
+        kdbImage.index = group.image;
+    }
+
+    ImageFactory *imageFactory = [ImageFactory sharedInstance];
+    if (kdbImage.uuid != nil) {
+        kdbImage.image = [imageFactory imageForUuid:kdbImage.uuid];
+    } else if (kdbImage.index != NSUIntegerMax) {
+        kdbImage.image = [imageFactory imageForIndex:kdbImage.index];
+    }
+
+    return kdbImage;
+}
+
+- (BOOL)isEqual:(id)object {
+    if (![object isKindOfClass:[KdbImage class]]) {
+        return NO;
+    }
+
+    KdbImage *kdbImage = object;
+    if (self.uuid != nil || kdbImage.uuid != nil) {
+        // If either has a UUID, make sure it matches
+        if (self.uuid != nil && kdbImage.uuid != nil) {
+            return [kdbImage.uuid isEqual:self.uuid];
+        }
+    } else {
+        return kdbImage.index == self.index;
+    }
+
+    return NO;
+}
+
+@end
+
 @interface ImageFactory ()
 @property (nonatomic, strong) NSMutableArray *standardImages;
 @end
@@ -47,12 +127,26 @@
     return sharedInstance;
 }
 
-- (NSArray *)images {
+- (NSArray *)kdbImages {
+    NSMutableArray *kdbImages = [[NSMutableArray alloc] init];
+
     // Make sure all the standard images are loaded
     for (NSUInteger i = 0; i < NUM_IMAGES; i++) {
-        [self imageForIndex:i];
+        KdbImage *kdbImage = [KdbImage kdbImageWithImage:[self imageForIndex:i] andIndex:i];
+        [kdbImages addObject:kdbImage];
     }
-    return self.standardImages;
+
+    MiniKeePassAppDelegate *appDelegate = [MiniKeePassAppDelegate appDelegate];
+    KdbTree *kdbTree = appDelegate.databaseDocument.kdbTree;
+    if ([kdbTree isKindOfClass:[Kdb4Tree class]]) {
+        NSArray *customIcons = ((Kdb4Tree *)kdbTree).customIcons;
+        for (CustomIcon *customIcon in customIcons) {
+            KdbImage *kdbImage = [KdbImage kdbImageWithImage:customIcon.image andUuid:customIcon.uuid];
+            [kdbImages addObject:kdbImage];
+        }
+    }
+
+    return kdbImages;
 }
 
 - (UIImage *)imageForGroup:(KdbGroup *)group {

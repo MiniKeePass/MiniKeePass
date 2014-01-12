@@ -16,18 +16,19 @@
  */
 
 #import <UIKit/UIKit.h>
+#import "ImageFactory.h"
 
 @protocol ImageSelectionViewDelegate;
 
 @interface ImageSelectionView : UIView
 
-@property (nonatomic, assign) NSUInteger selectedImageIndex;
-@property (nonatomic, unsafe_unretained) id<ImageSelectionViewDelegate> delegate;
+@property (nonatomic, weak) KdbImage *selectedImage;
+@property (nonatomic, weak) id<ImageSelectionViewDelegate> delegate;
 
 @end
 
 @protocol ImageSelectionViewDelegate <NSObject>
 
-- (void)imageSelectionView:(ImageSelectionView *)imageSelectionView selectedImageIndex:(NSUInteger)selectedImageIndex;
+- (void)imageSelectionView:(ImageSelectionView *)imageSelectionView selectedKdbImage:(KdbImage *)kdbImage;
 
 @end

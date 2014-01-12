@@ -30,7 +30,6 @@
 
 @interface EntryViewController : UITableViewController <UIGestureRecognizerDelegate, ImageSelectionViewDelegate, PasswordGeneratorDelegate, TitleFieldCellDelegate, TextFieldCellDelegate>
 
-@property (nonatomic, assign) NSUInteger selectedImageIndex;
 @property (nonatomic, strong) KdbEntry *entry;
 @property (nonatomic) BOOL isNewEntry;
 

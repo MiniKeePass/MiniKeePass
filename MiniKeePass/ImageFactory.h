@@ -17,14 +17,29 @@
 
 #import <Foundation/Foundation.h>
 #import "Kdb.h"
+#import "Kdb4Node.h"
+
+@interface KdbImage : NSObject
+
+@property (nonatomic, strong) UIImage *image;
+@property (nonatomic, assign) NSUInteger index;
+@property (nonatomic, strong) UUID *uuid;
+
++ (KdbImage *)kdbImageWithImage:(UIImage *)image andIndex:(NSUInteger)index;
++ (KdbImage *)kdbImageWithImage:(UIImage *)image andUuid:(UUID *)uuid;
++ (KdbImage *)kdbImageForEntry:(KdbEntry *)entry;
++ (KdbImage *)kdbImageForGroup:(KdbGroup *)group;
+
+@end
 
 @interface ImageFactory : NSObject
 
 + (ImageFactory *)sharedInstance;
 
-- (NSArray *)images;
+- (NSArray *)kdbImages;
 - (UIImage *)imageForGroup:(KdbGroup *)group;
 - (UIImage *)imageForEntry:(KdbEntry *)entry;
+- (UIImage *)imageForUuid:(UUID *)uuid;
 - (UIImage *)imageForIndex:(NSUInteger)index;
 
 @end

@@ -50,7 +50,7 @@
         self.title = NSLocalizedString(@"Edit Entry", nil);
 
         self.nameTextField.text = entry.title;
-        [self setSelectedImageIndex:entry.image];
+        self.selectedImage = [KdbImage kdbImageForEntry:entry];
     }
     return self;
 }
@@ -61,27 +61,26 @@
         self.title = NSLocalizedString(@"Edit Group", nil);
 
         self.nameTextField.text = group.name;
-        [self setSelectedImageIndex:group.image];
+        self.selectedImage = [KdbImage kdbImageForGroup:group];
     }
     return self;
 }
 
-- (void)setSelectedImageIndex:(NSUInteger)selectedImageIndex {
-    _selectedImageIndex = selectedImageIndex;
+- (void)setSelectedImage:(KdbImage *)selectedImage {
+    _selectedImage = selectedImage;
     
-    UIImage *image = [[ImageFactory sharedInstance] imageForIndex:index];
-    [self.imageButtonCell.imageButton setImage:image forState:UIControlStateNormal];
+    [self.imageButtonCell.imageButton setImage:selectedImage.image forState:UIControlStateNormal];
 }
 
 - (void)imageButtonPressed {
     ImageSelectionViewController *imageSelectionViewController = [[ImageSelectionViewController alloc] init];
     imageSelectionViewController.imageSelectionView.delegate = self;
-    imageSelectionViewController.imageSelectionView.selectedImageIndex = _selectedImageIndex;
+    imageSelectionViewController.imageSelectionView.selectedImage = self.selectedImage;
     [self.navigationController pushViewController:imageSelectionViewController animated:YES];
 }
 
-- (void)imageSelectionView:(ImageSelectionView *)imageSelectionView selectedImageIndex:(NSUInteger)imageIndex {
-    self.selectedImageIndex = imageIndex;
+- (void)imageSelectionView:(ImageSelectionView *)imageSelectionView selectedKdbImage:(KdbImage *)kdbImage {
+    self.selectedImage = kdbImage;
 }
 
 @end

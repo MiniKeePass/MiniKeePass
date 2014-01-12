@@ -753,7 +753,15 @@ enum {
             // Update the group
             KdbGroup *g = [self.groupsArray objectAtIndex:indexPath.row];
             g.name = newName;
-            g.image = editItemViewController.selectedImageIndex;
+
+            KdbImage *selectedImage = editItemViewController.selectedImage;
+            if (selectedImage != nil) {
+                if (selectedImage.uuid != nil) {
+                    ((Kdb4Group *)g).customIconUuid = selectedImage.uuid;
+                } else {
+                    g.image = selectedImage.index;
+                }
+            }
             break;
         }
 
@@ -761,7 +769,15 @@ enum {
             // Update the entry
             KdbEntry *e = [self.entriesArray objectAtIndex:indexPath.row];
             e.title = newName;
-            e.image = editItemViewController.selectedImageIndex;
+
+            KdbImage *selectedImage = editItemViewController.selectedImage;
+            if (selectedImage != nil) {
+                if (selectedImage.uuid != nil) {
+                    ((Kdb4Entry *)e).customIconUuid = selectedImage.uuid;
+                } else {
+                    e.image = selectedImage.index;
+                }
+            }
             break;
         }
     }

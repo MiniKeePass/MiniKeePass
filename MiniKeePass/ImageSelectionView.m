@@ -22,12 +22,15 @@
 #define MIN_SPACING 10.5f
 
 @interface ImageSelectionView () {
+    NSArray *kdbImages;
     NSUInteger numImages;
     NSMutableArray *imageViews;
     UIImageView *selectedImageView;
     CGFloat spacing;
     NSInteger imagesPerRow;
 }
+
+@property (nonatomic, assign) NSUInteger selectedIndex;
 @end
 
 @implementation ImageSelectionView
@@ -38,12 +41,13 @@
     if (self) {
         // Get the application delegate
         ImageFactory *imageFactory = [ImageFactory sharedInstance];
-        numImages = [imageFactory.images count];
+        kdbImages = imageFactory.kdbImages;
+        numImages = [kdbImages count];
 
         // Create an image view for each image
         imageViews = [[NSMutableArray alloc] initWithCapacity:numImages];
-        for (UIImage *image in imageFactory.images) {
-            UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
+        for (KdbImage *kdbImage in kdbImages) {
+            UIImageView *imageView = [[UIImageView alloc] initWithImage:kdbImage.image];
             [self addSubview:imageView];
             [imageViews addObject:imageView];
         }
@@ -87,7 +91,7 @@
     }
 
     // Re-select the image after layout
-    self.selectedImageIndex = _selectedImageIndex;
+    self.selectedIndex = _selectedIndex;
 
     // Update the height of the frame based on the new layout
     CGRect newFrame = self.frame;
@@ -97,17 +101,25 @@
     scrollView.contentSize = newFrame.size;
 }
 
-- (void)setSelectedImageIndex:(NSUInteger)selectedImageIndex {
-    if (selectedImageIndex >= numImages) {
+- (void)setSelectedImage:(KdbImage *)selectedImage {
+    self.selectedIndex = [kdbImages indexOfObject:selectedImage];
+}
+
+- (KdbImage *)selectedImage {
+    return [kdbImages objectAtIndex:self.selectedIndex];
+}
+
+- (void)setSelectedIndex:(NSUInteger)selectedIndex {
+    if (selectedIndex >= numImages) {
         return;
     }
     
-    _selectedImageIndex = selectedImageIndex;
+    _selectedIndex = selectedIndex;
 
     // Update the selected image view frame if we know how many images there are per row
     if (imagesPerRow > 0) {
-        NSUInteger row = _selectedImageIndex / imagesPerRow;
-        NSUInteger col = _selectedImageIndex - (row * imagesPerRow);
+        NSUInteger row = self.selectedIndex / imagesPerRow;
+        NSUInteger col = self.selectedIndex - (row * imagesPerRow);
 
         CGSize size = selectedImageView.image.size;
         CGRect frame = CGRectMake((col + 1) * (IMAGE_SIZE + 2 * spacing) - size.width,
@@ -127,11 +139,12 @@
     // Convert the row/col to an index
     NSUInteger index = row * imagesPerRow + col;
 
-    self.selectedImageIndex = index;
+    self.selectedIndex = index;
 
     // Notify the delegate
-    if ([_delegate respondsToSelector:@selector(imageSelectionView:selectedImageIndex:)]) {
-        [_delegate imageSelectionView:self selectedImageIndex:_selectedImageIndex];
+    if ([_delegate respondsToSelector:@selector(imageSelectionView:selectedKdbImage:)]) {
+        KdbImage *kdbImage = [kdbImages objectAtIndex:self.selectedIndex];
+        [_delegate imageSelectionView:self selectedKdbImage:kdbImage];
         
     }
 }
