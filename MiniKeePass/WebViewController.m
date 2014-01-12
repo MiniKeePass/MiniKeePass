@@ -110,7 +110,6 @@
     self.webView.scalesPageToFit = YES;
     self.webView.delegate = self;
     self.webView.mkpDelegate = self;
-    self.webView.keyboardDisplayRequiresUserAction = NO;
 	[self.view addSubview:self.webView];
 
     // Create the toolbar button
