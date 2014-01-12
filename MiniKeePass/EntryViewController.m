@@ -391,7 +391,7 @@ enum {
                     cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2
                                                   reuseIdentifier:AddFieldCellIdentifier];
                     cell.textLabel.textAlignment = NSTextAlignmentLeft;
-                    cell.textLabel.text = NSLocalizedString(@"Add new…" nil);
+                    cell.textLabel.text = NSLocalizedString(@"Add new…", nil);
 
                     // Add new cell when this cell is tapped
                     [cell addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self
