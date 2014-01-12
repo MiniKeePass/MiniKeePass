@@ -62,7 +62,7 @@ sub process_localizable {
   my($file) = @_;
   my %localized_strings = {};
 
-  open(FILE, "iconv -f UTF-16BE $file |") or die("Failed to open file: $!");
+  open(FILE, "iconv -f UTF-8 $file |") or die("Failed to open file: $!");
 
   my $lineno = 0;
   while (<FILE>) {
