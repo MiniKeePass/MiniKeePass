@@ -28,7 +28,9 @@
     self = [super init];
     if (self) {
         if (password == nil && keyFile == nil) {
-            @throw [NSException exceptionWithName:@"IllegalArgument" reason:@"No password or keyfile specified" userInfo:nil];
+            @throw [NSException exceptionWithName:@"IllegalArgument"
+                                           reason:NSLocalizedString(@"No password or keyfile specified", nil)
+                                         userInfo:nil];
         }
 
         self.filename = filename;
