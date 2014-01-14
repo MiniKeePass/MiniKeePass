@@ -64,8 +64,11 @@
         self.textLabel.numberOfLines = 0;
         self.textLabel.textAlignment = UITextAlignmentCenter;
         self.textLabel.text = text;
-        
-        topBar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, frameWidth, 95)];
+
+        // Hack for iOS 7
+        CGFloat y = [[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0 ? 20.0f : 0.0f;
+
+        topBar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0f, y, frameWidth, 95.0f)];
         topBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         topBar.barStyle = UIBarStyleBlackTranslucent;
 
@@ -130,12 +133,10 @@
     // Nothing needs to be done for the iPad; return
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) return;
 
-    CGRect newFrame = topBar.frame;
-    newFrame.size.height = UIInterfaceOrientationIsPortrait(toInterfaceOrientation) ? 95 : 68;
+    CGFloat height = UIInterfaceOrientationIsPortrait(toInterfaceOrientation) ? 95 : 68;
 
-    topBar.frame = newFrame;
-    self.textLabel.frame = newFrame;
-    pinBar.frame = newFrame;
+    topBar.frame = CGRectMake(topBar.frame.origin.x, topBar.frame.origin.y, topBar.frame.size.width, height);
+    pinBar.frame = CGRectMake(pinBar.frame.origin.x, pinBar.frame.origin.y, pinBar.frame.size.width, height);
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
