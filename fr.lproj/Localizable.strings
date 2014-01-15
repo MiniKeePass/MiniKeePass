@@ -16,6 +16,7 @@
  */
 
 // French translator: Patrice Lachance <patlachance@gmail.com>
+// Additional translations: Damien Regad <dregad@mantisbt.org>
 
 "Files" = "Fichiers";
 "Databases" = "Bases de données";
@@ -29,7 +30,7 @@
 "New Group" = "Nouveau Groupe";
 "New Entry" = "Nouvelle Entrée";
 "Edit Group" = "Editer Groupe";
-"Edit Entry" = "Edit Entry"; // FIXME
+"Edit Entry" = "Editer Entrée";
 "Title" = "Titre";
 "Image" = "Image";
 "Images" = "Images";
@@ -54,12 +55,12 @@
 "Database Name" = "Nom BDD";
 "Last Modified" = "Dernière Modification";
 "Copied" = "Copié(e)";
-"In Memory Protection" = "Protection 'In Memory'";
+"In Memory Protection" = "Protection en mémoire";
 "Custom Field" = "Attribut Spécifique";
 "Custom Fields" = "Attributs Spécifiques";
 "Add new…" = "Ajouter nouveau…";
 "Choose Group" = "Choisir le Groupe";
-"Backup" = "Backup"; // FIXME
+"Backup" = "Sauvegarde";
 
 // General Messages
 "Enter your PIN to unlock" = "Saisir votre code PIN pour déverrouiller";
@@ -74,25 +75,25 @@
 "Passwords do not match" = "Les mots de passe ne sont pas identiques";
 "Password is required" = "Le mot de passe est requis";
 "Incorrect PIN" = "Code PIN erroné";
-"Incorrect PIN\n1 attempt remaining" = "Incorrect PIN\n1 attempt remaining";
-"Incorrect PIN\n2 attempts remaining" = "Incorrect PIN\n2 attempts remaining";
-"Incorrect PIN\n3 attempts remaining" = "Incorrect PIN\n3 attempts remaining";
-"Incorrect PIN\n4 attempts remaining" = "Incorrect PIN\n4 attempts remaining";
-"Incorrect PIN\n5 attempts remaining" = "Incorrect PIN\n5 attempts remaining";
-"Incorrect PIN\n6 attempts remaining" = "Incorrect PIN\n6 attempts remaining";
-"Incorrect PIN\n7 attempts remaining" = "Incorrect PIN\n7 attempts remaining";
-"Incorrect PIN\n8 attempts remaining" = "Incorrect PIN\n8 attempts remaining";
-"Incorrect PIN\n9 attempts remaining" = "Incorrect PIN\n9 attempts remaining";
-"Incorrect PIN\n10 attempts remaining" = "Incorrect PIN\n10 attempts remaining";
-"Incorrect PIN\n11 attempts remaining" = "Incorrect PIN\n11 attempts remaining";
-"Incorrect PIN\n12 attempts remaining" = "Incorrect PIN\n12 attempts remaining";
-"Incorrect PIN\n13 attempts remaining" = "Incorrect PIN\n13 attempts remaining";
-"Incorrect PIN\n14 attempts remaining" = "Incorrect PIN\n14 attempts remaining";
+"Incorrect PIN\n1 attempt remaining" = "Code PIN erroné\n1 tentatives restantes";
+"Incorrect PIN\n2 attempts remaining" = "Code PIN erroné\n2 tentatives restantes";
+"Incorrect PIN\n3 attempts remaining" = "Code PIN erroné\n3 tentatives restantes";
+"Incorrect PIN\n4 attempts remaining" = "Code PIN erroné\n4 tentatives restantes";
+"Incorrect PIN\n5 attempts remaining" = "Code PIN erroné\n5 tentatives restantes";
+"Incorrect PIN\n6 attempts remaining" = "Code PIN erroné\n6 tentatives restantes";
+"Incorrect PIN\n7 attempts remaining" = "Code PIN erroné\n7 tentatives restantes";
+"Incorrect PIN\n8 attempts remaining" = "Code PIN erroné\n8 tentatives restantes";
+"Incorrect PIN\n9 attempts remaining" = "Code PIN erroné\n9 tentatives restantes";
+"Incorrect PIN\n10 attempts remaining" = "Code PIN erroné\n10 tentatives restantes";
+"Incorrect PIN\n11 attempts remaining" = "Code PIN erroné\n11 tentatives restantes";
+"Incorrect PIN\n12 attempts remaining" = "Code PIN erroné\n12 tentatives restantes";
+"Incorrect PIN\n13 attempts remaining" = "Code PIN erroné\n13 tentatives restantes";
+"Incorrect PIN\n14 attempts remaining" = "Code PIN erroné\n14 tentatives restantes";
 "Filename is invalid" = "Le nom de fichier est invalide";
 "A file already exists with this name" = "Un fichier présent porte déjà ce nom";
 "There are no applications installed capable of importing KeePass files" = "Il n'y a aucune application installée capable d'importer des fichiers KeePass";
-"You do not have any KeePass files available for MiniKeePass to open." = "Aucun fichier KeePaas trouver à ouvrir avec MiniKeePass.";
-"No password or keyfile specified" = "No password or keyfile specified"; // FIXME
+"You do not have any KeePass files available for MiniKeePass to open." = "MiniKeePass n'a trouvé aucun fichier KeePaas à ouvrir.";
+"No password or keyfile specified" = "Pas de mot de passe ou fichier clé spécifié";
 
 // Settings Page
 "Settings" = "Réglages";
@@ -110,7 +111,7 @@
 "Close Timeout" = "Délai à la fermeture";
 "Hide Passwords" = "Masquer les mots de passe";
 "Sorting" = "Ordre de tri";
-"Sort Groups and Entries Alphabetically" = "Trier les Entrées et les Groupe en ordre alphabétique";
+"Sort Groups and Entries Alphabetically" = "Trier les Entrées et les Groupe par ordre alphabétique";
 "Encoding" = "Encodage";
 "UTF-8" = "UTF-8";
 "UTF-16 Big Endian" = "UTF-16 Big Endian";
@@ -137,9 +138,9 @@
 "Clear the contents of the clipboard after a given timeout upon performing a copy." = "Supprimer le contenu du presse-papiers après expiration du délai lors d'une opération de copie.";
 "Close Timeout" = "Délai de fermeture";
 "Clear Clipboard Timeout" = "Délai d'effacement du presse-papiers";
-"Web Browser" = "Web Browser"; // FIXME
-"Integrated" = "Integrated"; // FIXME
-"Switch between an integrated web browser and Safari." = "Switch between an integrated web browser and Safari."; // FIXME
+"Web Browser" = "Navigateur";
+"Integrated" = "Intégré";
+"Switch between an integrated web browser and Safari." = "Basculer entre le navigateur intégré et Safari.";
 "Set PIN" = "Définir le code PIN";
 "Confirm PIN" = "Confirmer le code PIN";
 "PINs did not match. Try again" = "Les codes PINs sont différents. Recommencez";
