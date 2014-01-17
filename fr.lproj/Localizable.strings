@@ -75,7 +75,7 @@
 "Passwords do not match" = "Les mots de passe ne sont pas identiques";
 "Password is required" = "Le mot de passe est requis";
 "Incorrect PIN" = "Code PIN erroné";
-"Incorrect PIN\n1 attempt remaining" = "Code PIN erroné\n1 tentatives restantes";
+"Incorrect PIN\n1 attempt remaining" = "Code PIN erroné\n1 tentative restante";
 "Incorrect PIN\n2 attempts remaining" = "Code PIN erroné\n2 tentatives restantes";
 "Incorrect PIN\n3 attempts remaining" = "Code PIN erroné\n3 tentatives restantes";
 "Incorrect PIN\n4 attempts remaining" = "Code PIN erroné\n4 tentatives restantes";
@@ -92,7 +92,7 @@
 "Filename is invalid" = "Le nom de fichier est invalide";
 "A file already exists with this name" = "Un fichier présent porte déjà ce nom";
 "There are no applications installed capable of importing KeePass files" = "Il n'y a aucune application installée capable d'importer des fichiers KeePass";
-"You do not have any KeePass files available for MiniKeePass to open." = "MiniKeePass n'a trouvé aucun fichier KeePaas à ouvrir.";
+"You do not have any KeePass files available for MiniKeePass to open." = "MiniKeePass n'a trouvé aucun fichier KeePass à ouvrir.";
 "No password or keyfile specified" = "Pas de mot de passe ou fichier clé spécifié";
 
 // Settings Page
