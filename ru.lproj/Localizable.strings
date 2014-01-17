@@ -15,8 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* Russian translation maintainer:
-   Roman Azarenko aka BasicXP <basicxp@basicxp.ru> */
+// Translation maintainer: Foster "Forst" Snowhill <forst@basicxp.ru>
 
 "Files" = "Файлы";
 "Databases" = "Базы данных";
