@@ -199,7 +199,6 @@ enum {
                                                                            style:UIBarButtonItemStylePlain
                                                                           target:self.appDelegate
                                                                           action:@selector(showSettingsView)];
-        settingsButton.imageInsets = UIEdgeInsetsMake(2, 0, -2, 0);
 
         UIBarButtonItem *actionButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction
                                                                                       target:self
