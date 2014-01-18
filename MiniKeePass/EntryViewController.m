@@ -380,7 +380,6 @@ enum {
 
     switch (indexPath.section) {
         case SECTION_DEFAULT_FIELDS: {
-            NSLog(@"%d", titleCell.selected);
             return [self.cells objectAtIndex:indexPath.row];
         }
         case SECTION_CUSTOM_FIELDS: {
