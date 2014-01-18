@@ -121,24 +121,17 @@
     return self;
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
-    if ([self.delegate respondsToSelector:@selector(pinViewControllerShouldAutorotateToInterfaceOrientation:)]) {
-        return [self.delegate pinViewControllerShouldAutorotateToInterfaceOrientation:toInterfaceOrientation];
-    } else {
-        return NO;
-    }
-}
-
 - (UIStatusBarStyle)preferredStatusBarStyle {
     return UIStatusBarStyleLightContent;
 }
 
 - (void)resizeToolbarsToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
     // Nothing needs to be done for the iPad; return
-    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) return;
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+        return;
+    }
 
     CGFloat height = UIInterfaceOrientationIsPortrait(toInterfaceOrientation) ? 95 : 68;
-
     topBar.frame = CGRectMake(topBar.frame.origin.x, topBar.frame.origin.y, topBar.frame.size.width, height);
     pinBar.frame = CGRectMake(pinBar.frame.origin.x, pinBar.frame.origin.y, pinBar.frame.size.width, height);
 }
@@ -161,9 +154,7 @@
     [self becomeFirstResponder];
     
     UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
-    if ([self shouldAutorotateToInterfaceOrientation:orientation]) {
-        [self resizeToolbarsToInterfaceOrientation:orientation];
-    }
+    [self resizeToolbarsToInterfaceOrientation:orientation];
 
     [self clearEntry];
 }

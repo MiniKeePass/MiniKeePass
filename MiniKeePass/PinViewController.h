@@ -32,7 +32,6 @@
 
 @protocol PinViewControllerDelegate <NSObject>
 - (void)pinViewController:(PinViewController*)controller pinEntered:(NSString*)pin;
-- (BOOL)pinViewControllerShouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation;
 @optional
 - (void)pinViewControllerDidShow:(PinViewController*)controller;
 @end

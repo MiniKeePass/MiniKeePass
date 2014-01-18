@@ -65,12 +65,7 @@
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
-    BOOL boolean = [[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad || toInterfaceOrientation == UIInterfaceOrientationPortrait;
-    return boolean;
-}
-
--(BOOL)pinViewControllerShouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
-    return [self shouldAutorotateToInterfaceOrientation:toInterfaceOrientation];
+    return [[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad || toInterfaceOrientation == UIInterfaceOrientationPortrait;
 }
 
 - (UIViewController *)frontMostViewController {
