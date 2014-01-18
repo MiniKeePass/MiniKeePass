@@ -220,6 +220,14 @@
 		685D9D941603F8EE00D739D3 /* Kdb3Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Kdb3Utils.m; sourceTree = "<group>"; };
 		6876F67613B2D8F400A05C7A /* ImageSelectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageSelectionViewController.h; sourceTree = "<group>"; };
 		6876F67713B2D8F400A05C7A /* ImageSelectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageSelectionViewController.m; sourceTree = "<group>"; };
+		687AAA981889F8B400AB8AC5 /* en */ = {isa = PBXFileReference; lastKnownFileType = file; name = en; path = en.lproj/AppStore.txt; sourceTree = "<group>"; };
+		687AAAA11889FB4000AB8AC5 /* ru */ = {isa = PBXFileReference; lastKnownFileType = file; name = ru; path = ru.lproj/AppStore.txt; sourceTree = "<group>"; };
+		687AAAA21889FB4B00AB8AC5 /* ja */ = {isa = PBXFileReference; lastKnownFileType = file; name = ja; path = ja.lproj/AppStore.txt; sourceTree = "<group>"; };
+		687AAAA31889FB4C00AB8AC5 /* de */ = {isa = PBXFileReference; lastKnownFileType = file; name = de; path = de.lproj/AppStore.txt; sourceTree = "<group>"; };
+		687AAAA41889FB4D00AB8AC5 /* it */ = {isa = PBXFileReference; lastKnownFileType = file; name = it; path = it.lproj/AppStore.txt; sourceTree = "<group>"; };
+		687AAAA51889FB4D00AB8AC5 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = file; name = "zh-Hans"; path = "zh-Hans.lproj/AppStore.txt"; sourceTree = "<group>"; };
+		687AAAA61889FB4E00AB8AC5 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = file; name = "pt-BR"; path = "pt-BR.lproj/AppStore.txt"; sourceTree = "<group>"; };
+		687AAAA71889FB4F00AB8AC5 /* fr */ = {isa = PBXFileReference; lastKnownFileType = file; name = fr; path = fr.lproj/AppStore.txt; sourceTree = "<group>"; };
 		68884F0E186E1C5600C222D4 /* MasterPasswordFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MasterPasswordFieldCell.h; sourceTree = "<group>"; };
 		68884F0F186E1C5600C222D4 /* MasterPasswordFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MasterPasswordFieldCell.m; sourceTree = "<group>"; };
 		68884F11186E414C00C222D4 /* stretchme-7@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "stretchme-7@2x.png"; sourceTree = "<group>"; };
@@ -815,6 +823,7 @@
 		689DFFE013A4273F005EBD36 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				687AAA991889F8B400AB8AC5 /* AppStore.txt */,
 				68E08314146F2749001C4EDF /* InfoPlist.strings */,
 				68E0830E146F24E3001C4EDF /* Localizable.strings */,
 				689DFFE113A4273F005EBD36 /* MiniKeePass-Info.plist */,
@@ -1037,6 +1046,21 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		687AAA991889F8B400AB8AC5 /* AppStore.txt */ = {
+			isa = PBXVariantGroup;
+			children = (
+				687AAA981889F8B400AB8AC5 /* en */,
+				687AAAA11889FB4000AB8AC5 /* ru */,
+				687AAAA21889FB4B00AB8AC5 /* ja */,
+				687AAAA31889FB4C00AB8AC5 /* de */,
+				687AAAA41889FB4D00AB8AC5 /* it */,
+				687AAAA51889FB4D00AB8AC5 /* zh-Hans */,
+				687AAAA61889FB4E00AB8AC5 /* pt-BR */,
+				687AAAA71889FB4F00AB8AC5 /* fr */,
+			);
+			name = AppStore.txt;
+			sourceTree = SOURCE_ROOT;
+		};
 		68E0830E146F24E3001C4EDF /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
