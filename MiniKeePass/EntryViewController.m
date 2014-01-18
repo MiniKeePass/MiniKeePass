@@ -232,8 +232,8 @@ enum {
 
             if (self.isKdb4) {
                 // Ensure any textfield currently being edited is saved
-                int count = [self.tableView numberOfRowsInSection:SECTION_CUSTOM_FIELDS] - 1;
-                for (int i = 0; i < count; i++) {
+                NSInteger count = [self.tableView numberOfRowsInSection:SECTION_CUSTOM_FIELDS] - 1;
+                for (NSInteger i = 0; i < count; i++) {
                     TextFieldCell *cell = (TextFieldCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:SECTION_CUSTOM_FIELDS]];
                     [cell.textField resignFirstResponder];
                 }
@@ -311,7 +311,7 @@ enum {
 
     switch (indexPath.section) {
         case SECTION_DEFAULT_FIELDS: {
-            int nextIndex = indexPath.row + 1;
+            NSInteger nextIndex = indexPath.row + 1;
             if (nextIndex < [self.defaultCells count]) {
                 TextFieldCell *nextCell = [self.defaultCells objectAtIndex:nextIndex];
                 [nextCell.textField becomeFirstResponder];
@@ -361,7 +361,7 @@ enum {
             return [self.cells count];
         case SECTION_CUSTOM_FIELDS:
             if (self.isKdb4) {
-                int numCells = self.currentStringFields.count;
+                NSUInteger numCells = self.currentStringFields.count;
                 // Additional cell for Add cell
                 return self.editing ? numCells + 1 : numCells;
             } else {
