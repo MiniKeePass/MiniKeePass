@@ -45,6 +45,10 @@
         self.view.backgroundColor = [UIColor darkGrayColor];
         CGFloat frameWidth = CGRectGetWidth(self.view.frame);
 
+        if ([self respondsToSelector:@selector(edgesForExtendedLayout)]) {
+            self.edgesForExtendedLayout = UIRectEdgeNone;
+        }
+
         textField = [[UITextField alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
         textField.delegate = self;
         textField.hidden = YES;
