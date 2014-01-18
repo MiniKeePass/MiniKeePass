@@ -89,7 +89,7 @@
 "Filename is invalid" = "Il nome del file non è valido";
 "A file already exists with this name" = "Esiste già un file con questo nome";
 "There are no applications installed capable of importing KeePass files" = "Non ci sono applicazioni installate in grado di importare file di KeePass";
-"You do not have any KeePass files available for MiniKeePass to open." = "Non hai nessun file disponibile da aprire tramite MiniKeePass.";
+"Tap the + button to add a new KeePass file." = "Tap the + button to add a new KeePass file."; // FIXME
 "No password or keyfile specified" = "No password or keyfile specified"; // FIXME
 
 // Settings Page

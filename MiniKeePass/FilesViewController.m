@@ -37,19 +37,19 @@ enum {
 
 - (void)viewDidLoad {
     appDelegate = [MiniKeePassAppDelegate appDelegate];
-    
+
     self.tableView.allowsSelectionDuringEditing = YES;
-    
+
     UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"gear"] style:UIBarButtonItemStylePlain target:appDelegate action:@selector(showSettingsView)];
     settingsButton.imageInsets = UIEdgeInsetsMake(2, 0, -2, 0);
-    
+
     UIBarButtonItem *helpButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"help"] style:UIBarButtonItemStylePlain target:self action:@selector(helpPressed)];
     helpButton.imageInsets = UIEdgeInsetsMake(2, 0, -2, 0);
-    
+
     UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addPressed)];
-    
+
     UIBarButtonItem *spacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-    
+
     self.toolbarItems = [NSArray arrayWithObjects:settingsButton, spacer, helpButton, spacer, addButton, nil];
     self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
@@ -64,10 +64,9 @@ enum {
 
 - (void)displayInfoPage {
     if (filesInfoView == nil) {
-        filesInfoView = [[FilesInfoView alloc] initWithFrame:self.view.frame];
-        filesInfoView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+        filesInfoView = [[FilesInfoView alloc] initWithFrame:self.view.bounds];
     }
-    
+
     [self.view addSubview:filesInfoView];
     
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -80,7 +79,7 @@ enum {
     if (filesInfoView != nil) {
         [filesInfoView removeFromSuperview];
     }
-    
+
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
     self.tableView.scrollEnabled = YES;
     
