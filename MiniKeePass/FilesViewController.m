@@ -163,10 +163,10 @@ enum {
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    int databaseCount = [databaseFiles count];
-    int keyCount = [keyFiles count];
+    NSUInteger databaseCount = [databaseFiles count];
+    NSUInteger keyCount = [keyFiles count];
     
-    int n;
+    NSInteger n;
     switch (section) {
         case SECTION_DATABASE:
             n = databaseCount;

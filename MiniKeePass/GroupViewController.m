@@ -341,13 +341,13 @@ enum {
     NSArray *selectedRows = [self.tableView indexPathsForSelectedRows];
     NSUInteger numSelectedRows = [selectedRows count];
     if (numSelectedRows != 0) {
-        self.deleteButton.title = [NSLocalizedString(@"Delete", nil) stringByAppendingFormat:@" (%u)", numSelectedRows];
+        self.deleteButton.title = [NSLocalizedString(@"Delete", nil) stringByAppendingFormat:@" (%lu)", (unsigned long)numSelectedRows];
         self.deleteButton.enabled = YES;
 
-        self.moveButton.title = [NSLocalizedString(@"Move", nil) stringByAppendingFormat:@" (%u)", numSelectedRows];
+        self.moveButton.title = [NSLocalizedString(@"Move", nil) stringByAppendingFormat:@" (%lu)", (unsigned long)numSelectedRows];
         self.moveButton.enabled = YES;
 
-        self.renameButton.title = [NSLocalizedString(@"Rename", nil) stringByAppendingFormat:@" (%u)", numSelectedRows];
+        self.renameButton.title = [NSLocalizedString(@"Rename", nil) stringByAppendingFormat:@" (%lu)", (unsigned long)numSelectedRows];
         self.renameButton.enabled = numSelectedRows == 1;
     } else {
         self.deleteButton.title = NSLocalizedString(@"Delete", nil);

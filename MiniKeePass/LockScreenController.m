@@ -164,7 +164,7 @@
 
                 // Update the incorrect pin message
                 if (remainingAttempts > 0) {
-                    controller.textLabel.text = [NSString stringWithFormat:@"%@\n%@: %d", NSLocalizedString(@"Incorrect PIN", nil), NSLocalizedString(@"Attempts Remaining", nil), remainingAttempts];
+                    controller.textLabel.text = [NSString stringWithFormat:@"%@\n%@: %ld", NSLocalizedString(@"Incorrect PIN", nil), NSLocalizedString(@"Attempts Remaining", nil), (long)remainingAttempts];
                 } else {
                     controller.textLabel.text = NSLocalizedString(@"Incorrect PIN", nil);
                 }

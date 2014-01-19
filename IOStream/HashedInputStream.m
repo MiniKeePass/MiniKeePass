@@ -53,7 +53,7 @@
             }
         }
         
-        int n = MIN(bufferLength - bufferOffset, remaining);
+        NSUInteger n = MIN(bufferLength - bufferOffset, remaining);
         memcpy(bytes + offset, buffer + bufferOffset, n);
         
         offset += n;
