@@ -38,6 +38,7 @@ enum {
 - (void)viewDidLoad {
     appDelegate = [MiniKeePassAppDelegate appDelegate];
 
+    self.title = NSLocalizedString(@"Files", nil);
     self.tableView.allowsSelectionDuringEditing = YES;
 
     UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"gear"]
@@ -62,17 +63,10 @@ enum {
     self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        self.title = NSLocalizedString(@"Files", nil);
-    }
-    return self;
-}
-
 - (void)displayInfoPage {
     if (filesInfoView == nil) {
         filesInfoView = [[FilesInfoView alloc] initWithFrame:self.view.bounds];
+        filesInfoView.viewController = self;
     }
 
     [self.view addSubview:filesInfoView];
@@ -106,6 +100,13 @@ enum {
     }
     
     [super viewWillAppear:animated];
+}
+
+- (void)viewWillLayoutSubviews {
+    [super viewWillLayoutSubviews];
+
+    // Adjust the frame of the filesInfoView to make sure it fills the screen
+    filesInfoView.frame = self.view.bounds;
 }
 
 - (void)updateFiles {

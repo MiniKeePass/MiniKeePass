@@ -19,4 +19,6 @@
 
 @interface FilesInfoView : UIView
 
+@property (nonatomic, assign) UIViewController *viewController;
+
 @end
