@@ -7,30 +7,30 @@
 #
 
 # App Name:
-MiniKeePass — Secure Password Manager
+MiniKeePass — безопасный менеджер паролей
 
 # Description:
-MiniKeePass provides secure password storage on your iOS device that's compatible with KeePass.
+MiniKeePass предоставляет безопасное хранилище паролей, совместимое с KeePass, на вашем iOS-устройстве.
 
-- View, Edit, and Create KeePass 1.x and 2.x files
-- Search for entries from the top of tables like in Mail
-- Key File Support
-- Import/Export files to and from Dropbox using the official Dropbox app or any other cloud storage application
-- Copy password entries to the clipboard for easy entry
-- Open websites in Safari while MiniKeePass runs in the background
-- Prevent unauthorized access to MiniKeePass with a PIN
-- Remember database passwords in the device's secure keychain
-- Optionally clear the clipboard after set time on devices that support background tasks
-- Generate new passwords
-- Integrated web browser with username/password auto-type
+- Просматривайте, редактируйте и создавайте файлы KeePass версий 1.x и 2.x
+- Находите записи из удобного поля поиска как в приложении Mail
+- Поддержка файлов ключей
+- Импортируйте и экспортируйте файлы из/в Dropbox, используя официальное приложение Dropbox или любую другую службу для хранения файлов в облаке
+- Копируйте пароли в буфер обмена для лёгкого ввода
+- Открывайте веб-сайты в Safari, пока MiniKeePass запущен в фоне
+- Блокируйте неавторизованный доступ к MiniKeePass с помощью PIN-кода
+- Сохраняйте пароли от баз данных в безопасной связке ключей устройства
+- Очищайте буфер обмена после заданного времени на устройствах с поддержкой многозадачности
+- Создавайте новые пароли
+- Используйте встроенный веб-браузер с автоматическим набором имени пользователя и пароля
 
-MiniKeePass's source code is available for security audit or contribution on GitHub.
+Исходный код MiniKeePass доступен для аудита безопасности или внесения вклада на GitHub.
 
 # Keywords:
-MiniKeePass,KeePass,Kee Pass,KeyPass,KeePassX,Password,Password Manager,Secure
+MiniKeePass,KeePass,Kee Pass,KeyPass,KeePassX,Пароль,Менеджер паролей,Хранилище паролей,Безопасный
 
 # What's New in this Version:
 # Version 1.5
-iOS 7 compatible
-Integrated web browser with auto-type
-Bug fixes
+Совместимость с iOS 7
+Встроенный веб-браузер с автоматическим набором
+Исправления ошибок

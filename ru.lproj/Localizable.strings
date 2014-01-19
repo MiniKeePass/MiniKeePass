@@ -74,11 +74,11 @@
 "Passwords do not match" = "Пароли не совпадают";
 "Password is required" = "Ввод пароля обязателен";
 "Incorrect PIN" = "Неправильный PIN";
-"Attempts Remaining" = "Attempts Remaining"; // FIXME
+"Attempts Remaining" = "Осталось попыток";
 "Filename is invalid" = "Имя файла недействительно";
 "A file already exists with this name" = "Файл с этим именем уже существует";
 "There are no applications installed capable of importing KeePass files" = "Нет установленных приложений, способных импортировать файлы KeePass";
-"Tap the + button to add a new KeePass file." = "Tap the + button to add a new KeePass file."; // FIXME
+"Tap the + button to add a new KeePass file." = "Нажмите кнопку +, чтобы добавить новый файл KeePass.";
 "No password or keyfile specified" = "Не указан ни пароль, ни файл ключа";
 
 // Settings Page
