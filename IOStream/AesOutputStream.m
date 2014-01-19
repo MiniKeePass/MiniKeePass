@@ -17,7 +17,7 @@
 #import "AesOutputStream.h"
 
 @interface AesOutputStream (PrivateMethods)
-- (void)ensureBufferCapacity:(uint32_t)capacity;
+- (void)ensureBufferCapacity:(size_t)capacity;
 @end
 
 @implementation AesOutputStream
@@ -69,7 +69,7 @@
     [outputStream close];
 }
 
-- (void)ensureBufferCapacity:(uint32_t)capacity {
+- (void)ensureBufferCapacity:(size_t)capacity {
     // Check if we need to resize the internal buffer
     if (capacity > bufferCapacity) {
         free(buffer);

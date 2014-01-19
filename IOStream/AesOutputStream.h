@@ -24,7 +24,7 @@
     
     CCCryptorRef cryptorRef;
     
-    uint32_t bufferCapacity;
+    size_t bufferCapacity;
     uint8_t *buffer;
 }
 

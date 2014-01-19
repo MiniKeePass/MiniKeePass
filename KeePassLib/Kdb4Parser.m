@@ -53,7 +53,7 @@
 
 int	readCallback(void *context, char *buffer, int len) {
     InputStream *inputStream = (__bridge InputStream*)context;
-    return [inputStream read:buffer length:len];
+    return (int)[inputStream read:buffer length:len];
 }
 
 int closeCallback(void *context) {

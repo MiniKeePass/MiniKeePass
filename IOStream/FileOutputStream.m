@@ -19,7 +19,7 @@
 
 @implementation FileOutputStream
 
-- (id)initWithFilename:(NSString*)filename flags:(NSUInteger)flags mode:(NSUInteger)mode {
+- (id)initWithFilename:(NSString*)filename flags:(int)flags mode:(mode_t)mode {
     self = [super init];
     if (self) {
         fd = open([filename UTF8String], flags, mode);

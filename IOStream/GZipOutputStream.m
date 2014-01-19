@@ -41,7 +41,7 @@
 - (NSUInteger)write:(const void *)bytes length:(NSUInteger)bytesLength {
     int n;
     
-    zstream.avail_in = bytesLength;
+    zstream.avail_in = (unsigned int)bytesLength;
     zstream.next_in = (void*)bytes;
     
     while (zstream.avail_in > 0) {

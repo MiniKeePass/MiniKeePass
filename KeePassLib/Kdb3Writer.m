@@ -59,7 +59,7 @@
  * Get the number of entries and meta entries in the KDB tree
  */
 - (uint32_t)numOfEntries:(Kdb3Group *)root {
-    int num = [root.entries count] + [root.metaEntries count];
+    uint32_t num = (uint32_t)([root.entries count] + [root.metaEntries count]);
     for (Kdb3Group *g in root.groups) {
         num += [self numOfEntries:g];
     }
@@ -187,7 +187,7 @@
         [dataOutputStream close];
 
         // Write the extra data to a field with id 0
-        [self appendField:0 size:dataOutputStream.data.length bytes:dataOutputStream.data.bytes withOutputStream:outputStream];
+        [self appendField:0 size:(uint32_t)dataOutputStream.data.length bytes:dataOutputStream.data.bytes withOutputStream:outputStream];
 
         firstGroup = NO;
     }
@@ -197,7 +197,7 @@
 
     if (![Utils emptyString:group.name]){
         const char * title = [group.name cStringUsingEncoding:NSUTF8StringEncoding];
-        [self appendField:2 size:strlen(title)+1 bytes:(void *)title withOutputStream:outputStream];
+        [self appendField:2 size:(uint32_t)(strlen(title) + 1) bytes:(void *)title withOutputStream:outputStream];
     }
 
     [Kdb3Date toPacked:group.creationTime bytes:packedDate];
@@ -212,7 +212,8 @@
     [Kdb3Date toPacked:group.expiryTime bytes:packedDate];
     [self appendField:6 size:5 bytes:packedDate withOutputStream:outputStream];
 
-    tmp32 = CFSwapInt32HostToLittle(group.image);
+    tmp32 = (uint32_t)group.image;
+    tmp32 = CFSwapInt32HostToLittle(tmp32);
     [self appendField:7 size:4 bytes:&tmp32 withOutputStream:outputStream];
 
     // Get the level of the group
@@ -242,38 +243,39 @@
     tmp32 = CFSwapInt32HostToLittle(((Kdb3Group*)entry.parent).groupId);
     [self appendField:2 size:4 bytes:&tmp32 withOutputStream:outputStream];
 
-    tmp32 = CFSwapInt32HostToLittle(entry.image);
+    tmp32 = (uint32_t)entry.image;
+    tmp32 = CFSwapInt32HostToLittle(tmp32);
     [self appendField:3 size:4 bytes:&tmp32 withOutputStream:outputStream];
 
     tmpStr = "";
     if (![Utils emptyString:entry.title]) {
         tmpStr = [entry.title cStringUsingEncoding:NSUTF8StringEncoding];
     }
-    [self appendField:4 size:strlen(tmpStr) + 1 bytes:tmpStr withOutputStream:outputStream];
+    [self appendField:4 size:(uint32_t)(strlen(tmpStr) + 1) bytes:tmpStr withOutputStream:outputStream];
 
     tmpStr = "";
     if (![Utils emptyString:entry.url]) {
         tmpStr = [entry.url cStringUsingEncoding:NSUTF8StringEncoding];
     }
-    [self appendField:5 size:strlen(tmpStr) + 1 bytes:tmpStr withOutputStream:outputStream];
+    [self appendField:5 size:(uint32_t)(strlen(tmpStr) + 1) bytes:tmpStr withOutputStream:outputStream];
 
     tmpStr = "";
     if (![Utils emptyString:entry.username]) {
         tmpStr = [entry.username cStringUsingEncoding:NSUTF8StringEncoding];
     }
-    [self appendField:6 size:strlen(tmpStr) + 1 bytes:tmpStr withOutputStream:outputStream];
+    [self appendField:6 size:(uint32_t)(strlen(tmpStr) + 1) bytes:tmpStr withOutputStream:outputStream];
 
     tmpStr = "";
     if (![Utils emptyString:entry.password]) {
         tmpStr = [entry.password cStringUsingEncoding:NSUTF8StringEncoding];
     }
-    [self appendField:7 size:strlen(tmpStr) + 1 bytes:tmpStr withOutputStream:outputStream];
+    [self appendField:7 size:(uint32_t)(strlen(tmpStr) + 1) bytes:tmpStr withOutputStream:outputStream];
 
     tmpStr = "";
     if (![Utils emptyString:entry.notes]) {
         tmpStr = [entry.notes cStringUsingEncoding:NSUTF8StringEncoding];
     }
-    [self appendField:8 size:strlen(tmpStr) + 1 bytes:tmpStr withOutputStream:outputStream];
+    [self appendField:8 size:(uint32_t)(strlen(tmpStr) + 1) bytes:tmpStr withOutputStream:outputStream];
 
     [Kdb3Date toPacked:entry.creationTime bytes:buffer];
     [self appendField:9 size:5 bytes:buffer withOutputStream:outputStream];
@@ -291,10 +293,10 @@
     if (![Utils emptyString:entry.binaryDesc]) {
         tmpStr = [entry.binaryDesc cStringUsingEncoding:NSUTF8StringEncoding];
     }
-    [self appendField:13 size:strlen(tmpStr)+1 bytes:tmpStr withOutputStream:outputStream];
+    [self appendField:13 size:(uint32_t)(strlen(tmpStr) + 1) bytes:tmpStr withOutputStream:outputStream];
 
     if (entry.binary && entry.binary.length) {
-        [self appendField:14 size:entry.binary.length bytes:entry.binary.bytes withOutputStream:outputStream];
+        [self appendField:14 size:(uint32_t)entry.binary.length bytes:entry.binary.bytes withOutputStream:outputStream];
     } else {
         [self appendField:14 size:0 bytes:nil withOutputStream:outputStream];
     }
