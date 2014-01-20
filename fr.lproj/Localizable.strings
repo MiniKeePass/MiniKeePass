@@ -20,8 +20,8 @@
 
 "Files" = "Fichiers";
 "Databases" = "Bases de données";
-"Key File" = "Key File";
-"Key Files" = "Key Files";
+"Key File" = "Fichier de clé";
+"Key Files" = "Fichiers de clé";
 "Groups" = "Groupes";
 "Entries" = "Entrées";
 "Group" = "Groupe";
@@ -64,7 +64,7 @@
 
 // General Messages
 "Enter your PIN to unlock" = "Saisir votre code PIN pour déverrouiller";
-"Enter the password and/or select the keyfile for the %@ database." = "Saisir le mot de passe et/ou choisir la keyfile pour la base de données %@.";
+"Enter the password and/or select the keyfile for the %@ database." = "Saisir le mot de passe et/ou choisir le fichier de clé pour la base de données %@.";
 "Enter a new name for the password database. The correct file extension will automatically be appended." = "Saisir un nouveau nom pour la 'base de donnée password'. L'extension de fichier appropriée sera automatiquement concaténée.";
 "Do not forget your database password, it cannot be recovered." = "Do not forget your database password, it cannot be recovered."; // FIXME
 
@@ -80,7 +80,7 @@
 "A file already exists with this name" = "Un fichier présent porte déjà ce nom";
 "There are no applications installed capable of importing KeePass files" = "Il n'y a aucune application installée capable d'importer des fichiers KeePass";
 "Tap the + button to add a new KeePass file." = "Appuyez sur + pour ajouter un nouveau fichier KeePass.";
-"No password or keyfile specified" = "Pas de mot de passe ou fichier clé spécifié";
+"No password or keyfile specified" = "Pas de mot de passe ou fichier de clé spécifié";
 
 // Settings Page
 "Settings" = "Réglages";
@@ -119,9 +119,9 @@
 "Prevent unauthorized access to MiniKeePass with a PIN." = "Prévient des accès non autorisés à MiniKeePass à l'aide d'un code PIN.";
 "Delete all files and passwords after too many failed attempts." = "Supprimer tous les fichiers et mots de passe après trop de tentatives infructueuses.";
 "Automatically close an open database after the selected timeout." = "Clore automatiquement les bases de données ouvertes après expiration du délai.";
-"Stores remembered database passwords in the devices's secure keychain." = "Enregistre les mots de passe mémorisés dans le porte-clefs sécurisé du périphérique.";
+"Stores remembered database passwords in the devices's secure keychain." = "Enregistre les mots de passe mémorisés dans le porte-clés sécurisé du périphérique.";
 "Hides passwords when viewing a password entry." = "Masque les mots de passe lors de l'affichage d'une entrée de type mot de passe.";
-"The string encoding used for passwords when converting them to database keys." = "L'encodage utilisé lors de la conversion de mots de passe en clefs.";
+"The string encoding used for passwords when converting them to database keys." = "L'encodage utilisé lors de la conversion de mots de passe en clés.";
 "Clear the contents of the clipboard after a given timeout upon performing a copy." = "Supprimer le contenu du presse-papiers après expiration du délai lors d'une opération de copie.";
 "Close Timeout" = "Délai de fermeture";
 "Clear Clipboard Timeout" = "Délai d'effacement du presse-papiers";
@@ -138,7 +138,7 @@
 "Dropbox Import/Export" = "Import/Export Dropbox";
 "Safari/Email Import" = "Import Safari/Email";
 "Create New Database" = "Créer une nouvelle BDD";
-"Key Files" = "Fichiers de clef";
+"Key Files" = "Fichiers de clé";
 
 // Password Generator
 "Generator" = "Générateur";
