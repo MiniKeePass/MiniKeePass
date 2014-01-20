@@ -33,7 +33,6 @@
 		52E43F4F15B59C890029F979 /* ru-keyfiles.html in Resources */ = {isa = PBXBuildFile; fileRef = 52E43F4A15B59C890029F979 /* ru-keyfiles.html */; };
 		52E43F5015B59C890029F979 /* ru-safariemail.html in Resources */ = {isa = PBXBuildFile; fileRef = 52E43F4B15B59C890029F979 /* ru-safariemail.html */; };
 		52E7AF5C162523F800DCB00A /* EditItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52E7AF5B162523F800DCB00A /* EditItemViewController.m */; };
-		52E7AF6316252D7C00DCB00A /* SelectGroupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52E7AF6216252D7C00DCB00A /* SelectGroupViewController.m */; };
 		680C277616050C7A009403DE /* DDXMLDocument+MKPAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 680C277516050C7A009403DE /* DDXMLDocument+MKPAdditions.m */; };
 		682D450D1603883900156830 /* AesInputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 682D44F21603883900156830 /* AesInputStream.m */; };
 		682D450E1603883900156830 /* AesOutputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 682D44F41603883900156830 /* AesOutputStream.m */; };
@@ -49,6 +48,7 @@
 		682D45181603883900156830 /* InputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 682D45081603883900156830 /* InputStream.m */; };
 		682D45191603883900156830 /* OutputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 682D450A1603883900156830 /* OutputStream.m */; };
 		682D451A1603883900156830 /* Sha256OutputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 682D450C1603883900156830 /* Sha256OutputStream.m */; };
+		6837C360188C9ED30018D588 /* SelectGroupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6837C35F188C9ED30018D588 /* SelectGroupViewController.m */; };
 		684846B6167E1E460040C4EE /* StringFieldViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 684846B5167E1E460040C4EE /* StringFieldViewController.m */; };
 		6851FAFD186DD11D00A53B0E /* UIActionSheetAutoDismiss.m in Sources */ = {isa = PBXBuildFile; fileRef = 6851FAFC186DD11D00A53B0E /* UIActionSheetAutoDismiss.m */; };
 		6859176F1615DE1D005FECA5 /* AppSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 6859176E1615DE1D005FECA5 /* AppSettings.m */; };
@@ -178,8 +178,6 @@
 		52E43F4B15B59C890029F979 /* ru-safariemail.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "ru-safariemail.html"; sourceTree = "<group>"; };
 		52E7AF5A162523F800DCB00A /* EditItemViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditItemViewController.h; sourceTree = "<group>"; };
 		52E7AF5B162523F800DCB00A /* EditItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditItemViewController.m; sourceTree = "<group>"; };
-		52E7AF6116252D7C00DCB00A /* SelectGroupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SelectGroupViewController.h; path = ../SelectGroupViewController.h; sourceTree = "<group>"; };
-		52E7AF6216252D7C00DCB00A /* SelectGroupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SelectGroupViewController.m; path = ../SelectGroupViewController.m; sourceTree = "<group>"; };
 		680C277416050C7A009403DE /* DDXMLDocument+MKPAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "DDXMLDocument+MKPAdditions.h"; sourceTree = "<group>"; };
 		680C277516050C7A009403DE /* DDXMLDocument+MKPAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "DDXMLDocument+MKPAdditions.m"; sourceTree = "<group>"; };
 		682D44F11603883900156830 /* AesInputStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AesInputStream.h; sourceTree = "<group>"; };
@@ -210,6 +208,8 @@
 		682D450A1603883900156830 /* OutputStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OutputStream.m; sourceTree = "<group>"; };
 		682D450B1603883900156830 /* Sha256OutputStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Sha256OutputStream.h; sourceTree = "<group>"; };
 		682D450C1603883900156830 /* Sha256OutputStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Sha256OutputStream.m; sourceTree = "<group>"; };
+		6837C35E188C9ED30018D588 /* SelectGroupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectGroupViewController.h; sourceTree = "<group>"; };
+		6837C35F188C9ED30018D588 /* SelectGroupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectGroupViewController.m; sourceTree = "<group>"; };
 		684846B4167E1E460040C4EE /* StringFieldViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StringFieldViewController.h; sourceTree = "<group>"; };
 		684846B5167E1E460040C4EE /* StringFieldViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StringFieldViewController.m; sourceTree = "<group>"; };
 		6851FAFB186DD11D00A53B0E /* UIActionSheetAutoDismiss.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIActionSheetAutoDismiss.h; sourceTree = "<group>"; };
@@ -798,8 +798,8 @@
 				689D043513A42C81005EBD36 /* NewKdbViewController.m */,
 				68D991E413F3EAAE00F6ED1F /* PasswordViewController.h */,
 				68D991E513F3EAAE00F6ED1F /* PasswordViewController.m */,
-				52E7AF6116252D7C00DCB00A /* SelectGroupViewController.h */,
-				52E7AF6216252D7C00DCB00A /* SelectGroupViewController.m */,
+				6837C35E188C9ED30018D588 /* SelectGroupViewController.h */,
+				6837C35F188C9ED30018D588 /* SelectGroupViewController.m */,
 				689D043E13A42C82005EBD36 /* SelectionListViewController.h */,
 				689D043F13A42C82005EBD36 /* SelectionListViewController.m */,
 				689D044013A42C82005EBD36 /* SettingsViewController.h */,
@@ -975,6 +975,7 @@
 				689D03E013A42B63005EBD36 /* Kdb4Writer.m in Sources */,
 				689D03E113A42B63005EBD36 /* KdbPassword.m in Sources */,
 				689D03E213A42B63005EBD36 /* KdbReaderFactory.m in Sources */,
+				6837C360188C9ED30018D588 /* SelectGroupViewController.m in Sources */,
 				689D03E313A42B63005EBD36 /* KdbWriterFactory.m in Sources */,
 				689D03E513A42B63005EBD36 /* Salsa20RandomStream.m in Sources */,
 				689D03E713A42B63005EBD36 /* Utils.m in Sources */,
@@ -1038,7 +1039,6 @@
 				680C277616050C7A009403DE /* DDXMLDocument+MKPAdditions.m in Sources */,
 				6859176F1615DE1D005FECA5 /* AppSettings.m in Sources */,
 				52E7AF5C162523F800DCB00A /* EditItemViewController.m in Sources */,
-				52E7AF6316252D7C00DCB00A /* SelectGroupViewController.m in Sources */,
 				684846B6167E1E460040C4EE /* StringFieldViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
