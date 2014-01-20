@@ -78,7 +78,7 @@ int hex2dec(char c);
     uint8_t finalKey[32];
     CC_SHA256_CTX ctx;
     CC_SHA256_Init(&ctx);
-    CC_SHA256_Update(&ctx, masterSeed.bytes, masterSeed.length);
+    CC_SHA256_Update(&ctx, masterSeed.bytes, (CC_LONG)masterSeed.length);
     CC_SHA256_Update(&ctx, transformedKey, 32);
     CC_SHA256_Final(finalKey, &ctx);
 
@@ -89,7 +89,7 @@ int hex2dec(char c);
     if (password != nil && keyFile == nil) {
         // Hash the password into the master key
         NSData *passwordData = [password dataUsingEncoding:passswordEncoding];
-        CC_SHA256(passwordData.bytes, passwordData.length, masterKey);
+        CC_SHA256(passwordData.bytes, (CC_LONG)passwordData.length, masterKey);
     } else if (password == nil && keyFile != nil) {
         // Get the bytes from the keyfile
         NSData *keyFileData = [self loadKeyFileV3:keyFile];
@@ -102,7 +102,7 @@ int hex2dec(char c);
         // Hash the password
         uint8_t passwordHash[32];
         NSData *passwordData = [password dataUsingEncoding:passswordEncoding];
-        CC_SHA256(passwordData.bytes, passwordData.length, passwordHash);
+        CC_SHA256(passwordData.bytes, (CC_LONG)passwordData.length, passwordHash);
 
         // Get the bytes from the keyfile
         NSData *keyFileData = [self loadKeyFileV3:keyFile];
@@ -131,7 +131,7 @@ int hex2dec(char c);
 
         // Hash the password
         uint8_t hash[32];
-        CC_SHA256(passwordData.bytes, passwordData.length, hash);
+        CC_SHA256(passwordData.bytes, (CC_LONG)passwordData.length, hash);
 
         // Add the password hash to the master hash
         CC_SHA256_Update(&ctx, hash, 32);
@@ -146,7 +146,7 @@ int hex2dec(char c);
         }
 
         // Add the keyfile hash to the master hash
-        CC_SHA256_Update(&ctx, keyFileData.bytes, keyFileData.length);
+        CC_SHA256_Update(&ctx, keyFileData.bytes, (CC_LONG)keyFileData.length);
     }
 
     // Finish the hash into the master key
@@ -274,7 +274,7 @@ int hex2dec(char c);
         if (data.length == 0) {
             break;
         }
-        CC_SHA256_Update(&ctx, data.bytes, data.length);
+        CC_SHA256_Update(&ctx, data.bytes, (CC_LONG)data.length);
     }
 
     CC_SHA256_Final(buffer, &ctx);

@@ -61,14 +61,14 @@
     return [self imageForIndex:entry.image];
 }
 
-- (UIImage *)imageForIndex:(NSUInteger)index {
+- (UIImage *)imageForIndex:(NSInteger)index {
     if (index >= NUM_IMAGES) {
         return nil;
     }
 
     id image = [self.standardImages objectAtIndex:index];
     if (image == [NSNull null]) {
-        image = [UIImage imageNamed:[NSString stringWithFormat:@"%d", index]];
+        image = [UIImage imageNamed:[NSString stringWithFormat:@"%ld", (long)index]];
         [self.standardImages replaceObjectAtIndex:index withObject:image];
     }
 

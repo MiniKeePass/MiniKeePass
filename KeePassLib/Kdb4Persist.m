@@ -85,15 +85,15 @@
     [element addChild:[DDXMLNode elementWithName:@"DefaultUserNameChanged"
                                      stringValue:[dateFormatter stringFromDate:tree.defaultUserNameChanged]]];
     [element addChild:[DDXMLNode elementWithName:@"MaintenanceHistoryDays"
-                                     stringValue:[NSString stringWithFormat:@"%d", tree.maintenanceHistoryDays]]];
+                                     stringValue:[NSString stringWithFormat:@"%ld", (long)tree.maintenanceHistoryDays]]];
     [element addChild:[DDXMLNode elementWithName:@"Color"
                                      stringValue:tree.color]];
     [element addChild:[DDXMLNode elementWithName:@"MasterKeyChanged"
                                      stringValue:[dateFormatter stringFromDate:tree.masterKeyChanged]]];
     [element addChild:[DDXMLNode elementWithName:@"MasterKeyChangeRec"
-                                     stringValue:[NSString stringWithFormat:@"%d", tree.masterKeyChangeRec]]];
+                                     stringValue:[NSString stringWithFormat:@"%ld", (long)tree.masterKeyChangeRec]]];
     [element addChild:[DDXMLNode elementWithName:@"MasterKeyChangeForce"
-                                     stringValue:[NSString stringWithFormat:@"%d", tree.masterKeyChangeForce]]];
+                                     stringValue:[NSString stringWithFormat:@"%ld", (long)tree.masterKeyChangeForce]]];
 
     DDXMLElement *protectionElement = [DDXMLElement elementWithName:@"MemoryProtection"];
     [protectionElement addChild:[DDXMLNode elementWithName:@"ProtectTitle"
@@ -127,9 +127,9 @@
     [element addChild:[DDXMLNode elementWithName:@"EntryTemplatesGroupChanged"
                                      stringValue:[dateFormatter stringFromDate:tree.entryTemplatesGroupChanged]]];
     [element addChild:[DDXMLNode elementWithName:@"HistoryMaxItems"
-                                     stringValue:[NSString stringWithFormat:@"%d", tree.historyMaxItems]]];
+                                     stringValue:[NSString stringWithFormat:@"%ld", (long)tree.historyMaxItems]]];
     [element addChild:[DDXMLNode elementWithName:@"HistoryMaxSize"
-                                     stringValue:[NSString stringWithFormat:@"%d", tree.historyMaxSize]]];
+                                     stringValue:[NSString stringWithFormat:@"%ld", (long)tree.historyMaxSize]]];
     [element addChild:[DDXMLNode elementWithName:@"LastSelectedGroup"
                                      stringValue:[self persistUuid:tree.lastSelectedGroup]]];
     [element addChild:[DDXMLNode elementWithName:@"LastTopVisibleGroup"
@@ -175,7 +175,7 @@
 - (DDXMLElement *)persistBinary:(Binary *)binary {
     DDXMLElement *root = [DDXMLNode elementWithName:@"Binary"];
 
-    [root addAttributeWithName:@"ID" stringValue:[NSString stringWithFormat:@"%d", binary.binaryId]];
+    [root addAttributeWithName:@"ID" stringValue:[NSString stringWithFormat:@"%ld", (long)binary.binaryId]];
     [root addAttributeWithName:@"Compressed" stringValue:binary.compressed ? @"True" : @"False"];
     root.stringValue = binary.data;
 
@@ -204,7 +204,7 @@
     [root addChild:[DDXMLNode elementWithName:@"Notes"
                                   stringValue:group.notes]];
     [root addChild:[DDXMLNode elementWithName:@"IconID"
-                                  stringValue:[NSString stringWithFormat:@"%d", group.image]]];
+                                  stringValue:[NSString stringWithFormat:@"%ld", (long)group.image]]];
     if (group.customIconUuid != nil) {
         [root addChild:[DDXMLNode elementWithName:@"CustomIconUUID"
                                       stringValue:[self persistUuid:group.customIconUuid]]];
@@ -223,7 +223,7 @@
     [timesElement addChild:[DDXMLNode elementWithName:@"Expires"
                                           stringValue:group.expires ? @"True" : @"False"]];
     [timesElement addChild:[DDXMLNode elementWithName:@"UsageCount"
-                                          stringValue:[NSString stringWithFormat:@"%d", group.usageCount]]];
+                                          stringValue:[NSString stringWithFormat:@"%ld", (long)group.usageCount]]];
     [timesElement addChild:[DDXMLNode elementWithName:@"LocationChanged"
                                           stringValue:[dateFormatter stringFromDate:group.locationChanged]]];
     [root addChild:timesElement];
@@ -258,7 +258,7 @@
     [root addChild:[DDXMLNode elementWithName:@"UUID"
                                   stringValue:[self persistUuid:entry.uuid]]];
     [root addChild:[DDXMLNode elementWithName:@"IconID"
-                                  stringValue:[NSString stringWithFormat:@"%d", entry.image]]];
+                                  stringValue:[NSString stringWithFormat:@"%ld", (long)entry.image]]];
     if (entry.customIconUuid != nil) {
         [root addChild:[DDXMLNode elementWithName:@"CustomIconUUID"
                                       stringValue:[self persistUuid:entry.customIconUuid]]];
@@ -285,7 +285,7 @@
     [timesElement addChild:[DDXMLNode elementWithName:@"Expires"
                                           stringValue:entry.expires ? @"True" : @"False"]];
     [timesElement addChild:[DDXMLNode elementWithName:@"UsageCount"
-                                          stringValue:[NSString stringWithFormat:@"%d", entry.usageCount]]];
+                                          stringValue:[NSString stringWithFormat:@"%ld", (long)entry.usageCount]]];
     [timesElement addChild:[DDXMLNode elementWithName:@"LocationChanged"
                                           stringValue:[dateFormatter stringFromDate:entry.locationChanged]]];
     [root addChild:timesElement];
@@ -342,7 +342,7 @@
     [root addChild:[DDXMLElement elementWithName:@"Key" stringValue:binaryRef.key]];
 
     DDXMLElement *element = [DDXMLElement elementWithName:@"Value"];
-    [element addAttributeWithName:@"Ref" stringValue:[NSString stringWithFormat:@"%d", binaryRef.ref]];
+    [element addAttributeWithName:@"Ref" stringValue:[NSString stringWithFormat:@"%ld", (long)binaryRef.ref]];
     [root addChild:element];
 
     return root;
@@ -354,7 +354,7 @@
     [root addChild:[DDXMLElement elementWithName:@"Enabled"
                                      stringValue:autoType.enabled ? @"True" : @"False"]];
     [root addChild:[DDXMLElement elementWithName:@"DataTransferObfuscation"
-                                     stringValue:[NSString stringWithFormat:@"%d", autoType.dataTransferObfuscation]]];
+                                     stringValue:[NSString stringWithFormat:@"%ld", (long)autoType.dataTransferObfuscation]]];
 
     if (autoType.defaultSequence != nil) {
         [root addChild:[DDXMLElement elementWithName:@"DefaultSequence" stringValue:autoType.defaultSequence]];

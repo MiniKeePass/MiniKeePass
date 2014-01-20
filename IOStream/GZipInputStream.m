@@ -68,7 +68,7 @@
 
 - (BOOL)decompress {
     int ret;
-    int n;
+    NSUInteger n;
     
     if (eof) {
         return NO;
@@ -86,7 +86,7 @@
                 @throw [NSException exceptionWithName:@"IOException" reason:@"Failed to read compressed data" userInfo:nil];
             }
             
-            zstream.avail_in = n;
+            zstream.avail_in = (unsigned int)n;
             zstream.next_in = inputBuffer;
         }
         

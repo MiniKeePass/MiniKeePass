@@ -25,6 +25,6 @@
 - (NSArray *)images;
 - (UIImage *)imageForGroup:(KdbGroup *)group;
 - (UIImage *)imageForEntry:(KdbEntry *)entry;
-- (UIImage *)imageForIndex:(NSUInteger)index;
+- (UIImage *)imageForIndex:(NSInteger)index;
 
 @end

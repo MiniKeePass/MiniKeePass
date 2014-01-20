@@ -600,8 +600,4 @@ enum {
     }
 }
 
--(BOOL)pinViewControllerShouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
-    return [self shouldAutorotateToInterfaceOrientation:toInterfaceOrientation];
-}
-
 @end

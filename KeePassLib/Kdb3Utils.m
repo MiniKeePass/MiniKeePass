@@ -22,8 +22,8 @@
 
 + (NSData *)hashHeader:(kdb3_header_t *)header {
     uint8_t *buffer = (uint8_t *)header;
-    size_t endCount = sizeof(header->masterSeed2) + sizeof(header->keyEncRounds);
-    size_t startCount = sizeof(kdb3_header_t) - sizeof(header->contentsHash) - endCount;
+    CC_LONG endCount = sizeof(header->masterSeed2) + sizeof(header->keyEncRounds);
+    CC_LONG startCount = sizeof(kdb3_header_t) - sizeof(header->contentsHash) - endCount;
     uint8_t hash[32];
 
     CC_SHA256_CTX ctx;

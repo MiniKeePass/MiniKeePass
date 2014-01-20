@@ -75,26 +75,11 @@
 "Passwords do not match" = "Les mots de passe ne sont pas identiques";
 "Password is required" = "Le mot de passe est requis";
 "Incorrect PIN" = "Code PIN erroné";
-"Incorrect PIN\n1 attempt remaining" = "Code PIN erroné\n1 tentative restante";
-"Incorrect PIN\n2 attempts remaining" = "Code PIN erroné\n2 tentatives restantes";
-"Incorrect PIN\n3 attempts remaining" = "Code PIN erroné\n3 tentatives restantes";
-"Incorrect PIN\n4 attempts remaining" = "Code PIN erroné\n4 tentatives restantes";
-"Incorrect PIN\n5 attempts remaining" = "Code PIN erroné\n5 tentatives restantes";
-"Incorrect PIN\n6 attempts remaining" = "Code PIN erroné\n6 tentatives restantes";
-"Incorrect PIN\n7 attempts remaining" = "Code PIN erroné\n7 tentatives restantes";
-"Incorrect PIN\n8 attempts remaining" = "Code PIN erroné\n8 tentatives restantes";
-"Incorrect PIN\n9 attempts remaining" = "Code PIN erroné\n9 tentatives restantes";
-"Incorrect PIN\n10 attempts remaining" = "Code PIN erroné\n10 tentatives restantes";
-"Incorrect PIN\n11 attempts remaining" = "Code PIN erroné\n11 tentatives restantes";
-"Incorrect PIN\n12 attempts remaining" = "Code PIN erroné\n12 tentatives restantes";
-"Incorrect PIN\n13 attempts remaining" = "Code PIN erroné\n13 tentatives restantes";
-"Incorrect PIN\n14 attempts remaining" = "Code PIN erroné\n14 tentatives restantes";
+"Attempts Remaining" = "Tentatives restantes";
 "Filename is invalid" = "Le nom de fichier est invalide";
 "A file already exists with this name" = "Un fichier présent porte déjà ce nom";
 "There are no applications installed capable of importing KeePass files" = "Il n'y a aucune application installée capable d'importer des fichiers KeePass";
-// "You do not have any KeePass files available for MiniKeePass to open." = "MiniKeePass n'a trouvé aucun fichier KeePass à ouvrir.";
-// Shortened string to fit screen width, see #252
-"You do not have any KeePass files available for MiniKeePass to open." = "Aucun fichier KeePass trouvé.";
+"Tap the + button to add a new KeePass file." = "Appuyez sur + pour ajouter un nouveau fichier KeePass.";
 "No password or keyfile specified" = "Pas de mot de passe ou fichier clé spécifié";
 
 // Settings Page

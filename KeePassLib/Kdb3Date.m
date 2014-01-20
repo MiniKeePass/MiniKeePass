@@ -51,12 +51,12 @@
         NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
         NSDateComponents *dateComponents = [calendar components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit) fromDate:date];
         
-        y = [dateComponents year];
-        mon = [dateComponents month];
-        d = [dateComponents day];
-        h = [dateComponents hour];
-        min = [dateComponents minute];
-        s = [dateComponents second];
+        y = (uint32_t)[dateComponents year];
+        mon = (uint32_t)[dateComponents month];
+        d = (uint32_t)[dateComponents day];
+        h = (uint32_t)[dateComponents hour];
+        min = (uint32_t)[dateComponents minute];
+        s = (uint32_t)[dateComponents second];
     } else {
         y = 2999;
         mon = 12;

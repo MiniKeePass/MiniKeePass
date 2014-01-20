@@ -21,18 +21,17 @@
 
 @interface PinViewController : UIViewController <UITextFieldDelegate>
 
-- (id)initWithText:(NSString*)text;
+@property (nonatomic, copy) UILabel *textLabel;
+@property (nonatomic, assign) id<PinViewControllerDelegate> delegate;
+
+- (id)initWithText:(NSString *)text;
 - (void)clearEntry;
 - (void)keyboardDidHide;
-
-@property (nonatomic, copy) UILabel *textLabel;
-@property (nonatomic, unsafe_unretained) id<PinViewControllerDelegate> delegate;
 
 @end
 
 @protocol PinViewControllerDelegate <NSObject>
-- (void)pinViewController:(PinViewController*)controller pinEntered:(NSString*)pin;
-- (BOOL)pinViewControllerShouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation;
+- (void)pinViewController:(PinViewController *)controller pinEntered:(NSString*)pin;
 @optional
-- (void)pinViewControllerDidShow:(PinViewController*)controller;
+- (void)pinViewControllerDidShow:(PinViewController *)controller;
 @end

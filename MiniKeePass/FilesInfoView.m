@@ -18,9 +18,7 @@
 #import "FilesInfoView.h"
 
 @interface FilesInfoView ()  {
-    UIView *containerView;
-    CGFloat containerWidth;
-    CGFloat containerHeight;
+    UILabel *label;
 }
 @end
 
@@ -31,42 +29,17 @@
     if (self) {
         // Initialization code
         self.backgroundColor = [UIColor whiteColor];
-        
-        CGFloat viewWidth = CGRectGetWidth(self.frame);
-        UIImage *image = [UIImage imageNamed:@"background"];
-        
-        CGFloat imageWidth = image.size.width;
-        CGFloat imageHeight = image.size.height;        
+        self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 
-        CGFloat spacerHeight = 40.0f;
-
-        CGFloat labelWidth = 320.0f;
-        CGFloat labelHeight = 40.0f;
-        
-        containerWidth = labelWidth;
-        containerHeight = imageHeight + labelHeight + spacerHeight;
-
-        UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
-        imageView.frame = CGRectMake((containerWidth - image.size.width) / 2.0f, 0, imageWidth, imageHeight);
-        imageView.contentMode = UIViewContentModeScaleAspectFit;
-        imageView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleBottomMargin;
-        
-        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, imageHeight + spacerHeight, labelWidth, labelHeight)];
-        label.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
+        label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.bounds.size.width - 20.0f, 0)];
         label.backgroundColor = [UIColor clearColor];
         label.textAlignment = UITextAlignmentCenter;
         label.numberOfLines = 0;
         label.lineBreakMode = UILineBreakModeWordWrap;
         label.textColor = [UIColor grayColor];
-        label.text = NSLocalizedString(@"You do not have any KeePass files available for MiniKeePass to open.", nil);
-        
-        CGFloat y = [[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad ? 240.0f : 40.0f;
-        containerView = [[UIView alloc] initWithFrame:CGRectMake((viewWidth - containerWidth) / 2.0f, y, containerWidth, containerHeight)];
-        containerView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
-        [containerView addSubview:imageView];
-        [containerView addSubview:label];
-        
-        [self addSubview:containerView];
+        label.text = NSLocalizedString(@"Tap the + button to add a new KeePass file.", nil);
+        [label sizeToFit];
+        [self addSubview:label];
     }
     return self;
 }
@@ -74,19 +47,18 @@
 - (void)layoutSubviews {
     [super layoutSubviews];
 
-    // Nothing to be done for iPad; return
-    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) return;
-    
-    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
-    CGRect newFrame = containerView.frame;
-    if (UIInterfaceOrientationIsLandscape(orientation)) {
-        newFrame.origin.y = 5.0f;
-        newFrame.size.height = 225.0f;
+    // Resize the label to the width of the screen in case we've rotated
+    label.frame = CGRectMake(0, 0, self.bounds.size.width - 20.0f, 0);
+    [label sizeToFit];
+
+    // Center the label, in iOS 7 account for the layout guides
+    if ([self.viewController respondsToSelector:@selector(topLayoutGuide)]) {
+        CGFloat top = self.viewController.topLayoutGuide.length;
+        CGFloat bottom = self.viewController.bottomLayoutGuide.length;
+        label.center = CGPointMake(self.bounds.size.width / 2.0f, (self.bounds.size.height - top - bottom) / 2.0f + top);
     } else {
-        newFrame.origin.y = 40.0f;
-        newFrame.size.height = containerHeight;
+        label.center = CGPointMake(self.bounds.size.width / 2.0f, self.bounds.size.height / 2.0f);
     }
-    containerView.frame = newFrame;
 }
 
 @end

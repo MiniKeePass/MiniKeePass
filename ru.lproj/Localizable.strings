@@ -15,8 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* Russian translation maintainer:
-   Roman Azarenko aka BasicXP <basicxp@basicxp.ru> */
+// Translation maintainer: Foster "Forst" Snowhill <forst@basicxp.ru>
 
 "Files" = "Файлы";
 "Databases" = "Базы данных";
@@ -75,24 +74,11 @@
 "Passwords do not match" = "Пароли не совпадают";
 "Password is required" = "Ввод пароля обязателен";
 "Incorrect PIN" = "Неправильный PIN";
-"Incorrect PIN\n1 attempt remaining" = "Неправильный PIN\nОсталась 1 попытка";
-"Incorrect PIN\n2 attempts remaining" = "Неправильный PIN\nОсталось 2 попытки";
-"Incorrect PIN\n3 attempts remaining" = "Неправильный PIN\nОсталось 3 попытки";
-"Incorrect PIN\n4 attempts remaining" = "Неправильный PIN\nОсталось 4 попытки";
-"Incorrect PIN\n5 attempts remaining" = "Неправильный PIN\nОсталось 5 попыток";
-"Incorrect PIN\n6 attempts remaining" = "Неправильный PIN\nОсталось 6 попыток";
-"Incorrect PIN\n7 attempts remaining" = "Неправильный PIN\nОсталось 7 попыток";
-"Incorrect PIN\n8 attempts remaining" = "Неправильный PIN\nОсталось 8 попыток";
-"Incorrect PIN\n9 attempts remaining" = "Неправильный PIN\nОсталось 9 попыток";
-"Incorrect PIN\n10 attempts remaining" = "Неправильный PIN\nОсталось 10 попыток";
-"Incorrect PIN\n11 attempts remaining" = "Неправильный PIN\nОсталось 11 попыток";
-"Incorrect PIN\n12 attempts remaining" = "Неправильный PIN\nОсталось 12 попыток";
-"Incorrect PIN\n13 attempts remaining" = "Неправильный PIN\nОсталось 13 попыток";
-"Incorrect PIN\n14 attempts remaining" = "Неправильный PIN\nОсталось 14 попыток";
+"Attempts Remaining" = "Осталось попыток";
 "Filename is invalid" = "Имя файла недействительно";
 "A file already exists with this name" = "Файл с этим именем уже существует";
 "There are no applications installed capable of importing KeePass files" = "Нет установленных приложений, способных импортировать файлы KeePass";
-"You do not have any KeePass files available for MiniKeePass to open." = "У вас нет файлов KeePass.";
+"Tap the + button to add a new KeePass file." = "Нажмите кнопку +, чтобы добавить новый файл KeePass.";
 "No password or keyfile specified" = "Не указан ни пароль, ни файл ключа";
 
 // Settings Page

@@ -37,37 +37,38 @@ enum {
 
 - (void)viewDidLoad {
     appDelegate = [MiniKeePassAppDelegate appDelegate];
-    
+
+    self.title = NSLocalizedString(@"Files", nil);
     self.tableView.allowsSelectionDuringEditing = YES;
-    
-    UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"gear"] style:UIBarButtonItemStylePlain target:appDelegate action:@selector(showSettingsView)];
-    settingsButton.imageInsets = UIEdgeInsetsMake(2, 0, -2, 0);
-    
-    UIBarButtonItem *helpButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"help"] style:UIBarButtonItemStylePlain target:self action:@selector(helpPressed)];
-    helpButton.imageInsets = UIEdgeInsetsMake(2, 0, -2, 0);
-    
-    UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addPressed)];
-    
-    UIBarButtonItem *spacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-    
+
+    UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"gear"]
+                                                                       style:UIBarButtonItemStylePlain
+                                                                      target:appDelegate
+                                                                      action:@selector(showSettingsView)];
+
+    UIBarButtonItem *helpButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"help"]
+                                                                   style:UIBarButtonItemStylePlain
+                                                                  target:self
+                                                                  action:@selector(helpPressed)];
+
+    UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+                                                                               target:self
+                                                                               action:@selector(addPressed)];
+
+    UIBarButtonItem *spacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+                                                                            target:nil
+                                                                            action:nil];
+
     self.toolbarItems = [NSArray arrayWithObjects:settingsButton, spacer, helpButton, spacer, addButton, nil];
     self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        self.title = NSLocalizedString(@"Files", nil);
-    }
-    return self;
-}
-
 - (void)displayInfoPage {
     if (filesInfoView == nil) {
-        filesInfoView = [[FilesInfoView alloc] initWithFrame:self.view.frame];
-        filesInfoView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+        filesInfoView = [[FilesInfoView alloc] initWithFrame:self.view.bounds];
+        filesInfoView.viewController = self;
     }
-    
+
     [self.view addSubview:filesInfoView];
     
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -80,7 +81,7 @@ enum {
     if (filesInfoView != nil) {
         [filesInfoView removeFromSuperview];
     }
-    
+
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
     self.tableView.scrollEnabled = YES;
     
@@ -99,6 +100,13 @@ enum {
     }
     
     [super viewWillAppear:animated];
+}
+
+- (void)viewWillLayoutSubviews {
+    [super viewWillLayoutSubviews];
+
+    // Adjust the frame of the filesInfoView to make sure it fills the screen
+    filesInfoView.frame = self.view.bounds;
 }
 
 - (void)updateFiles {
@@ -156,10 +164,10 @@ enum {
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    int databaseCount = [databaseFiles count];
-    int keyCount = [keyFiles count];
+    NSUInteger databaseCount = [databaseFiles count];
+    NSUInteger keyCount = [keyFiles count];
     
-    int n;
+    NSInteger n;
     switch (section) {
         case SECTION_DATABASE:
             n = databaseCount;

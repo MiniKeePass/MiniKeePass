@@ -72,24 +72,11 @@
 "Passwords do not match" = "As senhas não coincidem";
 "Password is required" = "Senha é requerida";
 "Incorrect PIN" = "PIN incorreto";
-"Incorrect PIN\n1 attempt remaining" = "PIN incorreto\n1 tentativa restante";
-"Incorrect PIN\n2 attempts remaining" = "PIN incorreto\n2 tentativas restantes";
-"Incorrect PIN\n3 attempts remaining" = "PIN incorreto\n3 tentativas restantes";
-"Incorrect PIN\n4 attempts remaining" = "PIN incorreto\n4 tentativas restantes";
-"Incorrect PIN\n5 attempts remaining" = "PIN incorreto\n5 tentativas restantes";
-"Incorrect PIN\n6 attempts remaining" = "PIN incorreto\n6 tentativas restantes";
-"Incorrect PIN\n7 attempts remaining" = "PIN incorreto\n7 tentativas restantes";
-"Incorrect PIN\n8 attempts remaining" = "PIN incorreto\n8 tentativas restantes";
-"Incorrect PIN\n9 attempts remaining" = "PIN incorreto\n9 tentativas restantes";
-"Incorrect PIN\n10 attempts remaining" = "PIN incorreto\n10 tentativas restantes";
-"Incorrect PIN\n11 attempts remaining" = "PIN incorreto\n11 tentativas restantes";
-"Incorrect PIN\n12 attempts remaining" = "PIN incorreto\n12 tentativas restantes";
-"Incorrect PIN\n13 attempts remaining" = "PIN incorreto\n13 tentativas restantes";
-"Incorrect PIN\n14 attempts remaining" = "PIN incorreto\n14 tentativas restantes";
+"Attempts Remaining" = "Attempts Remaining"; // FIXME
 "Filename is invalid" = "Nome do arquivo é inválido";
 "A file already exists with this name" = "Um arquivo já existe com esse nome";
 "There are no applications installed capable of importing KeePass files" = "Não há aplicações instaladas capazes de importar arquivos KeePass";
-"You do not have any KeePass files available for MiniKeePass to open." = "Você não tem nenhum arquivo KeePass disponível para o MiniKeePass abrir.";
+"Tap the + button to add a new KeePass file." = "Tap the + button to add a new KeePass file."; // FIXME
 "No password or keyfile specified" = "No password or keyfile specified"; // FIXME
 
 // Settings Page

@@ -33,7 +33,6 @@
 		52E43F4F15B59C890029F979 /* ru-keyfiles.html in Resources */ = {isa = PBXBuildFile; fileRef = 52E43F4A15B59C890029F979 /* ru-keyfiles.html */; };
 		52E43F5015B59C890029F979 /* ru-safariemail.html in Resources */ = {isa = PBXBuildFile; fileRef = 52E43F4B15B59C890029F979 /* ru-safariemail.html */; };
 		52E7AF5C162523F800DCB00A /* EditItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52E7AF5B162523F800DCB00A /* EditItemViewController.m */; };
-		52E7AF6316252D7C00DCB00A /* SelectGroupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52E7AF6216252D7C00DCB00A /* SelectGroupViewController.m */; };
 		680C277616050C7A009403DE /* DDXMLDocument+MKPAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 680C277516050C7A009403DE /* DDXMLDocument+MKPAdditions.m */; };
 		682D450D1603883900156830 /* AesInputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 682D44F21603883900156830 /* AesInputStream.m */; };
 		682D450E1603883900156830 /* AesOutputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 682D44F41603883900156830 /* AesOutputStream.m */; };
@@ -49,6 +48,7 @@
 		682D45181603883900156830 /* InputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 682D45081603883900156830 /* InputStream.m */; };
 		682D45191603883900156830 /* OutputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 682D450A1603883900156830 /* OutputStream.m */; };
 		682D451A1603883900156830 /* Sha256OutputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 682D450C1603883900156830 /* Sha256OutputStream.m */; };
+		6837C360188C9ED30018D588 /* SelectGroupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6837C35F188C9ED30018D588 /* SelectGroupViewController.m */; };
 		684846B6167E1E460040C4EE /* StringFieldViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 684846B5167E1E460040C4EE /* StringFieldViewController.m */; };
 		6851FAFD186DD11D00A53B0E /* UIActionSheetAutoDismiss.m in Sources */ = {isa = PBXBuildFile; fileRef = 6851FAFC186DD11D00A53B0E /* UIActionSheetAutoDismiss.m */; };
 		6859176F1615DE1D005FECA5 /* AppSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 6859176E1615DE1D005FECA5 /* AppSettings.m */; };
@@ -178,8 +178,6 @@
 		52E43F4B15B59C890029F979 /* ru-safariemail.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "ru-safariemail.html"; sourceTree = "<group>"; };
 		52E7AF5A162523F800DCB00A /* EditItemViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditItemViewController.h; sourceTree = "<group>"; };
 		52E7AF5B162523F800DCB00A /* EditItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditItemViewController.m; sourceTree = "<group>"; };
-		52E7AF6116252D7C00DCB00A /* SelectGroupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SelectGroupViewController.h; path = ../SelectGroupViewController.h; sourceTree = "<group>"; };
-		52E7AF6216252D7C00DCB00A /* SelectGroupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SelectGroupViewController.m; path = ../SelectGroupViewController.m; sourceTree = "<group>"; };
 		680C277416050C7A009403DE /* DDXMLDocument+MKPAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "DDXMLDocument+MKPAdditions.h"; sourceTree = "<group>"; };
 		680C277516050C7A009403DE /* DDXMLDocument+MKPAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "DDXMLDocument+MKPAdditions.m"; sourceTree = "<group>"; };
 		682D44F11603883900156830 /* AesInputStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AesInputStream.h; sourceTree = "<group>"; };
@@ -210,6 +208,8 @@
 		682D450A1603883900156830 /* OutputStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OutputStream.m; sourceTree = "<group>"; };
 		682D450B1603883900156830 /* Sha256OutputStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Sha256OutputStream.h; sourceTree = "<group>"; };
 		682D450C1603883900156830 /* Sha256OutputStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Sha256OutputStream.m; sourceTree = "<group>"; };
+		6837C35E188C9ED30018D588 /* SelectGroupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectGroupViewController.h; sourceTree = "<group>"; };
+		6837C35F188C9ED30018D588 /* SelectGroupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectGroupViewController.m; sourceTree = "<group>"; };
 		684846B4167E1E460040C4EE /* StringFieldViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StringFieldViewController.h; sourceTree = "<group>"; };
 		684846B5167E1E460040C4EE /* StringFieldViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StringFieldViewController.m; sourceTree = "<group>"; };
 		6851FAFB186DD11D00A53B0E /* UIActionSheetAutoDismiss.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIActionSheetAutoDismiss.h; sourceTree = "<group>"; };
@@ -220,6 +220,14 @@
 		685D9D941603F8EE00D739D3 /* Kdb3Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Kdb3Utils.m; sourceTree = "<group>"; };
 		6876F67613B2D8F400A05C7A /* ImageSelectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageSelectionViewController.h; sourceTree = "<group>"; };
 		6876F67713B2D8F400A05C7A /* ImageSelectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageSelectionViewController.m; sourceTree = "<group>"; };
+		687AAA981889F8B400AB8AC5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text; name = en; path = en.lproj/AppStore.txt; sourceTree = "<group>"; };
+		687AAAA11889FB4000AB8AC5 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text; name = ru; path = ru.lproj/AppStore.txt; sourceTree = "<group>"; };
+		687AAAA21889FB4B00AB8AC5 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text; name = ja; path = ja.lproj/AppStore.txt; sourceTree = "<group>"; };
+		687AAAA31889FB4C00AB8AC5 /* de */ = {isa = PBXFileReference; lastKnownFileType = text; name = de; path = de.lproj/AppStore.txt; sourceTree = "<group>"; };
+		687AAAA41889FB4D00AB8AC5 /* it */ = {isa = PBXFileReference; lastKnownFileType = text; name = it; path = it.lproj/AppStore.txt; sourceTree = "<group>"; };
+		687AAAA51889FB4D00AB8AC5 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text; name = "zh-Hans"; path = "zh-Hans.lproj/AppStore.txt"; sourceTree = "<group>"; };
+		687AAAA61889FB4E00AB8AC5 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text; name = "pt-BR"; path = "pt-BR.lproj/AppStore.txt"; sourceTree = "<group>"; };
+		687AAAA71889FB4F00AB8AC5 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text; name = fr; path = fr.lproj/AppStore.txt; sourceTree = "<group>"; };
 		68884F0E186E1C5600C222D4 /* MasterPasswordFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MasterPasswordFieldCell.h; sourceTree = "<group>"; };
 		68884F0F186E1C5600C222D4 /* MasterPasswordFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MasterPasswordFieldCell.m; sourceTree = "<group>"; };
 		68884F11186E414C00C222D4 /* stretchme-7@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "stretchme-7@2x.png"; sourceTree = "<group>"; };
@@ -288,41 +296,6 @@
 		689D030213A42B63005EBD36 /* DDXMLPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDXMLPrivate.h; sourceTree = "<group>"; };
 		689D030313A42B63005EBD36 /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
 		689D030413A42B63005EBD36 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
-		689D030613A42B63005EBD36 /* sample.1.00.kdb */ = {isa = PBXFileReference; lastKnownFileType = file; path = sample.1.00.kdb; sourceTree = "<group>"; };
-		689D030713A42B63005EBD36 /* sample.1.01.kdb */ = {isa = PBXFileReference; lastKnownFileType = file; path = sample.1.01.kdb; sourceTree = "<group>"; };
-		689D030813A42B63005EBD36 /* sample.1.02.kdb */ = {isa = PBXFileReference; lastKnownFileType = file; path = sample.1.02.kdb; sourceTree = "<group>"; };
-		689D030913A42B63005EBD36 /* sample.1.03.kdb */ = {isa = PBXFileReference; lastKnownFileType = file; path = sample.1.03.kdb; sourceTree = "<group>"; };
-		689D030A13A42B63005EBD36 /* sample.1.04.kdb */ = {isa = PBXFileReference; lastKnownFileType = file; path = sample.1.04.kdb; sourceTree = "<group>"; };
-		689D030B13A42B63005EBD36 /* sample.1.05.kdb */ = {isa = PBXFileReference; lastKnownFileType = file; path = sample.1.05.kdb; sourceTree = "<group>"; };
-		689D030C13A42B63005EBD36 /* sample.1.06.kdb */ = {isa = PBXFileReference; lastKnownFileType = file; path = sample.1.06.kdb; sourceTree = "<group>"; };
-		689D030D13A42B63005EBD36 /* sample.1.07.kdb */ = {isa = PBXFileReference; lastKnownFileType = file; path = sample.1.07.kdb; sourceTree = "<group>"; };
-		689D030E13A42B63005EBD36 /* sample.1.08.kdb */ = {isa = PBXFileReference; lastKnownFileType = file; path = sample.1.08.kdb; sourceTree = "<group>"; };
-		689D030F13A42B63005EBD36 /* sample.1.09.kdb */ = {isa = PBXFileReference; lastKnownFileType = file; path = sample.1.09.kdb; sourceTree = "<group>"; };
-		689D031013A42B63005EBD36 /* sample.1.10.kdb */ = {isa = PBXFileReference; lastKnownFileType = file; path = sample.1.10.kdb; sourceTree = "<group>"; };
-		689D031113A42B63005EBD36 /* sample.1.11.kdb */ = {isa = PBXFileReference; lastKnownFileType = file; path = sample.1.11.kdb; sourceTree = "<group>"; };
-		689D031213A42B63005EBD36 /* sample.1.12.kdb */ = {isa = PBXFileReference; lastKnownFileType = file; path = sample.1.12.kdb; sourceTree = "<group>"; };
-		689D031313A42B63005EBD36 /* sample.1.13.kdb */ = {isa = PBXFileReference; lastKnownFileType = file; path = sample.1.13.kdb; sourceTree = "<group>"; };
-		689D031413A42B63005EBD36 /* sample.1.14.kdb */ = {isa = PBXFileReference; lastKnownFileType = file; path = sample.1.14.kdb; sourceTree = "<group>"; };
-		689D031513A42B63005EBD36 /* sample.1.15.kdb */ = {isa = PBXFileReference; lastKnownFileType = file; path = sample.1.15.kdb; sourceTree = "<group>"; };
-		689D031613A42B63005EBD36 /* sample.1.16.kdb */ = {isa = PBXFileReference; lastKnownFileType = file; path = sample.1.16.kdb; sourceTree = "<group>"; };
-		689D031713A42B63005EBD36 /* sample.1.17.kdb */ = {isa = PBXFileReference; lastKnownFileType = file; path = sample.1.17.kdb; sourceTree = "<group>"; };
-		689D031813A42B63005EBD36 /* sample.1.18.kdb */ = {isa = PBXFileReference; lastKnownFileType = file; path = sample.1.18.kdb; sourceTree = "<group>"; };
-		689D031913A42B63005EBD36 /* sample.1.19b.kdb */ = {isa = PBXFileReference; lastKnownFileType = file; path = sample.1.19b.kdb; sourceTree = "<group>"; };
-		689D031A13A42B63005EBD36 /* sample.2.01.kdbx */ = {isa = PBXFileReference; lastKnownFileType = file; path = sample.2.01.kdbx; sourceTree = "<group>"; };
-		689D031B13A42B63005EBD36 /* sample.2.02.kdbx */ = {isa = PBXFileReference; lastKnownFileType = file; path = sample.2.02.kdbx; sourceTree = "<group>"; };
-		689D031C13A42B63005EBD36 /* sample.2.03.kdbx */ = {isa = PBXFileReference; lastKnownFileType = file; path = sample.2.03.kdbx; sourceTree = "<group>"; };
-		689D031D13A42B63005EBD36 /* sample.2.04.kdbx */ = {isa = PBXFileReference; lastKnownFileType = file; path = sample.2.04.kdbx; sourceTree = "<group>"; };
-		689D031E13A42B63005EBD36 /* sample.2.05.kdbx */ = {isa = PBXFileReference; lastKnownFileType = file; path = sample.2.05.kdbx; sourceTree = "<group>"; };
-		689D031F13A42B63005EBD36 /* sample.2.06.kdbx */ = {isa = PBXFileReference; lastKnownFileType = file; path = sample.2.06.kdbx; sourceTree = "<group>"; };
-		689D032013A42B63005EBD36 /* sample.2.07.kdbx */ = {isa = PBXFileReference; lastKnownFileType = file; path = sample.2.07.kdbx; sourceTree = "<group>"; };
-		689D032113A42B63005EBD36 /* sample.2.08.kdbx */ = {isa = PBXFileReference; lastKnownFileType = file; path = sample.2.08.kdbx; sourceTree = "<group>"; };
-		689D032213A42B63005EBD36 /* sample.2.09.kdbx */ = {isa = PBXFileReference; lastKnownFileType = file; path = sample.2.09.kdbx; sourceTree = "<group>"; };
-		689D032313A42B63005EBD36 /* sample.2.10.kdbx */ = {isa = PBXFileReference; lastKnownFileType = file; path = sample.2.10.kdbx; sourceTree = "<group>"; };
-		689D032413A42B63005EBD36 /* sample.2.11.kdbx */ = {isa = PBXFileReference; lastKnownFileType = file; path = sample.2.11.kdbx; sourceTree = "<group>"; };
-		689D032513A42B63005EBD36 /* sample.2.12.kdbx */ = {isa = PBXFileReference; lastKnownFileType = file; path = sample.2.12.kdbx; sourceTree = "<group>"; };
-		689D032613A42B63005EBD36 /* sample.2.13.kdbx */ = {isa = PBXFileReference; lastKnownFileType = file; path = sample.2.13.kdbx; sourceTree = "<group>"; };
-		689D032713A42B63005EBD36 /* sample.2.14.kdbx */ = {isa = PBXFileReference; lastKnownFileType = file; path = sample.2.14.kdbx; sourceTree = "<group>"; };
-		689D032813A42B63005EBD36 /* sample.2.15.kdbx */ = {isa = PBXFileReference; lastKnownFileType = file; path = sample.2.15.kdbx; sourceTree = "<group>"; };
 		689D032A13A42B63005EBD36 /* KeychainUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeychainUtils.h; sourceTree = "<group>"; };
 		689D032B13A42B63005EBD36 /* KeychainUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeychainUtils.m; sourceTree = "<group>"; };
 		689D042413A42C81005EBD36 /* ChoiceCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChoiceCell.h; sourceTree = "<group>"; };
@@ -624,48 +597,6 @@
 			path = Private;
 			sourceTree = "<group>";
 		};
-		689D030513A42B63005EBD36 /* Samples */ = {
-			isa = PBXGroup;
-			children = (
-				689D030613A42B63005EBD36 /* sample.1.00.kdb */,
-				689D030713A42B63005EBD36 /* sample.1.01.kdb */,
-				689D030813A42B63005EBD36 /* sample.1.02.kdb */,
-				689D030913A42B63005EBD36 /* sample.1.03.kdb */,
-				689D030A13A42B63005EBD36 /* sample.1.04.kdb */,
-				689D030B13A42B63005EBD36 /* sample.1.05.kdb */,
-				689D030C13A42B63005EBD36 /* sample.1.06.kdb */,
-				689D030D13A42B63005EBD36 /* sample.1.07.kdb */,
-				689D030E13A42B63005EBD36 /* sample.1.08.kdb */,
-				689D030F13A42B63005EBD36 /* sample.1.09.kdb */,
-				689D031013A42B63005EBD36 /* sample.1.10.kdb */,
-				689D031113A42B63005EBD36 /* sample.1.11.kdb */,
-				689D031213A42B63005EBD36 /* sample.1.12.kdb */,
-				689D031313A42B63005EBD36 /* sample.1.13.kdb */,
-				689D031413A42B63005EBD36 /* sample.1.14.kdb */,
-				689D031513A42B63005EBD36 /* sample.1.15.kdb */,
-				689D031613A42B63005EBD36 /* sample.1.16.kdb */,
-				689D031713A42B63005EBD36 /* sample.1.17.kdb */,
-				689D031813A42B63005EBD36 /* sample.1.18.kdb */,
-				689D031913A42B63005EBD36 /* sample.1.19b.kdb */,
-				689D031A13A42B63005EBD36 /* sample.2.01.kdbx */,
-				689D031B13A42B63005EBD36 /* sample.2.02.kdbx */,
-				689D031C13A42B63005EBD36 /* sample.2.03.kdbx */,
-				689D031D13A42B63005EBD36 /* sample.2.04.kdbx */,
-				689D031E13A42B63005EBD36 /* sample.2.05.kdbx */,
-				689D031F13A42B63005EBD36 /* sample.2.06.kdbx */,
-				689D032013A42B63005EBD36 /* sample.2.07.kdbx */,
-				689D032113A42B63005EBD36 /* sample.2.08.kdbx */,
-				689D032213A42B63005EBD36 /* sample.2.09.kdbx */,
-				689D032313A42B63005EBD36 /* sample.2.10.kdbx */,
-				689D032413A42B63005EBD36 /* sample.2.11.kdbx */,
-				689D032513A42B63005EBD36 /* sample.2.12.kdbx */,
-				689D032613A42B63005EBD36 /* sample.2.13.kdbx */,
-				689D032713A42B63005EBD36 /* sample.2.14.kdbx */,
-				689D032813A42B63005EBD36 /* sample.2.15.kdbx */,
-			);
-			path = Samples;
-			sourceTree = "<group>";
-		};
 		689D032913A42B63005EBD36 /* Security */ = {
 			isa = PBXGroup;
 			children = (
@@ -722,7 +653,6 @@
 				689D032913A42B63005EBD36 /* Security */,
 				689DFFD813A4273F005EBD36 /* Frameworks */,
 				689D041413A42B85005EBD36 /* Resources */,
-				689D030513A42B63005EBD36 /* Samples */,
 				689DFFD613A4273F005EBD36 /* Products */,
 				526D9FA3167CDC010097213E /* MBProgressHUD.xcodeproj */,
 			);
@@ -790,8 +720,8 @@
 				689D043513A42C81005EBD36 /* NewKdbViewController.m */,
 				68D991E413F3EAAE00F6ED1F /* PasswordViewController.h */,
 				68D991E513F3EAAE00F6ED1F /* PasswordViewController.m */,
-				52E7AF6116252D7C00DCB00A /* SelectGroupViewController.h */,
-				52E7AF6216252D7C00DCB00A /* SelectGroupViewController.m */,
+				6837C35E188C9ED30018D588 /* SelectGroupViewController.h */,
+				6837C35F188C9ED30018D588 /* SelectGroupViewController.m */,
 				689D043E13A42C82005EBD36 /* SelectionListViewController.h */,
 				689D043F13A42C82005EBD36 /* SelectionListViewController.m */,
 				689D044013A42C82005EBD36 /* SettingsViewController.h */,
@@ -815,6 +745,7 @@
 		689DFFE013A4273F005EBD36 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				687AAA991889F8B400AB8AC5 /* AppStore.txt */,
 				68E08314146F2749001C4EDF /* InfoPlist.strings */,
 				68E0830E146F24E3001C4EDF /* Localizable.strings */,
 				689DFFE113A4273F005EBD36 /* MiniKeePass-Info.plist */,
@@ -966,6 +897,7 @@
 				689D03E013A42B63005EBD36 /* Kdb4Writer.m in Sources */,
 				689D03E113A42B63005EBD36 /* KdbPassword.m in Sources */,
 				689D03E213A42B63005EBD36 /* KdbReaderFactory.m in Sources */,
+				6837C360188C9ED30018D588 /* SelectGroupViewController.m in Sources */,
 				689D03E313A42B63005EBD36 /* KdbWriterFactory.m in Sources */,
 				689D03E513A42B63005EBD36 /* Salsa20RandomStream.m in Sources */,
 				689D03E713A42B63005EBD36 /* Utils.m in Sources */,
@@ -1029,7 +961,6 @@
 				680C277616050C7A009403DE /* DDXMLDocument+MKPAdditions.m in Sources */,
 				6859176F1615DE1D005FECA5 /* AppSettings.m in Sources */,
 				52E7AF5C162523F800DCB00A /* EditItemViewController.m in Sources */,
-				52E7AF6316252D7C00DCB00A /* SelectGroupViewController.m in Sources */,
 				684846B6167E1E460040C4EE /* StringFieldViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1037,6 +968,21 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		687AAA991889F8B400AB8AC5 /* AppStore.txt */ = {
+			isa = PBXVariantGroup;
+			children = (
+				687AAA981889F8B400AB8AC5 /* en */,
+				687AAAA11889FB4000AB8AC5 /* ru */,
+				687AAAA21889FB4B00AB8AC5 /* ja */,
+				687AAAA31889FB4C00AB8AC5 /* de */,
+				687AAAA41889FB4D00AB8AC5 /* it */,
+				687AAAA51889FB4D00AB8AC5 /* zh-Hans */,
+				687AAAA61889FB4E00AB8AC5 /* pt-BR */,
+				687AAAA71889FB4F00AB8AC5 /* fr */,
+			);
+			name = AppStore.txt;
+			sourceTree = SOURCE_ROOT;
+		};
 		68E0830E146F24E3001C4EDF /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -1075,6 +1021,7 @@
 		5200281913D7D95900B77DD8 /* Distribution */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -1083,7 +1030,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1.1;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				PROVISIONING_PROFILE = "";
@@ -1111,7 +1058,7 @@
 					.,
 				);
 				INFOPLIST_FILE = "MiniKeePass/MiniKeePass-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1.1;
 				OTHER_LDFLAGS = (
 					"-fobjc-arc",
 					"-all_load",
@@ -1129,6 +1076,7 @@
 		689D000413A42740005EBD36 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -1140,7 +1088,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1.1;
 				ONLY_ACTIVE_ARCH = YES;
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
@@ -1151,6 +1099,7 @@
 		689D000513A42740005EBD36 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -1159,7 +1108,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1.1;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				PROVISIONING_PROFILE = "";
@@ -1188,7 +1137,7 @@
 					.,
 				);
 				INFOPLIST_FILE = "MiniKeePass/MiniKeePass-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1.1;
 				OTHER_LDFLAGS = (
 					"-fobjc-arc",
 					"-all_load",
@@ -1219,7 +1168,7 @@
 					.,
 				);
 				INFOPLIST_FILE = "MiniKeePass/MiniKeePass-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1.1;
 				OTHER_LDFLAGS = (
 					"-fobjc-arc",
 					"-all_load",

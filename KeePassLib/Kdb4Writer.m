@@ -145,7 +145,7 @@
 
 - (NSData *)computeHashOfHeaderData:(NSData *)headerData {
     uint8_t hash[CC_SHA256_DIGEST_LENGTH];
-    CC_SHA256(headerData.bytes, headerData.length, hash);
+    CC_SHA256(headerData.bytes, (CC_LONG)headerData.length, hash);
     return [NSData dataWithBytes:hash length:sizeof(hash)];
 }
 
