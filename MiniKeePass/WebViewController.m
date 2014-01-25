@@ -69,7 +69,7 @@
 @property (nonatomic, strong) MKPWebView *webView;
 @property (nonatomic, strong) UIBarButtonItem *backButton;
 @property (nonatomic, strong) UIBarButtonItem *forwardButton;
-@property (nonatomic, strong) UIBarButtonItem *reloadButton;
+@property (nonatomic, strong) UIBarButtonItem *reloadStopButton;
 @property (nonatomic, strong) UIBarButtonItem *openInButton;
 @end
 
@@ -125,34 +125,15 @@
                                                      action:@selector(forwardPressed)];
     self.forwardButton.enabled = NO;
 
-    self.reloadButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh
-                                                                  target:self
-                                                                  action:@selector(reloadPressed)];
+    self.reloadStopButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh
+                                                                          target:self
+                                                                          action:@selector(reloadPressed)];
 
     self.openInButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction
                                                                   target:self
                                                                   action:@selector(openInPressed)];
 
-    UIBarButtonItem *fixedSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace
-                                                                                target:nil
-                                                                                action:nil];
-    fixedSpace.width = 10.0f;
-
-    UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
-                                                                                   target:nil
-                                                                                   action:nil];
-
-    self.toolbarItems = @[
-                          fixedSpace,
-                          self.backButton,
-                          flexibleSpace,
-                          self.forwardButton,
-                          flexibleSpace,
-                          self.reloadButton,
-                          flexibleSpace,
-                          self.openInButton,
-                          fixedSpace
-                          ];
+    self.toolbarItems = [self createToolbarItems];
 
     // Load the URL
     NSURL *url = [NSURL URLWithString:self.entry.url];
@@ -177,6 +158,29 @@
     self.urlTextField.frame = CGRectMake(0, 0, self.navigationController.navigationBar.bounds.size.width, height);
 }
 
+- (NSArray *)createToolbarItems {
+    UIBarButtonItem *fixedSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace
+                                                                                target:nil
+                                                                                action:nil];
+    fixedSpace.width = 10.0f;
+
+    UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+                                                                                   target:nil
+                                                                                   action:nil];
+
+    return @[
+             fixedSpace,
+             self.backButton,
+             flexibleSpace,
+             self.forwardButton,
+             flexibleSpace,
+             self.reloadStopButton,
+             flexibleSpace,
+             self.openInButton,
+             fixedSpace
+             ];
+}
+
 #pragma mark - URL Text Field
 
 - (void)textFieldEditingDidEnd:(id)sender {
@@ -190,6 +194,9 @@
 }
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
+    // Stop loading
+    [self.webView stopLoading];
+
     // Save the original size of the url text field
     self.originalUrlFrame = self.urlTextField.frame;
 
@@ -228,6 +235,20 @@
     self.backButton.enabled = self.webView.canGoBack;
     self.forwardButton.enabled = self.webView.canGoForward;
     self.openInButton.enabled = !self.webView.isLoading;
+
+    if (self.webView.loading) {
+        self.reloadStopButton = [[UIBarButtonItem alloc]
+                                 initWithBarButtonSystemItem:UIBarButtonSystemItemStop
+                                 target:self
+                                 action:@selector(stopPressed)];
+    } else {
+        self.reloadStopButton = [[UIBarButtonItem alloc]
+                                 initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh
+                                 target:self
+                                 action:@selector(reloadPressed)];
+    }
+
+    self.toolbarItems = [self createToolbarItems];
 }
 
 - (void)backPressed {
@@ -244,6 +265,10 @@
 
 - (void)reloadPressed {
     [self.webView reload];
+}
+
+- (void)stopPressed {
+    [self.webView stopLoading];
 }
 
 - (void)openInPressed {
@@ -303,6 +328,14 @@
 
     // Stop the network activity indicator
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+
+    // Show the error message
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                        message:error.localizedDescription
+                                                       delegate:nil
+                                              cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
+                                              otherButtonTitles:nil];
+    [alertView show];
 }
 
 @end
