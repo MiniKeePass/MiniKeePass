@@ -23,9 +23,19 @@
 @property (nonatomic, strong) KdbTree *kdbTree;
 @property (nonatomic, copy) NSString *filename;
 
+/// Create a KeePass Database
+/// @param filename Database filename
+/// @param password Database password
+/// @param keyFile Path to KeyFile
+/// @return A KeePass DatabaseDocument
 - (id)initWithFilename:(NSString *)filename password:(NSString *)password keyFile:(NSString *)keyFile;
+
+/// Save the current KeePass DatabaseDocument
 - (void)save;
 
+/// Search a KeePass group for the supplied text
+/// @param searchText The text for which you're searching
+/// @param results A Dictionary to store the matching results
 + (void)searchGroup:(KdbGroup *)group searchText:(NSString *)searchText results:(NSMutableArray *)results;
 
 @end
