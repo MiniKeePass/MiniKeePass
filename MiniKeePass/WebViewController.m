@@ -16,6 +16,7 @@
  */
 
 #import "WebViewController.h"
+#import "CustomHttpProtocol.h"
 
 #define kUrlFieldPortHeight 30.0f
 #define kUrlFieldLandHeight 24.0f
@@ -60,7 +61,7 @@
 
 @end
 
-@interface WebViewController () <UIWebViewDelegate, UITextFieldDelegate, MKPWebViewDelegate>
+@interface WebViewController () <UIWebViewDelegate, UITextFieldDelegate, UIAlertViewDelegate, MKPWebViewDelegate, CustomHttpProtocolDelegate>
 @property (nonatomic, strong) UITextField *urlTextField;
 @property (nonatomic, assign) CGRect originalUrlFrame;
 
@@ -71,11 +72,18 @@
 @property (nonatomic, strong) UIBarButtonItem *forwardButton;
 @property (nonatomic, strong) UIBarButtonItem *reloadStopButton;
 @property (nonatomic, strong) UIBarButtonItem *openInButton;
+
+@property (nonatomic, assign) NSInteger dialogResults;
+@property (nonatomic, strong) NSURLCredential *credential;
+
 @end
 
 @implementation WebViewController
 
 - (void)viewDidLoad {
+    [CustomHttpProtocol registerProtocol];
+    [CustomHttpProtocol setProtocolDelegate:self];
+
     // Create the URL text field
     CGFloat height = UrlFieldHeight(self.interfaceOrientation);
     self.urlTextField = [[UITextField alloc] initWithFrame:CGRectMake(0, 0, self.navigationController.navigationBar.bounds.size.width, height)];
@@ -336,6 +344,58 @@
                                               cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
                                               otherButtonTitles:nil];
     [alertView show];
+}
+
+#pragma mark - UIAlertView Delegate
+
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 1) {
+        NSString *username = [alertView textFieldAtIndex:0].text;
+        NSString *password = [alertView textFieldAtIndex:1].text;
+        self.credential = [NSURLCredential credentialWithUser:username
+                                                     password:password
+                                                  persistence:NSURLCredentialPersistenceForSession];
+    }
+
+    self.dialogResults = buttonIndex;
+}
+
+#pragma mark - CustomHttpProtocol Delegate
+
+- (void)customHttpProtocol:(CustomHttpProtocol *)protocol willSendRequestForAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge {
+    if ([challenge.protectionSpace.authenticationMethod isEqual:NSURLAuthenticationMethodHTTPBasic]) {
+        NSString *message;
+        if (challenge.protectionSpace.realm != nil) {
+            message = challenge.protectionSpace.realm;
+        } else {
+            message = @"Enter your credentials";
+        }
+
+        // Initialize the credential parameters
+        self.dialogResults = -1;
+        self.credential = nil;
+
+        // Show the UIAlertView on the main thread
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Password"
+                                                                message:message
+                                                               delegate:self
+                                                      cancelButtonTitle:@"Cancel"
+                                                      otherButtonTitles:@"Ok", nil];
+            alertView.alertViewStyle = UIAlertViewStyleLoginAndPasswordInput;
+            [alertView show];
+        });
+
+        // Wait for the credentials
+        while ((self.dialogResults == -1) && ([[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate dateWithTimeIntervalSinceNow:0.5]]));
+
+        // Send the credentials if supplied
+        if (self.dialogResults == 1) {
+            [challenge.sender useCredential:self.credential forAuthenticationChallenge:challenge];
+        }
+
+        self.credential = nil;
+    }
 }
 
 @end

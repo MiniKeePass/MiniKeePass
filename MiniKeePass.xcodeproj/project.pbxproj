@@ -124,6 +124,7 @@
 		68DDC3731405160300FC8BD8 /* keyfiles.html in Resources */ = {isa = PBXBuildFile; fileRef = 68DDC3721405160300FC8BD8 /* keyfiles.html */; };
 		68E08310146F24E3001C4EDF /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 68E0830E146F24E3001C4EDF /* Localizable.strings */; };
 		68E08316146F2749001C4EDF /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 68E08314146F2749001C4EDF /* InfoPlist.strings */; };
+		68E5F5B11898A15F007E6447 /* CustomHttpProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E5F5B01898A15F007E6447 /* CustomHttpProtocol.m */; };
 		68EBC2D61613394D00E8E799 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68EBC2D51613394D00E8E799 /* QuartzCore.framework */; };
 		68F19D1F14EB3A9C00B772CB /* CharacterSetsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F19D1E14EB3A9C00B772CB /* CharacterSetsViewController.m */; };
 /* End PBXBuildFile section */
@@ -365,6 +366,8 @@
 		68E08315146F2749001C4EDF /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		68E08318146F2C8B001C4EDF /* ja */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
 		68E0831C146F2D37001C4EDF /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		68E5F5AF1898A15F007E6447 /* CustomHttpProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomHttpProtocol.h; sourceTree = "<group>"; };
+		68E5F5B01898A15F007E6447 /* CustomHttpProtocol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomHttpProtocol.m; sourceTree = "<group>"; };
 		68EBC2D51613394D00E8E799 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		68F19D1D14EB3A9C00B772CB /* CharacterSetsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CharacterSetsViewController.h; sourceTree = "<group>"; };
 		68F19D1E14EB3A9C00B772CB /* CharacterSetsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CharacterSetsViewController.m; sourceTree = "<group>"; };
@@ -734,6 +737,8 @@
 				6851FAFC186DD11D00A53B0E /* UIActionSheetAutoDismiss.m */,
 				68D7564B186E4D8A001AFB82 /* WebViewController.h */,
 				68D7564C186E4D8A001AFB82 /* WebViewController.m */,
+				68E5F5AF1898A15F007E6447 /* CustomHttpProtocol.h */,
+				68E5F5B01898A15F007E6447 /* CustomHttpProtocol.m */,
 				689D046313A42CA8005EBD36 /* Cells */,
 				52370CB314F2CDC3003DC64C /* Lock Screen */,
 				68F19D1B14EB3A3900B772CB /* Password Generator */,
@@ -939,6 +944,7 @@
 				68CE37F214049BC900E4A5E1 /* HelpViewController.m in Sources */,
 				52A7E1A914EDF1CB0041F950 /* LockScreenController.m in Sources */,
 				68F19D1F14EB3A9C00B772CB /* CharacterSetsViewController.m in Sources */,
+				68E5F5B11898A15F007E6447 /* CustomHttpProtocol.m in Sources */,
 				68CE868F14EDF4C300D34A61 /* LengthCell.m in Sources */,
 				52A512B1159CE7540009F82F /* ImageSelectionView.m in Sources */,
 				682D450D1603883900156830 /* AesInputStream.m in Sources */,
