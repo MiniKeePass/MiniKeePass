@@ -377,7 +377,7 @@
 
         // Show the UIAlertView on the main thread
         dispatch_sync(dispatch_get_main_queue(), ^{
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Password"
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Authentication Required"
                                                                 message:message
                                                                delegate:self
                                                       cancelButtonTitle:@"Cancel"
@@ -392,9 +392,19 @@
         // Send the credentials if supplied
         if (self.dialogResults == 1) {
             [challenge.sender useCredential:self.credential forAuthenticationChallenge:challenge];
+        } else {
+            [challenge.sender  cancelAuthenticationChallenge:challenge];
         }
 
         self.credential = nil;
+    } else if ([challenge.protectionSpace.authenticationMethod isEqual:NSURLAuthenticationMethodServerTrust]) {
+        NSLog(@"Challenge: error: %@, failureResponse: %@, previousFailCount: %d, proposedCredential: %@, protectionSpace: %@", challenge.error, challenge.failureResponse, challenge.previousFailureCount, challenge.proposedCredential, challenge.protectionSpace);
+
+        // FIXME this will by-pass invalid certificates (expired, wrong host, etc).
+        NSURLCredential *credential = [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust];
+        [challenge.sender useCredential:credential forAuthenticationChallenge:challenge];
+    } else {
+        [challenge.sender performDefaultHandlingForAuthenticationChallenge:challenge];
     }
 }
 
