@@ -16,6 +16,7 @@
  */
 
 #import "WebViewController.h"
+#import "UIAlertViewAutoDismiss.h"
 
 #define kUrlFieldPortHeight 30.0f
 #define kUrlFieldLandHeight 24.0f
@@ -317,10 +318,11 @@
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
     [self updateButtons];
-    self.urlTextField.text = [webView.request.URL absoluteString];
 
     // Stop the network activity indicator
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+
+    self.urlTextField.text = [webView.request.URL absoluteString];
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
@@ -329,12 +331,18 @@
     // Stop the network activity indicator
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
 
+    // Don't generate error messages for cancelled requests
+    if ([error.domain isEqual:NSURLErrorDomain] && error.code == NSURLErrorCancelled) {
+        NSLog(@"Cancelled");
+        return;
+    }
+
     // Show the error message
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                        message:error.localizedDescription
-                                                       delegate:nil
-                                              cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-                                              otherButtonTitles:nil];
+    UIAlertViewAutoDismiss *alertView = [[UIAlertViewAutoDismiss alloc] initWithTitle:@"Error"
+                                                                              message:error.localizedDescription
+                                                                             delegate:nil
+                                                                    cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
+                                                                    otherButtonTitles:nil];
     [alertView show];
 }
 
