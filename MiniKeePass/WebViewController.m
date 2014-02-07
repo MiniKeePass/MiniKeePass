@@ -333,7 +333,6 @@
 
     // Don't generate error messages for cancelled requests
     if ([error.domain isEqual:NSURLErrorDomain] && error.code == NSURLErrorCancelled) {
-        NSLog(@"Cancelled");
         return;
     }
 
