@@ -71,7 +71,8 @@
 @property (nonatomic, strong) MKPWebView *webView;
 @property (nonatomic, strong) UIBarButtonItem *backButton;
 @property (nonatomic, strong) UIBarButtonItem *forwardButton;
-@property (nonatomic, strong) UIBarButtonItem *reloadStopButton;
+@property (nonatomic, strong) UIBarButtonItem *reloadButton;
+@property (nonatomic, strong) UIBarButtonItem *stopButton;
 @property (nonatomic, strong) UIBarButtonItem *openInButton;
 
 @property (nonatomic, assign) NSInteger dialogResults;
@@ -126,23 +127,27 @@
                                                    style:UIBarButtonItemStylePlain
                                                   target:self
                                                   action:@selector(backPressed)];
-    self.backButton.enabled = NO;
 
     self.forwardButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"forward"]
                                                       style:UIBarButtonItemStylePlain
                                                      target:self
                                                      action:@selector(forwardPressed)];
-    self.forwardButton.enabled = NO;
 
-    self.reloadStopButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh
-                                                                          target:self
-                                                                          action:@selector(reloadPressed)];
+    self.reloadButton = [[UIBarButtonItem alloc]
+                         initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh
+                         target:self
+                         action:@selector(reloadPressed)];
+
+    self.stopButton = [[UIBarButtonItem alloc]
+                       initWithBarButtonSystemItem:UIBarButtonSystemItemStop
+                       target:self
+                       action:@selector(stopPressed)];
 
     self.openInButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction
                                                                   target:self
                                                                   action:@selector(openInPressed)];
 
-    self.toolbarItems = [self createToolbarItems];
+    [self updateButtons];
 
     // Load the URL
     NSURL *url = [NSURL URLWithString:self.entry.url];
@@ -165,29 +170,6 @@
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
     CGFloat height = UrlFieldHeight(self.interfaceOrientation);
     self.urlTextField.frame = CGRectMake(0, 0, self.navigationController.navigationBar.bounds.size.width, height);
-}
-
-- (NSArray *)createToolbarItems {
-    UIBarButtonItem *fixedSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace
-                                                                                target:nil
-                                                                                action:nil];
-    fixedSpace.width = 10.0f;
-
-    UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
-                                                                                   target:nil
-                                                                                   action:nil];
-
-    return @[
-             fixedSpace,
-             self.backButton,
-             flexibleSpace,
-             self.forwardButton,
-             flexibleSpace,
-             self.reloadStopButton,
-             flexibleSpace,
-             self.openInButton,
-             fixedSpace
-             ];
 }
 
 #pragma mark - URL Text Field
@@ -244,20 +226,31 @@
     self.backButton.enabled = self.webView.canGoBack;
     self.forwardButton.enabled = self.webView.canGoForward;
     self.openInButton.enabled = !self.webView.isLoading;
+    self.reloadButton.enabled = !self.webView.isLoading;
+    self.stopButton.enabled = self.webView.isLoading;
 
-    if (self.webView.loading) {
-        self.reloadStopButton = [[UIBarButtonItem alloc]
-                                 initWithBarButtonSystemItem:UIBarButtonSystemItemStop
-                                 target:self
-                                 action:@selector(stopPressed)];
-    } else {
-        self.reloadStopButton = [[UIBarButtonItem alloc]
-                                 initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh
-                                 target:self
-                                 action:@selector(reloadPressed)];
-    }
+    UIBarButtonItem *fixedSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace
+                                                                                target:nil
+                                                                                action:nil];
+    fixedSpace.width = 10.0f;
 
-    self.toolbarItems = [self createToolbarItems];
+    UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+                                                                                   target:nil
+                                                                                   action:nil];
+
+    UIBarButtonItem *reloadOrStopButton = self.webView.loading ? self.stopButton : self.reloadButton;
+
+    self.toolbarItems = @[
+                          fixedSpace,
+                          self.backButton,
+                          flexibleSpace,
+                          self.forwardButton,
+                          flexibleSpace,
+                          reloadOrStopButton,
+                          flexibleSpace,
+                          self.openInButton,
+                          fixedSpace
+                          ];
 }
 
 - (void)backPressed {
