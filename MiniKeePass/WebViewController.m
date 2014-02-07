@@ -17,6 +17,7 @@
 
 #import "WebViewController.h"
 #import "CustomHttpProtocol.h"
+#import "UIAlertViewAutoDismiss.h"
 
 #define kUrlFieldPortHeight 30.0f
 #define kUrlFieldLandHeight 24.0f
@@ -325,10 +326,11 @@
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
     [self updateButtons];
-    self.urlTextField.text = [webView.request.URL absoluteString];
 
     // Stop the network activity indicator
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+
+    self.urlTextField.text = [webView.request.URL absoluteString];
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
@@ -337,27 +339,18 @@
     // Stop the network activity indicator
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
 
-    // Show the error message
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                        message:error.localizedDescription
-                                                       delegate:nil
-                                              cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-                                              otherButtonTitles:nil];
-    [alertView show];
-}
-
-#pragma mark - UIAlertView Delegate
-
-- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
-    if (buttonIndex == 1) {
-        NSString *username = [alertView textFieldAtIndex:0].text;
-        NSString *password = [alertView textFieldAtIndex:1].text;
-        self.credential = [NSURLCredential credentialWithUser:username
-                                                     password:password
-                                                  persistence:NSURLCredentialPersistenceForSession];
+    // Don't generate error messages for cancelled requests
+    if ([error.domain isEqual:NSURLErrorDomain] && error.code == NSURLErrorCancelled) {
+        return;
     }
 
-    self.dialogResults = buttonIndex;
+    // Show the error message
+    UIAlertViewAutoDismiss *alertView = [[UIAlertViewAutoDismiss alloc] initWithTitle:@"Error"
+                                                                              message:error.localizedDescription
+                                                                             delegate:nil
+                                                                    cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
+                                                                    otherButtonTitles:nil];
+    [alertView show];
 }
 
 #pragma mark - CustomHttpProtocol Delegate
@@ -377,11 +370,11 @@
 
         // Show the UIAlertView on the main thread
         dispatch_sync(dispatch_get_main_queue(), ^{
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Authentication Required"
-                                                                message:message
-                                                               delegate:self
-                                                      cancelButtonTitle:@"Cancel"
-                                                      otherButtonTitles:@"Ok", nil];
+            UIAlertViewAutoDismiss *alertView = [[UIAlertViewAutoDismiss alloc] initWithTitle:@"Authentication Required"
+                                                                                      message:message
+                                                                                     delegate:self
+                                                                            cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
+                                                                            otherButtonTitles:NSLocalizedString(@"OK", nil), nil];
             alertView.alertViewStyle = UIAlertViewStyleLoginAndPasswordInput;
             [alertView show];
         });
@@ -397,15 +390,23 @@
         }
 
         self.credential = nil;
-    } else if ([challenge.protectionSpace.authenticationMethod isEqual:NSURLAuthenticationMethodServerTrust]) {
-        NSLog(@"Challenge: error: %@, failureResponse: %@, previousFailCount: %d, proposedCredential: %@, protectionSpace: %@", challenge.error, challenge.failureResponse, challenge.previousFailureCount, challenge.proposedCredential, challenge.protectionSpace);
-
-        // FIXME this will by-pass invalid certificates (expired, wrong host, etc).
-        NSURLCredential *credential = [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust];
-        [challenge.sender useCredential:credential forAuthenticationChallenge:challenge];
     } else {
         [challenge.sender performDefaultHandlingForAuthenticationChallenge:challenge];
     }
+}
+
+#pragma mark - UIAlertView Delegate
+
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 1) {
+        NSString *username = [alertView textFieldAtIndex:0].text;
+        NSString *password = [alertView textFieldAtIndex:1].text;
+        self.credential = [NSURLCredential credentialWithUser:username
+                                                     password:password
+                                                  persistence:NSURLCredentialPersistenceForSession];
+    }
+
+    self.dialogResults = buttonIndex;
 }
 
 @end
