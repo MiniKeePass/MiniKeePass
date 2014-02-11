@@ -330,7 +330,7 @@
     }
 
     // Show the error message
-    UIAlertViewAutoDismiss *alertView = [[UIAlertViewAutoDismiss alloc] initWithTitle:@"Error"
+    UIAlertViewAutoDismiss *alertView = [[UIAlertViewAutoDismiss alloc] initWithTitle:NSLocalizedString(@"Error", nil)
                                                                               message:error.localizedDescription
                                                                              delegate:nil
                                                                     cancelButtonTitle:NSLocalizedString(@"Cancel", nil)

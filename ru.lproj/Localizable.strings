@@ -68,6 +68,7 @@
 "Do not forget your database password, it cannot be recovered." = "Запомните ваш пароль к базе данных, он не может быть восстановлён.";
 
 // Error Messages
+"Error" = "Ошибка";
 "New name is invalid" = "Новое имя недействительно";
 "Name cannot be empty" = "Имя не может быть пустым";
 "Database name is required" = "Имя базы данных необходимо";
