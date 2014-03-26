@@ -21,7 +21,7 @@ FAQ
 
 You can copy KeePass files from Dropbox to your device using the [Dropbox iOS App](https://www.dropbox.com/help/80/en).  This method will also work with any other app that let you open files in other apps (Google Drive, Box.net, Mail, Safari, etc).
 
-You can use a simillar procedure in MiniKeePass to copy your KeePass file from MiniKeePass to another app.  Open the KeePass file in MiniKeePass, and select the action button on the bottom toolbar, and you will be presented with a list of apps that can open the KeePass file.
+You can use a similar procedure in MiniKeePass to copy your KeePass file from MiniKeePass to another app.  Open the KeePass file in MiniKeePass, and select the action button on the bottom toolbar, and you will be presented with a list of apps that can open the KeePass file.
 
 ### Copying KeePass files using iTunes ###
 
@@ -31,7 +31,7 @@ You can copy your KeePass files to/from your device using [File Sharing](http://
 
 iOS should backup and restore the files MiniKeePass uses automatically, (MiniKeePass doesn't have to do anything special to support backups).  There have been occasional reports of KeePass files not being restored when restoring from a backup.
 
-If you backup to iTunes, you can usually retrieve your KeePass files stored in the backup file using a tool that can open iOS backup files (iExplorer, iBackup Extractor, etc).  The file should be located in MiniKeePass's Documents folder.  Once you find the file, you can use one of the available methods for copying your KeePass files to get it back into MiniKeePass.
+If you backup to iTunes, you can usually retrieve your KeePass files stored in the backup file using a tool that can open iOS backup files (iExplorer, iBackup Extractor, etc).  The file should be located in the MiniKeePass Documents folder.  Once you find the file, you can use one of the available methods for copying your KeePass files to get it back into MiniKeePass.
 
 License
 -------
