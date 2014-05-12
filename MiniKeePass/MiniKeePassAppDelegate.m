@@ -101,8 +101,14 @@
 
     // Move input file into documents directory
     NSFileManager *fileManager = [NSFileManager defaultManager];
-    if ([fileManager fileExistsAtPath:path]) {
-        [fileManager removeItemAtPath:path error:nil];
+    BOOL isDirectory = NO;
+    if ([fileManager fileExistsAtPath:path isDirectory:&isDirectory]) {
+        if (isDirectory) {
+            // Should not have been passed a directory
+            return NO;
+        } else {
+            [fileManager removeItemAtPath:path error:nil];
+        }
     }
     [fileManager moveItemAtURL:url toURL:[NSURL fileURLWithPath:path] error:nil];
 
@@ -148,22 +154,27 @@
     _databaseDocument = nil;
 }
 
-- (void)deleteAllData {
-    // Close the current database
-    [self closeDatabase];
-    
+- (void)deleteKeychainData {
     // Reset some settings
     AppSettings *appSettings = [AppSettings sharedInstance];
     [appSettings setPinFailedAttempts:0];
     [appSettings setPinEnabled:NO];
-    
+
     // Delete the PIN from the keychain
     [KeychainUtils deleteStringForKey:@"PIN" andServiceName:@"com.jflan.MiniKeePass.pin"];
-    
+
     // Delete all database passwords from the keychain
     [KeychainUtils deleteAllForServiceName:@"com.jflan.MiniKeePass.passwords"];
     [KeychainUtils deleteAllForServiceName:@"com.jflan.MiniKeePass.keyfiles"];
-    
+}
+
+- (void)deleteAllData {
+    // Close the current database
+    [self closeDatabase];
+
+    // Delete data stored in system keychain
+    [self deleteKeychainData];
+
     // Get the files in the Documents directory
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSString *documentsDirectory = [MiniKeePassAppDelegate documentsDirectory];

@@ -29,6 +29,7 @@
 + (NSString *)documentsDirectory;
 
 - (void)closeDatabase;
+- (void)deleteKeychainData;
 - (void)deleteAllData;
 
 - (void)showSettingsView;

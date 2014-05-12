@@ -128,8 +128,8 @@
 - (void)pinViewController:(PinViewController *)controller pinEntered:(NSString *)pin {
     NSString *validPin = [KeychainUtils stringForKey:@"PIN" andServiceName:@"com.jflan.MiniKeePass.pin"];
     if (validPin == nil) {
-        // Delete all data
-        [appDelegate deleteAllData];
+        // Delete keychain data
+        [appDelegate deleteKeychainData];
         
         // Hide spashscreen
         [self unlock];
