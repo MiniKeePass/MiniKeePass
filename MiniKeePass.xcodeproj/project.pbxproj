@@ -229,7 +229,6 @@
 		687AAAA31889FB4C00AB8AC5 /* de */ = {isa = PBXFileReference; lastKnownFileType = text; name = de; path = de.lproj/AppStore.txt; sourceTree = "<group>"; };
 		687AAAA41889FB4D00AB8AC5 /* it */ = {isa = PBXFileReference; lastKnownFileType = text; name = it; path = it.lproj/AppStore.txt; sourceTree = "<group>"; };
 		687AAAA51889FB4D00AB8AC5 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text; name = "zh-Hans"; path = "zh-Hans.lproj/AppStore.txt"; sourceTree = "<group>"; };
-		687AAAA61889FB4E00AB8AC5 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text; name = "pt-BR"; path = "pt-BR.lproj/AppStore.txt"; sourceTree = "<group>"; };
 		687AAAA71889FB4F00AB8AC5 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text; name = fr; path = fr.lproj/AppStore.txt; sourceTree = "<group>"; };
 		68884F0E186E1C5600C222D4 /* MasterPasswordFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MasterPasswordFieldCell.h; sourceTree = "<group>"; };
 		68884F0F186E1C5600C222D4 /* MasterPasswordFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MasterPasswordFieldCell.m; sourceTree = "<group>"; };
@@ -237,6 +236,9 @@
 		68884F13186E461600C222D4 /* stretchme-7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "stretchme-7.png"; sourceTree = "<group>"; };
 		68915A0913A6F6C200A408B0 /* InfoBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfoBar.h; sourceTree = "<group>"; };
 		68915A0A13A6F6C200A408B0 /* InfoBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfoBar.m; sourceTree = "<group>"; };
+		6891C07419263611000EFC70 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text; name = pt; path = pt.lproj/AppStore.txt; sourceTree = "<group>"; };
+		6891C07519263611000EFC70 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		6891C07619263611000EFC70 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/Localizable.strings; sourceTree = "<group>"; };
 		689A4D1214046B8200AA897D /* RandomStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RandomStream.m; sourceTree = "<group>"; };
 		689A4D151404759700AA897D /* PasswordGeneratorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasswordGeneratorViewController.h; sourceTree = "<group>"; };
 		689A4D161404759700AA897D /* PasswordGeneratorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PasswordGeneratorViewController.m; sourceTree = "<group>"; };
@@ -357,8 +359,6 @@
 		68CE37F41404A86600E4A5E1 /* safariemail.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = safariemail.html; sourceTree = "<group>"; };
 		68CE868D14EDF4C300D34A61 /* LengthCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LengthCell.h; sourceTree = "<group>"; };
 		68CE868E14EDF4C300D34A61 /* LengthCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LengthCell.m; sourceTree = "<group>"; };
-		68D0C29B169A4F1C0002812A /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
-		68D0C29C169A4F1C0002812A /* pt-BR */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		68D7564B186E4D8A001AFB82 /* WebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewController.h; sourceTree = "<group>"; };
 		68D7564C186E4D8A001AFB82 /* WebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewController.m; sourceTree = "<group>"; };
 		68D991E413F3EAAE00F6ED1F /* PasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasswordViewController.h; sourceTree = "<group>"; };
@@ -815,6 +815,7 @@
 				"zh-Hans",
 				"pt-BR",
 				fr,
+				pt,
 			);
 			mainGroup = 689DFFCA13A4273F005EBD36;
 			productRefGroup = 689DFFD613A4273F005EBD36 /* Products */;
@@ -983,8 +984,8 @@
 				687AAAA31889FB4C00AB8AC5 /* de */,
 				687AAAA41889FB4D00AB8AC5 /* it */,
 				687AAAA51889FB4D00AB8AC5 /* zh-Hans */,
-				687AAAA61889FB4E00AB8AC5 /* pt-BR */,
 				687AAAA71889FB4F00AB8AC5 /* fr */,
+				6891C07419263611000EFC70 /* pt */,
 			);
 			name = AppStore.txt;
 			sourceTree = SOURCE_ROOT;
@@ -998,8 +999,8 @@
 				52051E971524EAAE00D217B8 /* ru */,
 				52051E991524EB2600D217B8 /* it */,
 				EFD785BA15B3D02600B9A276 /* zh-Hans */,
-				68D0C29C169A4F1C0002812A /* pt-BR */,
 				4E8C169916B3E888004195A1 /* fr */,
+				6891C07619263611000EFC70 /* pt */,
 			);
 			name = Localizable.strings;
 			path = ..;
@@ -1014,8 +1015,8 @@
 				52051E981524EAD100D217B8 /* ru */,
 				52051E9A1524EB2D00D217B8 /* it */,
 				EFD785BB15B3D03F00B9A276 /* zh-Hans */,
-				68D0C29B169A4F1C0002812A /* pt-BR */,
 				4E8C169816B3E888004195A1 /* fr */,
+				6891C07519263611000EFC70 /* pt */,
 			);
 			name = InfoPlist.strings;
 			path = ..;
