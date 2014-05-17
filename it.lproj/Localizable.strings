@@ -66,6 +66,7 @@
 "Do not forget your database password, it cannot be recovered." = "Do not forget your database password, it cannot be recovered."; // FIXME
 
 // Error Messages
+"Error" = "Error"; // FIXME
 "New name is invalid" = "Il nuovo nome non è valido"; // FIXME
 "Name cannot be empty" = "Il nome non può essere vuoto"; // FIXME
 "Database name is required" = "È richiesto un nome per il database";

@@ -66,6 +66,7 @@
 "Do not forget your database password, it cannot be recovered." = "Do not forget your database password, it cannot be recovered.";
 
 // Error Messages
+"Error" = "Error";
 "New name is invalid" = "New name is invalid";
 "Name cannot be empty" = "Name cannot be empty";
 "Database name is required" = "Database name is required";
