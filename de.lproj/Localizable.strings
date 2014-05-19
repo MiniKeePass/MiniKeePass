@@ -66,19 +66,19 @@
 "Do not forget your database password, it cannot be recovered." = "Vergessen Sie niemals das Passwort für die Datenbank. Es kann nicht wiederhergestellt werden.";
 
 // Error Messages
-"Error" = "Error"; // FIXME
+"Error" = "Fehler";
 "New name is invalid" = "Der neue Name ist ungültig";
 "Name cannot be empty" = "Der Name darf nicht leer sein";
 "Database name is required" = "Für die Datenbank wird ein Name benötigt";
 "Passwords do not match" = "Passwörter stimmen nicht überein";
 "Password is required" = "Passwort wird benötigt";
 "Incorrect PIN" = "Ungültige PIN";
-"Attempts Remaining" = "Attempts Remaining"; // FIXME
+"Attempts Remaining" = "Verbleibende Versuche";
 "Filename is invalid" = "Der Dateiname ist ungültig";
 "A file already exists with this name" = "Eine Datei mit diesem Namen existiert bereits";
 "There are no applications installed capable of importing KeePass files" = "Es gibt keine installierten Programme, die KeePass Datenbanken importieren können";
-"Tap the + button to add a new KeePass file." = "Tap the + button to add a new KeePass file."; // FIXME
-"No password or keyfile specified" = "No password or keyfile specified"; // FIXME
+"Tap the + button to add a new KeePass file." = "Drücken Sie den + Button um neue KeePass Dateien hinzuzufügen.";
+"No password or keyfile specified" = "Es wurde weder ein Passwort oder noch eine Schlüsseldatei angegeben";
 
 // Settings Page
 "Settings" = "Einstellungen";
@@ -124,8 +124,8 @@
 "Close Timeout" = "Close Timeout";
 "Clear Clipboard Timeout" = "Timeout zum Löschen der Zwischenablage";
 "Web Browser" = "Web Browser";
-"Integrated" = "Intigriert";
-"Switch between an integrated web browser and Safari." = "Switch between an integrated web browser and Safari."; // FIXME
+"Integrated" = "Integriert";
+"Switch between an integrated web browser and Safari." = "Wechseln Sie zwischen einem integrierten Web Browser und Safari.";
 "Set PIN" = "PIN setzen";
 "Confirm PIN" = "PIN bestätigen";
 "PINs did not match. Try again" = "PINs stimmen nicht überein. Bitte erneut versuchen.";
