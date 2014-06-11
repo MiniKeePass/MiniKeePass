@@ -100,7 +100,7 @@
     Kdb3Group *group = [[Kdb3Group alloc] init];
     
     do {
-        group.groupId = random();
+        group.groupId = (uint32_t)random();
     } while (![self isGroupIdUnique:(Kdb3Group*)root groupId:group.groupId]);
 
     return group;

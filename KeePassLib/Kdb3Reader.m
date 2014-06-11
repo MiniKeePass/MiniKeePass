@@ -115,6 +115,7 @@
     uint16_t fieldType;
     uint32_t fieldSize;
     uint8_t dateBuffer[5];
+    uint32_t image = 0;
     BOOL eos;
 
     // Parse the groups
@@ -167,8 +168,8 @@
                     break;
 
                 case 0x0007:
-                    group.image = [inputStream readInt32];
-                    group.image = CFSwapInt32LittleToHost(group.image);
+                    image = [inputStream readInt32];
+                    group.image = CFSwapInt32LittleToHost(image);
                     break;
 
                 case 0x0008: {
@@ -205,6 +206,7 @@
     uint32_t fieldSize;
     uint8_t buffer[16];
     uint32_t groupId = 0;
+    uint32_t image = 0;
     BOOL eos;
 
     // Parse the entries
@@ -243,8 +245,8 @@
                     break;
 
                 case 0x0003:
-                    entry.image = [inputStream readInt32];
-                    entry.image = CFSwapInt32LittleToHost(entry.image);
+                    image = [inputStream readInt32];
+                    entry.image = CFSwapInt32LittleToHost(image);
                     break;
 
                 case 0x0004:
