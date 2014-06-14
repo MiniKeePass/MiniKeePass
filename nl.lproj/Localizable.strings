@@ -146,10 +146,10 @@
 "Character Sets" = "Karaktersets";
 "Upper Case" = "Hoofdletters";
 "Lower Case" = "Kleine Letters";
-"Upper" = "Bovenste";
-"Lower" = "Onderste";
+"Upper" = "Grote";
+"Lower" = "Kleine";
 "Digits" = "Cijfers";
-"Minus" = "Minus";
+"Minus" = "Minteken";
 "Underline" = "Onderstrepen";
 "Space" = "Spatie";
 "Special" = "Speciaal";
