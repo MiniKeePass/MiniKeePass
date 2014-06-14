@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright 2011 Jason Rush and John Flanagan. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -125,9 +125,9 @@
 "Clear the contents of the clipboard after a given timeout upon performing a copy." = "Wis de inhoud van het klembord na een gegeven timeout tijdens het kopiëren.";
 "Close Timeout" = "Sluiten Timeout";
 "Clear Clipboard Timeout" = "Klembord Leegmaken Timeout";
-"Web Browser" = "Web Browser";
+"Web Browser" = "Webbrowser";
 "Integrated" = "Geïntegreerd";
-"Switch between an integrated web browser and Safari." = "Wissel tussen een geïntegreerde web browser en Safari.";
+"Switch between an integrated web browser and Safari." = "Wissel tussen een geïntegreerde webbrowser en Safari.";
 "Set PIN" = "Stel PIN in";
 "Confirm PIN" = "Bevestig PIN";
 "PINs did not match. Try again" = "PINs komen niet overeen. Probeer opnieuw";
