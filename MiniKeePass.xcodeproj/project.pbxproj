@@ -371,6 +371,9 @@
 		68EBC2D51613394D00E8E799 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		68F19D1D14EB3A9C00B772CB /* CharacterSetsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CharacterSetsViewController.h; sourceTree = "<group>"; };
 		68F19D1E14EB3A9C00B772CB /* CharacterSetsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CharacterSetsViewController.m; sourceTree = "<group>"; };
+		BDB0FF5D194C7C6F00C44DEF /* nl */ = {isa = PBXFileReference; lastKnownFileType = text; name = nl; path = nl.lproj/AppStore.txt; sourceTree = "<group>"; };
+		BDB0FF5E194C7C6F00C44DEF /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		BDB0FF5F194C7C6F00C44DEF /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Localizable.strings; sourceTree = "<group>"; };
 		EFD785BA15B3D02600B9A276 /* zh-Hans */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		EFD785BB15B3D03F00B9A276 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -816,6 +819,7 @@
 				"pt-BR",
 				fr,
 				pt,
+				nl,
 			);
 			mainGroup = 689DFFCA13A4273F005EBD36;
 			productRefGroup = 689DFFD613A4273F005EBD36 /* Products */;
@@ -986,6 +990,7 @@
 				687AAAA51889FB4D00AB8AC5 /* zh-Hans */,
 				687AAAA71889FB4F00AB8AC5 /* fr */,
 				6891C07419263611000EFC70 /* pt */,
+				BDB0FF5D194C7C6F00C44DEF /* nl */,
 			);
 			name = AppStore.txt;
 			sourceTree = SOURCE_ROOT;
@@ -1001,6 +1006,7 @@
 				EFD785BA15B3D02600B9A276 /* zh-Hans */,
 				4E8C169916B3E888004195A1 /* fr */,
 				6891C07619263611000EFC70 /* pt */,
+				BDB0FF5F194C7C6F00C44DEF /* nl */,
 			);
 			name = Localizable.strings;
 			path = ..;
@@ -1017,6 +1023,7 @@
 				EFD785BB15B3D03F00B9A276 /* zh-Hans */,
 				4E8C169816B3E888004195A1 /* fr */,
 				6891C07519263611000EFC70 /* pt */,
+				BDB0FF5E194C7C6F00C44DEF /* nl */,
 			);
 			name = InfoPlist.strings;
 			path = ..;
