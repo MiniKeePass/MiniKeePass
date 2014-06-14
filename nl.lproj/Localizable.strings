@@ -1,0 +1,157 @@
+﻿/*
+ * Copyright 2011 Jason Rush and John Flanagan. All rights reserved.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+// Nederlandse vertaling: Jannick Hemelhof <clone1612@me.com>
+
+"Files" = "Bestanden";
+"Databases" = "Databases";
+"Key File" = "Sleutelbestand";
+"Key Files" = "Sleutelbestanden";
+"Groups" = "Groepen";
+"Entries" = "Items";
+"Group" = "Groep";
+"Entry" = "Item";
+"New Database" = "Nieuwe Database";
+"New Group" = "Nieuwe Groep";
+"New Entry" = "Nieuw Item";
+"Edit Group" = "Wijzig Groep";
+"Edit Entry" = "Wijzig Item";
+"Title" = "Titel";
+"Image" = "Afbeelding";
+"Images" = "Afbeeldingen";
+"Username" = "Gebruikersnaam";
+"Password" = "Wachtwoord";
+"Confirm Password" = "Bevestig Wachtwoord";
+"URL" = "URL";
+"Comments" = "Opmerkingen";
+"OK" = "OK";
+"Cancel" = "Annuleer";
+"Add" = "Voeg Toe";
+"Search" = "Zoeken";
+"Help" = "Help";
+"Version 1.x" = "Versie 1.x";
+"Version 2.x" = "Versie 2.x";
+"None" = "Geen";
+"Name" = "Naam";
+"Value" = "Waarde";
+"Delete" = "Verwijder";
+"Move" = "Verplaats";
+"Rename" = "Hernoem";
+"Database Name" = "Naam Database";
+"Last Modified" = "Laatst Gewijzigd";
+"Copied" = "Gekopieerd";
+"In Memory Protection" = "In Geheugenbescherming";
+"Custom Field" = "Aangepast Veld";
+"Custom Fields" = "Aangepaste Velden";
+"Add new…" = "Nieuwe toevoegen…";
+"Choose Group" = "Kies groep";
+"Backup" = "Backup";
+
+// General Messages
+"Enter your PIN to unlock" = "Voer uw PIN in om te ontgrendelen";
+"Enter the password and/or select the keyfile for the %@ database." = "Voer uw wachtwoord in en/of selecteer het sleutelbestand voor de %@ database.";
+"Enter a new name for the password database. The correct file extension will automatically be appended." = "Voer een nieuwe naam in voor de wachtwoorddatabase. De correcte bestandextensie zal automatisch worden toegevoegd.";
+"Do not forget your database password, it cannot be recovered." = "Vergeet uw databasewachtwoord niet, het kan niet hersteld worden.";
+
+// Error Messages
+"Error" = "Fout";
+"New name is invalid" = "Nieuwe naam is ongeldig";
+"Name cannot be empty" = "Naam kan niet leeg zijn";
+"Database name is required" = "Databasenaam is vereist";
+"Passwords do not match" = "Wachtwoorden komen niet overeen";
+"Password is required" = "Wachtwoord is vereist";
+"Incorrect PIN" = "Ongeldige PIN";
+"Attempts Remaining" = "Resterende Pogingen";
+"Filename is invalid" = "Bestandsnaam is ongeldig";
+"A file already exists with this name" = "Er bestaat reeds een bestand met deze naam";
+"There are no applications installed capable of importing KeePass files" = "Er zijn geen applicaties geïnstalleerd die KeePass files kunnen importeren";
+"Tap the + button to add a new KeePass file." = "Tik op de + knop om een nieuwe KeePass file toe te voegen";
+"No password or keyfile specified" = "Geen wachtwoord of sleutelbestand gespecifieerd";
+
+// Settings Page
+"Settings" = "Voorkeuren";
+"PIN Enabled" = "PIN Geactiveerd";
+"Lock Timeout" = "Vergrendel Timeout";
+"Immediately" = "Onmiddellijk";
+"30 Seconds" = "30 Seconden";
+"1 Minute" = "1 Minuut";
+"2 Minutes" = "2 Minuten";
+"3 Minutes" = "3 Minuten";
+"5 Minutes" = "5 Minuten";
+"Enabled" = "Geactiveerd";
+"Attempts" = "Pogingen";
+"Close Enabled" = "Sluiten Geactiveerd";
+"Close Timeout" = "Sluiten Timeout";
+"Hide Passwords" = "Verberg Wachtwoorden";
+"Sorting" = "Sorteren";
+"Sort Groups and Entries Alphabetically" = "Sorteer Groepen en Items Alfabetisch";
+"Encoding" = "Encodering";
+"UTF-8" = "UTF-8";
+"UTF-16 Big Endian" = "UTF-16 Big Endian";
+"UTF-16 Little Endian" = "UTF-16 Little Endian";
+"Latin 1 (ISO/IEC 8859-1)" = "Latin 1 (ISO/IEC 8859-1)";
+"Latin 2 (ISO/IEC 8859-2)" = "Latin 2 (ISO/IEC 8859-2)";
+"7-Bit ASCII" = "7-Bit ASCII";
+"Japanese EUC" = "Japanese EUC";
+"ISO-2022-JP" = "ISO-2022-JP";
+"PIN Protection" = "PIN Bescherming";
+"Delete All Data on PIN Failure" = "Verwijder Alle Data bij falen PIN";
+"Close Database on Timeout" = "Sluit Database bij Timeout";
+"Remember Database Passwords" = "Databasewachtwoorden Onthouden";
+"Hide Passwords" = "Verberg Wachtwoorden";
+"Password Encoding" = "Wachtwoord Encodering";
+"Clear Clipboard on Timeout" = "Leeg Klembord bij Timeout";
+"Clear Timeout" = "Leegmaken Timeout";
+"Prevent unauthorized access to MiniKeePass with a PIN." = "Voorkom ongeauthoriseerde toegang tot MiniKeePass met een PIN.";
+"Delete all files and passwords after too many failed attempts." = "Verwijder alle bestanden en wachtwoorden na te veel mislukte pogingen.";
+"Automatically close an open database after the selected timeout." = "Sluit een geopende database automatisch na de geselecteerde timeout.";
+"Stores remembered database passwords in the devices's secure keychain." = "Slaat de herinnerde databasewachtwoorden op in de sleutelhanger van het apparaat.";
+"Hides passwords when viewing a password entry." = "Verberg wachtwoorden tijdens het bekijken van een wachtwoord item.";
+"The string encoding used for passwords when converting them to database keys." = "De stringencodering gebruikt voor wachtwoorden wanneer ze worden geconverteerd naar databasesleutels.";
+"Clear the contents of the clipboard after a given timeout upon performing a copy." = "Wis de inhoud van het klembord na een gegeven timeout tijdens het kopiëren.";
+"Close Timeout" = "Sluiten Timeout";
+"Clear Clipboard Timeout" = "Klembord Leegmaken Timeout";
+"Web Browser" = "Web Browser";
+"Integrated" = "Geïntegreerd";
+"Switch between an integrated web browser and Safari." = "Wissel tussen een geïntegreerde web browser en Safari.";
+"Set PIN" = "Stel PIN in";
+"Confirm PIN" = "Bevestig PIN";
+"PINs did not match. Try again" = "PINs komen niet overeen. Probeer opnieuw";
+"MiniKeePass version %@" = "MiniKeePass versie %@";
+
+// Help Titles
+"iTunes Import/Export" = "iTunes Import/Export";
+"Dropbox Import/Export" = "Dropbox Import/Export";
+"Safari/Email Import" = "Safari/E-mail Import";
+"Create New Database" = "Creëer Nieuwe Database";
+"Key Files" = "Sleutelbestanden";
+
+// Password Generator
+"Generator" = "Generator";
+"Length" = "Lengte";
+"Character Sets" = "Karaktersets";
+"Upper Case" = "Hoofdletters";
+"Lower Case" = "Kleine Letters";
+"Upper" = "Bovenste";
+"Lower" = "Onderste";
+"Digits" = "Cijfers";
+"Minus" = "Minus";
+"Underline" = "Onderstrepen";
+"Space" = "Spatie";
+"Special" = "Speciaal";
+"Brackets" = "Haakjes";
+"None Selected" = "Geen Geselecteerd";
