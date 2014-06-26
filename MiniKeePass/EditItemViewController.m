@@ -69,7 +69,7 @@
 - (void)setSelectedImageIndex:(NSUInteger)selectedImageIndex {
     _selectedImageIndex = selectedImageIndex;
     
-    UIImage *image = [[ImageFactory sharedInstance] imageForIndex:index];
+    UIImage *image = [[ImageFactory sharedInstance] imageForIndex:selectedImageIndex];
     [self.imageButtonCell.imageButton setImage:image forState:UIControlStateNormal];
 }
 
