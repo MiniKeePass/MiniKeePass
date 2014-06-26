@@ -221,6 +221,7 @@
 		6859176E1615DE1D005FECA5 /* AppSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppSettings.m; sourceTree = "<group>"; };
 		685D9D931603F8EE00D739D3 /* Kdb3Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Kdb3Utils.h; sourceTree = "<group>"; };
 		685D9D941603F8EE00D739D3 /* Kdb3Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Kdb3Utils.m; sourceTree = "<group>"; };
+		6861C7E4195CD159008E1057 /* VersionUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VersionUtils.h; sourceTree = "<group>"; };
 		6876F67613B2D8F400A05C7A /* ImageSelectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageSelectionViewController.h; sourceTree = "<group>"; };
 		6876F67713B2D8F400A05C7A /* ImageSelectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageSelectionViewController.m; sourceTree = "<group>"; };
 		687AAA981889F8B400AB8AC5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text; name = en; path = en.lproj/AppStore.txt; sourceTree = "<group>"; };
@@ -746,6 +747,7 @@
 				52370CB314F2CDC3003DC64C /* Lock Screen */,
 				68F19D1B14EB3A3900B772CB /* Password Generator */,
 				689DFFE013A4273F005EBD36 /* Supporting Files */,
+				6861C7E4195CD159008E1057 /* VersionUtils.h */,
 			);
 			path = MiniKeePass;
 			sourceTree = "<group>";

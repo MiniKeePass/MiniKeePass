@@ -17,6 +17,7 @@
 
 #import "TextFieldCell.h"
 #import <UIKit/UIPasteboard.h>
+#import "VersionUtils.h"
 
 @interface TextFieldCell()
 @property (nonatomic, strong) UIView *grayBar;
@@ -27,9 +28,10 @@
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        int inset = 83;
-
-        if ([[UIDevice currentDevice].systemVersion hasPrefix:@"7"]) {
+        int inset;
+        if (SYSTEM_VERSION_LESS_THAN(@"7.0")) {
+            inset = 83;
+        } else {
             inset = 115;
         }
 
