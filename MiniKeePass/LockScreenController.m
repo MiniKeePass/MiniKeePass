@@ -21,29 +21,27 @@
 #import "KeychainUtils.h"
 #import "LockScreenController.h"
 #import "AppSettings.h"
+#import "VersionUtils.h"
 
 #define DURATION 0.3
 
-@interface LockScreenController () {
-    PinViewController *pinViewController;
-    MiniKeePassAppDelegate *appDelegate;
-    UIViewController *previousViewController;
-}
+@interface LockScreenController ()
+
+@property (nonatomic, retain) PinViewController *pinViewController;
+@property (nonatomic, retain) UIViewController *previousViewController;
+
 @end
 
 @implementation LockScreenController
 
-- (id)init {
-    self = [super init];
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
+    self = [super initWithNibName:nil bundle:nil];
     if (self) {
-        pinViewController = [[PinViewController alloc] init];
-        pinViewController.delegate = self;
+        _pinViewController = [[PinViewController alloc] init];
+        _pinViewController.delegate = self;
 
-        appDelegate = [MiniKeePassAppDelegate appDelegate];
-        
         UIImageView *imageView = [[UIImageView alloc] initWithFrame:self.view.frame];
-
-        if ([[UIDevice currentDevice].systemVersion floatValue] >= 7) {
+        if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7")) {
             imageView.image = [[UIImage imageNamed:@"stretchme-7"] resizableImageWithCapInsets:UIEdgeInsetsMake(65, 0, 45, 0)];
         } else {
             imageView.image = [[UIImage imageNamed:@"stretchme"] resizableImageWithCapInsets:UIEdgeInsetsMake(44, 0, 44, 0)];
@@ -68,7 +66,8 @@
     return [[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad || toInterfaceOrientation == UIInterfaceOrientationPortrait;
 }
 
-- (UIViewController *)frontMostViewController {
+- (UIViewController *)topViewController {
+    MiniKeePassAppDelegate *appDelegate = [MiniKeePassAppDelegate appDelegate];
     UIViewController *frontViewController = appDelegate.window.rootViewController;
     while (frontViewController.modalViewController != nil) {
         frontViewController = frontViewController.modalViewController;
@@ -77,32 +76,36 @@
 }
 
 - (void)show {
-    previousViewController = [self frontMostViewController];
-    [previousViewController presentModalViewController:self animated:NO];
+    self.previousViewController = [self topViewController];
+    [self.previousViewController presentViewController:self animated:NO completion:nil];
 }
 
 + (void)present {
-    LockScreenController *pinScreen = [[LockScreenController alloc] init];
-    [pinScreen show];
+    LockScreenController *lockScreenController = [[LockScreenController alloc] init];
+    [lockScreenController show];
 }
 
 - (void)hide {
-    [self dismissModalViewControllerAnimated:NO];
+    [self dismissViewControllerAnimated:NO completion:nil];
 }
 
 - (void)lock {
+    MiniKeePassAppDelegate *appDelegate = [MiniKeePassAppDelegate appDelegate];
     if (!appDelegate.locked) {
-        pinViewController.textLabel.text = NSLocalizedString(@"Enter your PIN to unlock", nil);
-        [self presentModalViewController:pinViewController animated:NO];
+        self.pinViewController.textLabel.text = NSLocalizedString(@"Enter your PIN to unlock", nil);
+        [self presentViewController:self.pinViewController animated:NO completion:nil];
     }
 }
 
 - (void)unlock {
+    MiniKeePassAppDelegate *appDelegate = [MiniKeePassAppDelegate appDelegate];
     appDelegate.locked = NO;
-    [previousViewController dismissModalViewControllerAnimated:YES];
+
+    [self.previousViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)pinViewControllerDidShow:(PinViewController *)controller {
+    MiniKeePassAppDelegate *appDelegate = [MiniKeePassAppDelegate appDelegate];
     appDelegate.locked = YES;
 }
 
@@ -129,6 +132,7 @@
     NSString *validPin = [KeychainUtils stringForKey:@"PIN" andServiceName:@"com.jflan.MiniKeePass.pin"];
     if (validPin == nil) {
         // Delete keychain data
+        MiniKeePassAppDelegate *appDelegate = [MiniKeePassAppDelegate appDelegate];
         [appDelegate deleteKeychainData];
         
         // Hide spashscreen
@@ -172,6 +176,7 @@
                 // Check if they have failed too many times
                 if (pinFailedAttempts >= deleteOnFailureAttempts) {
                     // Delete all data
+                    MiniKeePassAppDelegate *appDelegate = [MiniKeePassAppDelegate appDelegate];
                     [appDelegate deleteAllData];
                     
                     // Dismiss the pin view
