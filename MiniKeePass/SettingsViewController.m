@@ -506,9 +506,10 @@ enum {
 
 - (void)togglePinEnabled:(id)sender {
     if (pinEnabledCell.switchControl.on) {
-        PinViewController *pinViewController = [[PinViewController alloc] initWithText:NSLocalizedString(@"Set PIN", nil)];
-        [pinViewController becomeFirstResponder];
+        PinViewController *pinViewController = [[PinViewController alloc] init];
+        pinViewController.textLabel.text = NSLocalizedString(@"Set PIN", nil);
         pinViewController.delegate = self;
+        
         [self presentModalViewController:pinViewController animated:YES];
     } else {
         // Delete the PIN and disable the PIN enabled setting

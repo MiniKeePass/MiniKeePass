@@ -37,96 +37,95 @@
 
 @implementation PinViewController
 
-- (id)init {
-    return [self initWithText:NSLocalizedString(@"Enter your PIN to unlock", nil)];
-}
+- (void)viewDidLoad {
+    [super viewDidLoad];
 
-- (id)initWithText:(NSString*)text {
-    self = [super init];
-    if (self) {
-        self.view.backgroundColor = [UIColor darkGrayColor];
-        CGFloat frameWidth = CGRectGetWidth(self.view.frame);
+    self.view.backgroundColor = [UIColor darkGrayColor];
+    CGFloat frameWidth = CGRectGetWidth(self.view.frame);
 
-        // In iOS 7 don't layout under the status bar
-        if ([self respondsToSelector:@selector(edgesForExtendedLayout)]) {
-            self.edgesForExtendedLayout = UIRectEdgeNone;
-        }
-
-        // Add a invisible text field where the typing actually occurs
-        _textField = [[UITextField alloc] initWithFrame:CGRectZero];
-        _textField.delegate = self;
-        _textField.hidden = YES;
-        _textField.secureTextEntry = YES;
-        _textField.keyboardType = UIKeyboardTypeNumberPad;
-        _textField.keyboardAppearance = UIKeyboardAppearanceAlert;
-        [self.view addSubview:_textField];
-
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(textDidChange:)
-                                                     name:UITextFieldTextDidChangeNotification
-                                                   object:_textField];
-        
-        // Create topbar
-        _textLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, frameWidth, 95)];
-        _textLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        _textLabel.backgroundColor = [UIColor clearColor];
-        _textLabel.textColor = [UIColor whiteColor];
-        _textLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:25];
-        _textLabel.numberOfLines = 0;
-        _textLabel.textAlignment = UITextAlignmentCenter;
-        _textLabel.text = text;
-
-        // Hack for iOS 7
-        CGFloat y = [[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0 ? 20.0f : 0.0f;
-
-        _topBar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0f, y, frameWidth, 95.0f)];
-        _topBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-        _topBar.barStyle = UIBarStyleBlackTranslucent;
-        [_topBar addSubview:_textLabel];
-        [self.view addSubview:_topBar];
-        
-        CGFloat textFieldViewWidth = PINTEXTFIELDWIDTH * 4 + TEXTFIELDSPACE * 3;
-        
-        UIView *textFieldsView = [[UIView alloc] initWithFrame:CGRectMake((frameWidth - textFieldViewWidth) / 2, 22, textFieldViewWidth, PINTEXTFIELDHEIGHT)];
-        textFieldsView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
-        
-        CGFloat xOrigin = 0;
-        
-        PinTextField *pinTextField1 = [[PinTextField alloc] initWithFrame:CGRectMake(xOrigin, 0, PINTEXTFIELDWIDTH, PINTEXTFIELDHEIGHT)];
-        xOrigin += (PINTEXTFIELDWIDTH + TEXTFIELDSPACE);
-        [textFieldsView addSubview:pinTextField1];
-        
-        PinTextField *pinTextField2 = [[PinTextField alloc] initWithFrame:CGRectMake(xOrigin, 0, PINTEXTFIELDWIDTH, PINTEXTFIELDHEIGHT)];
-        xOrigin += (PINTEXTFIELDWIDTH + TEXTFIELDSPACE);
-        [textFieldsView addSubview:pinTextField2];
-      
-        PinTextField *pinTextField3 = [[PinTextField alloc] initWithFrame:CGRectMake(xOrigin, 0, PINTEXTFIELDWIDTH, PINTEXTFIELDHEIGHT)];
-        xOrigin += (PINTEXTFIELDWIDTH + TEXTFIELDSPACE);
-        [textFieldsView addSubview:pinTextField3];
-      
-        PinTextField *pinTextField4 = [[PinTextField alloc] initWithFrame:CGRectMake(xOrigin, 0, PINTEXTFIELDWIDTH, PINTEXTFIELDHEIGHT)];
-        [textFieldsView addSubview:pinTextField4];
-        
-        _pinTextFields = @[pinTextField1, pinTextField2, pinTextField3, pinTextField4];
-        
-        _pinBar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, frameWidth, 95)];
-        _pinBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-        [_pinBar setBarStyle:UIBarStyleBlackTranslucent];
-        [_pinBar addSubview:textFieldsView];
-        _textField.inputAccessoryView = _pinBar;
-
-        // If the keyboard is dismissed, show it again.
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(keyboardDidHide)
-                                                     name:UIKeyboardDidHideNotification
-                                                   object:nil];
+    // In iOS 7 don't layout under the status bar
+    if ([self respondsToSelector:@selector(edgesForExtendedLayout)]) {
+        self.edgesForExtendedLayout = UIRectEdgeNone;
     }
-    
-    return self;
+
+    // Add a invisible text field where the typing actually occurs
+    _textField = [[UITextField alloc] initWithFrame:CGRectZero];
+    _textField.delegate = self;
+    _textField.hidden = YES;
+    _textField.secureTextEntry = YES;
+    _textField.keyboardType = UIKeyboardTypeNumberPad;
+    _textField.keyboardAppearance = UIKeyboardAppearanceAlert;
+    [self.view addSubview:_textField];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(textDidChange:)
+                                                 name:UITextFieldTextDidChangeNotification
+                                               object:_textField];
+
+    // Create topbar
+    _textLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, frameWidth, 95)];
+    _textLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    _textLabel.backgroundColor = [UIColor clearColor];
+    _textLabel.textColor = [UIColor whiteColor];
+    _textLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:25];
+    _textLabel.numberOfLines = 0;
+    _textLabel.textAlignment = UITextAlignmentCenter;
+    _textLabel.text = NSLocalizedString(@"Enter your PIN to unlock", nil);
+
+    // Hack for iOS 7
+    CGFloat y = [[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0 ? 20.0f : 0.0f;
+
+    _topBar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0f, y, frameWidth, 95.0f)];
+    _topBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    _topBar.barStyle = UIBarStyleBlackTranslucent;
+    [_topBar addSubview:_textLabel];
+    [self.view addSubview:_topBar];
+
+    CGFloat textFieldViewWidth = PINTEXTFIELDWIDTH * 4 + TEXTFIELDSPACE * 3;
+
+    UIView *textFieldsView = [[UIView alloc] initWithFrame:CGRectMake((frameWidth - textFieldViewWidth) / 2, 22, textFieldViewWidth, PINTEXTFIELDHEIGHT)];
+    textFieldsView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
+
+    CGFloat xOrigin = 0;
+
+    PinTextField *pinTextField1 = [[PinTextField alloc] initWithFrame:CGRectMake(xOrigin, 0, PINTEXTFIELDWIDTH, PINTEXTFIELDHEIGHT)];
+    xOrigin += (PINTEXTFIELDWIDTH + TEXTFIELDSPACE);
+    [textFieldsView addSubview:pinTextField1];
+
+    PinTextField *pinTextField2 = [[PinTextField alloc] initWithFrame:CGRectMake(xOrigin, 0, PINTEXTFIELDWIDTH, PINTEXTFIELDHEIGHT)];
+    xOrigin += (PINTEXTFIELDWIDTH + TEXTFIELDSPACE);
+    [textFieldsView addSubview:pinTextField2];
+
+    PinTextField *pinTextField3 = [[PinTextField alloc] initWithFrame:CGRectMake(xOrigin, 0, PINTEXTFIELDWIDTH, PINTEXTFIELDHEIGHT)];
+    xOrigin += (PINTEXTFIELDWIDTH + TEXTFIELDSPACE);
+    [textFieldsView addSubview:pinTextField3];
+
+    PinTextField *pinTextField4 = [[PinTextField alloc] initWithFrame:CGRectMake(xOrigin, 0, PINTEXTFIELDWIDTH, PINTEXTFIELDHEIGHT)];
+    [textFieldsView addSubview:pinTextField4];
+
+    _pinTextFields = @[pinTextField1, pinTextField2, pinTextField3, pinTextField4];
+
+    _pinBar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, frameWidth, 95)];
+    _pinBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    [_pinBar setBarStyle:UIBarStyleBlackTranslucent];
+    [_pinBar addSubview:textFieldsView];
+    _textField.inputAccessoryView = _pinBar;
+
+    // If the keyboard is dismissed, show it again.
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardDidHide)
+                                                 name:UIKeyboardDidHideNotification
+                                               object:nil];
 }
 
-- (UIStatusBarStyle)preferredStatusBarStyle {
-    return UIStatusBarStyleLightContent;
+- (void)viewDidUnload {
+    [super viewDidUnload];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)keyboardDidHide {
+    [self.textField becomeFirstResponder];
 }
 
 - (void)resizeToolbarsToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
@@ -143,39 +142,31 @@
     self.pinBar.frame = CGRectMake(pinBarFrame.origin.x, pinBarFrame.origin.y, pinBarFrame.size.width, height);
 }
 
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
-    [UIView animateWithDuration:duration animations:^{
-        [self resizeToolbarsToInterfaceOrientation:toInterfaceOrientation];
-    }];
-}
-
-- (void)keyboardDidHide {
-    // If the keyboard is dismissed, show it again.
-    [self becomeFirstResponder];
-}
-
 - (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    
-    // Required for 4.3 to show keyboard
-    [self becomeFirstResponder];
-    
     UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
     [self resizeToolbarsToInterfaceOrientation:orientation];
 
     [self clearEntry];
+
+    [self.textField becomeFirstResponder];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     if ([self.delegate respondsToSelector:@selector(pinViewControllerDidShow:)]) {
         [self.delegate pinViewControllerDidShow:self];
     }
+
+    [self.textField becomeFirstResponder];
 }
 
-- (void)viewDidUnload {
-    [super viewDidUnload];
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+    [UIView animateWithDuration:duration animations:^{
+        [self resizeToolbarsToInterfaceOrientation:toInterfaceOrientation];
+    }];
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    return UIStatusBarStyleLightContent;
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
@@ -208,18 +199,6 @@
     if ([self.delegate respondsToSelector:@selector(pinViewController:pinEntered:)]) {
         [self.delegate pinViewController:self pinEntered:self.textField.text];
     }
-}
-
-- (BOOL)becomeFirstResponder {
-    [super becomeFirstResponder];
-    
-    return [self.textField becomeFirstResponder];
-}
-
-- (BOOL)resignFirstResponder {
-    [super resignFirstResponder];
-    
-    return [self.textField resignFirstResponder];
 }
 
 - (void)clearEntry {
