@@ -143,6 +143,7 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:false];
     UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
     [self resizeToolbarsToInterfaceOrientation:orientation];
 
@@ -152,6 +153,7 @@
 }
 
 - (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:false];
     if ([self.delegate respondsToSelector:@selector(pinViewControllerDidShow:)]) {
         [self.delegate pinViewControllerDidShow:self];
     }

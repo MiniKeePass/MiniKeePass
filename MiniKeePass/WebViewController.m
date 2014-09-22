@@ -78,6 +78,7 @@
 @implementation WebViewController
 
 - (void)viewDidLoad {
+    [super viewDidLoad];
     // Create the URL text field
     CGFloat height = UrlFieldHeight(self.interfaceOrientation);
     self.urlTextField = [[UITextField alloc] initWithFrame:CGRectMake(0, 0, self.navigationController.navigationBar.bounds.size.width, height)];

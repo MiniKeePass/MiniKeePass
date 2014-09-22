@@ -112,6 +112,7 @@ enum {
 }
 
 - (void)viewDidLoad {
+    [super viewDidLoad];
     self.tableView.sectionFooterHeight = 0.0f;
 }
 

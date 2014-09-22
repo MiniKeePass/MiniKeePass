@@ -87,6 +87,8 @@ static NSString *const kKeyName = @"name";
 }
 
 - (void)viewDidLoad {
+    [super viewDidLoad];
+    
     // Get parameters for the root
     KdbGroup *rootGroup = self.appDelegate.databaseDocument.kdbTree.root;
     NSString *filename = [self.appDelegate.databaseDocument.filename lastPathComponent];
