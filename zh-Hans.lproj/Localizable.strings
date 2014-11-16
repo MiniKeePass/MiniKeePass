@@ -27,10 +27,10 @@
 "New Group" = "新群组";
 "New Entry" = "新记录";
 "Edit Group" = "编辑群组";
-"Edit Entry" = "Edit Entry"; // FIXME
+"Edit Entry" = "编辑记录";
 "Title" = "标题";
 "Image" = "图标";
-"Images" = "Images"; // FIXME
+"Images" = "图标";
 "Username" = "用户名";
 "Password" = "密码";
 "Confirm Password" = "确认密码";
@@ -45,40 +45,40 @@
 "Version 2.x" = "2.x 版本";
 "None" = "无";
 "Name" = "名称";
-"Value" = "Value"; // FIXME
-"Delete" = "Delete"; // FIXME
-"Move" = "Move"; // FIXME
+"Value" = "内容";
+"Delete" = "删除";
+"Move" = "移动";
 "Rename" = "重命名";
 "Database Name" = "数据库名";
-"Last Modified" = "Last Modified"; // FIXME
-"Copied" = "Copied"; // FIXME
-"In Memory Protection" = "In Memory Protection"; // FIXME
-"Custom Field" = "Custom Field"; // FIXME
-"Custom Fields" = "Custom Fields"; // FIXME
-"Add new…" = "Add new…"; // FIXME
-"Choose Group" = "Choose Group"; // FIXME
-"Backup" = "Backup"; // FIXME
+"Last Modified" = "最后修改";
+"Copied" = "已拷贝";
+"In Memory Protection" = "内存保护";
+"Custom Field" = "自定义字段";
+"Custom Fields" = "自定义字段";
+"Add new…" = "添加新项";
+"Choose Group" = "选择群组";
+"Backup" = "备份";
 
 // General Messages
 "Enter your PIN to unlock" = "输入 PIN 码解锁";
 "Enter the password and/or select the keyfile for the %@ database." = "为访问“%@”数据库，您需要输入密码或选定密匙文件";
 "Enter a new name for the password database. The correct file extension will automatically be appended." = "请为密码数据库输入新的名称，文件扩展名将会自动添加";
-"Do not forget your database password, it cannot be recovered." = "Do not forget your database password, it cannot be recovered."; // FIXME
+"Do not forget your database password, it cannot be recovered." = "不要忘记您的数据库密码，它是不可恢复的";
 
 // Error Messages
-"Error" = "Error"; // FIXME
-"New name is invalid" = "New name is invalid"; // FIXME
-"Name cannot be empty" = "Name cannot be empty"; // FIXME
+"Error" = "错误";
+"New name is invalid" = "新名称无效";
+"Name cannot be empty" = "名称不能为空";
 "Database name is required" = "必须输入数据库名";
 "Passwords do not match" = "密码不匹配";
 "Password is required" = "必须输入密码";
 "Incorrect PIN" = "PIN 码错误";
-"Attempts Remaining" = "Attempts Remaining"; // FIXME
+"Attempts Remaining" = "剩余尝试次数";
 "Filename is invalid" = "文件名无效";
 "A file already exists with this name" = "已存在同名文件";
 "There are no applications installed capable of importing KeePass files" = "尚未安装支持导入 KeePass 文件的应用";
-"Tap the + button to add a new KeePass file." = "Tap the + button to add a new KeePass file."; // FIXME
-"No password or keyfile specified" = "No password or keyfile specified"; // FIXME
+"Tap the + button to add a new KeePass file." = "触摸 + 按钮以添加新的KeePass 文件";
+"No password or keyfile specified" = "未指定密码或密匙文件";
 
 // Settings Page
 "Settings" = "设置";
@@ -123,13 +123,13 @@
 "Clear the contents of the clipboard after a given timeout upon performing a copy." = "在设定的时长后清除剪贴板内容";
 "Close Timeout" = "关闭前时长";
 "Clear Clipboard Timeout" = "超时后清除剪贴板内容";
-"Web Browser" = "Web Browser"; // FIXME
-"Integrated" = "Integrated"; // FIXME
-"Switch between an integrated web browser and Safari." = "Switch between an integrated web browser and Safari."; // FIXME
+"Web Browser" = "网页浏览器";
+"Integrated" = "内置";
+"Switch between an integrated web browser and Safari." = "在内置网页浏览器和Safari之前切换";
 "Set PIN" = "设定 PIN 码";
 "Confirm PIN" = "确认 PIN 码";
 "PINs did not match. Try again" = "两次输入的 PIN 码不匹配，请重试";
-"MiniKeePass version %@" = "MiniKeePass version %@"; // FIXME
+"MiniKeePass version %@" = "MiniKeePass 版本 %@";
 
 // Help Titles
 "iTunes Import/Export" = "从 iTunes 导入/导出";
