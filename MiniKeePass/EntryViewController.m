@@ -22,6 +22,12 @@
 #import "WebViewController.h"
 
 #import <MBProgressHUD/MBProgressHUD.h>
+#import "AeroGearOTP.h"
+#import "KdbEntry+MKPAdditions.h"
+#import "AGClock+MKPAdditions.h"
+
+#include "OTPAuthBarClock.h"
+
 
 #define SECTION_HEADER_HEIGHT 46.0f
 
@@ -37,7 +43,10 @@ enum {
     TextFieldCell *usernameCell;
     PasswordFieldCell *passwordCell;
     UrlFieldCell *urlCell;
+    TextFieldCell *otpCell;
     TextViewCell *commentsCell;
+    
+    NSTimer *otpTimer;
 }
 
 @property (nonatomic) BOOL isKdb4;
@@ -99,12 +108,22 @@ enum {
         urlCell.textFieldCellDelegate = self;
         urlCell.textField.returnKeyType = UIReturnKeyDone;
         [urlCell.accessoryButton addTarget:self action:@selector(openUrlPressed) forControlEvents:UIControlEventTouchUpInside];
+        
+        otpCell = [[TextFieldCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:nil];
+        otpCell.textLabel.text = NSLocalizedString(@"OTP", nil);
+        otpCell.textField.enabled = NO;
+        otpCell.textField.autocorrectionType = UITextAutocorrectionTypeNo;
+        otpCell.textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+        otpCell.textFieldCellDelegate = self;
+        
+        CGFloat clockHeight = otpCell.contentView.frame.size.height * .50;
+        otpCell.accessoryView = [[OTPAuthBarClock alloc] initWithFrame:CGRectMake(0, 0, clockHeight, clockHeight) period:30];
 
         commentsCell = [[TextViewCell alloc] init];
         commentsCell.textView.editable = NO;
 
         _defaultCells = @[titleCell, usernameCell, passwordCell, urlCell];
-        _filledCells = [[NSMutableArray alloc] initWithCapacity:4];
+        _filledCells = [[NSMutableArray alloc] initWithCapacity:5];
 
         _editingStringFields = [NSMutableArray array];
     }
@@ -131,6 +150,8 @@ enum {
         [titleCell.textField becomeFirstResponder];
         self.isNewEntry = NO;
     }
+    
+    [self startOTPTimer];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -141,6 +162,8 @@ enum {
 
     // Remove listeners from the keyboard
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+    [self stopOTPTimer];
 }
 
 - (void)applicationWillResignActive:(id)sender {
@@ -149,6 +172,7 @@ enum {
     [usernameCell.textField resignFirstResponder];
     [passwordCell.textField resignFirstResponder];
     [urlCell.textField resignFirstResponder];
+    [otpCell.textField resignFirstResponder];
     [commentsCell.textView resignFirstResponder];
 }
 
@@ -165,12 +189,39 @@ enum {
     urlCell.textField.text = self.entry.url;
     commentsCell.textView.text = self.entry.notes;
 
-    // Track what cells are filled out
-    [self updateFilledCells];
+    [self updateOTP];
 }
 
 - (NSArray *)cells {
     return self.editing ? self.defaultCells : self.filledCells;
+}
+
+- (void)startOTPTimer {
+    if (otpTimer == nil && otpCell.textField.text.length > 0) {
+        NSLog(@"Starting OTP update timer");
+        // should we update faster?
+        otpTimer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(updateOTP) userInfo:nil repeats:YES];
+    }
+}
+
+- (void)stopOTPTimer {
+    if (otpTimer != nil) {
+        NSLog(@"Stopping OTP update timer");
+        [otpTimer invalidate];
+        otpTimer = nil;
+    }
+}
+
+- (void)updateOTP {
+    otpCell.textField.text = [self.entry getOtp];
+    // Track what cells are filled out
+    [self updateFilledCells];
+    if ([self.entry getOtpTimeRemaining] < 5) {
+        otpCell.textField.textColor = [UIColor redColor];
+    }
+    else {
+        otpCell.textField.textColor = [UIColor blackColor];
+    }
 }
 
 - (void)updateFilledCells {
@@ -179,6 +230,14 @@ enum {
         if (cell.textField.text.length > 0) {
             [self.filledCells addObject:cell];
         }
+    }
+    // OTP cell
+    if (otpCell.textField.text.length > 0) {
+        [self.filledCells addObject:otpCell];
+        [self startOTPTimer];
+    }
+    else {
+        [self stopOTPTimer];
     }
 }
 
@@ -228,7 +287,6 @@ enum {
             self.entry.url = urlCell.textField.text;
             self.entry.notes = commentsCell.textView.text;
             self.entry.lastModificationTime = [NSDate date];
-            [self updateFilledCells];
 
             if (self.isKdb4) {
                 // Ensure any textfield currently being edited is saved
@@ -242,6 +300,10 @@ enum {
                 [kdb4Entry.stringFields removeAllObjects];
                 [kdb4Entry.stringFields addObjectsFromArray:self.editingStringFields];
             }
+
+            // See if we now have an OTP
+            [self.entry setIsUpdated];
+            [self updateOTP];
 
             // Save the database document
             [[MiniKeePassAppDelegate appDelegate].databaseDocument save];
@@ -272,6 +334,10 @@ enum {
         titleCell.imageButton.adjustsImageWhenHighlighted = YES;
         commentsCell.textView.editable = YES;
 
+        // Hide the OTP cell, if needed
+        if (otpCell.textField.text.length > 0) {
+            [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:[self.filledCells count] - 1 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+        }
         [self.tableView insertRowsAtIndexPaths:paths withRowAnimation:UITableViewRowAnimationFade];
     } else {
         self.navigationItem.leftBarButtonItem = nil;
@@ -280,6 +346,10 @@ enum {
         commentsCell.textView.editable = NO;
 
         [self.tableView deleteRowsAtIndexPaths:paths withRowAnimation:UITableViewRowAnimationFade];
+        // Make the OTP cell visible again, if needed
+        if (otpCell.textField.text.length > 0) {
+            [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:[self.filledCells count] - 1 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+        }
     }
 
     // Commit all updates
