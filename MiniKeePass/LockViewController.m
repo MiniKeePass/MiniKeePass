@@ -15,22 +15,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#import <UIKit/UIKit.h>
+#import "LockViewController.h"
+#import "VersionUtils.h"
 
-@class PinViewController;
-
-@protocol PinViewControllerDelegate <NSObject>
-
-- (void)pinViewController:(PinViewController *)pinViewController pinEntered:(NSString *)pin;
+@interface LockViewController ()
 
 @end
 
+@implementation LockViewController
 
-@interface PinViewController : UIViewController
+- (void)viewDidLoad {
+    [super viewDidLoad];
 
-@property(nonatomic, strong) UILabel *titleLabel;
-@property(nonatomic, assign) id<PinViewControllerDelegate> delegate;
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:self.view.frame];
+    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7")) {
+        imageView.image = [[UIImage imageNamed:@"stretchme-7"] resizableImageWithCapInsets:UIEdgeInsetsMake(65, 0, 45, 0)];
+    } else {
+        imageView.image = [[UIImage imageNamed:@"stretchme"] resizableImageWithCapInsets:UIEdgeInsetsMake(44, 0, 44, 0)];
+    }
 
-- (void)clearPinEntry;
+    self.view = imageView;
+}
 
 @end

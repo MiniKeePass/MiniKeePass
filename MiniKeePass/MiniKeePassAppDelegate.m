@@ -22,7 +22,7 @@
 #import "AppSettings.h"
 #import "DatabaseManager.h"
 #import "KeychainUtils.h"
-#import "LockScreenController.h"
+#import "LockScreenManager.h"
 
 @interface MiniKeePassAppDelegate ()
 
@@ -57,17 +57,10 @@
     // Check file protection
     [self checkFileProtection];
 
-    [LockScreenController present];
+    // Initialize the lock screen manager
+    [LockScreenManager sharedInstance];
 
     return YES;
-}
-
-- (void)applicationDidEnterBackground:(UIApplication *)application {
-    if (!self.locked) {
-        [LockScreenController present];
-        NSDate *currentTime = [NSDate date];
-        [[AppSettings sharedInstance] setExitTime:currentTime];
-    }
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
@@ -83,7 +76,7 @@
         // Get the lock timeout (in seconds)
         NSInteger closeTimeout = [appSettings closeTimeout];
 
-        // Check if it's been longer then lock timeout
+        // Check if it's been longer then close timeout
         NSTimeInterval timeInterval = [exitTime timeIntervalSinceNow];
         if (timeInterval < -closeTimeout) {
             [self closeDatabase];
@@ -92,6 +85,21 @@
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+    [self importUrl:url];
+
+    return YES;
+}
+
++ (MiniKeePassAppDelegate *)appDelegate {
+    return [[UIApplication sharedApplication] delegate];
+}
+
++ (NSString *)documentsDirectory {
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    return [paths objectAtIndex:0];
+}
+
+- (void)importUrl:(NSURL *)url {
     // Get the filename
     NSString *filename = [url lastPathComponent];
 
@@ -105,7 +113,7 @@
     if ([fileManager fileExistsAtPath:path isDirectory:&isDirectory]) {
         if (isDirectory) {
             // Should not have been passed a directory
-            return NO;
+            return;
         } else {
             [fileManager removeItemAtPath:path error:nil];
         }
@@ -120,17 +128,6 @@
 
     [self.filesViewController updateFiles];
     [self.filesViewController.tableView reloadData];
-
-    return YES;
-}
-
-+ (MiniKeePassAppDelegate *)appDelegate {
-    return [[UIApplication sharedApplication] delegate];
-}
-
-+ (NSString *)documentsDirectory {
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    return [paths objectAtIndex:0];
 }
 
 - (void)setDatabaseDocument:(DatabaseDocument *)newDatabaseDocument {

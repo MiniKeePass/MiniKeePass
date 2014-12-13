@@ -507,7 +507,7 @@ enum {
 - (void)togglePinEnabled:(id)sender {
     if (pinEnabledCell.switchControl.on) {
         PinViewController *pinViewController = [[PinViewController alloc] init];
-        pinViewController.textLabel.text = NSLocalizedString(@"Set PIN", nil);
+        pinViewController.titleLabel.text = NSLocalizedString(@"Set PIN", nil);
         pinViewController.delegate = self;
         
         [self presentModalViewController:pinViewController animated:YES];
@@ -573,10 +573,10 @@ enum {
     if (tempPin == nil) {
         tempPin = [pin copy];
         
-        controller.textLabel.text = NSLocalizedString(@"Confirm PIN", nil);
+        controller.titleLabel.text = NSLocalizedString(@"Confirm PIN", nil);
         
         // Clear the PIN entry for confirmation
-        [controller clearEntry];
+        [controller clearPinEntry];
     } else if ([tempPin isEqualToString:pin]) {
         tempPin = nil;
         
@@ -593,11 +593,11 @@ enum {
         tempPin = nil;
         
         // Notify the user the PINs they entered did not match
-        controller.textLabel.text = NSLocalizedString(@"PINs did not match. Try again", nil);
+        controller.titleLabel.text = NSLocalizedString(@"PINs did not match. Try again", nil);
         AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
         
         // Clear the PIN entry to let them try again
-        [controller clearEntry];
+        [controller clearPinEntry];
     }
 }
 

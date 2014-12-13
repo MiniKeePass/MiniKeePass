@@ -23,7 +23,6 @@
 		529708B014FEF149003547FB /* Andale Mono.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 529708AD14FEEFD3003547FB /* Andale Mono.ttf */; };
 		52A177BC13EB698E00CEEFCE /* createdb.html in Resources */ = {isa = PBXBuildFile; fileRef = 52A177BB13EB698E00CEEFCE /* createdb.html */; };
 		52A512B1159CE7540009F82F /* ImageSelectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 52A512B0159CE7540009F82F /* ImageSelectionView.m */; };
-		52A7E1A914EDF1CB0041F950 /* LockScreenController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52A7E1A814EDF1CB0041F950 /* LockScreenController.m */; };
 		52C7FD7D18693D9900D498A2 /* GroupSearchController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52C7FD7C18693D9900D498A2 /* GroupSearchController.m */; };
 		52E3342D161E0F310049F4A1 /* stretchme.png in Resources */ = {isa = PBXBuildFile; fileRef = 52E3342B161E0F310049F4A1 /* stretchme.png */; };
 		52E3342E161E0F310049F4A1 /* stretchme@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52E3342C161E0F310049F4A1 /* stretchme@2x.png */; };
@@ -102,7 +101,6 @@
 		689D045613A42C82005EBD36 /* NewKdbViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D043513A42C81005EBD36 /* NewKdbViewController.m */; };
 		689D045713A42C82005EBD36 /* PasswordFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D043713A42C81005EBD36 /* PasswordFieldCell.m */; };
 		689D045813A42C82005EBD36 /* PinTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D043913A42C81005EBD36 /* PinTextField.m */; };
-		689D045913A42C82005EBD36 /* PinViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D043B13A42C82005EBD36 /* PinViewController.m */; };
 		689D045B13A42C82005EBD36 /* SelectionListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D043F13A42C82005EBD36 /* SelectionListViewController.m */; };
 		689D045C13A42C82005EBD36 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D044113A42C82005EBD36 /* SettingsViewController.m */; };
 		689D045D13A42C82005EBD36 /* SwitchCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D044313A42C82005EBD36 /* SwitchCell.m */; };
@@ -117,6 +115,9 @@
 		689DFFE713A4273F005EBD36 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 689DFFE613A4273F005EBD36 /* main.m */; };
 		68A3E1AF13A8C9D1006881CA /* FormViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68A3E1AE13A8C9D1006881CA /* FormViewController.m */; };
 		68A4E29A18711983003117A4 /* ImageFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 68A4E29918711983003117A4 /* ImageFactory.m */; };
+		68B211C51A336AA5002B3F33 /* LockScreenManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B211C41A336AA5002B3F33 /* LockScreenManager.m */; };
+		68B211C81A336FEA002B3F33 /* LockViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B211C71A336FEA002B3F33 /* LockViewController.m */; };
+		68B211CB1A33B0D3002B3F33 /* PinViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B211CA1A33B0D3002B3F33 /* PinViewController.m */; };
 		68CE37F214049BC900E4A5E1 /* HelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68CE37F114049BC900E4A5E1 /* HelpViewController.m */; };
 		68CE37F51404A86600E4A5E1 /* safariemail.html in Resources */ = {isa = PBXBuildFile; fileRef = 68CE37F41404A86600E4A5E1 /* safariemail.html */; };
 		68CE868F14EDF4C300D34A61 /* LengthCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68CE868E14EDF4C300D34A61 /* LengthCell.m */; };
@@ -166,8 +167,6 @@
 		52A177BB13EB698E00CEEFCE /* createdb.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = createdb.html; sourceTree = "<group>"; };
 		52A512AF159CE7540009F82F /* ImageSelectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageSelectionView.h; sourceTree = "<group>"; };
 		52A512B0159CE7540009F82F /* ImageSelectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageSelectionView.m; sourceTree = "<group>"; };
-		52A7E1A714EDF1CB0041F950 /* LockScreenController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LockScreenController.h; sourceTree = "<group>"; };
-		52A7E1A814EDF1CB0041F950 /* LockScreenController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LockScreenController.m; sourceTree = "<group>"; };
 		52C7FD7B18693D9900D498A2 /* GroupSearchController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupSearchController.h; sourceTree = "<group>"; };
 		52C7FD7C18693D9900D498A2 /* GroupSearchController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupSearchController.m; sourceTree = "<group>"; };
 		52E3342B161E0F310049F4A1 /* stretchme.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = stretchme.png; sourceTree = SOURCE_ROOT; };
@@ -326,8 +325,6 @@
 		689D043713A42C81005EBD36 /* PasswordFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PasswordFieldCell.m; sourceTree = "<group>"; };
 		689D043813A42C81005EBD36 /* PinTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PinTextField.h; sourceTree = "<group>"; };
 		689D043913A42C81005EBD36 /* PinTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PinTextField.m; sourceTree = "<group>"; };
-		689D043A13A42C81005EBD36 /* PinViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PinViewController.h; sourceTree = "<group>"; };
-		689D043B13A42C82005EBD36 /* PinViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PinViewController.m; sourceTree = "<group>"; };
 		689D043E13A42C82005EBD36 /* SelectionListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectionListViewController.h; sourceTree = "<group>"; };
 		689D043F13A42C82005EBD36 /* SelectionListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectionListViewController.m; sourceTree = "<group>"; };
 		689D044013A42C82005EBD36 /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
@@ -355,6 +352,12 @@
 		68A3E1AE13A8C9D1006881CA /* FormViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FormViewController.m; sourceTree = "<group>"; };
 		68A4E29818711983003117A4 /* ImageFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageFactory.h; sourceTree = "<group>"; };
 		68A4E29918711983003117A4 /* ImageFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageFactory.m; sourceTree = "<group>"; };
+		68B211C31A336AA5002B3F33 /* LockScreenManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LockScreenManager.h; sourceTree = "<group>"; };
+		68B211C41A336AA5002B3F33 /* LockScreenManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LockScreenManager.m; sourceTree = "<group>"; };
+		68B211C61A336FEA002B3F33 /* LockViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LockViewController.h; sourceTree = "<group>"; };
+		68B211C71A336FEA002B3F33 /* LockViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LockViewController.m; sourceTree = "<group>"; };
+		68B211C91A33B0D3002B3F33 /* PinViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PinViewController.h; sourceTree = "<group>"; };
+		68B211CA1A33B0D3002B3F33 /* PinViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PinViewController.m; sourceTree = "<group>"; };
 		68CE37F014049BC900E4A5E1 /* HelpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelpViewController.h; sourceTree = "<group>"; };
 		68CE37F114049BC900E4A5E1 /* HelpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelpViewController.m; sourceTree = "<group>"; };
 		68CE37F41404A86600E4A5E1 /* safariemail.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = safariemail.html; sourceTree = "<group>"; };
@@ -418,12 +421,14 @@
 				52E3342C161E0F310049F4A1 /* stretchme@2x.png */,
 				68884F13186E461600C222D4 /* stretchme-7.png */,
 				68884F11186E414C00C222D4 /* stretchme-7@2x.png */,
+				68B211C31A336AA5002B3F33 /* LockScreenManager.h */,
+				68B211C41A336AA5002B3F33 /* LockScreenManager.m */,
+				68B211C61A336FEA002B3F33 /* LockViewController.h */,
+				68B211C71A336FEA002B3F33 /* LockViewController.m */,
 				689D043813A42C81005EBD36 /* PinTextField.h */,
 				689D043913A42C81005EBD36 /* PinTextField.m */,
-				689D043A13A42C81005EBD36 /* PinViewController.h */,
-				689D043B13A42C82005EBD36 /* PinViewController.m */,
-				52A7E1A714EDF1CB0041F950 /* LockScreenController.h */,
-				52A7E1A814EDF1CB0041F950 /* LockScreenController.m */,
+				68B211C91A33B0D3002B3F33 /* PinViewController.h */,
+				68B211CA1A33B0D3002B3F33 /* PinViewController.m */,
 			);
 			name = "Lock Screen";
 			sourceTree = "<group>";
@@ -809,6 +814,11 @@
 				TargetAttributes = {
 					689DFFD413A4273F005EBD36 = {
 						DevelopmentTeam = G9ZT7943FZ;
+						SystemCapabilities = {
+							com.apple.iCloud = {
+								enabled = 0;
+							};
+						};
 					};
 				};
 			};
@@ -904,6 +914,7 @@
 				52C7FD7D18693D9900D498A2 /* GroupSearchController.m in Sources */,
 				689D03D513A42B63005EBD36 /* Kdb.m in Sources */,
 				689D03D613A42B63005EBD36 /* Kdb3Date.m in Sources */,
+				68B211C51A336AA5002B3F33 /* LockScreenManager.m in Sources */,
 				689D03D713A42B63005EBD36 /* Kdb3Node.m in Sources */,
 				689D03DA13A42B63005EBD36 /* Kdb3Reader.m in Sources */,
 				689D03DB13A42B63005EBD36 /* Kdb3Writer.m in Sources */,
@@ -916,6 +927,7 @@
 				689D03E213A42B63005EBD36 /* KdbReaderFactory.m in Sources */,
 				6837C360188C9ED30018D588 /* SelectGroupViewController.m in Sources */,
 				689D03E313A42B63005EBD36 /* KdbWriterFactory.m in Sources */,
+				68B211C81A336FEA002B3F33 /* LockViewController.m in Sources */,
 				689D03E513A42B63005EBD36 /* Salsa20RandomStream.m in Sources */,
 				689D03E713A42B63005EBD36 /* Utils.m in Sources */,
 				689D03E813A42B63005EBD36 /* UUID.m in Sources */,
@@ -937,7 +949,6 @@
 				689D045613A42C82005EBD36 /* NewKdbViewController.m in Sources */,
 				689D045713A42C82005EBD36 /* PasswordFieldCell.m in Sources */,
 				689D045813A42C82005EBD36 /* PinTextField.m in Sources */,
-				689D045913A42C82005EBD36 /* PinViewController.m in Sources */,
 				689D045B13A42C82005EBD36 /* SelectionListViewController.m in Sources */,
 				689D045C13A42C82005EBD36 /* SettingsViewController.m in Sources */,
 				689D045D13A42C82005EBD36 /* SwitchCell.m in Sources */,
@@ -948,6 +959,7 @@
 				689D046213A42C82005EBD36 /* UrlFieldCell.m in Sources */,
 				68915A0B13A6F6C200A408B0 /* InfoBar.m in Sources */,
 				68A3E1AF13A8C9D1006881CA /* FormViewController.m in Sources */,
+				68B211CB1A33B0D3002B3F33 /* PinViewController.m in Sources */,
 				68A4E29A18711983003117A4 /* ImageFactory.m in Sources */,
 				6876F67813B2D8F500A05C7A /* ImageSelectionViewController.m in Sources */,
 				68D7564D186E4D8A001AFB82 /* WebViewController.m in Sources */,
@@ -955,7 +967,6 @@
 				689A4D1314046B8200AA897D /* RandomStream.m in Sources */,
 				689A4D171404759700AA897D /* PasswordGeneratorViewController.m in Sources */,
 				68CE37F214049BC900E4A5E1 /* HelpViewController.m in Sources */,
-				52A7E1A914EDF1CB0041F950 /* LockScreenController.m in Sources */,
 				68F19D1F14EB3A9C00B772CB /* CharacterSetsViewController.m in Sources */,
 				68CE868F14EDF4C300D34A61 /* LengthCell.m in Sources */,
 				52A512B1159CE7540009F82F /* ImageSelectionView.m in Sources */,
@@ -1126,10 +1137,13 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = MiniKeePass/MiniKeePass.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = "MiniKeePass/MiniKeePass-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -1139,10 +1153,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = MiniKeePass/MiniKeePass.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = "MiniKeePass/MiniKeePass-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
