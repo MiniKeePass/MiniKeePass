@@ -70,13 +70,13 @@
     CGContextFillRect(context, rect);
     CGFloat midX = CGRectGetMidX(bounds);
     CGFloat midY = CGRectGetMidY(bounds);
-    CGFloat radius = midY - 4;
+    CGFloat radius = midY - 11;
     CGContextMoveToPoint(context, midX, midY);
     CGFloat start = -M_PI_2;
     CGFloat end = 2 * M_PI;
     CGFloat sweep = end * percent + start;
     CGContextAddArc(context, midX, midY, radius, start, sweep, 1);
-    [[[UIColor blackColor] colorWithAlphaComponent:0.7] setFill];
+    [[[UIColor blackColor] colorWithAlphaComponent:0.5] setFill];
     CGContextFillPath(context);
 //    if (percent > .875) {
 //        CGContextMoveToPoint(context, midX, midY);

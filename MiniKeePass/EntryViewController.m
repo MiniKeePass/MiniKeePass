@@ -214,7 +214,7 @@ enum {
         // should we update faster?
         otpTimer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(updateOTP) userInfo:nil repeats:YES];
         // Also create the clock view for the OTP cell
-        CGFloat clockHeight = otpCell.contentView.frame.size.height * .50;
+        CGFloat clockHeight = otpCell.contentView.frame.size.height;
         otpCell.accessoryView = [[OTPAuthBarClock alloc] initWithFrame:CGRectMake(0, 0, clockHeight, clockHeight) period:[otp getStep]];
     }
 }
