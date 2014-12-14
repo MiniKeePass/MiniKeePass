@@ -15,14 +15,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#import "AGClock+MKPAdditions.h"
+#import <Foundation/Foundation.h>
+#import "KeeOtpAuthData.h"
 
-@implementation AGClock (MKPAdditions)
+@interface OneTimePassword : NSObject {
 
-- (uint64_t)timeRemainingInCurrentInterval {
-    NSTimeInterval seconds = [self.date timeIntervalSince1970];
-    uint64_t counter = (uint64_t) (seconds / self.timeStep);
-    return (uint64_t) ((counter + 1) * self.timeStep) - seconds;
+    KeeOtpAuthData *otpAuthData;
+    NSData *secret;
+    uint64_t lastOtpInterval;
+    NSString *lastOtp;
+
 }
+
+- (id)initWithData:(KeeOtpAuthData *)data;
+- (uint32_t)getStep;
+- (NSString *)getOTP;
+- (uint64_t)getOtpTimeRemaining;
 
 @end

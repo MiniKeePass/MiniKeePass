@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		4D476D44195A1AC500D614E5 /* KdbEntry+MKPAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D476D43195A1AC500D614E5 /* KdbEntry+MKPAdditions.m */; };
 		4D476D4B195A799000D614E5 /* KeeOtpAuthData.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D476D4A195A799000D614E5 /* KeeOtpAuthData.m */; };
+		4DA74F141A36AF4B005F890C /* OneTimePassword.m in Sources */ = {isa = PBXBuildFile; fileRef = 4DA74F131A36AF4B005F890C /* OneTimePassword.m */; };
 		4DAD4BFC197C5A3800DD5916 /* AGBase32.m in Sources */ = {isa = PBXBuildFile; fileRef = 4DAD4BF3197C5A3800DD5916 /* AGBase32.m */; };
 		4DAD4BFD197C5A3800DD5916 /* AGClock.m in Sources */ = {isa = PBXBuildFile; fileRef = 4DAD4BF5197C5A3800DD5916 /* AGClock.m */; };
 		4DAD4BFE197C5A3800DD5916 /* AGOtp.m in Sources */ = {isa = PBXBuildFile; fileRef = 4DAD4BF7197C5A3800DD5916 /* AGOtp.m */; };
@@ -153,6 +154,8 @@
 		4D476D43195A1AC500D614E5 /* KdbEntry+MKPAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "KdbEntry+MKPAdditions.m"; path = "MiniKeePass/KdbEntry+MKPAdditions.m"; sourceTree = "<group>"; };
 		4D476D49195A799000D614E5 /* KeeOtpAuthData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KeeOtpAuthData.h; path = MiniKeePass/KeeOtpAuthData.h; sourceTree = "<group>"; };
 		4D476D4A195A799000D614E5 /* KeeOtpAuthData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KeeOtpAuthData.m; path = MiniKeePass/KeeOtpAuthData.m; sourceTree = "<group>"; };
+		4DA74F121A36AF4B005F890C /* OneTimePassword.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OneTimePassword.h; path = MiniKeePass/OneTimePassword.h; sourceTree = "<group>"; };
+		4DA74F131A36AF4B005F890C /* OneTimePassword.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = OneTimePassword.m; path = MiniKeePass/OneTimePassword.m; sourceTree = "<group>"; };
 		4DAD4BF1197C5A3800DD5916 /* AeroGearOTP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AeroGearOTP.h; path = "aerogear-otp-ios/aerogear-otp.ios/Classes/AeroGearOTP.h"; sourceTree = "<group>"; };
 		4DAD4BF2197C5A3800DD5916 /* AGBase32.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AGBase32.h; path = "aerogear-otp-ios/aerogear-otp.ios/Classes/AGBase32.h"; sourceTree = "<group>"; };
 		4DAD4BF3197C5A3800DD5916 /* AGBase32.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AGBase32.m; path = "aerogear-otp-ios/aerogear-otp.ios/Classes/AGBase32.m"; sourceTree = "<group>"; };
@@ -427,15 +430,9 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		4DAD4BE7197C531D00DD5916 /* OTP */ = {
+		4DA74F161A36C79C005F890C /* AeroGearOTP */ = {
 			isa = PBXGroup;
 			children = (
-				4D476D49195A799000D614E5 /* KeeOtpAuthData.h */,
-				4D476D4A195A799000D614E5 /* KeeOtpAuthData.m */,
-				4D476D42195A1AC500D614E5 /* KdbEntry+MKPAdditions.h */,
-				4D476D43195A1AC500D614E5 /* KdbEntry+MKPAdditions.m */,
-				4DAD4C01197C5AA600DD5916 /* AGClock+MKPAdditions.h */,
-				4DAD4C02197C5AA600DD5916 /* AGClock+MKPAdditions.m */,
 				4DAD4BF1197C5A3800DD5916 /* AeroGearOTP.h */,
 				4DAD4BF2197C5A3800DD5916 /* AGBase32.h */,
 				4DAD4BF3197C5A3800DD5916 /* AGBase32.m */,
@@ -447,8 +444,24 @@
 				4DAD4BF9197C5A3800DD5916 /* AGStringEncoding.m */,
 				4DAD4BFA197C5A3800DD5916 /* AGTotp.h */,
 				4DAD4BFB197C5A3800DD5916 /* AGTotp.m */,
+			);
+			name = AeroGearOTP;
+			sourceTree = "<group>";
+		};
+		4DAD4BE7197C531D00DD5916 /* OTP */ = {
+			isa = PBXGroup;
+			children = (
+				4DA74F121A36AF4B005F890C /* OneTimePassword.h */,
+				4DA74F131A36AF4B005F890C /* OneTimePassword.m */,
+				4D476D49195A799000D614E5 /* KeeOtpAuthData.h */,
+				4D476D4A195A799000D614E5 /* KeeOtpAuthData.m */,
+				4D476D42195A1AC500D614E5 /* KdbEntry+MKPAdditions.h */,
+				4D476D43195A1AC500D614E5 /* KdbEntry+MKPAdditions.m */,
+				4DAD4C01197C5AA600DD5916 /* AGClock+MKPAdditions.h */,
+				4DAD4C02197C5AA600DD5916 /* AGClock+MKPAdditions.m */,
 				4DD83E361960AC0D006B1858 /* OTPAuthBarClock.h */,
 				4DD83E371960AC0D006B1858 /* OTPAuthBarClock.m */,
+				4DA74F161A36C79C005F890C /* AeroGearOTP */,
 			);
 			name = OTP;
 			sourceTree = "<group>";
@@ -973,6 +986,7 @@
 				689D03E113A42B63005EBD36 /* KdbPassword.m in Sources */,
 				689D03E213A42B63005EBD36 /* KdbReaderFactory.m in Sources */,
 				6837C360188C9ED30018D588 /* SelectGroupViewController.m in Sources */,
+				4DA74F141A36AF4B005F890C /* OneTimePassword.m in Sources */,
 				689D03E313A42B63005EBD36 /* KdbWriterFactory.m in Sources */,
 				689D03E513A42B63005EBD36 /* Salsa20RandomStream.m in Sources */,
 				4DAD4BFE197C5A3800DD5916 /* AGOtp.m in Sources */,

@@ -22,8 +22,9 @@
 #import "WebViewController.h"
 
 #import <MBProgressHUD/MBProgressHUD.h>
-#import "AeroGearOTP.h"
 #import "KdbEntry+MKPAdditions.h"
+#import "OneTimePassword.h"
+#import "AeroGearOTP.h"
 #import "AGClock+MKPAdditions.h"
 
 #include "OTPAuthBarClock.h"
@@ -46,6 +47,7 @@ enum {
     TextFieldCell *otpCell;
     TextViewCell *commentsCell;
     
+    OneTimePassword *otp;
     NSTimer *otpTimer;
 }
 
@@ -116,9 +118,6 @@ enum {
         otpCell.textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
         otpCell.textFieldCellDelegate = self;
         
-        CGFloat clockHeight = otpCell.contentView.frame.size.height * .50;
-        otpCell.accessoryView = [[OTPAuthBarClock alloc] initWithFrame:CGRectMake(0, 0, clockHeight, clockHeight) period:30];
-
         commentsCell = [[TextViewCell alloc] init];
         commentsCell.textView.editable = NO;
 
@@ -151,7 +150,7 @@ enum {
         self.isNewEntry = NO;
     }
     
-    [self startOTPTimer];
+    [self startOtpTimer];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -163,7 +162,7 @@ enum {
     // Remove listeners from the keyboard
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
-    [self stopOTPTimer];
+    [self stopOtpTimer];
 }
 
 - (void)applicationWillResignActive:(id)sender {
@@ -189,38 +188,62 @@ enum {
     urlCell.textField.text = self.entry.url;
     commentsCell.textView.text = self.entry.notes;
 
-    [self updateOTP];
+    [self checkForOtp];
+    [self updateFilledCells];
 }
 
 - (NSArray *)cells {
     return self.editing ? self.defaultCells : self.filledCells;
 }
 
-- (void)startOTPTimer {
-    if (otpTimer == nil && otpCell.textField.text.length > 0) {
+- (void)checkForOtp {
+    KeeOtpAuthData *data = [self.entry getOtpAuthData];
+    if (data != nil) {
+        otp = [[OneTimePassword alloc] initWithData:data];
+        [self startOtpTimer];
+    } else {
+        otp = nil;
+        [self stopOtpTimer];
+    }
+    [self updateOTP];
+}
+
+- (void)startOtpTimer {
+    if (otpTimer == nil && otp != nil) {
         NSLog(@"Starting OTP update timer");
         // should we update faster?
         otpTimer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(updateOTP) userInfo:nil repeats:YES];
+        // Also create the clock view for the OTP cell
+        CGFloat clockHeight = otpCell.contentView.frame.size.height * .50;
+        otpCell.accessoryView = [[OTPAuthBarClock alloc] initWithFrame:CGRectMake(0, 0, clockHeight, clockHeight) period:[otp getStep]];
     }
 }
 
-- (void)stopOTPTimer {
+- (void)stopOtpTimer {
     if (otpTimer != nil) {
         NSLog(@"Stopping OTP update timer");
         [otpTimer invalidate];
         otpTimer = nil;
     }
+    // Also destroy the clock view for the OTP cell
+    if (otpCell.accessoryView != nil && [otpCell.accessoryView isKindOfClass:[OTPAuthBarClock class]]) {
+        OTPAuthBarClock *oldView = (OTPAuthBarClock *)otpCell.accessoryView;
+        [oldView invalidate];
+        otpCell.accessoryView = nil;
+    }
 }
 
 - (void)updateOTP {
-    otpCell.textField.text = [self.entry getOtp];
-    // Track what cells are filled out
-    [self updateFilledCells];
-    if ([self.entry getOtpTimeRemaining] < 5) {
-        otpCell.textField.textColor = [UIColor redColor];
-    }
-    else {
-        otpCell.textField.textColor = [UIColor blackColor];
+    if (otp != nil) {
+        otpCell.textField.text = [otp getOTP];
+        if ([otp getOtpTimeRemaining] < 5) {
+            otpCell.textField.textColor = [UIColor redColor];
+        }
+        else {
+            otpCell.textField.textColor = [UIColor blackColor];
+        }
+    } else {
+        otpCell.textField.text = @"";
     }
 }
 
@@ -232,12 +255,8 @@ enum {
         }
     }
     // OTP cell
-    if (otpCell.textField.text.length > 0) {
+    if (otp != nil) {
         [self.filledCells addObject:otpCell];
-        [self startOTPTimer];
-    }
-    else {
-        [self stopOTPTimer];
     }
 }
 
@@ -276,7 +295,9 @@ enum {
     // Ensure that all updates happen at once
     [self.tableView beginUpdates];
 
-    if (editing == NO) {
+    if (editing) {
+        [self stopOtpTimer];
+    } else {
         if (canceled) {
             [self setEntry:self.entry];
         } else {
@@ -302,8 +323,9 @@ enum {
             }
 
             // See if we now have an OTP
-            [self.entry setIsUpdated];
-            [self updateOTP];
+            [self checkForOtp];
+
+            [self updateFilledCells];
 
             // Save the database document
             [[MiniKeePassAppDelegate appDelegate].databaseDocument save];
@@ -335,7 +357,7 @@ enum {
         commentsCell.textView.editable = YES;
 
         // Hide the OTP cell, if needed
-        if (otpCell.textField.text.length > 0) {
+        if (otp != nil) {
             [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:[self.filledCells count] - 1 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
         }
         [self.tableView insertRowsAtIndexPaths:paths withRowAnimation:UITableViewRowAnimationFade];
@@ -347,7 +369,7 @@ enum {
 
         [self.tableView deleteRowsAtIndexPaths:paths withRowAnimation:UITableViewRowAnimationFade];
         // Make the OTP cell visible again, if needed
-        if (otpCell.textField.text.length > 0) {
+        if (otp != nil) {
             [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:[self.filledCells count] - 1 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
         }
     }

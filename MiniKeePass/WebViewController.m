@@ -18,6 +18,7 @@
 #import "WebViewController.h"
 #import "UIAlertViewAutoDismiss.h"
 #import "KdbEntry+MKPAdditions.h"
+#import "OneTimePassword.h"
 
 #define kUrlFieldPortHeight 30.0f
 #define kUrlFieldLandHeight 24.0f
@@ -69,7 +70,9 @@
 
 @end
 
-@interface WebViewController () <UIWebViewDelegate, UITextFieldDelegate, MKPWebViewDelegate>
+@interface WebViewController () <UIWebViewDelegate, UITextFieldDelegate, MKPWebViewDelegate> {
+    OneTimePassword *otp;
+}
 @property (nonatomic, strong) UITextField *urlTextField;
 @property (nonatomic, assign) CGRect originalUrlFrame;
 
@@ -104,9 +107,11 @@
 
     // Create the autotype buttons
     NSMutableArray *items = [NSMutableArray arrayWithObjects:[UIImage imageNamed:@"user"], [UIImage imageNamed:@"asterisk"], nil];
-    if ([[self.entry getOtp] length] > 0) {
+    KeeOtpAuthData *otpAuthData = [self.entry getOtpAuthData];
+    if (otpAuthData != nil && otpAuthData.isSupported) {
+        otp = [[OneTimePassword alloc] initWithData:otpAuthData];
         // TODO need a new icon
-        [items addObject:[UIImage imageNamed:@"asterisk"]];
+        [items addObject:[UIImage imageNamed:@"asterisk1"]];
     }
     UISegmentedControl *segmentedControl = [[UISegmentedControl alloc] initWithItems:items];
     segmentedControl.segmentedControlStyle = UISegmentedControlStyleBar;
@@ -292,7 +297,7 @@
 }
 
 - (void)autotypePressed:(UISegmentedControl *)segmentedControl {
-    NSString *otp = nil;
+    NSString *otpString = nil;
     switch (segmentedControl.selectedSegmentIndex) {
         case 0:
             [self autotypeString:self.entry.username];
@@ -303,9 +308,9 @@
             break;
             
         case 2:
-            otp = [self.entry getOtp];
-            if (otp != nil && [otp length] > 0) {
-                [self autotypeString:otp];
+            otpString = [otp getOTP];
+            if (otpString != nil && [otpString length] > 0) {
+                [self autotypeString:otpString];
             }
             break;
 
@@ -323,9 +328,9 @@
 }
 
 - (void)otpPressed:(MKPWebView *)webview {
-    NSString *otp = [self.entry getOtp];
-    if (otp != nil && [otp length] > 0) {
-        [self autotypeString:otp];
+    NSString *otpString = [otp getOTP];
+    if (otpString != nil && [otpString length] > 0) {
+        [self autotypeString:otpString];
     }
 }
 

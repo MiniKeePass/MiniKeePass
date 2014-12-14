@@ -1,112 +1,41 @@
-//
-//  KdbEntry+KdbEntry_MKPAdditions.m
-//  MiniKeePass
-//
-//  Created by Mark Hewett on 6/24/14.
-//  Copyright (c) 2014 Self. All rights reserved.
-//
-
-#import <objc/runtime.h>
+/*
+ * Copyright 2014 Mark Hewett. All rights reserved.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 #import "KdbEntry+MKPAdditions.h"
-#import "AGClock+MKPAdditions.h"
 #import "Kdb4Node.h"
-#import "AeroGearOTP.h"
 #import "KeeOtpAuthData.h"
-
-// See http://stackoverflow.com/a/9987819/2278086
-
-@interface KdbEntryMKPAdditionIVars : NSObject
-+ (KdbEntryMKPAdditionIVars *)fetch:(id)targetInstance;
-- (void)clear;
-@property KeeOtpAuthData *otpAuthData;
-@property BOOL isUpdated;
-@property uint64_t lastOtpInterval;
-@property NSString *lastOtp;
-@end
-
-@implementation KdbEntryMKPAdditionIVars
-
-+ (KdbEntryMKPAdditionIVars *)fetch:(id)targetInstance {
-    static void *compactFetchIVarKey = &compactFetchIVarKey;
-    KdbEntryMKPAdditionIVars *ivars = objc_getAssociatedObject(targetInstance, &compactFetchIVarKey);
-    if (ivars == nil) {
-        ivars = [[KdbEntryMKPAdditionIVars alloc] init];
-        objc_setAssociatedObject(targetInstance, &compactFetchIVarKey, ivars, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-    }
-    return ivars;
-}
-
-- (id)init {
-    self = [super init];
-    if (self) {
-        _isUpdated = YES;
-    }
-    return self;
-}
-
-- (void)clear {
-    self.otpAuthData = nil;
-    self.lastOtpInterval = 0;
-    self.lastOtp = 0;
-}
-
-@end
 
 @implementation KdbEntry (MKPAdditions)
 
-- (NSString *)getOtp {
+- (KeeOtpAuthData *)getOtpAuthData {
+
+    NSLog(@"Looking for OTP auth data");
     
-    KdbEntryMKPAdditionIVars *ivars = [KdbEntryMKPAdditionIVars fetch:self];
-    
-    if (ivars.isUpdated) {
-        
-        NSLog(@"Looking for OTP auth data");
-        
-        [ivars clear];
-    
-        NSString *otpAuthDataString = [self getOtpDataFromStringFields];
-        if (otpAuthDataString == nil && self.notes != nil) {
-            otpAuthDataString = [self getOtpDataFromNotes];
-        }
-        if (otpAuthDataString != nil) {
-            ivars.otpAuthData = [[KeeOtpAuthData alloc] initWithString:otpAuthDataString];
-        }
-        
-        ivars.isUpdated = NO;
-        
+    NSString *otpAuthDataString = [self getOtpDataFromStringFields];
+    if (otpAuthDataString == nil && self.notes != nil) {
+        otpAuthDataString = [self getOtpDataFromNotes];
+    }
+    if (otpAuthDataString != nil) {
+        NSLog(@"Found OTP auth data: %@", otpAuthDataString);
+        return [[KeeOtpAuthData alloc] initWithString:otpAuthDataString];
     }
     
-    NSString *otp = @"";
+    return nil;
     
-    if (ivars.otpAuthData != nil) {
-        if (ivars.otpAuthData.isSupported) {
-            AGClock *clock = [[AGClock alloc] initWithTimeStep:ivars.otpAuthData.step];
-            if (clock.currentInterval != ivars.lastOtpInterval) {
-                // Need to generate the current OTP
-                NSLog(@"Updating OTP");
-                NSData *secret = [AGBase32 base32Decode:[ivars.otpAuthData key]];
-                if (secret != nil) {
-                    AGTotp *generator = [[AGTotp alloc] initWithSecret:secret tokenLength:ivars.otpAuthData.size hashAlg:SHA1 timeStep:ivars.otpAuthData.step];
-                    otp = [generator generateOTP];
-                    ivars.lastOtp = otp;
-                    ivars.lastOtpInterval = clock.currentInterval;
-                    NSLog(@"OTP: %@", otp);
-                }
-                else {
-                    otp = @"Bad Key";
-                }
-            }
-            else {
-                otp = ivars.lastOtp;
-            }
-        }
-        else {
-            otp = @"Not Supported";
-        }
-    }
-    
-    return otp;
 }
 
 - (NSString *)getOtpDataFromStringFields {
@@ -133,19 +62,6 @@
         }
     }
     return nil;
-}
-
-- (NSUInteger)getOtpTimeRemaining {
-    KdbEntryMKPAdditionIVars *ivars = [KdbEntryMKPAdditionIVars fetch:self];
-    if (ivars.otpAuthData != nil && ivars.otpAuthData.isSupported) {
-        AGClock *clock = [[AGClock alloc] initWithTimeStep:ivars.otpAuthData.step];
-        return clock.timeRemainingInCurrentInterval;
-    }
-    return 0;
-}
-
-- (void)setIsUpdated {
-    [KdbEntryMKPAdditionIVars fetch:self].isUpdated = YES;
 }
 
 @end
