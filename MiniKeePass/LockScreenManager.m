@@ -24,7 +24,6 @@
 #import "KeychainUtils.h"
 
 @interface LockScreenManager () <PinViewControllerDelegate>
-@property (nonatomic, strong) UINavigationController *navigationController;
 @property (nonatomic, strong) LockViewController *lockViewController;
 @property (nonatomic, strong) PinViewController *pinViewController;
 @end
@@ -45,6 +44,10 @@ static LockScreenManager *sharedInstance = nil;
     self = [super init];
     if (self) {
         NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+        [notificationCenter addObserver:self
+                               selector:@selector(applicationDidFinishLaunching:)
+                                   name:UIApplicationDidFinishLaunchingNotification
+                                 object:nil];
         [notificationCenter addObserver:self
                                selector:@selector(applicationWillResignActive:)
                                    name:UIApplicationWillResignActiveNotification
@@ -99,10 +102,14 @@ static LockScreenManager *sharedInstance = nil;
     }
 
     self.lockViewController = [[LockViewController alloc] init];
-    self.navigationController = [[UINavigationController alloc] initWithRootViewController:self.lockViewController];
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:self.lockViewController];
+
+    // Hack for iOS 8 to ensure the view is displayed before anything else on launch
+    MiniKeePassAppDelegate *appDelegate = [MiniKeePassAppDelegate appDelegate];
+    [appDelegate.window addSubview:navigationController.view];
 
     UIViewController *rootViewController = [LockScreenManager topMostController];
-    [rootViewController presentViewController:self.navigationController animated:NO completion:nil];
+    [rootViewController presentViewController:navigationController animated:NO completion:nil];
 }
 
 - (void)hideLockScreen {
@@ -110,7 +117,7 @@ static LockScreenManager *sharedInstance = nil;
     self.lockViewController = nil;
 }
 
-- (void)showPinScreen {
+- (void)showPinScreenAnimated:(BOOL)animated {
     if (self.pinViewController != nil) {
         [self.pinViewController clearPinEntry];
         return;
@@ -123,7 +130,7 @@ static LockScreenManager *sharedInstance = nil;
     self.pinViewController = [[PinViewController alloc] init];
     self.pinViewController.delegate = self;
 
-    [self.lockViewController presentViewController:self.pinViewController animated:YES completion:nil];
+    [self.lockViewController presentViewController:self.pinViewController animated:animated completion:nil];
 }
 
 - (void)hidePinScreen {
@@ -132,7 +139,6 @@ static LockScreenManager *sharedInstance = nil;
         self.pinViewController = nil;
     }];
 }
-
 
 #pragma mark - PinViewController delegate methods
 
@@ -197,6 +203,12 @@ static LockScreenManager *sharedInstance = nil;
 
 #pragma mark - Application Notification Handlers
 
+- (void)applicationDidFinishLaunching:(NSNotification *)notification {
+    if ([self shouldCheckPin]) {
+        [self showPinScreenAnimated:NO];
+    }
+}
+
 - (void)applicationWillResignActive:(NSNotification *)notification {
     AppSettings *appSettings = [AppSettings sharedInstance];
     if ([appSettings pinEnabled]) {
@@ -208,7 +220,7 @@ static LockScreenManager *sharedInstance = nil;
 
 - (void)applicationDidBecomeActive:(NSNotification *)notification {
     if ([self shouldCheckPin]) {
-        [self showPinScreen];
+        [self showPinScreenAnimated:YES];
     } else {
         [self hideLockScreen];
     }
