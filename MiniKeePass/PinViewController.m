@@ -116,9 +116,7 @@
     [self.textField becomeFirstResponder];
 }
 
-- (void)viewDidUnload {
-    [super viewDidUnload];
-
+- (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
