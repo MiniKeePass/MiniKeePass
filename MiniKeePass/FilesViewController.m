@@ -36,6 +36,7 @@ enum {
 @synthesize selectedFile;
 
 - (void)viewDidLoad {
+    [super viewDidLoad];
     appDelegate = [MiniKeePassAppDelegate appDelegate];
 
     self.title = NSLocalizedString(@"Files", nil);
