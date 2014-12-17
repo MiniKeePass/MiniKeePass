@@ -15,15 +15,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#import "LockViewController.h"
-#import "VersionUtils.h"
+#import <UIKit/UIKit.h>
 
-@implementation LockViewController
+#define KEYPAD_BUTTON_SIZE    75
+#define KEYPAD_BUTTON_XPADDING 20
+#define KEYPAD_BUTTON_YPADDING 12
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
+@interface KeypadButton : UIButton
 
-    self.view.backgroundColor = [UIColor whiteColor];
-}
+@property (nonatomic, strong) UILabel *mainLabel;
+@property (nonatomic, strong) UILabel *subtitleLabel;
+
+- (instancetype)initWithTitle:(NSString *)title andSubtitle:(NSString *)subtitle;
+
++ (KeypadButton *)numberButtonWithValue:(NSInteger)value andSubtitle:(NSString *)subtitle;
++ (KeypadButton *)systemButtonWithTitle:(NSString *)title;
 
 @end

@@ -117,7 +117,9 @@
 		68A4E29A18711983003117A4 /* ImageFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 68A4E29918711983003117A4 /* ImageFactory.m */; };
 		68B211C51A336AA5002B3F33 /* LockScreenManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B211C41A336AA5002B3F33 /* LockScreenManager.m */; };
 		68B211C81A336FEA002B3F33 /* LockViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B211C71A336FEA002B3F33 /* LockViewController.m */; };
-		68B211CB1A33B0D3002B3F33 /* PinViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B211CA1A33B0D3002B3F33 /* PinViewController.m */; };
+		68CDB7831A3E55A20094BC55 /* KeypadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68CDB7821A3E55A20094BC55 /* KeypadView.m */; };
+		68CDB7871A3E55DE0094BC55 /* KeypadButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 68CDB7861A3E55DE0094BC55 /* KeypadButton.m */; };
+		68CDB78A1A3E5FC10094BC55 /* PinViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68CDB7891A3E5FC10094BC55 /* PinViewController.m */; };
 		68CE37F214049BC900E4A5E1 /* HelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68CE37F114049BC900E4A5E1 /* HelpViewController.m */; };
 		68CE37F51404A86600E4A5E1 /* safariemail.html in Resources */ = {isa = PBXBuildFile; fileRef = 68CE37F41404A86600E4A5E1 /* safariemail.html */; };
 		68CE868F14EDF4C300D34A61 /* LengthCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68CE868E14EDF4C300D34A61 /* LengthCell.m */; };
@@ -356,8 +358,12 @@
 		68B211C41A336AA5002B3F33 /* LockScreenManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LockScreenManager.m; sourceTree = "<group>"; };
 		68B211C61A336FEA002B3F33 /* LockViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LockViewController.h; sourceTree = "<group>"; };
 		68B211C71A336FEA002B3F33 /* LockViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LockViewController.m; sourceTree = "<group>"; };
-		68B211C91A33B0D3002B3F33 /* PinViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PinViewController.h; sourceTree = "<group>"; };
-		68B211CA1A33B0D3002B3F33 /* PinViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PinViewController.m; sourceTree = "<group>"; };
+		68CDB7811A3E55A20094BC55 /* KeypadView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeypadView.h; sourceTree = "<group>"; };
+		68CDB7821A3E55A20094BC55 /* KeypadView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeypadView.m; sourceTree = "<group>"; };
+		68CDB7851A3E55DE0094BC55 /* KeypadButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeypadButton.h; sourceTree = "<group>"; };
+		68CDB7861A3E55DE0094BC55 /* KeypadButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeypadButton.m; sourceTree = "<group>"; };
+		68CDB7881A3E5FC10094BC55 /* PinViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PinViewController.h; sourceTree = "<group>"; };
+		68CDB7891A3E5FC10094BC55 /* PinViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PinViewController.m; sourceTree = "<group>"; };
 		68CE37F014049BC900E4A5E1 /* HelpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelpViewController.h; sourceTree = "<group>"; };
 		68CE37F114049BC900E4A5E1 /* HelpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelpViewController.m; sourceTree = "<group>"; };
 		68CE37F41404A86600E4A5E1 /* safariemail.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = safariemail.html; sourceTree = "<group>"; };
@@ -427,8 +433,12 @@
 				68B211C71A336FEA002B3F33 /* LockViewController.m */,
 				689D043813A42C81005EBD36 /* PinTextField.h */,
 				689D043913A42C81005EBD36 /* PinTextField.m */,
-				68B211C91A33B0D3002B3F33 /* PinViewController.h */,
-				68B211CA1A33B0D3002B3F33 /* PinViewController.m */,
+				68CDB7811A3E55A20094BC55 /* KeypadView.h */,
+				68CDB7821A3E55A20094BC55 /* KeypadView.m */,
+				68CDB7851A3E55DE0094BC55 /* KeypadButton.h */,
+				68CDB7861A3E55DE0094BC55 /* KeypadButton.m */,
+				68CDB7881A3E5FC10094BC55 /* PinViewController.h */,
+				68CDB7891A3E5FC10094BC55 /* PinViewController.m */,
 			);
 			name = "Lock Screen";
 			sourceTree = "<group>";
@@ -934,6 +944,7 @@
 				689D03D613A42B63005EBD36 /* Kdb3Date.m in Sources */,
 				68B211C51A336AA5002B3F33 /* LockScreenManager.m in Sources */,
 				689D03D713A42B63005EBD36 /* Kdb3Node.m in Sources */,
+				68CDB7831A3E55A20094BC55 /* KeypadView.m in Sources */,
 				689D03DA13A42B63005EBD36 /* Kdb3Reader.m in Sources */,
 				689D03DB13A42B63005EBD36 /* Kdb3Writer.m in Sources */,
 				689D03DC13A42B63005EBD36 /* Kdb4Node.m in Sources */,
@@ -977,13 +988,14 @@
 				689D046213A42C82005EBD36 /* UrlFieldCell.m in Sources */,
 				68915A0B13A6F6C200A408B0 /* InfoBar.m in Sources */,
 				68A3E1AF13A8C9D1006881CA /* FormViewController.m in Sources */,
-				68B211CB1A33B0D3002B3F33 /* PinViewController.m in Sources */,
 				68A4E29A18711983003117A4 /* ImageFactory.m in Sources */,
 				6876F67813B2D8F500A05C7A /* ImageSelectionViewController.m in Sources */,
 				68D7564D186E4D8A001AFB82 /* WebViewController.m in Sources */,
+				68CDB7871A3E55DE0094BC55 /* KeypadButton.m in Sources */,
 				68D991E613F3EAAE00F6ED1F /* PasswordViewController.m in Sources */,
 				689A4D1314046B8200AA897D /* RandomStream.m in Sources */,
 				689A4D171404759700AA897D /* PasswordGeneratorViewController.m in Sources */,
+				68CDB78A1A3E5FC10094BC55 /* PinViewController.m in Sources */,
 				68CE37F214049BC900E4A5E1 /* HelpViewController.m in Sources */,
 				68F19D1F14EB3A9C00B772CB /* CharacterSetsViewController.m in Sources */,
 				68CE868F14EDF4C300D34A61 /* LengthCell.m in Sources */,

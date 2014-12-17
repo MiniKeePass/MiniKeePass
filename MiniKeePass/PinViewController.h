@@ -25,12 +25,11 @@
 
 @end
 
-
 @interface PinViewController : UIViewController
 
-@property(nonatomic, strong) UILabel *titleLabel;
-@property(nonatomic, assign) id<PinViewControllerDelegate> delegate;
+@property (nonatomic, strong) UILabel *titleLabel;
+@property (nonatomic, assign) id<PinViewControllerDelegate> delegate;
 
-- (void)clearPinEntry;
+- (void)clearPin;
 
 @end

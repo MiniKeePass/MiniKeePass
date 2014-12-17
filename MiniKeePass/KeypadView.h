@@ -15,15 +15,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#import "LockViewController.h"
-#import "VersionUtils.h"
+#import <UIKit/UIKit.h>
 
-@implementation LockViewController
+@class KeypadView;
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
+@protocol KeypadViewDelegate <NSObject>
 
-    self.view.backgroundColor = [UIColor whiteColor];
-}
+- (void)keypadView:(KeypadView *)keypadView numberPressed:(NSString *)str;
+- (void)keypadViewDeletePressed:(KeypadView *)keypadView;
+
+@end
+
+@interface KeypadView : UIView
+
+@property (nonatomic, assign) id<KeypadViewDelegate> delegate;
 
 @end

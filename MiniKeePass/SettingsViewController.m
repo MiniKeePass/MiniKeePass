@@ -576,7 +576,7 @@ enum {
         controller.titleLabel.text = NSLocalizedString(@"Confirm PIN", nil);
         
         // Clear the PIN entry for confirmation
-        [controller clearPinEntry];
+        [controller clearPin];
     } else if ([tempPin isEqualToString:pin]) {
         tempPin = nil;
         
@@ -597,7 +597,7 @@ enum {
         AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
         
         // Clear the PIN entry to let them try again
-        [controller clearPinEntry];
+        [controller clearPin];
     }
 }
 
