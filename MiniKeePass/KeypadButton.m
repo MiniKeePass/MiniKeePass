@@ -58,9 +58,9 @@
     }
 
     keypadButton.borderHidden = NO;
-    keypadButton.textColor = [UIColor lightGrayColor];
+    keypadButton.textColor = [UIColor darkGrayColor];
     keypadButton.highlightTextColor = [UIColor whiteColor];
-    keypadButton.borderColor = [UIColor lightGrayColor];
+    keypadButton.borderColor = [UIColor darkGrayColor];
     keypadButton.highlightBackgroundColor = [UIColor colorWithRed:0x33/255.0f green:0xAA/255.0f blue:0xDC/255.0f alpha:1.0f];
 
     return keypadButton;
@@ -71,7 +71,7 @@
 
     keypadButton.mainLabel.font = [keypadButton.mainLabel.font fontWithSize:22];
     keypadButton.borderHidden = YES;
-    keypadButton.textColor = [UIColor lightGrayColor];
+    keypadButton.textColor = [UIColor darkGrayColor];
     keypadButton.highlightTextColor = [UIColor colorWithRed:0x33/255.0f green:0xAA/255.0f blue:0xDC/255.0f alpha:1.0f];
     keypadButton.highlightBackgroundColor = [UIColor clearColor];
 

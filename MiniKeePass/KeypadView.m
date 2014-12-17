@@ -93,6 +93,8 @@
     }];
 }
 
+#pragma mark - Button handlers
+
 - (void)buttonPressed:(KeypadButton *)source {
     [self.delegate keypadView:self numberPressed:source.mainLabel.text];
 }

@@ -35,6 +35,7 @@
 
         // Create a container view to hold everything
         UIView *view = [[UIView alloc] init];
+        view.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
 
         CGFloat w = self.view.bounds.size.width;
         CGFloat y = 0.0f;
@@ -43,7 +44,7 @@
         self.titleLabel = [[UILabel alloc] init];
         self.titleLabel.text = NSLocalizedString(@"Enter your PIN to unlock", nil);
         self.titleLabel.textAlignment = NSTextAlignmentCenter;
-        self.titleLabel.textColor = [UIColor lightGrayColor];
+        self.titleLabel.textColor = [UIColor darkGrayColor];
         self.titleLabel.font = [self.titleLabel.font fontWithSize:18];
         [self.titleLabel sizeToFit];
         [view addSubview:self.titleLabel];
@@ -57,7 +58,7 @@
         self.pinLabel = [[UILabel alloc] init];
         self.pinLabel.text = @"\u25CB";
         self.pinLabel.textAlignment = NSTextAlignmentCenter;
-        self.pinLabel.textColor = [UIColor lightGrayColor];
+        self.pinLabel.textColor = [UIColor darkGrayColor];
         self.pinLabel.font = [UIFont fontWithName:@"ArialMT" size:36];
         [self.pinLabel sizeToFit];
         [view addSubview:self.pinLabel];
@@ -93,13 +94,15 @@
     [self clearPin];
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
-    return NO;
+- (NSUInteger)supportedInterfaceOrientations {
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        return UIInterfaceOrientationMaskAll;
+    } else {
+        return UIInterfaceOrientationMaskPortrait;
+    }
 }
 
-- (BOOL)shouldAutorotate {
-    return NO;
-}
+#pragma mark - KeypadView delegate
 
 - (void)keypadView:(KeypadView *)keypadView numberPressed:(NSString *)str {
     if (self.pin.length < PIN_LENGTH) {
@@ -119,6 +122,8 @@
         self.pin = [self.pin substringToIndex:n - 1];
     }
 }
+
+#pragma mark - PIN related methods
 
 - (void)setPin:(NSString *)pin {
     _pin = pin;
