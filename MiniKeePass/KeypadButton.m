@@ -47,7 +47,7 @@
 }
 
 + (KeypadButton *)numberButtonWithValue:(NSInteger)value andSubtitle:(NSString *)subtitle {
-    NSString *title = [NSString stringWithFormat:@"%d", value];
+    NSString *title = [NSString stringWithFormat:@"%ld", (long)value];
 
     KeypadButton *keypadButton = [[KeypadButton alloc] initWithTitle:title andSubtitle:subtitle];
     keypadButton.tag = value;
