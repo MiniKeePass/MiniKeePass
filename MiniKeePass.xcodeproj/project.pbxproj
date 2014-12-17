@@ -24,8 +24,6 @@
 		52A177BC13EB698E00CEEFCE /* createdb.html in Resources */ = {isa = PBXBuildFile; fileRef = 52A177BB13EB698E00CEEFCE /* createdb.html */; };
 		52A512B1159CE7540009F82F /* ImageSelectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 52A512B0159CE7540009F82F /* ImageSelectionView.m */; };
 		52C7FD7D18693D9900D498A2 /* GroupSearchController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52C7FD7C18693D9900D498A2 /* GroupSearchController.m */; };
-		52E3342D161E0F310049F4A1 /* stretchme.png in Resources */ = {isa = PBXBuildFile; fileRef = 52E3342B161E0F310049F4A1 /* stretchme.png */; };
-		52E3342E161E0F310049F4A1 /* stretchme@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52E3342C161E0F310049F4A1 /* stretchme@2x.png */; };
 		52E43F4C15B59C890029F979 /* ru-createdb.html in Resources */ = {isa = PBXBuildFile; fileRef = 52E43F4715B59C880029F979 /* ru-createdb.html */; };
 		52E43F4D15B59C890029F979 /* ru-dropbox.html in Resources */ = {isa = PBXBuildFile; fileRef = 52E43F4815B59C880029F979 /* ru-dropbox.html */; };
 		52E43F4E15B59C890029F979 /* ru-itunes.html in Resources */ = {isa = PBXBuildFile; fileRef = 52E43F4915B59C890029F979 /* ru-itunes.html */; };
@@ -55,8 +53,6 @@
 		685D9D951603F8EE00D739D3 /* Kdb3Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 685D9D941603F8EE00D739D3 /* Kdb3Utils.m */; };
 		6876F67813B2D8F500A05C7A /* ImageSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6876F67713B2D8F400A05C7A /* ImageSelectionViewController.m */; };
 		68884F10186E1C5600C222D4 /* MasterPasswordFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68884F0F186E1C5600C222D4 /* MasterPasswordFieldCell.m */; };
-		68884F12186E414C00C222D4 /* stretchme-7@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 68884F11186E414C00C222D4 /* stretchme-7@2x.png */; };
-		68884F14186E461600C222D4 /* stretchme-7.png in Resources */ = {isa = PBXBuildFile; fileRef = 68884F13186E461600C222D4 /* stretchme-7.png */; };
 		68915A0B13A6F6C200A408B0 /* InfoBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 68915A0A13A6F6C200A408B0 /* InfoBar.m */; };
 		689A4D1314046B8200AA897D /* RandomStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 689A4D1214046B8200AA897D /* RandomStream.m */; };
 		689A4D171404759700AA897D /* PasswordGeneratorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 689A4D161404759700AA897D /* PasswordGeneratorViewController.m */; };
@@ -100,7 +96,6 @@
 		689D045513A42C82005EBD36 /* MiniKeePassAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D043313A42C81005EBD36 /* MiniKeePassAppDelegate.m */; };
 		689D045613A42C82005EBD36 /* NewKdbViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D043513A42C81005EBD36 /* NewKdbViewController.m */; };
 		689D045713A42C82005EBD36 /* PasswordFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D043713A42C81005EBD36 /* PasswordFieldCell.m */; };
-		689D045813A42C82005EBD36 /* PinTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D043913A42C81005EBD36 /* PinTextField.m */; };
 		689D045B13A42C82005EBD36 /* SelectionListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D043F13A42C82005EBD36 /* SelectionListViewController.m */; };
 		689D045C13A42C82005EBD36 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D044113A42C82005EBD36 /* SettingsViewController.m */; };
 		689D045D13A42C82005EBD36 /* SwitchCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D044313A42C82005EBD36 /* SwitchCell.m */; };
@@ -171,8 +166,6 @@
 		52A512B0159CE7540009F82F /* ImageSelectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageSelectionView.m; sourceTree = "<group>"; };
 		52C7FD7B18693D9900D498A2 /* GroupSearchController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupSearchController.h; sourceTree = "<group>"; };
 		52C7FD7C18693D9900D498A2 /* GroupSearchController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupSearchController.m; sourceTree = "<group>"; };
-		52E3342B161E0F310049F4A1 /* stretchme.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = stretchme.png; sourceTree = SOURCE_ROOT; };
-		52E3342C161E0F310049F4A1 /* stretchme@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "stretchme@2x.png"; sourceTree = SOURCE_ROOT; };
 		52E43F4715B59C880029F979 /* ru-createdb.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "ru-createdb.html"; sourceTree = "<group>"; };
 		52E43F4815B59C880029F979 /* ru-dropbox.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "ru-dropbox.html"; sourceTree = "<group>"; };
 		52E43F4915B59C890029F979 /* ru-itunes.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "ru-itunes.html"; sourceTree = "<group>"; };
@@ -234,8 +227,6 @@
 		687AAAA71889FB4F00AB8AC5 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text; name = fr; path = fr.lproj/AppStore.txt; sourceTree = "<group>"; };
 		68884F0E186E1C5600C222D4 /* MasterPasswordFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MasterPasswordFieldCell.h; sourceTree = "<group>"; };
 		68884F0F186E1C5600C222D4 /* MasterPasswordFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MasterPasswordFieldCell.m; sourceTree = "<group>"; };
-		68884F11186E414C00C222D4 /* stretchme-7@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "stretchme-7@2x.png"; sourceTree = "<group>"; };
-		68884F13186E461600C222D4 /* stretchme-7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "stretchme-7.png"; sourceTree = "<group>"; };
 		68915A0913A6F6C200A408B0 /* InfoBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfoBar.h; sourceTree = "<group>"; };
 		68915A0A13A6F6C200A408B0 /* InfoBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfoBar.m; sourceTree = "<group>"; };
 		6891C07419263611000EFC70 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text; name = pt; path = pt.lproj/AppStore.txt; sourceTree = "<group>"; };
@@ -325,8 +316,6 @@
 		689D043513A42C81005EBD36 /* NewKdbViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewKdbViewController.m; sourceTree = "<group>"; };
 		689D043613A42C81005EBD36 /* PasswordFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasswordFieldCell.h; sourceTree = "<group>"; };
 		689D043713A42C81005EBD36 /* PasswordFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PasswordFieldCell.m; sourceTree = "<group>"; };
-		689D043813A42C81005EBD36 /* PinTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PinTextField.h; sourceTree = "<group>"; };
-		689D043913A42C81005EBD36 /* PinTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PinTextField.m; sourceTree = "<group>"; };
 		689D043E13A42C82005EBD36 /* SelectionListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectionListViewController.h; sourceTree = "<group>"; };
 		689D043F13A42C82005EBD36 /* SelectionListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectionListViewController.m; sourceTree = "<group>"; };
 		689D044013A42C82005EBD36 /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
@@ -423,16 +412,10 @@
 		52370CB314F2CDC3003DC64C /* Lock Screen */ = {
 			isa = PBXGroup;
 			children = (
-				52E3342B161E0F310049F4A1 /* stretchme.png */,
-				52E3342C161E0F310049F4A1 /* stretchme@2x.png */,
-				68884F13186E461600C222D4 /* stretchme-7.png */,
-				68884F11186E414C00C222D4 /* stretchme-7@2x.png */,
 				68B211C31A336AA5002B3F33 /* LockScreenManager.h */,
 				68B211C41A336AA5002B3F33 /* LockScreenManager.m */,
 				68B211C61A336FEA002B3F33 /* LockViewController.h */,
 				68B211C71A336FEA002B3F33 /* LockViewController.m */,
-				689D043813A42C81005EBD36 /* PinTextField.h */,
-				689D043913A42C81005EBD36 /* PinTextField.m */,
 				68CDB7811A3E55A20094BC55 /* KeypadView.h */,
 				68CDB7821A3E55A20094BC55 /* KeypadView.m */,
 				68CDB7851A3E55DE0094BC55 /* KeypadButton.h */,
@@ -886,7 +869,6 @@
 				689D033013A42B63005EBD36 /* itunes.html in Resources */,
 				52A177BC13EB698E00CEEFCE /* createdb.html in Resources */,
 				68CE37F51404A86600E4A5E1 /* safariemail.html in Resources */,
-				68884F12186E414C00C222D4 /* stretchme-7@2x.png in Resources */,
 				68DDC3731405160300FC8BD8 /* keyfiles.html in Resources */,
 				689D033113A42B63005EBD36 /* style.css in Resources */,
 				68E08310146F24E3001C4EDF /* Localizable.strings in Resources */,
@@ -901,9 +883,6 @@
 				52E43F4E15B59C890029F979 /* ru-itunes.html in Resources */,
 				52E43F4F15B59C890029F979 /* ru-keyfiles.html in Resources */,
 				52E43F5015B59C890029F979 /* ru-safariemail.html in Resources */,
-				52E3342D161E0F310049F4A1 /* stretchme.png in Resources */,
-				68884F14186E461600C222D4 /* stretchme-7.png in Resources */,
-				52E3342E161E0F310049F4A1 /* stretchme@2x.png in Resources */,
 				4E8C169316B3E871004195A1 /* fr-createdb.html in Resources */,
 				4E8C169416B3E871004195A1 /* fr-dropbox.html in Resources */,
 				4E8C169516B3E871004195A1 /* fr-itunes.html in Resources */,
@@ -977,7 +956,6 @@
 				689D045513A42C82005EBD36 /* MiniKeePassAppDelegate.m in Sources */,
 				689D045613A42C82005EBD36 /* NewKdbViewController.m in Sources */,
 				689D045713A42C82005EBD36 /* PasswordFieldCell.m in Sources */,
-				689D045813A42C82005EBD36 /* PinTextField.m in Sources */,
 				689D045B13A42C82005EBD36 /* SelectionListViewController.m in Sources */,
 				689D045C13A42C82005EBD36 /* SettingsViewController.m in Sources */,
 				689D045D13A42C82005EBD36 /* SwitchCell.m in Sources */,
