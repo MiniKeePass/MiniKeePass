@@ -24,6 +24,7 @@
 @interface SettingsViewController : UITableViewController <PinViewControllerDelegate, SelectionListViewControllerDelegate> {
     SwitchCell *pinEnabledCell;
     ChoiceCell *pinLockTimeoutCell;
+    SwitchCell *touchIdEnabledCell;
     SwitchCell *deleteOnFailureEnabledCell;
     ChoiceCell *deleteOnFailureAttemptsCell;
     SwitchCell *closeEnabledCell;

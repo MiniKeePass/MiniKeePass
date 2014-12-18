@@ -24,6 +24,7 @@
 
 enum {
     SECTION_PIN,
+    SECTION_TOUCH_ID,
     SECTION_DELETE_ON_FAILURE,
     SECTION_CLOSE,
     SECTION_REMEMBER_PASSWORDS,
@@ -39,6 +40,11 @@ enum {
     ROW_PIN_ENABLED,
     ROW_PIN_LOCK_TIMEOUT,
     ROW_PIN_NUMBER
+};
+
+enum {
+    ROW_TOUCH_ID_ENABLED,
+    ROW_TOUCH_ID_NUMBER
 };
 
 enum {
@@ -110,7 +116,12 @@ enum {
                                                              NSLocalizedString(@"2 Minutes", nil),
                                                              NSLocalizedString(@"5 Minutes", nil)]
                                              selectedIndex:0];
-    
+
+    touchIdEnabledCell = [[SwitchCell alloc] initWithLabel:NSLocalizedString(@"Enabled", nil)];
+    [touchIdEnabledCell.switchControl addTarget:self
+                                         action:@selector(toggleTouchIdEnabled:)
+                               forControlEvents:UIControlEventValueChanged];
+
     deleteOnFailureEnabledCell = [[SwitchCell alloc] initWithLabel:NSLocalizedString(@"Enabled", nil)];
     [deleteOnFailureEnabledCell.switchControl addTarget:self
                                                  action:@selector(toggleDeleteOnFailureEnabled:)
@@ -122,7 +133,7 @@ enum {
                                                                       @"10",
                                                                       @"15"]
                                                       selectedIndex:0];
-    
+
     closeEnabledCell = [[SwitchCell alloc] initWithLabel:NSLocalizedString(@"Close Enabled", nil)];
     [closeEnabledCell.switchControl addTarget:self
                                        action:@selector(toggleCloseEnabled:)
@@ -211,7 +222,9 @@ enum {
     // Initialize all the controls with their settings
     pinEnabledCell.switchControl.on = [appSettings pinEnabled];
     [pinLockTimeoutCell setSelectedIndex:[appSettings pinLockTimeoutIndex]];
-    
+
+    touchIdEnabledCell.switchControl.on = [appSettings touchIdEnabled];
+
     deleteOnFailureEnabledCell.switchControl.on = [appSettings deleteOnFailureEnabled];
     [deleteOnFailureAttemptsCell setSelectedIndex:[appSettings deleteOnFailureAttemptsIndex]];
     
@@ -243,6 +256,7 @@ enum {
     
     // Enable/disable the components dependant on settings
     [pinLockTimeoutCell setEnabled:pinEnabled];
+    [touchIdEnabledCell setEnabled:pinEnabled];
     [deleteOnFailureEnabledCell setEnabled:pinEnabled];
     [deleteOnFailureAttemptsCell setEnabled:pinEnabled && deleteOnFailureEnabled];
     [closeTimeoutCell setEnabled:closeEnabled];
@@ -257,7 +271,10 @@ enum {
     switch (section) {
         case SECTION_PIN:
             return ROW_PIN_NUMBER;
-            
+
+        case SECTION_TOUCH_ID:
+            return ROW_TOUCH_ID_NUMBER;
+
         case SECTION_DELETE_ON_FAILURE:
             return ROW_DELETE_ON_FAILURE_NUMBER;
             
@@ -289,7 +306,10 @@ enum {
     switch (section) {
         case SECTION_PIN:
             return NSLocalizedString(@"PIN Protection", nil);
-            
+
+        case SECTION_TOUCH_ID:
+            return NSLocalizedString(@"Touch ID", nil);
+
         case SECTION_DELETE_ON_FAILURE:
             return NSLocalizedString(@"Delete All Data on PIN Failure", nil);
             
@@ -321,7 +341,10 @@ enum {
     switch (section) {
         case SECTION_PIN:
             return NSLocalizedString(@"Prevent unauthorized access to MiniKeePass with a PIN.", nil);
-            
+
+        case SECTION_TOUCH_ID:
+            return NSLocalizedString(@"Use your fingerprint as an alternative to entering a PIN if supported.", nil);
+
         case SECTION_DELETE_ON_FAILURE:
             return NSLocalizedString(@"Delete all files and passwords after too many failed attempts.", nil);
             
@@ -359,7 +382,14 @@ enum {
                     return pinLockTimeoutCell;
             }
             break;
-            
+
+        case SECTION_TOUCH_ID:
+            switch (indexPath.row) {
+                case ROW_TOUCH_ID_ENABLED:
+                    return touchIdEnabledCell;
+            }
+            break;
+
         case SECTION_DELETE_ON_FAILURE:
             switch (indexPath.row) {
                 case ROW_DELETE_ON_FAILURE_ENABLED:
@@ -519,6 +549,11 @@ enum {
         // Update which controls are enabled
         [self updateEnabledControls];
     }
+}
+
+- (void)toggleTouchIdEnabled:(id)sender {
+    // Update the setting
+    [appSettings setTouchIdEnabled:touchIdEnabledCell.switchControl.on];
 }
 
 - (void)toggleDeleteOnFailureEnabled:(id)sender {

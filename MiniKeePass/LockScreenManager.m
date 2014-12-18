@@ -15,6 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#import <LocalAuthentication/LocalAuthentication.h>
 #import <AudioToolbox/AudioToolbox.h>
 #import "LockScreenManager.h"
 #import "LockViewController.h"
@@ -86,6 +87,27 @@ static LockScreenManager *sharedInstance = nil;
     return timeInterval > [appSettings pinLockTimeout];
 }
 
+- (void)checkPinAnimated:(BOOL)animated {
+    // If the PIN view is already visible, just return
+    if (self.pinViewController != nil) {
+        [self.pinViewController clearPin];
+        return;
+    }
+
+    // Ensure the lock screen is shown first
+    if (self.lockViewController == nil) {
+        [self showLockScreen];
+    }
+
+    // Show either the PIN view or perform Touch ID
+    AppSettings *appSettings = [AppSettings sharedInstance];
+    if ([appSettings touchIdEnabled]) {
+        [self showTouchIdAnimated:animated];
+    } else {
+        [self showPinScreenAnimated:animated];
+    }
+}
+
 + (UIViewController *)topMostController {
     UIViewController *topController = [UIApplication sharedApplication].keyWindow.rootViewController;
 
@@ -119,15 +141,6 @@ static LockScreenManager *sharedInstance = nil;
 }
 
 - (void)showPinScreenAnimated:(BOOL)animated {
-    if (self.pinViewController != nil) {
-        [self.pinViewController clearPin];
-        return;
-    }
-
-    if (self.lockViewController == nil) {
-        [self showLockScreen];
-    }
-
     self.pinViewController = [[PinViewController alloc] init];
     self.pinViewController.delegate = self;
 
@@ -139,6 +152,40 @@ static LockScreenManager *sharedInstance = nil;
         self.lockViewController = nil;
         self.pinViewController = nil;
     }];
+}
+
+- (void)showTouchIdAnimated:(BOOL)animated {
+    // Check if TouchID is supported
+    if (![NSClassFromString(@"LAContext") class]) {
+        // Fallback to the PIN screen
+        [self showPinScreenAnimated:animated];
+        return;
+    }
+
+    LAContext *context = [[LAContext alloc] init];
+    context.localizedFallbackTitle = @"Enter PIN"; // FIXME
+
+    NSError *error = nil;
+    if (![context canEvaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics error:&error]) {
+        // Fallback to the PIN screen
+        [self showPinScreenAnimated:animated];
+        return;
+    }
+
+    // Authenticate User
+    [context evaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics
+            localizedReason:@"Unlock App?"
+                      reply:^(BOOL success, NSError *error) {
+                          if (success) {
+                              // Dismiss the PIN screen
+                              [self hidePinScreen];
+                          } else {
+                              // TODO display the error message?
+
+                              // Failed, show the PIN screen
+                              [self showPinScreenAnimated:animated];
+                          }
+                      }];
 }
 
 #pragma mark - PinViewController delegate methods
@@ -206,7 +253,7 @@ static LockScreenManager *sharedInstance = nil;
 
 - (void)applicationDidFinishLaunching:(NSNotification *)notification {
     if ([self shouldCheckPin]) {
-        [self showPinScreenAnimated:NO];
+        [self checkPinAnimated:NO];
     }
 }
 
@@ -221,7 +268,7 @@ static LockScreenManager *sharedInstance = nil;
 
 - (void)applicationDidBecomeActive:(NSNotification *)notification {
     if ([self shouldCheckPin]) {
-        [self showPinScreenAnimated:YES];
+        [self checkPinAnimated:YES];
     } else {
         [self hideLockScreen];
     }

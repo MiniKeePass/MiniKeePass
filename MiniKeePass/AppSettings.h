@@ -34,6 +34,9 @@
 - (NSInteger)pinFailedAttempts;
 - (void)setPinFailedAttempts:(NSInteger)pinFailedAttempts;
 
+- (BOOL)touchIdEnabled;
+- (void)setTouchIdEnabled:(BOOL)touchIdEnabled;
+
 - (BOOL)deleteOnFailureEnabled;
 - (void)setDeleteOnFailureEnabled:(BOOL)deleteOnFailureEnabled;
 

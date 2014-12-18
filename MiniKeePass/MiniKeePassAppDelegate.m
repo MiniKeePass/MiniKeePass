@@ -156,6 +156,7 @@
     AppSettings *appSettings = [AppSettings sharedInstance];
     [appSettings setPinFailedAttempts:0];
     [appSettings setPinEnabled:NO];
+    [appSettings setTouchIdEnabled:NO];
 
     // Delete the PIN from the keychain
     [KeychainUtils deleteStringForKey:@"PIN" andServiceName:@"com.jflan.MiniKeePass.pin"];
