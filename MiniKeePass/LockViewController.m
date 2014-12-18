@@ -23,6 +23,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
+    self.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     self.view.backgroundColor = [UIColor whiteColor];
 }
 
