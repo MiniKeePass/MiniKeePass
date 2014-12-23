@@ -195,7 +195,7 @@ enum {
     UIView *tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, viewWidth, 40)];
     
     NSString *text = [NSString stringWithFormat:NSLocalizedString(@"MiniKeePass version %@", nil),
-                    [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]];
+                    [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]];
     UIFont *font = [UIFont boldSystemFontOfSize:17];
     
     UILabel *versionLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, viewWidth, 30)];
