@@ -736,7 +736,7 @@ enum {
 
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:editItemViewController];
 
-    [self.appDelegate.window.rootViewController presentModalViewController:navigationController animated:YES];
+    [self.appDelegate.window.rootViewController presentViewController:navigationController animated:YES completion:nil];
 }
 
 - (void)renameItem:(EditItemViewController *)editItemViewController {
@@ -780,7 +780,7 @@ enum {
     selectGroupViewController.delegate = self;
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:selectGroupViewController];
 
-    [self.appDelegate.window.rootViewController presentModalViewController:navController animated:YES];
+    [self.appDelegate.window.rootViewController presentViewController:navController animated:YES completion:nil];
 }
 
 - (BOOL)selectGroupViewController:(SelectGroupViewController *)selectGroupViewController

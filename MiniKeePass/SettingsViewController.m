@@ -199,7 +199,7 @@ enum {
     UIFont *font = [UIFont boldSystemFontOfSize:17];
     
     UILabel *versionLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, viewWidth, 30)];
-    versionLabel.textAlignment = UITextAlignmentCenter;
+    versionLabel.textAlignment = NSTextAlignmentCenter;
     versionLabel.backgroundColor = [UIColor clearColor];
     versionLabel.font = font;
     versionLabel.textColor = [UIColor colorWithRed:0.298039 green:0.337255 blue:0.423529 alpha:1.0];
@@ -540,7 +540,7 @@ enum {
         pinViewController.titleLabel.text = NSLocalizedString(@"Set PIN", nil);
         pinViewController.delegate = self;
         
-        [self presentModalViewController:pinViewController animated:YES];
+        [self presentViewController:pinViewController animated:YES completion:nil];
     } else {
         // Delete the PIN and disable the PIN enabled setting
         [KeychainUtils deleteStringForKey:@"PIN" andServiceName:@"com.jflan.MiniKeePass.pin"];
@@ -623,7 +623,7 @@ enum {
         [self updateEnabledControls];
         
         // Remove the PIN view
-        [self dismissModalViewControllerAnimated:YES];
+        [self dismissViewControllerAnimated:YES completion:nil];
     } else {
         tempPin = nil;
         

@@ -101,11 +101,11 @@ enum {
         [delegate passwordGeneratorViewController:self password:passwordCell.textLabel.text];
     }
     
-    [self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)cancelPressed {
-    [self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (NSString *)getPassword {

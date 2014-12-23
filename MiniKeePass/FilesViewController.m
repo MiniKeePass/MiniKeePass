@@ -261,7 +261,7 @@ enum {
                 
                 UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:textEntryController];
                 
-                [appDelegate.window.rootViewController presentModalViewController:navigationController animated:YES];
+                [appDelegate.window.rootViewController presentViewController:navigationController animated:YES completion:nil];
             }
             break;
         default:
@@ -368,7 +368,7 @@ enum {
     };
 
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:newKdbViewController];
-    [appDelegate.window.rootViewController presentModalViewController:navigationController animated:YES];
+    [appDelegate.window.rootViewController presentViewController:navigationController animated:YES completion:nil];
 }
 
 - (void)helpPressed {
@@ -454,7 +454,7 @@ enum {
         [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationRight];
     }
 
-    [appDelegate.window.rootViewController dismissModalViewControllerAnimated:YES];
+    [appDelegate.window.rootViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end

@@ -33,9 +33,9 @@
 
         label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.bounds.size.width - 20.0f, 0)];
         label.backgroundColor = [UIColor clearColor];
-        label.textAlignment = UITextAlignmentCenter;
+        label.textAlignment = NSTextAlignmentCenter;
         label.numberOfLines = 0;
-        label.lineBreakMode = UILineBreakModeWordWrap;
+        label.lineBreakMode = NSLineBreakByWordWrapping;
         label.textColor = [UIColor grayColor];
         label.text = NSLocalizedString(@"Tap the + button to add a new KeePass file.", nil);
         [label sizeToFit];

@@ -546,20 +546,15 @@ enum {
     UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
     pasteboard.string = cell.textField.text;
 
-    // Figure out frame for copied label
-    NSString *copiedString = NSLocalizedString(@"Copied", nil);
-    UIFont *font = [UIFont boldSystemFontOfSize:18];
-    CGSize size = [copiedString sizeWithFont:font];
-    CGFloat x = (cell.frame.size.width - size.width) / 2.0;
-    CGFloat y = (cell.frame.size.height - size.height) / 2.0;
-
-    // Contruct label
-    UILabel *copiedLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, y, size.width, size.height)];
-    copiedLabel.text = copiedString;
-    copiedLabel.font = font;
-    copiedLabel.textAlignment = UITextAlignmentCenter;
+    // Construct label
+    UILabel *copiedLabel = [[UILabel alloc] init];
+    copiedLabel.text = NSLocalizedString(@"Copied", nil);
+    copiedLabel.font = [UIFont boldSystemFontOfSize:18];
+    copiedLabel.textAlignment = NSTextAlignmentCenter;
     copiedLabel.textColor = [UIColor whiteColor];
     copiedLabel.backgroundColor = [UIColor clearColor];
+    [copiedLabel sizeToFit];
+    copiedLabel.center = CGPointMake(cell.bounds.size.width / 2.0f, cell.bounds.size.height / 2.0f);
 
     // Put cell into "Copied" state
     [cell addSubview:copiedLabel];
@@ -659,7 +654,7 @@ enum {
 
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:passwordGeneratorViewController];
 
-    [self presentModalViewController:navigationController animated:YES];
+    [self presentViewController:navigationController animated:YES completion:nil];
 }
 
 - (void)passwordGeneratorViewController:(PasswordGeneratorViewController *)controller password:(NSString *)password {

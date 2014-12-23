@@ -161,7 +161,7 @@ static NSString *const kKeyName = @"name";
     if (selectable) {
         KdbGroup *selectedGroup = [groupDict objectForKey:kKeyGroup];
         [self.delegate selectGroupViewController:self selectedGroup:selectedGroup];
-        [self dismissModalViewControllerAnimated:YES];
+        [self dismissViewControllerAnimated:YES completion:nil];
     }
 }
 

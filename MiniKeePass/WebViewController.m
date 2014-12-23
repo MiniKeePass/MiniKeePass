@@ -97,7 +97,6 @@
     // Create the autotype buttons
     NSArray *items = @[[UIImage imageNamed:@"user"], [UIImage imageNamed:@"asterisk"]];
     UISegmentedControl *segmentedControl = [[UISegmentedControl alloc] initWithItems:items];
-    segmentedControl.segmentedControlStyle = UISegmentedControlStyleBar;
     segmentedControl.momentary = YES;
     [segmentedControl addTarget:self
                          action:@selector(autotypePressed:)

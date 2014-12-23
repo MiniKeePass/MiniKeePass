@@ -86,7 +86,7 @@ static DatabaseManager *sharedInstance;
             [self openDatabaseWithPasswordViewController:(PasswordViewController *)formViewController];
         };
         passwordViewController.cancelPressed = ^(FormViewController *formViewController) {
-            [formViewController dismissModalViewControllerAnimated:YES];
+            [formViewController dismissViewControllerAnimated:YES completion:nil];
         };
         
         // Create a defult keyfile name from the database name
@@ -102,7 +102,7 @@ static DatabaseManager *sharedInstance;
         
         UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:passwordViewController];
         
-        [appDelegate.window.rootViewController presentModalViewController:navigationController animated:animated];
+        [appDelegate.window.rootViewController presentViewController:navigationController animated:animated completion:nil];
     }
 }
 
