@@ -1173,7 +1173,7 @@
 				INFOPLIST_FILE = "MiniKeePass/MiniKeePass-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "f8e95563-0456-451f-aeb6-303f45dafb98";
+				PROVISIONING_PROFILE = "b2580c41-a4ac-4e4b-aa58-5bd5565ef607";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
