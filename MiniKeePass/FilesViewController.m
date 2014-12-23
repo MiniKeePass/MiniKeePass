@@ -25,11 +25,17 @@
 #import "Kdb3Writer.h"
 #import "Kdb4Writer.h"
 
+#import <MobileCoreServices/UTCoreTypes.h>
+
 enum {
     SECTION_DATABASE,
     SECTION_KEYFILE,
     SECTION_NUMBER
 };
+
+@interface FilesViewController () <UIDocumentPickerDelegate, UIDocumentMenuDelegate>
+
+@end
 
 @implementation FilesViewController
 
@@ -53,7 +59,7 @@ enum {
 
     UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
                                                                                target:self
-                                                                               action:@selector(addPressed)];
+                                                                               action:@selector(addPressed:)];
 
     UIBarButtonItem *spacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
                                                                             target:nil
@@ -70,10 +76,10 @@ enum {
     }
 
     [self.view addSubview:filesInfoView];
-    
+
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.scrollEnabled = NO;
-    
+
     self.navigationItem.rightBarButtonItem = nil;
 }
 
@@ -84,13 +90,13 @@ enum {
 
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
     self.tableView.scrollEnabled = YES;
-    
+
     self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [self updateFiles];
-    
+
     NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
 
     [self.tableView reloadData];
@@ -98,7 +104,7 @@ enum {
     if (selectedIndexPath != nil) {
         [self.tableView selectRowAtIndexPath:selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
     }
-    
+
     [super viewWillAppear:animated];
 }
 
@@ -116,7 +122,7 @@ enum {
     // Get the contents of the documents directory
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSArray *dirContents = [fileManager contentsOfDirectoryAtPath:documentsDirectory error:nil];
-    
+
     // Strip out all the directories
     NSMutableArray *files = [[NSMutableArray alloc] init];
     for (NSString *file in dirContents) {
@@ -131,13 +137,13 @@ enum {
 
     // Sort the list of files
     [files sortUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
-    
+
     // Filter the list of files into everything ending with .kdb or .kdbx
     NSArray *databaseFilenames = [files filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"(self ENDSWITH[c] '.kdb') OR (self ENDSWITH[c] '.kdbx')"]];
-    
+
     // Filter the list of files into everything not ending with .kdb or .kdbx
     NSArray *keyFilenames = [files filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"!((self ENDSWITH[c] '.kdb') OR (self ENDSWITH[c] '.kdbx'))"]];
-    
+
     databaseFiles = [NSMutableArray arrayWithArray:databaseFilenames];
     keyFiles = [NSMutableArray arrayWithArray:keyFilenames];
 }
@@ -159,14 +165,14 @@ enum {
             }
             break;
     }
-    
+
     return nil;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     NSUInteger databaseCount = [databaseFiles count];
     NSUInteger keyCount = [keyFiles count];
-    
+
     NSInteger n;
     switch (section) {
         case SECTION_DATABASE:
@@ -179,26 +185,26 @@ enum {
             n = 0;
             break;
     }
-    
+
     // Show the help view if there are no files
     if (databaseCount == 0 && keyCount == 0) {
         [self displayInfoPage];
     } else {
         [self hideInfoPage];
     }
-    
+
     return n;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *CellIdentifier = @"Cell";
     NSString *filename = @"";
-    
+
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
     }
-    
+
     // Configure the cell
     switch (indexPath.section) {
         case SECTION_DATABASE:
@@ -258,9 +264,9 @@ enum {
 
                 NSString *filename = [databaseFiles objectAtIndex:indexPath.row];
                 textEntryController.textField.text = [filename stringByDeletingPathExtension];
-                
+
                 UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:textEntryController];
-                
+
                 [appDelegate.window.rootViewController presentViewController:navigationController animated:YES completion:nil];
             }
             break;
@@ -291,7 +297,7 @@ enum {
         default:
             return;
     }
-    
+
     // Retrieve the Document directory
     NSString *documentsDirectory = [MiniKeePassAppDelegate documentsDirectory];
     NSString *path = [documentsDirectory stringByAppendingPathComponent:filename];
@@ -300,11 +306,11 @@ enum {
     if ([path isEqualToString:appDelegate.databaseDocument.filename]) {
         [appDelegate closeDatabase];
     }
-    
+
     // Delete the file
     NSFileManager *fileManager = [NSFileManager defaultManager];
     [fileManager removeItemAtPath:path error:nil];
-    
+
     // Update the table
     [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
     [tableView reloadSections:[NSIndexSet indexSetWithIndex:indexPath.section] withRowAnimation:UITableViewRowAnimationNone];
@@ -316,49 +322,78 @@ enum {
         [textEntryController showErrorMessage:NSLocalizedString(@"Filename is invalid", nil)];
         return;
     }
-    
+
     NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
     NSString *oldFilename = [databaseFiles objectAtIndex:indexPath.row];
     NSString *newFilename = [newName stringByAppendingPathExtension:[oldFilename pathExtension]];
-    
+
     // Get the full path of where we're going to move the file
     NSString *documentsDirectory = [MiniKeePassAppDelegate documentsDirectory];
 
     NSString *oldPath = [documentsDirectory stringByAppendingPathComponent:oldFilename];
     NSString *newPath = [documentsDirectory stringByAppendingPathComponent:newFilename];
-    
+
     // Check if the file already exists
     NSFileManager *fileManager = [NSFileManager defaultManager];
     if ([fileManager fileExistsAtPath:newPath]) {
         [textEntryController showErrorMessage:NSLocalizedString(@"A file already exists with this name", nil)];
         return;
     }
-    
+
     // Move input file into documents directory
     [fileManager moveItemAtPath:oldPath toPath:newPath error:nil];
-    
+
     // Update the filename in the files list
     [databaseFiles replaceObjectAtIndex:indexPath.row withObject:newFilename];
-    
+
     // Load the password and keyfile from the keychain under the old filename
     NSString *password = [KeychainUtils stringForKey:oldFilename andServiceName:@"com.jflan.MiniKeePass.passwords"];
     NSString *keyFile = [KeychainUtils stringForKey:oldFilename andServiceName:@"com.jflan.MiniKeePass.keyfiles"];
-    
+
     // Store the password and keyfile into the keychain under the new filename
     [KeychainUtils setString:password forKey:newFilename andServiceName:@"com.jflan.MiniKeePass.passwords"];
     [KeychainUtils setString:keyFile forKey:newFilename andServiceName:@"com.jflan.MiniKeePass.keyfiles"];
-    
+
     // Delete the keychain entries for the old filename
     [KeychainUtils deleteStringForKey:oldFilename andServiceName:@"com.jflan.MiniKeePass.passwords"];
     [KeychainUtils deleteStringForKey:oldFilename andServiceName:@"com.jflan.MiniKeePass.keyfiles"];
-    
+
     // Reload the table row
     [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    
+
     [textEntryController dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void)addPressed {
+- (void)addPressed:(UIBarButtonItem *)source {
+    if (NSClassFromString(@"UIDocumentMenuViewController") != nil) {
+        UIDocumentMenuViewController *documentMenuViewController =
+        [[UIDocumentMenuViewController alloc] initWithDocumentTypes:@[(NSString *)kUTTypeItem]
+                                                             inMode:UIDocumentPickerModeImport];
+        [documentMenuViewController addOptionWithTitle:NSLocalizedString(@"New Database", nil)
+                                                 image:nil
+                                                 order:UIDocumentMenuOrderFirst
+                                               handler:^{
+                                                   [self createNewDatabasePressed];
+                                               }];
+        documentMenuViewController.delegate = self;
+        documentMenuViewController.modalInPopover = UIModalPresentationPopover;
+        documentMenuViewController.popoverPresentationController.barButtonItem = source;
+        [self presentViewController:documentMenuViewController animated:YES completion:nil];
+    } else {
+        [self createNewDatabasePressed];
+    }
+}
+
+- (void)documentMenu:(UIDocumentMenuViewController *)documentMenu didPickDocumentPicker:(UIDocumentPickerViewController *)documentPicker {
+    documentPicker.delegate = self;
+    [self presentViewController:documentPicker animated:YES completion:nil];
+}
+
+- (void)documentPicker:(UIDocumentPickerViewController *)controller didPickDocumentAtURL:(NSURL *)url {
+    [[MiniKeePassAppDelegate appDelegate] importUrl:url];
+}
+
+- (void)createNewDatabasePressed {
     NewKdbViewController *newKdbViewController = [[NewKdbViewController alloc] init];
     newKdbViewController.donePressed = ^(FormViewController *formViewController) {
         [self createNewDatabase:(NewKdbViewController *)formViewController];
@@ -374,7 +409,7 @@ enum {
 - (void)helpPressed {
     HelpViewController *helpViewController = [[HelpViewController alloc] init];
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:helpViewController];
-    
+
     [self presentViewController:navigationController animated:YES completion:nil];
 }
 

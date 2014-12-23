@@ -30,7 +30,7 @@
 		52E43F4F15B59C890029F979 /* ru-keyfiles.html in Resources */ = {isa = PBXBuildFile; fileRef = 52E43F4A15B59C890029F979 /* ru-keyfiles.html */; };
 		52E43F5015B59C890029F979 /* ru-safariemail.html in Resources */ = {isa = PBXBuildFile; fileRef = 52E43F4B15B59C890029F979 /* ru-safariemail.html */; };
 		52E7AF5C162523F800DCB00A /* EditItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52E7AF5B162523F800DCB00A /* EditItemViewController.m */; };
-		6802C36F1A425D7300595AC9 /* LocalAuthentication.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6802C36E1A425D7300595AC9 /* LocalAuthentication.framework */; };
+		6802C36F1A425D7300595AC9 /* LocalAuthentication.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6802C36E1A425D7300595AC9 /* LocalAuthentication.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		680C277616050C7A009403DE /* DDXMLDocument+MKPAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 680C277516050C7A009403DE /* DDXMLDocument+MKPAdditions.m */; };
 		682B938E18A48EC20020C22A /* UIAlertViewAutoDismiss.m in Sources */ = {isa = PBXBuildFile; fileRef = 682B938D18A48EC20020C22A /* UIAlertViewAutoDismiss.m */; };
 		682D450D1603883900156830 /* AesInputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 682D44F21603883900156830 /* AesInputStream.m */; };
@@ -349,6 +349,7 @@
 		68B211C41A336AA5002B3F33 /* LockScreenManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LockScreenManager.m; sourceTree = "<group>"; };
 		68B211C61A336FEA002B3F33 /* LockViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LockViewController.h; sourceTree = "<group>"; };
 		68B211C71A336FEA002B3F33 /* LockViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LockViewController.m; sourceTree = "<group>"; };
+		68CBC1461A4A0F0E004A3553 /* MiniKeePass.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = MiniKeePass.entitlements; sourceTree = "<group>"; };
 		68CDB7811A3E55A20094BC55 /* KeypadView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeypadView.h; sourceTree = "<group>"; };
 		68CDB7821A3E55A20094BC55 /* KeypadView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeypadView.m; sourceTree = "<group>"; };
 		68CDB7851A3E55DE0094BC55 /* KeypadButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeypadButton.h; sourceTree = "<group>"; };
@@ -693,6 +694,7 @@
 		689DFFDF13A4273F005EBD36 /* MiniKeePass */ = {
 			isa = PBXGroup;
 			children = (
+				68CBC1461A4A0F0E004A3553 /* MiniKeePass.entitlements */,
 				6859176D1615DE1D005FECA5 /* AppSettings.h */,
 				6859176E1615DE1D005FECA5 /* AppSettings.m */,
 				689D042613A42C81005EBD36 /* DatabaseDocument.h */,
@@ -814,7 +816,7 @@
 						DevelopmentTeam = G9ZT7943FZ;
 						SystemCapabilities = {
 							com.apple.iCloud = {
-								enabled = 0;
+								enabled = 1;
 							};
 						};
 					};
@@ -1149,6 +1151,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = MiniKeePass/MiniKeePass.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = "MiniKeePass/MiniKeePass-Info.plist";
@@ -1164,6 +1167,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = MiniKeePass/MiniKeePass.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				INFOPLIST_FILE = "MiniKeePass/MiniKeePass-Info.plist";
