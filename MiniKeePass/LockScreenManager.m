@@ -93,7 +93,6 @@ static LockScreenManager *sharedInstance = nil;
 }
 
 - (void)checkPin {
-    NSLog(@"checkPin");
     // If the PIN view is already visible, just return
     if (self.pinViewController != nil) {
         [self.pinViewController clearPin];
@@ -115,7 +114,6 @@ static LockScreenManager *sharedInstance = nil;
 }
 
 - (void)showLockScreen {
-    NSLog(@"showLockScreen");
     if (self.lockViewController != nil) {
         return;
     }
@@ -135,7 +133,6 @@ static LockScreenManager *sharedInstance = nil;
 }
 
 - (void)hideLockScreen {
-    NSLog(@"hideLockScreen");
     if (self.lockViewController == nil) {
         return;
     }
@@ -149,7 +146,6 @@ static LockScreenManager *sharedInstance = nil;
 }
 
 - (void)showPinScreen {
-    NSLog(@"showPinScreen");
     self.pinViewController = [[PinViewController alloc] init];
     self.pinViewController.delegate = self;
 
@@ -157,7 +153,6 @@ static LockScreenManager *sharedInstance = nil;
 }
 
 - (void)showTouchId {
-    NSLog(@"showTouchId");
     // Check if TouchID is supported
     if (![NSClassFromString(@"LAContext") class]) {
         // Fallback to the PIN screen
@@ -261,14 +256,12 @@ static LockScreenManager *sharedInstance = nil;
 #pragma mark - Application Notification Handlers
 
 - (void)applicationDidFinishLaunching:(NSNotification *)notification {
-    NSLog(@"applicationDidFinishLaunching");
     if ([self shouldCheckPin]) {
         [self showLockScreen];
     }
 }
 
 - (void)applicationWillResignActive:(NSNotification *)notification {
-    NSLog(@"applicationWillResignActive");
     AppSettings *appSettings = [AppSettings sharedInstance];
     if ([appSettings pinEnabled]) {
         [appSettings setExitTime:[NSDate date]];
@@ -278,7 +271,6 @@ static LockScreenManager *sharedInstance = nil;
 }
 
 - (void)applicationDidBecomeActive:(NSNotification *)notification {
-    NSLog(@"applicationDidBecomeActive");
     if ([self shouldCheckPin]) {
         [self checkPin];
     } else {
