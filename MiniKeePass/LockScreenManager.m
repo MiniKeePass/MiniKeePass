@@ -27,6 +27,7 @@
 @interface LockScreenManager () <PinViewControllerDelegate>
 @property (nonatomic, strong) LockViewController *lockViewController;
 @property (nonatomic, strong) PinViewController *pinViewController;
+@property (nonatomic, assign) BOOL unlocked;
 @end
 
 @implementation LockScreenManager
@@ -69,9 +70,13 @@ static LockScreenManager *sharedInstance = nil;
 #pragma mark - Lock/Unlock
 
 - (BOOL)shouldCheckPin {
-    AppSettings *appSettings = [AppSettings sharedInstance];
+    // Check if we're unlocked
+    if (self.unlocked) {
+        return NO;
+    }
 
     // Check if the PIN is enabled
+    AppSettings *appSettings = [AppSettings sharedInstance];
     if (![appSettings pinEnabled]) {
         return NO;
     }
@@ -115,6 +120,8 @@ static LockScreenManager *sharedInstance = nil;
         return;
     }
 
+    self.unlocked = false;
+
     self.lockViewController = [[LockViewController alloc] init];
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:self.lockViewController];
     navigationController.toolbarHidden = NO;
@@ -133,8 +140,11 @@ static LockScreenManager *sharedInstance = nil;
         return;
     }
 
-    [self.lockViewController.presentingViewController dismissViewControllerAnimated:NO completion:^{
+    self.unlocked = true;
+
+    [self.lockViewController.presentingViewController dismissViewControllerAnimated:YES completion:^{
         self.lockViewController = nil;
+        self.pinViewController = nil;
     }];
 }
 
@@ -144,14 +154,6 @@ static LockScreenManager *sharedInstance = nil;
     self.pinViewController.delegate = self;
 
     [self.lockViewController presentViewController:self.pinViewController animated:YES completion:nil];
-}
-
-- (void)hidePinScreen {
-    NSLog(@"hidePinScreen");
-    [self.lockViewController.presentingViewController dismissViewControllerAnimated:YES completion:^{
-        self.lockViewController = nil;
-        self.pinViewController = nil;
-    }];
 }
 
 - (void)showTouchId {
@@ -164,7 +166,7 @@ static LockScreenManager *sharedInstance = nil;
     }
 
     LAContext *context = [[LAContext alloc] init];
-    context.localizedFallbackTitle = @"Enter PIN"; // FIXME translate
+    context.localizedFallbackTitle = @""; // Hide the fallback button
 
     // Check if Touch ID is available
     NSError *error = nil;
@@ -176,17 +178,21 @@ static LockScreenManager *sharedInstance = nil;
 
     // Authenticate User
     [context evaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics
-            localizedReason:@"Unlock App?" // FIXME translate - beter text?
+            localizedReason:@"Unlock MiniKeePass" // FIXME translate
                       reply:^(BOOL success, NSError *error) {
                           if (success) {
-                              // Dismiss the PIN screen
-                              [self hidePinScreen];
+                              // Dismiss the lock screen
+                              dispatch_async(dispatch_get_main_queue(), ^{
+                                  [self hideLockScreen];
+                              });
                           } else {
                               // FIXME display the error message?
                               // FIXME Count this as a login failure?
 
                               // Failed, show the PIN screen
-                              [self showPinScreen];
+                              dispatch_async(dispatch_get_main_queue(), ^{
+                                  [self showPinScreen];
+                              });
                           }
                       }];
 }
@@ -200,8 +206,8 @@ static LockScreenManager *sharedInstance = nil;
         MiniKeePassAppDelegate *appDelegate = [MiniKeePassAppDelegate appDelegate];
         [appDelegate deleteKeychainData];
 
-        // Dismiss the PIN screen
-        [self hidePinScreen];
+        // Dismiss the lock screen
+        [self hideLockScreen];
     } else {
         AppSettings *appSettings = [AppSettings sharedInstance];
 
@@ -211,7 +217,7 @@ static LockScreenManager *sharedInstance = nil;
             [appSettings setPinFailedAttempts:0];
 
             // Dismiss the PIN screen
-            [self hidePinScreen];
+            [self hideLockScreen];
         } else {
             // Vibrate to signify they are a bad user
             AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
@@ -245,7 +251,7 @@ static LockScreenManager *sharedInstance = nil;
                     [appDelegate deleteAllData];
 
                     // Dismiss the PIN screen
-                    [self hidePinScreen];
+                    [self hideLockScreen];
                 }
             }
         }
