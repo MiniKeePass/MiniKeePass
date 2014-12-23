@@ -108,6 +108,7 @@ static AppSettings *sharedInstance;
         NSMutableDictionary *defaultsDict = [NSMutableDictionary dictionary];
         [defaultsDict setValue:[NSNumber numberWithBool:NO] forKey:PIN_ENABLED];
         [defaultsDict setValue:[NSNumber numberWithInt:1] forKey:PIN_LOCK_TIMEOUT];
+        [defaultsDict setValue:[NSNumber numberWithBool:YES] forKey:TOUCH_ID_ENABLED];
         [defaultsDict setValue:[NSNumber numberWithBool:NO] forKey:DELETE_ON_FAILURE_ENABLED];
         [defaultsDict setValue:[NSNumber numberWithInt:1] forKey:DELETE_ON_FAILURE_ATTEMPTS];
         [defaultsDict setValue:[NSNumber numberWithBool:YES] forKey:CLOSE_ENABLED];
