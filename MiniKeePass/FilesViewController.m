@@ -117,6 +117,9 @@ enum {
 }
 
 - (void)updateFiles {
+    self.databaseFiles = [[NSMutableArray alloc] init];
+    self.keyFiles = [[NSMutableArray alloc] init];
+
     // Get the document's directory
     NSString *documentsDirectory = [MiniKeePassAppDelegate documentsDirectory];
 
@@ -124,29 +127,26 @@ enum {
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSArray *dirContents = [fileManager contentsOfDirectoryAtPath:documentsDirectory error:nil];
 
-    // Strip out all the directories
-    NSMutableArray *files = [[NSMutableArray alloc] init];
+    // Sort the files into database files and keyfiles
     for (NSString *file in dirContents) {
         NSString *path = [documentsDirectory stringByAppendingPathComponent:file];
 
+        // Check if it's a directory
         BOOL dir = NO;
         [fileManager fileExistsAtPath:path isDirectory:&dir];
         if (!dir) {
-            [files addObject:file];
+            NSString *extension = [[file pathExtension] lowercaseString];
+            if ([extension isEqualToString:@"kdb"] || [extension isEqualToString:@"kdbx"]) {
+                [self.databaseFiles addObject:file];
+            } else {
+                [self.keyFiles addObject:file];
+            }
         }
     }
 
     // Sort the list of files
-    [files sortUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
-
-    // Filter the list of files into everything ending with .kdb or .kdbx
-    NSArray *databaseFilenames = [files filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"(self ENDSWITH[c] '.kdb') OR (self ENDSWITH[c] '.kdbx')"]];
-
-    // Filter the list of files into everything not ending with .kdb or .kdbx
-    NSArray *keyFilenames = [files filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"!((self ENDSWITH[c] '.kdb') OR (self ENDSWITH[c] '.kdbx'))"]];
-
-    self.databaseFiles = [NSMutableArray arrayWithArray:databaseFilenames];
-    self.keyFiles = [NSMutableArray arrayWithArray:keyFilenames];
+    [self.databaseFiles sortUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
+    [self.keyFiles sortUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
