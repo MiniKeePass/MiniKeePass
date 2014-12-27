@@ -22,17 +22,8 @@
 
 @class MiniKeePassAppDelegate;
 
-@interface FilesViewController : UITableViewController {
-    FilesInfoView *filesInfoView;
-    MiniKeePassAppDelegate *appDelegate;
-    
-    NSMutableArray *databaseFiles;
-    NSMutableArray *keyFiles;
-    NSString *selectedFile;
-}
+@interface FilesViewController : UITableViewController
 
 - (void)updateFiles;
-
-@property (nonatomic, copy) NSString* selectedFile;
 
 @end
