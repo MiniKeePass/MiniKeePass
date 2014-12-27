@@ -70,31 +70,6 @@ enum {
     self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
-- (void)displayInfoView {
-    if (self.filesInfoView == nil) {
-        self.filesInfoView = [[FilesInfoView alloc] initWithFrame:self.view.bounds];
-        self.filesInfoView.viewController = self;
-    }
-
-    [self.view addSubview:self.filesInfoView];
-
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    self.tableView.scrollEnabled = NO;
-
-    self.navigationItem.rightBarButtonItem = nil;
-}
-
-- (void)hideInfoView {
-    if (self.filesInfoView != nil) {
-        [self.filesInfoView removeFromSuperview];
-    }
-
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
-    self.tableView.scrollEnabled = YES;
-
-    self.navigationItem.rightBarButtonItem = self.editButtonItem;
-}
-
 - (void)viewWillAppear:(BOOL)animated {
     [self updateFiles];
 
@@ -148,6 +123,33 @@ enum {
     [self.databaseFiles sortUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
     [self.keyFiles sortUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
 }
+
+- (void)displayInfoView {
+    if (self.filesInfoView == nil) {
+        self.filesInfoView = [[FilesInfoView alloc] initWithFrame:self.view.bounds];
+        self.filesInfoView.viewController = self;
+    }
+
+    [self.view addSubview:self.filesInfoView];
+
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.tableView.scrollEnabled = NO;
+
+    self.navigationItem.rightBarButtonItem = nil;
+}
+
+- (void)hideInfoView {
+    if (self.filesInfoView != nil) {
+        [self.filesInfoView removeFromSuperview];
+    }
+
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+    self.tableView.scrollEnabled = YES;
+
+    self.navigationItem.rightBarButtonItem = self.editButtonItem;
+}
+
+#pragma mark - UITableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return SECTION_NUMBER;
@@ -243,39 +245,6 @@ enum {
     return cell;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    switch (indexPath.section) {
-        // Database file section
-        case SECTION_DATABASE:
-            if (self.editing == NO) {
-                // Load the database
-                [[DatabaseManager sharedInstance] openDatabaseDocument:[self.databaseFiles objectAtIndex:indexPath.row] animated:YES];
-            } else {
-                TextEntryController *textEntryController = [[TextEntryController alloc] init];
-                textEntryController.title = NSLocalizedString(@"Rename", nil);
-                textEntryController.headerTitle = NSLocalizedString(@"Database Name", nil);
-                textEntryController.footerTitle = NSLocalizedString(@"Enter a new name for the password database. The correct file extension will automatically be appended.", nil);
-                textEntryController.textField.placeholder = NSLocalizedString(@"Name", nil);
-                textEntryController.donePressed = ^(FormViewController *formViewController) {
-                    [self renameDatabase:(TextEntryController *)formViewController];
-                };
-                textEntryController.cancelPressed = ^(FormViewController *formViewController) {
-                    [formViewController dismissViewControllerAnimated:YES completion:nil];
-                };
-
-                NSString *filename = [self.databaseFiles objectAtIndex:indexPath.row];
-                textEntryController.textField.text = [filename stringByDeletingPathExtension];
-
-                UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:textEntryController];
-
-                [self presentViewController:navigationController animated:YES completion:nil];
-            }
-            break;
-        default:
-            break;
-    }
-}
-
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle != UITableViewCellEditingStyleDelete) {
         return;
@@ -319,6 +288,43 @@ enum {
     [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
     [tableView reloadSections:[NSIndexSet indexSetWithIndex:indexPath.section] withRowAnimation:UITableViewRowAnimationNone];
 }
+
+#pragma mark - UITableViewDelegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    switch (indexPath.section) {
+        // Database file section
+        case SECTION_DATABASE:
+            if (self.editing == NO) {
+                // Load the database
+                [[DatabaseManager sharedInstance] openDatabaseDocument:[self.databaseFiles objectAtIndex:indexPath.row] animated:YES];
+            } else {
+                TextEntryController *textEntryController = [[TextEntryController alloc] init];
+                textEntryController.title = NSLocalizedString(@"Rename", nil);
+                textEntryController.headerTitle = NSLocalizedString(@"Database Name", nil);
+                textEntryController.footerTitle = NSLocalizedString(@"Enter a new name for the password database. The correct file extension will automatically be appended.", nil);
+                textEntryController.textField.placeholder = NSLocalizedString(@"Name", nil);
+                textEntryController.donePressed = ^(FormViewController *formViewController) {
+                    [self renameDatabase:(TextEntryController *)formViewController];
+                };
+                textEntryController.cancelPressed = ^(FormViewController *formViewController) {
+                    [formViewController dismissViewControllerAnimated:YES completion:nil];
+                };
+
+                NSString *filename = [self.databaseFiles objectAtIndex:indexPath.row];
+                textEntryController.textField.text = [filename stringByDeletingPathExtension];
+
+                UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:textEntryController];
+
+                [self presentViewController:navigationController animated:YES completion:nil];
+            }
+            break;
+        default:
+            break;
+    }
+}
+
+#pragma mark - Actions
 
 - (void)renameDatabase:(TextEntryController *)textEntryController {
     NSString *newName = textEntryController.textField.text;
