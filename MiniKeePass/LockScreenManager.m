@@ -23,6 +23,7 @@
 #import "AppSettings.h"
 #import "KeychainUtils.h"
 #import "PinViewController.h"
+#import "PasswordUtils.h"
 
 @interface LockScreenManager () <PinViewControllerDelegate>
 @property (nonatomic, strong) LockViewController *lockViewController;
@@ -196,18 +197,23 @@ static LockScreenManager *sharedInstance = nil;
 
 - (void)pinViewController:(PinViewController *)pinViewController pinEntered:(NSString *)pin {
     NSString *validPin = [KeychainUtils stringForKey:@"PIN" andServiceName:@"com.jflan.MiniKeePass.pin"];
-    if (validPin == nil) {
-        // Delete keychain data
-        MiniKeePassAppDelegate *appDelegate = [MiniKeePassAppDelegate appDelegate];
-        [appDelegate deleteKeychainData];
+    
+    // Check if we need to migrate the plaintext pin to the hashed pin
+    if (![validPin hasPrefix:@"sha512"]) {
+        NSString *pinHash = [PasswordUtils hashPassword:validPin];
+        if ([PasswordUtils validatePassword:validPin againstHash:pinHash]) {
+            [KeychainUtils setString:pinHash forKey:@"PIN" andServiceName:@"com.jflan.MiniKeePass.pin"];
+            validPin = pinHash;
+        }
+    }
 
-        // Dismiss the lock screen
-        [self hideLockScreen];
+    if (validPin == nil) {
+        pinViewController.titleLabel.text = NSLocalizedString(@"Invalid PIN Settings", nil);
     } else {
         AppSettings *appSettings = [AppSettings sharedInstance];
 
         // Check if the PIN is valid
-        if ([pin isEqualToString:validPin]) {
+        if ([PasswordUtils validatePassword:pin againstHash:validPin]) {
             // Reset the number of pin failed attempts
             [appSettings setPinFailedAttempts:0];
 
