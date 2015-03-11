@@ -25,15 +25,13 @@
 #import "Kdb3Writer.h"
 #import "Kdb4Writer.h"
 
-#import <MobileCoreServices/UTCoreTypes.h>
-
 enum {
     SECTION_DATABASE,
     SECTION_KEYFILE,
     SECTION_NUMBER
 };
 
-@interface FilesViewController () <UIDocumentPickerDelegate, UIDocumentMenuDelegate>
+@interface FilesViewController ()
 @property (nonatomic, strong) FilesInfoView *filesInfoView;
 @property (nonatomic, strong) NSMutableArray *databaseFiles;
 @property (nonatomic, strong) NSMutableArray *keyFiles;
@@ -378,35 +376,6 @@ enum {
 }
 
 - (void)addPressed:(UIBarButtonItem *)source {
-    if (NSClassFromString(@"UIDocumentMenuViewController") != nil) {
-        UIDocumentMenuViewController *documentMenuViewController =
-        [[UIDocumentMenuViewController alloc] initWithDocumentTypes:@[(NSString *)kUTTypeItem]
-                                                             inMode:UIDocumentPickerModeImport];
-        [documentMenuViewController addOptionWithTitle:NSLocalizedString(@"New Database", nil)
-                                                 image:nil
-                                                 order:UIDocumentMenuOrderFirst
-                                               handler:^{
-                                                   [self createNewDatabasePressed];
-                                               }];
-        documentMenuViewController.delegate = self;
-        documentMenuViewController.modalInPopover = UIModalPresentationPopover;
-        documentMenuViewController.popoverPresentationController.barButtonItem = source;
-        [self presentViewController:documentMenuViewController animated:YES completion:nil];
-    } else {
-        [self createNewDatabasePressed];
-    }
-}
-
-- (void)documentMenu:(UIDocumentMenuViewController *)documentMenu didPickDocumentPicker:(UIDocumentPickerViewController *)documentPicker {
-    documentPicker.delegate = self;
-    [self presentViewController:documentPicker animated:YES completion:nil];
-}
-
-- (void)documentPicker:(UIDocumentPickerViewController *)controller didPickDocumentAtURL:(NSURL *)url {
-    [[MiniKeePassAppDelegate appDelegate] importUrl:url];
-}
-
-- (void)createNewDatabasePressed {
     NewKdbViewController *newKdbViewController = [[NewKdbViewController alloc] init];
     newKdbViewController.donePressed = ^(FormViewController *formViewController) {
         [self createNewDatabase:(NewKdbViewController *)formViewController];

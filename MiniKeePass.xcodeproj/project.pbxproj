@@ -745,13 +745,13 @@
 				6851FAFC186DD11D00A53B0E /* UIActionSheetAutoDismiss.m */,
 				682B938C18A48EC20020C22A /* UIAlertViewAutoDismiss.h */,
 				682B938D18A48EC20020C22A /* UIAlertViewAutoDismiss.m */,
+				6861C7E4195CD159008E1057 /* VersionUtils.h */,
 				68D7564B186E4D8A001AFB82 /* WebViewController.h */,
 				68D7564C186E4D8A001AFB82 /* WebViewController.m */,
 				689D046313A42CA8005EBD36 /* Cells */,
 				52370CB314F2CDC3003DC64C /* Lock Screen */,
 				68F19D1B14EB3A3900B772CB /* Password Generator */,
 				689DFFE013A4273F005EBD36 /* Supporting Files */,
-				6861C7E4195CD159008E1057 /* VersionUtils.h */,
 			);
 			path = MiniKeePass;
 			sourceTree = "<group>";
@@ -816,7 +816,7 @@
 						DevelopmentTeam = G9ZT7943FZ;
 						SystemCapabilities = {
 							com.apple.iCloud = {
-								enabled = 1;
+								enabled = 0;
 							};
 						};
 					};
@@ -1151,7 +1151,6 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_ENTITLEMENTS = MiniKeePass/MiniKeePass.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = "MiniKeePass/MiniKeePass-Info.plist";
@@ -1167,7 +1166,6 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_ENTITLEMENTS = MiniKeePass/MiniKeePass.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				INFOPLIST_FILE = "MiniKeePass/MiniKeePass-Info.plist";
