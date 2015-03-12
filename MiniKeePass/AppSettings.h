@@ -27,6 +27,9 @@
 - (BOOL)pinEnabled;
 - (void)setPinEnabled:(BOOL)pinEnabled;
 
+- (NSString *)pin;
+- (void)setPin:(NSString *)pin;
+
 - (NSInteger)pinLockTimeout;
 - (NSInteger)pinLockTimeoutIndex;
 - (void)setPinLockTimeoutIndex:(NSInteger)pinLockTimeoutIndex;

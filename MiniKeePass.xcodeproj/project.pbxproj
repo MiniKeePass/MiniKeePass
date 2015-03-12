@@ -212,8 +212,8 @@
 		6837C35F188C9ED30018D588 /* SelectGroupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectGroupViewController.m; sourceTree = "<group>"; };
 		684846B4167E1E460040C4EE /* StringFieldViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StringFieldViewController.h; sourceTree = "<group>"; };
 		684846B5167E1E460040C4EE /* StringFieldViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StringFieldViewController.m; sourceTree = "<group>"; };
-		6850B7E01AB10D8800093E56 /* PasswordUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasswordUtils.h; sourceTree = "<group>"; };
-		6850B7E11AB10D8800093E56 /* PasswordUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PasswordUtils.m; sourceTree = "<group>"; };
+		6850B7E01AB10D8800093E56 /* PasswordUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PasswordUtils.h; path = ../MiniKeePass/PasswordUtils.h; sourceTree = "<group>"; };
+		6850B7E11AB10D8800093E56 /* PasswordUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PasswordUtils.m; path = ../MiniKeePass/PasswordUtils.m; sourceTree = "<group>"; };
 		6851FAFB186DD11D00A53B0E /* UIActionSheetAutoDismiss.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIActionSheetAutoDismiss.h; sourceTree = "<group>"; };
 		6851FAFC186DD11D00A53B0E /* UIActionSheetAutoDismiss.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIActionSheetAutoDismiss.m; sourceTree = "<group>"; };
 		6859176D1615DE1D005FECA5 /* AppSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppSettings.h; sourceTree = "<group>"; };
@@ -614,6 +614,8 @@
 			children = (
 				689D032A13A42B63005EBD36 /* KeychainUtils.h */,
 				689D032B13A42B63005EBD36 /* KeychainUtils.m */,
+				6850B7E01AB10D8800093E56 /* PasswordUtils.h */,
+				6850B7E11AB10D8800093E56 /* PasswordUtils.m */,
 			);
 			path = Security;
 			sourceTree = "<group>";
@@ -732,8 +734,6 @@
 				689D043313A42C81005EBD36 /* MiniKeePassAppDelegate.m */,
 				689D043413A42C81005EBD36 /* NewKdbViewController.h */,
 				689D043513A42C81005EBD36 /* NewKdbViewController.m */,
-				6850B7E01AB10D8800093E56 /* PasswordUtils.h */,
-				6850B7E11AB10D8800093E56 /* PasswordUtils.m */,
 				68D991E413F3EAAE00F6ED1F /* PasswordViewController.h */,
 				68D991E513F3EAAE00F6ED1F /* PasswordViewController.m */,
 				6837C35E188C9ED30018D588 /* SelectGroupViewController.h */,

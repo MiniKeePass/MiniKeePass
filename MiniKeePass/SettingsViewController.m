@@ -21,6 +21,7 @@
 #import "SelectionListViewController.h"
 #import "KeychainUtils.h"
 #import "AppSettings.h"
+#import "PasswordUtils.h"
 
 enum {
     SECTION_PIN,
@@ -615,9 +616,12 @@ enum {
     } else if ([tempPin isEqualToString:pin]) {
         tempPin = nil;
         
+        // Hash the pin
+        NSString *pinHash = [PasswordUtils hashPassword:pin];
+        
         // Set the PIN and enable the PIN enabled setting
-        [KeychainUtils setString:pin forKey:@"PIN" andServiceName:@"com.jflan.MiniKeePass.pin"];
         [appSettings setPinEnabled:pinEnabledCell.switchControl.on];
+        [appSettings setPin:pinHash];
         
         // Update which controls are enabled
         [self updateEnabledControls];

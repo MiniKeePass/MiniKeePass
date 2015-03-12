@@ -196,22 +196,12 @@ static LockScreenManager *sharedInstance = nil;
 #pragma mark - PinViewController delegate methods
 
 - (void)pinViewController:(PinViewController *)pinViewController pinEntered:(NSString *)pin {
-    NSString *validPin = [KeychainUtils stringForKey:@"PIN" andServiceName:@"com.jflan.MiniKeePass.pin"];
+    AppSettings *appSettings = [AppSettings sharedInstance];
+    NSString *validPin = [appSettings pin];
     
-    // Check if we need to migrate the plaintext pin to the hashed pin
-    if (![validPin hasPrefix:@"sha512"]) {
-        NSString *pinHash = [PasswordUtils hashPassword:validPin];
-        if ([PasswordUtils validatePassword:validPin againstHash:pinHash]) {
-            [KeychainUtils setString:pinHash forKey:@"PIN" andServiceName:@"com.jflan.MiniKeePass.pin"];
-            validPin = pinHash;
-        }
-    }
-
     if (validPin == nil) {
         pinViewController.titleLabel.text = NSLocalizedString(@"Invalid PIN Settings", nil);
     } else {
-        AppSettings *appSettings = [AppSettings sharedInstance];
-
         // Check if the PIN is valid
         if ([PasswordUtils validatePassword:pin againstHash:validPin]) {
             // Reset the number of pin failed attempts

@@ -16,10 +16,16 @@
  */
 
 #import "AppSettings.h"
+#import "KeychainUtils.h"
+#import "PasswordUtils.h"
 #import "CharacterSetsViewController.h"
 
+#define KEYCHAIN_PIN_SERVICE       @"com.jflan.MiniKeePass.pin"
+
+#define VERSION                    @"version"
 #define EXIT_TIME                  @"exitTime"
 #define PIN_ENABLED                @"pinEnabled"
+#define PIN                        @"pin"
 #define PIN_LOCK_TIMEOUT           @"pinLockTimeout"
 #define PIN_FAILED_ATTEMPTS        @"pinFailedAttempts"
 #define TOUCH_ID_ENABLED           @"touchIdEnabled"
@@ -106,8 +112,6 @@ static AppSettings *sharedInstance;
 
         // Register the default values
         NSMutableDictionary *defaultsDict = [NSMutableDictionary dictionary];
-        [defaultsDict setValue:[NSNumber numberWithBool:NO] forKey:PIN_ENABLED];
-        [defaultsDict setValue:[NSNumber numberWithInt:1] forKey:PIN_LOCK_TIMEOUT];
         [defaultsDict setValue:[NSNumber numberWithBool:YES] forKey:TOUCH_ID_ENABLED];
         [defaultsDict setValue:[NSNumber numberWithBool:NO] forKey:DELETE_ON_FAILURE_ENABLED];
         [defaultsDict setValue:[NSNumber numberWithInt:1] forKey:DELETE_ON_FAILURE_ATTEMPTS];
@@ -123,44 +127,124 @@ static AppSettings *sharedInstance;
         [defaultsDict setValue:[NSNumber numberWithInt:10] forKey:PW_GEN_LENGTH];
         [defaultsDict setValue:[NSNumber numberWithInt:CHARACTER_SET_DEFAULT] forKey:PW_GEN_CHAR_SETS];
         [userDefaults registerDefaults:defaultsDict];
+        
+        [self upgrade];
     }
     return self;
 }
 
+- (void)upgrade {
+    NSString *version = [self version];
+    if (version == nil) {
+        version = @"1.5.2";
+    }
+    
+    if ([version isEqualToString:@"1.5.2"]) {
+        [self upgrade152];
+    }
+    
+    NSString *currentVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+    [self setVersion:currentVersion];
+}
+
+- (void)upgrade152 {
+    // Migrate the pin enabled setting
+    BOOL pinEnabled = [userDefaults boolForKey:PIN_ENABLED];
+    [self setPinEnabled:pinEnabled];
+    
+    // Migrate the pin lock timeout setting
+    NSInteger pinLockTimeoutIndex = [userDefaults boolForKey:PIN_LOCK_TIMEOUT];
+    [self setPinLockTimeoutIndex:pinLockTimeoutIndex];
+    
+    // Migrate the pin failed attempts setting
+    NSInteger pinFailedAttempts = [userDefaults boolForKey:PIN_FAILED_ATTEMPTS];
+    [self setPinFailedAttempts:pinFailedAttempts];
+
+    // Check if we need to migrate the plaintext pin to the hashed pin
+    NSString *pin = [self pin];
+    if (![pin hasPrefix:@"sha512"]) {
+        NSString *pinHash = [PasswordUtils hashPassword:pin];
+        [self setPin:pinHash];
+    }
+
+    // Remove the old keys
+    [userDefaults removeObjectForKey:EXIT_TIME];
+    [userDefaults removeObjectForKey:PIN_ENABLED];
+    [userDefaults removeObjectForKey:PIN_LOCK_TIMEOUT];
+    [userDefaults removeObjectForKey:PIN_FAILED_ATTEMPTS];
+}
+
+- (NSString *)version {
+    return [userDefaults stringForKey:VERSION];
+}
+
+- (void)setVersion:(NSString *)version {
+    return [userDefaults setValue:version forKey:VERSION];
+}
+
 - (NSDate *)exitTime {
-    return [userDefaults valueForKey:EXIT_TIME];
+    NSString *string = [KeychainUtils stringForKey:EXIT_TIME andServiceName:KEYCHAIN_PIN_SERVICE];
+    if (string == nil) {
+        return nil;
+    }
+    return [NSDate dateWithTimeIntervalSinceReferenceDate:[string doubleValue]];
 }
 
 - (void)setExitTime:(NSDate *)exitTime {
-    [userDefaults setValue:exitTime forKey:EXIT_TIME];
+    NSNumber *number = [NSNumber numberWithDouble:[exitTime timeIntervalSinceReferenceDate]];
+    [KeychainUtils setString:[number stringValue] forKey:EXIT_TIME andServiceName:KEYCHAIN_PIN_SERVICE];
 }
 
 - (BOOL)pinEnabled {
-    return [userDefaults boolForKey:PIN_ENABLED];
+    NSString *string = [KeychainUtils stringForKey:PIN_ENABLED andServiceName:KEYCHAIN_PIN_SERVICE];
+    if (string == nil) {
+        return NO;
+    }
+    return [string boolValue];
 }
 
 - (void)setPinEnabled:(BOOL)pinEnabled {
-    [userDefaults setBool:pinEnabled forKey:PIN_ENABLED];
+    NSNumber *number = [NSNumber numberWithBool:pinEnabled];
+    [KeychainUtils setString:[number stringValue] forKey:PIN_ENABLED andServiceName:KEYCHAIN_PIN_SERVICE];
+}
+
+- (NSString *)pin {
+    return [KeychainUtils stringForKey:PIN andServiceName:KEYCHAIN_PIN_SERVICE];
+}
+
+- (void)setPin:(NSString *)pin {
+    [KeychainUtils setString:pin forKey:PIN andServiceName:KEYCHAIN_PIN_SERVICE];
 }
 
 - (NSInteger)pinLockTimeout {
-    return pinLockTimeoutValues[[userDefaults integerForKey:PIN_LOCK_TIMEOUT]];
+    NSInteger pinLockTimeoutIndex = [self pinLockTimeoutIndex];
+    return pinLockTimeoutValues[pinLockTimeoutIndex];
 }
 
 - (NSInteger)pinLockTimeoutIndex {
-    return [userDefaults integerForKey:PIN_LOCK_TIMEOUT];
+    NSString *string = [KeychainUtils stringForKey:PIN_LOCK_TIMEOUT andServiceName:KEYCHAIN_PIN_SERVICE];
+    if (string == nil) {
+        return 1; // Default Value
+    }
+    return [string intValue];
 }
 
 - (void)setPinLockTimeoutIndex:(NSInteger)pinLockTimeoutIndex {
-    [userDefaults setInteger:pinLockTimeoutIndex forKey:PIN_LOCK_TIMEOUT];
+    NSNumber *number = [NSNumber numberWithInteger:pinLockTimeoutIndex];
+    [KeychainUtils setString:[number stringValue] forKey:PIN_LOCK_TIMEOUT andServiceName:KEYCHAIN_PIN_SERVICE];
 }
 
 - (NSInteger)pinFailedAttempts {
-    return [userDefaults integerForKey:PIN_FAILED_ATTEMPTS];
+    NSString *string = [KeychainUtils stringForKey:PIN_FAILED_ATTEMPTS andServiceName:KEYCHAIN_PIN_SERVICE];
+    if (string == nil) {
+        return 0;
+    }
+    return [string integerValue];
 }
 
 - (void)setPinFailedAttempts:(NSInteger)pinFailedAttempts {
-    [userDefaults setInteger:pinFailedAttempts forKey:PIN_FAILED_ATTEMPTS];
+    NSNumber *number = [NSNumber numberWithInteger:pinFailedAttempts];
+    [KeychainUtils setString:[number stringValue] forKey:PIN_FAILED_ATTEMPTS andServiceName:KEYCHAIN_PIN_SERVICE];
 }
 
 - (BOOL)deleteOnFailureEnabled {
