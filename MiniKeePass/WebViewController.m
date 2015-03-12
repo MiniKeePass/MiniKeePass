@@ -17,6 +17,8 @@
 
 #import "WebViewController.h"
 #import "UIAlertViewAutoDismiss.h"
+#import "KdbEntry+MKPAdditions.h"
+#import "OneTimePassword.h"
 
 #define kUrlFieldPortHeight 30.0f
 #define kUrlFieldLandHeight 24.0f
@@ -31,6 +33,7 @@
 @protocol MKPWebViewDelegate <NSObject>
 - (void)usernamePressed:(MKPWebView *)webview;
 - (void)passwordPressed:(MKPWebView *)webview;
+- (void)otpPressed:(MKPWebView *)webview;
 @end
 
 @implementation MKPWebView
@@ -40,15 +43,17 @@
     if (self) {
         UIMenuItem *username = [[UIMenuItem alloc] initWithTitle:NSLocalizedString(@"Username", nil) action:@selector(pasteUsername:)];
         UIMenuItem *password = [[UIMenuItem alloc] initWithTitle:NSLocalizedString(@"Password", nil) action:@selector(pastePassword:)];
+        UIMenuItem *otp = [[UIMenuItem alloc] initWithTitle:NSLocalizedString(@"OTP", nil) action:@selector(pasteOTP:)];
 
         UIMenuController *menuController = [UIMenuController sharedMenuController];
-        menuController.menuItems = @[username, password];
+        menuController.menuItems = @[username, password, otp];
     }
     return self;
 }
 
 - (BOOL)canPerformAction:(SEL)action withSender:(id)sender {
-    return [super canPerformAction:action withSender:sender] || action == @selector(pasteUsername:) || action == @selector(pastePassword:);
+    return [super canPerformAction:action withSender:sender] || action == @selector(pasteUsername:) || action == @selector(pastePassword:)
+        || action == @selector(pasteOTP:);
 }
 
 - (void)pasteUsername:(id)sender {
@@ -59,9 +64,15 @@
     [self.mkpDelegate passwordPressed:self];
 }
 
+- (void)pasteOTP:(id)sender {
+    [self.mkpDelegate otpPressed:self];
+}
+
 @end
 
-@interface WebViewController () <UIWebViewDelegate, UITextFieldDelegate, MKPWebViewDelegate>
+@interface WebViewController () <UIWebViewDelegate, UITextFieldDelegate, MKPWebViewDelegate> {
+    OneTimePassword *otp;
+}
 @property (nonatomic, strong) UITextField *urlTextField;
 @property (nonatomic, assign) CGRect originalUrlFrame;
 
@@ -95,7 +106,13 @@
     self.navigationItem.titleView = self.urlTextField;
 
     // Create the autotype buttons
-    NSArray *items = @[[UIImage imageNamed:@"user"], [UIImage imageNamed:@"asterisk"]];
+    NSMutableArray *items = [NSMutableArray arrayWithObjects:[UIImage imageNamed:@"user"], [UIImage imageNamed:@"asterisk"], nil];
+    KeeOtpAuthData *otpAuthData = [self.entry getOtpAuthData];
+    if (otpAuthData != nil && otpAuthData.isSupported) {
+        otp = [[OneTimePassword alloc] initWithData:otpAuthData];
+        // TODO need a new icon
+        [items addObject:[UIImage imageNamed:@"asterisk1"]];
+    }
     UISegmentedControl *segmentedControl = [[UISegmentedControl alloc] initWithItems:items];
     segmentedControl.momentary = YES;
     [segmentedControl addTarget:self
@@ -279,6 +296,7 @@
 }
 
 - (void)autotypePressed:(UISegmentedControl *)segmentedControl {
+    NSString *otpString = nil;
     switch (segmentedControl.selectedSegmentIndex) {
         case 0:
             [self autotypeString:self.entry.username];
@@ -286,6 +304,13 @@
 
         case 1:
             [self autotypeString:self.entry.password];
+            break;
+            
+        case 2:
+            otpString = [otp getOTP];
+            if (otpString != nil && [otpString length] > 0) {
+                [self autotypeString:otpString];
+            }
             break;
 
         default:
@@ -299,6 +324,13 @@
 
 - (void)passwordPressed:(MKPWebView *)webview {
     [self autotypeString:self.entry.password];
+}
+
+- (void)otpPressed:(MKPWebView *)webview {
+    NSString *otpString = [otp getOTP];
+    if (otpString != nil && [otpString length] > 0) {
+        [self autotypeString:otpString];
+    }
 }
 
 #pragma mark - WebView delegate methods
