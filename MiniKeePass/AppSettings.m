@@ -25,7 +25,7 @@
 #define VERSION                    @"version"
 #define EXIT_TIME                  @"exitTime"
 #define PIN_ENABLED                @"pinEnabled"
-#define PIN                        @"pin"
+#define PIN                        @"PIN"
 #define PIN_LOCK_TIMEOUT           @"pinLockTimeout"
 #define PIN_FAILED_ATTEMPTS        @"pinFailedAttempts"
 #define TOUCH_ID_ENABLED           @"touchIdEnabled"
@@ -127,7 +127,7 @@ static AppSettings *sharedInstance;
         [defaultsDict setValue:[NSNumber numberWithInt:10] forKey:PW_GEN_LENGTH];
         [defaultsDict setValue:[NSNumber numberWithInt:CHARACTER_SET_DEFAULT] forKey:PW_GEN_CHAR_SETS];
         [userDefaults registerDefaults:defaultsDict];
-        
+
         [self upgrade];
     }
     return self;
