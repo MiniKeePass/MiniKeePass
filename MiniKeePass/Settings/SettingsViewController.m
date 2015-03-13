@@ -213,11 +213,17 @@ enum {
     [tableFooterView addSubview:versionLabel];
     
     self.tableView.tableFooterView = tableFooterView;
-    
-    // Check if Touch ID is available
-    LAContext *context = [[LAContext alloc] init];
-    if ([context canEvaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics error:nil]) {
-        // Create the setting sections including TouchID
+
+    // Check if TouchID is supported
+    BOOL touchIdEnabled = NO;
+    if ([NSClassFromString(@"LAContext") class]) {
+        LAContext *context = [[LAContext alloc] init];
+        touchIdEnabled = [context canEvaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics error:nil];
+    }
+
+    // Create the list of supported sections
+    if (touchIdEnabled) {
+        // Include TouchID in the list of sections
         self.sections = @[
                           [NSNumber numberWithInt:SECTION_PIN],
                           [NSNumber numberWithInt:SECTION_TOUCH_ID],
@@ -231,7 +237,7 @@ enum {
                           [NSNumber numberWithInt:SECTION_WEB_BROWSER]
                           ];
     } else {
-        // Create the setting sections without TouchID
+        // Skip TouchID in the list of sections
         self.sections = @[
                           [NSNumber numberWithInt:SECTION_PIN],
                           [NSNumber numberWithInt:SECTION_DELETE_ON_FAILURE],
