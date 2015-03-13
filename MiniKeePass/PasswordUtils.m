@@ -37,9 +37,9 @@ static NSUInteger const kDefaultRounds = 10000;
     // Get the data by converting the string to ISO 8859-1 characters
     NSData *passwordData = [password dataUsingEncoding:NSISOLatin1StringEncoding];
 
-    CCKeyDerivationPBKDF(kCCPBKDF2, passwordData.bytes, passwordData.length, salt.bytes, salt.length, kCCPRFHmacAlgSHA512, rounds, derivedKey.mutableBytes, derivedKey.length);
+    CCKeyDerivationPBKDF(kCCPBKDF2, passwordData.bytes, passwordData.length, salt.bytes, salt.length, kCCPRFHmacAlgSHA512, (unsigned int)rounds, derivedKey.mutableBytes, derivedKey.length);
 
-    return [NSString stringWithFormat:@"sha512.%lu.%@.%@", (long)rounds, [PasswordUtils hexStringFromData:salt], [PasswordUtils hexStringFromData:derivedKey]];
+    return [NSString stringWithFormat:@"sha512.%u.%@.%@", (unsigned int)rounds, [PasswordUtils hexStringFromData:salt], [PasswordUtils hexStringFromData:derivedKey]];
 }
 
 + (NSString *)hashPassword:(NSString *)password {
