@@ -31,7 +31,7 @@ static NSUInteger const kDefaultRounds = 10000;
     return data;
 }
 
-+ (NSString *)hashPassword:(NSString *)password withSalt:(NSData *)salt andRounds:(NSInteger)rounds andKeySize:(NSInteger)keySize {
++ (NSString *)hashPassword:(NSString *)password withSalt:(NSData *)salt andRounds:(NSUInteger)rounds andKeySize:(NSInteger)keySize {
     NSMutableData *derivedKey = [NSMutableData dataWithLength:keySize];
 
     // Get the data by converting the string to ISO 8859-1 characters
@@ -39,7 +39,7 @@ static NSUInteger const kDefaultRounds = 10000;
 
     CCKeyDerivationPBKDF(kCCPBKDF2, passwordData.bytes, passwordData.length, salt.bytes, salt.length, kCCPRFHmacAlgSHA512, rounds, derivedKey.mutableBytes, derivedKey.length);
 
-    return [NSString stringWithFormat:@"sha512.%d.%@.%@", rounds, [PasswordUtils hexStringFromData:salt], [PasswordUtils hexStringFromData:derivedKey]];
+    return [NSString stringWithFormat:@"sha512.%lu.%@.%@", (long)rounds, [PasswordUtils hexStringFromData:salt], [PasswordUtils hexStringFromData:derivedKey]];
 }
 
 + (NSString *)hashPassword:(NSString *)password {

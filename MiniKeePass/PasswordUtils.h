@@ -21,7 +21,7 @@
 
 + (NSData *)generateSaltOfSize:(NSInteger)size;
 
-+ (NSString *)hashPassword:(NSString *)password withSalt:(NSData *)salt andRounds:(NSInteger)rounds andKeySize:(NSInteger)keySize;
++ (NSString *)hashPassword:(NSString *)password withSalt:(NSData *)salt andRounds:(NSUInteger)rounds andKeySize:(NSInteger)keySize;
 + (NSString *)hashPassword:(NSString *)password;
 
 + (BOOL)validatePassword:(NSString *)password againstHash:(NSString *)hash;
