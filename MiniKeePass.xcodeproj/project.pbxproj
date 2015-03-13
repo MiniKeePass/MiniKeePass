@@ -48,8 +48,9 @@
 		682D451A1603883900156830 /* Sha256OutputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 682D450C1603883900156830 /* Sha256OutputStream.m */; };
 		6837C360188C9ED30018D588 /* SelectGroupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6837C35F188C9ED30018D588 /* SelectGroupViewController.m */; };
 		684846B6167E1E460040C4EE /* StringFieldViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 684846B5167E1E460040C4EE /* StringFieldViewController.m */; };
+		68496E751AB34F8800370876 /* AppSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 68496E721AB34F8800370876 /* AppSettings.m */; };
+		68496E761AB34F8800370876 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68496E741AB34F8800370876 /* SettingsViewController.m */; };
 		6851FAFD186DD11D00A53B0E /* UIActionSheetAutoDismiss.m in Sources */ = {isa = PBXBuildFile; fileRef = 6851FAFC186DD11D00A53B0E /* UIActionSheetAutoDismiss.m */; };
-		6859176F1615DE1D005FECA5 /* AppSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 6859176E1615DE1D005FECA5 /* AppSettings.m */; };
 		685D9D951603F8EE00D739D3 /* Kdb3Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 685D9D941603F8EE00D739D3 /* Kdb3Utils.m */; };
 		6876F67813B2D8F500A05C7A /* ImageSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6876F67713B2D8F400A05C7A /* ImageSelectionViewController.m */; };
 		68915A0B13A6F6C200A408B0 /* InfoBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 68915A0A13A6F6C200A408B0 /* InfoBar.m */; };
@@ -92,7 +93,6 @@
 		689D045513A42C82005EBD36 /* MiniKeePassAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D043313A42C81005EBD36 /* MiniKeePassAppDelegate.m */; };
 		689D045613A42C82005EBD36 /* NewKdbViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D043513A42C81005EBD36 /* NewKdbViewController.m */; };
 		689D045B13A42C82005EBD36 /* SelectionListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D043F13A42C82005EBD36 /* SelectionListViewController.m */; };
-		689D045C13A42C82005EBD36 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D044113A42C82005EBD36 /* SettingsViewController.m */; };
 		689D045E13A42C82005EBD36 /* TextEntryController.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D044513A42C82005EBD36 /* TextEntryController.m */; };
 		689DFFDA13A4273F005EBD36 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 689DFFD913A4273F005EBD36 /* UIKit.framework */; };
 		689DFFDC13A4273F005EBD36 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 689DFFDB13A4273F005EBD36 /* Foundation.framework */; };
@@ -210,10 +210,12 @@
 		6837C35F188C9ED30018D588 /* SelectGroupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectGroupViewController.m; sourceTree = "<group>"; };
 		684846B4167E1E460040C4EE /* StringFieldViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StringFieldViewController.h; sourceTree = "<group>"; };
 		684846B5167E1E460040C4EE /* StringFieldViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StringFieldViewController.m; sourceTree = "<group>"; };
+		68496E711AB34F8800370876 /* AppSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppSettings.h; sourceTree = "<group>"; };
+		68496E721AB34F8800370876 /* AppSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppSettings.m; sourceTree = "<group>"; };
+		68496E731AB34F8800370876 /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
+		68496E741AB34F8800370876 /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
 		6851FAFB186DD11D00A53B0E /* UIActionSheetAutoDismiss.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIActionSheetAutoDismiss.h; sourceTree = "<group>"; };
 		6851FAFC186DD11D00A53B0E /* UIActionSheetAutoDismiss.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIActionSheetAutoDismiss.m; sourceTree = "<group>"; };
-		6859176D1615DE1D005FECA5 /* AppSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppSettings.h; sourceTree = "<group>"; };
-		6859176E1615DE1D005FECA5 /* AppSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppSettings.m; sourceTree = "<group>"; };
 		685D9D931603F8EE00D739D3 /* Kdb3Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Kdb3Utils.h; sourceTree = "<group>"; };
 		685D9D941603F8EE00D739D3 /* Kdb3Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Kdb3Utils.m; sourceTree = "<group>"; };
 		6876F67613B2D8F400A05C7A /* ImageSelectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageSelectionViewController.h; sourceTree = "<group>"; };
@@ -308,8 +310,6 @@
 		689D043513A42C81005EBD36 /* NewKdbViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewKdbViewController.m; sourceTree = "<group>"; };
 		689D043E13A42C82005EBD36 /* SelectionListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectionListViewController.h; sourceTree = "<group>"; };
 		689D043F13A42C82005EBD36 /* SelectionListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectionListViewController.m; sourceTree = "<group>"; };
-		689D044013A42C82005EBD36 /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
-		689D044113A42C82005EBD36 /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
 		689D044413A42C82005EBD36 /* TextEntryController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextEntryController.h; sourceTree = "<group>"; };
 		689D044513A42C82005EBD36 /* TextEntryController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextEntryController.m; sourceTree = "<group>"; };
 		689DFFD513A4273F005EBD36 /* MiniKeePass.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MiniKeePass.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -483,6 +483,17 @@
 			path = IOStream;
 			sourceTree = "<group>";
 		};
+		68496E701AB34F8800370876 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				68496E711AB34F8800370876 /* AppSettings.h */,
+				68496E721AB34F8800370876 /* AppSettings.m */,
+				68496E731AB34F8800370876 /* SettingsViewController.h */,
+				68496E741AB34F8800370876 /* SettingsViewController.m */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
 		689D021313A42B63005EBD36 /* help */ = {
 			isa = PBXGroup;
 			children = (
@@ -646,8 +657,6 @@
 			isa = PBXGroup;
 			children = (
 				68CBC1461A4A0F0E004A3553 /* MiniKeePass.entitlements */,
-				6859176D1615DE1D005FECA5 /* AppSettings.h */,
-				6859176E1615DE1D005FECA5 /* AppSettings.m */,
 				689D042613A42C81005EBD36 /* DatabaseDocument.h */,
 				689D042713A42C81005EBD36 /* DatabaseDocument.m */,
 				689D042813A42C81005EBD36 /* DatabaseManager.h */,
@@ -684,8 +693,6 @@
 				6837C35F188C9ED30018D588 /* SelectGroupViewController.m */,
 				689D043E13A42C82005EBD36 /* SelectionListViewController.h */,
 				689D043F13A42C82005EBD36 /* SelectionListViewController.m */,
-				689D044013A42C82005EBD36 /* SettingsViewController.h */,
-				689D044113A42C82005EBD36 /* SettingsViewController.m */,
 				684846B4167E1E460040C4EE /* StringFieldViewController.h */,
 				684846B5167E1E460040C4EE /* StringFieldViewController.m */,
 				689D044413A42C82005EBD36 /* TextEntryController.h */,
@@ -700,6 +707,7 @@
 				689FBE591AB271C6005CB6BD /* Lock Screen */,
 				689FBE691AB2720D005CB6BD /* Password Generator */,
 				689FBE731AB27228005CB6BD /* Utils */,
+				68496E701AB34F8800370876 /* Settings */,
 				689DFFE013A4273F005EBD36 /* Supporting Files */,
 			);
 			path = MiniKeePass;
@@ -952,6 +960,7 @@
 				689FBE991AB272BD005CB6BD /* ImageFactory.m in Sources */,
 				6837C360188C9ED30018D588 /* SelectGroupViewController.m in Sources */,
 				689FBE671AB271C6005CB6BD /* LockViewController.m in Sources */,
+				68496E751AB34F8800370876 /* AppSettings.m in Sources */,
 				689D03E313A42B63005EBD36 /* KdbWriterFactory.m in Sources */,
 				689D03E513A42B63005EBD36 /* Salsa20RandomStream.m in Sources */,
 				689D03E713A42B63005EBD36 /* Utils.m in Sources */,
@@ -971,7 +980,6 @@
 				689D045513A42C82005EBD36 /* MiniKeePassAppDelegate.m in Sources */,
 				689D045613A42C82005EBD36 /* NewKdbViewController.m in Sources */,
 				689D045B13A42C82005EBD36 /* SelectionListViewController.m in Sources */,
-				689D045C13A42C82005EBD36 /* SettingsViewController.m in Sources */,
 				689D045E13A42C82005EBD36 /* TextEntryController.m in Sources */,
 				689FBE791AB27228005CB6BD /* PasswordUtils.m in Sources */,
 				68915A0B13A6F6C200A408B0 /* InfoBar.m in Sources */,
@@ -1003,10 +1011,10 @@
 				685D9D951603F8EE00D739D3 /* Kdb3Utils.m in Sources */,
 				6851FAFD186DD11D00A53B0E /* UIActionSheetAutoDismiss.m in Sources */,
 				689FBE931AB27283005CB6BD /* TextFieldCell.m in Sources */,
+				68496E761AB34F8800370876 /* SettingsViewController.m in Sources */,
 				680C277616050C7A009403DE /* DDXMLDocument+MKPAdditions.m in Sources */,
 				689FBE8F1AB27283005CB6BD /* ImageButtonCell.m in Sources */,
 				689FBE961AB27283005CB6BD /* UrlFieldCell.m in Sources */,
-				6859176F1615DE1D005FECA5 /* AppSettings.m in Sources */,
 				52E7AF5C162523F800DCB00A /* EditItemViewController.m in Sources */,
 				689FBE651AB271C6005CB6BD /* KeypadView.m in Sources */,
 				689FBE941AB27283005CB6BD /* TextViewCell.m in Sources */,

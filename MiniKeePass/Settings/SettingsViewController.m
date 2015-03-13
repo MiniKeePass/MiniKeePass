@@ -15,6 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#import <LocalAuthentication/LocalAuthentication.h>
 #import <AudioToolbox/AudioToolbox.h>
 #import "MiniKeePassAppDelegate.h"
 #import "SettingsViewController.h"
@@ -33,8 +34,7 @@ enum {
     SECTION_SORTING,
     SECTION_PASSWORD_ENCODING,
     SECTION_CLEAR_CLIPBOARD,
-    SECTION_WEB_BROWSER,
-    SECTION_NUMBER
+    SECTION_WEB_BROWSER
 };
 
 enum {
@@ -91,9 +91,10 @@ enum {
     ROW_WEB_BROWSER_NUMBER
 };
 
-@interface SettingsViewController () {
-    AppSettings *appSettings;
-}
+@interface SettingsViewController ()
+@property (nonatomic, strong) AppSettings *appSettings;
+@property (nonatomic, strong) NSArray *sections;
+
 @end
 
 @implementation SettingsViewController
@@ -101,7 +102,7 @@ enum {
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    appSettings = [AppSettings sharedInstance];
+    self.appSettings = [AppSettings sharedInstance];
 
     self.title = NSLocalizedString(@"Settings", nil);
     
@@ -212,6 +213,37 @@ enum {
     [tableFooterView addSubview:versionLabel];
     
     self.tableView.tableFooterView = tableFooterView;
+    
+    // Check if Touch ID is available
+    LAContext *context = [[LAContext alloc] init];
+    if ([context canEvaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics error:nil]) {
+        // Create the setting sections including TouchID
+        self.sections = @[
+                          [NSNumber numberWithInt:SECTION_PIN],
+                          [NSNumber numberWithInt:SECTION_TOUCH_ID],
+                          [NSNumber numberWithInt:SECTION_DELETE_ON_FAILURE],
+                          [NSNumber numberWithInt:SECTION_CLOSE],
+                          [NSNumber numberWithInt:SECTION_REMEMBER_PASSWORDS],
+                          [NSNumber numberWithInt:SECTION_HIDE_PASSWORDS],
+                          [NSNumber numberWithInt:SECTION_SORTING],
+                          [NSNumber numberWithInt:SECTION_PASSWORD_ENCODING],
+                          [NSNumber numberWithInt:SECTION_CLEAR_CLIPBOARD],
+                          [NSNumber numberWithInt:SECTION_WEB_BROWSER]
+                          ];
+    } else {
+        // Create the setting sections without TouchID
+        self.sections = @[
+                          [NSNumber numberWithInt:SECTION_PIN],
+                          [NSNumber numberWithInt:SECTION_DELETE_ON_FAILURE],
+                          [NSNumber numberWithInt:SECTION_CLOSE],
+                          [NSNumber numberWithInt:SECTION_REMEMBER_PASSWORDS],
+                          [NSNumber numberWithInt:SECTION_HIDE_PASSWORDS],
+                          [NSNumber numberWithInt:SECTION_SORTING],
+                          [NSNumber numberWithInt:SECTION_PASSWORD_ENCODING],
+                          [NSNumber numberWithInt:SECTION_CLEAR_CLIPBOARD],
+                          [NSNumber numberWithInt:SECTION_WEB_BROWSER]
+                          ];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -221,39 +253,39 @@ enum {
     tempPin = nil;
     
     // Initialize all the controls with their settings
-    pinEnabledCell.switchControl.on = [appSettings pinEnabled];
-    [pinLockTimeoutCell setSelectedIndex:[appSettings pinLockTimeoutIndex]];
+    pinEnabledCell.switchControl.on = [self.appSettings pinEnabled];
+    [pinLockTimeoutCell setSelectedIndex:[self.appSettings pinLockTimeoutIndex]];
 
-    touchIdEnabledCell.switchControl.on = [appSettings touchIdEnabled];
+    touchIdEnabledCell.switchControl.on = [self.appSettings touchIdEnabled];
 
-    deleteOnFailureEnabledCell.switchControl.on = [appSettings deleteOnFailureEnabled];
-    [deleteOnFailureAttemptsCell setSelectedIndex:[appSettings deleteOnFailureAttemptsIndex]];
+    deleteOnFailureEnabledCell.switchControl.on = [self.appSettings deleteOnFailureEnabled];
+    [deleteOnFailureAttemptsCell setSelectedIndex:[self.appSettings deleteOnFailureAttemptsIndex]];
     
-    closeEnabledCell.switchControl.on = [appSettings closeEnabled];
-    [closeTimeoutCell setSelectedIndex:[appSettings closeTimeoutIndex]];
+    closeEnabledCell.switchControl.on = [self.appSettings closeEnabled];
+    [closeTimeoutCell setSelectedIndex:[self.appSettings closeTimeoutIndex]];
     
-    rememberPasswordsEnabledCell.switchControl.on = [appSettings rememberPasswordsEnabled];
+    rememberPasswordsEnabledCell.switchControl.on = [self.appSettings rememberPasswordsEnabled];
     
-    hidePasswordsCell.switchControl.on = [appSettings hidePasswords];
+    hidePasswordsCell.switchControl.on = [self.appSettings hidePasswords];
     
-    sortingEnabledCell.switchControl.on = [appSettings sortAlphabetically];
+    sortingEnabledCell.switchControl.on = [self.appSettings sortAlphabetically];
     
-    [passwordEncodingCell setSelectedIndex:[appSettings passwordEncodingIndex]];
+    [passwordEncodingCell setSelectedIndex:[self.appSettings passwordEncodingIndex]];
     
-    clearClipboardEnabledCell.switchControl.on = [appSettings clearClipboardEnabled];
-    [clearClipboardTimeoutCell setSelectedIndex:[appSettings clearClipboardTimeoutIndex]];
+    clearClipboardEnabledCell.switchControl.on = [self.appSettings clearClipboardEnabled];
+    [clearClipboardTimeoutCell setSelectedIndex:[self.appSettings clearClipboardTimeoutIndex]];
 
-    webBrowserIntegratedCell.switchControl.on = [appSettings webBrowserIntegrated];
+    webBrowserIntegratedCell.switchControl.on = [self.appSettings webBrowserIntegrated];
 
     // Update which controls are enabled
     [self updateEnabledControls];
 }
 
 - (void)updateEnabledControls {
-    BOOL pinEnabled = [appSettings pinEnabled];
-    BOOL deleteOnFailureEnabled = [appSettings deleteOnFailureEnabled];
-    BOOL closeEnabled = [appSettings closeEnabled];
-    BOOL clearClipboardEnabled = [appSettings clearClipboardEnabled];
+    BOOL pinEnabled = [self.appSettings pinEnabled];
+    BOOL deleteOnFailureEnabled = [self.appSettings deleteOnFailureEnabled];
+    BOOL closeEnabled = [self.appSettings closeEnabled];
+    BOOL clearClipboardEnabled = [self.appSettings clearClipboardEnabled];
     
     // Enable/disable the components dependant on settings
     [pinLockTimeoutCell setEnabled:pinEnabled];
@@ -265,10 +297,20 @@ enum {
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return SECTION_NUMBER;
+    return [self.sections count];
+}
+
+- (NSInteger)mappedSection:(NSInteger)section {
+    return [((NSNumber *)[self.sections objectAtIndex:section]) integerValue];
+}
+
+- (NSIndexPath *)mappedIndexPath:(NSIndexPath *)indexPAth {
+    NSInteger section = [self mappedSection:indexPAth.section];
+    return [NSIndexPath indexPathForRow:indexPAth.row inSection:section];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    section = [self mappedSection:section];
     switch (section) {
         case SECTION_PIN:
             return ROW_PIN_NUMBER;
@@ -304,6 +346,7 @@ enum {
 }
 
 - (NSString*)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    section = [self mappedSection:section];
     switch (section) {
         case SECTION_PIN:
             return NSLocalizedString(@"PIN Protection", nil);
@@ -339,6 +382,7 @@ enum {
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
+    section = [self mappedSection:section];
     switch (section) {
         case SECTION_PIN:
             return NSLocalizedString(@"Prevent unauthorized access to MiniKeePass with a PIN.", nil);
@@ -374,6 +418,7 @@ enum {
 }
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    indexPath = [self mappedIndexPath:indexPath];
     switch (indexPath.section) {
         case SECTION_PIN:
             switch (indexPath.row) {
@@ -457,11 +502,12 @@ enum {
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    indexPath = [self mappedIndexPath:indexPath];
     if (indexPath.section == SECTION_PIN && indexPath.row == ROW_PIN_LOCK_TIMEOUT && pinEnabledCell.switchControl.on) {
         SelectionListViewController *selectionListViewController = [[SelectionListViewController alloc] initWithStyle:UITableViewStyleGrouped];
         selectionListViewController.title = NSLocalizedString(@"Lock Timeout", nil);
         selectionListViewController.items = pinLockTimeoutCell.choices;
-        selectionListViewController.selectedIndex = [appSettings pinLockTimeoutIndex];
+        selectionListViewController.selectedIndex = [self.appSettings pinLockTimeoutIndex];
         selectionListViewController.delegate = self;
         selectionListViewController.reference = indexPath;
         [self.navigationController pushViewController:selectionListViewController animated:YES];
@@ -469,7 +515,7 @@ enum {
         SelectionListViewController *selectionListViewController = [[SelectionListViewController alloc] initWithStyle:UITableViewStyleGrouped];
         selectionListViewController.title = NSLocalizedString(@"Attempts", nil);
         selectionListViewController.items = deleteOnFailureAttemptsCell.choices;
-        selectionListViewController.selectedIndex = [appSettings deleteOnFailureAttemptsIndex];
+        selectionListViewController.selectedIndex = [self.appSettings deleteOnFailureAttemptsIndex];
         selectionListViewController.delegate = self;
         selectionListViewController.reference = indexPath;
         [self.navigationController pushViewController:selectionListViewController animated:YES];
@@ -477,7 +523,7 @@ enum {
         SelectionListViewController *selectionListViewController = [[SelectionListViewController alloc] initWithStyle:UITableViewStyleGrouped];
         selectionListViewController.title = NSLocalizedString(@"Close Timeout", nil);
         selectionListViewController.items = closeTimeoutCell.choices;
-        selectionListViewController.selectedIndex = [appSettings closeTimeoutIndex];
+        selectionListViewController.selectedIndex = [self.appSettings closeTimeoutIndex];
         selectionListViewController.delegate = self;
         selectionListViewController.reference = indexPath;
         [self.navigationController pushViewController:selectionListViewController animated:YES];
@@ -485,7 +531,7 @@ enum {
         SelectionListViewController *selectionListViewController = [[SelectionListViewController alloc] initWithStyle:UITableViewStyleGrouped];
         selectionListViewController.title = NSLocalizedString(@"Password Encoding", nil);
         selectionListViewController.items = passwordEncodingCell.choices;
-        selectionListViewController.selectedIndex = [appSettings passwordEncodingIndex];
+        selectionListViewController.selectedIndex = [self.appSettings passwordEncodingIndex];
         selectionListViewController.delegate = self;
         selectionListViewController.reference = indexPath;
         [self.navigationController pushViewController:selectionListViewController animated:YES];
@@ -493,7 +539,7 @@ enum {
         SelectionListViewController *selectionListViewController = [[SelectionListViewController alloc] initWithStyle:UITableViewStyleGrouped];
         selectionListViewController.title = NSLocalizedString(@"Clear Clipboard Timeout", nil);
         selectionListViewController.items = clearClipboardTimeoutCell.choices;
-        selectionListViewController.selectedIndex = [appSettings clearClipboardTimeoutIndex];
+        selectionListViewController.selectedIndex = [self.appSettings clearClipboardTimeoutIndex];
         selectionListViewController.delegate = self;
         selectionListViewController.reference = indexPath;
         [self.navigationController pushViewController:selectionListViewController animated:YES];
@@ -501,34 +547,34 @@ enum {
 }
 
 - (void)selectionListViewController:(SelectionListViewController *)controller selectedIndex:(NSInteger)selectedIndex withReference:(id<NSObject>)reference {
-    NSIndexPath *indexPath = (NSIndexPath*)reference;
+    NSIndexPath *indexPath = (NSIndexPath *)reference;
     if (indexPath.section == SECTION_PIN && indexPath.row == ROW_PIN_LOCK_TIMEOUT) {
         // Save the user setting
-        [appSettings setPinLockTimeoutIndex:selectedIndex];
+        [self.appSettings setPinLockTimeoutIndex:selectedIndex];
         
         // Update the cell text
         [pinLockTimeoutCell setSelectedIndex:selectedIndex];
     } else if (indexPath.section == SECTION_DELETE_ON_FAILURE && indexPath.row == ROW_DELETE_ON_FAILURE_ATTEMPTS) {
         // Save the user setting
-        [appSettings setDeleteOnFailureAttemptsIndex:selectedIndex];
+        [self.appSettings setDeleteOnFailureAttemptsIndex:selectedIndex];
         
         // Update the cell text
         [deleteOnFailureAttemptsCell setSelectedIndex:selectedIndex];
     } else if (indexPath.section == SECTION_CLOSE && indexPath.row == ROW_CLOSE_TIMEOUT) {
         // Save the user setting
-        [appSettings setCloseTimeoutIndex:selectedIndex];
+        [self.appSettings setCloseTimeoutIndex:selectedIndex];
         
         // Update the cell text
         [pinLockTimeoutCell setSelectedIndex:selectedIndex];
     } else if (indexPath.section == SECTION_PASSWORD_ENCODING && indexPath.row == ROW_PASSWORD_ENCODING_VALUE) {
         // Save the user setting
-        [appSettings setPasswordEncodingIndex:selectedIndex];
+        [self.appSettings setPasswordEncodingIndex:selectedIndex];
         
         // Update the cell text
         [passwordEncodingCell setSelectedIndex:selectedIndex];
     } else if (indexPath.section == SECTION_CLEAR_CLIPBOARD && indexPath.row == ROW_CLEAR_CLIPBOARD_TIMEOUT) {
         // Save the user setting
-        [appSettings setClearClipboardTimeoutIndex:selectedIndex];
+        [self.appSettings setClearClipboardTimeoutIndex:selectedIndex];
         
         // Update the cell text
         [clearClipboardTimeoutCell setSelectedIndex:selectedIndex];
@@ -545,7 +591,7 @@ enum {
     } else {
         // Delete the PIN and disable the PIN enabled setting
         [KeychainUtils deleteStringForKey:@"PIN" andServiceName:@"com.jflan.MiniKeePass.pin"];
-        [appSettings setPinEnabled:NO];
+        [self.appSettings setPinEnabled:NO];
         
         // Update which controls are enabled
         [self updateEnabledControls];
@@ -554,12 +600,12 @@ enum {
 
 - (void)toggleTouchIdEnabled:(id)sender {
     // Update the setting
-    [appSettings setTouchIdEnabled:touchIdEnabledCell.switchControl.on];
+    [self.appSettings setTouchIdEnabled:touchIdEnabledCell.switchControl.on];
 }
 
 - (void)toggleDeleteOnFailureEnabled:(id)sender {
     // Update the setting
-    [appSettings setDeleteOnFailureEnabled:deleteOnFailureEnabledCell.switchControl.on];
+    [self.appSettings setDeleteOnFailureEnabled:deleteOnFailureEnabledCell.switchControl.on];
     
     // Update which controls are enabled
     [self updateEnabledControls];
@@ -567,7 +613,7 @@ enum {
 
 - (void)toggleCloseEnabled:(id)sender {
     // Update the setting
-    [appSettings setCloseEnabled:closeEnabledCell.switchControl.on];
+    [self.appSettings setCloseEnabled:closeEnabledCell.switchControl.on];
     
     // Update which controls are enabled
     [self updateEnabledControls];
@@ -575,7 +621,7 @@ enum {
 
 - (void)toggleRememberPasswords:(id)sender {
     // Update the setting
-    [appSettings setRememberPasswordsEnabled:rememberPasswordsEnabledCell.switchControl.on];
+    [self.appSettings setRememberPasswordsEnabled:rememberPasswordsEnabledCell.switchControl.on];
     
     // Delete all database passwords from the keychain
     [KeychainUtils deleteAllForServiceName:@"com.jflan.MiniKeePass.passwords"];
@@ -584,17 +630,17 @@ enum {
 
 - (void)toggleHidePasswords:(id)sender {
     // Update the setting
-    [appSettings setHidePasswords:hidePasswordsCell.switchControl.on];
+    [self.appSettings setHidePasswords:hidePasswordsCell.switchControl.on];
 }
 
 - (void)toggleSortingEnabled:(id)sender {
     // Update the setting
-    [appSettings setSortAlphabetically:sortingEnabledCell.switchControl.on];
+    [self.appSettings setSortAlphabetically:sortingEnabledCell.switchControl.on];
 }
 
 - (void)toggleClearClipboardEnabled:(id)sender {
     // Update the setting
-    [appSettings setClearClipboardEnabled:clearClipboardEnabledCell.switchControl.on];
+    [self.appSettings setClearClipboardEnabled:clearClipboardEnabledCell.switchControl.on];
 
     // Update which controls are enabled
     [self updateEnabledControls];
@@ -602,7 +648,7 @@ enum {
 
 - (void)toggleWebBrowserIntegrated:(id)sender {
     // Update the setting
-    [appSettings setWebBrowserIntegrated:webBrowserIntegratedCell.switchControl.on];
+    [self.appSettings setWebBrowserIntegrated:webBrowserIntegratedCell.switchControl.on];
 }
 
 - (void)pinViewController:(PinViewController *)controller pinEntered:(NSString *)pin {        
@@ -620,8 +666,8 @@ enum {
         NSString *pinHash = [PasswordUtils hashPassword:pin];
         
         // Set the PIN and enable the PIN enabled setting
-        [appSettings setPinEnabled:pinEnabledCell.switchControl.on];
-        [appSettings setPin:pinHash];
+        [self.appSettings setPinEnabled:pinEnabledCell.switchControl.on];
+        [self.appSettings setPin:pinHash];
         
         // Update which controls are enabled
         [self updateEnabledControls];
