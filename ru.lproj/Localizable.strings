@@ -81,10 +81,13 @@
 "There are no applications installed capable of importing KeePass files" = "Нет установленных приложений, способных импортировать файлы KeePass";
 "Tap the + button to add a new KeePass file." = "Нажмите кнопку +, чтобы добавить новый файл KeePass.";
 "No password or keyfile specified" = "Не указан ни пароль, ни файл ключа";
+"Error Checking PIN" = "Error Checking PIN"; // FIXME
 
 // Settings Page
 "Settings" = "Настройки";
 "PIN Enabled" = "PIN-код включен";
+"Touch ID" = "Touch ID"; // FIXME
+"Use your fingerprint as an alternative to entering a PIN if supported." = "Use your fingerprint as an alternative to entering a PIN if supported."; // FIXME
 "Lock Timeout" = "Тайм-аут блокировки";
 "Immediately" = "Сразу";
 "30 Seconds" = "30 сек.";

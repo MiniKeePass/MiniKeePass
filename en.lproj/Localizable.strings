@@ -79,10 +79,13 @@
 "There are no applications installed capable of importing KeePass files" = "There are no applications installed capable of importing KeePass files";
 "Tap the + button to add a new KeePass file." = "Tap the + button to add a new KeePass file.";
 "No password or keyfile specified" = "No password or keyfile specified";
+"Error Checking PIN" = "Error Checking PIN";
 
 // Settings Page
 "Settings" = "Settings";
 "PIN Enabled" = "PIN Enabled";
+"Touch ID" = "Touch ID";
+"Use your fingerprint as an alternative to entering a PIN if supported." = "Use your fingerprint as an alternative to entering a PIN if supported.";
 "Lock Timeout" = "Lock Timeout";
 "Immediately" = "Immediately";
 "30 Seconds" = "30 Seconds";

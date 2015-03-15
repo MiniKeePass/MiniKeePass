@@ -79,10 +79,13 @@
 "There are no applications installed capable of importing KeePass files" = "尚未安装支持导入 KeePass 文件的应用";
 "Tap the + button to add a new KeePass file." = "触摸 + 按钮以添加新的KeePass 文件";
 "No password or keyfile specified" = "未指定密码或密匙文件";
+"Error Checking PIN" = "Error Checking PIN"; // FIXME
 
 // Settings Page
 "Settings" = "设置";
 "PIN Enabled" = "启用 PIN 码";
+"Touch ID" = "Touch ID"; // FIXME
+"Use your fingerprint as an alternative to entering a PIN if supported." = "Use your fingerprint as an alternative to entering a PIN if supported."; // FIXME
 "Lock Timeout" = "锁定前时长";
 "Immediately" = "立刻";
 "30 Seconds" = "30 秒";

@@ -200,7 +200,8 @@ static LockScreenManager *sharedInstance = nil;
     NSString *validPin = [appSettings pin];
     
     if (validPin == nil) {
-        pinViewController.titleLabel.text = NSLocalizedString(@"Invalid PIN Settings", nil);
+        [pinViewController clearPin];
+        pinViewController.titleLabel.text = NSLocalizedString(@"Error Checking PIN", nil);
     } else {
         // Check if the PIN is valid
         if ([PasswordUtils validatePassword:pin againstHash:validPin]) {

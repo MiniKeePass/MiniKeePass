@@ -79,10 +79,13 @@
 "There are no applications installed capable of importing KeePass files" = "Non ci sono applicazioni installate in grado di importare file di KeePass";
 "Tap the + button to add a new KeePass file." = "Tap the + button to add a new KeePass file."; // FIXME
 "No password or keyfile specified" = "No password or keyfile specified"; // FIXME
+"Error Checking PIN" = "Error Checking PIN"; // FIXME
 
 // Settings Page
 "Settings" = "Impostazioni";
 "PIN Enabled" = "PIN abilitato";
+"Touch ID" = "Touch ID"; // FIXME
+"Use your fingerprint as an alternative to entering a PIN if supported." = "Use your fingerprint as an alternative to entering a PIN if supported."; // FIXME
 "Lock Timeout" = "Intervallo blocco";
 "Immediately" = "Immediatamente";
 "30 Seconds" = "30 secondi";
