@@ -19,12 +19,12 @@
 
 @implementation OutputStream
 
-- (NSUInteger)write:(const void*)bytes length:(NSUInteger)bytesLength {
+- (NSUInteger)write:(const void *)bytes length:(NSUInteger)bytesLength {
     [self doesNotRecognizeSelector:_cmd];
     return 0;
 }
 
-- (NSUInteger)write:(NSData*)data {
+- (NSUInteger)write:(NSData *)data {
     return [self write:[data bytes] length:[data length]];
 }
 

@@ -33,6 +33,6 @@
     BOOL eof;
 }
 
-- (id)initWithInputStream:(InputStream*)stream;
+- (id)initWithInputStream:(InputStream *)stream;
 
 @end

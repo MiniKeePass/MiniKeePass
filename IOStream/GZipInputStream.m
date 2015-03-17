@@ -23,7 +23,7 @@
 
 @implementation GZipInputStream
 
-- (id)initWithInputStream:(InputStream*)stream {
+- (id)initWithInputStream:(InputStream *)stream {
     self = [super init];
     if (self) {
         inputStream = stream;
@@ -42,7 +42,7 @@
     return self;
 }
 
-- (NSUInteger)read:(void*)bytes length:(NSUInteger)bytesLength {
+- (NSUInteger)read:(void *)bytes length:(NSUInteger)bytesLength {
     NSUInteger remaining = bytesLength;
     NSUInteger offset = 0;
     NSUInteger n;

@@ -40,7 +40,7 @@
     CC_SHA256_Final(hash, &shaCtx);
 }
 
-- (uint8_t*)getHash {
+- (uint8_t *)getHash {
     return hash;
 }
 

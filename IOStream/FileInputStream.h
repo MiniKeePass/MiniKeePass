@@ -22,7 +22,7 @@
     int fd;
 }
 
-- (id)initWithFilename:(NSString*)filename;
-- (NSInteger)seek:(NSUInteger)offset;
+- (id)initWithFilename:(NSString *)filename;
+- (off_t)seek:(off_t)offset;
 
 @end

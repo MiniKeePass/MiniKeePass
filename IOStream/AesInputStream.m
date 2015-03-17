@@ -22,7 +22,7 @@
 
 @implementation AesInputStream
 
-- (id)initWithInputStream:(InputStream*)stream key:(NSData*)key iv:(NSData*)iv {
+- (id)initWithInputStream:(InputStream *)stream key:(NSData *)key iv:(NSData *)iv {
     self = [super init];
     if (self) {
         inputStream = stream;
@@ -40,7 +40,7 @@
     CCCryptorRelease(cryptorRef);
 }
 
-- (NSUInteger)read:(void*)bytes length:(NSUInteger)bytesLength {
+- (NSUInteger)read:(void *)bytes length:(NSUInteger)bytesLength {
     NSUInteger remaining = bytesLength;
     NSUInteger offset = 0;
     NSUInteger n;
@@ -53,7 +53,7 @@
         }
         
         n = MIN(remaining, bufferSize - bufferOffset);       
-        memcpy(((uint8_t*)bytes) + offset, outputBuffer + bufferOffset, n);
+        memcpy(((uint8_t *)bytes) + offset, outputBuffer + bufferOffset, n);
         
         bufferOffset += n;
         

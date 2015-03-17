@@ -22,7 +22,7 @@
 
 @implementation AesOutputStream
 
-- (id)initWithOutputStream:(OutputStream*)stream key:(NSData*)key iv:(NSData*)iv {
+- (id)initWithOutputStream:(OutputStream *)stream key:(NSData *)key iv:(NSData *)iv {
     self = [super init];
     if (self) {
         outputStream = stream;

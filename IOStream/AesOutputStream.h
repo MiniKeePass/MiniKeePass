@@ -28,6 +28,6 @@
     uint8_t *buffer;
 }
 
-- (id)initWithOutputStream:(OutputStream*)stream key:(NSData*)key iv:(NSData*)iv;
+- (id)initWithOutputStream:(OutputStream *)stream key:(NSData *)key iv:(NSData *)iv;
 
 @end

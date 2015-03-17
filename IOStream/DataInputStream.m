@@ -19,7 +19,7 @@
 
 @implementation DataInputStream
 
-- (id)initWithData:(NSData*)d {
+- (id)initWithData:(NSData *)d {
     self = [super init];
     if (self) {
         data = d;
@@ -28,7 +28,7 @@
     return self;
 }
 
-- (NSUInteger)read:(void*)bytes length:(NSUInteger)bytesLength {
+- (NSUInteger)read:(void *)bytes length:(NSUInteger)bytesLength {
     NSRange range;
     range.location = dataOffset;
     range.length = MIN([data length] - dataOffset, bytesLength);

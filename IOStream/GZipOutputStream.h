@@ -28,6 +28,6 @@
     uint8_t buffer[GZIP_OUTPUT_BUFFERSIZE];
 }
 
-- (id)initWithOutputStream:(OutputStream*)stream;
+- (id)initWithOutputStream:(OutputStream *)stream;
 
 @end
