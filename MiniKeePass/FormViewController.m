@@ -70,21 +70,6 @@
     [textField becomeFirstResponder];
 }
 
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
-    [UIView animateWithDuration:duration animations:^{
-        [self resizeControlsForOrientation:toInterfaceOrientation];
-    }];
-}
-
-- (void)resizeControlsForOrientation:(UIInterfaceOrientation)orientation {
-    for (UIView *controlView in self.controls) {
-        if (![controlView isKindOfClass:[UITableViewCell class]]) {
-            controlView.frame = [self calculateNewFrameForView:controlView inOrientation:orientation];
-        }
-    }
-}
-
-
 - (void)applicationWillResignActive:(id)sender {
     for (UITextField *textField in self.controls) {
         if ([textField isFirstResponder]) {
@@ -107,27 +92,37 @@
         if ([controlView isKindOfClass:[UITableViewCell class]]) {
             cell = (UITableViewCell*)controlView;
         } else {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-
-            controlView.frame = [self calculateNewFrameForView:controlView
-                                                 inOrientation:[[UIApplication sharedApplication] statusBarOrientation]];
-            [cell addSubview:controlView];
+            cell = [self createCellWithContraintsForView:controlView];
         }
         [self.cells addObject:cell];
     }
 }
 
-- (CGRect)calculateNewFrameForView:(UIView *)view inOrientation:(UIInterfaceOrientation)orientation {
-    CGRect screenBounds = [[UIScreen mainScreen] bounds];
-    CGFloat currentWidth = UIInterfaceOrientationIsPortrait(orientation) ? CGRectGetWidth(screenBounds) : CGRectGetHeight(screenBounds);
+- (UITableViewCell*)createCellWithContraintsForView:(UIView*)view
+{
+    UITableViewCell* cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    [cell addSubview:view];
 
-    CGFloat xOrigin = [[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad ? 56.0f : 20.0f;
-    CGFloat yOrigin = 11;
-    CGFloat width = currentWidth - 2 * xOrigin;
-    CGFloat height = 22;
-
-    return CGRectMake(xOrigin, yOrigin, width, height);
+    [view setTranslatesAutoresizingMaskIntoConstraints:NO];
+    NSNumber* xPadding = @20;
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
+    {
+        xPadding = @56;
+    }
+    NSArray* hContraints = [NSLayoutConstraint constraintsWithVisualFormat:@"|-xPadding-[view]-xPadding-|"
+                                                                   options:0
+                                                                   metrics:@{@"xPadding":xPadding}
+                                                                     views:@{@"view":view}
+                            ];
+    [cell addConstraints:hContraints];
+    NSArray* vContraints = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-11-[view(==22)]-11-|"
+                                                                   options:0
+                                                                   metrics:nil
+                                                                     views:@{@"view":view}
+                            ];
+    [cell addConstraints:vContraints];
+    return cell;
 }
 
 - (void)showErrorMessage:(NSString *)message {
