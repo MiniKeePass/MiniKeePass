@@ -25,9 +25,6 @@
 #import "ImageFactory.h"
 #import "Kdb3Node.h"
 
-#define PORTRAIT_BUTTON_WIDTH  ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone ? 97.0f : 244.0f)
-#define LANDSCAPE_BUTTON_WIDTH ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone ? 186.0f : 330.0f)
-
 enum {
     SECTION_GROUPS,
     SECTION_ENTRIES,
@@ -51,7 +48,6 @@ enum {
 @property (nonatomic, strong) UIBarButtonItem *deleteButton;
 @property (nonatomic, strong) UIBarButtonItem *moveButton;
 @property (nonatomic, strong) UIBarButtonItem *renameButton;
-@property (nonatomic, assign) CGFloat currentButtonWidth;
 
 @property (nonatomic, strong) GroupSearchController *searchController;
 @property (nonatomic, strong) UISearchDisplayController *mySearchDisplayController;
@@ -161,13 +157,6 @@ enum {
         }
     }
 
-    UIInterfaceOrientation currentOrientation = [[UIApplication sharedApplication] statusBarOrientation];
-    if (UIInterfaceOrientationIsPortrait(currentOrientation)) {
-        self.currentButtonWidth = PORTRAIT_BUTTON_WIDTH;
-    } else {
-        self.currentButtonWidth = LANDSCAPE_BUTTON_WIDTH;
-    }
-
     [super viewWillAppear:animated];
 }
 
@@ -180,16 +169,6 @@ enum {
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
-    if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) {
-        self.currentButtonWidth = PORTRAIT_BUTTON_WIDTH;
-    } else {
-        self.currentButtonWidth = LANDSCAPE_BUTTON_WIDTH;
-    }
-
-    self.deleteButton.width = self.currentButtonWidth;
-    self.moveButton.width = self.currentButtonWidth;
-    self.renameButton.width = self.currentButtonWidth;
-
     [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
 }
 
@@ -225,28 +204,25 @@ enum {
                                                             target:self
                                                             action:@selector(deleteSelectedItems)];
         self.deleteButton.tintColor = [UIColor colorWithRed:0.8 green:0.15 blue:0.15 alpha:1];
-        self.deleteButton.width = self.currentButtonWidth;
         self.deleteButton.enabled = NO;
 
         self.moveButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Move", nil)
                                                            style:UIBarButtonItemStyleBordered
                                                           target:self
                                                           action:@selector(moveSelectedItems)];
-        self.moveButton.width = self.currentButtonWidth;
         self.moveButton.enabled = NO;
 
         self.renameButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Rename", nil)
                                                              style:UIBarButtonItemStyleBordered
                                                             target:self
                                                             action:@selector(renameSelectedItem)];
-        self.renameButton.width = self.currentButtonWidth;
         self.renameButton.enabled = NO;
 
         UIBarButtonItem *spacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
                                                                                 target:nil
                                                                                 action:nil];
 
-        _editingToolbarItems = @[self.deleteButton, spacer, self.moveButton, spacer, self.renameButton];
+        _editingToolbarItems = @[spacer, self.deleteButton, spacer, self.moveButton, spacer, self.renameButton, spacer];
     }
     
     return _editingToolbarItems;
