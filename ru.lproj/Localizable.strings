@@ -63,6 +63,7 @@
 
 // General Messages
 "Enter your PIN to unlock" = "Введите PIN-код для разблокировки";
+"Unlock MiniKeePass" = "Unlock MiniKeePass"; // FIXME
 "Enter the password and/or select the keyfile for the %@ database." = "Введите пароль и/или выберите файл ключа для базы данных %@.";
 "Enter a new name for the password database. The correct file extension will automatically be appended." = "Введите новое имя для базы данных. Правильное расширение файла будет автоматически добавлено.";
 "Do not forget your database password, it cannot be recovered." = "Запомните ваш пароль к базе данных, он не может быть восстановлён.";

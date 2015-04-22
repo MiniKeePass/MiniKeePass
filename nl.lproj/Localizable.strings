@@ -63,6 +63,7 @@
 
 // General Messages
 "Enter your PIN to unlock" = "Voer uw PIN in om te ontgrendelen";
+"Unlock MiniKeePass" = "Unlock MiniKeePass"; // FIXME
 "Enter the password and/or select the keyfile for the %@ database." = "Voer uw wachtwoord in en/of selecteer het sleutelbestand voor de %@ database.";
 "Enter a new name for the password database. The correct file extension will automatically be appended." = "Voer een nieuwe naam in voor de wachtwoorddatabase. De correcte bestandextensie zal automatisch worden toegevoegd.";
 "Do not forget your database password, it cannot be recovered." = "Vergeet uw databasewachtwoord niet, het kan niet hersteld worden.";

@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright 2011 Jason Rush and John Flanagan. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -61,6 +61,7 @@
 
 // General Messages
 "Enter your PIN to unlock" = "Informe seu PIN para desbloquear";
+"Unlock MiniKeePass" = "Unlock MiniKeePass"; // FIXME
 "Enter the password and/or select the keyfile for the %@ database." = "Informe a senha e/ou selecione um arquivo de chave para a base de dados %@.";
 "Enter a new name for the password database. The correct file extension will automatically be appended." = "Informe um novo nome para a senha da base de dados. A extensão correta do arquivo será automaticamente adicionada.";
 "Do not forget your database password, it cannot be recovered." = "Do not forget your database password, it cannot be recovered."; // FIXME

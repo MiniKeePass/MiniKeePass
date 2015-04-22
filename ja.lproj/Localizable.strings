@@ -61,6 +61,7 @@
 
 // General Messages
 "Enter your PIN to unlock" = "Enter your PIN to unlock";
+"Unlock MiniKeePass" = "Unlock MiniKeePass";
 "Enter the password and/or select the keyfile for the %@ database." = "Enter the password and/or select the keyfile for the %@ database.";
 "Enter a new name for the password database. The correct file extension will automatically be appended." = "Enter a new name for the password database. The correct file extension will automatically be appended.";
 "Do not forget your database password, it cannot be recovered." = "Do not forget your database password, it cannot be recovered.";

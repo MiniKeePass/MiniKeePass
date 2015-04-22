@@ -61,14 +61,15 @@
 
 // General Messages
 "Enter your PIN to unlock" = "Inserisci il tuo PIN per sbloccare";
+"Unlock MiniKeePass" = "Unlock MiniKeePass"; // FIXME
 "Enter the password and/or select the keyfile for the %@ database." = "Inserisci la password e/o seleziona il file chiave per il database %@.";
 "Enter a new name for the password database. The correct file extension will automatically be appended." = "Inserisci un nuovo nome per il database delle password. L'estensione corretta del file sar aggiunta automaticamente.";
 "Do not forget your database password, it cannot be recovered." = "Do not forget your database password, it cannot be recovered."; // FIXME
 
 // Error Messages
 "Error" = "Error"; // FIXME
-"New name is invalid" = "Il nuovo nome non è valido"; // FIXME
-"Name cannot be empty" = "Il nome non può essere vuoto"; // FIXME
+"New name is invalid" = "Il nuovo nome non è valido";
+"Name cannot be empty" = "Il nome non può essere vuoto";
 "Database name is required" = "È richiesto un nome per il database";
 "Passwords do not match" = "Le password non corrispondono";
 "Password is required" = "È richiesta la password";

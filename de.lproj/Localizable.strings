@@ -61,6 +61,7 @@
 
 // General Messages
 "Enter your PIN to unlock" = "Geben Sie zum Entsperren Ihre PIN ein";
+"Unlock MiniKeePass" = "Unlock MiniKeePass"; // FIXME
 "Enter the password and/or select the keyfile for the %@ database." = "Geben Sie das Passwort ein oder wählen Sie die Schlüsseldatei für die Datenbank %@ aus.";
 "Enter a new name for the password database. The correct file extension will automatically be appended." = "Geben Sie einen neuen Namen für die Datenbank ein. Die korrekte Dateiendung wird automatisch hinzugefügt.";
 "Do not forget your database password, it cannot be recovered." = "Vergessen Sie niemals das Passwort für die Datenbank. Es kann nicht wiederhergestellt werden.";

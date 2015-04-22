@@ -61,6 +61,7 @@
 
 // General Messages
 "Enter your PIN to unlock" = "输入 PIN 码解锁";
+"Unlock MiniKeePass" = "Unlock MiniKeePass"; // FIXME
 "Enter the password and/or select the keyfile for the %@ database." = "为访问“%@”数据库，您需要输入密码或选定密匙文件";
 "Enter a new name for the password database. The correct file extension will automatically be appended." = "请为密码数据库输入新的名称，文件扩展名将会自动添加";
 "Do not forget your database password, it cannot be recovered." = "不要忘记您的数据库密码，它是不可恢复的";
