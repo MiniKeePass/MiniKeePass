@@ -1,0 +1,159 @@
+﻿/*
+ * Copyright 2011 Jason Rush and John Flanagan. All rights reserved.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+"Files" = "Filer";
+"Databases" = "Databaser";
+"Key File" = "Nyckelfil";
+"Key Files" = "Nyckelfiler";
+"Groups" = "Grupper";
+"Entries" = "Poster";
+"Group" = "Grupp";
+"Entry" = "Post";
+"New Database" = "Ny databas";
+"New Group" = "Ny grupp";
+"New Entry" = "Ny post";
+"Edit Group" = "Redigera grupp";
+"Edit Entry" = "Redigera post";
+"Title" = "Title";
+"Image" = "Bild";
+"Images" = "Bilder";
+"Username" = "Användarnamn";
+"Password" = "Lösenord";
+"Confirm Password" = "Bekräfta lösenord";
+"URL" = "URL";
+"Comments" = "Anteckningar";
+"OK" = "OK";
+"Cancel" = "Avbryt";
+"Add" = "Lägg till";
+"Search" = "Sök";
+"Help" = "Hjälp";
+"Version 1.x" = "Version 1.x";
+"Version 2.x" = "Version 2.x";
+"None" = "Inget";
+"Name" = "Namn";
+"Value" = "Värde";
+"Delete" = "Radera";
+"Move" = "Flytta";
+"Rename" = "Byt namn";
+"Database Name" = "Databasnamn";
+"Last Modified" = "Senast ändrad";
+"Copied" = "Kopierat";
+"In Memory Protection" = "Minnesskyddat";
+"Custom Field" = "Anpassat fält";
+"Custom Fields" = "Anpassade fält";
+"Add new…" = "Lägg till ny…";
+"Choose Group" = "Välj grupp";
+"Backup" = "Säkerhetskopiera";
+
+// General Messages
+"Enter your PIN to unlock" = "Ange din PIN för att låsa upp";
+"Unlock MiniKeePass" = "Lås upp MiniKeePass";
+"Enter the password and/or select the keyfile for the %@ database." = "Ange lösenord och/eller välj nyckelfil för databasen %@.";
+"Enter a new name for the password database. The correct file extension will automatically be appended." = "Ange ett namn för lösenordsdatabasen. Den rätta filändelsen läggs till automatiskt.";
+"Do not forget your database password, it cannot be recovered." = "Glöm inte lösenordet till databasen, det kan inte återskapas.";
+
+// Error Messages
+"Error" = "Fel";
+"New name is invalid" = "Namnet är ogiltigt";
+"Name cannot be empty" = "Namn krävs";
+"Database name is required" = "Databasnamn krävs";
+"Passwords do not match" = "Lösenorden matchar inte";
+"Password is required" = "Lösenord krävs";
+"Incorrect PIN" = "Ogiltig PIN";
+"Attempts Remaining" = "Försök återstår";
+"Filename is invalid" = "Filnamet är ogiltigt";
+"A file already exists with this name" = "En fil med detta namn finns redan";
+"There are no applications installed capable of importing KeePass files" = "Det finns inga installerade appar som kan importera KeePass-filer";
+"Tap the + button to add a new KeePass file." = "Tryck på + för att lägga till en ny KeePass-fil";
+"No password or keyfile specified" = "Inget lösenord eller nyckelfil angiven";
+"Error Checking PIN" = "PIN-fel";
+
+// Settings Page
+"Settings" = "Inställningar";
+"PIN Enabled" = "PIN aktiverad";
+"Touch ID" = "Touch ID";
+"Use your fingerprint as an alternative to entering a PIN if supported." = "Använd ditt fingeravtryck som alternativ till PIN om stöd finns.";
+"Lock Timeout" = "Låsningstid";
+"Immediately" = "Direkt";
+"30 Seconds" = "30 sekunder";
+"1 Minute" = "1 minut";
+"2 Minutes" = "2 minuter";
+"3 Minutes" = "3 minuter";
+"5 Minutes" = "5 minuter";
+"Enabled" = "Aktiverad";
+"Attempts" = "Försök";
+"Close Enabled" = "Stäng Aktiverad";
+"Close Timeout" = "Stäng Låsningstid";
+"Hide Passwords" = "Göm lösenord";
+"Sorting" = "Sortering";
+"Sort Groups and Entries Alphabetically" = "Sortera grupper och poster alfabetiskt";
+"Encoding" = "Teckenkodning";
+"UTF-8" = "UTF-8";
+"UTF-16 Big Endian" = "UTF-16 Big Endian";
+"UTF-16 Little Endian" = "UTF-16 Little Endian";
+"Latin 1 (ISO/IEC 8859-1)" = "Latin 1 (ISO/IEC 8859-1)";
+"Latin 2 (ISO/IEC 8859-2)" = "Latin 2 (ISO/IEC 8859-2)";
+"7-Bit ASCII" = "7-Bit ASCII";
+"Japanese EUC" = "Japanese EUC";
+"ISO-2022-JP" = "ISO-2022-JP";
+"PIN Protection" = "PIN-skydd";
+"Delete All Data on PIN Failure" = "Radera all data efter fel angiven PIN";
+"Close Database on Timeout" = "Stäng databas efter låsningstid";
+"Remember Database Passwords" = "Kom ihåg databaslösenord";
+"Hide Passwords" = "Göm lösenord";
+"Password Encoding" = "Lösenordsteckenkodning";
+"Clear Clipboard on Timeout" = "Rensa urklipp efter låsningstid";
+"Clear Timeout" = "Rensa låsningstid";
+"Prevent unauthorized access to MiniKeePass with a PIN." = "Förhindrar otillåten åtkoms till MiniKeePass med en PIN-kod.";
+"Delete all files and passwords after too many failed attempts." = "Raderar alla filer och lösenord efter för många misslyckade försök.";
+"Automatically close an open database after the selected timeout." = "Stänger en öppen databas automatiskt efter låsningstid.";
+"Stores remembered database passwords in the devices's secure keychain." = "Lagrar ihågkomna databaslösenord i enhetens säkrade nyckelring.";
+"Hides passwords when viewing a password entry." = "Gömmer lösenord vid visning av post.";
+"The string encoding used for passwords when converting them to database keys." = "Lösenordens teckenkodning vid konvertering till databasposter.";
+"Clear the contents of the clipboard after a given timeout upon performing a copy." = "Rensa urklipp efter en viss tid vid kopiering.";
+"Close Timeout" = "Stäng Låsningstid";
+"Clear Clipboard Timeout" = "Rensa urklipps låsningstid";
+"Web Browser" = "Webbläsare";
+"Integrated" = "Integrerad";
+"Switch between an integrated web browser and Safari." = "Växla mellan integrerad webbläsare och Safari.";
+"Set PIN" = "Välj PIN";
+"Confirm PIN" = "Bekräfta PIN";
+"PINs did not match. Try again" = "PIN matchade inte. Försök igen";
+"MiniKeePass version %@" = "MiniKeePass-version %@";
+
+// Help Titles
+"iTunes Import/Export" = "iTunes-import/export";
+"Dropbox Import/Export" = "Dropbox-import/export";
+"Safari/Email Import" = "Safari/epost-import";
+"Create New Database" = "Skapa ny databas";
+"Key Files" = "Nyckelfiler";
+
+// Password Generator
+"Generator" = "Generator";
+"Length" = "Längd";
+"Character Sets" = "Teckenuppsättningar";
+"Upper Case" = "Versaler";
+"Lower Case" = "Gemener";
+"Upper" = "Stora";
+"Lower" = "Små";
+"Digits" = "Siffror";
+"Minus" = "Minus";
+"Underline" = "Underline";
+"Space" = "Mellanslag";
+"Special" = "Special";
+"Brackets" = "Klamrar";
+"None Selected" = "Inget valt";
