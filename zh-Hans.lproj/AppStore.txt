@@ -7,30 +7,31 @@
 #
 
 # App Name:
-MiniKeePass — Secure Password Manager
+MiniKeePass — 安全密码管理器
 
 # Description:
-MiniKeePass provides secure password storage on your iOS device that's compatible with KeePass.
+MiniKeePass 提供在iOS设备上兼容KeePass的密码存储方案。
 
-- View, Edit, and Create KeePass 1.x and 2.x files
-- Search for entries from the top of tables like in Mail
-- Key File Support
-- Import/Export files to and from Dropbox using the official Dropbox app or any other cloud storage application
-- Copy password entries to the clipboard for easy entry
-- Open websites in Safari while MiniKeePass runs in the background
-- Prevent unauthorized access to MiniKeePass with a PIN
-- Remember database passwords in the device's secure keychain
-- Optionally clear the clipboard after set time on devices that support background tasks
-- Generate new passwords
-- Integrated web browser with username/password auto-type
+- 查看、编辑、或者创建KeePass 1.x 或 2.x 文件
+- 在上层目录下（例如邮件目录）搜索密码记录
+- 支持密匙文件
+- 使用Dropbox官方应用或者任何云端存储应用导入/导出数据文件
+- 方便地拷贝密码至粘贴板
+- 在Safari中浏览网页时，MiniKeePass会在后台运行
+- 通过PIN码阻止未经您授权的访问
+- 使用设备钥匙串保存数据库密码
+- 在超过设定时间后自动清空粘贴板，保证您的密码安全
+- 自动生成新密码
+- 内置浏览器自动完成用户名密码输入
 
-MiniKeePass's source code is available for security audit or contribution on GitHub.
+MiniKeePass的源代码在Github上公开，可供安全审阅
 
 # Keywords:
 MiniKeePass,KeePass,Kee Pass,KeyPass,KeePassX,Password,Password Manager,Secure
+MiniKeePass,KeePass,Kee Pass,KeyPass,KeePassX,密码,Password,密码管理,Password Manager,安全,Secure
 
 # What's New in this Version:
 # Version 1.5
-iOS 7 compatible
-Integrated web browser with auto-type
-Bug fixes
+适配iOS 7
+内置浏览器自动输入密码
+修复若干Bug
