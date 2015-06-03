@@ -41,6 +41,7 @@
         
         _textField = [[UITextField alloc] initWithFrame:frame];
         _textField.delegate = self;
+        _textField.autocorrectionType = UITextAutocorrectionTypeNo;
         _textField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
         _textField.textColor = [UIColor colorWithRed:.285 green:.376 blue:.541 alpha:1];
         _textField.font = [UIFont systemFontOfSize:16];
