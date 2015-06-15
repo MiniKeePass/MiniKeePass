@@ -252,7 +252,7 @@ static LockScreenManager *sharedInstance = nil;
 
                 // Update the incorrect pin message
                 if (remainingAttempts > 0) {
-                    pinViewController.titleLabel.text = [NSString stringWithFormat:@"%@\n%@: %ld", NSLocalizedString(@"Incorrect PIN", nil), NSLocalizedString(@"Attempts Remaining", nil), (long)remainingAttempts];
+                    pinViewController.titleLabel.text = [NSString stringWithFormat:@"%@: %ld", NSLocalizedString(@"Attempts Remaining", nil), (long)remainingAttempts];
                 } else {
                     pinViewController.titleLabel.text = NSLocalizedString(@"Incorrect PIN", nil);
                 }
