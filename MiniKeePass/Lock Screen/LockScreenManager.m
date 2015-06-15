@@ -93,6 +93,17 @@ static LockScreenManager *sharedInstance = nil;
     return timeInterval > [appSettings pinLockTimeout];
 }
 
+- (BOOL)shouldLock {
+    // Check if we're already locked
+    if (self.lockViewController != nil) {
+        return NO;
+    }
+
+    // We should lock if the PIN is enabled
+    AppSettings *appSettings = [AppSettings sharedInstance];
+    return [appSettings pinEnabled];
+}
+
 - (void)checkPin {
     // If the PIN view is already visible, just return
     if (self.pinViewController != nil) {
@@ -182,9 +193,6 @@ static LockScreenManager *sharedInstance = nil;
                                   [self hideLockScreen];
                               });
                           } else {
-                              // FIXME display the error message?
-                              // FIXME Count this as a login failure?
-
                               // Failed, show the PIN screen
                               dispatch_async(dispatch_get_main_queue(), ^{
                                   [self showPinScreen];
@@ -259,8 +267,8 @@ static LockScreenManager *sharedInstance = nil;
 }
 
 - (void)applicationWillResignActive:(NSNotification *)notification {
-    AppSettings *appSettings = [AppSettings sharedInstance];
-    if ([appSettings pinEnabled]) {
+    if ([self shouldLock]) {
+        AppSettings *appSettings = [AppSettings sharedInstance];
         [appSettings setExitTime:[NSDate date]];
 
         [self showLockScreen];
