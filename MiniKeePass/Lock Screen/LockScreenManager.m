@@ -28,6 +28,7 @@
 @interface LockScreenManager () <PinViewControllerDelegate>
 @property (nonatomic, strong) LockViewController *lockViewController;
 @property (nonatomic, strong) PinViewController *pinViewController;
+@property (nonatomic, assign) BOOL checkingTouchId;
 @property (nonatomic, assign) BOOL unlocked;
 @end
 
@@ -46,6 +47,9 @@ static LockScreenManager *sharedInstance = nil;
 - (instancetype)init {
     self = [super init];
     if (self) {
+        _checkingTouchId = NO;
+        _unlocked = NO;
+        
         NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
         [notificationCenter addObserver:self
                                selector:@selector(applicationDidFinishLaunching:)
@@ -71,6 +75,11 @@ static LockScreenManager *sharedInstance = nil;
 #pragma mark - Lock/Unlock
 
 - (BOOL)shouldCheckPin {
+    // Check if we're currently checking TouchID
+    if (self.checkingTouchId) {
+        return NO;
+    }
+    
     // Check if we're unlocked
     if (self.unlocked) {
         return NO;
@@ -182,11 +191,15 @@ static LockScreenManager *sharedInstance = nil;
         [self showPinScreen];
         return;
     }
+    
+    self.checkingTouchId = YES;
 
     // Authenticate User
     [context evaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics
             localizedReason:NSLocalizedString(@"Unlock MiniKeePass", nil)
                       reply:^(BOOL success, NSError *error) {
+                          self.checkingTouchId = NO;
+                          
                           if (success) {
                               // Dismiss the lock screen
                               dispatch_async(dispatch_get_main_queue(), ^{
