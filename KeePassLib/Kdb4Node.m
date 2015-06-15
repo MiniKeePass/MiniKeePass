@@ -150,7 +150,7 @@
     Kdb4Group *group = [[Kdb4Group alloc] init];
 
     group.uuid = [UUID uuid];
-    group.Notes = @"";
+    group.notes = @"";
     group.image = 0;
     group.isExpanded = true;
     group.defaultAutoTypeSequence = @"";

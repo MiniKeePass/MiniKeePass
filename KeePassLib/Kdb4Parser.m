@@ -235,9 +235,9 @@ int closeCallback(void *context) {
 
     group.isExpanded = [[[root elementForName:@"IsExpanded"] stringValue] boolValue];
     group.defaultAutoTypeSequence = [[root elementForName:@"DefaultAutoTypeSequence"] stringValue];
-    group.EnableAutoType = [[root elementForName:@"EnableAutoType"] stringValue];
-    group.EnableSearching = [[root elementForName:@"EnableSearching"] stringValue];
-    group.LastTopVisibleEntry = [self parseUuidString:[[root elementForName:@"LastTopVisibleEntry"] stringValue]];
+    group.enableAutoType = [[root elementForName:@"EnableAutoType"] stringValue];
+    group.enableSearching = [[root elementForName:@"EnableSearching"] stringValue];
+    group.lastTopVisibleEntry = [self parseUuidString:[[root elementForName:@"LastTopVisibleEntry"] stringValue]];
 
     for (DDXMLElement *element in [root elementsForName:@"Entry"]) {
         Kdb4Entry *entry = [self parseEntry:element];
