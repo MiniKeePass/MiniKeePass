@@ -147,19 +147,23 @@
                           delay:0.0f
                         options:UIViewAnimationOptionAllowUserInteraction
                      animations:^{
-                         self.backgroundColor = [UIColor clearColor];
-
-                         if (!_borderHidden) {
-                             self.layer.borderColor = [_borderColor CGColor];
-                         }
-
-                         _mainLabel.textColor = _textColor;
-
-                         if (_subtitleLabel != nil) {
-                             _subtitleLabel.textColor = _textColor;
-                         }
+                         [self clearHighlight];
                      }
                      completion:nil];
+}
+
+- (void)clearHighlight {
+    self.backgroundColor = [UIColor clearColor];
+    
+    if (!_borderHidden) {
+        self.layer.borderColor = [_borderColor CGColor];
+    }
+    
+    _mainLabel.textColor = _textColor;
+    
+    if (_subtitleLabel != nil) {
+        _subtitleLabel.textColor = _textColor;
+    }
 }
 
 @end

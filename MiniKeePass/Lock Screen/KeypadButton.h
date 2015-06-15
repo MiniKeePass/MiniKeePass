@@ -17,7 +17,7 @@
 
 #import <UIKit/UIKit.h>
 
-#define KEYPAD_BUTTON_SIZE    75
+#define KEYPAD_BUTTON_SIZE     75
 #define KEYPAD_BUTTON_XPADDING 20
 #define KEYPAD_BUTTON_YPADDING 12
 
@@ -30,5 +30,7 @@
 
 + (KeypadButton *)numberButtonWithValue:(NSInteger)value andSubtitle:(NSString *)subtitle;
 + (KeypadButton *)systemButtonWithTitle:(NSString *)title;
+
+- (void)clearHighlight;
 
 @end
