@@ -29,6 +29,7 @@
     if (self) {
         self.backgroundColor = [UIColor whiteColor];
 
+        KeypadButton *alphaButton = [KeypadButton systemButtonWithTitle:@"A-Z"];
         KeypadButton *deleteButton = [KeypadButton systemButtonWithTitle:@"Delete"];
 
         self.buttons = @[
@@ -41,7 +42,7 @@
                          [KeypadButton numberButtonWithValue:7 andSubtitle:@"PQRS"],
                          [KeypadButton numberButtonWithValue:8 andSubtitle:@"TUV"],
                          [KeypadButton numberButtonWithValue:9 andSubtitle:@"WXYZ"],
-                         [NSNull null],
+                         alphaButton,
                          [KeypadButton numberButtonWithValue:0 andSubtitle:nil],
                          deleteButton,
                          ];
@@ -51,7 +52,9 @@
                 continue;
             }
 
-            if (button == deleteButton) {
+            if (button == alphaButton) {
+                [button addTarget:self action:@selector(alphaPressed:) forControlEvents:UIControlEventTouchDown];
+            } else if (button == deleteButton) {
                 [button addTarget:self action:@selector(deletePressed:) forControlEvents:UIControlEventTouchDown];
             } else {
                 [button addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchDown];
@@ -101,6 +104,14 @@
 
 - (void)deletePressed:(KeypadButton *)source {
     [self.delegate keypadViewDeletePressed:self];
+}
+
+- (void)alphaPressed:(KeypadButton *)source {
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.3f * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void) {
+        [source clearHighlight];
+    });
+    
+    [self.delegate keypadViewAlphaPressed:self];
 }
 
 @end

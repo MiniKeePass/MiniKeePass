@@ -23,6 +23,7 @@
 
 - (void)keypadView:(KeypadView *)keypadView numberPressed:(NSString *)str;
 - (void)keypadViewDeletePressed:(KeypadView *)keypadView;
+- (void)keypadViewAlphaPressed:(KeypadView *)keypadView;
 
 @end
 

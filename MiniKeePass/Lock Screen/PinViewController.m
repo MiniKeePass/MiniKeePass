@@ -20,7 +20,7 @@
 
 #define PIN_LENGTH 4
 
-@interface PinViewController () <KeypadViewDelegate>
+@interface PinViewController () <KeypadViewDelegate, UIAlertViewDelegate>
 @property (nonatomic, strong) UILabel *pinLabel;
 @property (nonatomic, strong) KeypadView *keypadView;
 @property (nonatomic, strong) NSString *pin;
@@ -120,6 +120,30 @@
     NSInteger n = self.pin.length;
     if (n > 0) {
         self.pin = [self.pin substringToIndex:n - 1];
+    }
+}
+
+- (void)keypadViewAlphaPressed:(KeypadView *)keypadView {
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Enter your PIN to unlock", nil)
+                                                        message:nil
+                                                       delegate:self
+                                              cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
+                                              otherButtonTitles:NSLocalizedString(@"OK", nil), nil];
+    alertView.alertViewStyle = UIAlertViewStyleSecureTextInput;
+    [alertView show];
+}
+
+#pragma mark - UIAlertViewDelegate
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    UITextField *textField = [alertView textFieldAtIndex:0];
+    if (textField.text.length > 0) {
+        [self clearPin];
+        _pin = textField.text;
+
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.3f * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void) {
+            [self.delegate pinViewController:self pinEntered:self.pin];
+        });
     }
 }
 
