@@ -66,22 +66,6 @@
 - (void)applicationWillEnterForeground:(UIApplication *)application {
     // Check file protection
     [self checkFileProtection];
-
-    // Get the time when the application last exited
-    AppSettings *appSettings = [AppSettings sharedInstance];
-    NSDate *exitTime = [appSettings exitTime];
-
-    // Check if closing the database is enabled
-    if ([appSettings closeEnabled] && exitTime != nil) {
-        // Get the lock timeout (in seconds)
-        NSInteger closeTimeout = [appSettings closeTimeout];
-
-        // Check if it's been longer then close timeout
-        NSTimeInterval timeInterval = [exitTime timeIntervalSinceNow];
-        if (timeInterval < -closeTimeout) {
-            [self closeDatabase];
-        }
-    }
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {

@@ -108,9 +108,9 @@ static LockScreenManager *sharedInstance = nil;
         return NO;
     }
 
-    // We should lock if the PIN is enabled
+    // We should lock if the PIN is enabled or closing the database is enabled
     AppSettings *appSettings = [AppSettings sharedInstance];
-    return [appSettings pinEnabled];
+    return [appSettings pinEnabled] || [appSettings closeEnabled];
 }
 
 - (void)checkPin {
@@ -271,6 +271,26 @@ static LockScreenManager *sharedInstance = nil;
     }
 }
 
+#pragma mark - Closing the database
+
+- (BOOL)shouldCloseDatabase {
+    // Check if the PIN is enabled
+    AppSettings *appSettings = [AppSettings sharedInstance];
+    if (![appSettings closeEnabled]) {
+        return NO;
+    }
+    
+    // Get the last time the app exited
+    NSDate *exitTime = [appSettings exitTime];
+    if (exitTime == nil) {
+        return YES;
+    }
+    
+    // Check if enough time has ellapsed
+    NSTimeInterval timeInterval = ABS([exitTime timeIntervalSinceNow]);
+    return timeInterval > [appSettings closeTimeout];
+}
+
 #pragma mark - Application Notification Handlers
 
 - (void)applicationDidFinishLaunching:(NSNotification *)notification {
@@ -289,6 +309,11 @@ static LockScreenManager *sharedInstance = nil;
 }
 
 - (void)applicationDidBecomeActive:(NSNotification *)notification {
+    if ([self shouldCloseDatabase]) {
+        MiniKeePassAppDelegate *appDelegate = [MiniKeePassAppDelegate appDelegate];
+        [appDelegate closeDatabase];
+    }
+
     if ([self shouldCheckPin]) {
         [self checkPin];
     } else {
