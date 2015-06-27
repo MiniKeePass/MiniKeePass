@@ -55,7 +55,6 @@
                              object:nil];
 
     [self checkFileProtection];
-    [[AppSettings sharedInstance] enforceBackupPolicy];
 
     // Initialize the lock screen manager
     [LockScreenManager sharedInstance];
