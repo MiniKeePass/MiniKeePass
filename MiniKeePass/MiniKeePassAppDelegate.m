@@ -54,8 +54,8 @@
                                name:UIPasteboardChangedNotification
                              object:nil];
 
-    // Check file protection
     [self checkFileProtection];
+    [[AppSettings sharedInstance] enforceBackupPolicy];
 
     // Initialize the lock screen manager
     [LockScreenManager sharedInstance];

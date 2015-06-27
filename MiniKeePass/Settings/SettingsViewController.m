@@ -34,6 +34,7 @@ enum {
     SECTION_SORTING,
     SECTION_PASSWORD_ENCODING,
     SECTION_CLEAR_CLIPBOARD,
+    SECTION_BACKUP,
     SECTION_WEB_BROWSER
 };
 
@@ -84,6 +85,11 @@ enum {
     ROW_CLEAR_CLIPBOARD_ENABLED,
     ROW_CLEAR_CLIPBOARD_TIMEOUT,
     ROW_CLEAR_CLIPBOARD_NUMBER
+};
+
+enum {
+  ROW_BACKUP_DISABLED,
+  ROW_BACKUP_NUMBER
 };
 
 enum {
@@ -186,6 +192,11 @@ enum {
                                                                     NSLocalizedString(@"2 Minutes", nil),
                                                                     NSLocalizedString(@"3 Minutes", nil)]
                                                     selectedIndex:0];
+  
+    backupDisabledCell = [[SwitchCell alloc] initWithLabel:NSLocalizedString(@"Exclude from backup", nil)];
+    [backupDisabledCell.switchControl addTarget:self
+                                         action:@selector(toogleBackupDisabled:)
+                               forControlEvents:UIControlEventValueChanged];
 
     webBrowserIntegratedCell = [[SwitchCell alloc] initWithLabel:NSLocalizedString(@"Integrated", nil)];
     [webBrowserIntegratedCell.switchControl addTarget:self
@@ -234,6 +245,7 @@ enum {
                           [NSNumber numberWithInt:SECTION_SORTING],
                           [NSNumber numberWithInt:SECTION_PASSWORD_ENCODING],
                           [NSNumber numberWithInt:SECTION_CLEAR_CLIPBOARD],
+                          [NSNumber numberWithInt:SECTION_BACKUP],
                           [NSNumber numberWithInt:SECTION_WEB_BROWSER]
                           ];
     } else {
@@ -247,6 +259,7 @@ enum {
                           [NSNumber numberWithInt:SECTION_SORTING],
                           [NSNumber numberWithInt:SECTION_PASSWORD_ENCODING],
                           [NSNumber numberWithInt:SECTION_CLEAR_CLIPBOARD],
+                          [NSNumber numberWithInt:SECTION_BACKUP],
                           [NSNumber numberWithInt:SECTION_WEB_BROWSER]
                           ];
     }
@@ -280,6 +293,8 @@ enum {
     
     clearClipboardEnabledCell.switchControl.on = [self.appSettings clearClipboardEnabled];
     [clearClipboardTimeoutCell setSelectedIndex:[self.appSettings clearClipboardTimeoutIndex]];
+  
+    backupDisabledCell.switchControl.on = [self.appSettings backupDisabled];
 
     webBrowserIntegratedCell.switchControl.on = [self.appSettings webBrowserIntegrated];
 
@@ -344,6 +359,9 @@ enum {
 
         case SECTION_CLEAR_CLIPBOARD:
             return ROW_CLEAR_CLIPBOARD_NUMBER;
+        
+        case SECTION_BACKUP:
+            return ROW_BACKUP_NUMBER;
 
         case SECTION_WEB_BROWSER:
             return ROW_WEB_BROWSER_NUMBER;
@@ -380,6 +398,9 @@ enum {
 
         case SECTION_CLEAR_CLIPBOARD:
             return NSLocalizedString(@"Clear Clipboard on Timeout", nil);
+        
+        case SECTION_BACKUP:
+            return NSLocalizedString(@"iCloud/iTunes Backup", nil);
 
         case SECTION_WEB_BROWSER:
             return NSLocalizedString(@"Web Browser", nil);
@@ -417,6 +438,9 @@ enum {
         case SECTION_CLEAR_CLIPBOARD:
             return NSLocalizedString(@"Clear the contents of the clipboard after a given timeout upon performing a copy.", nil);
             
+        case SECTION_BACKUP:
+            return NSLocalizedString(@"MiniKeePass will exclude databases and key files from iTunes/iCloud backups", nil);
+        
         case SECTION_WEB_BROWSER:
             return NSLocalizedString(@"Switch between an integrated web browser and Safari.", nil);
     }
@@ -496,6 +520,14 @@ enum {
                     return clearClipboardTimeoutCell;
             }
             break;
+        
+        case SECTION_BACKUP:
+            switch (indexPath.row) {
+                case ROW_BACKUP_DISABLED:
+                return backupDisabledCell;
+            }
+            break;
+        
         case SECTION_WEB_BROWSER:
             switch (indexPath.row) {
                 case ROW_WEB_BROWSER_INTEGRATED:
@@ -657,7 +689,12 @@ enum {
     [self.appSettings setWebBrowserIntegrated:webBrowserIntegratedCell.switchControl.on];
 }
 
-- (void)pinViewController:(PinViewController *)controller pinEntered:(NSString *)pin {        
+- (void)toogleBackupDisabled:(id)sender {
+  // Update the setting
+  [self.appSettings setBackupDisabled:backupDisabledCell.switchControl.on];
+}
+
+- (void)pinViewController:(PinViewController *)controller pinEntered:(NSString *)pin {
     if (tempPin == nil) {
         tempPin = [pin copy];
         

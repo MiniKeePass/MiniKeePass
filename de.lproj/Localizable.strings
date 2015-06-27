@@ -127,6 +127,9 @@
 "Clear the contents of the clipboard after a given timeout upon performing a copy." = "Inhalt der Zwischenablage nach Zeitübeschreitung löschen nachdem kopiert wurde.";
 "Close Timeout" = "Close Timeout";
 "Clear Clipboard Timeout" = "Timeout zum Löschen der Zwischenablage";
+"Exclude from backup" = "Backups deaktivieren";
+"iCloud/iTunes Backup" = "iCloud/iTunes Backup";
+"MiniKeePass will exclude databases and key files from iTunes/iCloud backups" = "Datenbank- und Schlüsseldateien vom iTunes/iCloud Backup ausschließen";
 "Web Browser" = "Web Browser";
 "Integrated" = "Integriert";
 "Switch between an integrated web browser and Safari." = "Wechseln Sie zwischen einem integrierten Web Browser und Safari.";
