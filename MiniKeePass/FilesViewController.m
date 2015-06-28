@@ -427,7 +427,7 @@ enum {
 }
 
 - (void)showDocumentPickerMenu {
-    UIDocumentMenuViewController *documentMenuViewController = [[UIDocumentMenuViewController alloc] initWithDocumentTypes:@[(NSString *)kUTTypeJPEG]
+    UIDocumentMenuViewController *documentMenuViewController = [[UIDocumentMenuViewController alloc] initWithDocumentTypes:@[(NSString *)kUTTypeItem]
                                                                                                                     inMode:UIDocumentPickerModeOpen];
     documentMenuViewController.delegate = self;
     [self presentViewController:documentMenuViewController animated:YES completion:nil];
@@ -500,7 +500,7 @@ enum {
 }
 
 - (void)addFilename:(NSString *)filename {
-    // Add the file to the list of files  - TODO: Code duplicated (see above)
+    // Add the file to the list of files
     NSUInteger index = [self.databaseFiles indexOfObject:filename
                                            inSortedRange:NSMakeRange(0, [self.databaseFiles count])
                                                  options:NSBinarySearchingInsertionIndex
@@ -509,7 +509,7 @@ enum {
                                          }];
     [self.databaseFiles insertObject:filename atIndex:index];
 
-    // Notify the table of the new row  - TODO: Code duplicated (see above)
+    // Notify the table of the new row
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:SECTION_DATABASE];
     if ([self.databaseFiles count] == 1) {
         // Reload the section if it's the first item
@@ -584,6 +584,9 @@ enum {
                                                    relativeToURL:nil
                                                            error:&error];
      */
+    // Set file protection on the new file
+    [fileManager setAttributes:@{NSFileProtectionKey:NSFileProtectionComplete} ofItemAtPath:localFilePath error:nil];
+
 
     // release external resource:
     [sourceDocUrl stopAccessingSecurityScopedResource];
