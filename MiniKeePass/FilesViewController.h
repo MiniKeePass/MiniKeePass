@@ -22,7 +22,7 @@
 
 @class MiniKeePassAppDelegate;
 
-@interface FilesViewController : UITableViewController
+@interface FilesViewController : UITableViewController <UIDocumentMenuDelegate, UIDocumentPickerDelegate>
 
 - (void)updateFiles;
 

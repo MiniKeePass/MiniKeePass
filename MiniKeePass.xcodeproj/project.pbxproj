@@ -829,7 +829,7 @@
 						DevelopmentTeam = G9ZT7943FZ;
 						SystemCapabilities = {
 							com.apple.iCloud = {
-								enabled = 0;
+								enabled = 1;
 							};
 						};
 					};
