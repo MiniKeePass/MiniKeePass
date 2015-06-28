@@ -380,9 +380,33 @@ enum {
 }
 
 - (void)addPressed:(UIBarButtonItem *)source {
-    [self showDocumentPickerMenu];
 
-    /* DSTK was:
+
+    if (NSClassFromString(@"UIDocumentMenuViewController") != nil) {
+        // current iOS-Version DOES HAVE support for UIDocumentMenuViewController:
+        UIDocumentMenuViewController *documentMenuViewController =
+            [[UIDocumentMenuViewController alloc] initWithDocumentTypes:@[(NSString *)kUTTypeItem]
+                                                                 inMode:UIDocumentPickerModeImport];
+        [documentMenuViewController addOptionWithTitle:NSLocalizedString(@"New Database", nil)
+                                                 image:nil
+                                                 order:UIDocumentMenuOrderFirst
+                                               handler:^{
+                                                   [self createNewDatabasePressed];
+                                               }];
+        documentMenuViewController.delegate = self;
+        documentMenuViewController.modalInPopover = UIModalPresentationPopover;
+        documentMenuViewController.popoverPresentationController.barButtonItem = source;
+        [self presentViewController:documentMenuViewController animated:YES completion:nil];
+    } else {
+        // current iOS-Version HAS NO support for UIDocumentMenuViewController:
+        [self createNewDatabasePressed];
+    }
+
+
+    [self showDocumentPickerMenu];
+}
+
+- (void)createNewDatabasePressed {
     NewKdbViewController *newKdbViewController = [[NewKdbViewController alloc] init];
     newKdbViewController.donePressed = ^(FormViewController *formViewController) {
         [self createNewDatabase:(NewKdbViewController *)formViewController];
@@ -393,7 +417,6 @@ enum {
 
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:newKdbViewController];
     [self presentViewController:navigationController animated:YES completion:nil];
-     */
 }
 
 - (void)helpPressed {
@@ -471,89 +494,12 @@ enum {
     }
 
     // Add the file to the list of files
-    NSUInteger index = [self.databaseFiles indexOfObject:filename
-                                           inSortedRange:NSMakeRange(0, [self.databaseFiles count])
-                                                 options:NSBinarySearchingInsertionIndex
-                                         usingComparator:^(id string1, id string2) {
-                                             return [string1 localizedCaseInsensitiveCompare:string2];
-                                         }];
-    [self.databaseFiles insertObject:filename atIndex:index];
-
-    // Notify the table of the new row
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:SECTION_DATABASE];
-    if ([self.databaseFiles count] == 1) {
-        // Reload the section if it's the first item
-        NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:SECTION_DATABASE];
-        [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationRight];
-    } else {
-        // Insert the new row
-        [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationRight];
-    }
+    [self addFilename:filename];
 
     [newKdbViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
-#pragma mark - UIDocumentMenuDelegate
-
-- (void)documentMenu:(UIDocumentMenuViewController *)documentMenu didPickDocumentPicker:(UIDocumentPickerViewController *)documentPicker {
-    documentPicker.delegate = self;
-    [self presentViewController:documentPicker animated:YES completion:nil];
-}
-
-- (void)documentMenuWasCancelled:(UIDocumentMenuViewController *)documentMenu {
-
-}
-
-#pragma mark - UIDocumentPickerDelegate
-
-- (void)documentPicker:(UIDocumentPickerViewController *)controller didPickDocumentAtURL:(NSURL *)sourceDocUrl {
-    NSLog(@"picked URL %@", sourceDocUrl);
-
-    NSString *documentsDirectory = [MiniKeePassAppDelegate documentsDirectory];
-    NSString *filename = [[sourceDocUrl path] lastPathComponent];
-    NSString *localFilePath = [documentsDirectory stringByAppendingPathComponent:filename];
-
-    // Check if the file already exists
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    if ([fileManager fileExistsAtPath:localFilePath]) {
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Error" message:@"A file already exists with this name" preferredStyle:UIAlertControllerStyleAlert];
-        [alert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
-        [self presentViewController:alert animated:true completion:nil];
-        return;
-    }
-    NSLog(@"localFilePath=%@", localFilePath);
-
-    // get access on external ressource:
-    BOOL accessGranted = [sourceDocUrl startAccessingSecurityScopedResource];
-    if ( ! accessGranted) {
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Error" message:@"Access denied on source file" preferredStyle:UIAlertControllerStyleAlert];
-        [alert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
-        [self presentViewController:alert animated:true completion:nil];
-        return;
-    }
-
-    // now copy contents:
-    NSError *error;
-    BOOL copyOk = [fileManager copyItemAtPath:[sourceDocUrl path] toPath:localFilePath error:&error];
-    if (!copyOk) {
-        [sourceDocUrl stopAccessingSecurityScopedResource];
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Error" message:@"Error reading source file" preferredStyle:UIAlertControllerStyleAlert];
-        [alert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
-        [self presentViewController:alert animated:true completion:nil];
-        return;
-    }
-
-    // TODO: store bookmark and save this file there later.
-    /*
-    NSData* bookmarkData = [sourceDocUrl bookmarkDataWithOptions:(1 << 11) // NSURLBookmarkCreationWithSecurityScope
-                                  includingResourceValuesForKeys:nil
-                                                   relativeToURL:nil
-                                                           error:&error];
-     */
-
-    // release external resource:
-    [sourceDocUrl stopAccessingSecurityScopedResource];
-
+- (void)addFilename:(NSString *)filename {
     // Add the file to the list of files  - TODO: Code duplicated (see above)
     NSUInteger index = [self.databaseFiles indexOfObject:filename
                                            inSortedRange:NSMakeRange(0, [self.databaseFiles count])
@@ -573,6 +519,77 @@ enum {
         // Insert the new row
         [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationRight];
     }
+}
+
+#pragma mark - UIDocumentMenuDelegate
+
+- (void)documentMenu:(UIDocumentMenuViewController *)documentMenu didPickDocumentPicker:(UIDocumentPickerViewController *)documentPicker {
+    documentPicker.delegate = self;
+    [self presentViewController:documentPicker animated:YES completion:nil];
+}
+
+- (void)documentMenuWasCancelled:(UIDocumentMenuViewController *)documentMenu {
+
+}
+
+#pragma mark - UIDocumentPickerDelegate
+
+- (void)documentPicker:(UIDocumentPickerViewController *)controller didPickDocumentAtURL:(NSURL *)sourceDocUrl {
+    NSLog(@"picked URL %@", sourceDocUrl);
+
+    // should we use this here better? But this way we can use insertRowsAtIndexPaths within addFilename below - which is nicer.
+    // [[MiniKeePassAppDelegate appDelegate] importUrl:sourceDocUrl];
+    
+    NSString *documentsDirectory = [MiniKeePassAppDelegate documentsDirectory];
+    NSString *filename = [[sourceDocUrl path] lastPathComponent];
+    NSString *localFilePath = [documentsDirectory stringByAppendingPathComponent:filename];
+
+    // Check if the file already exists
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    if ([fileManager fileExistsAtPath:localFilePath]) {
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Error" message:NSLocalizedString(@"A file already exists with this name", nil)
+                                                                preferredStyle:UIAlertControllerStyleAlert];
+        [alert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
+        [self presentViewController:alert animated:true completion:nil];
+        return;
+    }
+    NSLog(@"localFilePath=%@", localFilePath);
+
+    // get access on external ressource:
+    BOOL accessGranted = [sourceDocUrl startAccessingSecurityScopedResource];
+    if ( ! accessGranted) {
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Error" message:@"Access denied on source file" // shoud not happen - so no translation
+                                                                preferredStyle:UIAlertControllerStyleAlert];
+        [alert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
+        [self presentViewController:alert animated:true completion:nil];
+        return;
+    }
+
+    // now copy contents:
+    NSError *error;
+    BOOL copyOk = [fileManager copyItemAtPath:[sourceDocUrl path] toPath:localFilePath error:&error];
+    if (!copyOk) {
+        [sourceDocUrl stopAccessingSecurityScopedResource];
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Error" message:@"Error reading source file" // shoud not happen - so no translation
+                                                                preferredStyle:UIAlertControllerStyleAlert];
+        [alert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
+        [self presentViewController:alert animated:true completion:nil];
+        return;
+    }
+
+    // TODO: store bookmark and save this file there later.
+    /*
+    NSData* bookmarkData = [sourceDocUrl bookmarkDataWithOptions:(1 << 11) // NSURLBookmarkCreationWithSecurityScope
+                                  includingResourceValuesForKeys:nil
+                                                   relativeToURL:nil
+                                                           error:&error];
+     */
+
+    // release external resource:
+    [sourceDocUrl stopAccessingSecurityScopedResource];
+
+    // Add the file to the list of files
+    [self addFilename:filename];
 }
 
 - (void)documentPickerWasCancelled:(UIDocumentPickerViewController *)controller {
