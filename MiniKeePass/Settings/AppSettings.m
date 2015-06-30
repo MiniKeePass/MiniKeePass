@@ -19,6 +19,7 @@
 #import "KeychainUtils.h"
 #import "PasswordUtils.h"
 #import "CharacterSetsViewController.h"
+#import "MiniKeePassAppDelegate.h"
 
 #define KEYCHAIN_PIN_SERVICE       @"com.jflan.MiniKeePass.pin"
 
@@ -38,6 +39,7 @@
 #define SORT_ALPHABETICALLY        @"sortAlphabetically"
 #define PASSWORD_ENCODING          @"passwordEncoding"
 #define CLEAR_CLIPBOARD_ENABLED    @"clearClipboardEnabled"
+#define BACKUP_DISABLED            @"backupDisabled"
 #define CLEAR_CLIPBOARD_TIMEOUT    @"clearClipboardTimeout"
 #define WEB_BROWSER_INTEGRATED     @"webBrowserIntegrated"
 #define PW_GEN_LENGTH              @"pwGenLength"
@@ -123,6 +125,7 @@ static AppSettings *sharedInstance;
         [defaultsDict setValue:[NSNumber numberWithInt:0] forKey:PASSWORD_ENCODING];
         [defaultsDict setValue:[NSNumber numberWithBool:NO] forKey:CLEAR_CLIPBOARD_ENABLED];
         [defaultsDict setValue:[NSNumber numberWithInt:0] forKey:CLEAR_CLIPBOARD_TIMEOUT];
+        [defaultsDict setValue:[NSNumber numberWithBool:NO] forKey:BACKUP_DISABLED];
         [defaultsDict setValue:[NSNumber numberWithBool:YES] forKey:WEB_BROWSER_INTEGRATED];
         [defaultsDict setValue:[NSNumber numberWithInt:10] forKey:PW_GEN_LENGTH];
         [defaultsDict setValue:[NSNumber numberWithInt:CHARACTER_SET_DEFAULT] forKey:PW_GEN_CHAR_SETS];
@@ -281,6 +284,24 @@ static AppSettings *sharedInstance;
 
 - (void)setCloseEnabled:(BOOL)closeEnabled {
     [userDefaults setBool:closeEnabled forKey:CLOSE_ENABLED];
+}
+
+- (BOOL)backupDisabled {
+    return [userDefaults boolForKey:BACKUP_DISABLED];
+}
+
+- (void)setBackupDisabled:(BOOL)backupDisabled {
+    [userDefaults setBool:backupDisabled forKey:BACKUP_DISABLED];
+    [self enforceBackupPolicy];
+}
+
+- (void)enforceBackupPolicy {
+    NSError *error = nil;
+    NSURL *filePath = [NSURL fileURLWithPath:[MiniKeePassAppDelegate documentsDirectory] isDirectory:YES];
+                     
+    if (![filePath setResourceValue:[NSNumber numberWithBool:![self backupDisabled]] forKey:NSURLIsExcludedFromBackupKey error:&error]) {
+        NSLog(@"Error excluding %@ from backup: %@", filePath, error);
+    };
 }
 
 - (NSInteger)closeTimeout {

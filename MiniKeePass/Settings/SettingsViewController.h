@@ -36,6 +36,7 @@
     SwitchCell *clearClipboardEnabledCell;
     ChoiceCell *clearClipboardTimeoutCell;
     SwitchCell *webBrowserIntegratedCell;
+    SwitchCell *backupDisabledCell;
 
     NSString *tempPin;
 }

@@ -70,6 +70,10 @@
 - (BOOL)clearClipboardEnabled;
 - (void)setClearClipboardEnabled:(BOOL)clearClipboardEnabled;
 
+- (BOOL)backupDisabled;
+- (void)setBackupDisabled:(BOOL)backupDisabled;
+- (void)enforceBackupPolicy;
+
 - (NSInteger)clearClipboardTimeout;
 - (NSInteger)clearClipboardTimeoutIndex;
 - (void)setClearClipboardTimeoutIndex:(NSInteger)clearClipboardTimeoutIndex;

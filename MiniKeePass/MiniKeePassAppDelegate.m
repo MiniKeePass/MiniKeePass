@@ -54,7 +54,6 @@
                                name:UIPasteboardChangedNotification
                              object:nil];
 
-    // Check file protection
     [self checkFileProtection];
 
     // Initialize the lock screen manager
