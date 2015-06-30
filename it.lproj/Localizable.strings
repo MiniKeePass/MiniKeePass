@@ -127,6 +127,9 @@
 "Clear the contents of the clipboard after a given timeout upon performing a copy." = "Pulisci i contenuti della clipboard in un tempo dato dopo aver effettuato una copia.";
 "Close Timeout" = "Intervallo chiusura";
 "Clear Clipboard Timeout" = "Intervallo pulitura clipboard";
+"Exclude from backup" = "Exclude from backup"; // FIXME
+"iCloud/iTunes Backup" = "iCloud/iTunes Backup"; // FIXME
+"Exclude databases and key files from iTunes/iCloud backups." = "Exclude databases and key files from iTunes/iCloud backups."; // FIXME
 "Web Browser" = "Web Browser"; // FIXME
 "Integrated" = "Integrated"; // FIXME
 "Switch between an integrated web browser and Safari." = "Switch between an integrated web browser and Safari."; // FIXME

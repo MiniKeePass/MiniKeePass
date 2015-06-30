@@ -129,7 +129,7 @@
 "Clear Clipboard Timeout" = "Clear Clipboard Timeout";
 "Exclude from backup" = "Exclude from backup";
 "iCloud/iTunes Backup" = "iCloud/iTunes Backup";
-"MiniKeePass will exclude databases and key files from iTunes/iCloud backups" = "MiniKeePass will exclude databases and key files from iTunes/iCloud backups";
+"Exclude databases and key files from iTunes/iCloud backups." = "Exclude databases and key files from iTunes/iCloud backups.";
 "Web Browser" = "Web Browser";
 "Integrated" = "Integrated";
 "Switch between an integrated web browser and Safari." = "Switch between an integrated web browser and Safari.";

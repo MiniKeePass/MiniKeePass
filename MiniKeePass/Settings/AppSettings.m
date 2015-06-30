@@ -292,16 +292,13 @@ static AppSettings *sharedInstance;
 
 - (void)setBackupDisabled:(BOOL)backupDisabled {
     [userDefaults setBool:backupDisabled forKey:BACKUP_DISABLED];
-    [self enforceBackupPolicy];
-}
 
-- (void)enforceBackupPolicy {
+    NSURL *url = [NSURL fileURLWithPath:[MiniKeePassAppDelegate documentsDirectory] isDirectory:YES];
+
     NSError *error = nil;
-    NSURL *filePath = [NSURL fileURLWithPath:[MiniKeePassAppDelegate documentsDirectory] isDirectory:YES];
-                     
-    if (![filePath setResourceValue:[NSNumber numberWithBool:![self backupDisabled]] forKey:NSURLIsExcludedFromBackupKey error:&error]) {
-        NSLog(@"Error excluding %@ from backup: %@", filePath, error);
-    };
+    if (![url setResourceValue:[NSNumber numberWithBool:!backupDisabled] forKey:NSURLIsExcludedFromBackupKey error:&error]) {
+        NSLog(@"Error excluding %@ from backup: %@", url, error);
+    }
 }
 
 - (NSInteger)closeTimeout {

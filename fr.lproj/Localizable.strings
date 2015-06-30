@@ -130,6 +130,9 @@
 "Clear the contents of the clipboard after a given timeout upon performing a copy." = "Supprimer le contenu du presse-papiers après expiration du délai lors d'une opération de copie.";
 "Close Timeout" = "Délai de fermeture";
 "Clear Clipboard Timeout" = "Délai d'effacement du presse-papiers";
+"Exclude from backup" = "Exclude from backup"; // FIXME
+"iCloud/iTunes Backup" = "iCloud/iTunes Backup"; // FIXME
+"Exclude databases and key files from iTunes/iCloud backups." = "Exclude databases and key files from iTunes/iCloud backups."; // FIXME
 "Web Browser" = "Navigateur";
 "Integrated" = "Intégré";
 "Switch between an integrated web browser and Safari." = "Basculer entre le navigateur intégré et Safari.";

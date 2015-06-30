@@ -88,8 +88,8 @@ enum {
 };
 
 enum {
-  ROW_BACKUP_DISABLED,
-  ROW_BACKUP_NUMBER
+    ROW_BACKUP_DISABLED,
+    ROW_BACKUP_NUMBER
 };
 
 enum {
@@ -439,7 +439,7 @@ enum {
             return NSLocalizedString(@"Clear the contents of the clipboard after a given timeout upon performing a copy.", nil);
             
         case SECTION_BACKUP:
-            return NSLocalizedString(@"MiniKeePass will exclude databases and key files from iTunes/iCloud backups", nil);
+            return NSLocalizedString(@"Exclude databases and key files from iTunes/iCloud backups.", nil);
         
         case SECTION_WEB_BROWSER:
             return NSLocalizedString(@"Switch between an integrated web browser and Safari.", nil);
@@ -524,7 +524,7 @@ enum {
         case SECTION_BACKUP:
             switch (indexPath.row) {
                 case ROW_BACKUP_DISABLED:
-                return backupDisabledCell;
+                    return backupDisabledCell;
             }
             break;
         

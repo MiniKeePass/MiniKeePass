@@ -72,7 +72,6 @@
 
 - (BOOL)backupDisabled;
 - (void)setBackupDisabled:(BOOL)backupDisabled;
-- (void)enforceBackupPolicy;
 
 - (NSInteger)clearClipboardTimeout;
 - (NSInteger)clearClipboardTimeoutIndex;

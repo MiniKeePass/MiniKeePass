@@ -129,6 +129,9 @@
 "Clear the contents of the clipboard after a given timeout upon performing a copy." = "Wis de inhoud van het klembord na een gegeven timeout tijdens het kopiëren.";
 "Close Timeout" = "Sluiten Timeout";
 "Clear Clipboard Timeout" = "Klembord Leegmaken Timeout";
+"Exclude from backup" = "Exclude from backup"; // FIXME
+"iCloud/iTunes Backup" = "iCloud/iTunes Backup"; // FIXME
+"Exclude databases and key files from iTunes/iCloud backups." = "Exclude databases and key files from iTunes/iCloud backups."; // FIXME
 "Web Browser" = "Webbrowser";
 "Integrated" = "Geïntegreerd";
 "Switch between an integrated web browser and Safari." = "Wissel tussen een geïntegreerde webbrowser en Safari.";

@@ -127,6 +127,9 @@
 "Clear the contents of the clipboard after a given timeout upon performing a copy." = "在设定的时长后清除剪贴板内容";
 "Close Timeout" = "关闭前时长";
 "Clear Clipboard Timeout" = "超时后清除剪贴板内容";
+"Exclude from backup" = "Exclude from backup"; // FIXME
+"iCloud/iTunes Backup" = "iCloud/iTunes Backup"; // FIXME
+"Exclude databases and key files from iTunes/iCloud backups." = "Exclude databases and key files from iTunes/iCloud backups."; // FIXME
 "Web Browser" = "网页浏览器";
 "Integrated" = "内置";
 "Switch between an integrated web browser and Safari." = "在内置网页浏览器和Safari之前切换";
