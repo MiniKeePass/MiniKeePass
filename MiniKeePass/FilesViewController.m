@@ -39,6 +39,7 @@ enum {
 @property (nonatomic, strong) FilesInfoView *filesInfoView;
 @property (nonatomic, strong) NSMutableArray *databaseFiles;
 @property (nonatomic, strong) NSMutableArray *keyFiles;
+@property (nonatomic, strong) InfoBar *infoBar;
 @end
 
 @implementation FilesViewController
@@ -70,6 +71,10 @@ enum {
 
     self.toolbarItems = [NSArray arrayWithObjects:settingsButton, spacer, helpButton, spacer, addButton, nil];
     self.navigationItem.rightBarButtonItem = self.editButtonItem;
+
+    self.infoBar = [[InfoBar alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 20)];
+    self.infoBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    [self.view addSubview:self.infoBar];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -149,6 +154,12 @@ enum {
     self.tableView.scrollEnabled = YES;
 
     self.navigationItem.rightBarButtonItem = self.editButtonItem;
+}
+
+- (void)showErrorMessage:(NSString *)message {
+    [self.view bringSubviewToFront:self.infoBar];
+    self.infoBar.label.text = message;
+    [self.infoBar showBar];
 }
 
 #pragma mark - UITableViewDataSource
@@ -385,8 +396,11 @@ enum {
     if (NSClassFromString(@"UIDocumentMenuViewController") != nil) {
         // current iOS-Version DOES HAVE support for UIDocumentMenuViewController:
         UIDocumentMenuViewController *documentMenuViewController =
-            [[UIDocumentMenuViewController alloc] initWithDocumentTypes:@[(NSString *)kUTTypeItem]
-                                                                 inMode:UIDocumentPickerModeImport];
+            [[UIDocumentMenuViewController alloc] initWithDocumentTypes:@[(NSString *)kUTTypeJPEG]
+                                                                 inMode:UIDocumentPickerModeOpen];
+        // maybe this should/could be kUTTypeItem and UIDocumentPickerModeImport,
+        // but JPEG/Open ist the only way my Owncloud-Provider shows up in document menu.
+
         [documentMenuViewController addOptionWithTitle:NSLocalizedString(@"New Database", nil)
                                                  image:nil
                                                  order:UIDocumentMenuOrderFirst
@@ -529,7 +543,7 @@ enum {
 }
 
 - (void)documentMenuWasCancelled:(UIDocumentMenuViewController *)documentMenu {
-
+    // empty
 }
 
 #pragma mark - UIDocumentPickerDelegate
@@ -537,7 +551,8 @@ enum {
 - (void)documentPicker:(UIDocumentPickerViewController *)controller didPickDocumentAtURL:(NSURL *)sourceDocUrl {
     NSLog(@"picked URL %@", sourceDocUrl);
 
-    // should we use this here better? But this way we can use insertRowsAtIndexPaths within addFilename below - which is nicer.
+    // should we use importUrl here better?
+    // But this way we can use insertRowsAtIndexPaths within addFilename below - which is nicer.
     // [[MiniKeePassAppDelegate appDelegate] importUrl:sourceDocUrl];
     
     NSString *documentsDirectory = [MiniKeePassAppDelegate documentsDirectory];
@@ -547,10 +562,9 @@ enum {
     // Check if the file already exists
     NSFileManager *fileManager = [NSFileManager defaultManager];
     if ([fileManager fileExistsAtPath:localFilePath]) {
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Error" message:NSLocalizedString(@"A file already exists with this name", nil)
-                                                                preferredStyle:UIAlertControllerStyleAlert];
-        [alert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
-        [self presentViewController:alert animated:true completion:nil];
+        // Show a message rather than just overwriting the file to prevent data loss in case the user did some changes to the existing file.
+        // Maybe we should ask the user "...overwrite - yes/no?"
+        [self showErrorMessage:NSLocalizedString(@"A file already exists with this name", nil)];
         return;
     }
     NSLog(@"localFilePath=%@", localFilePath);
@@ -558,10 +572,8 @@ enum {
     // get access on external ressource:
     BOOL accessGranted = [sourceDocUrl startAccessingSecurityScopedResource];
     if ( ! accessGranted) {
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Error" message:@"Access denied on source file" // shoud not happen - so no translation
-                                                                preferredStyle:UIAlertControllerStyleAlert];
-        [alert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
-        [self presentViewController:alert animated:true completion:nil];
+        // shoud not happen...
+        [self showErrorMessage:NSLocalizedString(@"Access denied on source file", nil)];
         return;
     }
 
@@ -570,33 +582,22 @@ enum {
     BOOL copyOk = [fileManager copyItemAtPath:[sourceDocUrl path] toPath:localFilePath error:&error];
     if (!copyOk) {
         [sourceDocUrl stopAccessingSecurityScopedResource];
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Error" message:@"Error reading source file" // shoud not happen - so no translation
-                                                                preferredStyle:UIAlertControllerStyleAlert];
-        [alert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
-        [self presentViewController:alert animated:true completion:nil];
+        [self showErrorMessage:error.localizedDescription];
         return;
     }
 
-    // TODO: store bookmark and save this file there later.
-    /*
-    NSData* bookmarkData = [sourceDocUrl bookmarkDataWithOptions:(1 << 11) // NSURLBookmarkCreationWithSecurityScope
-                                  includingResourceValuesForKeys:nil
-                                                   relativeToURL:nil
-                                                           error:&error];
-     */
     // Set file protection on the new file
     [fileManager setAttributes:@{NSFileProtectionKey:NSFileProtectionComplete} ofItemAtPath:localFilePath error:nil];
-
 
     // release external resource:
     [sourceDocUrl stopAccessingSecurityScopedResource];
 
-    // Add the file to the list of files
+    // Add the file to the list of files in this view.
     [self addFilename:filename];
 }
 
 - (void)documentPickerWasCancelled:(UIDocumentPickerViewController *)controller {
-
+    // empty
 }
 
 
