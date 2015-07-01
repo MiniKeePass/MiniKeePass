@@ -392,32 +392,13 @@ enum {
 
 - (void)addPressed:(UIBarButtonItem *)source {
 
-
     if (NSClassFromString(@"UIDocumentMenuViewController") != nil) {
         // current iOS-Version DOES HAVE support for UIDocumentMenuViewController:
-        UIDocumentMenuViewController *documentMenuViewController =
-            [[UIDocumentMenuViewController alloc] initWithDocumentTypes:@[(NSString *)kUTTypeJPEG]
-                                                                 inMode:UIDocumentPickerModeOpen];
-        // maybe this should/could be kUTTypeItem and UIDocumentPickerModeImport,
-        // but JPEG/Open ist the only way my Owncloud-Provider shows up in document menu.
-
-        [documentMenuViewController addOptionWithTitle:NSLocalizedString(@"New Database", nil)
-                                                 image:nil
-                                                 order:UIDocumentMenuOrderFirst
-                                               handler:^{
-                                                   [self createNewDatabasePressed];
-                                               }];
-        documentMenuViewController.delegate = self;
-        documentMenuViewController.modalInPopover = UIModalPresentationPopover;
-        documentMenuViewController.popoverPresentationController.barButtonItem = source;
-        [self presentViewController:documentMenuViewController animated:YES completion:nil];
+        [self showDocumentPickerMenu:source];
     } else {
         // current iOS-Version HAS NO support for UIDocumentMenuViewController:
         [self createNewDatabasePressed];
     }
-
-
-    [self showDocumentPickerMenu];
 }
 
 - (void)createNewDatabasePressed {
@@ -440,10 +421,24 @@ enum {
     [self presentViewController:navigationController animated:YES completion:nil];
 }
 
-- (void)showDocumentPickerMenu {
-    UIDocumentMenuViewController *documentMenuViewController = [[UIDocumentMenuViewController alloc] initWithDocumentTypes:@[(NSString *)kUTTypeItem]
-                                                                                                                    inMode:UIDocumentPickerModeOpen];
+- (void)showDocumentPickerMenu:(UIBarButtonItem *)source {
+    NSLog(@"showDocumentPickerMenu");
+
+    UIDocumentMenuViewController *documentMenuViewController =
+    [[UIDocumentMenuViewController alloc] initWithDocumentTypes:@[(NSString *)kUTTypeJPEG, (NSString *)kUTTypeData, (NSString *)kUTTypeItem, (NSString *)kUTTypeArchive]
+                                                         inMode:UIDocumentPickerModeOpen];
+    // maybe this should/could be kUTTypeItem and UIDocumentPickerModeImport,
+    // but JPEG/Open ist the only way my Owncloud-Provider shows up in document menu.
+
+    [documentMenuViewController addOptionWithTitle:NSLocalizedString(@"New Database", nil)
+                                             image:nil
+                                             order:UIDocumentMenuOrderFirst
+                                           handler:^{
+                                               [self createNewDatabasePressed];
+                                           }];
     documentMenuViewController.delegate = self;
+    documentMenuViewController.modalInPopover = UIModalPresentationPopover;
+    documentMenuViewController.popoverPresentationController.barButtonItem = source;
     [self presentViewController:documentMenuViewController animated:YES completion:nil];
 }
 
