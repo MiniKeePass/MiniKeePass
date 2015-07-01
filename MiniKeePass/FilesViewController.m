@@ -513,7 +513,7 @@ enum {
     [newKdbViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void)addFilename:(NSString *)filename {
+- (NSUInteger)getFilenameIndex:(NSString *)filename {
     // Add the file to the list of files
     NSUInteger index = [self.databaseFiles indexOfObject:filename
                                            inSortedRange:NSMakeRange(0, [self.databaseFiles count])
@@ -521,6 +521,11 @@ enum {
                                          usingComparator:^(id string1, id string2) {
                                              return [string1 localizedCaseInsensitiveCompare:string2];
                                          }];
+    return index;
+}
+
+- (void)addFilename:(NSString *)filename {
+    NSUInteger index = [self getFilenameIndex:filename];
     [self.databaseFiles insertObject:filename atIndex:index];
 
     // Notify the table of the new row
@@ -562,12 +567,50 @@ enum {
     // Check if the file already exists
     NSFileManager *fileManager = [NSFileManager defaultManager];
     if ([fileManager fileExistsAtPath:localFilePath]) {
-        // Show a message rather than just overwriting the file to prevent data loss in case the user did some changes to the existing file.
-        // Maybe we should ask the user "...overwrite - yes/no?"
-        [self showErrorMessage:NSLocalizedString(@"A file already exists with this name", nil)];
+        // Ask the user "...overwrite - yes/no?" in order to prevent data loss in case the user did some changes to the existing file.
+        // (Letting the user delete the file himself leeds to loosing the DB password.)
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Overwrite?", nil)
+                                                                       message:NSLocalizedString(@"Replace existing file?", nil)
+                                                                preferredStyle:UIAlertControllerStyleAlert];
+        [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil)
+                                                  style:UIAlertActionStyleDefault
+                                                handler:^(UIAlertAction *action) {
+
+                                                    // overwrite:
+
+                                                    [fileManager removeItemAtPath:localFilePath error:nil];
+
+                                                    // remove file here because it will be re-added in fetchFileFromUrl - resulting in an nice "visible replacement".
+                                                    NSUInteger index = [self getFilenameIndex:filename];
+                                                    [self.databaseFiles removeObjectAtIndex:index];
+
+                                                    // Notify the table of the new row
+                                                    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:SECTION_DATABASE];
+                                                    [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath]
+                                                                          withRowAnimation:UITableViewRowAnimationAutomatic];
+                                                    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:indexPath.section]
+                                                                          withRowAnimation:UITableViewRowAnimationNone];
+
+                                                    [self fetchFileFromUrl:sourceDocUrl localFilePath:localFilePath filename:filename];
+                                                }
+                          ]];
+        [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil)
+                                                  style:UIAlertActionStyleDefault
+                                                handler:^(UIAlertAction *action) {
+                                                    // cancel, DON'T overwrite - nothing todo
+                                                }
+                          ]];
+        [self presentViewController:alert animated:true completion:nil];
+
         return;
     }
-    NSLog(@"localFilePath=%@", localFilePath);
+
+    [self fetchFileFromUrl:sourceDocUrl localFilePath:localFilePath filename:filename];
+}
+
+- (void)fetchFileFromUrl:(NSURL *)sourceDocUrl localFilePath:(NSString *)localFilePath filename:(NSString *)filename {
+
+    NSFileManager *fileManager = [NSFileManager defaultManager];
 
     // get access on external ressource:
     BOOL accessGranted = [sourceDocUrl startAccessingSecurityScopedResource];
@@ -595,6 +638,7 @@ enum {
     // Add the file to the list of files in this view.
     [self addFilename:filename];
 }
+
 
 - (void)documentPickerWasCancelled:(UIDocumentPickerViewController *)controller {
     // empty

@@ -157,3 +157,7 @@
 "Special" = "Spezielle";
 "Brackets" = "Klammern";
 "None Selected" = "Keine ausgewählt";
+
+// FilesViewController
+"Overwrite?" = "Überschreiben?";
+"Replace existing file?" = "Eine Datei mit diesem Namen existiert bereits. Bestehende Datei ersetzen?";
