@@ -40,6 +40,8 @@ enum {
 @property (nonatomic, strong) NSMutableArray *databaseFiles;
 @property (nonatomic, strong) NSMutableArray *keyFiles;
 @property (nonatomic, strong) InfoBar *infoBar;
+@property (nonatomic, strong) UIDocumentMenuViewController *documentMenuViewController;
+@property (nonatomic, strong) UIDocumentPickerViewController *documentPickerViewController;
 @end
 
 @implementation FilesViewController
@@ -75,6 +77,15 @@ enum {
     self.infoBar = [[InfoBar alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 20)];
     self.infoBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     [self.view addSubview:self.infoBar];
+
+
+    NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+    [notificationCenter addObserver:self
+                           selector:@selector(applicationWillResignActive:)
+                               name:UIApplicationWillResignActiveNotification
+                             object:nil];
+    self.documentMenuViewController = nil;
+    self.documentPickerViewController = nil;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -89,6 +100,22 @@ enum {
     }
 
     [super viewWillAppear:animated];
+}
+
+- (void)applicationWillResignActive:(id)sender {
+    NSLog(@"FilesViewController: applicationWillResignActive");
+    if (self.documentMenuViewController != nil) {
+        [self.documentMenuViewController.presentingViewController dismissViewControllerAnimated:NO completion:^{
+            NSLog(@"documentMenuViewController dismissed");
+            self.documentMenuViewController = nil;
+        }];
+    }
+    if (self.documentPickerViewController != nil) {
+        [self.documentPickerViewController.presentingViewController dismissViewControllerAnimated:NO completion:^{
+            NSLog(@"documentPickerViewController dismissed");
+            self.documentPickerViewController = nil;
+        }];
+    }
 }
 
 - (void)viewWillLayoutSubviews {
@@ -424,22 +451,23 @@ enum {
 - (void)showDocumentPickerMenu:(UIBarButtonItem *)source {
     NSLog(@"showDocumentPickerMenu");
 
-    UIDocumentMenuViewController *documentMenuViewController =
+    self.documentMenuViewController =
     [[UIDocumentMenuViewController alloc] initWithDocumentTypes:@[(NSString *)kUTTypeJPEG, (NSString *)kUTTypeData, (NSString *)kUTTypeItem, (NSString *)kUTTypeArchive]
-                                                         inMode:UIDocumentPickerModeOpen];
+                                                         inMode:UIDocumentPickerModeImport];
     // maybe this should/could be kUTTypeItem and UIDocumentPickerModeImport,
     // but JPEG/Open ist the only way my Owncloud-Provider shows up in document menu.
 
-    [documentMenuViewController addOptionWithTitle:NSLocalizedString(@"New Database", nil)
+    FilesViewController *ff = self;
+    [self.documentMenuViewController addOptionWithTitle:NSLocalizedString(@"New Database", nil)
                                              image:nil
                                              order:UIDocumentMenuOrderFirst
                                            handler:^{
-                                               [self createNewDatabasePressed];
+                                               [ff createNewDatabasePressed];
                                            }];
-    documentMenuViewController.delegate = self;
-    documentMenuViewController.modalInPopover = UIModalPresentationPopover;
-    documentMenuViewController.popoverPresentationController.barButtonItem = source;
-    [self presentViewController:documentMenuViewController animated:YES completion:nil];
+    self.documentMenuViewController.delegate = self;
+    self.documentMenuViewController.modalInPopover = UIModalPresentationPopover;
+    self.documentMenuViewController.popoverPresentationController.barButtonItem = source;
+    [self presentViewController:self.documentMenuViewController animated:YES completion:nil];
 }
 
 - (void)createNewDatabase:(NewKdbViewController *)newKdbViewController {
@@ -538,18 +566,21 @@ enum {
 #pragma mark - UIDocumentMenuDelegate
 
 - (void)documentMenu:(UIDocumentMenuViewController *)documentMenu didPickDocumentPicker:(UIDocumentPickerViewController *)documentPicker {
+    self.documentMenuViewController = nil;
     documentPicker.delegate = self;
     [self presentViewController:documentPicker animated:YES completion:nil];
+    self.documentPickerViewController = documentPicker;
 }
 
 - (void)documentMenuWasCancelled:(UIDocumentMenuViewController *)documentMenu {
-    // empty
+    self.documentMenuViewController = nil;
 }
 
 #pragma mark - UIDocumentPickerDelegate
 
 - (void)documentPicker:(UIDocumentPickerViewController *)controller didPickDocumentAtURL:(NSURL *)sourceDocUrl {
     NSLog(@"picked URL %@", sourceDocUrl);
+    self.documentPickerViewController = nil;
 
     // should we use importUrl here better?
     // But this way we can use insertRowsAtIndexPaths within addFilename below - which is nicer.
@@ -636,7 +667,7 @@ enum {
 
 
 - (void)documentPickerWasCancelled:(UIDocumentPickerViewController *)controller {
-    // empty
+    self.documentPickerViewController = nil;
 }
 
 
