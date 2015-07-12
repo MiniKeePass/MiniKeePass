@@ -31,7 +31,6 @@
         self.footerTitle = [NSString stringWithFormat:NSLocalizedString(@"Enter the password and/or select the keyfile for the %@ database.", nil), filename];
         
         masterPasswordFieldCell = [[MasterPasswordFieldCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
-        masterPasswordFieldCell.textField.delegate = self;
         
         // Create an array to hold the possible keyfile choices
         NSMutableArray *keyFileChoices = [NSMutableArray arrayWithObject:NSLocalizedString(@"None", nil)];
@@ -89,12 +88,6 @@
 - (void)selectionListViewController:(SelectionListViewController *)controller selectedIndex:(NSInteger)selectedIndex withReference:(id<NSObject>)reference {
     // Update the cell text
     [keyFileCell setSelectedIndex:selectedIndex];
-}
-
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
-    // This makes it so the password text field doesn't clear the field when you toggle the password visible
-    textField.text = [textField.text stringByReplacingCharactersInRange:range withString:string];
-    return NO;
 }
 
 @end
