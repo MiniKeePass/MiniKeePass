@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Jason Rush and John Flanagan. All rights reserved.
+ * Copyright 2011-2012 Jason Rush and John Flanagan. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,13 +24,6 @@
 @synthesize delegate;
 @synthesize reference;
 
-- (void)dealloc {
-    [items release];
-    [delegate release];
-    [reference release];
-    [super dealloc];
-}
-
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
 }
@@ -44,7 +37,7 @@
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
     
     // Configure the cell

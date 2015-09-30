@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Jason Rush and John Flanagan. All rights reserved.
+ * Copyright 2011-2012 Jason Rush and John Flanagan. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,21 +16,20 @@
  */
 
 #import <UIKit/UIKit.h>
-#import "AutorotatingTableViewController.h"
 
 @protocol SelectionListViewControllerDelegate;
 
-@interface SelectionListViewController : AutorotatingTableViewController {
+@interface SelectionListViewController : UITableViewController {
     NSArray *items;
     NSInteger selectedIndex;
     id<SelectionListViewControllerDelegate> delegate;
     id<NSObject> reference;
 }
 
-@property (nonatomic, retain) NSArray *items;
+@property (nonatomic, strong) NSArray *items;
 @property (nonatomic) NSInteger selectedIndex;
-@property (nonatomic, retain) id<SelectionListViewControllerDelegate> delegate;
-@property (nonatomic, retain) id<NSObject> reference;
+@property (nonatomic, strong) id<SelectionListViewControllerDelegate> delegate;
+@property (nonatomic, strong) id<NSObject> reference;
 
 @end
 

@@ -42,18 +42,6 @@
     return self;
 }
 
-- (void)dealloc {
-    [masterSeed release];
-    [encryptionIv release];
-    [contentsHash release];
-    [masterSeed2 release];
-    [headerHash release];
-    [levels release];
-    [groups release];
-    [entries release];
-    [super dealloc];
-}
-
 - (KdbTree*)load:(InputStream *)inputStream withPassword:(KdbPassword *)kdbPassword {
     [self readHeader:inputStream];
 
@@ -75,7 +63,7 @@
         // Build the tree
         return [self buildTree];
     } @finally {
-        [aesInputStream release];
+        aesInputStream = nil;
     }
 
     return nil;
@@ -120,13 +108,14 @@
     keyEncRounds = CFSwapInt32LittleToHost(header.keyEncRounds);
 
     // Compute a sha256 hash of the header up to but not including the contentsHash
-    headerHash = [[Kdb3Utils hashHeader:&header] retain];
+    headerHash = [Kdb3Utils hashHeader:&header];
 }
 
 - (void)readGroups:(InputStream *)inputStream {
     uint16_t fieldType;
     uint32_t fieldSize;
     uint8_t dateBuffer[5];
+    uint32_t image = 0;
     BOOL eos;
 
     // Parse the groups
@@ -179,8 +168,8 @@
                     break;
 
                 case 0x0007:
-                    group.image = [inputStream readInt32];
-                    group.image = CFSwapInt32LittleToHost(group.image);
+                    image = [inputStream readInt32];
+                    group.image = CFSwapInt32LittleToHost(image);
                     break;
 
                 case 0x0008: {
@@ -197,7 +186,6 @@
 
                 case 0xFFFF:
                     if (fieldSize != 0) {
-                        [group release];
                         @throw [NSException exceptionWithName:@"IOException" reason:@"Invalid field size" userInfo:nil];
                     }
 
@@ -207,12 +195,9 @@
                     break;
 
                 default:
-                    [group release];
                     @throw [NSException exceptionWithName:@"IOException" reason:@"Invalid field type" userInfo:nil];
             }
         }
-
-        [group release];
     }
 }
 
@@ -220,7 +205,8 @@
     uint16_t fieldType;
     uint32_t fieldSize;
     uint8_t buffer[16];
-    uint32_t groupId;
+    uint32_t groupId = 0;
+    uint32_t image = 0;
     BOOL eos;
 
     // Parse the entries
@@ -245,14 +231,12 @@
 
                 case 0x0001:
                     if (fieldSize != 16) {
-                        [entry release];
                         @throw [NSException exceptionWithName:@"IOException" reason:@"Invalid field size" userInfo:nil];
                     }
                     if ([inputStream read:buffer length:fieldSize] != fieldSize) {
-                        [entry release];
                         @throw [NSException exceptionWithName:@"IOException" reason:@"Failed to read UUID" userInfo:nil];
                     }
-                    entry.uuid = [[[UUID alloc] initWithBytes:buffer] autorelease];
+                    entry.uuid = [[UUID alloc] initWithBytes:buffer];
                     break;
 
                 case 0x0002:
@@ -261,8 +245,8 @@
                     break;
 
                 case 0x0003:
-                    entry.image = [inputStream readInt32];
-                    entry.image = CFSwapInt32LittleToHost(entry.image);
+                    image = [inputStream readInt32];
+                    entry.image = CFSwapInt32LittleToHost(image);
                     break;
 
                 case 0x0004:
@@ -287,7 +271,6 @@
 
                 case 0x0009:
                     if (fieldSize != 5) {
-                        [entry release];
                         @throw [NSException exceptionWithName:@"IOException" reason:@"Invalid field size" userInfo:nil];
                     }
                     [inputStream read:buffer length:fieldSize];
@@ -296,7 +279,6 @@
 
                 case 0x000A:
                     if (fieldSize != 5) {
-                        [entry release];
                         @throw [NSException exceptionWithName:@"IOException" reason:@"Invalid field size" userInfo:nil];
                     }
                     [inputStream read:buffer length:fieldSize];
@@ -305,7 +287,6 @@
 
                 case 0x000B:
                     if (fieldSize != 5) {
-                        [entry release];
                         @throw [NSException exceptionWithName:@"IOException" reason:@"Invalid field size" userInfo:nil];
                     }
                     [inputStream read:buffer length:fieldSize];
@@ -314,7 +295,6 @@
 
                 case 0x000C:
                     if (fieldSize != 5) {
-                        [entry release];
                         @throw [NSException exceptionWithName:@"IOException" reason:@"Invalid field size" userInfo:nil];
                     }
                     [inputStream read:buffer length:fieldSize];
@@ -333,7 +313,6 @@
 
                 case 0xFFFF:
                     if (fieldSize != 0) {
-                        [entry release];
                         @throw [NSException exceptionWithName:@"IOException" reason:@"Invalid field size" userInfo:nil];
                     }
 
@@ -351,12 +330,9 @@
                     break;
 
                 default:
-                    [entry release];
                     @throw [NSException exceptionWithName:@"IOException" reason:@"Invalid field type" userInfo:nil];
             }
         }
-
-        [entry release];
     }
 }
 
@@ -438,16 +414,12 @@
             level2 = [[levels objectAtIndex:j] unsignedIntValue];
             if (level2 < level1) {
                 if (level1 - level2 != 1) {
-                    [tree release];
-                    [root release];
                     @throw [NSException exceptionWithName:@"InvalidData" reason:@"InvalidTree" userInfo:nil];
                 } else {
                     break;
                 }
             }
             if (j == 0) {
-                [tree release];
-                [root release];
                 @throw [NSException exceptionWithName:@"InvalidData" reason:@"InvalidTree" userInfo:nil];
             }
         }
@@ -456,9 +428,7 @@
         [parent addGroup:group];
     }
     
-    [root release];
-    
-    return [tree autorelease];
+    return tree;
 }
 
 @end

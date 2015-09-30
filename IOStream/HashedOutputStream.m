@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Jason Rush and John Flanagan. All rights reserved.
+ * Copyright 2011-2012 Jason Rush and John Flanagan. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,10 +24,10 @@
 
 @implementation HashedOutputStream
 
-- (id)initWithOutputStream:(OutputStream*)stream blockSize:(uint32_t)blockSize {
+- (id)initWithOutputStream:(OutputStream *)stream blockSize:(uint32_t)blockSize {
     self = [super init];
     if (self) {
-        outputStream = [stream retain];
+        outputStream = stream;
         
         blockIndex = 0;
         
@@ -39,9 +39,7 @@
 }
 
 - (void)dealloc {
-    [outputStream release];
     free(buffer);
-    [super dealloc];
 }
 
 - (NSUInteger)write:(const void *)bytes length:(NSUInteger)bytesLength {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Jason Rush and John Flanagan. All rights reserved.
+ * Copyright 2011-2012 Jason Rush and John Flanagan. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,10 +24,10 @@
     
     CCCryptorRef cryptorRef;
     
-    uint32_t bufferCapacity;
+    size_t bufferCapacity;
     uint8_t *buffer;
 }
 
-- (id)initWithOutputStream:(OutputStream*)stream key:(NSData*)key iv:(NSData*)iv;
+- (id)initWithOutputStream:(OutputStream *)stream key:(NSData *)key iv:(NSData *)iv;
 
 @end

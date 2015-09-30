@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Jason Rush and John Flanagan. All rights reserved.
+ * Copyright 2011-2012 Jason Rush and John Flanagan. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,10 +23,10 @@
 
 @implementation GZipInputStream
 
-- (id)initWithInputStream:(InputStream*)stream {
+- (id)initWithInputStream:(InputStream *)stream {
     self = [super init];
     if (self) {
-        inputStream = [stream retain];
+        inputStream = stream;
         
         zstream.zalloc = Z_NULL;
         zstream.zfree = Z_NULL;
@@ -42,12 +42,7 @@
     return self;
 }
 
-- (void)dealloc {
-    [inputStream release];
-    [super dealloc];
-}
-
-- (NSUInteger)read:(void*)bytes length:(NSUInteger)bytesLength {
+- (NSUInteger)read:(void *)bytes length:(NSUInteger)bytesLength {
     NSUInteger remaining = bytesLength;
     NSUInteger offset = 0;
     NSUInteger n;
@@ -73,7 +68,7 @@
 
 - (BOOL)decompress {
     int ret;
-    int n;
+    NSUInteger n;
     
     if (eof) {
         return NO;
@@ -91,7 +86,7 @@
                 @throw [NSException exceptionWithName:@"IOException" reason:@"Failed to read compressed data" userInfo:nil];
             }
             
-            zstream.avail_in = n;
+            zstream.avail_in = (unsigned int)n;
             zstream.next_in = inputBuffer;
         }
         

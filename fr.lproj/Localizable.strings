@@ -1,0 +1,162 @@
+﻿/*
+ * Copyright 2011 Jason Rush and John Flanagan. All rights reserved.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+// French translator: Patrice Lachance <patlachance@gmail.com>
+// Additional translations: Damien Regad <dregad@mantisbt.org>
+
+"Files" = "Fichiers";
+"Databases" = "Bases de données";
+"Key File" = "Fichier de clé";
+"Key Files" = "Fichiers de clé";
+"Groups" = "Groupes";
+"Entries" = "Entrées";
+"Group" = "Groupe";
+"Entry" = "Entrée";
+"New Database" = "Nouvelle Base de Données";
+"New Group" = "Nouveau Groupe";
+"New Entry" = "Nouvelle Entrée";
+"Edit Group" = "Editer Groupe";
+"Edit Entry" = "Editer Entrée";
+"Title" = "Titre";
+"Image" = "Image";
+"Images" = "Images";
+"Username" = "Nom d'utilisateur";
+"Password" = "Mot de passe";
+"Confirm Password" = "Confirmer le mot de passe";
+"URL" = "URL";
+"Comments" = "Commentaires";
+"OK" = "OK";
+"Cancel" = "Annuler";
+"Add" = "Ajouter";
+"Search" = "Rechercher";
+"Help" = "Aide";
+"Version 1.x" = "Version 1.x";
+"Version 2.x" = "Version 2.x";
+"None" = "Aucun";
+"Name" = "Nom";
+"Value" = "Valeur";
+"Delete" = "Supprimer";
+"Move" = "Déplacer";
+"Rename" = "Renommer";
+"Database Name" = "Nom BDD";
+"Last Modified" = "Dernière Modification";
+"Copied" = "Copié(e)";
+"In Memory Protection" = "Protection en mémoire";
+"Custom Field" = "Attribut Spécifique";
+"Custom Fields" = "Attributs Spécifiques";
+"Add new…" = "Ajouter nouveau…";
+"Choose Group" = "Choisir le Groupe";
+"Backup" = "Sauvegarde";
+
+// General Messages
+"Enter your PIN to unlock" = "Saisir votre code PIN pour déverrouiller";
+"Unlock MiniKeePass" = "Unlock MiniKeePass"; // FIXME
+"Enter the password and/or select the keyfile for the %@ database." = "Saisir le mot de passe et/ou choisir le fichier de clé pour la base de données %@.";
+"Enter a new name for the password database. The correct file extension will automatically be appended." = "Saisir un nouveau nom pour la 'base de donnée password'. L'extension de fichier appropriée sera automatiquement concaténée.";
+"Do not forget your database password, it cannot be recovered." = "Do not forget your database password, it cannot be recovered."; // FIXME
+
+// Error Messages
+"Error" = "Erreur";
+"New name is invalid" = "Nouveau nom invalide";
+"Name cannot be empty" = "Le nom ne peut être vide";
+"Database name is required" = "Le nom de la base de données est requis";
+"Passwords do not match" = "Les mots de passe ne sont pas identiques";
+"Password is required" = "Le mot de passe est requis";
+"Incorrect PIN" = "Code PIN erroné";
+"Attempts Remaining" = "Tentatives restantes";
+"Filename is invalid" = "Le nom de fichier est invalide";
+"A file already exists with this name" = "Un fichier présent porte déjà ce nom";
+"There are no applications installed capable of importing KeePass files" = "Il n'y a aucune application installée capable d'importer des fichiers KeePass";
+"Tap the + button to add a new KeePass file." = "Appuyez sur + pour ajouter un nouveau fichier KeePass.";
+"No password or keyfile specified" = "Pas de mot de passe ou fichier de clé spécifié";
+"Error Checking PIN" = "Error Checking PIN"; // FIXME
+
+// Settings Page
+"Settings" = "Réglages";
+"PIN Enabled" = "Code PIN Activé";
+"Touch ID" = "Touch ID"; // FIXME
+"Use your fingerprint as an alternative to entering a PIN if supported." = "Use your fingerprint as an alternative to entering a PIN if supported."; // FIXME
+"Lock Timeout" = "Délai de verrouillage";
+"Immediately" = "Immédiatement";
+"30 Seconds" = "30 Secondes";
+"1 Minute" = "1 Minute";
+"2 Minutes" = "2 Minutes";
+"3 Minutes" = "3 Minutes";
+"5 Minutes" = "5 Minutes";
+"Enabled" = "Activé(e)";
+"Attempts" = "Tentatives";
+"Close Enabled" = "Activé à la fermeture";
+"Close Timeout" = "Délai à la fermeture";
+"Hide Passwords" = "Masquer les mots de passe";
+"Sorting" = "Ordre de tri";
+"Sort Groups and Entries Alphabetically" = "Trier les Entrées et les Groupes par ordre alphabétique";
+"Encoding" = "Encodage";
+"UTF-8" = "UTF-8";
+"UTF-16 Big Endian" = "UTF-16 Big Endian";
+"UTF-16 Little Endian" = "UTF-16 Little Endian";
+"Latin 1 (ISO/IEC 8859-1)" = "Latin 1 (ISO/IEC 8859-1)";
+"Latin 2 (ISO/IEC 8859-2)" = "Latin 2 (ISO/IEC 8859-2)";
+"7-Bit ASCII" = "7-Bit ASCII";
+"Japanese EUC" = "Japanese EUC";
+"ISO-2022-JP" = "ISO-2022-JP";
+"PIN Protection" = "Protéger le code PIN";
+"Delete All Data on PIN Failure" = "Supprimer toutes les données sur échec code PIN";
+"Close Database on Timeout" = "Fermer la BDD après Timeout";
+"Remember Database Passwords" = "Mémoriser les MdP BDD";
+"Hide Passwords" = "Masquer les MdP";
+"Password Encoding" = "Encodage du MdP";
+"Clear Clipboard on Timeout" = "Effacer le presse-papiers après Timeout";
+"Clear Timeout" = "Supprimer Timeout";
+"Prevent unauthorized access to MiniKeePass with a PIN." = "Prévient des accès non autorisés à MiniKeePass à l'aide d'un code PIN.";
+"Delete all files and passwords after too many failed attempts." = "Supprimer tous les fichiers et mots de passe après trop de tentatives infructueuses.";
+"Automatically close an open database after the selected timeout." = "Clore automatiquement les bases de données ouvertes après expiration du délai.";
+"Stores remembered database passwords in the devices's secure keychain." = "Enregistre les mots de passe mémorisés dans le porte-clés sécurisé du périphérique.";
+"Hides passwords when viewing a password entry." = "Masque les mots de passe lors de l'affichage d'une entrée de type mot de passe.";
+"The string encoding used for passwords when converting them to database keys." = "L'encodage utilisé lors de la conversion de mots de passe en clés.";
+"Clear the contents of the clipboard after a given timeout upon performing a copy." = "Supprimer le contenu du presse-papiers après expiration du délai lors d'une opération de copie.";
+"Close Timeout" = "Délai de fermeture";
+"Clear Clipboard Timeout" = "Délai d'effacement du presse-papiers";
+"Web Browser" = "Navigateur";
+"Integrated" = "Intégré";
+"Switch between an integrated web browser and Safari." = "Basculer entre le navigateur intégré et Safari.";
+"Set PIN" = "Définir le code PIN";
+"Confirm PIN" = "Confirmer le code PIN";
+"PINs did not match. Try again" = "Les codes PINs sont différents. Recommencez";
+"MiniKeePass version %@" = "MiniKeePass version %@";
+
+// Help Titles
+"iTunes Import/Export" = "Import/Export iTunes";
+"Dropbox Import/Export" = "Import/Export Dropbox";
+"Safari/Email Import" = "Import Safari/Email";
+"Create New Database" = "Créer une nouvelle BDD";
+"Key Files" = "Fichiers de clé";
+
+// Password Generator
+"Generator" = "Générateur";
+"Length" = "Longueur";
+"Character Sets" = "Jeu de caractères";
+"Upper Case" = "Majuscule";
+"Lower Case" = "Minuscule";
+"Upper" = "Supérieur";
+"Lower" = "Inférieur";
+"Digits" = "Chiffres";
+"Minus" = "Moins";
+"Underline" = "Souligné";
+"Space" = "Space";
+"Special" = "Spécial(e)";
+"Brackets" = "Crochets";
+"None Selected" = "Aucune Sélection";

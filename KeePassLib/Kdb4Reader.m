@@ -1,10 +1,19 @@
-//
-//  Kdb4.m
-//  KeePass2
-//
-//  Created by Qiang Yu on 1/3/10.
-//  Copyright 2010 Qiang Yu. All rights reserved.
-//
+/*
+ * Copyright 2011-2012 Jason Rush and John Flanagan. All rights reserved.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 #import <CommonCrypto/CommonCryptor.h>
 #import "Kdb4Reader.h"
@@ -26,17 +35,6 @@
 
 @implementation Kdb4Reader
 
-- (void)dealloc {
-    [comment release];
-    [cipherUuid release];
-    [masterSeed release];
-    [transformSeed release];
-    [encryptionIv release];
-    [protectedStreamKey release];
-    [streamStartBytes release];
-    [super dealloc];
-}
-
 - (KdbTree*)load:(InputStream*)inputStream withPassword:(KdbPassword*)kdbPassword {
     // Read the header
     [self readHeader:inputStream];
@@ -48,7 +46,7 @@
     
     // Create the AES input stream
     NSData *key = [kdbPassword createFinalKeyForVersion:4 masterSeed:masterSeed transformSeed:transformSeed rounds:rounds];
-    AesInputStream *aesInputStream = [[[AesInputStream alloc] initWithInputStream:inputStream key:key iv:encryptionIv] autorelease];
+    AesInputStream *aesInputStream = [[AesInputStream alloc] initWithInputStream:inputStream key:key iv:encryptionIv];
     
     // Verify the stream start bytes match
     NSData *startBytes = [aesInputStream readData:32];
@@ -57,25 +55,25 @@
     }
     
     // Create the hashed input stream and swap in the compression input stream if compressed
-    InputStream *stream = [[[HashedInputStream alloc] initWithInputStream:aesInputStream] autorelease];
+    InputStream *stream = [[HashedInputStream alloc] initWithInputStream:aesInputStream];
     if (compressionAlgorithm == COMPRESSION_GZIP) {
-        stream = [[[GZipInputStream alloc] initWithInputStream:stream] autorelease];
+        stream = [[GZipInputStream alloc] initWithInputStream:stream];
     }
     
     // Create the CRS Algorithm
     RandomStream *randomStream = nil;
     if (randomStreamID == CSR_SALSA20) {
-        randomStream = [[[Salsa20RandomStream alloc] init:protectedStreamKey] autorelease];
+        randomStream = [[Salsa20RandomStream alloc] init:protectedStreamKey];
     } else if (randomStreamID == CSR_ARC4VARIANT) {
-        randomStream = [[[Arc4RandomStream alloc] init:protectedStreamKey] autorelease];
+        randomStream = [[Arc4RandomStream alloc] init:protectedStreamKey];
     } else {
         @throw [NSException exceptionWithName:@"IOException" reason:@"Unsupported CSR algorithm" userInfo:nil];
     }
     
     // Parse the tree
-    Kdb4Parser *parser = [[[Kdb4Parser alloc] initWithRandomStream:randomStream] autorelease];
+    Kdb4Parser *parser = [[Kdb4Parser alloc] initWithRandomStream:randomStream];
     Kdb4Tree *tree = [parser parse:stream];
-    
+
     // Copy some parameters into the KdbTree
     tree.rounds = rounds;
     tree.compressionAlgorithm = compressionAlgorithm;
@@ -117,7 +115,7 @@
             
             case HEADER_COMMENT:
                 // FIXME this should prolly be a string
-                comment = [[inputStream readData:fieldSize] retain];
+                comment = [inputStream readData:fieldSize];
                 break;
             
             case HEADER_CIPHERID:
@@ -132,7 +130,7 @@
                 if (fieldSize != 32) {
                     @throw [NSException exceptionWithName:@"IOException" reason:@"Invalid field size" userInfo:nil];
                 }
-                masterSeed = [[inputStream readData:fieldSize] retain];
+                masterSeed = [inputStream readData:fieldSize];
                 break;
             
             case HEADER_TRANSFORMSEED:
@@ -140,19 +138,19 @@
                     @throw [NSException exceptionWithName:@"IOException" reason:@"Invalid field size" userInfo:nil];
                 }
                 
-                transformSeed = [[inputStream readData:fieldSize] retain];
+                transformSeed = [inputStream readData:fieldSize];
                 break;
             
             case HEADER_ENCRYPTIONIV:
-                encryptionIv = [[inputStream readData:fieldSize] retain];
+                encryptionIv = [inputStream readData:fieldSize];
                 break;
             
             case HEADER_PROTECTEDKEY:
-                protectedStreamKey = [[inputStream readData:fieldSize] retain];
+                protectedStreamKey = [inputStream readData:fieldSize];
                 break;
             
             case HEADER_STARTBYTES:
-                streamStartBytes = [[inputStream readData:fieldSize] retain];
+                streamStartBytes = [inputStream readData:fieldSize];
                 break;
             
             case HEADER_TRANSFORMROUNDS:

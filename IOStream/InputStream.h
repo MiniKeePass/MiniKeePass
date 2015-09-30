@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Jason Rush and John Flanagan. All rights reserved.
+ * Copyright 2011-2012 Jason Rush and John Flanagan. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,16 +21,16 @@
     
 }
 
-- (NSUInteger)read:(void*)bytes length:(NSUInteger)bytesLength;
-- (NSData*)readData:(NSUInteger)length;
+- (NSUInteger)read:(void *)bytes length:(NSUInteger)bytesLength;
+- (NSData *)readData:(NSUInteger)length;
 
 - (uint8_t)readInt8;
 - (uint16_t)readInt16;
 - (uint32_t)readInt32;
 - (uint64_t)readInt64;
 
-- (NSString*)readString:(NSUInteger)length encoding:(NSStringEncoding)encoding;
-- (NSString*)readCString:(NSUInteger)length encoding:(NSStringEncoding)encoding;
+- (NSString *)readString:(NSUInteger)length encoding:(NSStringEncoding)encoding;
+- (NSString *)readCString:(NSUInteger)length encoding:(NSStringEncoding)encoding;
 
 - (NSUInteger)skip:(NSUInteger)length;
 

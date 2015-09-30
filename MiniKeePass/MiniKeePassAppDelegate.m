@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Jason Rush and John Flanagan. All rights reserved.
+ * Copyright 2011-2012 Jason Rush and John Flanagan. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,43 +21,46 @@
 #import "EntryViewController.h"
 #import "AppSettings.h"
 #import "DatabaseManager.h"
+<<<<<<< HEAD
 #import "SFHFKeychainUtils.h"
 #import "LockScreenController.h"
 #import "DropboxManager.h"
 #import <DropboxSDK/DropboxSDK.h>
+=======
+#import "KeychainUtils.h"
+#import "LockScreenManager.h"
+>>>>>>> MiniKeePass/master
 
-@interface MiniKeePassAppDelegate ()  {
-    UINavigationController *navigationController;
-    UIActionSheet* myActionSheet;
-    id<UIActionSheetDelegate> myActionSheetDelegate;
-    
-    UIImage *images[NUM_IMAGES];
-}
+@interface MiniKeePassAppDelegate ()
 
-@property (copy, nonatomic) NSString *fileToOpen;
+@property (nonatomic, strong) FilesViewController *filesViewController;;
+@property (nonatomic, strong) UINavigationController *navigationController;
 
 @end
 
 @implementation MiniKeePassAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // Initialize the images array
-    int i;
-    for (i = 0; i < NUM_IMAGES; i++) {
-        images[i] = nil;
-    }
-    
     _databaseDocument = nil;
-    
+
     // Create the files view
+<<<<<<< HEAD
     FilesViewController *filesViewController = [[[FilesViewController alloc] initWithStyle:UITableViewStylePlain] autorelease];
     navigationController = [[UINavigationController alloc] initWithRootViewController:filesViewController];
     navigationController.toolbarHidden = NO;
         
+=======
+    self.filesViewController = [[FilesViewController alloc] initWithStyle:UITableViewStylePlain];
+
+    self.navigationController = [[UINavigationController alloc] initWithRootViewController:self.filesViewController];
+    self.navigationController.toolbarHidden = NO;
+
+>>>>>>> MiniKeePass/master
     // Create the window
-    _window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    self.window.rootViewController = navigationController;
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    self.window.rootViewController = self.navigationController;
     [self.window makeKeyAndVisible];
+<<<<<<< HEAD
 
     // Initialize and update the Dropbox manager
     DropboxManager *dropManager = [DropboxManager singleton];
@@ -72,44 +75,28 @@
     NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
         [notificationCenter addObserver:self selector:@selector(handlePasteboardNotification:) name:UIPasteboardChangedNotification object:nil];
     }
+=======
+>>>>>>> MiniKeePass/master
 
-    [LockScreenController present];
+    // Add a pasteboard notification listener to support clearing the clipboard
+    NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+    [notificationCenter addObserver:self
+                           selector:@selector(handlePasteboardNotification:)
+                               name:UIPasteboardChangedNotification
+                             object:nil];
+
+    // Check file protection
+    [self checkFileProtection];
+
+    // Initialize the lock screen manager
+    [LockScreenManager sharedInstance];
 
     return YES;
 }
 
-- (void)dealloc {
-    int i;
-    for (i = 0; i < NUM_IMAGES; i++) {
-        [images[i] release];
-    }
-    [_databaseDocument release];
-    [_fileToOpen release];
-    [_window release];
-    [navigationController release];
-    [super dealloc];
-}
-
-- (void)applicationDidEnterBackground:(UIApplication *)application {
-    [self dismissActionSheet];
-    if (!self.locked) {
-        [LockScreenController present];
-        NSDate *currentTime = [NSDate date];
-        [[AppSettings sharedInstance] setExitTime:currentTime];
-    }
-}
-
 - (void)applicationWillEnterForeground:(UIApplication *)application {
-    // Check if we're supposed to open a file
-    if (self.fileToOpen != nil) {
-        // Close the current database
-        [self closeDatabase];
-        
-        // Open the file
-        [[DatabaseManager sharedInstance] openDatabaseDocument:self.fileToOpen animated:NO];
-        
-        self.fileToOpen = nil;
-    }
+    // Check file protection
+    [self checkFileProtection];
 
     // Get the time when the application last exited
     AppSettings *appSettings = [AppSettings sharedInstance];
@@ -120,7 +107,7 @@
         // Get the lock timeout (in seconds)
         NSInteger closeTimeout = [appSettings closeTimeout];
 
-        // Check if it's been longer then lock timeout
+        // Check if it's been longer then close timeout
         NSTimeInterval timeInterval = [exitTime timeIntervalSinceNow];
         if (timeInterval < -closeTimeout) {
             [self closeDatabase];
@@ -128,41 +115,43 @@
     }
 }
 
-- (CGFloat)currentScreenWidth {
-    CGRect screenRect = [[UIScreen mainScreen] bounds];
-    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
-    
-    return UIInterfaceOrientationIsPortrait(orientation) ? CGRectGetWidth(screenRect) : CGRectGetHeight(screenRect);
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+    [self importUrl:url];
+
+    return YES;
 }
 
-- (void)openUrl:(NSURL *)url {
++ (MiniKeePassAppDelegate *)appDelegate {
+    return [[UIApplication sharedApplication] delegate];
+}
+
++ (NSString *)documentsDirectory {
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    return [paths objectAtIndex:0];
+}
+
+- (void)importUrl:(NSURL *)url {
     // Get the filename
     NSString *filename = [url lastPathComponent];
-    
+
     // Get the full path of where we're going to move the file
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString *documentsDirectory = [MiniKeePassAppDelegate documentsDirectory];
     NSString *path = [documentsDirectory stringByAppendingPathComponent:filename];
-    
-    NSURL *newUrl = [NSURL fileURLWithPath:path];
-    
+
     // Move input file into documents directory
     NSFileManager *fileManager = [NSFileManager defaultManager];
-    [fileManager removeItemAtURL:newUrl error:nil];
-    [fileManager moveItemAtURL:url toURL:newUrl error:nil];
-    [fileManager removeItemAtPath:[documentsDirectory stringByAppendingPathComponent:@"Inbox"] error:nil];
-    
-    // Store the filename to open if it's a database
-    if ([filename hasSuffix:@".kdb"] || [filename hasSuffix:@".kdbx"]) {
-        self.fileToOpen = [filename copy];
-    } else {
-        self.fileToOpen = nil;
-        FilesViewController *fileView = [[navigationController viewControllers] objectAtIndex:0];
-        [fileView updateFiles];
-        [fileView.tableView reloadData];
+    BOOL isDirectory = NO;
+    if ([fileManager fileExistsAtPath:path isDirectory:&isDirectory]) {
+        if (isDirectory) {
+            // Should not have been passed a directory
+            return;
+        } else {
+            [fileManager removeItemAtPath:path error:nil];
+        }
     }
-}
+    [fileManager moveItemAtURL:url toURL:[NSURL fileURLWithPath:path] error:nil];
 
+<<<<<<< HEAD
 - (BOOL) commonHandleURL: (NSURL *) url
 {
     // Deal with drop box login method
@@ -187,6 +176,16 @@
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
 {
     return [self commonHandleURL:url];
+=======
+    // Set file protection on the new file
+    [fileManager setAttributes:@{NSFileProtectionKey:NSFileProtectionComplete} ofItemAtPath:path error:nil];
+
+    // Delete the Inbox folder if it exists
+    [fileManager removeItemAtPath:[documentsDirectory stringByAppendingPathComponent:@"Inbox"] error:nil];
+
+    [self.filesViewController updateFiles];
+    [self.filesViewController.tableView reloadData];
+>>>>>>> MiniKeePass/master
 }
 
 - (void)setDatabaseDocument:(DatabaseDocument *)newDatabaseDocument {
@@ -194,44 +193,47 @@
         [self closeDatabase];
     }
     
-    _databaseDocument = [newDatabaseDocument retain];
+    _databaseDocument = newDatabaseDocument;
     
     // Create and push on the root group view controller
-    GroupViewController *groupViewController = [[GroupViewController alloc] initWithStyle:UITableViewStylePlain];
+    GroupViewController *groupViewController = [[GroupViewController alloc] initWithGroup:_databaseDocument.kdbTree.root];
     groupViewController.title = [[_databaseDocument.filename lastPathComponent] stringByDeletingPathExtension];
-    groupViewController.group = _databaseDocument.kdbTree.root;
-    [navigationController pushViewController:groupViewController animated:YES];
-    [groupViewController release];
+    
+    [self.navigationController pushViewController:groupViewController animated:YES];
 }
 
 - (void)closeDatabase {
     // Close any open database views
-    [navigationController popToRootViewControllerAnimated:NO];
+    [self.navigationController popToRootViewControllerAnimated:NO];
     
-    [_databaseDocument release];
     _databaseDocument = nil;
+}
+
+- (void)deleteKeychainData {
+    // Reset some settings
+    AppSettings *appSettings = [AppSettings sharedInstance];
+    [appSettings setPinFailedAttempts:0];
+    [appSettings setPinEnabled:NO];
+    [appSettings setTouchIdEnabled:NO];
+
+    // Delete the PIN from the keychain
+    [KeychainUtils deleteStringForKey:@"PIN" andServiceName:@"com.jflan.MiniKeePass.pin"];
+
+    // Delete all database passwords from the keychain
+    [KeychainUtils deleteAllForServiceName:@"com.jflan.MiniKeePass.passwords"];
+    [KeychainUtils deleteAllForServiceName:@"com.jflan.MiniKeePass.keyfiles"];
 }
 
 - (void)deleteAllData {
     // Close the current database
     [self closeDatabase];
-    
-    // Reset some settings
-    AppSettings *appSettings = [AppSettings sharedInstance];
-    [appSettings setPinFailedAttempts:0];
-    [appSettings setPinEnabled:NO];
-    
-    // Delete the PIN from the keychain
-    [SFHFKeychainUtils deleteItemForUsername:@"PIN" andServiceName:@"com.jflan.MiniKeePass.pin" error:nil];
-    
-    // Delete all database passwords from the keychain
-    [SFHFKeychainUtils deleteAllItemForServiceName:@"com.jflan.MiniKeePass.passwords" error:nil];
-    [SFHFKeychainUtils deleteAllItemForServiceName:@"com.jflan.MiniKeePass.keyfiles" error:nil];
-    
+
+    // Delete data stored in system keychain
+    [self deleteKeychainData];
+
     // Get the files in the Documents directory
     NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString *documentsDirectory = [MiniKeePassAppDelegate documentsDirectory];
     NSArray *files = [fileManager contentsOfDirectoryAtPath:documentsDirectory error:nil];
     
     // Delete all the files in the Documents directory
@@ -240,16 +242,31 @@
     }
 }
 
-- (UIImage *)loadImage:(NSUInteger)index {
-    if (index >= NUM_IMAGES) {
-        return nil;
+- (void)checkFileProtection {
+    // Get the document's directory
+    NSString *documentsDirectory = [MiniKeePassAppDelegate documentsDirectory];
+
+    // Get the contents of the documents directory
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSArray *dirContents = [fileManager contentsOfDirectoryAtPath:documentsDirectory error:nil];
+
+    // Check all files to see if protection is enabled
+    for (NSString *file in dirContents) {
+        if (![file hasPrefix:@"."]) {
+            NSString *path = [documentsDirectory stringByAppendingPathComponent:file];
+
+            BOOL dir = NO;
+            [fileManager fileExistsAtPath:path isDirectory:&dir];
+            if (!dir) {
+                // Make sure file protecten is turned on
+                NSDictionary *attributes = [fileManager attributesOfItemAtPath:path error:nil];
+                NSString *fileProtection = [attributes valueForKey:NSFileProtectionKey];
+                if (![fileProtection isEqualToString:NSFileProtectionComplete]) {
+                    [fileManager setAttributes:@{NSFileProtectionKey:NSFileProtectionComplete} ofItemAtPath:path error:nil];
+                }
+            }
+        }
     }
-    
-    if (images[index] == nil) {
-        images[index] = [[UIImage imageNamed:[NSString stringWithFormat:@"%d", index]] retain];
-    }
-    
-    return images[index];
 }
 
 - (void)handlePasteboardNotification:(NSNotification *)notification {
@@ -268,10 +285,12 @@
 
         // Get the clear clipboard timeout (in seconds)
         NSInteger clearClipboardTimeout = [appSettings clearClipboardTimeout];
-        
-        // Initiate a background task
+
         UIApplication *application = [UIApplication sharedApplication];
-        UIBackgroundTaskIdentifier bgTask = [application beginBackgroundTaskWithExpirationHandler:^{
+
+        // Initiate a background task
+        __block UIBackgroundTaskIdentifier bgTask;
+        bgTask = [application beginBackgroundTaskWithExpirationHandler:^{
             // End the background task
             [application endBackgroundTask:bgTask];
         }];
@@ -297,65 +316,14 @@
     
     UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(dismissSettingsView)];
     settingsViewController.navigationItem.rightBarButtonItem = doneButton;
-    [doneButton release];
     
     UINavigationController *settingsNavController = [[UINavigationController alloc] initWithRootViewController:settingsViewController];
-    settingsNavController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
     
-    [self.window.rootViewController presentModalViewController:settingsNavController animated:YES];
-
-    [settingsViewController release];
-    [settingsNavController release];
+    [self.window.rootViewController presentViewController:settingsNavController animated:YES completion:nil];
 }
 
 - (void)dismissSettingsView {
-    [self.window.rootViewController dismissModalViewControllerAnimated:YES];
-}
-
-- (void)showActionSheet:(UIActionSheet *)actionSheet {
-    if (myActionSheet != nil) {
-        [myActionSheet dismissWithClickedButtonIndex:myActionSheet.cancelButtonIndex animated:NO];
-    }
-
-    myActionSheet = [actionSheet retain];
-    myActionSheetDelegate = actionSheet.delegate;
-    
-    actionSheet.delegate = self;
-    [actionSheet showInView:self.window.rootViewController.view];
-    [actionSheet release];
-}
-
-- (void)dismissActionSheet {
-    if (myActionSheet != nil) {
-        [myActionSheet dismissWithClickedButtonIndex:myActionSheet.cancelButtonIndex animated:YES];
-    }
-}
-
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if ([myActionSheetDelegate respondsToSelector:@selector(actionSheet:clickedButtonAtIndex:)]) {
-        [myActionSheetDelegate actionSheet:actionSheet clickedButtonAtIndex:buttonIndex];
-    }
-}
-
-- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
-    if ([myActionSheetDelegate respondsToSelector:@selector(actionSheet:didDismissWithButtonIndex:)]) {
-        [myActionSheetDelegate actionSheet:actionSheet didDismissWithButtonIndex:buttonIndex];
-    }
-    
-    myActionSheet = nil;
-    myActionSheetDelegate = nil;
-}
-
-- (void)actionSheet:(UIActionSheet *)actionSheet willDismissWithButtonIndex:(NSInteger)buttonIndex {
-    if ([myActionSheetDelegate respondsToSelector:@selector(actionSheet:willDismissWithButtonIndex:)]) {
-        [myActionSheetDelegate actionSheet:actionSheet willDismissWithButtonIndex:buttonIndex];
-    }
-}
-
-- (void)actionSheetCancel:(UIActionSheet *)actionSheet {
-    if ([myActionSheetDelegate respondsToSelector:@selector(actionSheetCancel:)]) {
-        [myActionSheetDelegate actionSheetCancel:actionSheet];
-    }
+    [self.window.rootViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end

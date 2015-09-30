@@ -1,1 +1,5 @@
 .DS_Store
+private
+xcuserdata
+xcshareddata
+icon.sketch/QuickLook

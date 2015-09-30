@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Jason Rush and John Flanagan. All rights reserved.
+ * Copyright 2011-2012 Jason Rush and John Flanagan. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,21 +19,23 @@
 
 @implementation InputStream
 
-- (NSUInteger)read:(void*)bytes length:(NSUInteger)bytesLength {
+- (NSUInteger)read:(void *)bytes length:(NSUInteger)bytesLength {
     [self doesNotRecognizeSelector:_cmd];
     return 0;
 }
 
-- (NSData*)readData:(NSUInteger)length {
-    uint8_t bytes[length];
+- (NSData *)readData:(NSUInteger)length {
+    uint8_t *bytes = calloc(sizeof(uint8_t), length);
     
     [self read:bytes length:length];
-    
-    return [NSData dataWithBytes:bytes length:length];
+    NSData *data = [NSData dataWithBytes:bytes length:length];
+    free(bytes);
+
+    return data;
 }
 
 - (uint8_t)readInt8 {
-    uint8_t value;
+    uint8_t value = 0;
     
     [self read:&value length:1];
     
@@ -41,7 +43,7 @@
 }
 
 - (uint16_t)readInt16 {
-    uint16_t value;
+    uint16_t value = 0;
     
     [self read:&value length:2];
     
@@ -49,7 +51,7 @@
 }
 
 - (uint32_t)readInt32 {
-    uint32_t value;
+    uint32_t value = 0;
     
     [self read:&value length:4];
     
@@ -57,22 +59,22 @@
 }
 
 - (uint64_t)readInt64 {
-    uint64_t value;
+    uint64_t value = 0;
     
     [self read:&value length:8];
     
     return value;
 }
 
-- (NSString*)readString:(NSUInteger)length encoding:(NSStringEncoding)encoding {
+- (NSString *)readString:(NSUInteger)length encoding:(NSStringEncoding)encoding {
     uint8_t bytes[length];
     
     [self read:bytes length:length];
     
-    return [[[NSString alloc] initWithBytes:bytes length:length encoding:encoding] autorelease];
+    return [[NSString alloc] initWithBytes:bytes length:length encoding:encoding];
 }
 
-- (NSString*)readCString:(NSUInteger)length encoding:(NSStringEncoding)encoding {
+- (NSString *)readCString:(NSUInteger)length encoding:(NSStringEncoding)encoding {
     char str[length];
     
     [self read:str length:length];

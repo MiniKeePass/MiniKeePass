@@ -1,0 +1,36 @@
+#
+# Copyright 2014 Jason Rush and John Flanagan. All rights reserved.
+#
+# This file contains translations used in the App Store. As a convention, lines
+# that start with a # should be in English. All other lines should be
+# translated into the respective language.
+#
+
+# App Name:
+MiniKeePass — Säker lösenordshantering
+
+# Description:
+MiniKeePass ger säker lösenordhantering på din iOS-enhet, kompatibel med KeePass.
+
+- Visa, redigera, och skapa KeePass 1.x- och 2.x-filer
+- Sök efter poster som i Mail
+- Stöd för nyckelfiler
+- Importera/exportera filer från och till Dropbox via den officiella Dropbox-appen eller annan molnlagrings-app
+- Kopiera lösenord till urklipp
+- Open webbsidor i Safari med MiniKeePass fortfarande i bakgrunden
+- Förhindra åtillåten tillgång till MiniKeePass med PIN-kod
+- Kom ihåg databaslösenord i enhetens säkrade nyckelring
+- Kan rensa urklipp efter bestämd tid på enheter som stöder bakgrundsaktivitet
+- Skapa nya, starka lösenord
+- Integrerad webbläsare med automatisk användarnamn- och lösenordsifyllning
+
+MiniKeePass källkod är öppen för säkerhetsanalys och kodbidrag på GitHub.
+
+# Keywords:
+MiniKeePass,KeePass,Kee Pass,KeyPass,KeePassX,Lösenord,Lösenordshantering,Lösenordshanterare,Lösenordsdatabas,Lösenordsvalv,Säker,Säkert,Krypterad,Krypterat
+
+# What's New in this Version:
+# Version 1.5
+Stöd för iOS 7
+Integrerad webbläsare med automatisk ifyllning
+Buggfixar

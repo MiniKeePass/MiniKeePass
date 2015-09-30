@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Jason Rush and John Flanagan. All rights reserved.
+ * Copyright 2011-2012 Jason Rush and John Flanagan. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,19 +18,8 @@
 #import <UIKit/UIKit.h>
 #import "FormViewController.h"
 
-@protocol TextEntryControllerDelegate;
+@interface TextEntryController : FormViewController
 
-@interface TextEntryController : FormViewController <FormViewControllerDelegate> {
-    UITextField *textField;
-    id<TextEntryControllerDelegate> textEntryDelegate;
-}
+@property (nonatomic, strong) UITextField *textField;
 
-@property (nonatomic, readonly) UITextField *textField;
-@property (nonatomic, retain) id<TextEntryControllerDelegate> textEntryDelegate;
-
-@end
-
-@protocol TextEntryControllerDelegate <NSObject>
-- (void)textEntryController:(TextEntryController*)controller textEntered:(NSString*)string;
-- (void)textEntryControllerCancelButtonPressed:(TextEntryController*)controller;
 @end

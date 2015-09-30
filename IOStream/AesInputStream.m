@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Jason Rush and John Flanagan. All rights reserved.
+ * Copyright 2011-2012 Jason Rush and John Flanagan. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,10 +22,10 @@
 
 @implementation AesInputStream
 
-- (id)initWithInputStream:(InputStream*)stream key:(NSData*)key iv:(NSData*)iv {
+- (id)initWithInputStream:(InputStream *)stream key:(NSData *)key iv:(NSData *)iv {
     self = [super init];
     if (self) {
-        inputStream = [stream retain];
+        inputStream = stream;
         
         CCCryptorCreate(kCCDecrypt, kCCAlgorithmAES128, kCCOptionPKCS7Padding, key.bytes, kCCKeySizeAES256, iv.bytes, &cryptorRef);
         
@@ -37,12 +37,10 @@
 }
 
 - (void)dealloc {
-    [inputStream release];
     CCCryptorRelease(cryptorRef);
-    [super dealloc];
 }
 
-- (NSUInteger)read:(void*)bytes length:(NSUInteger)bytesLength {
+- (NSUInteger)read:(void *)bytes length:(NSUInteger)bytesLength {
     NSUInteger remaining = bytesLength;
     NSUInteger offset = 0;
     NSUInteger n;
@@ -55,7 +53,7 @@
         }
         
         n = MIN(remaining, bufferSize - bufferOffset);       
-        memcpy(((uint8_t*)bytes) + offset, outputBuffer + bufferOffset, n);
+        memcpy(((uint8_t *)bytes) + offset, outputBuffer + bufferOffset, n);
         
         bufferOffset += n;
         

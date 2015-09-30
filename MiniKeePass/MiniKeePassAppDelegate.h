@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Jason Rush and John Flanagan. All rights reserved.
+ * Copyright 2011-2012 Jason Rush and John Flanagan. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,24 +19,21 @@
 #import "FilesViewController.h"
 #import "DatabaseDocument.h"
 
-#define NUM_IMAGES 69
+@interface MiniKeePassAppDelegate : NSObject <UIApplicationDelegate>
 
-@interface MiniKeePassAppDelegate : NSObject <UIApplicationDelegate, UIActionSheetDelegate>
+@property (nonatomic, strong) UIWindow *window;
+@property (nonatomic, strong) DatabaseDocument *databaseDocument;
 
-@property (nonatomic, retain) UIWindow *window;
-@property (nonatomic, retain) DatabaseDocument *databaseDocument;
-@property (nonatomic, assign) BOOL locked;
-@property (nonatomic, readonly) BOOL backgroundSupported;
++ (MiniKeePassAppDelegate *)appDelegate;
++ (NSString *)documentsDirectory;
 
-- (CGFloat)currentScreenWidth;
+- (void)importUrl:(NSURL *)url;
+
 - (void)closeDatabase;
+- (void)deleteKeychainData;
 - (void)deleteAllData;
-- (UIImage*)loadImage:(NSUInteger)index;
 
 - (void)showSettingsView;
 - (void)dismissSettingsView;
-
-- (void)showActionSheet:(UIActionSheet*)actionSheet;
-- (void)dismissActionSheet;
 
 @end

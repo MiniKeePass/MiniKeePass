@@ -8,15 +8,15 @@
 
 #import <Foundation/Foundation.h>
 
-@interface KdbPassword : NSObject {
-    NSData *masterKey;
-    BOOL needsAdditionalHash;
-}
+@interface KdbPassword : NSObject
 
-- (id)initWithPassword:(NSString*)password encoding:(NSStringEncoding)encoding;
-- (id)initWithKeyfile:(NSString*)filename;
-- (id)initWithPassword:(NSString*)password encoding:(NSStringEncoding)encoding keyfile:(NSString*)filename;
+- (id)initWithPassword:(NSString*)inPassword
+      passwordEncoding:(NSStringEncoding)inPasswordEncoding
+               keyFile:(NSString*)inKeyFile;
 
-- (NSData*)createFinalKeyForVersion:(uint8_t)version masterSeed:(NSData*)masterSeed transformSeed:(NSData*)transformSeed rounds:(uint64_t)rounds;
+- (NSData*)createFinalKeyForVersion:(uint8_t)version
+                         masterSeed:(NSData*)masterSeed
+                      transformSeed:(NSData*)transformSeed
+                             rounds:(uint64_t)rounds;
 
 @end

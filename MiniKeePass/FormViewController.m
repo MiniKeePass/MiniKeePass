@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Jason Rush and John Flanagan. All rights reserved.
+ * Copyright 2011-2012 Jason Rush and John Flanagan. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,33 +17,29 @@
 
 #import "FormViewController.h"
 
+@interface FormViewController ()
+@property (nonatomic, strong) NSMutableArray *cells;
+@property (nonatomic, strong) InfoBar *infoBar;
+@end
+
 @implementation FormViewController
 
-@synthesize controls;
-@synthesize headerTitle;
-@synthesize footerTitle;
-@synthesize delegate;
-
-- (id)initWithStyle:(UITableViewStyle)style {
+- (id)init {
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
         self.tableView.scrollEnabled = NO;
         self.tableView.delegate = self;
-        
-        headerTitle = nil;
-        footerTitle = nil;
-        
-        UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(okPressed:)];
-        self.navigationItem.rightBarButtonItem = doneButton;
-        [doneButton release];
-        
-        UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelPressed:)];
-        self.navigationItem.leftBarButtonItem = cancelButton;
-        [cancelButton release];
-        
-        infoBar = [[InfoBar alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 20)];
-        infoBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-        [self.view addSubview:infoBar];
+
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+                                                                                               target:self
+                                                                                               action:@selector(donePressed:)];
+        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+                                                                                              target:self
+                                                                                              action:@selector(cancelPressed:)];
+
+        self.infoBar = [[InfoBar alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 20)];
+        self.infoBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+        [self.view addSubview:self.infoBar];
     }
     return self;
 }
@@ -52,119 +48,32 @@
     [super viewDidLoad];
     
     NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
-    [notificationCenter addObserver:self selector:@selector(applicationWillResignActive:) name:UIApplicationWillResignActiveNotification object:nil];
+    [notificationCenter addObserver:self
+                           selector:@selector(applicationWillResignActive:)
+                               name:UIApplicationWillResignActiveNotification
+                             object:nil];
 }
 
 - (void)viewDidUnload {
     [super viewDidUnload];
     
     NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
-    [notificationCenter removeObserver:self name:UIApplicationWillResignActiveNotification object:nil];
-}
-
-- (void)dealloc {
-    [controls release];
-    [infoBar release];
-    [headerTitle release];
-    [footerTitle release];
-    [super dealloc];
+    [notificationCenter removeObserver:self
+                                  name:UIApplicationWillResignActiveNotification
+                                object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    UITextField *textField = [controls objectAtIndex:0];
+
+    UITextField *textField = [self.controls objectAtIndex:0];
     [textField becomeFirstResponder];
 }
 
-- (void)applicationWillResignActive:(id)sender {
-    for (UITextField *textField in controls) {
-        if ([textField isFirstResponder]) {
-            [textField resignFirstResponder];
-        }
-    }
-}
-
-- (void)showErrorMessage:(NSString *)message {
-    [self.view bringSubviewToFront:infoBar];
-    infoBar.label.text = message;
-    [infoBar showBar];
-}
-
-- (void)okPressed:(id)sender {
-    if ([delegate respondsToSelector:@selector(formViewController:button:)]) {
-        [delegate formViewController:self button:FormViewControllerButtonOk];
-    }
-}
-
-- (void)cancelPressed:(id)sender {
-    if ([delegate respondsToSelector:@selector(formViewController:button:)]) {
-        [delegate formViewController:self button:FormViewControllerButtonCancel];
-    }
-}
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView {
-    return 1;    
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [controls count];
-}
-
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    return headerTitle;
-}
-
-- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
-    return footerTitle;
-}
-
-// Create a local array of pre-generated cells.
-// This has potential memory issues if a large number of cells are created, but it solves a probem with scrolling the form
-- (void)setControls:(NSArray *)newControls {
-    [controls release];
-    controls = [newControls retain];
-    
-    if (cells == nil) {
-        cells = [[NSMutableArray alloc] initWithCapacity:[controls count]];
-    } else {
-        [cells removeAllObjects];
-    }
-    
-    UITableViewCell *cell;
-    for (UIView *controlView in controls) {
-        if ([controlView isKindOfClass:[UITableViewCell class]]) {
-            cell = (UITableViewCell*)controlView;
-        } else {
-            cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil] autorelease];
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            
-            controlView.frame = [self calculateNewFrameForView:controlView inOrientation:[[UIApplication sharedApplication] statusBarOrientation]];
-            //            NSLog(@"%@", controlView);
-            [cell addSubview:controlView];
-        }
-        [cells addObject:cell];
-    }
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return [cells objectAtIndex:indexPath.row];
-}
-
-- (BOOL)textFieldShouldReturn:(UITextField *)textField {
-    [self okPressed:nil];
-    return YES;
-}
-
-- (CGRect)calculateNewFrameForView:(UIView *)view inOrientation:(UIInterfaceOrientation)orientation{
-    CGRect screenBounds = [[UIScreen mainScreen] bounds];
-    CGFloat currentWidth = UIInterfaceOrientationIsPortrait(orientation) ? CGRectGetWidth(screenBounds) : CGRectGetHeight(screenBounds);
-    
-    CGFloat xOrigin = UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? 56.0f : 20.0f;
-    CGFloat yOrigin = 11;
-    CGFloat width = currentWidth - 2 * xOrigin;
-    CGFloat height = 22;
-    
-    return CGRectMake(xOrigin, yOrigin, width, height);
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+    [UIView animateWithDuration:duration animations:^{
+        [self resizeControlsForOrientation:toInterfaceOrientation];
+    }];
 }
 
 - (void)resizeControlsForOrientation:(UIInterfaceOrientation)orientation {
@@ -175,10 +84,95 @@
     }
 }
 
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {	
-    [UIView animateWithDuration:duration animations:^{
-        [self resizeControlsForOrientation:toInterfaceOrientation];
-    }];
+
+- (void)applicationWillResignActive:(id)sender {
+    for (UITextField *textField in self.controls) {
+        if ([textField isFirstResponder]) {
+            [textField resignFirstResponder];
+        }
+    }
+}
+
+- (void)setControls:(NSArray *)controls {
+    _controls = controls;
+
+    if (self.cells == nil) {
+        self.cells = [[NSMutableArray alloc] initWithCapacity:[_controls count]];
+    } else {
+        [self.cells removeAllObjects];
+    }
+
+    UITableViewCell *cell;
+    for (UIView *controlView in _controls) {
+        if ([controlView isKindOfClass:[UITableViewCell class]]) {
+            cell = (UITableViewCell*)controlView;
+        } else {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+
+            controlView.frame = [self calculateNewFrameForView:controlView
+                                                 inOrientation:[[UIApplication sharedApplication] statusBarOrientation]];
+            [cell addSubview:controlView];
+        }
+        [self.cells addObject:cell];
+    }
+}
+
+- (CGRect)calculateNewFrameForView:(UIView *)view inOrientation:(UIInterfaceOrientation)orientation {
+    CGRect screenBounds = [[UIScreen mainScreen] bounds];
+    CGFloat currentWidth = UIInterfaceOrientationIsPortrait(orientation) ? CGRectGetWidth(screenBounds) : CGRectGetHeight(screenBounds);
+
+    CGFloat xOrigin = [[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad ? 56.0f : 20.0f;
+    CGFloat yOrigin = 11;
+    CGFloat width = currentWidth - 2 * xOrigin;
+    CGFloat height = 22;
+
+    return CGRectMake(xOrigin, yOrigin, width, height);
+}
+
+- (void)showErrorMessage:(NSString *)message {
+    [self.view bringSubviewToFront:self.infoBar];
+    self.infoBar.label.text = message;
+    [self.infoBar showBar];
+}
+
+#pragma mark - Button actions
+
+- (void)donePressed:(id)sender {
+    if (self.donePressed != nil) {
+        self.donePressed(self);
+    }
+}
+
+- (void)cancelPressed:(id)sender {
+    if (self.cancelPressed != nil) {
+        self.cancelPressed(self);
+    }
+}
+
+#pragma mark - UITableViewDataSource
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return [self.controls count];
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    return self.headerTitle;
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
+    return self.footerTitle;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return [self.cells objectAtIndex:indexPath.row];
+}
+
+#pragma mark - UITextFieldDelegate
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    [self donePressed:nil];
+    return YES;
 }
 
 @end

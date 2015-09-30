@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Jason Rush and John Flanagan. All rights reserved.
+ * Copyright 2011-2012 Jason Rush and John Flanagan. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,33 +16,65 @@
  */
 
 #import "HelpViewController.h"
-#import "AutorotatingViewController.h"
+
+@interface HelpTopic : NSObject
+- (HelpTopic *)initWithTitle:(NSString *)title andResource:(NSString *)resource;
++ (HelpTopic *)helpTopicWithTitle:(NSString *)title andResource:(NSString *)resource;
+@property (nonatomic, copy) NSString* title;
+@property (nonatomic, copy) NSString* resource;
+@end
+
+@implementation HelpTopic
+
+- (HelpTopic *)initWithTitle:(NSString *)title andResource:(NSString *)resource {
+    self = [super init];
+    if (self) {
+        _title = [title copy];
+        _resource = [resource copy];
+    }
+    return self;
+}
+
++ (HelpTopic *)helpTopicWithTitle:(NSString *)title andResource:(NSString *)resource {
+    return [[HelpTopic alloc] initWithTitle:title andResource:resource];
+}
+
+
+@end
+
+@interface HelpViewController ()
+@property (nonatomic, strong) NSArray *helpTopics;
+@end
 
 @implementation HelpViewController
-
-typedef struct {
-    NSString *title;
-    NSString *resource;
-} help_topic_t;
-
-help_topic_t help_topics[] = {
-    {@"iTunes Import/Export", @"itunes"},
-    {@"Dropbox Import/Export", @"dropbox"},
-    {@"Safari/Email Import", @"safariemail"},
-    {@"Create New Database", @"createdb"},
-    {@"Key Files", @"keyfiles"}
-};
 
 - (id)init {
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
         self.title = NSLocalizedString(@"Help", nil);
+        _helpTopics = @[
+                         [HelpTopic helpTopicWithTitle:@"iTunes Import/Export" andResource:@"itunes"],
+                         [HelpTopic helpTopicWithTitle:@"Dropbox Import/Export" andResource:@"dropbox"],
+                         [HelpTopic helpTopicWithTitle:@"Safari/Email Import" andResource:@"safariemail"],
+                         [HelpTopic helpTopicWithTitle:@"Create New Database" andResource:@"createdb"],
+                         [HelpTopic helpTopicWithTitle:@"Key Files" andResource:@"keyfiles"]
+                        ];
     }
     return self;
 }
 
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(closeHelp)];
+}
+
+- (void)closeHelp {
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return sizeof(help_topics) / sizeof(help_topic_t);
+    return _helpTopics.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -50,20 +82,20 @@ help_topic_t help_topics[] = {
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     
     // Configure the cell
-    cell.textLabel.text = NSLocalizedString(help_topics[indexPath.row].title, nil);
+    cell.textLabel.text = NSLocalizedString(((HelpTopic *)_helpTopics[indexPath.row]).title, nil);
     
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     // Get the title and resource of the selected help page
-    NSString *title = help_topics[indexPath.row].title;
-    NSString *resource = help_topics[indexPath.row].resource;
+    NSString *title = ((HelpTopic *)_helpTopics[indexPath.row]).title;
+    NSString *resource = ((HelpTopic *)_helpTopics[indexPath.row]).resource;
     
     NSString *language = [[NSLocale preferredLanguages] objectAtIndex:0];
     NSString *localizedResource = [NSString stringWithFormat:@"%@-%@", language, resource];
@@ -81,14 +113,11 @@ help_topic_t help_topics[] = {
     webView.backgroundColor = [UIColor whiteColor];
     [webView loadRequest:[NSURLRequest requestWithURL:url]];
     
-    UIViewController *viewController = [[AutorotatingViewController alloc] init];
+    UIViewController *viewController = [[UIViewController alloc] init];
     viewController.title = NSLocalizedString(title, nil);
     viewController.view = webView;
-    [webView release];
     
     [self.navigationController pushViewController:viewController animated:YES];
-    
-    [viewController release];
 }
 
 @end

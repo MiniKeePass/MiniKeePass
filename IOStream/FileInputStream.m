@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Jason Rush and John Flanagan. All rights reserved.
+ * Copyright 2011-2012 Jason Rush and John Flanagan. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,7 +21,7 @@
 
 @implementation FileInputStream
 
-- (id)initWithFilename:(NSString*)filename {
+- (id)initWithFilename:(NSString *)filename {
     self = [super init];
     if (self) {
         fd = open([filename UTF8String], O_RDONLY);
@@ -34,14 +34,13 @@
 
 - (void)dealloc {
     [self close];
-    [super dealloc];
 }
 
-- (NSUInteger)read:(void*)bytes length:(NSUInteger)bytesLength {
+- (NSUInteger)read:(void *)bytes length:(NSUInteger)bytesLength {
     return read(fd, bytes, bytesLength);
 }
 
-- (NSInteger)seek:(NSUInteger)offset {
+- (off_t)seek:(off_t)offset {
     return lseek(fd, offset, SEEK_SET);
 }
 

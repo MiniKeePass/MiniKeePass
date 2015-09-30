@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Jason Rush and John Flanagan. All rights reserved.
+ * Copyright 2011-2012 Jason Rush and John Flanagan. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,13 +18,14 @@
 #import <UIKit/UIKit.h>
 #import "FormViewController.h"
 #import "ChoiceCell.h"
+#import "MasterPasswordFieldCell.h"
 
 @interface PasswordViewController : FormViewController <SelectionListViewControllerDelegate> {
-    UITextField *passwordTextField;
+    MasterPasswordFieldCell *masterPasswordFieldCell;
     ChoiceCell *keyFileCell;
 }
 
-@property (nonatomic, readonly) UITextField *passwordTextField;
+@property (nonatomic, readonly) MasterPasswordFieldCell *masterPasswordFieldCell;
 @property (nonatomic, readonly) ChoiceCell *keyFileCell;
 
 - (id)initWithFilename:(NSString*)filename;

@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Jason Rush and John Flanagan. All rights reserved.
+ * Copyright 2011-2012 Jason Rush and John Flanagan. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,9 +23,15 @@
 
 @property (nonatomic, assign) CFUUIDRef uuid;
 
-- (id)initWithBytes:(uint8_t*)bytes;
-- (void)getBytes:(uint8_t*)bytes length:(NSUInteger)length;
+- (id)initWithBytes:(uint8_t *)bytes;
+- (id)initWithData:(NSData *)data;
+- (id)initWithString:(NSString *)string;
 
-+ (UUID*)getAESUUID;
+- (void)getBytes:(uint8_t *)bytes length:(NSUInteger)length;
+- (NSData *)getData;
+
++ (UUID *)uuid;
++ (UUID *)nullUuid;
++ (UUID *)getAESUUID;
 
 @end

@@ -21,6 +21,6 @@
 }
 
 - (id)init;
-- (id)init:(NSData*)key;
+- (id)init:(NSData *)key;
 
 @end

@@ -1,0 +1,36 @@
+#
+# Copyright 2014 Jason Rush and John Flanagan. All rights reserved.
+#
+# This file contains translations used in the App Store. As a convention, lines
+# that start with a # should be in English. All other lines should be
+# translated into the respective language.
+#
+
+# App Name:
+MiniKeePass — Veilige Wachtwoordmanager
+
+# Description:
+MiniKeePass provides secure password storage on your iOS device that's compatible with KeePass.
+
+- Bekijk, Bewerk en Creëer KeePass 1.x en 2.x bestanden
+- Zoeken voor items vanaf de top van tabellen zoals in Mail
+- Ondersteuning voor sleutelbestanden
+- Importeer/Exporteer bestanden naar en van Dropbox via de officiële Dropbox app of eender welke andere cloudapplicatie
+- Kopieer wachtwoorden naar het klembord voor makkelijke invoer
+- Open websites in Safari terwijl MiniKeePass op de achtergrond wordt uitgevoerd
+- Voorkom ongeauthoriseerde toegang tot MiniKeePass met een PIN
+- Databasewachtwoorden onthouden in de sleutelhanger van het apparaat
+- Optioneel leegmaken van het klembord na een opgegeven tijd op apparaten die achtergrondtaken ondersteunen
+- Genereren van nieuwe wachtwoorden
+- Geïntegreerde webbrowser met gebruikersnaam/wachtwoord auto-typen
+
+De source code van MiniKeePass is online beschikbaar voor een veiligheidsaudit of contributie op GitHub.
+
+# Keywords:
+MiniKeePass,KeePass,Kee Pass,KeyPass,KeePassX,Password,Password Manager,Wachtwoord, Wachtwoordmanager, Veilig
+
+# What's New in this Version:
+# Version 1.5
+iOS 7 compatibel
+Geïntegreerde webbrowser met auto-typen
+Bug fixes

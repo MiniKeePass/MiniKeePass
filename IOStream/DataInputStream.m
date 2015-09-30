@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Jason Rush and John Flanagan. All rights reserved.
+ * Copyright 2011-2012 Jason Rush and John Flanagan. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,21 +19,16 @@
 
 @implementation DataInputStream
 
-- (id)initWithData:(NSData*)d {
+- (id)initWithData:(NSData *)d {
     self = [super init];
     if (self) {
-        data = [d retain];
+        data = d;
         dataOffset = 0;
     }
     return self;
 }
 
-- (void)dealloc {
-    [data release];
-    [super dealloc];
-}
-
-- (NSUInteger)read:(void*)bytes length:(NSUInteger)bytesLength {
+- (NSUInteger)read:(void *)bytes length:(NSUInteger)bytesLength {
     NSRange range;
     range.location = dataOffset;
     range.length = MIN([data length] - dataOffset, bytesLength);

@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Jason Rush and John Flanagan. All rights reserved.
+ * Copyright 2011-2012 Jason Rush and John Flanagan. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,11 +29,13 @@
 @synthesize passwordTextField2;
 @synthesize versionSegmentedControl;
 
-- (id)initWithStyle:(UITableViewStyle)style {
-    self = [super initWithStyle:UITableViewStyleGrouped];
+- (id)init {
+    self = [super init];
     if (self) {
         self.headerTitle = NSLocalizedString(@"New Database", nil);
-        
+        self.footerTitle = NSLocalizedString(@"Do not forget your database password, it cannot be recovered.", nil);
+
+
         nameTextField = [[UITextField alloc] init];
         nameTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
         nameTextField.placeholder = NSLocalizedString(@"Name", nil);
@@ -60,23 +62,13 @@
 
         versionSegmentedControl = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObjects:NSLocalizedString(@"Version 1.x", nil), NSLocalizedString(@"Version 2.x", nil), nil]];
         versionSegmentedControl.selectedSegmentIndex = 0;
-        versionSegmentedControl.segmentedControlStyle = UISegmentedControlStyleBar;
         versionSegmentedControl.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-	  	
         self.navigationItem.titleView = versionSegmentedControl;
         
         self.controls = [NSArray arrayWithObjects:nameTextField, passwordTextField1, passwordTextField2, nil];
         self.tableView.scrollEnabled = YES;
     }
     return self;
-}
-
-- (void)dealloc {
-    [nameTextField release];
-    [passwordTextField1 release];
-    [passwordTextField2 release];
-    [versionSegmentedControl release];
-    [super dealloc];
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {    
@@ -91,7 +83,7 @@
     } else if (textField == passwordTextField1) {
         [passwordTextField2 becomeFirstResponder];
     } else if (textField == passwordTextField2) {
-        [self okPressed:nil];
+        [self donePressed:nil];
     }
     
     return YES;

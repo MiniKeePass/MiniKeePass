@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Jason Rush and John Flanagan. All rights reserved.
+ * Copyright 2011-2012 Jason Rush and John Flanagan. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,23 +18,24 @@
 #import <Foundation/Foundation.h>
 #import "KdbLib.h"
 
-@interface DatabaseDocument : NSObject {
-    KdbTree *kdbTree;
-    NSString *filename;
-    BOOL dirty;
-    
-    KdbPassword *kdbPassword;
-    
-    UIDocumentInteractionController *documentInteractionController;
-}
+@interface DatabaseDocument : NSObject
 
-@property (nonatomic, retain) KdbTree *kdbTree;
-@property (nonatomic, retain) NSString *filename;
-@property (nonatomic) BOOL dirty;
-@property (nonatomic, readonly) UIDocumentInteractionController *documentInteractionController;
+@property (nonatomic, strong) KdbTree *kdbTree;
+@property (nonatomic, copy) NSString *filename;
 
-- (void)open:(NSString*)newFilename password:(NSString*)password keyFile:(NSString*)keyFile;
+/// Create a KeePass Database
+/// @param filename Database filename
+/// @param password Database password
+/// @param keyFile Path to KeyFile
+/// @return A KeePass DatabaseDocument
+- (id)initWithFilename:(NSString *)filename password:(NSString *)password keyFile:(NSString *)keyFile;
+
+/// Save the current KeePass DatabaseDocument
 - (void)save;
-- (void)searchGroup:(KdbGroup*)group searchText:(NSString*)searchText results:(NSMutableArray*)results;
+
+/// Search a KeePass group for the supplied text
+/// @param searchText The text for which you're searching
+/// @param results A Dictionary to store the matching results
++ (void)searchGroup:(KdbGroup *)group searchText:(NSString *)searchText results:(NSMutableArray *)results;
 
 @end

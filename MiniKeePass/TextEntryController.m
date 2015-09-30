@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Jason Rush and John Flanagan. All rights reserved.
+ * Copyright 2011-2012 Jason Rush and John Flanagan. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,40 +19,17 @@
 
 @implementation TextEntryController
 
-@synthesize textField;
-@synthesize textEntryDelegate;
-
-- (id)initWithStyle:(UITableViewStyle)style {
-    self = [super initWithStyle:UITableViewStyleGrouped];
+- (id)init {
+    self = [super init];
     if (self) {
-        self.delegate = self;
+        self.textField = [[UITextField alloc] init];
+        self.textField.delegate = self;
+        self.textField.returnKeyType = UIReturnKeyDone;
+        self.textField.clearButtonMode = UITextFieldViewModeWhileEditing;
         
-        textField = [[UITextField alloc] init];
-        textField.delegate = self;
-        textField.returnKeyType = UIReturnKeyDone;
-        textField.clearButtonMode = UITextFieldViewModeWhileEditing;
-        
-        self.controls = [NSArray arrayWithObject:textField];
+        self.controls = [NSArray arrayWithObject:self.textField];
     }
     return self;
-}
-
-- (void)dealloc {
-    [textField release];
-    [textEntryDelegate release];
-    [super dealloc];
-}
-
-- (void)formViewController:(FormViewController *)controller button:(FormViewControllerButton)button {
-    if (button == FormViewControllerButtonOk) {
-        if ([textEntryDelegate respondsToSelector:@selector(textEntryController:textEntered:)]) {
-            [textEntryDelegate textEntryController:self textEntered:textField.text];
-        }
-    } else {
-        if ([textEntryDelegate respondsToSelector:@selector(textEntryControllerCancelButtonPressed:)]) {
-            [textEntryDelegate textEntryControllerCancelButtonPressed:self];
-        }
-    }
 }
 
 @end

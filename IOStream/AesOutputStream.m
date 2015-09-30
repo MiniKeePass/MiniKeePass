@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Jason Rush and John Flanagan. All rights reserved.
+ * Copyright 2011-2012 Jason Rush and John Flanagan. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,15 +17,15 @@
 #import "AesOutputStream.h"
 
 @interface AesOutputStream (PrivateMethods)
-- (void)ensureBufferCapacity:(uint32_t)capacity;
+- (void)ensureBufferCapacity:(size_t)capacity;
 @end
 
 @implementation AesOutputStream
 
-- (id)initWithOutputStream:(OutputStream*)stream key:(NSData*)key iv:(NSData*)iv {
+- (id)initWithOutputStream:(OutputStream *)stream key:(NSData *)key iv:(NSData *)iv {
     self = [super init];
     if (self) {
-        outputStream = [stream retain];
+        outputStream = stream;
         
         CCCryptorCreate(kCCEncrypt, kCCAlgorithmAES128, kCCOptionPKCS7Padding, key.bytes, kCCKeySizeAES256, iv.bytes, &cryptorRef);
         
@@ -36,10 +36,8 @@
 }
 
 - (void)dealloc {
-    [outputStream release];
     CCCryptorRelease(cryptorRef);
     free(buffer);
-    [super dealloc];
 }
 
 - (NSUInteger)write:(const void *)bytes length:(NSUInteger)bytesLength {
@@ -71,7 +69,7 @@
     [outputStream close];
 }
 
-- (void)ensureBufferCapacity:(uint32_t)capacity {
+- (void)ensureBufferCapacity:(size_t)capacity {
     // Check if we need to resize the internal buffer
     if (capacity > bufferCapacity) {
         free(buffer);

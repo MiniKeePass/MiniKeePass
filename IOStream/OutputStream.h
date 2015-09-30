@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Jason Rush and John Flanagan. All rights reserved.
+ * Copyright 2011-2012 Jason Rush and John Flanagan. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,8 +21,8 @@
     
 }
 
-- (NSUInteger)write:(const void*)bytes length:(NSUInteger)bytesLength;
-- (NSUInteger)write:(NSData*)data;
+- (NSUInteger)write:(const void *)bytes length:(NSUInteger)bytesLength;
+- (NSUInteger)write:(NSData *)data;
 
 - (void)writeInt8:(uint8_t)value;
 - (void)writeInt16:(uint16_t)value;

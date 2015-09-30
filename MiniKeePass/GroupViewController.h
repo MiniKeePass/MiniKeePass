@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Jason Rush and John Flanagan. All rights reserved.
+ * Copyright 2011-2012 Jason Rush and John Flanagan. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,23 +17,19 @@
 
 #import <UIKit/UIKit.h>
 #import "MiniKeePassAppDelegate.h"
-#import "EditGroupViewController.h"
+#import "SelectGroupViewController.h"
 #import "KdbLib.h"
-#import "AutorotatingTableViewController.h"
 
-@interface GroupViewController : AutorotatingTableViewController <UIActionSheetDelegate, UISearchDisplayDelegate, FormViewControllerDelegate> {
-    MiniKeePassAppDelegate *appDelegate;
-    UISearchDisplayController *searchDisplayController;
-    NSMutableArray *results;
-    KdbGroup *group;
-    NSString *pushedKdbTitle;
-    BOOL sortingEnabled;
-    NSMutableArray *groupsArray;
-    NSMutableArray *enteriesArray;
-    NSComparisonResult (^groupComparator) (id obj1, id obj2);
-    NSComparisonResult (^entryComparator) (id obj1, id obj2);
-}
+@interface GroupViewController : UITableViewController <UIActionSheetDelegate, SelectGroupDelegate>
 
-@property (nonatomic, assign) KdbGroup *group;
+@property (nonatomic, weak, readonly) KdbGroup *group;
+
+- (id)initWithGroup:(KdbGroup *)group;
+
+- (void)pushViewControllerForGroup:(KdbGroup *)group;
+- (void)pushViewControllerForEntry:(KdbEntry *)entry;
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForGroup:(KdbGroup *)g;
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForEntry:(KdbEntry *)e;
 
 @end

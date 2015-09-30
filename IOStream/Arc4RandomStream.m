@@ -23,7 +23,7 @@
     return [self init:[NSData dataWithBytes:buffer length:sizeof(buffer)]];
 }
 
-- (id)init:(NSData*)key {
+- (id)init:(NSData *)key {
     self = [super init];
     if (self) {
         const uint8_t *bytes = key.bytes;
@@ -58,10 +58,6 @@
         _index = 512; //skip first 512 bytes
     }
     return self;
-}
-
-- (void)dealloc {
-    [super dealloc];
 }
 
 - (void)updateState {

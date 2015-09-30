@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Jason Rush and John Flanagan. All rights reserved.
+ * Copyright 2011-2012 Jason Rush and John Flanagan. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,6 +28,6 @@
     uint32_t bufferLength;
 }
 
-- (id)initWithOutputStream:(OutputStream*)stream blockSize:(uint32_t)blockSize;
+- (id)initWithOutputStream:(OutputStream *)stream blockSize:(uint32_t)blockSize;
 
 @end

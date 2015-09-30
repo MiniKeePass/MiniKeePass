@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Jason Rush and John Flanagan. All rights reserved.
+ * Copyright 2011-2012 Jason Rush and John Flanagan. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@
     int fd;
 }
 
-- (id)initWithFilename:(NSString*)filename flags:(NSUInteger)flags mode:(NSUInteger)mode;
-- (NSInteger)seek:(NSUInteger)offset;
+- (id)initWithFilename:(NSString*)filename flags:(int)flags mode:(mode_t)mode;
+- (off_t)seek:(off_t)offset;
 
 @end

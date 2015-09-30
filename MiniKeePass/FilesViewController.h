@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Jason Rush and John Flanagan. All rights reserved.
+ * Copyright 2011-2012 Jason Rush and John Flanagan. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,21 +19,11 @@
 #import "FilesInfoView.h"
 #import "TextEntryController.h"
 #import "NewKdbViewController.h"
-#import "AutorotatingTableViewController.h"
 
 @class MiniKeePassAppDelegate;
 
-@interface FilesViewController : AutorotatingTableViewController <TextEntryControllerDelegate, FormViewControllerDelegate> {
-    FilesInfoView *filesInfoView;
-    MiniKeePassAppDelegate *appDelegate;
-    
-    NSMutableArray *databaseFiles;
-    NSMutableArray *keyFiles;
-    NSString *selectedFile;
-}
+@interface FilesViewController : UITableViewController
 
 - (void)updateFiles;
-
-@property (nonatomic, copy) NSString* selectedFile;
 
 @end

@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Jason Rush and John Flanagan. All rights reserved.
+ * Copyright 2011-2012 Jason Rush and John Flanagan. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,37 +17,22 @@
 
 #import <UIKit/UIKit.h>
 #import "InfoBar.h"
-#import "AutorotatingTableViewController.h"
 
-@protocol FormViewControllerDelegate;
+@interface FormViewController : UITableViewController <UITextFieldDelegate>
 
-@interface FormViewController : AutorotatingTableViewController <UITextFieldDelegate> {
-    NSArray *controls;
-    NSMutableArray *cells;
-    NSString *headerTitle;
-    NSString *footerTitle;
-    
-    InfoBar *infoBar;
-    
-    id<FormViewControllerDelegate> delegate;
-}
+@property (nonatomic, strong) NSArray *controls;
 
-@property (nonatomic, retain) NSArray *controls;
 @property (nonatomic, copy) NSString *headerTitle;
 @property (nonatomic, copy) NSString *footerTitle;
 
-@property (nonatomic, retain) id<FormViewControllerDelegate> delegate;
+@property (nonatomic, copy) void (^donePressed)(FormViewController *formViewController);
+@property (nonatomic, copy) void (^cancelPressed)(FormViewController *formViewController);
+
+- (id)init;
+
+- (void)donePressed:(id)sender;
+- (void)cancelPressed:(id)sender;
 
 - (void)showErrorMessage:(NSString*)message;
-- (void)okPressed:(id)sender;
 
-@end
-
-typedef enum {
-    FormViewControllerButtonCancel,
-    FormViewControllerButtonOk
-} FormViewControllerButton;
-
-@protocol FormViewControllerDelegate <NSObject>
-- (void)formViewController:(FormViewController *)controller button:(FormViewControllerButton)button;
 @end

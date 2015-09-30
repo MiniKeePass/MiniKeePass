@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Jason Rush and John Flanagan. All rights reserved.
+ * Copyright 2011-2012 Jason Rush and John Flanagan. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,10 +19,10 @@
 
 @implementation GZipOutputStream
 
-- (id)initWithOutputStream:(OutputStream*)stream {
+- (id)initWithOutputStream:(OutputStream *)stream {
     self = [super init];
     if (self) {
-        outputStream = [stream retain];
+        outputStream = stream;
         
         zstream.zalloc = Z_NULL;
         zstream.zfree = Z_NULL;
@@ -38,16 +38,11 @@
     return self;
 }
 
-- (void)dealloc {
-    [outputStream release];
-    [super dealloc];
-}
-
 - (NSUInteger)write:(const void *)bytes length:(NSUInteger)bytesLength {
     int n;
     
-    zstream.avail_in = bytesLength;
-    zstream.next_in = (void*)bytes;
+    zstream.avail_in = (unsigned int)bytesLength;
+    zstream.next_in = (void *)bytes;
     
     while (zstream.avail_in > 0) {
         do {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Jason Rush and John Flanagan. All rights reserved.
+ * Copyright 2011-2012 Jason Rush and John Flanagan. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,10 +24,10 @@
 
 @implementation HashedInputStream
 
-- (id)initWithInputStream:(InputStream*)stream {
+- (id)initWithInputStream:(InputStream *)stream {
     self = [super init];
     if (self) {
-        inputStream = [stream retain];
+        inputStream = stream;
         
         buffer = NULL;
         bufferOffset = 0;
@@ -37,16 +37,12 @@
 }
 
 - (void)dealloc {
-    [inputStream release];
-    
     if (buffer != NULL) {
         free(buffer);
     }
-    
-    [super dealloc];
 }
 
-- (NSUInteger)read:(void*)bytes length:(NSUInteger)bytesLength {
+- (NSUInteger)read:(void *)bytes length:(NSUInteger)bytesLength {
     NSUInteger remaining = bytesLength;
     NSUInteger offset = 0;
     
@@ -57,7 +53,7 @@
             }
         }
         
-        int n = MIN(bufferLength - bufferOffset, remaining);
+        NSUInteger n = MIN(bufferLength - bufferOffset, remaining);
         memcpy(bytes + offset, buffer + bufferOffset, n);
         
         offset += n;

@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Jason Rush and John Flanagan. All rights reserved.
+ * Copyright 2011-2012 Jason Rush and John Flanagan. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,7 +32,7 @@
         
         label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
         label.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-        label.textAlignment = UITextAlignmentCenter;
+        label.textAlignment = NSTextAlignmentCenter;
         label.text = @"Finished";
         label.textColor = [UIColor whiteColor];
         label.backgroundColor = [UIColor clearColor];
@@ -41,11 +41,6 @@
         self.hidden = YES;
     }
     return self;
-}
-
-- (void)dealloc {
-    [label release];
-    [super dealloc];
 }
 
 - (void)showBar {

@@ -1,0 +1,3 @@
+[submodule "MBProgressHUD"]
+	path = MBProgressHUD
+	url = git@github.com:MiniKeePass/MBProgressHUD.git

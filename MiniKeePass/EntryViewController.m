@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Jason Rush and John Flanagan. All rights reserved.
+ * Copyright 2011-2013 Jason Rush and John Flanagan. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,127 +17,130 @@
 
 #import "EntryViewController.h"
 #import "Kdb4Node.h"
+#import "AppSettings.h"
+#import "ImageFactory.h"
+#import "WebViewController.h"
+
+#import <MBProgressHUD/MBProgressHUD.h>
+
+#define SECTION_HEADER_HEIGHT 46.0f
+
+enum {
+    SECTION_DEFAULT_FIELDS,
+    SECTION_CUSTOM_FIELDS,
+    SECTION_COMMENTS,
+    NUM_SECTIONS
+};
+
+@interface EntryViewController() {
+    TitleFieldCell *titleCell;
+    TextFieldCell *usernameCell;
+    PasswordFieldCell *passwordCell;
+    UrlFieldCell *urlCell;
+    TextViewCell *commentsCell;
+}
+
+@property (nonatomic) BOOL isKdb4;
+@property (nonatomic, readonly) NSMutableArray *editingStringFields;
+@property (nonatomic, readonly) NSArray *entryStringFields;
+@property (nonatomic, readonly) NSArray *currentStringFields;
+
+@property (nonatomic, strong) NSMutableArray *filledCells;
+@property (nonatomic, readonly) NSArray *defaultCells;
+
+@property (nonatomic, readonly) NSArray *cells;
+
+@end
 
 @implementation EntryViewController
-
-@synthesize isNewEntry;
-@synthesize entry;
 
 - (id)initWithStyle:(UITableViewStyle)style {
     self = [super initWithStyle:style];
     if (self) {
-        self.tableView.delaysContentTouches = YES;
-        
-        UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", nil) style:UIBarButtonItemStylePlain target:self action:@selector(cancelPressed)];
-        self.navigationItem.rightBarButtonItem = cancelButton;
-        [cancelButton release];
-        
-        appDelegate = (MiniKeePassAppDelegate*)[[UIApplication sharedApplication] delegate];
-        
-        titleCell = [[TitleFieldCell alloc] init];
+        self.tableView.allowsSelectionDuringEditing = YES;
+
+        self.navigationItem.rightBarButtonItem = self.editButtonItem;
+
+        UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Entry", nil)
+                                                                              style:UIBarButtonItemStyleBordered
+                                                                             target:nil
+                                                                             action:nil];
+        self.navigationItem.backBarButtonItem = backBarButtonItem;
+
+        titleCell = [[TitleFieldCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:nil];
+        titleCell.delegate = self;
         titleCell.textLabel.text = NSLocalizedString(@"Title", nil);
+        titleCell.textField.placeholder = NSLocalizedString(@"Title", nil);
+        titleCell.textField.enabled = NO;
         titleCell.textFieldCellDelegate = self;
-        
-        imageButtonCell = [[ImageButtonCell alloc] initWithLabel:NSLocalizedString(@"Image", nil)];
-        [imageButtonCell.imageButton addTarget:self action:@selector(imageButtonPressed) forControlEvents:UIControlEventTouchUpInside];
-        
-        usernameCell = [[TextFieldCell alloc] init];
+        titleCell.imageButton.adjustsImageWhenHighlighted = NO;
+        [titleCell.imageButton addTarget:self action:@selector(imageButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+
+        usernameCell = [[TextFieldCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:nil];
         usernameCell.textLabel.text = NSLocalizedString(@"Username", nil);
+        usernameCell.textField.placeholder = NSLocalizedString(@"Username", nil);
+        usernameCell.textField.enabled = NO;
         usernameCell.textField.autocorrectionType = UITextAutocorrectionTypeNo;
         usernameCell.textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
         usernameCell.textFieldCellDelegate = self;
-        
-        passwordCell = [[PasswordFieldCell alloc] init];
+
+        passwordCell = [[PasswordFieldCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:nil];
         passwordCell.textLabel.text = NSLocalizedString(@"Password", nil);
+        passwordCell.textField.placeholder = NSLocalizedString(@"Password", nil);
+        passwordCell.textField.enabled = NO;
         passwordCell.textFieldCellDelegate = self;
-        [passwordCell.accessoryButton addTarget:self action:@selector(generatePasswordPressed) forControlEvents:UIControlEventTouchUpInside];
-        
-        urlCell = [[UrlFieldCell alloc] init];
+        [passwordCell.accessoryButton addTarget:self action:@selector(showPasswordPressed) forControlEvents:UIControlEventTouchUpInside];
+        [passwordCell.editAccessoryButton addTarget:self action:@selector(generatePasswordPressed) forControlEvents:UIControlEventTouchUpInside];
+
+        urlCell = [[UrlFieldCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:nil];
         urlCell.textLabel.text = NSLocalizedString(@"URL", nil);
+        urlCell.textField.placeholder = NSLocalizedString(@"URL", nil);
+        urlCell.textField.enabled = NO;
         urlCell.textFieldCellDelegate = self;
         urlCell.textField.returnKeyType = UIReturnKeyDone;
-        
+        [urlCell.accessoryButton addTarget:self action:@selector(openUrlPressed) forControlEvents:UIControlEventTouchUpInside];
+
         commentsCell = [[TextViewCell alloc] init];
-        
-        UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapPressed)];
-        tapGesture.delegate = self;
-        [self.view addGestureRecognizer:tapGesture];
-        [tapGesture release];
+        commentsCell.textView.editable = NO;
+
+        _defaultCells = @[titleCell, usernameCell, passwordCell, urlCell];
+        _filledCells = [[NSMutableArray alloc] initWithCapacity:4];
+
+        _editingStringFields = [NSMutableArray array];
     }
     return self;
 }
 
-- (void)dealloc {
-    [titleCell release];
-    [imageButtonCell release];
-    [usernameCell release];
-    [passwordCell release];
-    [urlCell release];
-    [commentsCell release];
-    [entry release];
-    [super dealloc];
+- (void)viewDidLoad {
+    self.tableView.sectionFooterHeight = 0.0f;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    // Mark the view as not being canceled
-    canceled = NO;
-    
     // Add listeners to the keyboard
     NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
     [notificationCenter addObserver:self selector:@selector(applicationWillResignActive:) name:UIApplicationWillResignActiveNotification object:nil];
-        
-    if (isNewEntry) {
-        [titleCell.textField becomeFirstResponder];
-    }
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-    originalHeight = self.view.frame.size.height;
-}
-
-- (void)viewWillDisappear:(BOOL)animated {
-    if (!canceled && [self isDirty]) {
-        entry.title = titleCell.textField.text;
-        entry.image = selectedImageIndex;
-        entry.username = usernameCell.textField.text;
-        entry.password = passwordCell.textField.text;
-        entry.url = urlCell.textField.text;
-        entry.notes = commentsCell.textView.text;
-        
-        appDelegate.databaseDocument.dirty = YES;
-        
-        // Save the database document
-        [appDelegate.databaseDocument save];
+    if (self.isNewEntry) {
+        [self setEditing:YES animated:NO];
+        [titleCell.textField becomeFirstResponder];
+        self.isNewEntry = NO;
     }
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
-    
+
+    // Hide the password HUD if it's visible
+    [MBProgressHUD hideHUDForView:self.view animated:NO];
+
     // Remove listeners from the keyboard
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
-- (void)setEntry:(KdbEntry *)e {
-    [entry release];
-    
-    entry = [e retain];
-    
-    // Update the fields
-    titleCell.textField.text = entry.title;
-    [self setSelectedImageIndex:entry.image];
-    usernameCell.textField.text = entry.username;
-    passwordCell.textField.text = entry.password;
-    urlCell.textField.text = entry.url;
-    commentsCell.textView.text = entry.notes;
-}
-
-- (KdbEntry *)entry {
-    return entry;
 }
 
 - (void)applicationWillResignActive:(id)sender {
@@ -149,184 +152,533 @@
     [commentsCell.textView resignFirstResponder];
 }
 
-- (void)cancelPressed {
-    canceled = YES;
-    [self.navigationController popViewControllerAnimated:YES];
+- (void)setEntry:(KdbEntry *)e {
+    _entry = e;
+    self.isKdb4 = [self.entry isKindOfClass:[Kdb4Entry class]];
+
+    // Update the fields
+    self.title = self.entry.title;
+    titleCell.textField.text = self.entry.title;
+    [self setSelectedImageIndex:self.entry.image];
+    usernameCell.textField.text = self.entry.username;
+    passwordCell.textField.text = self.entry.password;
+    urlCell.textField.text = self.entry.url;
+    commentsCell.textView.text = self.entry.notes;
+
+    // Track what cells are filled out
+    [self updateFilledCells];
 }
 
-BOOL stringsEqual(NSString *str1, NSString *str2) {
-    str1 = str1 == nil ? @"" : [str1 stringByReplacingOccurrencesOfString:@"\r\n" withString:@"\n"];
-    str2 = str2 == nil ? @"" : [str2 stringByReplacingOccurrencesOfString:@"\r\n" withString:@"\n"];
-    return [str1 isEqualToString:str2];
+- (NSArray *)cells {
+    return self.editing ? self.defaultCells : self.filledCells;
 }
 
-- (BOOL)isDirty {
-    return !(stringsEqual(entry.title, titleCell.textField.text) &&
-        entry.image == selectedImageIndex &&
-        stringsEqual(entry.username, usernameCell.textField.text) &&
-        stringsEqual(entry.password, passwordCell.textField.text) &&
-        stringsEqual(entry.url, urlCell.textField.text) &&
-        stringsEqual(entry.notes, commentsCell.textView.text));
-}
-
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
-    if ([touch.view isKindOfClass:[UIControl class]]) {
-        return NO;
+- (void)updateFilledCells {
+    [self.filledCells removeAllObjects];
+    for (TextFieldCell *cell in self.defaultCells) {
+        if (cell.textField.text.length > 0) {
+            [self.filledCells addObject:cell];
+        }
     }
-    return YES;
 }
 
-- (void)tapPressed {
-    [titleCell.textField resignFirstResponder];
-    [usernameCell.textField resignFirstResponder];
-    [passwordCell.textField resignFirstResponder];
-    [urlCell.textField resignFirstResponder];
-    [commentsCell.textView resignFirstResponder];
+- (NSArray *)currentStringFields {
+    if (!self.isKdb4) {
+        return nil;
+    }
+
+    if (self.editing) {
+        return self.editingStringFields;
+    } else {
+        return ((Kdb4Entry *)self.entry).stringFields;
+    }
+}
+
+- (NSArray *)entryStringFields {
+    if (self.isKdb4) {
+        Kdb4Entry *entry = (Kdb4Entry *)self.entry;
+        return entry.stringFields;
+    } else {
+        return nil;
+    }
+}
+
+- (void)cancelPressed {
+    [self setEditing:NO animated:YES canceled:YES];
+}
+
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated {
+    [self setEditing:editing animated:animated canceled:NO];
+}
+
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated canceled:(BOOL)canceled {
+    [super setEditing:editing animated:animated];
+
+    // Ensure that all updates happen at once
+    [self.tableView beginUpdates];
+
+    if (editing == NO) {
+        if (canceled) {
+            [self setEntry:self.entry];
+        } else {
+            self.entry.title = titleCell.textField.text;
+            self.entry.image = self.selectedImageIndex;
+            self.entry.username = usernameCell.textField.text;
+            self.entry.password = passwordCell.textField.text;
+            self.entry.url = urlCell.textField.text;
+            self.entry.notes = commentsCell.textView.text;
+            self.entry.lastModificationTime = [NSDate date];
+            [self updateFilledCells];
+
+            if (self.isKdb4) {
+                // Ensure any textfield currently being edited is saved
+                NSInteger count = [self.tableView numberOfRowsInSection:SECTION_CUSTOM_FIELDS] - 1;
+                for (NSInteger i = 0; i < count; i++) {
+                    TextFieldCell *cell = (TextFieldCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:SECTION_CUSTOM_FIELDS]];
+                    [cell.textField resignFirstResponder];
+                }
+
+                Kdb4Entry *kdb4Entry = (Kdb4Entry *)self.entry;
+                [kdb4Entry.stringFields removeAllObjects];
+                [kdb4Entry.stringFields addObjectsFromArray:self.editingStringFields];
+            }
+
+            // Save the database document
+            [[MiniKeePassAppDelegate appDelegate].databaseDocument save];
+        }
+    }
+
+    // Index paths for cells to be added or removed
+    NSMutableArray *paths = [NSMutableArray array];
+
+    // Manage default cells
+    for (TextFieldCell *cell in self.defaultCells) {
+        cell.textField.enabled = editing;
+
+        // Add empty cells to the list of cells that need to be added/deleted when changing between editing
+        if (cell.textField.text.length == 0) {
+            [paths addObject:[NSIndexPath indexPathForRow:[self.defaultCells indexOfObject:cell] inSection:0]];
+        }
+    }
+
+    [self.editingStringFields removeAllObjects];
+    [self.editingStringFields addObjectsFromArray:[self.entryStringFields copy]];
+    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:SECTION_CUSTOM_FIELDS] withRowAnimation:UITableViewRowAnimationFade];
+
+    if (editing) {
+        UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", nil) style:UIBarButtonItemStylePlain target:self action:@selector(cancelPressed)];
+        self.navigationItem.leftBarButtonItem = cancelButton;
+
+        titleCell.imageButton.adjustsImageWhenHighlighted = YES;
+        commentsCell.textView.editable = YES;
+
+        [self.tableView insertRowsAtIndexPaths:paths withRowAnimation:UITableViewRowAnimationFade];
+    } else {
+        self.navigationItem.leftBarButtonItem = nil;
+
+        titleCell.imageButton.adjustsImageWhenHighlighted = NO;
+        commentsCell.textView.editable = NO;
+
+        [self.tableView deleteRowsAtIndexPaths:paths withRowAnimation:UITableViewRowAnimationFade];
+    }
+
+    // Commit all updates
+    [self.tableView endUpdates];
+}
+
+- (void)titleFieldCell:(TitleFieldCell *)cell updatedTitle:(NSString *)title {
+    self.title = title;
+}
+
+#pragma mark - TextFieldCell delegate
+
+- (void)textFieldCellDidEndEditing:(TextFieldCell *)textFieldCell {
+    NSIndexPath *indexPath = [self.tableView indexPathForCell:textFieldCell];
+
+    switch (indexPath.section) {
+        case SECTION_CUSTOM_FIELDS: {
+            StringField *stringField = [self.editingStringFields objectAtIndex:indexPath.row];
+            stringField.value = textFieldCell.textField.text;
+            break;
+        }
+        default:
+            break;
+    }
 }
 
 - (void)textFieldCellWillReturn:(TextFieldCell *)textFieldCell {
-    if (textFieldCell == titleCell) {
-        [usernameCell.textField becomeFirstResponder];
-    } else if (textFieldCell == usernameCell) {
-        [passwordCell.textField becomeFirstResponder];
-    } else if (textFieldCell == passwordCell) {
-        [urlCell.textField becomeFirstResponder];
-    } else if (textFieldCell == urlCell) {
-        [urlCell.textField resignFirstResponder];
+    NSIndexPath *indexPath = [self.tableView indexPathForCell:textFieldCell];
+
+    switch (indexPath.section) {
+        case SECTION_DEFAULT_FIELDS: {
+            NSInteger nextIndex = indexPath.row + 1;
+            if (nextIndex < [self.defaultCells count]) {
+                TextFieldCell *nextCell = [self.defaultCells objectAtIndex:nextIndex];
+                [nextCell.textField becomeFirstResponder];
+            } else {
+                [self setEditing:NO animated:YES];
+            }
+            break;
+        }
+        case SECTION_CUSTOM_FIELDS: {
+            [textFieldCell.textField resignFirstResponder];
+        }
+        default:
+            break;
     }
 }
+
+#pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-#if 0
-    if ([entry isKindOfClass:[Kdb4Entry class]]) {
-        return 3;
-    }
-#endif
-    return 2;
-}
-
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    switch (section) {
-        case 0:
-            return 5;
-        case 1:
-            return 1;
-#if 0
-        case 2:
-            return [((Kdb4Entry*)entry).stringFields count];
-#endif
-    }
-    
-    return 0;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    switch (indexPath.section) {
-        case 0:
-            return 40;
-        case 1:
-            return 104;
-#if 0
-        case 2:
-            return 40;
-#endif
-    }
-    
-    return 40;
+    return NUM_SECTIONS;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     switch (section) {
-        case 0:
+        case SECTION_DEFAULT_FIELDS:
             return nil;
-        case 1:
+        case SECTION_CUSTOM_FIELDS:
+            if (self.isKdb4) {
+                if ([self tableView:tableView numberOfRowsInSection:1] > 0) {
+                    return NSLocalizedString(@"Custom Fields", nil);
+                } else {
+                    return nil;
+                }
+            } else {
+                return nil;
+            }
+        case SECTION_COMMENTS:
             return NSLocalizedString(@"Comments", nil);
-#if 0
-        case 2:
-            return NSLocalizedString(@"String Fields", nil);
-#endif
     }
-    
+
     return nil;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    switch (section) {
+        case SECTION_DEFAULT_FIELDS:
+            return [self.cells count];
+        case SECTION_CUSTOM_FIELDS:
+            if (self.isKdb4) {
+                NSUInteger numCells = self.currentStringFields.count;
+                // Additional cell for Add cell
+                return self.editing ? numCells + 1 : numCells;
+            } else {
+                return 0;
+            }
+        case SECTION_COMMENTS:
+            return 1;
+    }
+
+    return 0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-#if 0
-    static NSString *CellIdentifier = @"Cell";
-#endif
+    static NSString *TextFieldCellIdentifier = @"TextFieldCell";
+    static NSString *AddFieldCellIdentifier = @"AddFieldCell";
+
     switch (indexPath.section) {
-        case 0: {
-            switch (indexPath.row) {
-                case 0:
-                    return titleCell;
-                case 1:
-                    return imageButtonCell;
-                case 2:
-                    return usernameCell;
-                case 3:
-                    return passwordCell;
-                case 4:
-                    return urlCell;
+        case SECTION_DEFAULT_FIELDS: {
+            return [self.cells objectAtIndex:indexPath.row];
+        }
+        case SECTION_CUSTOM_FIELDS: {
+            if (indexPath.row == self.currentStringFields.count) {
+                // Return "Add new..." cell
+                UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:AddFieldCellIdentifier];
+                if (cell == nil) {
+                    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2
+                                                  reuseIdentifier:AddFieldCellIdentifier];
+                    cell.textLabel.textAlignment = NSTextAlignmentLeft;
+                    cell.textLabel.text = NSLocalizedString(@"Add new…", nil);
+
+                    // Add new cell when this cell is tapped
+                    [cell addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self
+                                                                                       action:@selector(addPressed)]];
+                }
+
+                return cell;
+            } else {
+                TextFieldCell *cell = [tableView dequeueReusableCellWithIdentifier:TextFieldCellIdentifier];
+                if (cell == nil) {
+                    cell = [[TextFieldCell alloc] initWithStyle:UITableViewCellStyleValue2
+                                                reuseIdentifier:TextFieldCellIdentifier];
+                    cell.textFieldCellDelegate = self;
+                    cell.textField.returnKeyType = UIReturnKeyDone;
+                }
+
+                StringField *stringField = [self.currentStringFields objectAtIndex:indexPath.row];
+                [cell setShowGrayBar:self.editing];
+
+                cell.textLabel.text = stringField.key;
+                cell.textField.text = stringField.value;
+                cell.textField.enabled = self.editing;
+
+                return cell;
             }
         }
-        case 1: {
+        case SECTION_COMMENTS: {
             return commentsCell;
         }
-#if 0
-        case 2: {
-            StringField *stringField = [((Kdb4Entry*)entry).stringFields objectAtIndex:indexPath.row];
-            
-            TextFieldCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-            if (cell == nil) {
-                cell = [[[TextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
-            }
-            cell.textLabel.text = stringField.name;
-            cell.textField.text = stringField.value;
-            return cell;
-        }
-#endif
     }
     
     return nil;
 }
 
-- (NSUInteger)selectedImageIndex {
-    return selectedImageIndex;
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    switch (indexPath.section) {
+        case SECTION_DEFAULT_FIELDS:
+            break;
+        case SECTION_CUSTOM_FIELDS: {
+            switch (editingStyle) {
+                case UITableViewCellEditingStyleInsert: {
+                    [self addPressed];
+                    break;
+                }
+                case UITableViewCellEditingStyleDelete: {
+                    TextFieldCell *cell = (TextFieldCell *)[tableView cellForRowAtIndexPath:indexPath];
+                    [cell.textField resignFirstResponder];
+
+                    [self.editingStringFields removeObjectAtIndex:indexPath.row];
+                    [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationBottom];
+                    break;
+                }
+                default:
+                    break;
+            }
+            break;
+        }
+        case SECTION_COMMENTS:
+            break;
+    }
 }
 
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+    return YES;
+}
+
+- (void)addPressed {
+    StringField *stringField = [StringField stringFieldWithKey:@"" andValue:@""];
+
+    StringFieldViewController *stringFieldViewController = [[StringFieldViewController alloc] initWithStringField:stringField];
+    stringFieldViewController.donePressed = ^(FormViewController *formViewController) {
+        [self updateStringField:(StringFieldViewController *)formViewController];
+    };
+    stringFieldViewController.cancelPressed = ^(FormViewController *formViewController) {
+        [formViewController dismissViewControllerAnimated:YES completion:nil];
+    };
+
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:stringFieldViewController];
+
+    [self.navigationController presentViewController:navController animated:YES completion:nil];
+}
+
+# pragma mark - Table view delegate
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    // Special case for top section with no section title
+    if (section == 0) {
+        return 10.0f;
+    }
+
+    return [self tableView:tableView titleForHeaderInSection:section] == nil ? 0.0f : SECTION_HEADER_HEIGHT;;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    switch (indexPath.section) {
+        case SECTION_DEFAULT_FIELDS:
+        case SECTION_CUSTOM_FIELDS:
+            return 40.0f;
+        case SECTION_COMMENTS:
+            return 228.0f;
+    }
+
+    return 40.0f;
+}
+
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
+    switch (indexPath.section) {
+        case SECTION_DEFAULT_FIELDS:
+            return UITableViewCellEditingStyleNone;
+        case SECTION_CUSTOM_FIELDS:
+            if (self.isKdb4 && self.editing) {
+                if (indexPath.row < self.currentStringFields.count) {
+                    return UITableViewCellEditingStyleDelete;
+                } else {
+                    return UITableViewCellEditingStyleInsert;
+                }
+            }
+            return UITableViewCellEditingStyleNone;
+        case SECTION_COMMENTS:
+            return UITableViewCellEditingStyleNone;
+    }
+    return UITableViewCellEditingStyleNone;
+}
+
+- (BOOL)tableView:(UITableView *)tableView shouldIndentWhileEditingRowAtIndexPath:(NSIndexPath *)indexPath {
+    return indexPath.section == SECTION_CUSTOM_FIELDS;
+}
+
+- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (self.editing && indexPath.section == SECTION_DEFAULT_FIELDS) {
+        return nil;
+    }
+    return indexPath;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (self.editing) {
+        if (indexPath.section != SECTION_CUSTOM_FIELDS) {
+            return;
+        }
+
+        [self editStringField:indexPath];
+    } else {
+        [self copyCellContents:indexPath];
+    }
+}
+
+- (void)copyCellContents:(NSIndexPath *)indexPath {
+    self.tableView.allowsSelection = NO;
+
+    TextFieldCell *cell = (TextFieldCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+
+    UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
+    pasteboard.string = cell.textField.text;
+
+    // Construct label
+    UILabel *copiedLabel = [[UILabel alloc] init];
+    copiedLabel.text = NSLocalizedString(@"Copied", nil);
+    copiedLabel.font = [UIFont boldSystemFontOfSize:18];
+    copiedLabel.textAlignment = NSTextAlignmentCenter;
+    copiedLabel.textColor = [UIColor whiteColor];
+    copiedLabel.backgroundColor = [UIColor clearColor];
+    [copiedLabel sizeToFit];
+    copiedLabel.center = CGPointMake(cell.bounds.size.width / 2.0f, cell.bounds.size.height / 2.0f);
+
+    // Put cell into "Copied" state
+    [cell addSubview:copiedLabel];
+    cell.textField.alpha = 0;
+    cell.textLabel.alpha = 0;
+    cell.accessoryView.hidden = YES;
+
+    int64_t delayInSeconds = 1.0;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        [UIView animateWithDuration:0.5 animations:^{
+            // Return to normal state
+            copiedLabel.alpha = 0;
+            cell.textField.alpha = 1;
+            cell.textLabel.alpha = 1;
+            [cell setSelected:NO animated:YES];
+        } completion:^(BOOL finished) {
+            cell.accessoryView.hidden = NO;
+            [copiedLabel removeFromSuperview];
+            self.tableView.allowsSelection = YES;
+        }];
+    });
+}
+
+#pragma mark - StringField related
+
+- (void)editStringField:(NSIndexPath *)indexPath {
+    StringField *stringField = [self.editingStringFields objectAtIndex:indexPath.row];
+
+    StringFieldViewController *stringFieldViewController = [[StringFieldViewController alloc] initWithStringField:stringField];
+    stringFieldViewController.object = indexPath;
+    stringFieldViewController.donePressed = ^(FormViewController *formViewController) {
+        [self updateStringField:(StringFieldViewController *)formViewController];
+    };
+    stringFieldViewController.cancelPressed = ^(FormViewController *formViewController) {
+        [formViewController dismissViewControllerAnimated:YES completion:nil];
+    };
+
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:stringFieldViewController];
+
+    [self.navigationController presentViewController:navController animated:YES completion:nil];
+}
+
+- (void)updateStringField:(StringFieldViewController *)stringFieldController {
+    if (stringFieldController.object == nil) {
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:self.editingStringFields.count inSection:1];
+        [self.editingStringFields addObject:stringFieldController.stringField];
+        [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+    } else {
+        NSIndexPath *indexPath = (NSIndexPath *)stringFieldController.object;
+        [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+    }
+
+    [stringFieldController dismissViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark - Image related
+
 - (void)setSelectedImageIndex:(NSUInteger)index {
-    selectedImageIndex = index;
-    
-    [imageButtonCell.imageButton setImage:[appDelegate loadImage:index] forState:UIControlStateNormal];
+    _selectedImageIndex = index;
+
+    UIImage *image = [[ImageFactory sharedInstance] imageForIndex:index];
+    [titleCell.imageButton setImage:image forState:UIControlStateNormal];
 }
 
 - (void)imageButtonPressed {
-    ImagesViewController *imagesViewController = [[ImagesViewController alloc] init];
-    imagesViewController.delegate = self;
-    [imagesViewController setSelectedImage:selectedImageIndex];
-    [self.navigationController pushViewController:imagesViewController animated:YES];
-    [imagesViewController release];
+    if (self.tableView.isEditing) {
+        ImageSelectionViewController *imageSelectionViewController = [[ImageSelectionViewController alloc] init];
+        imageSelectionViewController.imageSelectionView.delegate = self;
+        imageSelectionViewController.imageSelectionView.selectedImageIndex = _selectedImageIndex;
+        [self.navigationController pushViewController:imageSelectionViewController animated:YES];
+    }
 }
 
-- (void)imagesViewController:(ImagesViewController *)controller imageSelected:(NSUInteger)index {
-    [self setSelectedImageIndex:index];
+- (void)imageSelectionView:(ImageSelectionView *)imageSelectionView selectedImageIndex:(NSUInteger)imageIndex {
+    [self setSelectedImageIndex:imageIndex];
 }
+
+#pragma mark - Password Display
+
+- (void)showPasswordPressed {
+	MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+
+	hud.mode = MBProgressHUDModeText;
+    hud.detailsLabelText = self.entry.password;
+    hud.detailsLabelFont = [UIFont fontWithName:@"Andale Mono" size:24];
+	hud.margin = 10.f;
+	hud.removeFromSuperViewOnHide = YES;
+    [hud addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:hud action:@selector(hide:)]];
+}
+
+#pragma mark - Password Generation
 
 - (void)generatePasswordPressed {
     PasswordGeneratorViewController *passwordGeneratorViewController = [[PasswordGeneratorViewController alloc] init];
     passwordGeneratorViewController.delegate = self;
-    
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:passwordGeneratorViewController];
-    
-    [self presentModalViewController:navigationController animated:YES];
 
-    [navigationController release];
-    [passwordGeneratorViewController release];
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:passwordGeneratorViewController];
+
+    [self presentViewController:navigationController animated:YES completion:nil];
 }
 
 - (void)passwordGeneratorViewController:(PasswordGeneratorViewController *)controller password:(NSString *)password {
     passwordCell.textField.text = password;
+}
+
+- (void)openUrlPressed {
+    NSString *text = urlCell.textField.text;
+    
+    NSURL *url = [NSURL URLWithString:text];
+    if (url.scheme == nil) {
+        url = [NSURL URLWithString:[@"http://" stringByAppendingString:text]];
+    }
+
+    BOOL isHttp = [url.scheme isEqualToString:@"http"] || [url.scheme isEqualToString:@"https"];
+
+    BOOL webBrowserIntegrated = [[AppSettings sharedInstance] webBrowserIntegrated];
+    if (webBrowserIntegrated && isHttp) {
+        WebViewController *webViewController = [[WebViewController alloc] init];
+        webViewController.entry = self.entry;
+        [self.navigationController pushViewController:webViewController animated:YES];
+    } else {
+        [[UIApplication sharedApplication] openURL:url];
+    }
 }
 
 @end

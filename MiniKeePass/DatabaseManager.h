@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Jason Rush and John Flanagan. All rights reserved.
+ * Copyright 2011-2012 Jason Rush and John Flanagan. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,15 +18,17 @@
 #import <Foundation/Foundation.h>
 #import "FormViewController.h"
 
-@interface DatabaseManager : NSObject <FormViewControllerDelegate> {
-    NSString *selectedFilename;
-    BOOL animated;
-}
+@interface DatabaseManager : NSObject
 
+/// A string containing the name of the KeePass DatabaseDocument to be managed
 @property (nonatomic, copy) NSString *selectedFilename;
-@property (nonatomic) BOOL animated;
 
+/// Create a DatabaseManager instance
 + (DatabaseManager*)sharedInstance;
+
+/// Open the specified KeePass DatabaseDocument
+/// @param path Path to the chosen KeePass DatabaseDocument
+/// @param animated Animate the ViewController transition
 - (void)openDatabaseDocument:(NSString*)path animated:(BOOL)newAnimated;
 
 @end

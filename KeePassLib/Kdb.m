@@ -31,39 +31,53 @@
     return self;
 }
 
-- (void)dealloc {
-    [name release];
-    [groups release];
-    [entries release];
-    [creationTime release];
-    [lastModificationTime release];
-    [lastAccessTime release];
-    [expiryTime release];
-    [super dealloc];
-}
-
-- (void)addGroup:(KdbGroup*)group {
+- (void)addGroup:(KdbGroup *)group {
     group.parent = self;
     [groups addObject:group];
 }
 
-- (void)removeGroup:(KdbGroup*)group {
+- (void)removeGroup:(KdbGroup *)group {
     group.parent = nil;
     [groups removeObject:group];
 }
 
-- (void)addEntry:(KdbEntry*)entry {
+- (void)moveGroup:(KdbGroup *)group toGroup:(KdbGroup *)toGroup {
+    [self removeGroup:group];
+    [toGroup addGroup:group];
+}
+
+- (void)addEntry:(KdbEntry *)entry {
     entry.parent = self;
     [entries addObject:entry];
 }
 
-- (void)removeEntry:(KdbEntry*)entry {
+- (void)removeEntry:(KdbEntry *)entry {
     entry.parent = nil;
     [entries removeObject:entry];
 }
 
-- (NSString*)description {
-    return [NSString stringWithFormat:@"KdbGroup [image=%d, name=%@, creationTime=%@, lastModificationTime=%@, lastAccessTime=%@, expiryTime=%@]", image, name, creationTime, lastModificationTime, lastAccessTime, expiryTime];
+- (void)moveEntry:(KdbEntry *)entry toGroup:(KdbGroup *)toGroup {
+    [self removeEntry:entry];
+    [toGroup addEntry:entry];
+}
+
+- (BOOL)containsGroup:(KdbGroup *)group {
+    // Check trivial case where group is passed to itself
+    if (self == group) {
+        return YES;
+    } else {
+        // Check subgroups
+        for (KdbGroup *subGroup in groups) {
+            if ([subGroup containsGroup:group]) {
+                return YES;
+            }
+        }
+        return NO;
+    }
+}
+
+- (NSString *)description {
+    return [NSString stringWithFormat:@"KdbGroup [image=%ld, name=%@, creationTime=%@, lastModificationTime=%@, lastAccessTime=%@, expiryTime=%@]", (long)image, name, creationTime, lastModificationTime, lastAccessTime, expiryTime];
 }
 
 @end
@@ -73,31 +87,58 @@
 
 @synthesize parent;
 @synthesize image;
-@synthesize title;
-@synthesize username;
-@synthesize password;
-@synthesize url;
-@synthesize notes;
 @synthesize creationTime;
 @synthesize lastModificationTime;
 @synthesize lastAccessTime;
 @synthesize expiryTime;
 
-- (void)dealloc {
-    [title release];
-    [username release];
-    [password release];
-    [url release];
-    [notes release];
-    [creationTime release];
-    [lastModificationTime release];
-    [lastAccessTime release];
-    [expiryTime release];
-    [super dealloc];
+- (NSString *)title {
+    [self doesNotRecognizeSelector:_cmd];
+    return nil;
 }
 
-- (NSString*)description {
-    return [NSString stringWithFormat:@"KdbEntry [image=%d, title=%@, username=%@, password=%@, url=%@, notes=%@, creationTime=%@, lastModificationTime=%@, lastAccessTime=%@, expiryTime=%@]", image, title, username, password, url, notes, creationTime, lastModificationTime, lastAccessTime, expiryTime];
+- (void)setTitle:(NSString *)title {
+    [self doesNotRecognizeSelector:_cmd];
+}
+
+- (NSString *)username {
+    [self doesNotRecognizeSelector:_cmd];
+    return nil;
+}
+
+- (void)setUsername:(NSString *)username {
+    [self doesNotRecognizeSelector:_cmd];
+}
+
+- (NSString *)password {
+    [self doesNotRecognizeSelector:_cmd];
+    return nil;
+}
+
+- (void)setPassword:(NSString *)password {
+    [self doesNotRecognizeSelector:_cmd];
+}
+
+- (NSString *)url {
+    [self doesNotRecognizeSelector:_cmd];
+    return nil;
+}
+
+- (void)setUrl:(NSString *)url {
+    [self doesNotRecognizeSelector:_cmd];
+}
+
+- (NSString *)notes {
+    [self doesNotRecognizeSelector:_cmd];
+    return nil;
+}
+
+- (void)setNotes:(NSString *)notes {
+    [self doesNotRecognizeSelector:_cmd];
+}
+
+- (NSString *)description {
+    return [NSString stringWithFormat:@"KdbEntry [image=%ld, title=%@, username=%@, password=%@, url=%@, notes=%@, creationTime=%@, lastModificationTime=%@, lastAccessTime=%@, expiryTime=%@]", (long)image, self.title, self.username, self.password, self.url, self.notes, creationTime, lastModificationTime, lastAccessTime, expiryTime];
 }
 
 @end
@@ -106,11 +147,6 @@
 @implementation KdbTree
 
 @synthesize root;
-
-- (void)dealloc {
-    [root release];
-    [super dealloc];
-}
 
 - (KdbGroup*)createGroup:(KdbGroup*)parent {
     [self doesNotRecognizeSelector:_cmd];
