@@ -148,6 +148,7 @@
 
 - (KdbGroup*)createGroup:(KdbGroup*)parent {
     Kdb4Group *group = [[Kdb4Group alloc] init];
+<<<<<<< HEAD
 
     group.uuid = [UUID uuid];
     group.Notes = @"";
@@ -168,6 +169,67 @@
     group.locationChanged = currentTime;
 
     return group;
+||||||| merged common ancestors
+    group.parent = parent;
+    
+    group.element = [DDXMLElement elementWithName:@"Group"];
+    
+    element = [DDXMLElement elementWithName:@"UUID" stringValue:@""];
+    [group.element addChild:element];
+    
+    element = [DDXMLElement elementWithName:@"Name" stringValue:@""];
+    [group.element addChild:element];
+    
+    element = [DDXMLElement elementWithName:@"Notes" stringValue:@""];
+    [group.element addChild:element];
+    
+    element = [DDXMLElement elementWithName:@"IconID" stringValue:@"0"];
+    [group.element addChild:element];
+    
+    element = [self createTimesElement];
+    [group.element addChild:element];
+    
+    element = [DDXMLElement elementWithName:@"IsExpanded" stringValue:@"True"];
+    [group.element addChild:element];
+
+    element = [DDXMLElement elementWithName:@"DefaultAutoTypeSequence"];
+    [group.element addChild:element];
+    
+    element = [DDXMLElement elementWithName:@"EnableAutoType" stringValue:@"null"];
+    [group.element addChild:element];
+    
+    element = [DDXMLElement elementWithName:@"EnableSearching" stringValue:@"null"];
+    [group.element addChild:element];
+    
+    element = [DDXMLElement elementWithName:@"LastTopVisibleEntry" stringValue:@""];
+    [group.element addChild:element];
+    
+    // Add the root element to the parent group's element
+    [((Kdb4Group*)parent).element addChild:group.element];
+    
+    return [group autorelease];
+=======
+
+    group.uuid = [UUID uuid];
+    group.notes = @"";
+    group.image = 0;
+    group.isExpanded = true;
+    group.defaultAutoTypeSequence = @"";
+    group.enableAutoType = @"null";
+    group.enableSearching = @"null";
+    group.lastTopVisibleEntry = [UUID nullUuid];
+
+    NSDate *currentTime = [NSDate date];
+    group.lastModificationTime = currentTime;
+    group.creationTime = currentTime;
+    group.lastAccessTime = currentTime;
+    group.expiryTime = currentTime;
+    group.expires = false;
+    group.usageCount = 0;
+    group.locationChanged = currentTime;
+
+    return group;
+>>>>>>> MiniKeePass/master
 }
 
 - (KdbEntry*)createEntry:(KdbGroup*)parent {

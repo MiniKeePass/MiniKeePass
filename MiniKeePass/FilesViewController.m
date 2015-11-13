@@ -46,6 +46,7 @@ enum {
     self.title = NSLocalizedString(@"Files", nil);
     self.tableView.allowsSelectionDuringEditing = YES;
 <<<<<<< HEAD
+<<<<<<< HEAD
     
     UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"gear"] style:UIBarButtonItemStylePlain target:appDelegate action:@selector(showSettingsView)];
     settingsButton.imageInsets = UIEdgeInsetsMake(2, 0, -2, 0);
@@ -60,6 +61,28 @@ enum {
     UIBarButtonItem *linkButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemOrganize target:self action:@selector(linkToDropbox)];
     
     self.toolbarItems = [NSArray arrayWithObjects:settingsButton, spacer, helpButton, spacer, linkButton, spacer, addButton, nil];
+    self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    
+    [settingsButton release];
+    [helpButton release];
+    [addButton release];
+    [spacer release];
+}
+=======
+>>>>>>> MiniKeePass/master
+||||||| merged common ancestors
+    
+    UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"gear"] style:UIBarButtonItemStylePlain target:appDelegate action:@selector(showSettingsView)];
+    settingsButton.imageInsets = UIEdgeInsetsMake(2, 0, -2, 0);
+    
+    UIBarButtonItem *helpButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"info"] style:UIBarButtonItemStylePlain target:self action:@selector(helpPressed)];
+    helpButton.imageInsets = UIEdgeInsetsMake(2, 0, -2, 0);
+    
+    UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addPressed)];
+    
+    UIBarButtonItem *spacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    
+    self.toolbarItems = [NSArray arrayWithObjects:settingsButton, spacer, helpButton, spacer, addButton, nil];
     self.navigationItem.rightBarButtonItem = self.editButtonItem;
     
     [settingsButton release];
@@ -143,10 +166,58 @@ enum {
     }
 
     // Sort the list of files
+<<<<<<< HEAD
     [self.databaseFiles sortUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
     [self.keyFiles sortUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
 }
 
+- (void)displayInfoView {
+    if (self.filesInfoView == nil) {
+        self.filesInfoView = [[FilesInfoView alloc] initWithFrame:self.view.bounds];
+        self.filesInfoView.viewController = self;
+    }
+
+    [self.view addSubview:self.filesInfoView];
+
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.tableView.scrollEnabled = NO;
+
+    self.navigationItem.rightBarButtonItem = nil;
+||||||| merged common ancestors
+    [files sortUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
+    
+    // Filter the list of files into everything ending with .kdb or .kdbx
+    NSArray *databaseFilenames = [files filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"(self ENDSWITH[c] '.kdb') OR (self ENDSWITH[c] '.kdbx')"]];
+    
+    // Filter the list of files into everything not ending with .kdb or .kdbx
+    NSArray *keyFilenames = [files filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"!((self ENDSWITH[c] '.kdb') OR (self ENDSWITH[c] '.kdbx'))"]];
+    
+    databaseFiles = [[NSMutableArray arrayWithArray:databaseFilenames] retain];
+    keyFiles = [[NSMutableArray arrayWithArray:keyFilenames] retain];
+    
+    [files release];
+=======
+    [self.databaseFiles sortUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
+    [self.keyFiles sortUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
+>>>>>>> MiniKeePass/master
+}
+
+<<<<<<< HEAD
+- (void)hideInfoView {
+    if (self.filesInfoView != nil) {
+        [self.filesInfoView removeFromSuperview];
+    }
+
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+    self.tableView.scrollEnabled = YES;
+
+    self.navigationItem.rightBarButtonItem = self.editButtonItem;
+}
+
+#pragma mark - UITableViewDataSource
+
+||||||| merged common ancestors
+=======
 - (void)displayInfoView {
     if (self.filesInfoView == nil) {
         self.filesInfoView = [[FilesInfoView alloc] initWithFrame:self.view.bounds];
@@ -174,6 +245,7 @@ enum {
 
 #pragma mark - UITableViewDataSource
 
+>>>>>>> MiniKeePass/master
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return SECTION_NUMBER;
 }
@@ -269,6 +341,7 @@ enum {
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
 
@@ -305,6 +378,40 @@ enum {
                 [textEntryController release];
             }
         }
+            break;
+        default:
+            break;
+    }
+}
+
+=======
+>>>>>>> MiniKeePass/master
+||||||| merged common ancestors
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    switch (indexPath.section) {
+        // Database file section
+        case SECTION_DATABASE:
+            if (self.editing == NO) {
+                // Load the database
+                [[DatabaseManager sharedInstance] openDatabaseDocument:[databaseFiles objectAtIndex:indexPath.row] animated:YES];
+            } else {
+                TextEntryController *textEntryController = [[TextEntryController alloc] initWithStyle:UITableViewStyleGrouped];
+                textEntryController.title = NSLocalizedString(@"Rename", nil);
+                textEntryController.headerTitle = NSLocalizedString(@"Database Name", nil);
+                textEntryController.footerTitle = NSLocalizedString(@"Enter a new name for the password database.  The correct file extension will automatically be appended.", nil);
+                textEntryController.textEntryDelegate = self;
+                textEntryController.textField.placeholder = NSLocalizedString(@"Name", nil);
+                
+                NSString *filename = [databaseFiles objectAtIndex:indexPath.row];
+                textEntryController.textField.text = [filename stringByDeletingPathExtension];
+                
+                UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:textEntryController];
+                
+                [appDelegate.window.rootViewController presentModalViewController:navigationController animated:YES];
+                
+                [navigationController release];
+                [textEntryController release];
+            }
             break;
         default:
             break;
@@ -460,6 +567,7 @@ enum {
 
 - (void)helpPressed {
     HelpViewController *helpViewController = [[HelpViewController alloc] init];
+<<<<<<< HEAD
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:helpViewController];
 
     [self presentViewController:navigationController animated:YES completion:nil];
@@ -470,8 +578,107 @@ enum {
 {
     // HACK to show the linking if necessary
     [[DropboxManager singleton] activateLink: self.navigationController];
+||||||| merged common ancestors
+    
+    [self.navigationController pushViewController:helpViewController animated:YES];
+    
+    [helpViewController release];
+=======
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:helpViewController];
+
+    [self presentViewController:navigationController animated:YES completion:nil];
+>>>>>>> MiniKeePass/master
 }
 
+<<<<<<< HEAD
+- (void)formViewController:(FormViewController *)controller button:(FormViewControllerButton)button {
+    if (button == FormViewControllerButtonOk) {
+        NewKdbViewController *viewController = (NewKdbViewController*)controller;
+        
+        NSString *name = viewController.nameTextField.text;
+        if (name == nil || [name isEqualToString:@""]) {
+            [viewController showErrorMessage:NSLocalizedString(@"Database name is required", nil)];
+            return;
+        }
+        
+        // Check the passwords
+        NSString *password1 = viewController.passwordTextField1.text;
+        NSString *password2 = viewController.passwordTextField2.text;
+        if (![password1 isEqualToString:password2]) {
+            [viewController showErrorMessage:NSLocalizedString(@"Passwords do not match", nil)];
+            return;
+        }
+        if (password1 == nil || [password1 isEqualToString:@""]) {
+            [viewController showErrorMessage:NSLocalizedString(@"Password is required", nil)];
+            return;
+        }
+        
+        // Append the correct file extension
+        NSString *filename;
+        if (viewController.versionSegmentedControl.selectedSegmentIndex == 0) {
+             filename = [name stringByAppendingPathExtension:@"kdb"];
+        } else {
+            filename = [name stringByAppendingPathExtension:@"kdbx"];
+        }
+        
+        // Retrieve the Document directory
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *documentsDirectory = [paths objectAtIndex:0];
+        NSString *path = [documentsDirectory stringByAppendingPathComponent:filename];
+        
+        // Check if the file already exists
+        NSFileManager *fileManager = [NSFileManager defaultManager];
+        if ([fileManager fileExistsAtPath:path]) {
+            [viewController showErrorMessage:NSLocalizedString(@"A file already exists with this name", nil)];
+            return;
+        }
+        
+        // Create the KdbWriter for the requested version
+        id<KdbWriter> writer;
+        if (viewController.versionSegmentedControl.selectedSegmentIndex == 0) {
+            writer = [[Kdb3Writer alloc] init];
+        } else {
+            writer = [[Kdb4Writer alloc] init];
+        }
+        
+        // Create the KdbPassword
+        KdbPassword *kdbPassword = [[KdbPassword alloc] initWithPassword:password1 encoding:NSUTF8StringEncoding];
+        
+        // Create the new database
+        [writer newFile:path withPassword:kdbPassword];
+        [writer release];
+        
+        [kdbPassword release];
+        
+        // Store the password in the keychain
+        if ([[AppSettings sharedInstance] rememberPasswordsEnabled]) {
+            NSError *error;
+            [SFHFKeychainUtils storeUsername:filename andPassword:password1 forServiceName:@"com.jflan.MiniKeePass.passwords" updateExisting:YES error:&error];
+        }
+        
+        // Add the file to the list of files
+        NSUInteger index = [databaseFiles indexOfObject:filename inSortedRange:NSMakeRange(0, [databaseFiles count]) options:NSBinarySearchingInsertionIndex usingComparator:^(id string1, id string2) {
+            return [string1 localizedCaseInsensitiveCompare:string2];
+        }];
+        [databaseFiles insertObject:filename atIndex:index];
+        
+        // Notify the table of the new row
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:SECTION_DATABASE];
+        if ([databaseFiles count] == 1) {
+            // Reload the section if it's the first item
+            NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:SECTION_DATABASE];
+            [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationRight];
+        } else {
+            // Insert the new row
+            [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationRight];
+        }
+=======
+- (void)createNewDatabase:(NewKdbViewController *)newKdbViewController {
+    NSString *name = newKdbViewController.nameTextField.text;
+    if (name == nil || [name isEqualToString:@""]) {
+        [newKdbViewController showErrorMessage:NSLocalizedString(@"Database name is required", nil)];
+        return;
+||||||| merged common ancestors
 - (void)formViewController:(FormViewController *)controller button:(FormViewControllerButton)button {
     if (button == FormViewControllerButtonOk) {
         NewKdbViewController *viewController = (NewKdbViewController*)controller;
@@ -581,6 +788,28 @@ enum {
         filename = [name stringByAppendingPathExtension:@"kdbx"];
 >>>>>>> MiniKeePass/master
     }
+<<<<<<< HEAD
+
+    // Check the passwords
+    NSString *password1 = newKdbViewController.passwordTextField1.text;
+    NSString *password2 = newKdbViewController.passwordTextField2.text;
+    if (![password1 isEqualToString:password2]) {
+        [newKdbViewController showErrorMessage:NSLocalizedString(@"Passwords do not match", nil)];
+        return;
+    }
+    if (password1 == nil || [password1 isEqualToString:@""]) {
+        [newKdbViewController showErrorMessage:NSLocalizedString(@"Password is required", nil)];
+        return;
+    }
+
+    // Append the correct file extension
+    NSString *filename;
+    if (newKdbViewController.versionSegmentedControl.selectedSegmentIndex == 0) {
+        filename = [name stringByAppendingPathExtension:@"kdb"];
+    } else {
+        filename = [name stringByAppendingPathExtension:@"kdbx"];
+>>>>>>> MiniKeePass/master
+    }
 
     // Retrieve the Document directory
     NSString *documentsDirectory = [MiniKeePassAppDelegate documentsDirectory];
@@ -635,6 +864,65 @@ enum {
     }
 
     [newKdbViewController dismissViewControllerAnimated:YES completion:nil];
+||||||| merged common ancestors
+    
+    [appDelegate.window.rootViewController dismissModalViewControllerAnimated:YES];
+=======
+
+    // Retrieve the Document directory
+    NSString *documentsDirectory = [MiniKeePassAppDelegate documentsDirectory];
+    NSString *path = [documentsDirectory stringByAppendingPathComponent:filename];
+
+    // Check if the file already exists
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    if ([fileManager fileExistsAtPath:path]) {
+        [newKdbViewController showErrorMessage:NSLocalizedString(@"A file already exists with this name", nil)];
+        return;
+    }
+
+    // Create the KdbWriter for the requested version
+    id<KdbWriter> writer;
+    if (newKdbViewController.versionSegmentedControl.selectedSegmentIndex == 0) {
+        writer = [[Kdb3Writer alloc] init];
+    } else {
+        writer = [[Kdb4Writer alloc] init];
+    }
+
+    // Create the KdbPassword
+    KdbPassword *kdbPassword = [[KdbPassword alloc] initWithPassword:password1
+                                                    passwordEncoding:NSUTF8StringEncoding
+                                                             keyFile:nil];
+
+    // Create the new database
+    [writer newFile:path withPassword:kdbPassword];
+
+    // Store the password in the keychain
+    if ([[AppSettings sharedInstance] rememberPasswordsEnabled]) {
+        [KeychainUtils setString:password1 forKey:filename andServiceName:@"com.jflan.MiniKeePass.passwords"];
+    }
+
+    // Add the file to the list of files
+    NSUInteger index = [self.databaseFiles indexOfObject:filename
+                                           inSortedRange:NSMakeRange(0, [self.databaseFiles count])
+                                                 options:NSBinarySearchingInsertionIndex
+                                         usingComparator:^(id string1, id string2) {
+                                             return [string1 localizedCaseInsensitiveCompare:string2];
+                                         }];
+    [self.databaseFiles insertObject:filename atIndex:index];
+
+    // Notify the table of the new row
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:SECTION_DATABASE];
+    if ([self.databaseFiles count] == 1) {
+        // Reload the section if it's the first item
+        NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:SECTION_DATABASE];
+        [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationRight];
+    } else {
+        // Insert the new row
+        [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationRight];
+    }
+
+    [newKdbViewController dismissViewControllerAnimated:YES completion:nil];
+>>>>>>> MiniKeePass/master
 }
 
 @end

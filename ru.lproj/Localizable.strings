@@ -129,9 +129,19 @@
 "Clear the contents of the clipboard after a given timeout upon performing a copy." = "Очищать буфер обмена после заданного тайм-аута при копировании.";
 "Close Timeout" = "Тайм-аут закрытия";
 "Clear Clipboard Timeout" = "Тайм-аут очистки буфера обмена";
+<<<<<<< HEAD
 "Web Browser" = "Веб-браузер";
 "Integrated" = "Встроенный";
 "Switch between an integrated web browser and Safari." = "Переключение между встроенным веб-браузером и Safari.";
+||||||| merged common ancestors
+=======
+"Exclude from backup" = "Исключить из резервной копии";
+"iCloud/iTunes Backup" = "Резервная копия iCloud/iTunes";
+"Exclude databases and key files from iTunes/iCloud backups." = "Исключить базы данных и файлы ключей из резервных копий iTunes/iCloud.";
+"Web Browser" = "Веб-браузер";
+"Integrated" = "Встроенный";
+"Switch between an integrated web browser and Safari." = "Переключение между встроенным веб-браузером и Safari.";
+>>>>>>> MiniKeePass/master
 "Set PIN" = "Установите PIN-код";
 "Confirm PIN" = "Подтвердите PIN-код";
 "PINs did not match. Try again" = "PIN-коды не совпадают. Попробуйте снова";

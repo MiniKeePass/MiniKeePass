@@ -112,6 +112,7 @@ static DatabaseManager *sharedInstance;
     NSString *path = [documentsDirectory stringByAppendingPathComponent:self.selectedFilename];
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 - (void)formViewController:(FormViewController *)controller button:(FormViewControllerButton)button {
     PasswordViewController *passwordViewController = (PasswordViewController*)controller;
     BOOL shouldDismiss = YES;
@@ -142,6 +143,63 @@ static DatabaseManager *sharedInstance;
             keyFilePath = [documentsDirectory stringByAppendingPathComponent:keyFile];
         }
 
+        // Load the database
+        DatabaseDocument *dd = [[DatabaseDocument alloc] init];
+        @try {
+            // Open the database
+            [dd open:path password:password keyFile:keyFilePath];
+            
+            // Store the password in the keychain
+            if ([[AppSettings sharedInstance] rememberPasswordsEnabled]) {
+                NSError *error;
+                [SFHFKeychainUtils storeUsername:selectedFilename andPassword:password forServiceName:@"com.jflan.MiniKeePass.passwords" updateExisting:YES error:&error];
+                [SFHFKeychainUtils storeUsername:selectedFilename andPassword:keyFile forServiceName:@"com.jflan.MiniKeePass.keyfiles" updateExisting:YES error:&error];
+            }
+            
+            // Load the database after a short delay so the push animation is visible
+            [self performSelector:@selector(loadDatabaseDocument:) withObject:dd afterDelay:0.01];
+        } @catch (NSException *exception) {
+            shouldDismiss = NO;
+            [passwordViewController showErrorMessage:exception.reason];
+            [dd release];
+        }
+=======
+    // Get the password
+    NSString *password = passwordViewController.masterPasswordFieldCell.textField.text;
+    if ([password isEqualToString:@""]) {
+        password = nil;
+>>>>>>> MiniKeePass/master
+||||||| merged common ancestors
+- (void)formViewController:(FormViewController *)controller button:(FormViewControllerButton)button {
+    PasswordViewController *passwordViewController = (PasswordViewController*)controller;
+    BOOL shouldDismiss = YES;
+    
+    // Check if the OK button was pressed
+    if (button == FormViewControllerButtonOk) {
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *documentsDirectory = [paths objectAtIndex:0];
+        NSString *path = [documentsDirectory stringByAppendingPathComponent:selectedFilename];
+        
+        // Get the password
+        NSString *password = passwordViewController.passwordTextField.text;
+        if ([password isEqualToString:@""]) {
+            password = nil;
+        }
+        
+        // Get the keyfile
+        NSString *keyFile = [passwordViewController.keyFileCell getSelectedItem];
+        if ([keyFile isEqualToString:NSLocalizedString(@"None", nil)]) {
+            keyFile = nil;
+        }
+        
+        // Get the absolute path to the keyfile
+        NSString *keyFilePath = nil;
+        if (keyFile != nil) {
+            NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+            NSString *documentsDirectory = [paths objectAtIndex:0];
+            keyFilePath = [documentsDirectory stringByAppendingPathComponent:keyFile];
+        }
+        
         // Load the database
         DatabaseDocument *dd = [[DatabaseDocument alloc] init];
         @try {

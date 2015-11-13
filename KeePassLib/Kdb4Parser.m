@@ -225,6 +225,7 @@ int closeCallback(void *context) {
     }
 
     DDXMLElement *timesElement = [root elementForName:@"Times"];
+<<<<<<< HEAD
     group.lastModificationTime = [dateFormatter dateFromString:[[timesElement elementForName:@"LastModificationTime"] stringValue]];
     group.creationTime = [dateFormatter dateFromString:[[timesElement elementForName:@"CreationTime"] stringValue]];
     group.lastAccessTime = [dateFormatter dateFromString:[[timesElement elementForName:@"LastAccessTime"] stringValue]];
@@ -239,6 +240,36 @@ int closeCallback(void *context) {
     group.EnableSearching = [[root elementForName:@"EnableSearching"] stringValue];
     group.LastTopVisibleEntry = [self parseUuidString:[[root elementForName:@"LastTopVisibleEntry"] stringValue]];
 
+||||||| merged common ancestors
+    
+    NSString *str = [[timesElement elementForName:@"CreationTime"] stringValue];
+    group.creationTime = [dateFormatter dateFromString:str];
+    
+    str = [[timesElement elementForName:@"LastModificationTime"] stringValue];
+    group.lastModificationTime = [dateFormatter dateFromString:str];
+    
+    str = [[timesElement elementForName:@"LastAccessTime"] stringValue];
+    group.lastAccessTime = [dateFormatter dateFromString:str];
+    
+    str = [[timesElement elementForName:@"ExpiryTime"] stringValue];
+    group.expiryTime = [dateFormatter dateFromString:str];
+    
+=======
+    group.lastModificationTime = [dateFormatter dateFromString:[[timesElement elementForName:@"LastModificationTime"] stringValue]];
+    group.creationTime = [dateFormatter dateFromString:[[timesElement elementForName:@"CreationTime"] stringValue]];
+    group.lastAccessTime = [dateFormatter dateFromString:[[timesElement elementForName:@"LastAccessTime"] stringValue]];
+    group.expiryTime = [dateFormatter dateFromString:[[timesElement elementForName:@"ExpiryTime"] stringValue]];
+    group.expires = [[[timesElement elementForName:@"Expires"] stringValue] boolValue];
+    group.usageCount = [[[timesElement elementForName:@"UsageCount"] stringValue] integerValue];
+    group.locationChanged = [dateFormatter dateFromString:[[timesElement elementForName:@"LocationChanged"] stringValue]];
+
+    group.isExpanded = [[[root elementForName:@"IsExpanded"] stringValue] boolValue];
+    group.defaultAutoTypeSequence = [[root elementForName:@"DefaultAutoTypeSequence"] stringValue];
+    group.enableAutoType = [[root elementForName:@"EnableAutoType"] stringValue];
+    group.enableSearching = [[root elementForName:@"EnableSearching"] stringValue];
+    group.lastTopVisibleEntry = [self parseUuidString:[[root elementForName:@"LastTopVisibleEntry"] stringValue]];
+
+>>>>>>> MiniKeePass/master
     for (DDXMLElement *element in [root elementsForName:@"Entry"]) {
         Kdb4Entry *entry = [self parseEntry:element];
         entry.parent = group;

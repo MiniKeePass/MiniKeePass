@@ -23,7 +23,13 @@
 #import "UIActionSheetAutoDismiss.h"
 #import "AppSettings.h"
 <<<<<<< HEAD
+<<<<<<< HEAD
 #import "DropboxManager.h"
+=======
+#import "ImageFactory.h"
+#import "Kdb3Node.h"
+>>>>>>> MiniKeePass/master
+||||||| merged common ancestors
 =======
 #import "ImageFactory.h"
 #import "Kdb3Node.h"
@@ -66,6 +72,7 @@ enum {
 
 @implementation GroupViewController
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 - (void)viewDidLoad {
     appDelegate = (MiniKeePassAppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -167,6 +174,100 @@ enum {
     }
     return self;
 >>>>>>> MiniKeePass/master
+||||||| merged common ancestors
+- (void)viewDidLoad {
+    appDelegate = (MiniKeePassAppDelegate *)[[UIApplication sharedApplication] delegate];
+    
+    self.tableView.allowsSelectionDuringEditing = YES;
+    
+    UISearchBar *searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
+    searchBar.placeholder = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"Search", nil), self.title];
+    
+    self.tableView.tableHeaderView = searchBar;
+    
+    searchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:searchBar contentsController:self];
+    searchDisplayController.searchResultsDataSource = self;
+    searchDisplayController.searchResultsDelegate = self;
+    searchDisplayController.delegate = self;
+    
+    [searchBar release];
+    
+    UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"gear"] style:UIBarButtonItemStylePlain target:appDelegate action:@selector(showSettingsView)];
+    settingsButton.imageInsets = UIEdgeInsetsMake(2, 0, -2, 0);
+    UIBarButtonItem *actionButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(exportFilePressed)];
+    UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addPressed)];
+    UIBarButtonItem *spacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    
+    self.toolbarItems = [NSArray arrayWithObjects:settingsButton, spacer, actionButton, spacer, addButton, nil];
+    self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    
+    [settingsButton release];
+    [actionButton release];
+    [addButton release];
+    [spacer release];
+    
+    results = [[NSMutableArray alloc] init];
+    
+    groupComparator = ^(id obj1, id obj2) {
+        NSString *string1 = ((KdbGroup*)obj1).name;
+        NSString *string2 = ((KdbGroup*)obj2).name;
+        return [string1 localizedCaseInsensitiveCompare:string2];
+    };
+    
+    entryComparator = ^(id obj1, id obj2) {
+        NSString *string1 = ((KdbEntry*)obj1).title;
+        NSString *string2 = ((KdbEntry*)obj2).title;
+        return [string1 localizedCaseInsensitiveCompare:string2];
+    };
+=======
+- (id)initWithGroup:(KdbGroup *)group {
+    self = [super initWithStyle:UITableViewStylePlain];
+    if (self) {
+        _group = group;
+
+        // Get the app delegate
+        self.appDelegate = [MiniKeePassAppDelegate appDelegate];
+
+        // Configure the various buttons
+        self.toolbarItems = self.standardToolbarItems;
+        self.navigationItem.rightBarButtonItem = self.editButtonItem;
+
+        // Configure the table
+        self.title = self.group.name;
+        self.tableView.allowsSelectionDuringEditing = YES;
+
+        // Configure the search bar
+        UISearchBar *searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
+        self.tableView.tableHeaderView = searchBar;
+
+        self.searchController = [[GroupSearchController alloc] init];
+        self.searchController.groupViewController = self;
+
+        self.mySearchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:searchBar contentsController:self];
+        self.searchDisplayController.searchResultsDataSource = self.searchController;
+        self.searchDisplayController.searchResultsDelegate = self.searchController;
+        self.searchDisplayController.delegate = self.searchController;
+
+        // Get sort settings, and create the sort comparators
+        self.sortingEnabled = [[AppSettings sharedInstance] sortAlphabetically];
+
+        self.groupComparator = ^(id obj1, id obj2) {
+            NSString *string1 = ((KdbGroup*)obj1).name;
+            NSString *string2 = ((KdbGroup*)obj2).name;
+            return [string1 localizedCaseInsensitiveCompare:string2];
+        };
+
+        self.entryComparator = ^(id obj1, id obj2) {
+            NSString *string1 = ((KdbEntry*)obj1).title;
+            NSString *string2 = ((KdbEntry*)obj2).title;
+            return [string1 localizedCaseInsensitiveCompare:string2];
+        };
+
+        // Update the view model from the group information
+        [self updateViewModel];
+    }
+    return self;
+>>>>>>> MiniKeePass/master
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -185,6 +286,55 @@ enum {
         self.sortingEnabled = sortAlphabetically;
         [self updateViewModel];
         [self.tableView reloadData];
+<<<<<<< HEAD
+    } else {
+        // Reload the cell in case the title was changed by the entry view
+        NSIndexPath *selectedIndexPath = [selectedIndexPaths objectAtIndex:0];
+        if (selectedIndexPath != nil) {
+            NSMutableArray *array;
+            switch (selectedIndexPath.section) {
+                case SECTION_GROUPS:
+                    array = self.groupsArray;
+                    break;
+                case SECTION_ENTRIES:
+                    array = self.entriesArray;
+                    break;
+                default:
+                    @throw [NSException exceptionWithName:@"RuntimeException" reason:@"Invalid Section" userInfo:nil];
+                    break;
+            }
+
+            NSUInteger index = selectedIndexPath.row;
+            if (self.sortingEnabled) {
+                // Remove and re-add object to maintain sorting
+                id object = [array objectAtIndex:index];
+                [array removeObjectAtIndex:index];
+                index = [self addObject:object toArray:array];
+            }
+||||||| merged common ancestors
+    }
+    
+    NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
+    
+    // Reload the cell in case the title was changed by the entry view
+    if (selectedIndexPath != nil) {
+        NSMutableArray *array;
+        NSString *newKdbTitle;
+        
+        switch (selectedIndexPath.section) {
+            case ENTRIES_SECTION:
+                newKdbTitle = [((KdbEntry *)[enteriesArray objectAtIndex:selectedIndexPath.row]).title copy];
+                array = enteriesArray;
+                break;
+            case GROUPS_SECTION:
+                newKdbTitle = [((KdbGroup *)[groupsArray objectAtIndex:selectedIndexPath.row]).name copy];
+                array = groupsArray;
+                break;
+            default:
+                @throw [NSException exceptionWithName:@"RuntimeException" reason:@"Invalid Section" userInfo:nil];
+                break;
+        }
+=======
     } else {
         // Reload the cell in case the title was changed by the entry view
         NSIndexPath *selectedIndexPath = [selectedIndexPaths objectAtIndex:0];
@@ -212,8 +362,23 @@ enum {
 
             // The row might have moved or changed contents, just reload the data
             [self.tableView reloadData];
+>>>>>>> MiniKeePass/master
+
+<<<<<<< HEAD
+            // The row might have moved or changed contents, just reload the data
+            [self.tableView reloadData];
 
             // Re-select the row (it might have changed)
+||||||| merged common ancestors
+        NSUInteger index = [self updatePositionOfObjectAtIndex:selectedIndexPath.row inArray:array];
+            
+        // Move or update the row
+        if (index != selectedIndexPath.row) {
+            [self.tableView beginUpdates];
+            [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:selectedIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+=======
+            // Re-select the row (it might have changed)
+>>>>>>> MiniKeePass/master
             selectedIndexPath = [NSIndexPath indexPathForRow:index inSection:selectedIndexPath.section];
             [self.tableView selectRowAtIndexPath:selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
         }
@@ -589,6 +754,7 @@ enum {
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 //
 // Add functionality to handle syncing file to DropBox
 - (void)syncFilePressed {
@@ -599,6 +765,11 @@ enum {
 #pragma mark - Add Group/Entry
 >>>>>>> MiniKeePass/master
 
+||||||| merged common ancestors
+=======
+#pragma mark - Add Group/Entry
+
+>>>>>>> MiniKeePass/master
 - (void)addPressed {
     UIActionSheetAutoDismiss *actionSheet;
 

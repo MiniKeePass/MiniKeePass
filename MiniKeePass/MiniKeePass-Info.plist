@@ -71,7 +71,13 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
+<<<<<<< HEAD
 	<string>1.6</string>
+||||||| merged common ancestors
+	<string>1.3.3</string>
+=======
+	<string>1.6.2</string>
+>>>>>>> MiniKeePass/master
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -84,7 +90,13 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
+<<<<<<< HEAD
 	<string>257</string>
+||||||| merged common ancestors
+	<string>1.3.3</string>
+=======
+	<string>262</string>
+>>>>>>> MiniKeePass/master
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UIAppFonts</key>

@@ -34,7 +34,14 @@ enum {
     SECTION_SORTING,
     SECTION_PASSWORD_ENCODING,
     SECTION_CLEAR_CLIPBOARD,
+<<<<<<< HEAD:MiniKeePass/Settings/SettingsViewController.m
     SECTION_WEB_BROWSER
+||||||| merged common ancestors
+    SECTION_NUMBER
+=======
+    SECTION_BACKUP,
+    SECTION_WEB_BROWSER
+>>>>>>> MiniKeePass/master:MiniKeePass/Settings/SettingsViewController.m
 };
 
 enum {
@@ -86,6 +93,7 @@ enum {
     ROW_CLEAR_CLIPBOARD_NUMBER
 };
 
+<<<<<<< HEAD:MiniKeePass/Settings/SettingsViewController.m
 enum {
     ROW_WEB_BROWSER_INTEGRATED,
     ROW_WEB_BROWSER_NUMBER
@@ -95,6 +103,26 @@ enum {
 @property (nonatomic, strong) AppSettings *appSettings;
 @property (nonatomic, strong) NSArray *sections;
 
+||||||| merged common ancestors
+@interface SettingsViewController () {
+    AppSettings *appSettings;
+}
+=======
+enum {
+    ROW_BACKUP_DISABLED,
+    ROW_BACKUP_NUMBER
+};
+
+enum {
+    ROW_WEB_BROWSER_INTEGRATED,
+    ROW_WEB_BROWSER_NUMBER
+};
+
+@interface SettingsViewController ()
+@property (nonatomic, strong) AppSettings *appSettings;
+@property (nonatomic, strong) NSArray *sections;
+
+>>>>>>> MiniKeePass/master:MiniKeePass/Settings/SettingsViewController.m
 @end
 
 @implementation SettingsViewController
@@ -186,6 +214,16 @@ enum {
                                                                     NSLocalizedString(@"2 Minutes", nil),
                                                                     NSLocalizedString(@"3 Minutes", nil)]
                                                     selectedIndex:0];
+  
+    backupDisabledCell = [[SwitchCell alloc] initWithLabel:NSLocalizedString(@"Exclude from backup", nil)];
+    [backupDisabledCell.switchControl addTarget:self
+                                         action:@selector(toogleBackupDisabled:)
+                               forControlEvents:UIControlEventValueChanged];
+
+    webBrowserIntegratedCell = [[SwitchCell alloc] initWithLabel:NSLocalizedString(@"Integrated", nil)];
+    [webBrowserIntegratedCell.switchControl addTarget:self
+                                           action:@selector(toggleWebBrowserIntegrated:)
+                                 forControlEvents:UIControlEventValueChanged];
 
     webBrowserIntegratedCell = [[SwitchCell alloc] initWithLabel:NSLocalizedString(@"Integrated", nil)];
     [webBrowserIntegratedCell.switchControl addTarget:self
@@ -214,6 +252,7 @@ enum {
     
     self.tableView.tableFooterView = tableFooterView;
 
+<<<<<<< HEAD:MiniKeePass/Settings/SettingsViewController.m
     // Check if TouchID is supported
     BOOL touchIdEnabled = NO;
     if ([NSClassFromString(@"LAContext") class]) {
@@ -250,6 +289,60 @@ enum {
                           [NSNumber numberWithInt:SECTION_WEB_BROWSER]
                           ];
     }
+||||||| merged common ancestors
+- (void)dealloc {
+    [pinEnabledCell release];
+    [pinLockTimeoutCell release];
+    [deleteOnFailureEnabledCell release];
+    [deleteOnFailureAttemptsCell release];
+    [closeEnabledCell release];
+    [closeTimeoutCell release];
+    [rememberPasswordsEnabledCell release];
+    [hidePasswordsCell release];
+    [passwordEncodingCell release];
+    [clearClipboardEnabledCell release];
+    [clearClipboardTimeoutCell release];
+    [super dealloc];
+=======
+    // Check if TouchID is supported
+    BOOL touchIdEnabled = NO;
+    if ([NSClassFromString(@"LAContext") class]) {
+        LAContext *context = [[LAContext alloc] init];
+        touchIdEnabled = [context canEvaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics error:nil];
+    }
+
+    // Create the list of supported sections
+    if (touchIdEnabled) {
+        // Include TouchID in the list of sections
+        self.sections = @[
+                          [NSNumber numberWithInt:SECTION_PIN],
+                          [NSNumber numberWithInt:SECTION_TOUCH_ID],
+                          [NSNumber numberWithInt:SECTION_DELETE_ON_FAILURE],
+                          [NSNumber numberWithInt:SECTION_CLOSE],
+                          [NSNumber numberWithInt:SECTION_REMEMBER_PASSWORDS],
+                          [NSNumber numberWithInt:SECTION_HIDE_PASSWORDS],
+                          [NSNumber numberWithInt:SECTION_SORTING],
+                          [NSNumber numberWithInt:SECTION_PASSWORD_ENCODING],
+                          [NSNumber numberWithInt:SECTION_CLEAR_CLIPBOARD],
+                          [NSNumber numberWithInt:SECTION_BACKUP],
+                          [NSNumber numberWithInt:SECTION_WEB_BROWSER]
+                          ];
+    } else {
+        // Skip TouchID in the list of sections
+        self.sections = @[
+                          [NSNumber numberWithInt:SECTION_PIN],
+                          [NSNumber numberWithInt:SECTION_DELETE_ON_FAILURE],
+                          [NSNumber numberWithInt:SECTION_CLOSE],
+                          [NSNumber numberWithInt:SECTION_REMEMBER_PASSWORDS],
+                          [NSNumber numberWithInt:SECTION_HIDE_PASSWORDS],
+                          [NSNumber numberWithInt:SECTION_SORTING],
+                          [NSNumber numberWithInt:SECTION_PASSWORD_ENCODING],
+                          [NSNumber numberWithInt:SECTION_CLEAR_CLIPBOARD],
+                          [NSNumber numberWithInt:SECTION_BACKUP],
+                          [NSNumber numberWithInt:SECTION_WEB_BROWSER]
+                          ];
+    }
+>>>>>>> MiniKeePass/master:MiniKeePass/Settings/SettingsViewController.m
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -278,11 +371,22 @@ enum {
     
     [passwordEncodingCell setSelectedIndex:[self.appSettings passwordEncodingIndex]];
     
+<<<<<<< HEAD:MiniKeePass/Settings/SettingsViewController.m
     clearClipboardEnabledCell.switchControl.on = [self.appSettings clearClipboardEnabled];
     [clearClipboardTimeoutCell setSelectedIndex:[self.appSettings clearClipboardTimeoutIndex]];
 
     webBrowserIntegratedCell.switchControl.on = [self.appSettings webBrowserIntegrated];
 
+||||||| merged common ancestors
+=======
+    clearClipboardEnabledCell.switchControl.on = [self.appSettings clearClipboardEnabled];
+    [clearClipboardTimeoutCell setSelectedIndex:[self.appSettings clearClipboardTimeoutIndex]];
+  
+    backupDisabledCell.switchControl.on = [self.appSettings backupDisabled];
+
+    webBrowserIntegratedCell.switchControl.on = [self.appSettings webBrowserIntegrated];
+
+>>>>>>> MiniKeePass/master:MiniKeePass/Settings/SettingsViewController.m
     // Update which controls are enabled
     [self updateEnabledControls];
 }
@@ -344,9 +448,19 @@ enum {
 
         case SECTION_CLEAR_CLIPBOARD:
             return ROW_CLEAR_CLIPBOARD_NUMBER;
+<<<<<<< HEAD:MiniKeePass/Settings/SettingsViewController.m
 
         case SECTION_WEB_BROWSER:
             return ROW_WEB_BROWSER_NUMBER;
+||||||| merged common ancestors
+=======
+        
+        case SECTION_BACKUP:
+            return ROW_BACKUP_NUMBER;
+
+        case SECTION_WEB_BROWSER:
+            return ROW_WEB_BROWSER_NUMBER;
+>>>>>>> MiniKeePass/master:MiniKeePass/Settings/SettingsViewController.m
     }
     return 0;
 }
@@ -380,9 +494,19 @@ enum {
 
         case SECTION_CLEAR_CLIPBOARD:
             return NSLocalizedString(@"Clear Clipboard on Timeout", nil);
+<<<<<<< HEAD:MiniKeePass/Settings/SettingsViewController.m
 
         case SECTION_WEB_BROWSER:
             return NSLocalizedString(@"Web Browser", nil);
+||||||| merged common ancestors
+=======
+        
+        case SECTION_BACKUP:
+            return NSLocalizedString(@"iCloud/iTunes Backup", nil);
+
+        case SECTION_WEB_BROWSER:
+            return NSLocalizedString(@"Web Browser", nil);
+>>>>>>> MiniKeePass/master:MiniKeePass/Settings/SettingsViewController.m
     }
     return nil;
 }
@@ -416,9 +540,19 @@ enum {
             
         case SECTION_CLEAR_CLIPBOARD:
             return NSLocalizedString(@"Clear the contents of the clipboard after a given timeout upon performing a copy.", nil);
+<<<<<<< HEAD:MiniKeePass/Settings/SettingsViewController.m
             
         case SECTION_WEB_BROWSER:
             return NSLocalizedString(@"Switch between an integrated web browser and Safari.", nil);
+||||||| merged common ancestors
+=======
+            
+        case SECTION_BACKUP:
+            return NSLocalizedString(@"Exclude databases and key files from iTunes/iCloud backups.", nil);
+        
+        case SECTION_WEB_BROWSER:
+            return NSLocalizedString(@"Switch between an integrated web browser and Safari.", nil);
+>>>>>>> MiniKeePass/master:MiniKeePass/Settings/SettingsViewController.m
     }
     return nil;
 }
@@ -496,12 +630,30 @@ enum {
                     return clearClipboardTimeoutCell;
             }
             break;
+<<<<<<< HEAD:MiniKeePass/Settings/SettingsViewController.m
         case SECTION_WEB_BROWSER:
             switch (indexPath.row) {
                 case ROW_WEB_BROWSER_INTEGRATED:
                     return webBrowserIntegratedCell;
             }
             break;
+||||||| merged common ancestors
+=======
+        
+        case SECTION_BACKUP:
+            switch (indexPath.row) {
+                case ROW_BACKUP_DISABLED:
+                    return backupDisabledCell;
+            }
+            break;
+        
+        case SECTION_WEB_BROWSER:
+            switch (indexPath.row) {
+                case ROW_WEB_BROWSER_INTEGRATED:
+                    return webBrowserIntegratedCell;
+            }
+            break;
+>>>>>>> MiniKeePass/master:MiniKeePass/Settings/SettingsViewController.m
     }
     
     return nil;
@@ -652,12 +804,28 @@ enum {
     [self updateEnabledControls];
 }
 
+<<<<<<< HEAD:MiniKeePass/Settings/SettingsViewController.m
 - (void)toggleWebBrowserIntegrated:(id)sender {
     // Update the setting
     [self.appSettings setWebBrowserIntegrated:webBrowserIntegratedCell.switchControl.on];
 }
 
 - (void)pinViewController:(PinViewController *)controller pinEntered:(NSString *)pin {        
+||||||| merged common ancestors
+- (void)pinViewController:(PinViewController *)controller pinEntered:(NSString *)pin {        
+=======
+- (void)toggleWebBrowserIntegrated:(id)sender {
+    // Update the setting
+    [self.appSettings setWebBrowserIntegrated:webBrowserIntegratedCell.switchControl.on];
+}
+
+- (void)toogleBackupDisabled:(id)sender {
+  // Update the setting
+  [self.appSettings setBackupDisabled:backupDisabledCell.switchControl.on];
+}
+
+- (void)pinViewController:(PinViewController *)controller pinEntered:(NSString *)pin {
+>>>>>>> MiniKeePass/master:MiniKeePass/Settings/SettingsViewController.m
     if (tempPin == nil) {
         tempPin = [pin copy];
         

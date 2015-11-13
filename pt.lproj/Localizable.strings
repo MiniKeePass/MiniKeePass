@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /*
  * Copyright 2011 Jason Rush and John Flanagan. All rights reserved.
  *
@@ -157,3 +158,168 @@
 "Special" = "Especial";
 "Brackets" = "Colchetes";
 "None Selected" = "Nenhum selecionado";
+||||||| merged common ancestors
+=======
+/*
+ * Copyright 2011 Jason Rush and John Flanagan. All rights reserved.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+"Files" = "Arquivos";
+"Databases" = "Base de Dados";
+"Key File" = "Arquivo de Chave";
+"Key Files" = "Arquivos de Chave";
+"Groups" = "Grupos";
+"Entries" = "Entradas";
+"Group" = "Grupo";
+"Entry" = "Entrada";
+"New Database" = "Nova Base de Dados";
+"New Group" = "Novo Grupo";
+"New Entry" = "Nova Entrada";
+"Edit Group" = "Editar Grupo";
+"Edit Entry" = "Edit Entry"; // FIXME
+"Title" = "Título";
+"Image" = "Imagem";
+"Images" = "Images"; // FIXME
+"Username" = "Usuário";
+"Password" = "Senha";
+"Confirm Password" = "Confirmar Senha";
+"URL" = "URL";
+"Comments" = "Comentários";
+"OK" = "Confirmar";
+"Cancel" = "Cancelar";
+"Add" = "Adicionar";
+"Search" = "Procurar";
+"Help" = "Ajuda";
+"Version 1.x" = "Versão 1.x";
+"Version 2.x" = "Versão 2.x";
+"None" = "Nenhum";
+"Name" = "Nome";
+"Value" = "Value"; // FIXME
+"Delete" = "Delete"; // FIXME
+"Move" = "Move"; // FIXME
+"Rename" = "Renomear";
+"Database Name" = "Nome da Base de Dados";
+"Last Modified" = "Last Modified"; // FIXME
+"Copied" = "Copied"; // FIXME
+"In Memory Protection" = "In Memory Protection"; // FIXME
+"Custom Field" = "Custom Field"; // FIXME
+"Custom Fields" = "Custom Fields"; // FIXME
+"Add new…" = "Add new…"; // FIXME
+"Choose Group" = "Choose Group"; // FIXME
+"Backup" = "Backup"; // FIXME
+
+// General Messages
+"Enter your PIN to unlock" = "Informe seu PIN para desbloquear";
+"Unlock MiniKeePass" = "Unlock MiniKeePass"; // FIXME
+"Enter the password and/or select the keyfile for the %@ database." = "Informe a senha e/ou selecione um arquivo de chave para a base de dados %@.";
+"Enter a new name for the password database. The correct file extension will automatically be appended." = "Informe um novo nome para a senha da base de dados. A extensão correta do arquivo será automaticamente adicionada.";
+"Do not forget your database password, it cannot be recovered." = "Do not forget your database password, it cannot be recovered."; // FIXME
+
+// Error Messages
+"Error" = "Error"; // FIXME
+"New name is invalid" = "New name is invalid"; // FIXME
+"Name cannot be empty" = "Name cannot be empty"; // FIXME
+"Database name is required" = "Nome da base de dados é requerido";
+"Passwords do not match" = "As senhas não coincidem";
+"Password is required" = "Senha é requerida";
+"Incorrect PIN" = "PIN incorreto";
+"Attempts Remaining" = "Attempts Remaining"; // FIXME
+"Filename is invalid" = "Nome do arquivo é inválido";
+"A file already exists with this name" = "Um arquivo já existe com esse nome";
+"There are no applications installed capable of importing KeePass files" = "Não há aplicações instaladas capazes de importar arquivos KeePass";
+"Tap the + button to add a new KeePass file." = "Tap the + button to add a new KeePass file."; // FIXME
+"No password or keyfile specified" = "No password or keyfile specified"; // FIXME
+"Error Checking PIN" = "Error Checking PIN"; // FIXME
+
+// Settings Page
+"Settings" = "Configurações";
+"PIN Enabled" = "Habilitar PIN";
+"Touch ID" = "Touch ID"; // FIXME
+"Use your fingerprint as an alternative to entering a PIN if supported." = "Use your fingerprint as an alternative to entering a PIN if supported."; // FIXME
+"Lock Timeout" = "Bloqueio Automático";
+"Immediately" = "Imediatamente";
+"30 Seconds" = "30 Segundos";
+"1 Minute" = "1 Minuto";
+"2 Minutes" = "2 Minutos";
+"3 Minutes" = "3 Minutos";
+"5 Minutes" = "5 Minutos";
+"Enabled" = "Habilitado";
+"Attempts" = "Tentativas";
+"Close Enabled" = "Fechamento Habilitado";
+"Close Timeout" = "Fechamento Automático";
+"Hide Passwords" = "Esconder Senhas";
+"Sorting" = "Ordenar";
+"Sort Groups and Entries Alphabetically" = "Ordenar Grupos e Entradas Alfabeticamente";
+"Encoding" = "Codificação";
+"UTF-8" = "UTF-8";
+"UTF-16 Big Endian" = "UTF-16 Big Endian";
+"UTF-16 Little Endian" = "UTF-16 Little Endian";
+"Latin 1 (ISO/IEC 8859-1)" = "Latin 1 (ISO/IEC 8859-1)";
+"Latin 2 (ISO/IEC 8859-2)" = "Latin 2 (ISO/IEC 8859-2)";
+"7-Bit ASCII" = "7-Bit ASCII";
+"Japanese EUC" = "Japanese EUC";
+"ISO-2022-JP" = "ISO-2022-JP";
+"PIN Protection" = "Proteção por PIN";
+"Delete All Data on PIN Failure" = "Apagar Todas as Informações na Falha de PIN";
+"Close Database on Timeout" = "Fechamento Automático da Base de Dados Após Período de Tempo";
+"Remember Database Passwords" = "Lembrar Senha da Base de Dados";
+"Hide Passwords" = "Esconder Senhas";
+"Password Encoding" = "Codificação da Senha";
+"Clear Clipboard on Timeout" = "Limpar Área de Transferência Após um Período de Tempo";
+"Clear Timeout" = "Limpeza Automática";
+"Prevent unauthorized access to MiniKeePass with a PIN." = "Utilizar um PIN para prevenir acesso não autorizado ao MiniKeePass.";
+"Delete all files and passwords after too many failed attempts." = "Apagar todos os arquivos e senhas após muitas tentativas falhas.";
+"Automatically close an open database after the selected timeout." = "Fechar automaticamente uma base de dados aberto após o tempo selecionado.";
+"Stores remembered database passwords in the devices's secure keychain." = "Armazene as senhas da base de dados lembradas no keychain securo do dispositivo.";
+"Hides passwords when viewing a password entry." = "Esconder senhas ao visualizar uma entrada de senha.";
+"The string encoding used for passwords when converting them to database keys." = "A codificação utilizada para a senhas quando convertidas para as chaves da base de dados.";
+"Clear the contents of the clipboard after a given timeout upon performing a copy." = "Limpar os conteúdos da área de transferência após um dado período de tempo para realizar a cópia.";
+"Close Timeout" = "Fechamento Automático";
+"Clear Clipboard Timeout" = "Limpeza Área de Trasnferência Automática";
+"Exclude from backup" = "Exclude from backup"; // FIXME
+"iCloud/iTunes Backup" = "iCloud/iTunes Backup"; // FIXME
+"Exclude databases and key files from iTunes/iCloud backups." = "Exclude databases and key files from iTunes/iCloud backups."; // FIXME
+"Web Browser" = "Web Browser"; // FIXME
+"Integrated" = "Integrated"; // FIXME
+"Switch between an integrated web browser and Safari." = "Switch between an integrated web browser and Safari."; // FIXME
+"Set PIN" = "Defina PIN";
+"Confirm PIN" = "Confirme PIN";
+"PINs did not match. Try again" = "Os PINs não coincidem. Tente novamente";
+"MiniKeePass version %@" = "MiniKeePass versão %@";
+
+// Help Titles
+"iTunes Import/Export" = "iTunes Importar/Exportar";
+"Dropbox Import/Export" = "Dropbox Importar/Exportar";
+"Safari/Email Import" = "Safari/Email Importar";
+"Create New Database" = "Criar um Nova Base de Dados";
+"Key Files" = "Arquivos de Chave";
+
+// Password Generator
+"Generator" = "Gerador";
+"Length" = "Tamanho";
+"Character Sets" = "Conjuntos de caracteres";
+"Upper Case" = "Maiúsculas";
+"Lower Case" = "Minúsculas";
+"Upper" = "Maiúscula";
+"Lower" = "Minúscula";
+"Digits" = "Dígitos";
+"Minus" = "Menos";
+"Underline" = "Sublinhado";
+"Space" = "Espaço";
+"Special" = "Especial";
+"Brackets" = "Colchetes";
+"None Selected" = "Nenhum selecionado";
+>>>>>>> MiniKeePass/master

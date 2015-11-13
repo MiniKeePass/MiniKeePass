@@ -35,8 +35,16 @@
     ChoiceCell *passwordEncodingCell;
     SwitchCell *clearClipboardEnabledCell;
     ChoiceCell *clearClipboardTimeoutCell;
+<<<<<<< HEAD:MiniKeePass/Settings/SettingsViewController.h
     SwitchCell *webBrowserIntegratedCell;
 
+||||||| merged common ancestors
+    
+=======
+    SwitchCell *webBrowserIntegratedCell;
+    SwitchCell *backupDisabledCell;
+
+>>>>>>> MiniKeePass/master:MiniKeePass/Settings/SettingsViewController.h
     NSString *tempPin;
 }
 

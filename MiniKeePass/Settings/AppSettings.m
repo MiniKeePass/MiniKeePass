@@ -19,6 +19,7 @@
 #import "KeychainUtils.h"
 #import "PasswordUtils.h"
 #import "CharacterSetsViewController.h"
+#import "MiniKeePassAppDelegate.h"
 
 #define KEYCHAIN_PIN_SERVICE       @"com.jflan.MiniKeePass.pin"
 
@@ -38,6 +39,7 @@
 #define SORT_ALPHABETICALLY        @"sortAlphabetically"
 #define PASSWORD_ENCODING          @"passwordEncoding"
 #define CLEAR_CLIPBOARD_ENABLED    @"clearClipboardEnabled"
+#define BACKUP_DISABLED            @"backupDisabled"
 #define CLEAR_CLIPBOARD_TIMEOUT    @"clearClipboardTimeout"
 #define WEB_BROWSER_INTEGRATED     @"webBrowserIntegrated"
 #define PW_GEN_LENGTH              @"pwGenLength"
@@ -122,8 +124,16 @@ static AppSettings *sharedInstance;
         [defaultsDict setValue:[NSNumber numberWithBool:YES] forKey:SORT_ALPHABETICALLY];
         [defaultsDict setValue:[NSNumber numberWithInt:0] forKey:PASSWORD_ENCODING];
         [defaultsDict setValue:[NSNumber numberWithBool:NO] forKey:CLEAR_CLIPBOARD_ENABLED];
+<<<<<<< HEAD:MiniKeePass/Settings/AppSettings.m
         [defaultsDict setValue:[NSNumber numberWithInt:0] forKey:CLEAR_CLIPBOARD_TIMEOUT];
         [defaultsDict setValue:[NSNumber numberWithBool:YES] forKey:WEB_BROWSER_INTEGRATED];
+||||||| merged common ancestors
+        [defaultsDict setValue:[NSNumber numberWithInt:NO] forKey:CLEAR_CLIPBOARD_TIMEOUT];
+=======
+        [defaultsDict setValue:[NSNumber numberWithInt:0] forKey:CLEAR_CLIPBOARD_TIMEOUT];
+        [defaultsDict setValue:[NSNumber numberWithBool:NO] forKey:BACKUP_DISABLED];
+        [defaultsDict setValue:[NSNumber numberWithBool:YES] forKey:WEB_BROWSER_INTEGRATED];
+>>>>>>> MiniKeePass/master:MiniKeePass/Settings/AppSettings.m
         [defaultsDict setValue:[NSNumber numberWithInt:10] forKey:PW_GEN_LENGTH];
         [defaultsDict setValue:[NSNumber numberWithInt:CHARACTER_SET_DEFAULT] forKey:PW_GEN_CHAR_SETS];
         [userDefaults registerDefaults:defaultsDict];
@@ -281,6 +291,21 @@ static AppSettings *sharedInstance;
 
 - (void)setCloseEnabled:(BOOL)closeEnabled {
     [userDefaults setBool:closeEnabled forKey:CLOSE_ENABLED];
+}
+
+- (BOOL)backupDisabled {
+    return [userDefaults boolForKey:BACKUP_DISABLED];
+}
+
+- (void)setBackupDisabled:(BOOL)backupDisabled {
+    [userDefaults setBool:backupDisabled forKey:BACKUP_DISABLED];
+
+    NSURL *url = [NSURL fileURLWithPath:[MiniKeePassAppDelegate documentsDirectory] isDirectory:YES];
+
+    NSError *error = nil;
+    if (![url setResourceValue:[NSNumber numberWithBool:!backupDisabled] forKey:NSURLIsExcludedFromBackupKey error:&error]) {
+        NSLog(@"Error excluding %@ from backup: %@", url, error);
+    }
 }
 
 - (NSInteger)closeTimeout {
