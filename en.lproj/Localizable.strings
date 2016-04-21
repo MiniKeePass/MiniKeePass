@@ -160,3 +160,7 @@
 "Special" = "Special";
 "Brackets" = "Brackets";
 "None Selected" = "None Selected";
+
+// FilesViewController
+"Overwrite?" = "Overwrite?";
+"Replace existing file?" = "A file already exists with this name. Replace existing file?";

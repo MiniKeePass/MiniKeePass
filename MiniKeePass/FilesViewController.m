@@ -24,6 +24,10 @@
 #import "KeychainUtils.h"
 #import "Kdb3Writer.h"
 #import "Kdb4Writer.h"
+#import "Foundation/NSURL.h"
+
+@import MobileCoreServices;
+@import Foundation;
 
 enum {
     SECTION_DATABASE,
@@ -35,6 +39,9 @@ enum {
 @property (nonatomic, strong) FilesInfoView *filesInfoView;
 @property (nonatomic, strong) NSMutableArray *databaseFiles;
 @property (nonatomic, strong) NSMutableArray *keyFiles;
+@property (nonatomic, strong) InfoBar *infoBar;
+@property (nonatomic, strong) UIDocumentMenuViewController *documentMenuViewController;
+@property (nonatomic, strong) UIDocumentPickerViewController *documentPickerViewController;
 @end
 
 @implementation FilesViewController
@@ -66,6 +73,19 @@ enum {
 
     self.toolbarItems = [NSArray arrayWithObjects:settingsButton, spacer, helpButton, spacer, addButton, nil];
     self.navigationItem.rightBarButtonItem = self.editButtonItem;
+
+    self.infoBar = [[InfoBar alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 20)];
+    self.infoBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    [self.view addSubview:self.infoBar];
+
+
+    NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+    [notificationCenter addObserver:self
+                           selector:@selector(applicationWillResignActive:)
+                               name:UIApplicationWillResignActiveNotification
+                             object:nil];
+    self.documentMenuViewController = nil;
+    self.documentPickerViewController = nil;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -80,6 +100,22 @@ enum {
     }
 
     [super viewWillAppear:animated];
+}
+
+- (void)applicationWillResignActive:(id)sender {
+    NSLog(@"FilesViewController: applicationWillResignActive");
+    if (self.documentMenuViewController != nil) {
+        [self.documentMenuViewController.presentingViewController dismissViewControllerAnimated:NO completion:^{
+            NSLog(@"documentMenuViewController dismissed");
+            self.documentMenuViewController = nil;
+        }];
+    }
+    if (self.documentPickerViewController != nil) {
+        [self.documentPickerViewController.presentingViewController dismissViewControllerAnimated:NO completion:^{
+            NSLog(@"documentPickerViewController dismissed");
+            self.documentPickerViewController = nil;
+        }];
+    }
 }
 
 - (void)viewWillLayoutSubviews {
@@ -145,6 +181,12 @@ enum {
     self.tableView.scrollEnabled = YES;
 
     self.navigationItem.rightBarButtonItem = self.editButtonItem;
+}
+
+- (void)showErrorMessage:(NSString *)message {
+    [self.view bringSubviewToFront:self.infoBar];
+    self.infoBar.label.text = message;
+    [self.infoBar showBar];
 }
 
 #pragma mark - UITableViewDataSource
@@ -376,6 +418,17 @@ enum {
 }
 
 - (void)addPressed:(UIBarButtonItem *)source {
+
+    if (NSClassFromString(@"UIDocumentMenuViewController") != nil) {
+        // current iOS-Version DOES HAVE support for UIDocumentMenuViewController:
+        [self showDocumentPickerMenu:source];
+    } else {
+        // current iOS-Version HAS NO support for UIDocumentMenuViewController:
+        [self createNewDatabasePressed];
+    }
+}
+
+- (void)createNewDatabasePressed {
     NewKdbViewController *newKdbViewController = [[NewKdbViewController alloc] init];
     newKdbViewController.donePressed = ^(FormViewController *formViewController) {
         [self createNewDatabase:(NewKdbViewController *)formViewController];
@@ -395,7 +448,30 @@ enum {
     [self presentViewController:navigationController animated:YES completion:nil];
 }
 
+- (void)showDocumentPickerMenu:(UIBarButtonItem *)source {
+    NSLog(@"showDocumentPickerMenu");
+
+    self.documentMenuViewController =
+    [[UIDocumentMenuViewController alloc] initWithDocumentTypes:@[(NSString *)kUTTypeJPEG, (NSString *)kUTTypeData, (NSString *)kUTTypeItem, (NSString *)kUTTypeArchive]
+                                                         inMode:UIDocumentPickerModeImport];
+    // maybe this should/could be kUTTypeItem and UIDocumentPickerModeImport,
+    // but JPEG/Open ist the only way my Owncloud-Provider shows up in document menu.
+
+    FilesViewController *ff = self;
+    [self.documentMenuViewController addOptionWithTitle:NSLocalizedString(@"New Database", nil)
+                                             image:nil
+                                             order:UIDocumentMenuOrderFirst
+                                           handler:^{
+                                               [ff createNewDatabasePressed];
+                                           }];
+    self.documentMenuViewController.delegate = self;
+    self.documentMenuViewController.modalInPopover = UIModalPresentationPopover;
+    self.documentMenuViewController.popoverPresentationController.barButtonItem = source;
+    [self presentViewController:self.documentMenuViewController animated:YES completion:nil];
+}
+
 - (void)createNewDatabase:(NewKdbViewController *)newKdbViewController {
+
     NSString *name = newKdbViewController.nameTextField.text;
     if (name == nil || [name isEqualToString:@""]) {
         [newKdbViewController showErrorMessage:NSLocalizedString(@"Database name is required", nil)];
@@ -455,12 +531,24 @@ enum {
     }
 
     // Add the file to the list of files
+    [self addFilename:filename];
+
+    [newKdbViewController dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (NSUInteger)getFilenameIndex:(NSString *)filename {
+    // Add the file to the list of files
     NSUInteger index = [self.databaseFiles indexOfObject:filename
                                            inSortedRange:NSMakeRange(0, [self.databaseFiles count])
                                                  options:NSBinarySearchingInsertionIndex
                                          usingComparator:^(id string1, id string2) {
                                              return [string1 localizedCaseInsensitiveCompare:string2];
                                          }];
+    return index;
+}
+
+- (void)addFilename:(NSString *)filename {
+    NSUInteger index = [self getFilenameIndex:filename];
     [self.databaseFiles insertObject:filename atIndex:index];
 
     // Notify the table of the new row
@@ -473,8 +561,114 @@ enum {
         // Insert the new row
         [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationRight];
     }
-
-    [newKdbViewController dismissViewControllerAnimated:YES completion:nil];
 }
+
+#pragma mark - UIDocumentMenuDelegate
+
+- (void)documentMenu:(UIDocumentMenuViewController *)documentMenu didPickDocumentPicker:(UIDocumentPickerViewController *)documentPicker {
+    self.documentMenuViewController = nil;
+    documentPicker.delegate = self;
+    [self presentViewController:documentPicker animated:YES completion:nil];
+    self.documentPickerViewController = documentPicker;
+}
+
+- (void)documentMenuWasCancelled:(UIDocumentMenuViewController *)documentMenu {
+    self.documentMenuViewController = nil;
+}
+
+#pragma mark - UIDocumentPickerDelegate
+
+- (void)documentPicker:(UIDocumentPickerViewController *)controller didPickDocumentAtURL:(NSURL *)sourceDocUrl {
+    NSLog(@"picked URL %@", sourceDocUrl);
+    self.documentPickerViewController = nil;
+
+    // should we use importUrl here better?
+    // But this way we can use insertRowsAtIndexPaths within addFilename below - which is nicer.
+    // [[MiniKeePassAppDelegate appDelegate] importUrl:sourceDocUrl];
+    
+    NSString *documentsDirectory = [MiniKeePassAppDelegate documentsDirectory];
+    NSString *filename = [[sourceDocUrl path] lastPathComponent];
+    NSString *localFilePath = [documentsDirectory stringByAppendingPathComponent:filename];
+
+    // Check if the file already exists
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    if ([fileManager fileExistsAtPath:localFilePath]) {
+        // Ask the user "...overwrite - yes/no?" in order to prevent data loss in case the user did some changes to the existing file.
+        // (Letting the user delete the file himself leeds to loosing the DB password.)
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Overwrite?", nil)
+                                                                       message:NSLocalizedString(@"Replace existing file?", nil)
+                                                                preferredStyle:UIAlertControllerStyleAlert];
+        [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil)
+                                                  style:UIAlertActionStyleDefault
+                                                handler:^(UIAlertAction *action) {
+
+                                                    // overwrite:
+
+                                                    [fileManager removeItemAtPath:localFilePath error:nil];
+
+                                                    // remove file here because it will be re-added in fetchFileFromUrl - resulting in an nice "visible replacement".
+                                                    NSUInteger index = [self getFilenameIndex:filename];
+                                                    [self.databaseFiles removeObjectAtIndex:index];
+
+                                                    // Notify the table of the new row
+                                                    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:SECTION_DATABASE];
+                                                    [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath]
+                                                                          withRowAnimation:UITableViewRowAnimationAutomatic];
+                                                    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:indexPath.section]
+                                                                          withRowAnimation:UITableViewRowAnimationNone];
+
+                                                    [self fetchFileFromUrl:sourceDocUrl localFilePath:localFilePath filename:filename];
+                                                }
+                          ]];
+        [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil)
+                                                  style:UIAlertActionStyleDefault
+                                                handler:^(UIAlertAction *action) {
+                                                    // cancel, DON'T overwrite - nothing todo
+                                                }
+                          ]];
+        [self presentViewController:alert animated:true completion:nil];
+
+        return;
+    }
+
+    [self fetchFileFromUrl:sourceDocUrl localFilePath:localFilePath filename:filename];
+}
+
+- (void)fetchFileFromUrl:(NSURL *)sourceDocUrl localFilePath:(NSString *)localFilePath filename:(NSString *)filename {
+
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+
+    // get access on external ressource:
+    BOOL accessGranted = [sourceDocUrl startAccessingSecurityScopedResource];
+    if ( ! accessGranted) {
+        // shoud not happen...
+        [self showErrorMessage:NSLocalizedString(@"Access denied on source file", nil)];
+        return;
+    }
+
+    // now copy contents:
+    NSError *error;
+    BOOL copyOk = [fileManager copyItemAtPath:[sourceDocUrl path] toPath:localFilePath error:&error];
+    if (!copyOk) {
+        [sourceDocUrl stopAccessingSecurityScopedResource];
+        [self showErrorMessage:error.localizedDescription];
+        return;
+    }
+
+    // Set file protection on the new file
+    [fileManager setAttributes:@{NSFileProtectionKey:NSFileProtectionComplete} ofItemAtPath:localFilePath error:nil];
+
+    // release external resource:
+    [sourceDocUrl stopAccessingSecurityScopedResource];
+
+    // Add the file to the list of files in this view.
+    [self addFilename:filename];
+}
+
+
+- (void)documentPickerWasCancelled:(UIDocumentPickerViewController *)controller {
+    self.documentPickerViewController = nil;
+}
+
 
 @end

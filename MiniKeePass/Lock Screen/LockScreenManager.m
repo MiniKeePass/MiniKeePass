@@ -105,6 +105,7 @@ static LockScreenManager *sharedInstance = nil;
 - (BOOL)shouldLock {
     // Check if we're already locked
     if (self.lockViewController != nil) {
+        NSLog(@"LockScreenManager: already locked -> shouldLock returns NO (unlocked=%@)", self.unlocked ? @"YES" : @"NO");
         return NO;
     }
 
@@ -114,6 +115,7 @@ static LockScreenManager *sharedInstance = nil;
 }
 
 - (void)checkPin {
+    NSLog(@"LockScreenManager: checkPin");
     // If the PIN view is already visible, just return
     if (self.pinViewController != nil) {
         [self.pinViewController clearPin];
@@ -122,6 +124,11 @@ static LockScreenManager *sharedInstance = nil;
 
     // Ensure the lock screen is shown first
     if (self.lockViewController == nil) {
+        [self showLockScreen];
+    }
+    BOOL lockViewControllerShown = self.lockViewController.isViewLoaded && self.lockViewController.view.window;
+    if ( ! lockViewControllerShown) {
+        self.lockViewController = nil;
         [self showLockScreen];
     }
 
@@ -135,7 +142,9 @@ static LockScreenManager *sharedInstance = nil;
 }
 
 - (void)showLockScreen {
+    NSLog(@"LockScreenManager: showLockScreen");
     if (self.lockViewController != nil) {
+        NSLog(@"LockScreenManager: already locked -> showLockScreen does nothing");
         return;
     }
 
@@ -151,9 +160,11 @@ static LockScreenManager *sharedInstance = nil;
 
     UIViewController *rootViewController = [LockScreenManager topMostController];
     [rootViewController presentViewController:navigationController animated:NO completion:nil];
+    NSLog(@"LockScreenManager: showLockScreen end");
 }
 
 - (void)hideLockScreen {
+    NSLog(@"LockScreenManager: hideLockScreen");
     if (self.lockViewController == nil) {
         return;
     }
@@ -167,6 +178,7 @@ static LockScreenManager *sharedInstance = nil;
 }
 
 - (void)showPinScreen {
+    NSLog(@"LockScreenManager: showPinScreen");
     self.pinViewController = [[PinViewController alloc] init];
     self.pinViewController.delegate = self;
 
@@ -174,6 +186,7 @@ static LockScreenManager *sharedInstance = nil;
 }
 
 - (void)showTouchId {
+    NSLog(@"LockScreenManager: showTouchId");
     // Check if TouchID is supported
     if (![NSClassFromString(@"LAContext") class]) {
         // Fallback to the PIN screen
@@ -294,13 +307,16 @@ static LockScreenManager *sharedInstance = nil;
 #pragma mark - Application Notification Handlers
 
 - (void)applicationDidFinishLaunching:(NSNotification *)notification {
+    NSLog(@"LockScreenManager: applicationDidFinishLaunching");
     if ([self shouldCheckPin]) {
         [self showLockScreen];
     }
 }
 
 - (void)applicationWillResignActive:(NSNotification *)notification {
+    NSLog(@"LockScreenManager: applicationWillResignActive");
     if ([self shouldLock]) {
+        NSLog(@"LockScreenManager: shouldLock");
         AppSettings *appSettings = [AppSettings sharedInstance];
         [appSettings setExitTime:[NSDate date]];
 
@@ -309,6 +325,7 @@ static LockScreenManager *sharedInstance = nil;
 }
 
 - (void)applicationDidBecomeActive:(NSNotification *)notification {
+    NSLog(@"LockScreenManager: applicationDidBecomeActive");
     if ([self shouldCloseDatabase]) {
         MiniKeePassAppDelegate *appDelegate = [MiniKeePassAppDelegate appDelegate];
         [appDelegate closeDatabase];
