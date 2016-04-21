@@ -112,6 +112,8 @@ enum {
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+    self.navigationController.toolbarHidden = NO;
+
     // Update the search bar's placeholder
     self.searchDisplayController.searchBar.placeholder = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"Search", nil), self.title];
 
