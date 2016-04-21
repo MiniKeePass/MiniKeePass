@@ -221,7 +221,7 @@ enum {
 - (NSArray *)editingToolbarItems {
     if (_editingToolbarItems == nil) {
         self.deleteButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Delete", nil)
-                                                             style:UIBarButtonItemStyleBordered
+                                                             style:UIBarButtonItemStylePlain
                                                             target:self
                                                             action:@selector(deleteSelectedItems)];
         self.deleteButton.tintColor = [UIColor colorWithRed:0.8 green:0.15 blue:0.15 alpha:1];
@@ -229,14 +229,14 @@ enum {
         self.deleteButton.enabled = NO;
 
         self.moveButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Move", nil)
-                                                           style:UIBarButtonItemStyleBordered
+                                                           style:UIBarButtonItemStylePlain
                                                           target:self
                                                           action:@selector(moveSelectedItems)];
         self.moveButton.width = self.currentButtonWidth;
         self.moveButton.enabled = NO;
 
         self.renameButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Rename", nil)
-                                                             style:UIBarButtonItemStyleBordered
+                                                             style:UIBarButtonItemStylePlain
                                                             target:self
                                                             action:@selector(renameSelectedItem)];
         self.renameButton.width = self.currentButtonWidth;
