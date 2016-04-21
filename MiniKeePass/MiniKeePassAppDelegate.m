@@ -142,11 +142,11 @@
     [appSettings setTouchIdEnabled:NO];
 
     // Delete the PIN from the keychain
-    [KeychainUtils deleteStringForKey:@"PIN" andServiceName:@"com.jflan.MiniKeePass.pin"];
+    [KeychainUtils deleteStringForKey:@"PIN" andServiceName:KEYCHAIN_PIN_SERVICE];
 
     // Delete all database passwords from the keychain
-    [KeychainUtils deleteAllForServiceName:@"com.jflan.MiniKeePass.passwords"];
-    [KeychainUtils deleteAllForServiceName:@"com.jflan.MiniKeePass.keyfiles"];
+    [KeychainUtils deleteAllForServiceName:KEYCHAIN_PASSWORDS_SERVICE];
+    [KeychainUtils deleteAllForServiceName:KEYCHAIN_KEYFILES_SERVICE];
 }
 
 - (void)deleteAllData {

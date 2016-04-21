@@ -50,9 +50,9 @@ static DatabaseManager *sharedInstance;
     
     // Load the password and keyfile from the keychain
     NSString *password = [KeychainUtils stringForKey:self.selectedFilename
-                                      andServiceName:@"com.jflan.MiniKeePass.passwords"];
+                                      andServiceName:KEYCHAIN_PASSWORDS_SERVICE];
     NSString *keyFile = [KeychainUtils stringForKey:self.selectedFilename
-                                     andServiceName:@"com.jflan.MiniKeePass.keyfiles"];
+                                     andServiceName:KEYCHAIN_KEYFILES_SERVICE];
     
     // Try and load the database with the cached password from the keychain
     if (password != nil || keyFile != nil) {
@@ -137,9 +137,9 @@ static DatabaseManager *sharedInstance;
         // Store the password in the keychain
         if ([[AppSettings sharedInstance] rememberPasswordsEnabled]) {
             [KeychainUtils setString:password forKey:self.selectedFilename
-                      andServiceName:@"com.jflan.MiniKeePass.passwords"];
+                      andServiceName:KEYCHAIN_PASSWORDS_SERVICE];
             [KeychainUtils setString:keyFile forKey:self.selectedFilename
-                      andServiceName:@"com.jflan.MiniKeePass.keyfiles"];
+                      andServiceName:KEYCHAIN_KEYFILES_SERVICE];
         }
 
         // Dismiss the view controller, and after animation set the database document

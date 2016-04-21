@@ -21,8 +21,6 @@
 #import "CharacterSetsViewController.h"
 #import "MiniKeePassAppDelegate.h"
 
-#define KEYCHAIN_PIN_SERVICE       @"com.jflan.MiniKeePass.pin"
-
 #define VERSION                    @"version"
 #define EXIT_TIME                  @"exitTime"
 #define PIN_ENABLED                @"pinEnabled"

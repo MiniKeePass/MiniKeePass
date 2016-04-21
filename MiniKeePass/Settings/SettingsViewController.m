@@ -628,7 +628,7 @@ enum {
         [self presentViewController:pinViewController animated:YES completion:nil];
     } else {
         // Delete the PIN and disable the PIN enabled setting
-        [KeychainUtils deleteStringForKey:@"PIN" andServiceName:@"com.jflan.MiniKeePass.pin"];
+        [KeychainUtils deleteStringForKey:@"PIN" andServiceName:KEYCHAIN_PIN_SERVICE];
         [self.appSettings setPinEnabled:NO];
         
         // Update which controls are enabled
@@ -662,8 +662,8 @@ enum {
     [self.appSettings setRememberPasswordsEnabled:rememberPasswordsEnabledCell.switchControl.on];
     
     // Delete all database passwords from the keychain
-    [KeychainUtils deleteAllForServiceName:@"com.jflan.MiniKeePass.passwords"];
-    [KeychainUtils deleteAllForServiceName:@"com.jflan.MiniKeePass.keyfiles"];
+    [KeychainUtils deleteAllForServiceName:KEYCHAIN_PASSWORDS_SERVICE];
+    [KeychainUtils deleteAllForServiceName:KEYCHAIN_KEYFILES_SERVICE];
 }
 
 - (void)toggleHidePasswords:(id)sender {
