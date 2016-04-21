@@ -60,6 +60,7 @@ Russian Translation - Foster "Forst" Snowhill<br />
 Italian Translation - Emanuele Di Vita and Gabriele Cirulli<br />
 Simplified Chinese Translation - Caspar Zhang and David Wong<br />
 French Translation - Patrice Lachance<br />
+Brazilian Portuguese Translation - BR Lingo<br />
 
 MiniKeePass Icon - Gabriele Cirulli
 
