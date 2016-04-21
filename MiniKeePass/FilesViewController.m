@@ -257,7 +257,7 @@ enum {
             // Delete the keychain entries for the old filename
             if ([[AppSettings sharedInstance] rememberPasswordsEnabled]) {
                 [KeychainUtils deleteStringForKey:filename andServiceName:@"com.jflan.MiniKeePass.passwords"];
-                [KeychainUtils deleteStringForKey:filename andServiceName:@"com.jflan.MiniKeePass.keychains"];
+                [KeychainUtils deleteStringForKey:filename andServiceName:@"com.jflan.MiniKeePass.keyfiles"];
             }
             break;
         case SECTION_KEYFILE:
