@@ -61,6 +61,7 @@ enum {
 
         self.navigationItem.rightBarButtonItem = self.editButtonItem;
 
+        // Set the back button name to Entry for when the web view is pushed on
         UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Entry", nil)
                                                                               style:UIBarButtonItemStylePlain
                                                                              target:nil
