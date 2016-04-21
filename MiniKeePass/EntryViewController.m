@@ -62,7 +62,7 @@ enum {
         self.navigationItem.rightBarButtonItem = self.editButtonItem;
 
         UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Entry", nil)
-                                                                              style:UIBarButtonItemStyleBordered
+                                                                              style:UIBarButtonItemStylePlain
                                                                              target:nil
                                                                              action:nil];
         self.navigationItem.backBarButtonItem = backBarButtonItem;
