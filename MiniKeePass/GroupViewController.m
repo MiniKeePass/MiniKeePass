@@ -53,8 +53,8 @@ enum {
 @property (nonatomic, strong) UIBarButtonItem *renameButton;
 @property (nonatomic, assign) CGFloat currentButtonWidth;
 
-@property (nonatomic, strong) GroupSearchController *searchController;
-@property (nonatomic, strong) UISearchDisplayController *mySearchDisplayController;
+@property (nonatomic, strong) GroupSearchController *groupSearchController;
+@property (nonatomic, strong) UISearchController *searchController;
 
 @property (nonatomic, strong) UIDocumentInteractionController *documentInteractionController;
 
@@ -78,18 +78,25 @@ enum {
         self.title = self.group.name;
         self.tableView.allowsSelectionDuringEditing = YES;
 
-        // Configure the search bar
-        UISearchBar *searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
-        self.tableView.tableHeaderView = searchBar;
+        // Set up searching
+        self.groupSearchController = [[GroupSearchController alloc] init];
+        self.groupSearchController.groupViewController = self;
 
-        self.searchController = [[GroupSearchController alloc] init];
-        self.searchController.groupViewController = self;
-
-        self.mySearchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:searchBar contentsController:self];
-        self.searchDisplayController.searchResultsDataSource = self.searchController;
-        self.searchDisplayController.searchResultsDelegate = self.searchController;
-        self.searchDisplayController.delegate = self.searchController;
-
+        self.searchController = [[UISearchController alloc] initWithSearchResultsController:self.groupSearchController];
+        self.searchController.searchResultsUpdater = self.groupSearchController;
+        [self.searchController.searchBar sizeToFit];
+        
+        // There is a bug in UISearchController in iOS 9 that causes it to load it's view in it's dealloc
+        // method even if the view has never been allocaed.  As a workaround, we can trigger the view to
+        // load by accessing it.
+        [self.searchController.view isHidden];
+        
+        // Add the search bar to the table
+        self.tableView.tableHeaderView = self.searchController.searchBar;
+        
+        // Set this property since the UISearchController covers the GroupViewController
+        self.definesPresentationContext = YES;
+        
         // Get sort settings, and create the sort comparators
         self.sortingEnabled = [[AppSettings sharedInstance] sortAlphabetically];
 
@@ -112,8 +119,8 @@ enum {
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    // Update the search bar's placeholder
-    self.searchDisplayController.searchBar.placeholder = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"Search", nil), self.title];
+    // Update the search bar's placeholder here, since the title may have changed since loading
+    self.searchController.searchBar.placeholder = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"Search", nil), self.title];
 
     NSArray *selectedIndexPaths = [self.tableView indexPathsForSelectedRows];
     if ([selectedIndexPaths count] > 1) {
@@ -260,31 +267,6 @@ enum {
     return _documentInteractionController;
 }
 
-- (void)setSeachBar:(UISearchBar *)searchBar enabled:(BOOL)enabled {
-    static UIView *overlayView = nil;
-    if (overlayView == nil) {
-        overlayView = [[UIView alloc] initWithFrame:searchBar.frame];
-        overlayView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-        overlayView.backgroundColor = [UIColor darkGrayColor];
-        overlayView.alpha = 0.0;
-    }
-
-    searchBar.userInteractionEnabled = enabled;
-    if (enabled) {
-        [UIView animateWithDuration:0.3 animations:^{
-            overlayView.alpha = 0.0;
-        } completion:^(BOOL finished) {
-            [overlayView removeFromSuperview];
-            overlayView = nil;
-        }];
-    } else {
-        [searchBar addSubview:overlayView];
-        [UIView animateWithDuration:0.3 animations:^{
-            overlayView.alpha = 0.25;
-        }];
-    }
-}
-
 - (void)updateViewModel {
     self.groupsArray = [[NSMutableArray alloc] initWithArray:self.group.groups];
     self.entriesArray = [[NSMutableArray alloc] initWithArray:self.group.entries];
@@ -325,13 +307,23 @@ enum {
 
     if (editing) {
         [self.navigationItem setHidesBackButton:YES animated:YES];
-        [self setSeachBar:self.searchDisplayController.searchBar enabled:NO];
+        
+        // Disable the search bar
+        [self.searchController.searchBar setUserInteractionEnabled:NO];
+        [UIView animateWithDuration:0.3 animations:^{
+            self.searchController.searchBar.alpha = 0.4;
+        }];
 
         self.toolbarItems = self.editingToolbarItems;
         [self updateEditingButtons];
     } else {
         [self.navigationItem setHidesBackButton:NO animated:YES];
-        [self setSeachBar:self.searchDisplayController.searchBar enabled:YES];
+
+        // Enable the search bar
+        [self.searchController.searchBar setUserInteractionEnabled:NO];
+        [UIView animateWithDuration:0.3 animations:^{
+            self.searchController.searchBar.alpha = 1.0;
+        }];
 
         self.toolbarItems = self.standardToolbarItems;
     }

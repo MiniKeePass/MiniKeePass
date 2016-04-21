@@ -15,12 +15,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 #import "KdbLib.h"
 #import "GroupViewController.h"
 
-@interface GroupSearchController : NSObject <UITableViewDataSource, UITableViewDelegate, UISearchDisplayDelegate>
+@interface GroupSearchController : UITableViewController <UISearchResultsUpdating>
 
 @property (nonatomic, weak) GroupViewController *groupViewController;
 
