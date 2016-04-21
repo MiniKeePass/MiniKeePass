@@ -317,7 +317,9 @@ static LockScreenManager *sharedInstance = nil;
     if ([self shouldCheckPin]) {
         [self checkPin];
     } else {
-        [self hideLockScreen];
+        if (!self.checkingTouchId) {
+            [self hideLockScreen];
+        }
     }
 }
 
