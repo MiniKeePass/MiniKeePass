@@ -19,12 +19,12 @@
 
 @implementation InputStream
 
-- (NSUInteger)read:(void*)bytes length:(NSUInteger)bytesLength {
+- (NSUInteger)read:(void *)bytes length:(NSUInteger)bytesLength {
     [self doesNotRecognizeSelector:_cmd];
     return 0;
 }
 
-- (NSData*)readData:(NSUInteger)length {
+- (NSData *)readData:(NSUInteger)length {
     uint8_t *bytes = calloc(sizeof(uint8_t), length);
     
     [self read:bytes length:length];
@@ -66,7 +66,7 @@
     return value;
 }
 
-- (NSString*)readString:(NSUInteger)length encoding:(NSStringEncoding)encoding {
+- (NSString *)readString:(NSUInteger)length encoding:(NSStringEncoding)encoding {
     uint8_t bytes[length];
     
     [self read:bytes length:length];
@@ -74,7 +74,7 @@
     return [[NSString alloc] initWithBytes:bytes length:length encoding:encoding];
 }
 
-- (NSString*)readCString:(NSUInteger)length encoding:(NSStringEncoding)encoding {
+- (NSString *)readCString:(NSUInteger)length encoding:(NSStringEncoding)encoding {
     char str[length];
     
     [self read:str length:length];

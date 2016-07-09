@@ -19,7 +19,7 @@
 
 @implementation GZipOutputStream
 
-- (id)initWithOutputStream:(OutputStream*)stream {
+- (id)initWithOutputStream:(OutputStream *)stream {
     self = [super init];
     if (self) {
         outputStream = stream;
@@ -42,7 +42,7 @@
     int n;
     
     zstream.avail_in = (unsigned int)bytesLength;
-    zstream.next_in = (void*)bytes;
+    zstream.next_in = (void *)bytes;
     
     while (zstream.avail_in > 0) {
         do {

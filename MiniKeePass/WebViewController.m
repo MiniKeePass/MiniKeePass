@@ -79,7 +79,7 @@
 
 - (void)viewDidLoad {
     // Create the URL text field
-    CGFloat height = UrlFieldHeight(self.interfaceOrientation);
+    CGFloat height = UrlFieldHeight([[UIApplication sharedApplication] statusBarOrientation]);
     self.urlTextField = [[UITextField alloc] initWithFrame:CGRectMake(0, 0, self.navigationController.navigationBar.bounds.size.width, height)];
     self.urlTextField.contentVerticalAlignment = UIViewContentModeCenter;
     self.urlTextField.autoresizingMask = UIViewAutoresizingFlexibleWidth;
@@ -182,31 +182,17 @@
     // Save the original size of the url text field
     self.originalUrlFrame = self.urlTextField.frame;
 
-    // Compute a new frame size
-    CGFloat height = UrlFieldHeight(self.interfaceOrientation);
-    CGRect frame = CGRectMake(0, 0, self.navigationController.navigationBar.bounds.size.width, height);
-
     // Hide the buttons
-    [self.navigationItem setHidesBackButton:YES animated:YES];
-    [self.navigationItem setRightBarButtonItem:nil animated:YES];
-
-    // Animate the size of the url text field
-    [UIView animateWithDuration:0.4 animations:^{
-        self.urlTextField.frame = frame;
-    }];
+    [self.navigationItem setHidesBackButton:YES animated:NO];
+    [self.navigationItem setRightBarButtonItem:nil animated:NO];
 
     return YES;
 }
 
 - (BOOL)textFieldShouldEndEditing:(UITextField *)textField {
-    [UIView animateWithDuration:0.4 animations:^{
-        // Display the buttons
-        [self.navigationItem setHidesBackButton:NO animated:YES];
-        [self.navigationItem setRightBarButtonItem:self.autotypeButtons animated:YES];
-
-        // Restore the url text fields frame
-        self.urlTextField.frame = self.originalUrlFrame;
-    }];
+    // Display the buttons
+    [self.navigationItem setHidesBackButton:NO animated:YES];
+    [self.navigationItem setRightBarButtonItem:self.autotypeButtons animated:YES];
 
     return YES;
 }

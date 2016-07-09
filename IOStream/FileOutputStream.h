@@ -24,6 +24,6 @@
 }
 
 - (id)initWithFilename:(NSString*)filename flags:(int)flags mode:(mode_t)mode;
-- (NSInteger)seek:(NSUInteger)offset;
+- (off_t)seek:(off_t)offset;
 
 @end

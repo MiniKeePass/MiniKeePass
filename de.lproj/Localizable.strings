@@ -61,6 +61,7 @@
 
 // General Messages
 "Enter your PIN to unlock" = "Geben Sie zum Entsperren Ihre PIN ein";
+"Unlock MiniKeePass" = "Unlock MiniKeePass"; // FIXME
 "Enter the password and/or select the keyfile for the %@ database." = "Geben Sie das Passwort ein oder wählen Sie die Schlüsseldatei für die Datenbank %@ aus.";
 "Enter a new name for the password database. The correct file extension will automatically be appended." = "Geben Sie einen neuen Namen für die Datenbank ein. Die korrekte Dateiendung wird automatisch hinzugefügt.";
 "Do not forget your database password, it cannot be recovered." = "Vergessen Sie niemals das Passwort für die Datenbank. Es kann nicht wiederhergestellt werden.";
@@ -79,10 +80,13 @@
 "There are no applications installed capable of importing KeePass files" = "Es gibt keine installierten Programme, die KeePass Datenbanken importieren können";
 "Tap the + button to add a new KeePass file." = "Drücken Sie den + Button um neue KeePass Dateien hinzuzufügen.";
 "No password or keyfile specified" = "Es wurde weder ein Passwort oder noch eine Schlüsseldatei angegeben";
+"Error Checking PIN" = "Error Checking PIN"; // FIXME
 
 // Settings Page
 "Settings" = "Einstellungen";
 "PIN Enabled" = "PIN aktiviert";
+"Touch ID" = "Touch ID"; // FIXME
+"Use your fingerprint as an alternative to entering a PIN if supported." = "Use your fingerprint as an alternative to entering a PIN if supported."; // FIXME
 "Lock Timeout" = "Sperrzeit";
 "Immediately" = "Sofort";
 "30 Seconds" = "30 Sekunden";
@@ -123,6 +127,9 @@
 "Clear the contents of the clipboard after a given timeout upon performing a copy." = "Inhalt der Zwischenablage nach Zeitübeschreitung löschen nachdem kopiert wurde.";
 "Close Timeout" = "Close Timeout";
 "Clear Clipboard Timeout" = "Timeout zum Löschen der Zwischenablage";
+"Exclude from backup" = "Backups deaktivieren";
+"iCloud/iTunes Backup" = "iCloud/iTunes Backup";
+"Exclude databases and key files from iTunes/iCloud backups." = "Datenbank- und Schlüsseldateien vom iTunes/iCloud Backup ausschließen";
 "Web Browser" = "Web Browser";
 "Integrated" = "Integriert";
 "Switch between an integrated web browser and Safari." = "Wechseln Sie zwischen einem integrierten Web Browser und Safari.";

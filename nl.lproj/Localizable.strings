@@ -63,6 +63,7 @@
 
 // General Messages
 "Enter your PIN to unlock" = "Voer uw PIN in om te ontgrendelen";
+"Unlock MiniKeePass" = "Unlock MiniKeePass"; // FIXME
 "Enter the password and/or select the keyfile for the %@ database." = "Voer uw wachtwoord in en/of selecteer het sleutelbestand voor de %@ database.";
 "Enter a new name for the password database. The correct file extension will automatically be appended." = "Voer een nieuwe naam in voor de wachtwoorddatabase. De correcte bestandextensie zal automatisch worden toegevoegd.";
 "Do not forget your database password, it cannot be recovered." = "Vergeet uw databasewachtwoord niet, het kan niet hersteld worden.";
@@ -81,10 +82,13 @@
 "There are no applications installed capable of importing KeePass files" = "Er zijn geen applicaties geïnstalleerd die KeePass files kunnen importeren";
 "Tap the + button to add a new KeePass file." = "Tik op de + knop om een nieuwe KeePass file toe te voegen";
 "No password or keyfile specified" = "Geen wachtwoord of sleutelbestand gespecifieerd";
+"Error Checking PIN" = "Error Checking PIN"; // FIXME
 
 // Settings Page
 "Settings" = "Voorkeuren";
 "PIN Enabled" = "PIN Geactiveerd";
+"Touch ID" = "Touch ID"; // FIXME
+"Use your fingerprint as an alternative to entering a PIN if supported." = "Use your fingerprint as an alternative to entering a PIN if supported."; // FIXME
 "Lock Timeout" = "Vergrendel Timeout";
 "Immediately" = "Onmiddellijk";
 "30 Seconds" = "30 Seconden";
@@ -125,6 +129,9 @@
 "Clear the contents of the clipboard after a given timeout upon performing a copy." = "Wis de inhoud van het klembord na een gegeven timeout tijdens het kopiëren.";
 "Close Timeout" = "Sluiten Timeout";
 "Clear Clipboard Timeout" = "Klembord Leegmaken Timeout";
+"Exclude from backup" = "Exclude from backup"; // FIXME
+"iCloud/iTunes Backup" = "iCloud/iTunes Backup"; // FIXME
+"Exclude databases and key files from iTunes/iCloud backups." = "Exclude databases and key files from iTunes/iCloud backups."; // FIXME
 "Web Browser" = "Webbrowser";
 "Integrated" = "Geïntegreerd";
 "Switch between an integrated web browser and Safari." = "Wissel tussen een geïntegreerde webbrowser en Safari.";

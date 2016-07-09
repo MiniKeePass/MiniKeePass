@@ -24,7 +24,7 @@
 
 @implementation HashedOutputStream
 
-- (id)initWithOutputStream:(OutputStream*)stream blockSize:(uint32_t)blockSize {
+- (id)initWithOutputStream:(OutputStream *)stream blockSize:(uint32_t)blockSize {
     self = [super init];
     if (self) {
         outputStream = stream;

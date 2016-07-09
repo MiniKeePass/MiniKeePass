@@ -23,7 +23,7 @@
     return [self init:[NSData dataWithBytes:buffer length:sizeof(buffer)]];
 }
 
-- (id)init:(NSData*)key {
+- (id)init:(NSData *)key {
     self = [super init];
     if (self) {
         const uint8_t *bytes = key.bytes;

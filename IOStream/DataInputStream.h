@@ -23,6 +23,6 @@
     NSUInteger dataOffset;
 }
 
-- (id)initWithData:(NSData*)d;
+- (id)initWithData:(NSData *)d;
 
 @end

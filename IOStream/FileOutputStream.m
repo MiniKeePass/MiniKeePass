@@ -38,7 +38,7 @@
     return write(fd, bytes, bytesLength);
 }
 
-- (NSInteger)seek:(NSUInteger)offset {
+- (off_t)seek:(off_t)offset {
     return lseek(fd, offset, SEEK_SET);
 }
 

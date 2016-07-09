@@ -21,8 +21,8 @@
     
 }
 
-- (NSUInteger)write:(const void*)bytes length:(NSUInteger)bytesLength;
-- (NSUInteger)write:(NSData*)data;
+- (NSUInteger)write:(const void *)bytes length:(NSUInteger)bytesLength;
+- (NSUInteger)write:(NSData *)data;
 
 - (void)writeInt8:(uint8_t)value;
 - (void)writeInt16:(uint16_t)value;

@@ -61,6 +61,7 @@
 
 // General Messages
 "Enter your PIN to unlock" = "Enter your PIN to unlock";
+"Unlock MiniKeePass" = "Unlock MiniKeePass";
 "Enter the password and/or select the keyfile for the %@ database." = "Enter the password and/or select the keyfile for the %@ database.";
 "Enter a new name for the password database. The correct file extension will automatically be appended." = "Enter a new name for the password database. The correct file extension will automatically be appended.";
 "Do not forget your database password, it cannot be recovered." = "Do not forget your database password, it cannot be recovered.";
@@ -79,10 +80,13 @@
 "There are no applications installed capable of importing KeePass files" = "There are no applications installed capable of importing KeePass files";
 "Tap the + button to add a new KeePass file." = "Tap the + button to add a new KeePass file.";
 "No password or keyfile specified" = "No password or keyfile specified";
+"Error Checking PIN" = "Error Checking PIN";
 
 // Settings Page
 "Settings" = "Settings";
 "PIN Enabled" = "PIN Enabled";
+"Touch ID" = "Touch ID";
+"Use your fingerprint as an alternative to entering a PIN if supported." = "Use your fingerprint as an alternative to entering a PIN if supported.";
 "Lock Timeout" = "Lock Timeout";
 "Immediately" = "Immediately";
 "30 Seconds" = "30 Seconds";
@@ -123,6 +127,9 @@
 "Clear the contents of the clipboard after a given timeout upon performing a copy." = "Clear the contents of the clipboard after a given timeout upon performing a copy.";
 "Close Timeout" = "Close Timeout";
 "Clear Clipboard Timeout" = "Clear Clipboard Timeout";
+"Exclude from backup" = "Exclude from backup";
+"iCloud/iTunes Backup" = "iCloud/iTunes Backup";
+"Exclude databases and key files from iTunes/iCloud backups." = "Exclude databases and key files from iTunes/iCloud backups.";
 "Web Browser" = "Web Browser";
 "Integrated" = "Integrated";
 "Switch between an integrated web browser and Safari." = "Switch between an integrated web browser and Safari.";

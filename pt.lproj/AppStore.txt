@@ -7,27 +7,27 @@
 #
 
 # App Name:
-MiniKeePass — Secure Password Manager
+MiniKeePass — Gerenciador de Senhas Seguro
 
 # Description:
-MiniKeePass provides secure password storage on your iOS device that's compatible with KeePass.
+O MiniKeePass fornece o armazenamento seguro de senhas em dispositivos iOS e é compatível com o KeePass.
 
-- View, Edit, and Create KeePass 1.x and 2.x files
-- Search for entries from the top of tables like in Mail
-- Key File Support
-- Import/Export files to and from Dropbox using the official Dropbox app or any other cloud storage application
-- Copy password entries to the clipboard for easy entry
-- Open websites in Safari while MiniKeePass runs in the background
-- Prevent unauthorized access to MiniKeePass with a PIN
-- Remember database passwords in the device's secure keychain
-- Optionally clear the clipboard after set time on devices that support background tasks
-- Generate new passwords
-- Integrated web browser with username/password auto-type
+- Visualize, edite e crie arquivos do KeePass 1.x e 2.x;
+- Use uma barra de busca (como no Mail) para buscar itens;
+- Compatibilidade com Arquivos de Chave;
+- Importe e exporte arquivos do Dropbox usando o aplicativo oficial do Dropbox ou qualquer outro aplicativo de armazenamento em nuvem;
+- Copie senhas para a área de transferência para usá-las facilmente;
+- Abra sites no Safari enquanto o MiniKeePass fica em 2º plano;
+- Impeça o acesso não autorizado ao MiniKeePass com um PIN;
+- Lembre-se de senhas de bancos de dados nas chaves seguras do dispositivo;
+- Em dispositivos com suporte a tarefas em 2º plano, limpe a área de transferência após um tempo pré-determinado;
+- Gere novas senhas;
+- Navegador integrado com preenchimento automático de usuário e senha.
 
-MiniKeePass's source code is available for security audit or contribution on GitHub.
+O código fonte do MiniKeePass está disponível para auditoria de segurança ou contribuição no GitHub.
 
 # Keywords:
-MiniKeePass,KeePass,Kee Pass,KeyPass,KeePassX,Password,Password Manager,Secure
+MiniKeePass,KeePass,Kee Pass,KeyPass,KeePassX,Senha,Gerenciador Senhas,Seguro
 
 # What's New in this Version:
 # Version 1.5

@@ -61,6 +61,7 @@
 
 // General Messages
 "Enter your PIN to unlock" = "输入 PIN 码解锁";
+"Unlock MiniKeePass" = "Unlock MiniKeePass"; // FIXME
 "Enter the password and/or select the keyfile for the %@ database." = "为访问“%@”数据库，您需要输入密码或选定密匙文件";
 "Enter a new name for the password database. The correct file extension will automatically be appended." = "请为密码数据库输入新的名称，文件扩展名将会自动添加";
 "Do not forget your database password, it cannot be recovered." = "不要忘记您的数据库密码，它是不可恢复的";
@@ -79,10 +80,13 @@
 "There are no applications installed capable of importing KeePass files" = "尚未安装支持导入 KeePass 文件的应用";
 "Tap the + button to add a new KeePass file." = "触摸 + 按钮以添加新的KeePass 文件";
 "No password or keyfile specified" = "未指定密码或密匙文件";
+"Error Checking PIN" = "Error Checking PIN"; // FIXME
 
 // Settings Page
 "Settings" = "设置";
 "PIN Enabled" = "启用 PIN 码";
+"Touch ID" = "Touch ID"; // FIXME
+"Use your fingerprint as an alternative to entering a PIN if supported." = "Use your fingerprint as an alternative to entering a PIN if supported."; // FIXME
 "Lock Timeout" = "锁定前时长";
 "Immediately" = "立刻";
 "30 Seconds" = "30 秒";
@@ -123,6 +127,9 @@
 "Clear the contents of the clipboard after a given timeout upon performing a copy." = "在设定的时长后清除剪贴板内容";
 "Close Timeout" = "关闭前时长";
 "Clear Clipboard Timeout" = "超时后清除剪贴板内容";
+"Exclude from backup" = "Exclude from backup"; // FIXME
+"iCloud/iTunes Backup" = "iCloud/iTunes Backup"; // FIXME
+"Exclude databases and key files from iTunes/iCloud backups." = "Exclude databases and key files from iTunes/iCloud backups."; // FIXME
 "Web Browser" = "网页浏览器";
 "Integrated" = "内置";
 "Switch between an integrated web browser and Safari." = "在内置网页浏览器和Safari之前切换";

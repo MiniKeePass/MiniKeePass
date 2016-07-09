@@ -28,6 +28,6 @@
     uint32_t bufferLength;
 }
 
-- (id)initWithOutputStream:(OutputStream*)stream blockSize:(uint32_t)blockSize;
+- (id)initWithOutputStream:(OutputStream *)stream blockSize:(uint32_t)blockSize;
 
 @end

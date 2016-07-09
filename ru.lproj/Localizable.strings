@@ -63,6 +63,7 @@
 
 // General Messages
 "Enter your PIN to unlock" = "Введите PIN-код для разблокировки";
+"Unlock MiniKeePass" = "Разблокировать MiniKeePass";
 "Enter the password and/or select the keyfile for the %@ database." = "Введите пароль и/или выберите файл ключа для базы данных %@.";
 "Enter a new name for the password database. The correct file extension will automatically be appended." = "Введите новое имя для базы данных. Правильное расширение файла будет автоматически добавлено.";
 "Do not forget your database password, it cannot be recovered." = "Запомните ваш пароль к базе данных, он не может быть восстановлён.";
@@ -81,10 +82,13 @@
 "There are no applications installed capable of importing KeePass files" = "Нет установленных приложений, способных импортировать файлы KeePass";
 "Tap the + button to add a new KeePass file." = "Нажмите кнопку +, чтобы добавить новый файл KeePass.";
 "No password or keyfile specified" = "Не указан ни пароль, ни файл ключа";
+"Error Checking PIN" = "Ошибка проверки PIN";
 
 // Settings Page
 "Settings" = "Настройки";
 "PIN Enabled" = "PIN-код включен";
+"Touch ID" = "Touch ID";
+"Use your fingerprint as an alternative to entering a PIN if supported." = "Используйте ваш отпечаток пальца как альтернативу вводу PIN, если поддерживается.";
 "Lock Timeout" = "Тайм-аут блокировки";
 "Immediately" = "Сразу";
 "30 Seconds" = "30 сек.";
@@ -125,6 +129,9 @@
 "Clear the contents of the clipboard after a given timeout upon performing a copy." = "Очищать буфер обмена после заданного тайм-аута при копировании.";
 "Close Timeout" = "Тайм-аут закрытия";
 "Clear Clipboard Timeout" = "Тайм-аут очистки буфера обмена";
+"Exclude from backup" = "Исключить из резервной копии";
+"iCloud/iTunes Backup" = "Резервная копия iCloud/iTunes";
+"Exclude databases and key files from iTunes/iCloud backups." = "Исключить базы данных и файлы ключей из резервных копий iTunes/iCloud.";
 "Web Browser" = "Веб-браузер";
 "Integrated" = "Встроенный";
 "Switch between an integrated web browser and Safari." = "Переключение между встроенным веб-браузером и Safari.";

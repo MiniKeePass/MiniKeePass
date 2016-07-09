@@ -25,15 +25,13 @@
 #import "Kdb3Writer.h"
 #import "Kdb4Writer.h"
 
-#import <MobileCoreServices/UTCoreTypes.h>
-
 enum {
     SECTION_DATABASE,
     SECTION_KEYFILE,
     SECTION_NUMBER
 };
 
-@interface FilesViewController () <UIDocumentPickerDelegate, UIDocumentMenuDelegate>
+@interface FilesViewController ()
 @property (nonatomic, strong) FilesInfoView *filesInfoView;
 @property (nonatomic, strong) NSMutableArray *databaseFiles;
 @property (nonatomic, strong) NSMutableArray *keyFiles;
@@ -258,8 +256,8 @@ enum {
 
             // Delete the keychain entries for the old filename
             if ([[AppSettings sharedInstance] rememberPasswordsEnabled]) {
-                [KeychainUtils deleteStringForKey:filename andServiceName:@"com.jflan.MiniKeePass.passwords"];
-                [KeychainUtils deleteStringForKey:filename andServiceName:@"com.jflan.MiniKeePass.keychains"];
+                [KeychainUtils deleteStringForKey:filename andServiceName:KEYCHAIN_PASSWORDS_SERVICE];
+                [KeychainUtils deleteStringForKey:filename andServiceName:KEYCHAIN_KEYFILES_SERVICE];
             }
             break;
         case SECTION_KEYFILE:
@@ -359,16 +357,16 @@ enum {
     // Check if we should move the saved passwords to the new filename
     if ([[AppSettings sharedInstance] rememberPasswordsEnabled]) {
         // Load the password and keyfile from the keychain under the old filename
-        NSString *password = [KeychainUtils stringForKey:oldFilename andServiceName:@"com.jflan.MiniKeePass.passwords"];
-        NSString *keyFile = [KeychainUtils stringForKey:oldFilename andServiceName:@"com.jflan.MiniKeePass.keyfiles"];
+        NSString *password = [KeychainUtils stringForKey:oldFilename andServiceName:KEYCHAIN_PASSWORDS_SERVICE];
+        NSString *keyFile = [KeychainUtils stringForKey:oldFilename andServiceName:KEYCHAIN_KEYFILES_SERVICE];
 
         // Store the password and keyfile into the keychain under the new filename
-        [KeychainUtils setString:password forKey:newFilename andServiceName:@"com.jflan.MiniKeePass.passwords"];
-        [KeychainUtils setString:keyFile forKey:newFilename andServiceName:@"com.jflan.MiniKeePass.keyfiles"];
+        [KeychainUtils setString:password forKey:newFilename andServiceName:KEYCHAIN_PASSWORDS_SERVICE];
+        [KeychainUtils setString:keyFile forKey:newFilename andServiceName:KEYCHAIN_KEYFILES_SERVICE];
 
         // Delete the keychain entries for the old filename
-        [KeychainUtils deleteStringForKey:oldFilename andServiceName:@"com.jflan.MiniKeePass.passwords"];
-        [KeychainUtils deleteStringForKey:oldFilename andServiceName:@"com.jflan.MiniKeePass.keyfiles"];
+        [KeychainUtils deleteStringForKey:oldFilename andServiceName:KEYCHAIN_PASSWORDS_SERVICE];
+        [KeychainUtils deleteStringForKey:oldFilename andServiceName:KEYCHAIN_KEYFILES_SERVICE];
     }
 
     // Reload the table row
@@ -378,35 +376,6 @@ enum {
 }
 
 - (void)addPressed:(UIBarButtonItem *)source {
-    if (NSClassFromString(@"UIDocumentMenuViewController") != nil) {
-        UIDocumentMenuViewController *documentMenuViewController =
-        [[UIDocumentMenuViewController alloc] initWithDocumentTypes:@[(NSString *)kUTTypeItem]
-                                                             inMode:UIDocumentPickerModeImport];
-        [documentMenuViewController addOptionWithTitle:NSLocalizedString(@"New Database", nil)
-                                                 image:nil
-                                                 order:UIDocumentMenuOrderFirst
-                                               handler:^{
-                                                   [self createNewDatabasePressed];
-                                               }];
-        documentMenuViewController.delegate = self;
-        documentMenuViewController.modalInPopover = UIModalPresentationPopover;
-        documentMenuViewController.popoverPresentationController.barButtonItem = source;
-        [self presentViewController:documentMenuViewController animated:YES completion:nil];
-    } else {
-        [self createNewDatabasePressed];
-    }
-}
-
-- (void)documentMenu:(UIDocumentMenuViewController *)documentMenu didPickDocumentPicker:(UIDocumentPickerViewController *)documentPicker {
-    documentPicker.delegate = self;
-    [self presentViewController:documentPicker animated:YES completion:nil];
-}
-
-- (void)documentPicker:(UIDocumentPickerViewController *)controller didPickDocumentAtURL:(NSURL *)url {
-    [[MiniKeePassAppDelegate appDelegate] importUrl:url];
-}
-
-- (void)createNewDatabasePressed {
     NewKdbViewController *newKdbViewController = [[NewKdbViewController alloc] init];
     newKdbViewController.donePressed = ^(FormViewController *formViewController) {
         [self createNewDatabase:(NewKdbViewController *)formViewController];
@@ -482,7 +451,7 @@ enum {
 
     // Store the password in the keychain
     if ([[AppSettings sharedInstance] rememberPasswordsEnabled]) {
-        [KeychainUtils setString:password1 forKey:filename andServiceName:@"com.jflan.MiniKeePass.passwords"];
+        [KeychainUtils setString:password1 forKey:filename andServiceName:KEYCHAIN_PASSWORDS_SERVICE];
     }
 
     // Add the file to the list of files

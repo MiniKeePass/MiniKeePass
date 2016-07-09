@@ -54,7 +54,6 @@
                                name:UIPasteboardChangedNotification
                              object:nil];
 
-    // Check file protection
     [self checkFileProtection];
 
     // Initialize the lock screen manager
@@ -66,22 +65,6 @@
 - (void)applicationWillEnterForeground:(UIApplication *)application {
     // Check file protection
     [self checkFileProtection];
-
-    // Get the time when the application last exited
-    AppSettings *appSettings = [AppSettings sharedInstance];
-    NSDate *exitTime = [appSettings exitTime];
-
-    // Check if closing the database is enabled
-    if ([appSettings closeEnabled] && exitTime != nil) {
-        // Get the lock timeout (in seconds)
-        NSInteger closeTimeout = [appSettings closeTimeout];
-
-        // Check if it's been longer then close timeout
-        NSTimeInterval timeInterval = [exitTime timeIntervalSinceNow];
-        if (timeInterval < -closeTimeout) {
-            [self closeDatabase];
-        }
-    }
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
@@ -159,11 +142,11 @@
     [appSettings setTouchIdEnabled:NO];
 
     // Delete the PIN from the keychain
-    [KeychainUtils deleteStringForKey:@"PIN" andServiceName:@"com.jflan.MiniKeePass.pin"];
+    [KeychainUtils deleteStringForKey:@"PIN" andServiceName:KEYCHAIN_PIN_SERVICE];
 
     // Delete all database passwords from the keychain
-    [KeychainUtils deleteAllForServiceName:@"com.jflan.MiniKeePass.passwords"];
-    [KeychainUtils deleteAllForServiceName:@"com.jflan.MiniKeePass.keyfiles"];
+    [KeychainUtils deleteAllForServiceName:KEYCHAIN_PASSWORDS_SERVICE];
+    [KeychainUtils deleteAllForServiceName:KEYCHAIN_KEYFILES_SERVICE];
 }
 
 - (void)deleteAllData {

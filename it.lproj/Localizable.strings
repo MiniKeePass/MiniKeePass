@@ -61,14 +61,15 @@
 
 // General Messages
 "Enter your PIN to unlock" = "Inserisci il tuo PIN per sbloccare";
+"Unlock MiniKeePass" = "Unlock MiniKeePass"; // FIXME
 "Enter the password and/or select the keyfile for the %@ database." = "Inserisci la password e/o seleziona il file chiave per il database %@.";
 "Enter a new name for the password database. The correct file extension will automatically be appended." = "Inserisci un nuovo nome per il database delle password. L'estensione corretta del file sar aggiunta automaticamente.";
 "Do not forget your database password, it cannot be recovered." = "Do not forget your database password, it cannot be recovered."; // FIXME
 
 // Error Messages
 "Error" = "Error"; // FIXME
-"New name is invalid" = "Il nuovo nome non è valido"; // FIXME
-"Name cannot be empty" = "Il nome non può essere vuoto"; // FIXME
+"New name is invalid" = "Il nuovo nome non è valido";
+"Name cannot be empty" = "Il nome non può essere vuoto";
 "Database name is required" = "È richiesto un nome per il database";
 "Passwords do not match" = "Le password non corrispondono";
 "Password is required" = "È richiesta la password";
@@ -79,10 +80,13 @@
 "There are no applications installed capable of importing KeePass files" = "Non ci sono applicazioni installate in grado di importare file di KeePass";
 "Tap the + button to add a new KeePass file." = "Tap the + button to add a new KeePass file."; // FIXME
 "No password or keyfile specified" = "No password or keyfile specified"; // FIXME
+"Error Checking PIN" = "Error Checking PIN"; // FIXME
 
 // Settings Page
 "Settings" = "Impostazioni";
 "PIN Enabled" = "PIN abilitato";
+"Touch ID" = "Touch ID"; // FIXME
+"Use your fingerprint as an alternative to entering a PIN if supported." = "Use your fingerprint as an alternative to entering a PIN if supported."; // FIXME
 "Lock Timeout" = "Intervallo blocco";
 "Immediately" = "Immediatamente";
 "30 Seconds" = "30 secondi";
@@ -123,6 +127,9 @@
 "Clear the contents of the clipboard after a given timeout upon performing a copy." = "Pulisci i contenuti della clipboard in un tempo dato dopo aver effettuato una copia.";
 "Close Timeout" = "Intervallo chiusura";
 "Clear Clipboard Timeout" = "Intervallo pulitura clipboard";
+"Exclude from backup" = "Exclude from backup"; // FIXME
+"iCloud/iTunes Backup" = "iCloud/iTunes Backup"; // FIXME
+"Exclude databases and key files from iTunes/iCloud backups." = "Exclude databases and key files from iTunes/iCloud backups."; // FIXME
 "Web Browser" = "Web Browser"; // FIXME
 "Integrated" = "Integrated"; // FIXME
 "Switch between an integrated web browser and Safari." = "Switch between an integrated web browser and Safari."; // FIXME
