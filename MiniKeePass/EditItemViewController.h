@@ -17,10 +17,9 @@
 
 #import <UIKit/UIKit.h>
 #import "FormViewController.h"
-#import "ImageSelectionViewController.h"
 #import "Kdb.h"
 
-@interface EditItemViewController : FormViewController <ImageSelectionViewDelegate>
+@interface EditItemViewController : FormViewController
 
 @property (nonatomic, readonly) UITextField *nameTextField;
 @property (nonatomic, assign) NSUInteger selectedImageIndex;

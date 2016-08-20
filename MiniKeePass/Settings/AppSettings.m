@@ -18,8 +18,8 @@
 #import "AppSettings.h"
 #import "KeychainUtils.h"
 #import "PasswordUtils.h"
-#import "CharacterSetsViewController.h"
 #import "MiniKeePassAppDelegate.h"
+#import "MiniKeePass-Swift.h"
 
 #define VERSION                    @"version"
 #define EXIT_TIME                  @"exitTime"
@@ -126,7 +126,7 @@ static AppSettings *sharedInstance;
         [defaultsDict setValue:[NSNumber numberWithBool:NO] forKey:BACKUP_DISABLED];
         [defaultsDict setValue:[NSNumber numberWithBool:YES] forKey:WEB_BROWSER_INTEGRATED];
         [defaultsDict setValue:[NSNumber numberWithInt:10] forKey:PW_GEN_LENGTH];
-        [defaultsDict setValue:[NSNumber numberWithInt:CHARACTER_SET_DEFAULT] forKey:PW_GEN_CHAR_SETS];
+        [defaultsDict setValue:[NSNumber numberWithInt:0x07] forKey:PW_GEN_CHAR_SETS];
         [userDefaults registerDefaults:defaultsDict];
 
         [self upgrade];

@@ -17,8 +17,6 @@
 
 #import <Foundation/Foundation.h>
 #import "FilesInfoView.h"
-#import "TextEntryController.h"
-#import "NewKdbViewController.h"
 
 @class MiniKeePassAppDelegate;
 

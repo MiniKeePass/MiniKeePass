@@ -20,6 +20,7 @@
 #import "AppSettings.h"
 #import "ImageFactory.h"
 #import "WebViewController.h"
+#import "MiniKeePass-Swift.h"
 
 #import <MBProgressHUD/MBProgressHUD.h>
 
@@ -622,7 +623,7 @@ enum {
     [stringFieldController dismissViewControllerAnimated:YES completion:nil];
 }
 
-#pragma mark - Image related
+#pragma mark - Image Selection
 
 - (void)setSelectedImageIndex:(NSUInteger)index {
     _selectedImageIndex = index;
@@ -633,15 +634,15 @@ enum {
 
 - (void)imageButtonPressed {
     if (self.tableView.isEditing) {
-        ImageSelectionViewController *imageSelectionViewController = [[ImageSelectionViewController alloc] init];
-        imageSelectionViewController.imageSelectionView.delegate = self;
-        imageSelectionViewController.imageSelectionView.selectedImageIndex = _selectedImageIndex;
-        [self.navigationController pushViewController:imageSelectionViewController animated:YES];
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"ImageSelector" bundle:nil];
+        ImageSelectorViewController *imageSelectorViewController = [storyboard instantiateInitialViewController];
+        imageSelectorViewController.selectedImage = _selectedImageIndex;
+        imageSelectorViewController.imageSelected = ^(ImageSelectorViewController *imageSelectorViewController, NSInteger selectedImage) {
+            self.selectedImageIndex = selectedImage;
+        };
+        
+        [self.navigationController pushViewController:imageSelectorViewController animated:YES];
     }
-}
-
-- (void)imageSelectionView:(ImageSelectionView *)imageSelectionView selectedImageIndex:(NSUInteger)imageIndex {
-    [self setSelectedImageIndex:imageIndex];
 }
 
 #pragma mark - Password Display
@@ -660,10 +661,18 @@ enum {
 #pragma mark - Password Generation
 
 - (void)generatePasswordPressed {
-    PasswordGeneratorViewController *passwordGeneratorViewController = [[PasswordGeneratorViewController alloc] init];
-    passwordGeneratorViewController.delegate = self;
-
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:passwordGeneratorViewController];
+    // Display the password generator
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"PasswordGenerator" bundle:nil];
+    UINavigationController *navigationController = [storyboard instantiateInitialViewController];
+    
+    PasswordGeneratorViewController *passwordGeneratorViewController = (PasswordGeneratorViewController *)navigationController.topViewController;
+    passwordGeneratorViewController.donePressed = ^(PasswordGeneratorViewController *passwordGeneratorViewController) {
+        passwordCell.textField.text = [passwordGeneratorViewController getPassword];
+        [passwordGeneratorViewController dismissViewControllerAnimated:YES completion:nil];
+    };
+    passwordGeneratorViewController.cancelPressed = ^(PasswordGeneratorViewController *passwordGeneratorViewController) {
+        [passwordGeneratorViewController dismissViewControllerAnimated:YES completion:nil];
+    };
 
     [self presentViewController:navigationController animated:YES completion:nil];
 }

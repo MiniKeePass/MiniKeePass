@@ -17,12 +17,12 @@
 
 #import "MiniKeePassAppDelegate.h"
 #import "GroupViewController.h"
-#import "SettingsViewController.h"
 #import "EntryViewController.h"
 #import "AppSettings.h"
 #import "DatabaseManager.h"
 #import "KeychainUtils.h"
 #import "LockScreenManager.h"
+#import "MiniKeePass-Swift.h"
 
 @interface MiniKeePassAppDelegate ()
 
@@ -80,6 +80,12 @@
 + (NSString *)documentsDirectory {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     return [paths objectAtIndex:0];
+}
+
++ (NSURL *)documentsDirectoryUrl {
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSArray *urls = [fileManager URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask];
+    return [urls firstObject];
 }
 
 - (void)importUrl:(NSURL *)url {
@@ -237,14 +243,17 @@
 }
 
 - (void)showSettingsView {
-    SettingsViewController *settingsViewController = [[SettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
+    // Display the password generator
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Settings" bundle:nil];
+    UINavigationController *navigationController = [storyboard instantiateInitialViewController];
     
-    UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(dismissSettingsView)];
-    settingsViewController.navigationItem.rightBarButtonItem = doneButton;
+    SettingsViewController *settingsViewController = (SettingsViewController *)navigationController.topViewController;
+    settingsViewController.donePressed = ^(SettingsViewController *settingsViewController) {
+        [settingsViewController dismissViewControllerAnimated:YES completion:nil];
+    };
+
     
-    UINavigationController *settingsNavController = [[UINavigationController alloc] initWithRootViewController:settingsViewController];
-    
-    [self.window.rootViewController presentViewController:settingsNavController animated:YES completion:nil];
+    [self.window.rootViewController presentViewController:navigationController animated:YES completion:nil];
 }
 
 - (void)dismissSettingsView {

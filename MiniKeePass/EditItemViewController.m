@@ -18,6 +18,7 @@
 #import "EditItemViewController.h"
 #import "ImageButtonCell.h"
 #import "ImageFactory.h"
+#import "MiniKeePass-Swift.h"
 
 @interface EditItemViewController ()
 @property (nonatomic, strong) ImageButtonCell *imageButtonCell;
@@ -74,14 +75,14 @@
 }
 
 - (void)imageButtonPressed {
-    ImageSelectionViewController *imageSelectionViewController = [[ImageSelectionViewController alloc] init];
-    imageSelectionViewController.imageSelectionView.delegate = self;
-    imageSelectionViewController.imageSelectionView.selectedImageIndex = _selectedImageIndex;
-    [self.navigationController pushViewController:imageSelectionViewController animated:YES];
-}
-
-- (void)imageSelectionView:(ImageSelectionView *)imageSelectionView selectedImageIndex:(NSUInteger)imageIndex {
-    self.selectedImageIndex = imageIndex;
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"ImageSelector" bundle:nil];
+    ImageSelectorViewController *imageSelectorViewController = [storyboard instantiateInitialViewController];
+    imageSelectorViewController.selectedImage = _selectedImageIndex;
+    imageSelectorViewController.imageSelected = ^(ImageSelectorViewController *imageSelectorViewController, NSInteger selectedImage) {
+        self.selectedImageIndex = selectedImage;
+    };
+    
+    [self.navigationController pushViewController:imageSelectorViewController animated:YES];
 }
 
 @end

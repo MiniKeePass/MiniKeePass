@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2012 Jason Rush and John Flanagan. All rights reserved.
+ * Copyright 2016 Jason Rush and John Flanagan. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,20 +15,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#import <UIKit/UIKit.h>
-#import "SelectionListViewController.h"
+import UIKit
 
-@interface ChoiceCell : UITableViewCell {
-    NSInteger selectedIndex;
-    NSArray *choices;
+class ImageCell: UICollectionViewCell {
+    @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var checkMark: CheckMark!
+    
+    override var selected: Bool {
+        didSet {
+            checkMark.checked = selected
+        }
+    }
 }
-
-@property (nonatomic, copy) NSString *prefix;
-@property (nonatomic, assign) NSInteger selectedIndex;
-@property (nonatomic, strong) NSArray *choices;
-
-- (id)initWithLabel:(NSString*)labelText choices:(NSArray*)newChoices selectedIndex:(NSInteger)selectedIndex;
-- (void)setEnabled:(BOOL)enabled;
-- (NSString*)getSelectedItem;
-
-@end

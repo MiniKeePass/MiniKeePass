@@ -19,11 +19,11 @@
 #import "FilesViewController.h"
 #import "HelpViewController.h"
 #import "DatabaseManager.h"
-#import "NewKdbViewController.h"
 #import "AppSettings.h"
 #import "KeychainUtils.h"
 #import "Kdb3Writer.h"
 #import "Kdb4Writer.h"
+#import "MiniKeePass-swift.h"
 
 enum {
     SECTION_DATABASE,
@@ -297,23 +297,22 @@ enum {
                 // Load the database
                 [[DatabaseManager sharedInstance] openDatabaseDocument:[self.databaseFiles objectAtIndex:indexPath.row] animated:YES];
             } else {
-                TextEntryController *textEntryController = [[TextEntryController alloc] init];
-                textEntryController.title = NSLocalizedString(@"Rename", nil);
-                textEntryController.headerTitle = NSLocalizedString(@"Database Name", nil);
-                textEntryController.footerTitle = NSLocalizedString(@"Enter a new name for the password database. The correct file extension will automatically be appended.", nil);
-                textEntryController.textField.placeholder = NSLocalizedString(@"Name", nil);
-                textEntryController.donePressed = ^(FormViewController *formViewController) {
-                    [self renameDatabase:(TextEntryController *)formViewController];
+                // Display the password generator
+                UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"RenameDatabase" bundle:nil];
+                UINavigationController *navigationController = [storyboard instantiateInitialViewController];
+                
+                RenameDatabaseViewController *renameDatabaseViewController = (RenameDatabaseViewController *)navigationController.topViewController;
+                renameDatabaseViewController.donePressed = ^(RenameDatabaseViewController *renameDatabaseViewController) {
+                    [renameDatabaseViewController dismissViewControllerAnimated:YES completion:nil];
                 };
-                textEntryController.cancelPressed = ^(FormViewController *formViewController) {
-                    [formViewController dismissViewControllerAnimated:YES completion:nil];
+                renameDatabaseViewController.cancelPressed = ^(RenameDatabaseViewController *renameDatabaseViewController) {
+                    [renameDatabaseViewController dismissViewControllerAnimated:YES completion:nil];
                 };
-
+                
                 NSString *filename = [self.databaseFiles objectAtIndex:indexPath.row];
-                textEntryController.textField.text = [filename stringByDeletingPathExtension];
-
-                UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:textEntryController];
-
+                NSURL *documentsDirectory = [MiniKeePassAppDelegate documentsDirectoryUrl];
+                renameDatabaseViewController.originalUrl = [documentsDirectory URLByAppendingPathComponent:filename];
+                
                 [self presentViewController:navigationController animated:YES completion:nil];
             }
             break;
@@ -324,32 +323,15 @@ enum {
 
 #pragma mark - Actions
 
-- (void)renameDatabase:(TextEntryController *)textEntryController {
-    NSString *newName = textEntryController.textField.text;
-    if (newName == nil || [newName isEqualToString:@""]) {
-        [textEntryController showErrorMessage:NSLocalizedString(@"Filename is invalid", nil)];
-        return;
-    }
-
+- (void)renameDatabase:(NSURL *)originalUrl newUrl:(NSURL *)newUrl {
     NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-    NSString *oldFilename = [self.databaseFiles objectAtIndex:indexPath.row];
-    NSString *newFilename = [newName stringByAppendingPathExtension:[oldFilename pathExtension]];
-
-    // Get the full path of where we're going to move the file
-    NSString *documentsDirectory = [MiniKeePassAppDelegate documentsDirectory];
-
-    NSString *oldPath = [documentsDirectory stringByAppendingPathComponent:oldFilename];
-    NSString *newPath = [documentsDirectory stringByAppendingPathComponent:newFilename];
-
-    // Check if the file already exists
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    if ([fileManager fileExistsAtPath:newPath]) {
-        [textEntryController showErrorMessage:NSLocalizedString(@"A file already exists with this name", nil)];
-        return;
-    }
-
+    
+    NSString *oldFilename = originalUrl.lastPathComponent;
+    NSString *newFilename = newUrl.lastPathComponent;
+    
     // Move input file into documents directory
-    [fileManager moveItemAtPath:oldPath toPath:newPath error:nil];
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    [fileManager moveItemAtURL:originalUrl toURL:newUrl error:nil];
 
     // Update the filename in the files list
     [self.databaseFiles replaceObjectAtIndex:indexPath.row withObject:newFilename];
@@ -371,20 +353,22 @@ enum {
 
     // Reload the table row
     [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-
-    [textEntryController dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)addPressed:(UIBarButtonItem *)source {
-    NewKdbViewController *newKdbViewController = [[NewKdbViewController alloc] init];
-    newKdbViewController.donePressed = ^(FormViewController *formViewController) {
-        [self createNewDatabase:(NewKdbViewController *)formViewController];
+    // Display the new database view
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"NewDatabase" bundle:nil];
+    UINavigationController *navigationController = [storyboard instantiateInitialViewController];
+    
+    NewDatabaseViewController *newDatabaseViewController = (NewDatabaseViewController *)navigationController.topViewController;
+    newDatabaseViewController.donePressed = ^(NewDatabaseViewController *newDatabaseViewController, NSURL *url, NSString *password, NSInteger version) {
+        [self createNewDatabase:url andPassword:password andVersion:version];
+        [newDatabaseViewController dismissViewControllerAnimated:YES completion:nil];
     };
-    newKdbViewController.cancelPressed = ^(FormViewController *formViewController) {
-        [formViewController dismissViewControllerAnimated:YES completion:nil];
+    newDatabaseViewController.cancelPressed = ^(NewDatabaseViewController *newDatabaseViewController) {
+        [newDatabaseViewController dismissViewControllerAnimated:YES completion:nil];
     };
-
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:newKdbViewController];
+    
     [self presentViewController:navigationController animated:YES completion:nil];
 }
 
@@ -395,63 +379,28 @@ enum {
     [self presentViewController:navigationController animated:YES completion:nil];
 }
 
-- (void)createNewDatabase:(NewKdbViewController *)newKdbViewController {
-    NSString *name = newKdbViewController.nameTextField.text;
-    if (name == nil || [name isEqualToString:@""]) {
-        [newKdbViewController showErrorMessage:NSLocalizedString(@"Database name is required", nil)];
-        return;
-    }
-
-    // Check the passwords
-    NSString *password1 = newKdbViewController.passwordTextField1.text;
-    NSString *password2 = newKdbViewController.passwordTextField2.text;
-    if (![password1 isEqualToString:password2]) {
-        [newKdbViewController showErrorMessage:NSLocalizedString(@"Passwords do not match", nil)];
-        return;
-    }
-    if (password1 == nil || [password1 isEqualToString:@""]) {
-        [newKdbViewController showErrorMessage:NSLocalizedString(@"Password is required", nil)];
-        return;
-    }
-
-    // Append the correct file extension
-    NSString *filename;
-    if (newKdbViewController.versionSegmentedControl.selectedSegmentIndex == 0) {
-        filename = [name stringByAppendingPathExtension:@"kdb"];
-    } else {
-        filename = [name stringByAppendingPathExtension:@"kdbx"];
-    }
-
-    // Retrieve the Document directory
-    NSString *documentsDirectory = [MiniKeePassAppDelegate documentsDirectory];
-    NSString *path = [documentsDirectory stringByAppendingPathComponent:filename];
-
-    // Check if the file already exists
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    if ([fileManager fileExistsAtPath:path]) {
-        [newKdbViewController showErrorMessage:NSLocalizedString(@"A file already exists with this name", nil)];
-        return;
-    }
+- (void)createNewDatabase:(NSURL *)url andPassword:(NSString *)password andVersion:(NSInteger)version {
+    NSString *filename = url.lastPathComponent;
 
     // Create the KdbWriter for the requested version
     id<KdbWriter> writer;
-    if (newKdbViewController.versionSegmentedControl.selectedSegmentIndex == 0) {
+    if (version == 1) {
         writer = [[Kdb3Writer alloc] init];
     } else {
         writer = [[Kdb4Writer alloc] init];
     }
 
     // Create the KdbPassword
-    KdbPassword *kdbPassword = [[KdbPassword alloc] initWithPassword:password1
+    KdbPassword *kdbPassword = [[KdbPassword alloc] initWithPassword:password
                                                     passwordEncoding:NSUTF8StringEncoding
                                                              keyFile:nil];
 
     // Create the new database
-    [writer newFile:path withPassword:kdbPassword];
+    [writer newFile:url.path withPassword:kdbPassword];
 
     // Store the password in the keychain
     if ([[AppSettings sharedInstance] rememberPasswordsEnabled]) {
-        [KeychainUtils setString:password1 forKey:filename andServiceName:KEYCHAIN_PASSWORDS_SERVICE];
+        [KeychainUtils setString:password forKey:filename andServiceName:KEYCHAIN_PASSWORDS_SERVICE];
     }
 
     // Add the file to the list of files
@@ -473,8 +422,6 @@ enum {
         // Insert the new row
         [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationRight];
     }
-
-    [newKdbViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end

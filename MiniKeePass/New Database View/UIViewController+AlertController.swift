@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2012 Jason Rush and John Flanagan. All rights reserved.
+ * Copyright 2016 Jason Rush and John Flanagan. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,21 +15,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#import "TextEntryController.h"
+import UIKit
 
-@implementation TextEntryController
-
-- (id)init {
-    self = [super init];
-    if (self) {
-        self.textField = [[UITextField alloc] init];
-        self.textField.delegate = self;
-        self.textField.returnKeyType = UIReturnKeyDone;
-        self.textField.clearButtonMode = UITextFieldViewModeWhileEditing;
-        
-        self.controls = [NSArray arrayWithObject:self.textField];
+extension UIViewController {
+    func presentAlertWithTitle(title: String, message: String) {
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert)
+        alertController.addAction(UIAlertAction(title: "OK", style: .Default, handler: nil))
+        self.presentViewController(alertController, animated: true, completion: nil)
     }
-    return self;
 }
-
-@end

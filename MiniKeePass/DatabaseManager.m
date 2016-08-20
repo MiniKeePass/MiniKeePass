@@ -18,8 +18,8 @@
 #import "DatabaseManager.h"
 #import "MiniKeePassAppDelegate.h"
 #import "KeychainUtils.h"
-#import "PasswordViewController.h"
 #import "AppSettings.h"
+#import "MiniKeePass-Swift.h"
 
 @implementation DatabaseManager
 
@@ -35,6 +35,37 @@ static DatabaseManager *sharedInstance;
 
 + (DatabaseManager*)sharedInstance {
     return sharedInstance;
+}
+
+- (NSArray *)getKeyFiles {
+    NSMutableArray *keyFiles = [[NSMutableArray alloc] init];
+    
+    // Get the document's directory
+    NSString *documentsDirectory = [MiniKeePassAppDelegate documentsDirectory];
+    
+    // Get the contents of the documents directory
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSArray *dirContents = [fileManager contentsOfDirectoryAtPath:documentsDirectory error:nil];
+    
+    // Sort the files into database files and keyfiles
+    for (NSString *file in dirContents) {
+        NSString *path = [documentsDirectory stringByAppendingPathComponent:file];
+        
+        // Check if it's a directory
+        BOOL dir = NO;
+        [fileManager fileExistsAtPath:path isDirectory:&dir];
+        if (!dir) {
+            NSString *extension = [[file pathExtension] lowercaseString];
+            if (![extension isEqualToString:@"kdb"] && ![extension isEqualToString:@"kdbx"]) {
+                [keyFiles addObject:file];
+            }
+        }
+    }
+    
+    // Sort the list of files
+    [keyFiles sortUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
+
+    return keyFiles;
 }
 
 - (void)openDatabaseDocument:(NSString*)filename animated:(BOOL)animated {
@@ -81,48 +112,39 @@ static DatabaseManager *sharedInstance;
     // Prompt the user for the password if we haven't loaded the database yet
     if (!databaseLoaded) {
         // Prompt the user for a password
-        PasswordViewController *passwordViewController = [[PasswordViewController alloc] initWithFilename:filename];
-        passwordViewController.donePressed = ^(FormViewController *formViewController) {
-            [self openDatabaseWithPasswordViewController:(PasswordViewController *)formViewController];
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"PasswordEntry" bundle:nil];
+        UINavigationController *navigationController = [storyboard instantiateInitialViewController];
+
+        PasswordEntryViewController *passwordEntryViewController = (PasswordEntryViewController *)navigationController.topViewController;
+        passwordEntryViewController.donePressed = ^(PasswordEntryViewController *passwordEntryViewController) {
+            [self openDatabaseWithPasswordEntryViewController:passwordEntryViewController];
         };
-        passwordViewController.cancelPressed = ^(FormViewController *formViewController) {
-            [formViewController dismissViewControllerAnimated:YES completion:nil];
+        passwordEntryViewController.cancelPressed = ^(PasswordEntryViewController *passwordEntryViewController) {
+            [passwordEntryViewController dismissViewControllerAnimated:YES completion:nil];
         };
+
+        // Initialize the filename
+        passwordEntryViewController.filename = filename;
         
-        // Create a defult keyfile name from the database name
-        keyFile = [[filename stringByDeletingPathExtension] stringByAppendingPathExtension:@"key"];
-        
-        // Select the keyfile if it's in the list
-        NSInteger index = [passwordViewController.keyFileCell.choices indexOfObject:keyFile];
-        if (index != NSNotFound) {
-            passwordViewController.keyFileCell.selectedIndex = index;
-        } else {
-            passwordViewController.keyFileCell.selectedIndex = 0;
-        }
-        
-        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:passwordViewController];
+        // Load the key files
+        passwordEntryViewController.keyFiles = [self getKeyFiles];
         
         [appDelegate.window.rootViewController presentViewController:navigationController animated:animated completion:nil];
     }
 }
 
-- (void)openDatabaseWithPasswordViewController:(PasswordViewController *)passwordViewController {
+- (void)openDatabaseWithPasswordEntryViewController:(PasswordEntryViewController *)passwordEntryViewController {
     NSString *documentsDirectory = [MiniKeePassAppDelegate documentsDirectory];
     NSString *path = [documentsDirectory stringByAppendingPathComponent:self.selectedFilename];
 
     // Get the password
-    NSString *password = passwordViewController.masterPasswordFieldCell.textField.text;
+    NSString *password = [passwordEntryViewController getPassword];
     if ([password isEqualToString:@""]) {
         password = nil;
     }
 
     // Get the keyfile
-    NSString *keyFile = [passwordViewController.keyFileCell getSelectedItem];
-    if ([keyFile isEqualToString:NSLocalizedString(@"None", nil)]) {
-        keyFile = nil;
-    }
-
-    // Get the absolute path to the keyfile
+    NSString *keyFile = [passwordEntryViewController getKeyFile];
     NSString *keyFilePath = nil;
     if (keyFile != nil) {
         NSString *documentsDirectory = [MiniKeePassAppDelegate documentsDirectory];
@@ -143,14 +165,15 @@ static DatabaseManager *sharedInstance;
         }
 
         // Dismiss the view controller, and after animation set the database document
-        [passwordViewController dismissViewControllerAnimated:YES completion:^{
+        [passwordEntryViewController dismissViewControllerAnimated:YES completion:^{
             // Set the database document in the application delegate
             MiniKeePassAppDelegate *appDelegate = [MiniKeePassAppDelegate appDelegate];
             appDelegate.databaseDocument = dd;
         }];
     } @catch (NSException *exception) {
         NSLog(@"%@", exception);
-        [passwordViewController showErrorMessage:exception.reason];
+// FIXME Need a way of showing the error
+//        [passwordViewController showErrorMessage:exception.reason];
     }
 }
 

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="eNG-Fw-s0t">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <scenes>
+        <!--Rename Database View Controller-->
+        <scene sceneID="bYa-ja-U8b">
+            <objects>
+                <tableViewController id="LRv-5a-zvh" userLabel="Rename Database View Controller" customClass="RenameDatabaseViewController" customModule="MiniKeePass" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="wcF-sS-sZ4">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <sections>
+                            <tableViewSection headerTitle="Database Name" footerTitle="Enter a name for the password database. The correct file extension will automatically be appended." id="dqo-KA-xxA">
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="cTP-DC-7OU">
+                                        <rect key="frame" x="0.0" y="114" width="600" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" tableViewCell="cTP-DC-7OU" id="W1F-MB-sro">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Name" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="FGw-rp-noX">
+                                                    <rect key="frame" x="15" y="12" width="570" height="19"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits"/>
+                                                    <connections>
+                                                        <outlet property="delegate" destination="LRv-5a-zvh" id="Ziq-Hp-5do"/>
+                                                    </connections>
+                                                </textField>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="leadingMargin" secondItem="FGw-rp-noX" secondAttribute="leading" id="9Rk-QI-2V2"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="FGw-rp-noX" secondAttribute="trailing" id="KUr-D4-TXW"/>
+                                                <constraint firstItem="FGw-rp-noX" firstAttribute="centerY" secondItem="W1F-MB-sro" secondAttribute="centerY" id="pS4-nj-1e2"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
+                        </sections>
+                        <connections>
+                            <outlet property="dataSource" destination="LRv-5a-zvh" id="HPk-Zh-rzL"/>
+                            <outlet property="delegate" destination="LRv-5a-zvh" id="hXs-dg-RjW"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Rename" id="PNk-M3-uh6">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="xzP-i2-b1N">
+                            <connections>
+                                <action selector="cancelPressedAction:" destination="LRv-5a-zvh" id="UJc-Ds-eLe"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="Cq2-aY-gX7">
+                            <connections>
+                                <action selector="donePressedAction:" destination="LRv-5a-zvh" id="cTE-ZO-4Wk"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="nameTextField" destination="FGw-rp-noX" id="6hf-Z5-Xp4"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Swv-YR-8lQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="687" y="360"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="LPw-Z7-su2">
+            <objects>
+                <navigationController id="eNG-Fw-s0t" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="mS1-uU-yqf">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="LRv-5a-zvh" kind="relationship" relationship="rootViewController" id="hFN-Qa-SLp"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="lQD-CP-BDB" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-133" y="360"/>
+        </scene>
+    </scenes>
+</document>

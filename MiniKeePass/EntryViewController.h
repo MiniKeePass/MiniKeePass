@@ -22,13 +22,11 @@
 #import "UrlFieldCell.h"
 #import "TextViewCell.h"
 #import "PasswordFieldCell.h"
-#import "ImageSelectionViewController.h"
 #import "KdbLib.h"
 #import "MiniKeePassAppDelegate.h"
-#import "PasswordGeneratorViewController.h"
 #import "StringFieldViewController.h"
 
-@interface EntryViewController : UITableViewController <UIGestureRecognizerDelegate, ImageSelectionViewDelegate, PasswordGeneratorDelegate, TitleFieldCellDelegate, TextFieldCellDelegate>
+@interface EntryViewController : UITableViewController <UIGestureRecognizerDelegate, TitleFieldCellDelegate, TextFieldCellDelegate>
 
 @property (nonatomic, assign) NSUInteger selectedImageIndex;
 @property (nonatomic, strong) KdbEntry *entry;
