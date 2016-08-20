@@ -19,11 +19,11 @@
 #import "GroupSearchController.h"
 #import "EntryViewController.h"
 #import "SelectGroupViewController.h"
-#import "EditItemViewController.h"
 #import "UIActionSheetAutoDismiss.h"
 #import "AppSettings.h"
 #import "ImageFactory.h"
 #import "Kdb3Node.h"
+#import "MiniKeePass-swift.h"
 
 #define PORTRAIT_BUTTON_WIDTH  ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone ? 97.0f : 244.0f)
 #define LANDSCAPE_BUTTON_WIDTH ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone ? 186.0f : 330.0f)
@@ -586,17 +586,26 @@ enum {
     // Save the database
     [databaseDocument save];
 
-    EditItemViewController *editItemViewController = [[EditItemViewController alloc] initWithGroup:g];
-    editItemViewController.donePressed = ^(FormViewController *formViewController) {
-        [self renameItem:(EditItemViewController *)formViewController];
-    };
-    editItemViewController.cancelPressed = ^(FormViewController *formViewController) {
-        [formViewController dismissViewControllerAnimated:YES completion:nil];
+    // Display the Rename Item view
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"RenameItem" bundle:nil];
+    UINavigationController *navigationController = [storyboard instantiateInitialViewController];
+    
+    RenameItemViewController *renameItemViewController = (RenameItemViewController *)navigationController.topViewController;
+    renameItemViewController.donePressed = ^(RenameItemViewController *renameItemViewController) {
+        // Save the document
+        [self.appDelegate.databaseDocument save];
+        
+        [renameItemViewController dismissViewControllerAnimated:YES completion:nil];
         [self setEditing:NO animated:YES];
     };
-
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:editItemViewController];
-    [self.appDelegate.window.rootViewController presentViewController:navigationController animated:YES completion:nil];
+    renameItemViewController.cancelPressed = ^(RenameItemViewController *renameItemViewController) {
+        [renameItemViewController dismissViewControllerAnimated:YES completion:nil];
+        [self setEditing:NO animated:YES];
+    };
+    
+    renameItemViewController.group = g;
+    
+    [self presentViewController:navigationController animated:YES completion:nil];
 
     return [NSIndexPath indexPathForRow:index inSection:SECTION_GROUPS];
 }
@@ -702,67 +711,36 @@ enum {
 #pragma mark - Rename Group/Entry
 
 - (void)renameSelectedItem {
-    EditItemViewController *editItemViewController;
+    // Display the Rename Item view
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"RenameItem" bundle:nil];
+    UINavigationController *navigationController = [storyboard instantiateInitialViewController];
+    
+    RenameItemViewController *renameItemViewController = (RenameItemViewController *)navigationController.topViewController;
+    renameItemViewController.donePressed = ^(RenameItemViewController *renameItemViewController) {
+        // Save the document
+        [self.appDelegate.databaseDocument save];
+        
+        [renameItemViewController dismissViewControllerAnimated:YES completion:nil];
+        [self setEditing:NO animated:YES];
+    };
+    renameItemViewController.cancelPressed = ^(RenameItemViewController *renameItemViewController) {
+        [renameItemViewController dismissViewControllerAnimated:YES completion:nil];
+        [self setEditing:NO animated:YES];
+    };
 
     NSIndexPath *indexPath = [self.tableView.indexPathsForSelectedRows objectAtIndex:0];
     switch (indexPath.section) {
         case SECTION_GROUPS: {
-            KdbGroup *g = [self.groupsArray objectAtIndex:indexPath.row];
-            editItemViewController = [[EditItemViewController alloc] initWithGroup:g];
+            renameItemViewController.group = [self.groupsArray objectAtIndex:indexPath.row];
             break;
         }
         case SECTION_ENTRIES: {
-            KdbEntry *e = [self.entriesArray objectAtIndex:indexPath.row];
-            editItemViewController = [[EditItemViewController alloc] initWithEntry:e];
+            renameItemViewController.entry = [self.entriesArray objectAtIndex:indexPath.row];
             break;
         }
     }
-
-    editItemViewController.donePressed = ^(FormViewController *formViewController) {
-        [self renameItem:(EditItemViewController *)formViewController];
-    };
-    editItemViewController.cancelPressed = ^(FormViewController *formViewController) {
-        [formViewController dismissViewControllerAnimated:YES completion:nil];
-        [self setEditing:NO animated:YES];
-    };
-
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:editItemViewController];
-
-    [self.appDelegate.window.rootViewController presentViewController:navigationController animated:YES completion:nil];
-}
-
-- (void)renameItem:(EditItemViewController *)editItemViewController {
-    NSString *newName = editItemViewController.nameTextField.text;
-    if (newName.length == 0) {
-        [editItemViewController showErrorMessage:NSLocalizedString(@"New name is invalid", nil)];
-        return;
-    }
-
-    NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-    switch (indexPath.section) {
-        case SECTION_GROUPS: {
-            // Update the group
-            KdbGroup *g = [self.groupsArray objectAtIndex:indexPath.row];
-            g.name = newName;
-            g.image = editItemViewController.selectedImageIndex;
-            break;
-        }
-
-        case SECTION_ENTRIES: {
-            // Update the entry
-            KdbEntry *e = [self.entriesArray objectAtIndex:indexPath.row];
-            e.title = newName;
-            e.image = editItemViewController.selectedImageIndex;
-            break;
-        }
-    }
-
-    // Save the document
-    [self.appDelegate.databaseDocument save];
-
-    [editItemViewController dismissViewControllerAnimated:YES completion:nil];
-
-    [self setEditing:NO animated:YES];
+    
+    [self presentViewController:navigationController animated:YES completion:nil];
 }
 
 #pragma mark - Move Groups/Entries

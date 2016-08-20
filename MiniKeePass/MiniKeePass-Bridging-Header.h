@@ -10,3 +10,4 @@
 #import "PasswordUtils.h"
 #import "PinViewController.h"
 #import "ImageFactory.h"
+#import "Kdb.h"

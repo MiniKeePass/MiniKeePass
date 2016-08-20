@@ -297,7 +297,7 @@ enum {
                 // Load the database
                 [[DatabaseManager sharedInstance] openDatabaseDocument:[self.databaseFiles objectAtIndex:indexPath.row] animated:YES];
             } else {
-                // Display the password generator
+                // Display the Rename Database view
                 UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"RenameDatabase" bundle:nil];
                 UINavigationController *navigationController = [storyboard instantiateInitialViewController];
                 
