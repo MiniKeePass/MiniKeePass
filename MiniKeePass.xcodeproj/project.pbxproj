@@ -128,7 +128,6 @@
 		689FBE951AB27283005CB6BD /* TitleFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 689FBE8B1AB27283005CB6BD /* TitleFieldCell.m */; };
 		689FBE961AB27283005CB6BD /* UrlFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 689FBE8D1AB27283005CB6BD /* UrlFieldCell.m */; };
 		689FBE991AB272BD005CB6BD /* ImageFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 689FBE981AB272BD005CB6BD /* ImageFactory.m */; };
-		68A3E1AF13A8C9D1006881CA /* FormViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68A3E1AE13A8C9D1006881CA /* FormViewController.m */; };
 		68CE37F214049BC900E4A5E1 /* HelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68CE37F114049BC900E4A5E1 /* HelpViewController.m */; };
 		68CE37F51404A86600E4A5E1 /* safariemail.html in Resources */ = {isa = PBXBuildFile; fileRef = 68CE37F41404A86600E4A5E1 /* safariemail.html */; };
 		68D7564D186E4D8A001AFB82 /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68D7564C186E4D8A001AFB82 /* WebViewController.m */; };
@@ -368,8 +367,6 @@
 		689FBE8D1AB27283005CB6BD /* UrlFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UrlFieldCell.m; sourceTree = "<group>"; };
 		689FBE971AB272BD005CB6BD /* ImageFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageFactory.h; sourceTree = "<group>"; };
 		689FBE981AB272BD005CB6BD /* ImageFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageFactory.m; sourceTree = "<group>"; };
-		68A3E1AD13A8C9D1006881CA /* FormViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FormViewController.h; sourceTree = "<group>"; };
-		68A3E1AE13A8C9D1006881CA /* FormViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FormViewController.m; sourceTree = "<group>"; };
 		68AB0F4D1CCA82B300CFE78D /* MiniKeePass-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MiniKeePass-Bridging-Header.h"; sourceTree = "<group>"; };
 		68CBC1461A4A0F0E004A3553 /* MiniKeePass.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = MiniKeePass.entitlements; sourceTree = "<group>"; };
 		68CE37F014049BC900E4A5E1 /* HelpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelpViewController.h; sourceTree = "<group>"; };
@@ -699,8 +696,6 @@
 				689D042D13A42C81005EBD36 /* FilesInfoView.m */,
 				689D042E13A42C81005EBD36 /* FilesViewController.h */,
 				689D042F13A42C81005EBD36 /* FilesViewController.m */,
-				68A3E1AD13A8C9D1006881CA /* FormViewController.h */,
-				68A3E1AE13A8C9D1006881CA /* FormViewController.m */,
 				689D043013A42C81005EBD36 /* GroupViewController.h */,
 				689D043113A42C81005EBD36 /* GroupViewController.m */,
 				52C7FD7B18693D9900D498A2 /* GroupSearchController.h */,
@@ -1058,7 +1053,6 @@
 				689D045513A42C82005EBD36 /* MiniKeePassAppDelegate.m in Sources */,
 				689FBE791AB27228005CB6BD /* PasswordUtils.m in Sources */,
 				68915A0B13A6F6C200A408B0 /* InfoBar.m in Sources */,
-				68A3E1AF13A8C9D1006881CA /* FormViewController.m in Sources */,
 				689EA6701D67F88500CF445E /* KeyFileViewController.swift in Sources */,
 				689FBE641AB271C6005CB6BD /* KeypadButton.m in Sources */,
 				68D7564D186E4D8A001AFB82 /* WebViewController.m in Sources */,
