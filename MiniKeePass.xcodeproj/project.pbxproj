@@ -45,13 +45,14 @@
 		682D45191603883900156830 /* OutputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 682D450A1603883900156830 /* OutputStream.m */; };
 		682D451A1603883900156830 /* Sha256OutputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 682D450C1603883900156830 /* Sha256OutputStream.m */; };
 		6837C360188C9ED30018D588 /* SelectGroupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6837C35F188C9ED30018D588 /* SelectGroupViewController.m */; };
-		684846B6167E1E460040C4EE /* StringFieldViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 684846B5167E1E460040C4EE /* StringFieldViewController.m */; };
 		68496E751AB34F8800370876 /* AppSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 68496E721AB34F8800370876 /* AppSettings.m */; };
 		6851FAFD186DD11D00A53B0E /* UIActionSheetAutoDismiss.m in Sources */ = {isa = PBXBuildFile; fileRef = 6851FAFC186DD11D00A53B0E /* UIActionSheetAutoDismiss.m */; };
 		685D9D951603F8EE00D739D3 /* Kdb3Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 685D9D941603F8EE00D739D3 /* Kdb3Utils.m */; };
 		68915A0B13A6F6C200A408B0 /* InfoBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 68915A0A13A6F6C200A408B0 /* InfoBar.m */; };
-		6895D2E31D68821E003D8C44 /* RenameItem.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6895D2E21D68821E003D8C44 /* RenameItem.storyboard */; };
-		6895D2E51D688310003D8C44 /* RenameItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6895D2E41D688310003D8C44 /* RenameItemViewController.swift */; };
+		6895D2E91D68F95D003D8C44 /* RenameItem.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6895D2E71D68F95D003D8C44 /* RenameItem.storyboard */; };
+		6895D2EA1D68F95D003D8C44 /* RenameItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6895D2E81D68F95D003D8C44 /* RenameItemViewController.swift */; };
+		6895D2F31D68FE00003D8C44 /* CustomField.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6895D2F11D68FE00003D8C44 /* CustomField.storyboard */; };
+		6895D2F41D68FE00003D8C44 /* CustomFieldViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6895D2F21D68FE00003D8C44 /* CustomFieldViewController.swift */; };
 		689A4D1314046B8200AA897D /* RandomStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 689A4D1214046B8200AA897D /* RandomStream.m */; };
 		689D000D13A42765005EBD36 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 689D000C13A42765005EBD36 /* AudioToolbox.framework */; };
 		689D000F13A42777005EBD36 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 689D000E13A42776005EBD36 /* Security.framework */; };
@@ -213,8 +214,6 @@
 		682D450C1603883900156830 /* Sha256OutputStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Sha256OutputStream.m; sourceTree = "<group>"; };
 		6837C35E188C9ED30018D588 /* SelectGroupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectGroupViewController.h; sourceTree = "<group>"; };
 		6837C35F188C9ED30018D588 /* SelectGroupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectGroupViewController.m; sourceTree = "<group>"; };
-		684846B4167E1E460040C4EE /* StringFieldViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StringFieldViewController.h; sourceTree = "<group>"; };
-		684846B5167E1E460040C4EE /* StringFieldViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StringFieldViewController.m; sourceTree = "<group>"; };
 		68496E711AB34F8800370876 /* AppSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppSettings.h; sourceTree = "<group>"; };
 		68496E721AB34F8800370876 /* AppSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppSettings.m; sourceTree = "<group>"; };
 		6851FAFB186DD11D00A53B0E /* UIActionSheetAutoDismiss.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIActionSheetAutoDismiss.h; sourceTree = "<group>"; };
@@ -233,8 +232,10 @@
 		6891C07419263611000EFC70 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text; name = pt; path = pt.lproj/AppStore.txt; sourceTree = "<group>"; };
 		6891C07519263611000EFC70 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		6891C07619263611000EFC70 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/Localizable.strings; sourceTree = "<group>"; };
-		6895D2E21D68821E003D8C44 /* RenameItem.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = RenameItem.storyboard; sourceTree = "<group>"; };
-		6895D2E41D688310003D8C44 /* RenameItemViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RenameItemViewController.swift; sourceTree = "<group>"; };
+		6895D2E71D68F95D003D8C44 /* RenameItem.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = RenameItem.storyboard; sourceTree = "<group>"; };
+		6895D2E81D68F95D003D8C44 /* RenameItemViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RenameItemViewController.swift; sourceTree = "<group>"; };
+		6895D2F11D68FE00003D8C44 /* CustomField.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = CustomField.storyboard; sourceTree = "<group>"; };
+		6895D2F21D68FE00003D8C44 /* CustomFieldViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomFieldViewController.swift; sourceTree = "<group>"; };
 		689A4D1214046B8200AA897D /* RandomStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RandomStream.m; sourceTree = "<group>"; };
 		689D000C13A42765005EBD36 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		689D000E13A42776005EBD36 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -499,13 +500,22 @@
 			path = Settings;
 			sourceTree = "<group>";
 		};
-		6895D2E11D6881D2003D8C44 /* Rename Group View */ = {
+		6895D2E61D68F95D003D8C44 /* Rename Item View */ = {
 			isa = PBXGroup;
 			children = (
-				6895D2E21D68821E003D8C44 /* RenameItem.storyboard */,
-				6895D2E41D688310003D8C44 /* RenameItemViewController.swift */,
+				6895D2E71D68F95D003D8C44 /* RenameItem.storyboard */,
+				6895D2E81D68F95D003D8C44 /* RenameItemViewController.swift */,
 			);
-			path = "Rename Group View";
+			path = "Rename Item View";
+			sourceTree = "<group>";
+		};
+		6895D2F01D68FE00003D8C44 /* Custom Field View */ = {
+			isa = PBXGroup;
+			children = (
+				6895D2F11D68FE00003D8C44 /* CustomField.storyboard */,
+				6895D2F21D68FE00003D8C44 /* CustomFieldViewController.swift */,
+			);
+			path = "Custom Field View";
 			sourceTree = "<group>";
 		};
 		689D021313A42B63005EBD36 /* help */ = {
@@ -670,12 +680,13 @@
 		689DFFDF13A4273F005EBD36 /* MiniKeePass */ = {
 			isa = PBXGroup;
 			children = (
-				6895D2E11D6881D2003D8C44 /* Rename Group View */,
+				6895D2F01D68FE00003D8C44 /* Custom Field View */,
 				689EA6731D67F8B500CF445E /* Image Selector View */,
 				689EA67C1D67F8D500CF445E /* New Database View */,
 				689EA6831D67F90800CF445E /* Password Generator View */,
 				689EA66C1D67F88500CF445E /* Password Entry View */,
 				689EA68A1D67F93200CF445E /* Rename Database View */,
+				6895D2E61D68F95D003D8C44 /* Rename Item View */,
 				689EA68F1D67F94600CF445E /* Settings View */,
 				68CBC1461A4A0F0E004A3553 /* MiniKeePass.entitlements */,
 				689D042613A42C81005EBD36 /* DatabaseDocument.h */,
@@ -702,8 +713,6 @@
 				689D043313A42C81005EBD36 /* MiniKeePassAppDelegate.m */,
 				6837C35E188C9ED30018D588 /* SelectGroupViewController.h */,
 				6837C35F188C9ED30018D588 /* SelectGroupViewController.m */,
-				684846B4167E1E460040C4EE /* StringFieldViewController.h */,
-				684846B5167E1E460040C4EE /* StringFieldViewController.m */,
 				6851FAFB186DD11D00A53B0E /* UIActionSheetAutoDismiss.h */,
 				6851FAFC186DD11D00A53B0E /* UIActionSheetAutoDismiss.m */,
 				682B938C18A48EC20020C22A /* UIAlertViewAutoDismiss.h */,
@@ -935,8 +944,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6895D2F31D68FE00003D8C44 /* CustomField.storyboard in Resources */,
 				529708B014FEF149003547FB /* Andale Mono.ttf in Resources */,
 				522D8F9E17E35B0E00BCA329 /* Images.xcassets in Resources */,
+				6895D2E91D68F95D003D8C44 /* RenameItem.storyboard in Resources */,
 				689D032F13A42B63005EBD36 /* dropbox.html in Resources */,
 				689D033013A42B63005EBD36 /* itunes.html in Resources */,
 				689EA68D1D67F93200CF445E /* RenameDatabase.storyboard in Resources */,
@@ -944,7 +955,6 @@
 				68CE37F51404A86600E4A5E1 /* safariemail.html in Resources */,
 				68DDC3731405160300FC8BD8 /* keyfiles.html in Resources */,
 				68EA62DB1CC972F300B33E42 /* LaunchScreen.storyboard in Resources */,
-				6895D2E31D68821E003D8C44 /* RenameItem.storyboard in Resources */,
 				689D033113A42B63005EBD36 /* style.css in Resources */,
 				68E08310146F24E3001C4EDF /* Localizable.strings in Resources */,
 				68E08316146F2749001C4EDF /* InfoPlist.strings in Resources */,
@@ -1003,6 +1013,7 @@
 				689FBE911AB27283005CB6BD /* PasswordFieldCell.m in Sources */,
 				689D03D513A42B63005EBD36 /* Kdb.m in Sources */,
 				689FBE661AB271C6005CB6BD /* LockScreenManager.m in Sources */,
+				6895D2F41D68FE00003D8C44 /* CustomFieldViewController.swift in Sources */,
 				689EA6811D67F8D500CF445E /* NewDatabaseViewController.swift in Sources */,
 				689D03D613A42B63005EBD36 /* Kdb3Date.m in Sources */,
 				689EA6821D67F8D500CF445E /* UIViewController+AlertController.swift in Sources */,
@@ -1024,6 +1035,7 @@
 				6837C360188C9ED30018D588 /* SelectGroupViewController.m in Sources */,
 				689FBE671AB271C6005CB6BD /* LockViewController.m in Sources */,
 				68496E751AB34F8800370876 /* AppSettings.m in Sources */,
+				6895D2EA1D68F95D003D8C44 /* RenameItemViewController.swift in Sources */,
 				689D03E313A42B63005EBD36 /* KdbWriterFactory.m in Sources */,
 				689D03E513A42B63005EBD36 /* Salsa20RandomStream.m in Sources */,
 				689D03E713A42B63005EBD36 /* Utils.m in Sources */,
@@ -1042,7 +1054,6 @@
 				689D045113A42C82005EBD36 /* EntryViewController.m in Sources */,
 				689D045213A42C82005EBD36 /* FilesInfoView.m in Sources */,
 				689D045313A42C82005EBD36 /* FilesViewController.m in Sources */,
-				6895D2E51D688310003D8C44 /* RenameItemViewController.swift in Sources */,
 				689D045413A42C82005EBD36 /* GroupViewController.m in Sources */,
 				689D045513A42C82005EBD36 /* MiniKeePassAppDelegate.m in Sources */,
 				689FBE791AB27228005CB6BD /* PasswordUtils.m in Sources */,
@@ -1079,7 +1090,6 @@
 				689FBE651AB271C6005CB6BD /* KeypadView.m in Sources */,
 				689EA6891D67F90800CF445E /* PasswordGeneratorViewController.swift in Sources */,
 				689FBE941AB27283005CB6BD /* TextViewCell.m in Sources */,
-				684846B6167E1E460040C4EE /* StringFieldViewController.m in Sources */,
 				689EA6791D67F8B500CF445E /* ImageCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

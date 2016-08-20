@@ -29,6 +29,9 @@
                                                     <rect key="frame" x="15" y="12" width="570" height="19"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits"/>
+                                                    <connections>
+                                                        <outlet property="delegate" destination="av4-5z-a0Z" id="Ugo-AW-spQ"/>
+                                                    </connections>
                                                 </textField>
                                             </subviews>
                                             <constraints>

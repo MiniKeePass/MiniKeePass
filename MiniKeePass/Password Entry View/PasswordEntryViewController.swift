@@ -67,32 +67,6 @@ class PasswordEntryViewController: UITableViewController, UITextFieldDelegate {
         }
     }
     
-    // MARK: - Actions
-    
-    @IBAction func donePressedAction(sender: UIBarButtonItem?) {
-        donePressed?(self)
-    }
-
-    @IBAction func cancelPressedAction(sender: UIBarButtonItem?) {
-        cancelPressed?(self)
-    }
-
-    @IBAction func showPressed(sender: UITapGestureRecognizer) {
-        if (!passwordTextField.secureTextEntry) {
-            // Clear the password first, since you can't edit a secure text entry once set
-            passwordTextField.text = ""
-            passwordTextField.secureTextEntry = true
-            
-            // Change the image
-            showImageView.image = UIImage(named: "eye")
-        } else {
-            passwordTextField.secureTextEntry = false
-            
-            // Change the image
-            showImageView.image = UIImage(named: "eye-slash")
-        }
-    }
-    
     // MARK: - UITextFieldDelegate
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
@@ -119,6 +93,32 @@ class PasswordEntryViewController: UITableViewController, UITextFieldDelegate {
             self.setSelectedKeyFile(selectedIndex)
 
             keyFileViewController.navigationController?.popViewControllerAnimated(true)
+        }
+    }
+    
+    // MARK: - Actions
+    
+    @IBAction func donePressedAction(sender: UIBarButtonItem?) {
+        donePressed?(self)
+    }
+    
+    @IBAction func cancelPressedAction(sender: UIBarButtonItem?) {
+        cancelPressed?(self)
+    }
+    
+    @IBAction func showPressed(sender: UITapGestureRecognizer) {
+        if (!passwordTextField.secureTextEntry) {
+            // Clear the password first, since you can't edit a secure text entry once set
+            passwordTextField.text = ""
+            passwordTextField.secureTextEntry = true
+            
+            // Change the image
+            showImageView.image = UIImage(named: "eye")
+        } else {
+            passwordTextField.secureTextEntry = false
+            
+            // Change the image
+            showImageView.image = UIImage(named: "eye-slash")
         }
     }
 }

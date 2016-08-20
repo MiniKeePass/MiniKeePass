@@ -710,6 +710,7 @@ enum {
 
 #pragma mark - Rename Group/Entry
 
+// FIXME when renamed, the row doesn't update with the current values
 - (void)renameSelectedItem {
     // Display the Rename Item view
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"RenameItem" bundle:nil];

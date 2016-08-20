@@ -471,18 +471,26 @@ enum {
 
 - (void)addPressed {
     StringField *stringField = [StringField stringFieldWithKey:@"" andValue:@""];
+    
+    // Display the Rename Database view
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"CustomField" bundle:nil];
+    UINavigationController *navigationController = [storyboard instantiateInitialViewController];
+    
+    CustomFieldViewController *customFieldViewController = (CustomFieldViewController *)navigationController.topViewController;
+    customFieldViewController.donePressed = ^(CustomFieldViewController *customFieldViewController) {
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:self.editingStringFields.count inSection:1];
+        [self.editingStringFields addObject:customFieldViewController.stringField];
+        [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
 
-    StringFieldViewController *stringFieldViewController = [[StringFieldViewController alloc] initWithStringField:stringField];
-    stringFieldViewController.donePressed = ^(FormViewController *formViewController) {
-        [self updateStringField:(StringFieldViewController *)formViewController];
+        [customFieldViewController dismissViewControllerAnimated:YES completion:nil];
     };
-    stringFieldViewController.cancelPressed = ^(FormViewController *formViewController) {
-        [formViewController dismissViewControllerAnimated:YES completion:nil];
+    customFieldViewController.cancelPressed = ^(CustomFieldViewController *customFieldViewController) {
+        [customFieldViewController dismissViewControllerAnimated:YES completion:nil];
     };
-
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:stringFieldViewController];
-
-    [self.navigationController presentViewController:navController animated:YES completion:nil];
+    
+    customFieldViewController.stringField = stringField;
+    
+    [self presentViewController:navigationController animated:YES completion:nil];
 }
 
 # pragma mark - Table view delegate
@@ -595,32 +603,25 @@ enum {
 
 - (void)editStringField:(NSIndexPath *)indexPath {
     StringField *stringField = [self.editingStringFields objectAtIndex:indexPath.row];
-
-    StringFieldViewController *stringFieldViewController = [[StringFieldViewController alloc] initWithStringField:stringField];
-    stringFieldViewController.object = indexPath;
-    stringFieldViewController.donePressed = ^(FormViewController *formViewController) {
-        [self updateStringField:(StringFieldViewController *)formViewController];
-    };
-    stringFieldViewController.cancelPressed = ^(FormViewController *formViewController) {
-        [formViewController dismissViewControllerAnimated:YES completion:nil];
-    };
-
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:stringFieldViewController];
-
-    [self.navigationController presentViewController:navController animated:YES completion:nil];
-}
-
-- (void)updateStringField:(StringFieldViewController *)stringFieldController {
-    if (stringFieldController.object == nil) {
-        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:self.editingStringFields.count inSection:1];
-        [self.editingStringFields addObject:stringFieldController.stringField];
-        [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-    } else {
-        NSIndexPath *indexPath = (NSIndexPath *)stringFieldController.object;
+    
+    // Display the Rename Database view
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"CustomField" bundle:nil];
+    UINavigationController *navigationController = [storyboard instantiateInitialViewController];
+    
+    CustomFieldViewController *customFieldViewController = (CustomFieldViewController *)navigationController.topViewController;
+    customFieldViewController.donePressed = ^(CustomFieldViewController *customFieldViewController) {
+        //NSIndexPath *indexPath = (NSIndexPath *)indexPAthstringFieldController.object;
         [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-    }
-
-    [stringFieldController dismissViewControllerAnimated:YES completion:nil];
+        
+        [customFieldViewController dismissViewControllerAnimated:YES completion:nil];
+    };
+    customFieldViewController.cancelPressed = ^(CustomFieldViewController *customFieldViewController) {
+        [customFieldViewController dismissViewControllerAnimated:YES completion:nil];
+    };
+    
+    customFieldViewController.stringField = stringField;
+    
+    [self presentViewController:navigationController animated:YES completion:nil];
 }
 
 #pragma mark - Image Selection

@@ -36,6 +36,13 @@ class RenameItemViewController: UITableViewController {
             selectedImageIndex = entry!.image
         }
     }
+    
+    // MARK: - UITextFieldDelegate
+    
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        donePressedAction(nil)
+        return true
+    }
 
     // MARK: - Navigation
 
@@ -49,7 +56,7 @@ class RenameItemViewController: UITableViewController {
 
     // MARK: - Actions
     
-    @IBAction func donePressedAction(sender: UIBarButtonItem) {
+    @IBAction func donePressedAction(sender: UIBarButtonItem?) {
         // Validate the name is valid
         let name = nameTextField.text
         if (name == nil || name!.isEmpty) {

@@ -11,3 +11,4 @@
 #import "PinViewController.h"
 #import "ImageFactory.h"
 #import "Kdb.h"
+#import "Kdb4Node.h"
