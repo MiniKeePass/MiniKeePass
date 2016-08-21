@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2012 Jason Rush and John Flanagan. All rights reserved.
+ * Copyright 2016 Jason Rush and John Flanagan. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,9 +15,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#import <UIKit/UIKit.h>
+import UIKit
 
-@interface HelpViewController : UITableViewController {
+class HelpWebViewController: UIViewController {
+    @IBOutlet weak var webView: UIWebView!
+    
+    var url: NSURL?
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        // Load the help page
+        let urlRequest = NSURLRequest(URL: url!)
+        webView.loadRequest(urlRequest)
+    }
 }
-
-@end

@@ -17,7 +17,6 @@
 
 #import "MiniKeePassAppDelegate.h"
 #import "FilesViewController.h"
-#import "HelpViewController.h"
 #import "DatabaseManager.h"
 #import "AppSettings.h"
 #import "KeychainUtils.h"
@@ -373,8 +372,9 @@ enum {
 }
 
 - (void)helpPressed {
-    HelpViewController *helpViewController = [[HelpViewController alloc] init];
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:helpViewController];
+    // Display the new database view
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Help" bundle:nil];
+    UINavigationController *navigationController = [storyboard instantiateInitialViewController];
 
     [self presentViewController:navigationController animated:YES completion:nil];
 }

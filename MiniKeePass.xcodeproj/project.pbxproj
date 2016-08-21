@@ -29,6 +29,9 @@
 		52E43F5015B59C890029F979 /* ru-safariemail.html in Resources */ = {isa = PBXBuildFile; fileRef = 52E43F4B15B59C890029F979 /* ru-safariemail.html */; };
 		6802C36F1A425D7300595AC9 /* LocalAuthentication.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6802C36E1A425D7300595AC9 /* LocalAuthentication.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		680C277616050C7A009403DE /* DDXMLDocument+MKPAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 680C277516050C7A009403DE /* DDXMLDocument+MKPAdditions.m */; };
+		680C9D771D69E2A70040FB43 /* HelpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680C9D761D69E2A70040FB43 /* HelpViewController.swift */; };
+		680C9D7A1D69E36C0040FB43 /* Help.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 680C9D791D69E36C0040FB43 /* Help.storyboard */; };
+		680C9D7C1D69EB540040FB43 /* HelpWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680C9D7B1D69EB540040FB43 /* HelpWebViewController.swift */; };
 		682B938E18A48EC20020C22A /* UIAlertViewAutoDismiss.m in Sources */ = {isa = PBXBuildFile; fileRef = 682B938D18A48EC20020C22A /* UIAlertViewAutoDismiss.m */; };
 		682D450D1603883900156830 /* AesInputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 682D44F21603883900156830 /* AesInputStream.m */; };
 		682D450E1603883900156830 /* AesOutputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 682D44F41603883900156830 /* AesOutputStream.m */; };
@@ -128,7 +131,6 @@
 		689FBE951AB27283005CB6BD /* TitleFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 689FBE8B1AB27283005CB6BD /* TitleFieldCell.m */; };
 		689FBE961AB27283005CB6BD /* UrlFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 689FBE8D1AB27283005CB6BD /* UrlFieldCell.m */; };
 		689FBE991AB272BD005CB6BD /* ImageFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 689FBE981AB272BD005CB6BD /* ImageFactory.m */; };
-		68CE37F214049BC900E4A5E1 /* HelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68CE37F114049BC900E4A5E1 /* HelpViewController.m */; };
 		68CE37F51404A86600E4A5E1 /* safariemail.html in Resources */ = {isa = PBXBuildFile; fileRef = 68CE37F41404A86600E4A5E1 /* safariemail.html */; };
 		68D7564D186E4D8A001AFB82 /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68D7564C186E4D8A001AFB82 /* WebViewController.m */; };
 		68DDC3731405160300FC8BD8 /* keyfiles.html in Resources */ = {isa = PBXBuildFile; fileRef = 68DDC3721405160300FC8BD8 /* keyfiles.html */; };
@@ -181,6 +183,9 @@
 		6802C36E1A425D7300595AC9 /* LocalAuthentication.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = LocalAuthentication.framework; path = System/Library/Frameworks/LocalAuthentication.framework; sourceTree = SDKROOT; };
 		680C277416050C7A009403DE /* DDXMLDocument+MKPAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "DDXMLDocument+MKPAdditions.h"; sourceTree = "<group>"; };
 		680C277516050C7A009403DE /* DDXMLDocument+MKPAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "DDXMLDocument+MKPAdditions.m"; sourceTree = "<group>"; };
+		680C9D761D69E2A70040FB43 /* HelpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelpViewController.swift; sourceTree = "<group>"; };
+		680C9D791D69E36C0040FB43 /* Help.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Help.storyboard; sourceTree = "<group>"; };
+		680C9D7B1D69EB540040FB43 /* HelpWebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelpWebViewController.swift; sourceTree = "<group>"; };
 		682B938C18A48EC20020C22A /* UIAlertViewAutoDismiss.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIAlertViewAutoDismiss.h; sourceTree = "<group>"; };
 		682B938D18A48EC20020C22A /* UIAlertViewAutoDismiss.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIAlertViewAutoDismiss.m; sourceTree = "<group>"; };
 		682D44F11603883900156830 /* AesInputStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AesInputStream.h; sourceTree = "<group>"; };
@@ -369,8 +374,6 @@
 		689FBE981AB272BD005CB6BD /* ImageFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageFactory.m; sourceTree = "<group>"; };
 		68AB0F4D1CCA82B300CFE78D /* MiniKeePass-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MiniKeePass-Bridging-Header.h"; sourceTree = "<group>"; };
 		68CBC1461A4A0F0E004A3553 /* MiniKeePass.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = MiniKeePass.entitlements; sourceTree = "<group>"; };
-		68CE37F014049BC900E4A5E1 /* HelpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelpViewController.h; sourceTree = "<group>"; };
-		68CE37F114049BC900E4A5E1 /* HelpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelpViewController.m; sourceTree = "<group>"; };
 		68CE37F41404A86600E4A5E1 /* safariemail.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = safariemail.html; sourceTree = "<group>"; };
 		68D7564B186E4D8A001AFB82 /* WebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewController.h; sourceTree = "<group>"; };
 		68D7564C186E4D8A001AFB82 /* WebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewController.m; sourceTree = "<group>"; };
@@ -451,6 +454,16 @@
 				52E43F4B15B59C890029F979 /* ru-safariemail.html */,
 			);
 			path = ru;
+			sourceTree = "<group>";
+		};
+		680C9D751D69E2A70040FB43 /* Help View */ = {
+			isa = PBXGroup;
+			children = (
+				680C9D791D69E36C0040FB43 /* Help.storyboard */,
+				680C9D761D69E2A70040FB43 /* HelpViewController.swift */,
+				680C9D7B1D69EB540040FB43 /* HelpWebViewController.swift */,
+			);
+			path = "Help View";
 			sourceTree = "<group>";
 		};
 		682D44F01603883900156830 /* IOStream */ = {
@@ -678,14 +691,14 @@
 			isa = PBXGroup;
 			children = (
 				6895D2F01D68FE00003D8C44 /* Custom Field View */,
+				680C9D751D69E2A70040FB43 /* Help View */,
 				689EA6731D67F8B500CF445E /* Image Selector View */,
 				689EA67C1D67F8D500CF445E /* New Database View */,
-				689EA6831D67F90800CF445E /* Password Generator View */,
 				689EA66C1D67F88500CF445E /* Password Entry View */,
+				689EA6831D67F90800CF445E /* Password Generator View */,
 				689EA68A1D67F93200CF445E /* Rename Database View */,
 				6895D2E61D68F95D003D8C44 /* Rename Item View */,
 				689EA68F1D67F94600CF445E /* Settings View */,
-				68CBC1461A4A0F0E004A3553 /* MiniKeePass.entitlements */,
 				689D042613A42C81005EBD36 /* DatabaseDocument.h */,
 				689D042713A42C81005EBD36 /* DatabaseDocument.m */,
 				689D042813A42C81005EBD36 /* DatabaseManager.h */,
@@ -696,14 +709,13 @@
 				689D042D13A42C81005EBD36 /* FilesInfoView.m */,
 				689D042E13A42C81005EBD36 /* FilesViewController.h */,
 				689D042F13A42C81005EBD36 /* FilesViewController.m */,
-				689D043013A42C81005EBD36 /* GroupViewController.h */,
-				689D043113A42C81005EBD36 /* GroupViewController.m */,
 				52C7FD7B18693D9900D498A2 /* GroupSearchController.h */,
 				52C7FD7C18693D9900D498A2 /* GroupSearchController.m */,
-				68CE37F014049BC900E4A5E1 /* HelpViewController.h */,
-				68CE37F114049BC900E4A5E1 /* HelpViewController.m */,
+				689D043013A42C81005EBD36 /* GroupViewController.h */,
+				689D043113A42C81005EBD36 /* GroupViewController.m */,
 				68915A0913A6F6C200A408B0 /* InfoBar.h */,
 				68915A0A13A6F6C200A408B0 /* InfoBar.m */,
+				68CBC1461A4A0F0E004A3553 /* MiniKeePass.entitlements */,
 				689D043213A42C81005EBD36 /* MiniKeePassAppDelegate.h */,
 				689D043313A42C81005EBD36 /* MiniKeePassAppDelegate.m */,
 				6837C35E188C9ED30018D588 /* SelectGroupViewController.h */,
@@ -716,9 +728,9 @@
 				68D7564C186E4D8A001AFB82 /* WebViewController.m */,
 				689FBE7B1AB27283005CB6BD /* Cells */,
 				689FBE591AB271C6005CB6BD /* Lock Screen */,
-				689FBE731AB27228005CB6BD /* Utils */,
 				68496E701AB34F8800370876 /* Settings */,
 				689DFFE013A4273F005EBD36 /* Supporting Files */,
+				689FBE731AB27228005CB6BD /* Utils */,
 			);
 			path = MiniKeePass;
 			sourceTree = "<group>";
@@ -971,6 +983,7 @@
 				689EA6941D67F94600CF445E /* Settings.storyboard in Resources */,
 				4E8C169416B3E871004195A1 /* fr-dropbox.html in Resources */,
 				4E8C169516B3E871004195A1 /* fr-itunes.html in Resources */,
+				680C9D7A1D69E36C0040FB43 /* Help.storyboard in Resources */,
 				4E8C169616B3E871004195A1 /* fr-keyfiles.html in Resources */,
 				4E8C169716B3E871004195A1 /* fr-safariemail.html in Resources */,
 			);
@@ -1047,6 +1060,8 @@
 				689D044F13A42C82005EBD36 /* DatabaseDocument.m in Sources */,
 				689D045013A42C82005EBD36 /* DatabaseManager.m in Sources */,
 				689D045113A42C82005EBD36 /* EntryViewController.m in Sources */,
+				680C9D7C1D69EB540040FB43 /* HelpWebViewController.swift in Sources */,
+				680C9D771D69E2A70040FB43 /* HelpViewController.swift in Sources */,
 				689D045213A42C82005EBD36 /* FilesInfoView.m in Sources */,
 				689D045313A42C82005EBD36 /* FilesViewController.m in Sources */,
 				689D045413A42C82005EBD36 /* GroupViewController.m in Sources */,
@@ -1057,7 +1072,6 @@
 				689FBE641AB271C6005CB6BD /* KeypadButton.m in Sources */,
 				68D7564D186E4D8A001AFB82 /* WebViewController.m in Sources */,
 				689A4D1314046B8200AA897D /* RandomStream.m in Sources */,
-				68CE37F214049BC900E4A5E1 /* HelpViewController.m in Sources */,
 				682D450D1603883900156830 /* AesInputStream.m in Sources */,
 				682D450E1603883900156830 /* AesOutputStream.m in Sources */,
 				682D450F1603883900156830 /* Arc4RandomStream.m in Sources */,
