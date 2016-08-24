@@ -32,7 +32,6 @@
 		680C9D771D69E2A70040FB43 /* HelpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680C9D761D69E2A70040FB43 /* HelpViewController.swift */; };
 		680C9D7A1D69E36C0040FB43 /* Help.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 680C9D791D69E36C0040FB43 /* Help.storyboard */; };
 		680C9D7C1D69EB540040FB43 /* HelpWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680C9D7B1D69EB540040FB43 /* HelpWebViewController.swift */; };
-		682B938E18A48EC20020C22A /* UIAlertViewAutoDismiss.m in Sources */ = {isa = PBXBuildFile; fileRef = 682B938D18A48EC20020C22A /* UIAlertViewAutoDismiss.m */; };
 		682D450D1603883900156830 /* AesInputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 682D44F21603883900156830 /* AesInputStream.m */; };
 		682D450E1603883900156830 /* AesOutputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 682D44F41603883900156830 /* AesOutputStream.m */; };
 		682D450F1603883900156830 /* Arc4RandomStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 682D44F61603883900156830 /* Arc4RandomStream.m */; };
@@ -51,7 +50,8 @@
 		68496E751AB34F8800370876 /* AppSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 68496E721AB34F8800370876 /* AppSettings.m */; };
 		6851FAFD186DD11D00A53B0E /* UIActionSheetAutoDismiss.m in Sources */ = {isa = PBXBuildFile; fileRef = 6851FAFC186DD11D00A53B0E /* UIActionSheetAutoDismiss.m */; };
 		685D9D951603F8EE00D739D3 /* Kdb3Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 685D9D941603F8EE00D739D3 /* Kdb3Utils.m */; };
-		68915A0B13A6F6C200A408B0 /* InfoBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 68915A0A13A6F6C200A408B0 /* InfoBar.m */; };
+		688038971D6BB33A001424CA /* WebBrowser.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 688038951D6BB33A001424CA /* WebBrowser.storyboard */; };
+		688038981D6BB33A001424CA /* WebBrowserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 688038961D6BB33A001424CA /* WebBrowserViewController.swift */; };
 		6895D2E91D68F95D003D8C44 /* RenameItem.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6895D2E71D68F95D003D8C44 /* RenameItem.storyboard */; };
 		6895D2EA1D68F95D003D8C44 /* RenameItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6895D2E81D68F95D003D8C44 /* RenameItemViewController.swift */; };
 		6895D2F31D68FE00003D8C44 /* CustomField.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6895D2F11D68FE00003D8C44 /* CustomField.storyboard */; };
@@ -123,16 +123,13 @@
 		689FBE781AB27228005CB6BD /* KeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 689FBE751AB27228005CB6BD /* KeychainUtils.m */; };
 		689FBE791AB27228005CB6BD /* PasswordUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 689FBE771AB27228005CB6BD /* PasswordUtils.m */; };
 		689FBE8F1AB27283005CB6BD /* ImageButtonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 689FBE7F1AB27283005CB6BD /* ImageButtonCell.m */; };
-		689FBE901AB27283005CB6BD /* MasterPasswordFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 689FBE811AB27283005CB6BD /* MasterPasswordFieldCell.m */; };
 		689FBE911AB27283005CB6BD /* PasswordFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 689FBE831AB27283005CB6BD /* PasswordFieldCell.m */; };
-		689FBE921AB27283005CB6BD /* SwitchCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 689FBE851AB27283005CB6BD /* SwitchCell.m */; };
 		689FBE931AB27283005CB6BD /* TextFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 689FBE871AB27283005CB6BD /* TextFieldCell.m */; };
 		689FBE941AB27283005CB6BD /* TextViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 689FBE891AB27283005CB6BD /* TextViewCell.m */; };
 		689FBE951AB27283005CB6BD /* TitleFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 689FBE8B1AB27283005CB6BD /* TitleFieldCell.m */; };
 		689FBE961AB27283005CB6BD /* UrlFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 689FBE8D1AB27283005CB6BD /* UrlFieldCell.m */; };
 		689FBE991AB272BD005CB6BD /* ImageFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 689FBE981AB272BD005CB6BD /* ImageFactory.m */; };
 		68CE37F51404A86600E4A5E1 /* safariemail.html in Resources */ = {isa = PBXBuildFile; fileRef = 68CE37F41404A86600E4A5E1 /* safariemail.html */; };
-		68D7564D186E4D8A001AFB82 /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68D7564C186E4D8A001AFB82 /* WebViewController.m */; };
 		68DDC3731405160300FC8BD8 /* keyfiles.html in Resources */ = {isa = PBXBuildFile; fileRef = 68DDC3721405160300FC8BD8 /* keyfiles.html */; };
 		68E08310146F24E3001C4EDF /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 68E0830E146F24E3001C4EDF /* Localizable.strings */; };
 		68E08316146F2749001C4EDF /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 68E08314146F2749001C4EDF /* InfoPlist.strings */; };
@@ -186,8 +183,6 @@
 		680C9D761D69E2A70040FB43 /* HelpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelpViewController.swift; sourceTree = "<group>"; };
 		680C9D791D69E36C0040FB43 /* Help.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Help.storyboard; sourceTree = "<group>"; };
 		680C9D7B1D69EB540040FB43 /* HelpWebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelpWebViewController.swift; sourceTree = "<group>"; };
-		682B938C18A48EC20020C22A /* UIAlertViewAutoDismiss.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIAlertViewAutoDismiss.h; sourceTree = "<group>"; };
-		682B938D18A48EC20020C22A /* UIAlertViewAutoDismiss.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIAlertViewAutoDismiss.m; sourceTree = "<group>"; };
 		682D44F11603883900156830 /* AesInputStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AesInputStream.h; sourceTree = "<group>"; };
 		682D44F21603883900156830 /* AesInputStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AesInputStream.m; sourceTree = "<group>"; };
 		682D44F31603883900156830 /* AesOutputStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AesOutputStream.h; sourceTree = "<group>"; };
@@ -231,8 +226,8 @@
 		687AAAA41889FB4D00AB8AC5 /* it */ = {isa = PBXFileReference; lastKnownFileType = text; name = it; path = it.lproj/AppStore.txt; sourceTree = "<group>"; };
 		687AAAA51889FB4D00AB8AC5 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text; name = "zh-Hans"; path = "zh-Hans.lproj/AppStore.txt"; sourceTree = "<group>"; };
 		687AAAA71889FB4F00AB8AC5 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text; name = fr; path = fr.lproj/AppStore.txt; sourceTree = "<group>"; };
-		68915A0913A6F6C200A408B0 /* InfoBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfoBar.h; sourceTree = "<group>"; };
-		68915A0A13A6F6C200A408B0 /* InfoBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfoBar.m; sourceTree = "<group>"; };
+		688038951D6BB33A001424CA /* WebBrowser.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = WebBrowser.storyboard; sourceTree = "<group>"; };
+		688038961D6BB33A001424CA /* WebBrowserViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebBrowserViewController.swift; sourceTree = "<group>"; };
 		6891C07419263611000EFC70 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text; name = pt; path = pt.lproj/AppStore.txt; sourceTree = "<group>"; };
 		6891C07519263611000EFC70 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		6891C07619263611000EFC70 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -356,12 +351,8 @@
 		689FBE7A1AB27244005CB6BD /* VersionUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VersionUtils.h; sourceTree = "<group>"; };
 		689FBE7E1AB27283005CB6BD /* ImageButtonCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageButtonCell.h; sourceTree = "<group>"; };
 		689FBE7F1AB27283005CB6BD /* ImageButtonCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageButtonCell.m; sourceTree = "<group>"; };
-		689FBE801AB27283005CB6BD /* MasterPasswordFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MasterPasswordFieldCell.h; sourceTree = "<group>"; };
-		689FBE811AB27283005CB6BD /* MasterPasswordFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MasterPasswordFieldCell.m; sourceTree = "<group>"; };
 		689FBE821AB27283005CB6BD /* PasswordFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasswordFieldCell.h; sourceTree = "<group>"; };
 		689FBE831AB27283005CB6BD /* PasswordFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PasswordFieldCell.m; sourceTree = "<group>"; };
-		689FBE841AB27283005CB6BD /* SwitchCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwitchCell.h; sourceTree = "<group>"; };
-		689FBE851AB27283005CB6BD /* SwitchCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SwitchCell.m; sourceTree = "<group>"; };
 		689FBE861AB27283005CB6BD /* TextFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextFieldCell.h; sourceTree = "<group>"; };
 		689FBE871AB27283005CB6BD /* TextFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextFieldCell.m; sourceTree = "<group>"; };
 		689FBE881AB27283005CB6BD /* TextViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextViewCell.h; sourceTree = "<group>"; };
@@ -375,8 +366,6 @@
 		68AB0F4D1CCA82B300CFE78D /* MiniKeePass-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MiniKeePass-Bridging-Header.h"; sourceTree = "<group>"; };
 		68CBC1461A4A0F0E004A3553 /* MiniKeePass.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = MiniKeePass.entitlements; sourceTree = "<group>"; };
 		68CE37F41404A86600E4A5E1 /* safariemail.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = safariemail.html; sourceTree = "<group>"; };
-		68D7564B186E4D8A001AFB82 /* WebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewController.h; sourceTree = "<group>"; };
-		68D7564C186E4D8A001AFB82 /* WebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewController.m; sourceTree = "<group>"; };
 		68DDC3721405160300FC8BD8 /* keyfiles.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = keyfiles.html; sourceTree = "<group>"; };
 		68E0830F146F24E3001C4EDF /* en */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		68E08315146F2749001C4EDF /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -508,6 +497,15 @@
 				68496E721AB34F8800370876 /* AppSettings.m */,
 			);
 			path = Settings;
+			sourceTree = "<group>";
+		};
+		688038941D6BB33A001424CA /* Web Browser View */ = {
+			isa = PBXGroup;
+			children = (
+				688038951D6BB33A001424CA /* WebBrowser.storyboard */,
+				688038961D6BB33A001424CA /* WebBrowserViewController.swift */,
+			);
+			path = "Web Browser View";
 			sourceTree = "<group>";
 		};
 		6895D2E61D68F95D003D8C44 /* Rename Item View */ = {
@@ -699,6 +697,7 @@
 				689EA68A1D67F93200CF445E /* Rename Database View */,
 				6895D2E61D68F95D003D8C44 /* Rename Item View */,
 				689EA68F1D67F94600CF445E /* Settings View */,
+				688038941D6BB33A001424CA /* Web Browser View */,
 				689D042613A42C81005EBD36 /* DatabaseDocument.h */,
 				689D042713A42C81005EBD36 /* DatabaseDocument.m */,
 				689D042813A42C81005EBD36 /* DatabaseManager.h */,
@@ -713,8 +712,6 @@
 				52C7FD7C18693D9900D498A2 /* GroupSearchController.m */,
 				689D043013A42C81005EBD36 /* GroupViewController.h */,
 				689D043113A42C81005EBD36 /* GroupViewController.m */,
-				68915A0913A6F6C200A408B0 /* InfoBar.h */,
-				68915A0A13A6F6C200A408B0 /* InfoBar.m */,
 				68CBC1461A4A0F0E004A3553 /* MiniKeePass.entitlements */,
 				689D043213A42C81005EBD36 /* MiniKeePassAppDelegate.h */,
 				689D043313A42C81005EBD36 /* MiniKeePassAppDelegate.m */,
@@ -722,10 +719,6 @@
 				6837C35F188C9ED30018D588 /* SelectGroupViewController.m */,
 				6851FAFB186DD11D00A53B0E /* UIActionSheetAutoDismiss.h */,
 				6851FAFC186DD11D00A53B0E /* UIActionSheetAutoDismiss.m */,
-				682B938C18A48EC20020C22A /* UIAlertViewAutoDismiss.h */,
-				682B938D18A48EC20020C22A /* UIAlertViewAutoDismiss.m */,
-				68D7564B186E4D8A001AFB82 /* WebViewController.h */,
-				68D7564C186E4D8A001AFB82 /* WebViewController.m */,
 				689FBE7B1AB27283005CB6BD /* Cells */,
 				689FBE591AB271C6005CB6BD /* Lock Screen */,
 				68496E701AB34F8800370876 /* Settings */,
@@ -846,12 +839,8 @@
 			children = (
 				689FBE7E1AB27283005CB6BD /* ImageButtonCell.h */,
 				689FBE7F1AB27283005CB6BD /* ImageButtonCell.m */,
-				689FBE801AB27283005CB6BD /* MasterPasswordFieldCell.h */,
-				689FBE811AB27283005CB6BD /* MasterPasswordFieldCell.m */,
 				689FBE821AB27283005CB6BD /* PasswordFieldCell.h */,
 				689FBE831AB27283005CB6BD /* PasswordFieldCell.m */,
-				689FBE841AB27283005CB6BD /* SwitchCell.h */,
-				689FBE851AB27283005CB6BD /* SwitchCell.m */,
 				689FBE861AB27283005CB6BD /* TextFieldCell.h */,
 				689FBE871AB27283005CB6BD /* TextFieldCell.m */,
 				689FBE881AB27283005CB6BD /* TextViewCell.h */,
@@ -969,6 +958,7 @@
 				52491D0C14D8F3FB00F8CBC8 /* de-createdb.html in Resources */,
 				689EA6801D67F8D500CF445E /* NewDatabase.storyboard in Resources */,
 				52491D0D14D8F3FB00F8CBC8 /* de-dropbox.html in Resources */,
+				688038971D6BB33A001424CA /* WebBrowser.storyboard in Resources */,
 				52491D0E14D8F3FB00F8CBC8 /* de-itunes.html in Resources */,
 				52491D0F14D8F3FB00F8CBC8 /* de-keyfiles.html in Resources */,
 				52491D1014D8F3FB00F8CBC8 /* de-safariemail.html in Resources */,
@@ -1028,7 +1018,6 @@
 				689D03D713A42B63005EBD36 /* Kdb3Node.m in Sources */,
 				689D03DA13A42B63005EBD36 /* Kdb3Reader.m in Sources */,
 				689D03DB13A42B63005EBD36 /* Kdb3Writer.m in Sources */,
-				689FBE921AB27283005CB6BD /* SwitchCell.m in Sources */,
 				689D03DC13A42B63005EBD36 /* Kdb4Node.m in Sources */,
 				689D03DD13A42B63005EBD36 /* Kdb4Parser.m in Sources */,
 				689EA68E1D67F93200CF445E /* RenameDatabaseViewController.swift in Sources */,
@@ -1052,7 +1041,7 @@
 				689EA67B1D67F8B500CF445E /* ImageSelectorViewController.swift in Sources */,
 				689D03E913A42B63005EBD36 /* DDXMLElementAdditions.m in Sources */,
 				689D03EA13A42B63005EBD36 /* NSString+DDXML.m in Sources */,
-				682B938E18A48EC20020C22A /* UIAlertViewAutoDismiss.m in Sources */,
+				688038981D6BB33A001424CA /* WebBrowserViewController.swift in Sources */,
 				689EA6721D67F88500CF445E /* PasswordEntryViewController.swift in Sources */,
 				689D03EB13A42B63005EBD36 /* DDXMLDocument.m in Sources */,
 				689D03EC13A42B63005EBD36 /* DDXMLElement.m in Sources */,
@@ -1067,10 +1056,8 @@
 				689D045413A42C82005EBD36 /* GroupViewController.m in Sources */,
 				689D045513A42C82005EBD36 /* MiniKeePassAppDelegate.m in Sources */,
 				689FBE791AB27228005CB6BD /* PasswordUtils.m in Sources */,
-				68915A0B13A6F6C200A408B0 /* InfoBar.m in Sources */,
 				689EA6701D67F88500CF445E /* KeyFileViewController.swift in Sources */,
 				689FBE641AB271C6005CB6BD /* KeypadButton.m in Sources */,
-				68D7564D186E4D8A001AFB82 /* WebViewController.m in Sources */,
 				689A4D1314046B8200AA897D /* RandomStream.m in Sources */,
 				682D450D1603883900156830 /* AesInputStream.m in Sources */,
 				682D450E1603883900156830 /* AesOutputStream.m in Sources */,
@@ -1085,7 +1072,6 @@
 				682D45171603883900156830 /* HashedOutputStream.m in Sources */,
 				682D45181603883900156830 /* InputStream.m in Sources */,
 				682D45191603883900156830 /* OutputStream.m in Sources */,
-				689FBE901AB27283005CB6BD /* MasterPasswordFieldCell.m in Sources */,
 				682D451A1603883900156830 /* Sha256OutputStream.m in Sources */,
 				689FBE951AB27283005CB6BD /* TitleFieldCell.m in Sources */,
 				685D9D951603F8EE00D739D3 /* Kdb3Utils.m in Sources */,

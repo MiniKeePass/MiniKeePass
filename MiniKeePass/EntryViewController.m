@@ -19,7 +19,6 @@
 #import "Kdb4Node.h"
 #import "AppSettings.h"
 #import "ImageFactory.h"
-#import "WebViewController.h"
 #import "MiniKeePass-Swift.h"
 
 #import <MBProgressHUD/MBProgressHUD.h>
@@ -694,9 +693,14 @@ enum {
 
     BOOL webBrowserIntegrated = [[AppSettings sharedInstance] webBrowserIntegrated];
     if (webBrowserIntegrated && isHttp) {
-        WebViewController *webViewController = [[WebViewController alloc] init];
-        webViewController.entry = self.entry;
-        [self.navigationController pushViewController:webViewController animated:YES];
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"WebBrowser" bundle:nil];
+        UINavigationController *navigationController = [storyboard instantiateInitialViewController];
+        
+        WebBrowserViewController *webBrowserViewController = (WebBrowserViewController *)navigationController.topViewController;
+        webBrowserViewController.url = url;
+        webBrowserViewController.entry = self.entry;
+        
+        [self presentViewController:navigationController animated:YES completion:nil];
     } else {
         [[UIApplication sharedApplication] openURL:url];
     }
