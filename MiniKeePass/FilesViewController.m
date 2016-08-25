@@ -301,7 +301,8 @@ enum {
                 UINavigationController *navigationController = [storyboard instantiateInitialViewController];
                 
                 RenameDatabaseViewController *renameDatabaseViewController = (RenameDatabaseViewController *)navigationController.topViewController;
-                renameDatabaseViewController.donePressed = ^(RenameDatabaseViewController *renameDatabaseViewController) {
+                renameDatabaseViewController.donePressed = ^(RenameDatabaseViewController *renameDatabaseViewController, NSURL *originalUrl, NSURL *newUrl) {
+                    [self renameDatabase:originalUrl newUrl:newUrl];
                     [renameDatabaseViewController dismissViewControllerAnimated:YES completion:nil];
                 };
                 renameDatabaseViewController.cancelPressed = ^(RenameDatabaseViewController *renameDatabaseViewController) {

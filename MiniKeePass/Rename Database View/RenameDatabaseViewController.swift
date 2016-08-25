@@ -20,20 +20,15 @@ import UIKit
 class RenameDatabaseViewController: UITableViewController {
     @IBOutlet weak var nameTextField: UITextField!
     
-    var originalUrl: NSURL! = nil {
-        didSet {
-            nameTextField.text = originalUrl.URLByDeletingPathExtension?.lastPathComponent
-        }
-    }
+    var originalUrl: NSURL!
 
-    var donePressed: ((renameDatabaseViewController: RenameDatabaseViewController) -> Void)?
-    var cancelPressed: ((renameDatabaseViewController: RenameDatabaseViewController) -> Void)?
-
-    func getNewUrl() -> NSURL {
-        var url = originalUrl.URLByDeletingLastPathComponent!
-        url = url.URLByAppendingPathComponent(nameTextField.text!)
-        url = url.URLByAppendingPathExtension(originalUrl.pathExtension!)
-        return url
+    var donePressed: ((RenameDatabaseViewController, originalUrl: NSURL, newUrl: NSURL) -> Void)?
+    var cancelPressed: ((RenameDatabaseViewController) -> Void)?
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        nameTextField.text = originalUrl.URLByDeletingPathExtension?.lastPathComponent
     }
     
     // MARK: - UITextFieldDelegate
@@ -46,7 +41,7 @@ class RenameDatabaseViewController: UITableViewController {
     // MARK: - Actions
 
     @IBAction func cancelPressedAction(sender: UIBarButtonItem) {
-        cancelPressed?(renameDatabaseViewController: self)
+        cancelPressed?(self)
     }
     
     @IBAction func donePressedAction(sender: UIBarButtonItem?) {
@@ -56,13 +51,17 @@ class RenameDatabaseViewController: UITableViewController {
             return
         }
         
+        // Create the new URL
+        var newUrl = originalUrl.URLByDeletingLastPathComponent!
+        newUrl = newUrl.URLByAppendingPathComponent(nameTextField.text!)
+        newUrl = newUrl.URLByAppendingPathExtension(originalUrl.pathExtension!)
+        
         // Check if the file already exists
-        let newUrl = getNewUrl()
-        if (!newUrl.checkResourceIsReachableAndReturnError(nil)) {
+        if (newUrl.checkResourceIsReachableAndReturnError(nil)) {
             self.presentAlertWithTitle(NSLocalizedString("Error", comment: ""), message: NSLocalizedString("A file already exists with this name", comment: ""))
             return
         }
         
-        donePressed?(renameDatabaseViewController: self)
+        donePressed?(self, originalUrl: originalUrl, newUrl: newUrl)
     }
 }
