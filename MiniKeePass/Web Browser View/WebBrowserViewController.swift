@@ -11,7 +11,6 @@ import WebKit
 
 class WebBrowserViewController: UIViewController, WKNavigationDelegate {
     @IBOutlet weak var progressView: UIProgressView!
-    @IBOutlet weak var toolbar: UIToolbar!
     @IBOutlet weak var backButton: UIBarButtonItem!
     @IBOutlet weak var forwardButton: UIBarButtonItem!
     // FIXME Add stop button too
@@ -41,11 +40,9 @@ class WebBrowserViewController: UIViewController, WKNavigationDelegate {
 
         // Add autolayout constraints for the web view
         webView.translatesAutoresizingMaskIntoConstraints = false
-        let leading = NSLayoutConstraint(item: webView, attribute: .Leading, relatedBy: .Equal, toItem: view, attribute: .Leading, multiplier: 1, constant: 0)
-        let trailing = NSLayoutConstraint(item: webView, attribute: .Trailing, relatedBy: .Equal, toItem: view, attribute: .Trailing, multiplier: 1, constant: 0)
-        let top = NSLayoutConstraint(item: webView, attribute: .Top, relatedBy: .Equal, toItem: view, attribute: .Top, multiplier: 1, constant: 0)
-        let bottom = NSLayoutConstraint(item: webView, attribute: .Bottom, relatedBy: .Equal, toItem: toolbar, attribute: .Top, multiplier: 1, constant: 0)
-        view.addConstraints([top, bottom, leading, trailing])
+        let widthConstraint = NSLayoutConstraint(item: webView, attribute: .Width, relatedBy: .Equal, toItem: view, attribute: .Width, multiplier: 1, constant: 0)
+        let heightConstraint = NSLayoutConstraint(item: webView, attribute: .Height, relatedBy: .Equal, toItem: view, attribute: .Height, multiplier: 1, constant: 0)
+        view.addConstraints([widthConstraint, heightConstraint])
 
         // Configure the delegate and observers
         webView.navigationDelegate = self

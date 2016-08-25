@@ -21,56 +21,50 @@
                             <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="aF3-DE-8b4">
                                 <rect key="frame" x="0.0" y="64" width="600" height="2"/>
                             </progressView>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="46T-Hk-8Y6">
-                                <rect key="frame" x="0.0" y="556" width="600" height="44"/>
-                                <items>
-                                    <barButtonItem image="back" id="GL6-h4-pW7">
-                                        <connections>
-                                            <action selector="backPressed:" destination="bzB-WB-WEb" id="axS-xb-wX0"/>
-                                        </connections>
-                                    </barButtonItem>
-                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="VQi-wb-lHJ"/>
-                                    <barButtonItem image="forward" id="xaL-Sh-eFP">
-                                        <connections>
-                                            <action selector="forwardPressed:" destination="bzB-WB-WEb" id="Zr8-l7-dG4"/>
-                                        </connections>
-                                    </barButtonItem>
-                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="8Hq-Pr-Pca"/>
-                                    <barButtonItem image="repeat" id="aNk-eb-u2K" userLabel="Reload Button">
-                                        <connections>
-                                            <action selector="reloadPressed:" destination="bzB-WB-WEb" id="67T-hs-9K9"/>
-                                        </connections>
-                                    </barButtonItem>
-                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="dgT-Kn-Wvm"/>
-                                    <barButtonItem systemItem="action" id="BDj-LS-sES">
-                                        <connections>
-                                            <action selector="actionPressed:" destination="bzB-WB-WEb" id="QZJ-sA-Zkz"/>
-                                        </connections>
-                                    </barButtonItem>
-                                </items>
-                            </toolbar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="46T-Hk-8Y6" secondAttribute="trailing" id="MIn-IX-SuG"/>
                             <constraint firstAttribute="trailing" secondItem="aF3-DE-8b4" secondAttribute="trailing" id="Out-EY-8OR"/>
-                            <constraint firstItem="BBa-P3-YQU" firstAttribute="top" secondItem="46T-Hk-8Y6" secondAttribute="bottom" id="QD4-OB-Ta6"/>
-                            <constraint firstItem="46T-Hk-8Y6" firstAttribute="leading" secondItem="y0G-Qe-lnI" secondAttribute="leading" id="Qc0-6I-SeB"/>
                             <constraint firstItem="aF3-DE-8b4" firstAttribute="top" secondItem="lPO-vz-M16" secondAttribute="bottom" id="VGi-dX-7E6"/>
                             <constraint firstItem="aF3-DE-8b4" firstAttribute="leading" secondItem="y0G-Qe-lnI" secondAttribute="leading" id="fPK-VU-oKK"/>
                         </constraints>
                     </view>
+                    <toolbarItems>
+                        <barButtonItem image="back" id="VoZ-QU-yTU" userLabel="Back Button">
+                            <connections>
+                                <action selector="backPressed:" destination="bzB-WB-WEb" id="kiS-Q7-5ui"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="hkD-X8-wNp"/>
+                        <barButtonItem image="forward" id="y30-Vu-FUu" userLabel="Forward Button">
+                            <connections>
+                                <action selector="forwardPressed:" destination="bzB-WB-WEb" id="pDA-Es-m45"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="qu9-aw-aJ0"/>
+                        <barButtonItem image="repeat" id="ZeG-ey-W5v" userLabel="Reload Button">
+                            <connections>
+                                <action selector="reloadPressed:" destination="bzB-WB-WEb" id="cdc-Zg-1oW"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="Jy0-g9-8ko"/>
+                        <barButtonItem systemItem="action" id="9sb-F2-puc" userLabel="Action Button">
+                            <connections>
+                                <action selector="actionPressed:" destination="bzB-WB-WEb" id="u1S-Ul-1rk"/>
+                            </connections>
+                        </barButtonItem>
+                    </toolbarItems>
                     <navigationItem key="navigationItem" id="wy5-xD-GF6">
                         <nil key="title"/>
                         <leftBarButtonItems>
-                            <barButtonItem image="asterisk" id="HdL-jC-eDT" userLabel="Paste Password Button">
-                                <connections>
-                                    <action selector="pastePasswordPressed:" destination="bzB-WB-WEb" id="PkS-w0-hqW"/>
-                                </connections>
-                            </barButtonItem>
                             <barButtonItem image="user" id="LRL-eC-mOZ" userLabel="Paste Username Button">
                                 <connections>
                                     <action selector="pasteUsernamePressed:" destination="bzB-WB-WEb" id="ZFs-7X-y7s"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem image="asterisk" id="HdL-jC-eDT" userLabel="Paste Password Button">
+                                <connections>
+                                    <action selector="pastePasswordPressed:" destination="bzB-WB-WEb" id="PkS-w0-hqW"/>
                                 </connections>
                             </barButtonItem>
                         </leftBarButtonItems>
@@ -81,10 +75,9 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="backButton" destination="GL6-h4-pW7" id="fDd-SO-liO"/>
-                        <outlet property="forwardButton" destination="xaL-Sh-eFP" id="2ct-bh-7wH"/>
+                        <outlet property="backButton" destination="VoZ-QU-yTU" id="DSv-QO-AY2"/>
+                        <outlet property="forwardButton" destination="y30-Vu-FUu" id="Zv2-HQ-9ps"/>
                         <outlet property="progressView" destination="aF3-DE-8b4" id="O0C-fk-qeo"/>
-                        <outlet property="toolbar" destination="46T-Hk-8Y6" id="Dey-ht-AUF"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tMY-2z-ajL" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -94,13 +87,17 @@
         <!--Navigation Controller-->
         <scene sceneID="J6h-Sw-qoh">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="d33-B8-2Jh" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" toolbarHidden="NO" id="d33-B8-2Jh" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="nOd-Fp-gjA">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
+                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="o39-Mr-lYV">
+                        <rect key="frame" x="0.0" y="556" width="600" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </toolbar>
                     <connections>
                         <segue destination="bzB-WB-WEb" kind="relationship" relationship="rootViewController" id="iAM-7i-iha"/>
                     </connections>
