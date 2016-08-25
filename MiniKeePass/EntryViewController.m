@@ -666,8 +666,8 @@ enum {
     UINavigationController *navigationController = [storyboard instantiateInitialViewController];
     
     PasswordGeneratorViewController *passwordGeneratorViewController = (PasswordGeneratorViewController *)navigationController.topViewController;
-    passwordGeneratorViewController.donePressed = ^(PasswordGeneratorViewController *passwordGeneratorViewController) {
-        passwordCell.textField.text = [passwordGeneratorViewController getPassword];
+    passwordGeneratorViewController.donePressed = ^(PasswordGeneratorViewController *passwordGeneratorViewController, NSString *password) {
+        passwordCell.textField.text = password;
         [passwordGeneratorViewController dismissViewControllerAnimated:YES completion:nil];
     };
     passwordGeneratorViewController.cancelPressed = ^(PasswordGeneratorViewController *passwordGeneratorViewController) {

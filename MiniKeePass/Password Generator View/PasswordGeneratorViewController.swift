@@ -38,7 +38,7 @@ class PasswordGeneratorViewController: UITableViewController, UIPickerViewDataSo
     private var length: Int = 0
     private var charSets: Int = 10
     
-    var donePressed: ((PasswordGeneratorViewController) -> Void)?
+    var donePressed: ((PasswordGeneratorViewController, password: String) -> Void)?
     var cancelPressed: ((PasswordGeneratorViewController) -> Void)?
 
     override func viewDidLoad() {
@@ -60,10 +60,6 @@ class PasswordGeneratorViewController: UITableViewController, UIPickerViewDataSo
         characterSetsCell.detailTextLabel?.text = createCharSetsDescription()
         
         generatePassword()
-    }
-    
-    func getPassword() -> String {
-        return passwordLabel.text!
     }
     
     func generatePassword() {
@@ -197,7 +193,7 @@ class PasswordGeneratorViewController: UITableViewController, UIPickerViewDataSo
     }
 
     @IBAction func donePressedAction(sender: AnyObject) {
-        donePressed?(self)
+        donePressed?(self, password: passwordLabel.text!)
     }
     
     @IBAction func cancelPressedAction(sender: AnyObject) {
