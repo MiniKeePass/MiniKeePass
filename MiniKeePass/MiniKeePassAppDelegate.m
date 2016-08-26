@@ -16,7 +16,6 @@
  */
 
 #import "MiniKeePassAppDelegate.h"
-#import "FilesViewControllerOld.h"
 #import "GroupViewController.h"
 #import "EntryViewController.h"
 #import "AppSettings.h"
@@ -27,7 +26,7 @@
 
 @interface MiniKeePassAppDelegate ()
 
-@property (nonatomic, strong) FilesViewControllerOld *filesViewController;;
+@property (nonatomic, strong) FilesViewController *filesViewController;;
 @property (nonatomic, strong) UINavigationController *navigationController;
 
 @end
@@ -37,19 +36,14 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     _databaseDocument = nil;
     
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Files" bundle:[NSBundle mainBundle]];
-    UIViewController *vc =[storyboard instantiateInitialViewController];
-
-
     // Create the files view
-    self.filesViewController = [[FilesViewControllerOld alloc] initWithStyle:UITableViewStylePlain];
-
-    self.navigationController = [[UINavigationController alloc] initWithRootViewController:self.filesViewController];
-    self.navigationController.toolbarHidden = NO;
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Files" bundle:[NSBundle mainBundle]];
+    self.navigationController = [storyboard instantiateInitialViewController];
+    self.filesViewController = (FilesViewController *)self.navigationController.topViewController;
 
     // Create the window
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    self.window.rootViewController = vc;
+    self.window.rootViewController = self.navigationController;
     [self.window makeKeyAndVisible];
 
     // Add a pasteboard notification listener to support clearing the clipboard
@@ -120,8 +114,9 @@
     // Delete the Inbox folder if it exists
     [fileManager removeItemAtPath:[documentsDirectory stringByAppendingPathComponent:@"Inbox"] error:nil];
 
-    [self.filesViewController updateFiles];
-    [self.filesViewController.tableView reloadData];
+// FIXME Is this necessary, won't it update automatically?
+//    [self.filesViewController updateFiles];
+//    [self.filesViewController.tableView reloadData];
 }
 
 - (void)setDatabaseDocument:(DatabaseDocument *)newDatabaseDocument {

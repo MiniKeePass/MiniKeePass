@@ -93,7 +93,6 @@
 		689D045013A42C82005EBD36 /* DatabaseManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D042913A42C81005EBD36 /* DatabaseManager.m */; };
 		689D045113A42C82005EBD36 /* EntryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D042B13A42C81005EBD36 /* EntryViewController.m */; };
 		689D045213A42C82005EBD36 /* FilesInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D042D13A42C81005EBD36 /* FilesInfoView.m */; };
-		689D045313A42C82005EBD36 /* FilesViewControllerOld.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D042F13A42C81005EBD36 /* FilesViewControllerOld.m */; };
 		689D045413A42C82005EBD36 /* GroupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D043113A42C81005EBD36 /* GroupViewController.m */; };
 		689D045513A42C82005EBD36 /* MiniKeePassAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D043313A42C81005EBD36 /* MiniKeePassAppDelegate.m */; };
 		689DFFDA13A4273F005EBD36 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 689DFFD913A4273F005EBD36 /* UIKit.framework */; };
@@ -309,8 +308,6 @@
 		689D042B13A42C81005EBD36 /* EntryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EntryViewController.m; sourceTree = "<group>"; };
 		689D042C13A42C81005EBD36 /* FilesInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilesInfoView.h; sourceTree = "<group>"; };
 		689D042D13A42C81005EBD36 /* FilesInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilesInfoView.m; sourceTree = "<group>"; };
-		689D042E13A42C81005EBD36 /* FilesViewControllerOld.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilesViewControllerOld.h; sourceTree = "<group>"; };
-		689D042F13A42C81005EBD36 /* FilesViewControllerOld.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilesViewControllerOld.m; sourceTree = "<group>"; };
 		689D043013A42C81005EBD36 /* GroupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupViewController.h; sourceTree = "<group>"; };
 		689D043113A42C81005EBD36 /* GroupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupViewController.m; sourceTree = "<group>"; };
 		689D043213A42C81005EBD36 /* MiniKeePassAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MiniKeePassAppDelegate.h; sourceTree = "<group>"; };
@@ -723,8 +720,6 @@
 				689D042B13A42C81005EBD36 /* EntryViewController.m */,
 				689D042C13A42C81005EBD36 /* FilesInfoView.h */,
 				689D042D13A42C81005EBD36 /* FilesInfoView.m */,
-				689D042E13A42C81005EBD36 /* FilesViewControllerOld.h */,
-				689D042F13A42C81005EBD36 /* FilesViewControllerOld.m */,
 				52C7FD7B18693D9900D498A2 /* GroupSearchController.h */,
 				52C7FD7C18693D9900D498A2 /* GroupSearchController.m */,
 				689D043013A42C81005EBD36 /* GroupViewController.h */,
@@ -1071,7 +1066,6 @@
 				680C9D7C1D69EB540040FB43 /* HelpWebViewController.swift in Sources */,
 				680C9D771D69E2A70040FB43 /* HelpViewController.swift in Sources */,
 				689D045213A42C82005EBD36 /* FilesInfoView.m in Sources */,
-				689D045313A42C82005EBD36 /* FilesViewControllerOld.m in Sources */,
 				689D045413A42C82005EBD36 /* GroupViewController.m in Sources */,
 				689D045513A42C82005EBD36 /* MiniKeePassAppDelegate.m in Sources */,
 				689FBE791AB27228005CB6BD /* PasswordUtils.m in Sources */,

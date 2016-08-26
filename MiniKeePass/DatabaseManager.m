@@ -39,18 +39,18 @@ static DatabaseManager *sharedInstance;
 
 - (NSArray *)getDatabases {
     NSMutableArray *files = [[NSMutableArray alloc] init];
-    
+
     // Get the document's directory
     NSString *documentsDirectory = [MiniKeePassAppDelegate documentsDirectory];
-    
+
     // Get the contents of the documents directory
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSArray *dirContents = [fileManager contentsOfDirectoryAtPath:documentsDirectory error:nil];
-    
+
     // Sort the files into database files and keyfiles
     for (NSString *file in dirContents) {
         NSString *path = [documentsDirectory stringByAppendingPathComponent:file];
-        
+
         // Check if it's a directory
         BOOL dir = NO;
         [fileManager fileExistsAtPath:path isDirectory:&dir];
@@ -61,27 +61,27 @@ static DatabaseManager *sharedInstance;
             }
         }
     }
-    
+
     // Sort the list of files
     [files sortUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
-    
+
     return files;
 }
 
 - (NSArray *)getKeyFiles {
     NSMutableArray *files = [[NSMutableArray alloc] init];
-    
+
     // Get the document's directory
     NSString *documentsDirectory = [MiniKeePassAppDelegate documentsDirectory];
-    
+
     // Get the contents of the documents directory
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSArray *dirContents = [fileManager contentsOfDirectoryAtPath:documentsDirectory error:nil];
-    
+
     // Sort the files into database files and keyfiles
     for (NSString *file in dirContents) {
         NSString *path = [documentsDirectory stringByAppendingPathComponent:file];
-        
+
         // Check if it's a directory
         BOOL dir = NO;
         [fileManager fileExistsAtPath:path isDirectory:&dir];
@@ -92,10 +92,10 @@ static DatabaseManager *sharedInstance;
             }
         }
     }
-    
+
     // Sort the list of files
     [files sortUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
-    
+
     return files;
 }
 
@@ -112,47 +112,110 @@ static DatabaseManager *sharedInstance;
     return date;
 }
 
+- (void)deleteFile:(NSString *)filename {
+    NSURL *url = [self getFileUrl:filename];
+    NSString *path = url.path;
+
+    // Close the current database if we're deleting it's file
+    MiniKeePassAppDelegate *appDelegate = [MiniKeePassAppDelegate appDelegate];
+    if ([path isEqualToString:appDelegate.databaseDocument.filename]) {
+        [appDelegate closeDatabase];
+    }
+
+    // Delete the file
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    [fileManager removeItemAtURL:url error:nil];
+}
+
+- (void)newDatabase:(NSURL *)url password:(NSString *)password version:(NSInteger)version {
+    // Create the KdbWriter for the requested version
+    id<KdbWriter> writer;
+    if (version == 1) {
+        writer = [[Kdb3Writer alloc] init];
+    } else {
+        writer = [[Kdb4Writer alloc] init];
+    }
+    
+    // Create the KdbPassword
+    KdbPassword *kdbPassword = [[KdbPassword alloc] initWithPassword:password
+                                                    passwordEncoding:NSUTF8StringEncoding
+                                                             keyFile:nil];
+    
+    // Create the new database
+    [writer newFile:url.path withPassword:kdbPassword];
+    
+    // Store the password in the keychain
+    if ([[AppSettings sharedInstance] rememberPasswordsEnabled]) {
+        NSString *filename = url.lastPathComponent;
+        [KeychainUtils setString:password forKey:filename andServiceName:KEYCHAIN_PASSWORDS_SERVICE];
+    }
+}
+
+- (void)renameDatabase:(NSURL *)originalUrl newUrl:(NSURL *)newUrl {
+    NSString *oldFilename = originalUrl.lastPathComponent;
+    NSString *newFilename = newUrl.lastPathComponent;
+    
+    // Move input file into documents directory
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    [fileManager moveItemAtURL:originalUrl toURL:newUrl error:nil];
+    
+    // Check if we should move the saved passwords to the new filename
+    if ([[AppSettings sharedInstance] rememberPasswordsEnabled]) {
+        // Load the password and keyfile from the keychain under the old filename
+        NSString *password = [KeychainUtils stringForKey:oldFilename andServiceName:KEYCHAIN_PASSWORDS_SERVICE];
+        NSString *keyFile = [KeychainUtils stringForKey:oldFilename andServiceName:KEYCHAIN_KEYFILES_SERVICE];
+        
+        // Store the password and keyfile into the keychain under the new filename
+        [KeychainUtils setString:password forKey:newFilename andServiceName:KEYCHAIN_PASSWORDS_SERVICE];
+        [KeychainUtils setString:keyFile forKey:newFilename andServiceName:KEYCHAIN_KEYFILES_SERVICE];
+        
+        // Delete the keychain entries for the old filename
+        [KeychainUtils deleteStringForKey:oldFilename andServiceName:KEYCHAIN_PASSWORDS_SERVICE];
+        [KeychainUtils deleteStringForKey:oldFilename andServiceName:KEYCHAIN_KEYFILES_SERVICE];
+    }
+}
+
 - (void)openDatabaseDocument:(NSString*)filename animated:(BOOL)animated {
     BOOL databaseLoaded = NO;
-    
+
     self.selectedFilename = filename;
-    
+
     // Get the application delegate
     MiniKeePassAppDelegate *appDelegate = [MiniKeePassAppDelegate appDelegate];
-    
+
     // Get the documents directory
     NSString *documentsDirectory = [MiniKeePassAppDelegate documentsDirectory];
-    
+
     // Load the password and keyfile from the keychain
     NSString *password = [KeychainUtils stringForKey:self.selectedFilename
                                       andServiceName:KEYCHAIN_PASSWORDS_SERVICE];
     NSString *keyFile = [KeychainUtils stringForKey:self.selectedFilename
                                      andServiceName:KEYCHAIN_KEYFILES_SERVICE];
-    
+
     // Try and load the database with the cached password from the keychain
     if (password != nil || keyFile != nil) {
         // Get the absolute path to the database
         NSString *path = [documentsDirectory stringByAppendingPathComponent:self.selectedFilename];
-        
+
         // Get the absolute path to the keyfile
         NSString *keyFilePath = nil;
         if (keyFile != nil) {
             keyFilePath = [documentsDirectory stringByAppendingPathComponent:keyFile];
         }
-        
+
         // Load the database
         @try {
             DatabaseDocument *dd = [[DatabaseDocument alloc] initWithFilename:path password:password keyFile:keyFilePath];
-            
+
             databaseLoaded = YES;
-            
+
             // Set the database document in the application delegate
             appDelegate.databaseDocument = dd;
         } @catch (NSException *exception) {
             // Ignore
         }
     }
-    
+
     // Prompt the user for the password if we haven't loaded the database yet
     if (!databaseLoaded) {
         // Prompt the user for a password
@@ -169,10 +232,10 @@ static DatabaseManager *sharedInstance;
 
         // Initialize the filename
         passwordEntryViewController.filename = filename;
-        
+
         // Load the key files
         passwordEntryViewController.keyFiles = [self getKeyFiles];
-        
+
         [appDelegate.window.rootViewController presentViewController:navigationController animated:animated completion:nil];
     }
 }

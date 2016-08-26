@@ -23,7 +23,6 @@ class RenameDatabaseViewController: UITableViewController {
     var originalUrl: NSURL!
 
     var donePressed: ((RenameDatabaseViewController, originalUrl: NSURL, newUrl: NSURL) -> Void)?
-    var cancelPressed: ((RenameDatabaseViewController) -> Void)?
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
@@ -39,10 +38,6 @@ class RenameDatabaseViewController: UITableViewController {
     }
     
     // MARK: - Actions
-
-    @IBAction func cancelPressedAction(sender: UIBarButtonItem) {
-        cancelPressed?(self)
-    }
     
     @IBAction func donePressedAction(sender: UIBarButtonItem?) {
         let name = nameTextField.text;
@@ -63,5 +58,9 @@ class RenameDatabaseViewController: UITableViewController {
         }
         
         donePressed?(self, originalUrl: originalUrl, newUrl: newUrl)
+    }
+    
+    @IBAction func cancelPressed(sender: UIBarButtonItem) {
+        dismissViewControllerAnimated(true, completion: nil)
     }
 }
