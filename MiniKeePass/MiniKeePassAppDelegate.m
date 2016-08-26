@@ -16,6 +16,7 @@
  */
 
 #import "MiniKeePassAppDelegate.h"
+#import "FilesViewControllerOld.h"
 #import "GroupViewController.h"
 #import "EntryViewController.h"
 #import "AppSettings.h"
@@ -26,7 +27,7 @@
 
 @interface MiniKeePassAppDelegate ()
 
-@property (nonatomic, strong) FilesViewController *filesViewController;;
+@property (nonatomic, strong) FilesViewControllerOld *filesViewController;;
 @property (nonatomic, strong) UINavigationController *navigationController;
 
 @end
@@ -35,16 +36,20 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     _databaseDocument = nil;
+    
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Files" bundle:[NSBundle mainBundle]];
+    UIViewController *vc =[storyboard instantiateInitialViewController];
+
 
     // Create the files view
-    self.filesViewController = [[FilesViewController alloc] initWithStyle:UITableViewStylePlain];
+    self.filesViewController = [[FilesViewControllerOld alloc] initWithStyle:UITableViewStylePlain];
 
     self.navigationController = [[UINavigationController alloc] initWithRootViewController:self.filesViewController];
     self.navigationController.toolbarHidden = NO;
 
     // Create the window
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    self.window.rootViewController = self.navigationController;
+    self.window.rootViewController = vc;
     [self.window makeKeyAndVisible];
 
     // Add a pasteboard notification listener to support clearing the clipboard
@@ -240,24 +245,6 @@
             [application endBackgroundTask:bgTask];
         });
     }
-}
-
-- (void)showSettingsView {
-    // Display the password generator
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Settings" bundle:nil];
-    UINavigationController *navigationController = [storyboard instantiateInitialViewController];
-    
-    SettingsViewController *settingsViewController = (SettingsViewController *)navigationController.topViewController;
-    settingsViewController.donePressed = ^(SettingsViewController *settingsViewController) {
-        [settingsViewController dismissViewControllerAnimated:YES completion:nil];
-    };
-
-    
-    [self.window.rootViewController presentViewController:navigationController animated:YES completion:nil];
-}
-
-- (void)dismissSettingsView {
-    [self.window.rootViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end

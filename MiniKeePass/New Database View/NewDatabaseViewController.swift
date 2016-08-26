@@ -22,7 +22,6 @@ class NewDatabaseViewController: UITableViewController {
     @IBOutlet weak var versionSegmentedControl: UISegmentedControl!
 
     var donePressed: ((newDatabaseViewController: NewDatabaseViewController, url: NSURL, password: String, version: Int) -> Void)?
-    var cancelPressed: ((newDatabaseViewController: NewDatabaseViewController) -> Void)?
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
@@ -44,10 +43,6 @@ class NewDatabaseViewController: UITableViewController {
     }
     
     // MARK: - Actions
-
-    @IBAction func cancelPressedAction(sender: UIBarButtonItem) {
-        cancelPressed?(newDatabaseViewController: self)
-    }
 
     @IBAction func donePressedAction(sender: UIBarButtonItem?) {
         // Check to make sure the name was supplied
@@ -89,5 +84,9 @@ class NewDatabaseViewController: UITableViewController {
 
         // Notify the listener
         donePressed?(newDatabaseViewController: self, url: url, password: password1!, version: version)
+    }
+    
+    @IBAction func cancelPressedAction(sender: UIBarButtonItem) {
+        dismissViewControllerAnimated(true, completion: nil)
     }
 }

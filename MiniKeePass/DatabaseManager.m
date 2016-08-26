@@ -37,8 +37,39 @@ static DatabaseManager *sharedInstance;
     return sharedInstance;
 }
 
+- (NSArray *)getDatabases {
+    NSMutableArray *files = [[NSMutableArray alloc] init];
+    
+    // Get the document's directory
+    NSString *documentsDirectory = [MiniKeePassAppDelegate documentsDirectory];
+    
+    // Get the contents of the documents directory
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSArray *dirContents = [fileManager contentsOfDirectoryAtPath:documentsDirectory error:nil];
+    
+    // Sort the files into database files and keyfiles
+    for (NSString *file in dirContents) {
+        NSString *path = [documentsDirectory stringByAppendingPathComponent:file];
+        
+        // Check if it's a directory
+        BOOL dir = NO;
+        [fileManager fileExistsAtPath:path isDirectory:&dir];
+        if (!dir) {
+            NSString *extension = [[file pathExtension] lowercaseString];
+            if ([extension isEqualToString:@"kdb"] || [extension isEqualToString:@"kdbx"]) {
+                [files addObject:file];
+            }
+        }
+    }
+    
+    // Sort the list of files
+    [files sortUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
+    
+    return files;
+}
+
 - (NSArray *)getKeyFiles {
-    NSMutableArray *keyFiles = [[NSMutableArray alloc] init];
+    NSMutableArray *files = [[NSMutableArray alloc] init];
     
     // Get the document's directory
     NSString *documentsDirectory = [MiniKeePassAppDelegate documentsDirectory];
@@ -57,15 +88,28 @@ static DatabaseManager *sharedInstance;
         if (!dir) {
             NSString *extension = [[file pathExtension] lowercaseString];
             if (![extension isEqualToString:@"kdb"] && ![extension isEqualToString:@"kdbx"]) {
-                [keyFiles addObject:file];
+                [files addObject:file];
             }
         }
     }
     
     // Sort the list of files
-    [keyFiles sortUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
+    [files sortUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
+    
+    return files;
+}
 
-    return keyFiles;
+- (NSURL *)getFileUrl:(NSString *)filename {
+    // Resolve the filename to a URL
+    NSURL *documentsDirectory = [MiniKeePassAppDelegate documentsDirectoryUrl];
+    return [documentsDirectory URLByAppendingPathComponent:filename];
+}
+
+- (NSDate *)getFileLastModificationDate:(NSURL *)url {
+    NSDate *date;
+    NSError *error;
+    [url getResourceValue:&date forKey:NSURLContentModificationDateKey error:&error];
+    return date;
 }
 
 - (void)openDatabaseDocument:(NSString*)filename animated:(BOOL)animated {

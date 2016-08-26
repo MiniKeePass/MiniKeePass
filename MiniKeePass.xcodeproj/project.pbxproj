@@ -50,6 +50,9 @@
 		68496E751AB34F8800370876 /* AppSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 68496E721AB34F8800370876 /* AppSettings.m */; };
 		6851FAFD186DD11D00A53B0E /* UIActionSheetAutoDismiss.m in Sources */ = {isa = PBXBuildFile; fileRef = 6851FAFC186DD11D00A53B0E /* UIActionSheetAutoDismiss.m */; };
 		685D9D951603F8EE00D739D3 /* Kdb3Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 685D9D941603F8EE00D739D3 /* Kdb3Utils.m */; };
+		68767B651D6F23350039EFE0 /* FilesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68767B641D6F23350039EFE0 /* FilesViewController.swift */; };
+		68767B671D6F241F0039EFE0 /* Files.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 68767B661D6F241F0039EFE0 /* Files.storyboard */; };
+		68767B691D70B0830039EFE0 /* Array+InsertionIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68767B681D70B0830039EFE0 /* Array+InsertionIndex.swift */; };
 		688038971D6BB33A001424CA /* WebBrowser.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 688038951D6BB33A001424CA /* WebBrowser.storyboard */; };
 		688038981D6BB33A001424CA /* WebBrowserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 688038961D6BB33A001424CA /* WebBrowserViewController.swift */; };
 		6895D2E91D68F95D003D8C44 /* RenameItem.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6895D2E71D68F95D003D8C44 /* RenameItem.storyboard */; };
@@ -90,7 +93,7 @@
 		689D045013A42C82005EBD36 /* DatabaseManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D042913A42C81005EBD36 /* DatabaseManager.m */; };
 		689D045113A42C82005EBD36 /* EntryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D042B13A42C81005EBD36 /* EntryViewController.m */; };
 		689D045213A42C82005EBD36 /* FilesInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D042D13A42C81005EBD36 /* FilesInfoView.m */; };
-		689D045313A42C82005EBD36 /* FilesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D042F13A42C81005EBD36 /* FilesViewController.m */; };
+		689D045313A42C82005EBD36 /* FilesViewControllerOld.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D042F13A42C81005EBD36 /* FilesViewControllerOld.m */; };
 		689D045413A42C82005EBD36 /* GroupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D043113A42C81005EBD36 /* GroupViewController.m */; };
 		689D045513A42C82005EBD36 /* MiniKeePassAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D043313A42C81005EBD36 /* MiniKeePassAppDelegate.m */; };
 		689DFFDA13A4273F005EBD36 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 689DFFD913A4273F005EBD36 /* UIKit.framework */; };
@@ -219,6 +222,9 @@
 		6851FAFC186DD11D00A53B0E /* UIActionSheetAutoDismiss.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIActionSheetAutoDismiss.m; sourceTree = "<group>"; };
 		685D9D931603F8EE00D739D3 /* Kdb3Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Kdb3Utils.h; sourceTree = "<group>"; };
 		685D9D941603F8EE00D739D3 /* Kdb3Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Kdb3Utils.m; sourceTree = "<group>"; };
+		68767B641D6F23350039EFE0 /* FilesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilesViewController.swift; sourceTree = "<group>"; };
+		68767B661D6F241F0039EFE0 /* Files.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Files.storyboard; sourceTree = "<group>"; };
+		68767B681D70B0830039EFE0 /* Array+InsertionIndex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Array+InsertionIndex.swift"; sourceTree = "<group>"; };
 		687AAA981889F8B400AB8AC5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text; name = en; path = en.lproj/AppStore.txt; sourceTree = "<group>"; };
 		687AAAA11889FB4000AB8AC5 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text; name = ru; path = ru.lproj/AppStore.txt; sourceTree = "<group>"; };
 		687AAAA21889FB4B00AB8AC5 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text; name = ja; path = ja.lproj/AppStore.txt; sourceTree = "<group>"; };
@@ -303,8 +309,8 @@
 		689D042B13A42C81005EBD36 /* EntryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EntryViewController.m; sourceTree = "<group>"; };
 		689D042C13A42C81005EBD36 /* FilesInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilesInfoView.h; sourceTree = "<group>"; };
 		689D042D13A42C81005EBD36 /* FilesInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilesInfoView.m; sourceTree = "<group>"; };
-		689D042E13A42C81005EBD36 /* FilesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilesViewController.h; sourceTree = "<group>"; };
-		689D042F13A42C81005EBD36 /* FilesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilesViewController.m; sourceTree = "<group>"; };
+		689D042E13A42C81005EBD36 /* FilesViewControllerOld.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilesViewControllerOld.h; sourceTree = "<group>"; };
+		689D042F13A42C81005EBD36 /* FilesViewControllerOld.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilesViewControllerOld.m; sourceTree = "<group>"; };
 		689D043013A42C81005EBD36 /* GroupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupViewController.h; sourceTree = "<group>"; };
 		689D043113A42C81005EBD36 /* GroupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupViewController.m; sourceTree = "<group>"; };
 		689D043213A42C81005EBD36 /* MiniKeePassAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MiniKeePassAppDelegate.h; sourceTree = "<group>"; };
@@ -499,6 +505,16 @@
 			path = Settings;
 			sourceTree = "<group>";
 		};
+		68767B631D6F23350039EFE0 /* Files View */ = {
+			isa = PBXGroup;
+			children = (
+				68767B661D6F241F0039EFE0 /* Files.storyboard */,
+				68767B641D6F23350039EFE0 /* FilesViewController.swift */,
+				68767B681D70B0830039EFE0 /* Array+InsertionIndex.swift */,
+			);
+			path = "Files View";
+			sourceTree = "<group>";
+		};
 		688038941D6BB33A001424CA /* Web Browser View */ = {
 			isa = PBXGroup;
 			children = (
@@ -689,6 +705,7 @@
 			isa = PBXGroup;
 			children = (
 				6895D2F01D68FE00003D8C44 /* Custom Field View */,
+				68767B631D6F23350039EFE0 /* Files View */,
 				680C9D751D69E2A70040FB43 /* Help View */,
 				689EA6731D67F8B500CF445E /* Image Selector View */,
 				689EA67C1D67F8D500CF445E /* New Database View */,
@@ -706,8 +723,8 @@
 				689D042B13A42C81005EBD36 /* EntryViewController.m */,
 				689D042C13A42C81005EBD36 /* FilesInfoView.h */,
 				689D042D13A42C81005EBD36 /* FilesInfoView.m */,
-				689D042E13A42C81005EBD36 /* FilesViewController.h */,
-				689D042F13A42C81005EBD36 /* FilesViewController.m */,
+				689D042E13A42C81005EBD36 /* FilesViewControllerOld.h */,
+				689D042F13A42C81005EBD36 /* FilesViewControllerOld.m */,
 				52C7FD7B18693D9900D498A2 /* GroupSearchController.h */,
 				52C7FD7C18693D9900D498A2 /* GroupSearchController.m */,
 				689D043013A42C81005EBD36 /* GroupViewController.h */,
@@ -950,6 +967,7 @@
 				52A177BC13EB698E00CEEFCE /* createdb.html in Resources */,
 				68CE37F51404A86600E4A5E1 /* safariemail.html in Resources */,
 				68DDC3731405160300FC8BD8 /* keyfiles.html in Resources */,
+				68767B671D6F241F0039EFE0 /* Files.storyboard in Resources */,
 				68EA62DB1CC972F300B33E42 /* LaunchScreen.storyboard in Resources */,
 				689D033113A42B63005EBD36 /* style.css in Resources */,
 				68E08310146F24E3001C4EDF /* Localizable.strings in Resources */,
@@ -1048,11 +1066,12 @@
 				689D03ED13A42B63005EBD36 /* DDXMLNode.m in Sources */,
 				689D044F13A42C82005EBD36 /* DatabaseDocument.m in Sources */,
 				689D045013A42C82005EBD36 /* DatabaseManager.m in Sources */,
+				68767B651D6F23350039EFE0 /* FilesViewController.swift in Sources */,
 				689D045113A42C82005EBD36 /* EntryViewController.m in Sources */,
 				680C9D7C1D69EB540040FB43 /* HelpWebViewController.swift in Sources */,
 				680C9D771D69E2A70040FB43 /* HelpViewController.swift in Sources */,
 				689D045213A42C82005EBD36 /* FilesInfoView.m in Sources */,
-				689D045313A42C82005EBD36 /* FilesViewController.m in Sources */,
+				689D045313A42C82005EBD36 /* FilesViewControllerOld.m in Sources */,
 				689D045413A42C82005EBD36 /* GroupViewController.m in Sources */,
 				689D045513A42C82005EBD36 /* MiniKeePassAppDelegate.m in Sources */,
 				689FBE791AB27228005CB6BD /* PasswordUtils.m in Sources */,
@@ -1072,6 +1091,7 @@
 				682D45171603883900156830 /* HashedOutputStream.m in Sources */,
 				682D45181603883900156830 /* InputStream.m in Sources */,
 				682D45191603883900156830 /* OutputStream.m in Sources */,
+				68767B691D70B0830039EFE0 /* Array+InsertionIndex.swift in Sources */,
 				682D451A1603883900156830 /* Sha256OutputStream.m in Sources */,
 				689FBE951AB27283005CB6BD /* TitleFieldCell.m in Sources */,
 				685D9D951603F8EE00D739D3 /* Kdb3Utils.m in Sources */,

@@ -204,8 +204,8 @@ enum {
     if (_standardToolbarItems == nil) {
         UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"gear"]
                                                                            style:UIBarButtonItemStylePlain
-                                                                          target:self.appDelegate
-                                                                          action:@selector(showSettingsView)];
+                                                                          target:self
+                                                                          action:@selector(settingsPressed:)];
 
         UIBarButtonItem *actionButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction
                                                                                       target:self
@@ -504,6 +504,14 @@ enum {
     if (self.editing) {
         [self updateEditingButtons];
     }
+}
+
+- (void)settingsPressed:(id)sender {
+    // Display the settings view
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Settings" bundle:nil];
+    UINavigationController *navigationController = [storyboard instantiateInitialViewController];
+    
+    [self presentViewController:navigationController animated:YES completion:nil];
 }
 
 #pragma mark - Export Database

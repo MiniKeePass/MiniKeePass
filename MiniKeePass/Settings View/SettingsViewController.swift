@@ -82,8 +82,6 @@ class SettingsViewController: UITableViewController, PinViewControllerDelegate {
     private var touchIdSupported = false
     private var tempPin: String? = nil
     
-    var donePressed: ((settingsViewController: SettingsViewController) -> Void)?
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -214,7 +212,7 @@ class SettingsViewController: UITableViewController, PinViewControllerDelegate {
     // MARK: - Actions
     
     @IBAction func donePressedAction(sender: UIBarButtonItem) {
-        donePressed?(settingsViewController: self)
+        dismissViewControllerAnimated(true, completion: nil)
     }
     
     @IBAction func pinEnabledChanged(sender: UISwitch) {

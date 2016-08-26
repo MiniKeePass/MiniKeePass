@@ -25,6 +25,12 @@
 /// Create a DatabaseManager instance
 + (DatabaseManager*)sharedInstance;
 
+- (NSArray *)getDatabases;
+- (NSArray *)getKeyFiles;
+- (NSURL *)getFileUrl:(NSString *)filename;
+- (NSDate *)getFileLastModificationDate:(NSURL *)url;
+
+
 /// Open the specified KeePass DatabaseDocument
 /// @param path Path to the chosen KeePass DatabaseDocument
 /// @param animated Animate the ViewController transition
