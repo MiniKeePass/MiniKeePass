@@ -86,7 +86,7 @@ class NewDatabaseViewController: UITableViewController {
         donePressed?(newDatabaseViewController: self, url: url, password: password1!, version: version)
     }
     
-    @IBAction func cancelPressedAction(sender: UIBarButtonItem) {
+    @IBAction func cancelPressed(sender: UIBarButtonItem) {
         dismissViewControllerAnimated(true, completion: nil)
     }
 }

@@ -130,7 +130,7 @@
                     <navigationItem key="navigationItem" title="New Database" id="cHh-Kv-sss">
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="bgb-sM-CyA">
                             <connections>
-                                <action selector="cancelPressedAction:" destination="F1U-jU-Mc4" id="nHH-qY-0tX"/>
+                                <action selector="cancelPressed:" destination="F1U-jU-Mc4" id="NeN-0w-NZC"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="done" id="2MN-rf-n5q">
