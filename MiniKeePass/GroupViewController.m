@@ -18,7 +18,6 @@
 #import "GroupViewController.h"
 #import "GroupSearchController.h"
 #import "EntryViewController.h"
-#import "SelectGroupViewController.h"
 #import "UIActionSheetAutoDismiss.h"
 #import "AppSettings.h"
 #import "ImageFactory.h"
@@ -755,104 +754,101 @@ enum {
 #pragma mark - Move Groups/Entries
 
 - (void)moveSelectedItems {
-    SelectGroupViewController *selectGroupViewController = [[SelectGroupViewController alloc] initWithStyle:UITableViewStylePlain];
-    selectGroupViewController.delegate = self;
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:selectGroupViewController];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SelectGroup" bundle:nil];
+    UINavigationController *navigationController = [storyboard instantiateInitialViewController];
 
-    [self.appDelegate.window.rootViewController presentViewController:navController animated:YES completion:nil];
-}
+    SelectGroupViewController *selectGroupViewController = (SelectGroupViewController *)navigationController.topViewController;
+    selectGroupViewController.groupSelected = ^(SelectGroupViewController *selectGroupViewController, KdbGroup *selectedGroup) {
+        NSArray *indexPaths = self.tableView.indexPathsForSelectedRows;
 
-- (BOOL)selectGroupViewController:(SelectGroupViewController *)selectGroupViewController
-                   canSelectGroup:(KdbGroup *)g {
-    BOOL validGroup = YES;
-    BOOL containsEntry = NO;
+        // Find items to move
+        NSMutableArray *groupsToMove = [NSMutableArray arrayWithCapacity:[indexPaths count]];
+        NSMutableArray *enteriesToMove = [NSMutableArray arrayWithCapacity:[indexPaths count]];
 
-    // Check if chosen group is a subgroup of any groups to be moved
-    for (NSIndexPath *indexPath in self.tableView.indexPathsForSelectedRows) {
-        switch (indexPath.section) {
-            case SECTION_GROUPS: {
-                KdbGroup *movingGroup = [self.groupsArray objectAtIndex:indexPath.row];
-                if (movingGroup.parent == g) {
-                    validGroup = NO;
+        for (NSIndexPath *indexPath in indexPaths) {
+            switch (indexPath.section) {
+                case SECTION_GROUPS:
+                    [groupsToMove addObject:[self.groupsArray objectAtIndex:indexPath.row]];
+                    break;
+                case SECTION_ENTRIES:
+                    [enteriesToMove addObject:[self.entriesArray objectAtIndex:indexPath.row]];
+                    break;
+            }
+        }
+
+        // Add desired items to chosen group
+        for (KdbGroup *movingGroup in groupsToMove) {
+            if (movingGroup.parent == selectedGroup) {
+                continue;
+            }
+            [movingGroup.parent moveGroup:movingGroup toGroup:selectedGroup];
+            [self.groupsArray removeObject:movingGroup];
+        }
+        for (KdbEntry *movingEntry in enteriesToMove) {
+            if (movingEntry.parent == selectedGroup) {
+                continue;
+            }
+            [movingEntry.parent moveEntry:movingEntry toGroup:selectedGroup];
+            [self.entriesArray removeObject:movingEntry];
+        }
+
+        // Save the database
+        DatabaseDocument *databaseDocument = self.appDelegate.databaseDocument;
+        [databaseDocument save];
+
+        // Update the table
+        [self.tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
+        
+        [self setEditing:NO animated:YES];
+    };
+    selectGroupViewController.isSelectable = ^(KdbGroup *group) {
+        BOOL validGroup = YES;
+        BOOL containsEntry = NO;
+
+        // Check if chosen group is a subgroup of any groups to be moved
+        for (NSIndexPath *indexPath in self.tableView.indexPathsForSelectedRows) {
+            switch (indexPath.section) {
+                case SECTION_GROUPS: {
+                    KdbGroup *movingGroup = [self.groupsArray objectAtIndex:indexPath.row];
+                    if (movingGroup.parent == group) {
+                        validGroup = NO;
+                    }
+                    if ([movingGroup containsGroup:group]) {
+                        validGroup = NO;
+                    }
+                    break;
                 }
-                if ([movingGroup containsGroup:g]) {
-                    validGroup = NO;
+
+                case SECTION_ENTRIES: {
+                    containsEntry = YES;
+                    KdbEntry *movingEntry = [self.entriesArray objectAtIndex:indexPath.row];
+                    if (movingEntry.parent == group) {
+                        validGroup = NO;
+                    }
+                    break;
                 }
-                break;
             }
 
-            case SECTION_ENTRIES: {
-                containsEntry = YES;
-                KdbEntry *movingEntry = [self.entriesArray objectAtIndex:indexPath.row];
-                if (movingEntry.parent == g) {
-                    validGroup = NO;
-                }
+            if (!validGroup) {
                 break;
             }
         }
 
+        // Failed subgroup check
         if (!validGroup) {
-            break;
+            return NO;
         }
-    }
 
-    // Failed subgroup check
-    if (!validGroup) {
-        return NO;
-    }
-
-    // Check if trying to move entries to top level in 1.x database
-    KdbTree *tree = self.appDelegate.databaseDocument.kdbTree;
-    if (containsEntry && g == tree.root && [tree isKindOfClass:[Kdb3Tree class]]) {
-        return NO;
-    }
-    
-    return YES;
-}
-
-- (void)selectGroupViewController:(SelectGroupViewController *)selectGroupViewController
-                    selectedGroup:(KdbGroup *)selectedGroup {
-    NSArray *indexPaths = self.tableView.indexPathsForSelectedRows;
-
-    // Find items to move
-    NSMutableArray *groupsToMove = [NSMutableArray arrayWithCapacity:[indexPaths count]];
-    NSMutableArray *enteriesToMove = [NSMutableArray arrayWithCapacity:[indexPaths count]];
-
-    for (NSIndexPath *indexPath in indexPaths) {
-        switch (indexPath.section) {
-            case SECTION_GROUPS:
-                [groupsToMove addObject:[self.groupsArray objectAtIndex:indexPath.row]];
-                break;
-            case SECTION_ENTRIES:
-                [enteriesToMove addObject:[self.entriesArray objectAtIndex:indexPath.row]];
-                break;
+        // Check if trying to move entries to top level in 1.x database
+        KdbTree *tree = self.appDelegate.databaseDocument.kdbTree;
+        if (containsEntry && group == tree.root && [tree isKindOfClass:[Kdb3Tree class]]) {
+            return NO;
         }
-    }
+        
+        return YES;
+    };
 
-    // Add desired items to chosen group
-    for (KdbGroup *movingGroup in groupsToMove) {
-        if (movingGroup.parent == selectedGroup) {
-            continue;
-        }
-        [movingGroup.parent moveGroup:movingGroup toGroup:selectedGroup];
-        [self.groupsArray removeObject:movingGroup];
-    }
-    for (KdbEntry *movingEntry in enteriesToMove) {
-        if (movingEntry.parent == selectedGroup) {
-            continue;
-        }
-        [movingEntry.parent moveEntry:movingEntry toGroup:selectedGroup];
-        [self.entriesArray removeObject:movingEntry];
-    }
-
-    // Save the database
-    DatabaseDocument *databaseDocument = self.appDelegate.databaseDocument;
-    [databaseDocument save];
-
-    // Update the table
-    [self.tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
-
-    [self setEditing:NO animated:YES];
+    [self presentViewController:navigationController animated:YES completion:nil];
 }
 
 @end

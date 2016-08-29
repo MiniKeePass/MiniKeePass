@@ -46,7 +46,6 @@
 		682D45181603883900156830 /* InputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 682D45081603883900156830 /* InputStream.m */; };
 		682D45191603883900156830 /* OutputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 682D450A1603883900156830 /* OutputStream.m */; };
 		682D451A1603883900156830 /* Sha256OutputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 682D450C1603883900156830 /* Sha256OutputStream.m */; };
-		6837C360188C9ED30018D588 /* SelectGroupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6837C35F188C9ED30018D588 /* SelectGroupViewController.m */; };
 		68496E751AB34F8800370876 /* AppSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 68496E721AB34F8800370876 /* AppSettings.m */; };
 		6851FAFD186DD11D00A53B0E /* UIActionSheetAutoDismiss.m in Sources */ = {isa = PBXBuildFile; fileRef = 6851FAFC186DD11D00A53B0E /* UIActionSheetAutoDismiss.m */; };
 		685D9D951603F8EE00D739D3 /* Kdb3Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 685D9D941603F8EE00D739D3 /* Kdb3Utils.m */; };
@@ -55,6 +54,9 @@
 		68767B691D70B0830039EFE0 /* Array+InsertionIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68767B681D70B0830039EFE0 /* Array+InsertionIndex.swift */; };
 		688038971D6BB33A001424CA /* WebBrowser.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 688038951D6BB33A001424CA /* WebBrowser.storyboard */; };
 		688038981D6BB33A001424CA /* WebBrowserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 688038961D6BB33A001424CA /* WebBrowserViewController.swift */; };
+		688D3AA61D74640B007B1C27 /* GroupCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 688D3AA31D74640B007B1C27 /* GroupCell.swift */; };
+		688D3AA71D74640B007B1C27 /* SelectGroup.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 688D3AA41D74640B007B1C27 /* SelectGroup.storyboard */; };
+		688D3AA81D74640B007B1C27 /* SelectGroupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 688D3AA51D74640B007B1C27 /* SelectGroupViewController.swift */; };
 		6895D2E91D68F95D003D8C44 /* RenameItem.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6895D2E71D68F95D003D8C44 /* RenameItem.storyboard */; };
 		6895D2EA1D68F95D003D8C44 /* RenameItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6895D2E81D68F95D003D8C44 /* RenameItemViewController.swift */; };
 		6895D2F31D68FE00003D8C44 /* CustomField.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6895D2F11D68FE00003D8C44 /* CustomField.storyboard */; };
@@ -212,8 +214,6 @@
 		682D450A1603883900156830 /* OutputStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OutputStream.m; sourceTree = "<group>"; };
 		682D450B1603883900156830 /* Sha256OutputStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Sha256OutputStream.h; sourceTree = "<group>"; };
 		682D450C1603883900156830 /* Sha256OutputStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Sha256OutputStream.m; sourceTree = "<group>"; };
-		6837C35E188C9ED30018D588 /* SelectGroupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectGroupViewController.h; sourceTree = "<group>"; };
-		6837C35F188C9ED30018D588 /* SelectGroupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectGroupViewController.m; sourceTree = "<group>"; };
 		68496E711AB34F8800370876 /* AppSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppSettings.h; sourceTree = "<group>"; };
 		68496E721AB34F8800370876 /* AppSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppSettings.m; sourceTree = "<group>"; };
 		6851FAFB186DD11D00A53B0E /* UIActionSheetAutoDismiss.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIActionSheetAutoDismiss.h; sourceTree = "<group>"; };
@@ -232,6 +232,9 @@
 		687AAAA71889FB4F00AB8AC5 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text; name = fr; path = fr.lproj/AppStore.txt; sourceTree = "<group>"; };
 		688038951D6BB33A001424CA /* WebBrowser.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = WebBrowser.storyboard; sourceTree = "<group>"; };
 		688038961D6BB33A001424CA /* WebBrowserViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebBrowserViewController.swift; sourceTree = "<group>"; };
+		688D3AA31D74640B007B1C27 /* GroupCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupCell.swift; sourceTree = "<group>"; };
+		688D3AA41D74640B007B1C27 /* SelectGroup.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SelectGroup.storyboard; sourceTree = "<group>"; };
+		688D3AA51D74640B007B1C27 /* SelectGroupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectGroupViewController.swift; sourceTree = "<group>"; };
 		6891C07419263611000EFC70 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text; name = pt; path = pt.lproj/AppStore.txt; sourceTree = "<group>"; };
 		6891C07519263611000EFC70 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		6891C07619263611000EFC70 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -518,6 +521,16 @@
 			path = "Web Browser View";
 			sourceTree = "<group>";
 		};
+		688D3AA21D74640B007B1C27 /* Select Group View */ = {
+			isa = PBXGroup;
+			children = (
+				688D3AA31D74640B007B1C27 /* GroupCell.swift */,
+				688D3AA41D74640B007B1C27 /* SelectGroup.storyboard */,
+				688D3AA51D74640B007B1C27 /* SelectGroupViewController.swift */,
+			);
+			path = "Select Group View";
+			sourceTree = "<group>";
+		};
 		6895D2E61D68F95D003D8C44 /* Rename Item View */ = {
 			isa = PBXGroup;
 			children = (
@@ -707,6 +720,7 @@
 				689EA6831D67F90800CF445E /* Password Generator View */,
 				689EA68A1D67F93200CF445E /* Rename Database View */,
 				6895D2E61D68F95D003D8C44 /* Rename Item View */,
+				688D3AA21D74640B007B1C27 /* Select Group View */,
 				689EA68F1D67F94600CF445E /* Settings View */,
 				688038941D6BB33A001424CA /* Web Browser View */,
 				689D042613A42C81005EBD36 /* DatabaseDocument.h */,
@@ -722,8 +736,6 @@
 				68CBC1461A4A0F0E004A3553 /* MiniKeePass.entitlements */,
 				689D043213A42C81005EBD36 /* MiniKeePassAppDelegate.h */,
 				689D043313A42C81005EBD36 /* MiniKeePassAppDelegate.m */,
-				6837C35E188C9ED30018D588 /* SelectGroupViewController.h */,
-				6837C35F188C9ED30018D588 /* SelectGroupViewController.m */,
 				6851FAFB186DD11D00A53B0E /* UIActionSheetAutoDismiss.h */,
 				6851FAFC186DD11D00A53B0E /* UIActionSheetAutoDismiss.m */,
 				689FBE7B1AB27283005CB6BD /* Cells */,
@@ -969,6 +981,7 @@
 				688038971D6BB33A001424CA /* WebBrowser.storyboard in Resources */,
 				52491D0E14D8F3FB00F8CBC8 /* de-itunes.html in Resources */,
 				52491D0F14D8F3FB00F8CBC8 /* de-keyfiles.html in Resources */,
+				688D3AA71D74640B007B1C27 /* SelectGroup.storyboard in Resources */,
 				52491D1014D8F3FB00F8CBC8 /* de-safariemail.html in Resources */,
 				52E43F4C15B59C890029F979 /* ru-createdb.html in Resources */,
 				689EA6711D67F88500CF445E /* PasswordEntry.storyboard in Resources */,
@@ -1037,7 +1050,6 @@
 				689D03E213A42B63005EBD36 /* KdbReaderFactory.m in Sources */,
 				689FBE991AB272BD005CB6BD /* ImageFactory.m in Sources */,
 				689EA6931D67F94600CF445E /* SelectionViewController.swift in Sources */,
-				6837C360188C9ED30018D588 /* SelectGroupViewController.m in Sources */,
 				689FBE671AB271C6005CB6BD /* LockViewController.m in Sources */,
 				68496E751AB34F8800370876 /* AppSettings.m in Sources */,
 				6895D2EA1D68F95D003D8C44 /* RenameItemViewController.swift in Sources */,
@@ -1052,6 +1064,7 @@
 				688038981D6BB33A001424CA /* WebBrowserViewController.swift in Sources */,
 				689EA6721D67F88500CF445E /* PasswordEntryViewController.swift in Sources */,
 				689D03EB13A42B63005EBD36 /* DDXMLDocument.m in Sources */,
+				688D3AA61D74640B007B1C27 /* GroupCell.swift in Sources */,
 				689D03EC13A42B63005EBD36 /* DDXMLElement.m in Sources */,
 				689D03ED13A42B63005EBD36 /* DDXMLNode.m in Sources */,
 				689D044F13A42C82005EBD36 /* DatabaseDocument.m in Sources */,
@@ -1088,6 +1101,7 @@
 				689EA6871D67F90800CF445E /* CharacterSetsViewController.swift in Sources */,
 				680C277616050C7A009403DE /* DDXMLDocument+MKPAdditions.m in Sources */,
 				689FBE8F1AB27283005CB6BD /* ImageButtonCell.m in Sources */,
+				688D3AA81D74640B007B1C27 /* SelectGroupViewController.swift in Sources */,
 				689FBE961AB27283005CB6BD /* UrlFieldCell.m in Sources */,
 				689FBE651AB271C6005CB6BD /* KeypadView.m in Sources */,
 				689EA6891D67F90800CF445E /* PasswordGeneratorViewController.swift in Sources */,

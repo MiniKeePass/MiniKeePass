@@ -23,6 +23,7 @@
 @property (nonatomic, strong) UIWindow *window;
 @property (nonatomic, strong) DatabaseDocument *databaseDocument;
 
++ (MiniKeePassAppDelegate *)getDelegate;
 + (MiniKeePassAppDelegate *)appDelegate;
 + (NSString *)documentsDirectory;
 + (NSURL *)documentsDirectoryUrl;
