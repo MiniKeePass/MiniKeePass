@@ -769,6 +769,7 @@ enum {
         }
     }
 
+    // Show the Move Items view
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MoveItems" bundle:nil];
     UINavigationController *navigationController = [storyboard instantiateInitialViewController];
 
