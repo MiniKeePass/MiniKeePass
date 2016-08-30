@@ -24,15 +24,15 @@ struct GroupModel {
     var selectable: Bool
 }
 
-class SelectGroupViewController: UITableViewController {
+class MoveItemsViewController: UITableViewController {
     private let SelectableReuseIdentifier = "SelectableGroupCell"
     private let UnselectableReuseIdentifier = "UnselectableGroupCell"
     private let IndentWidth = 10
 
-    var groupModels: [GroupModel] = []
+    private var groupModels: [GroupModel] = []
 
-    var isSelectable: ((group: KdbGroup) -> Bool)?
-    var groupSelected: ((selectGroupViewController: SelectGroupViewController, group: KdbGroup) -> Void)?
+    var itemsToMove: [AnyObject] = []
+    var groupSelected: ((moveItemsViewController: MoveItemsViewController, group: KdbGroup) -> Void)?
 
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
@@ -49,9 +49,40 @@ class SelectGroupViewController: UITableViewController {
         addGroup(rootGroup, name: filename.lastPathComponent, indent: 0)
     }
 
+    func isSelectable(group: KdbGroup) -> Bool {
+        var containsEntry = false
+
+        // Check if group is a subgroup of any groups to be moved
+        for obj in itemsToMove {
+            if (obj is KdbGroup) {
+                let movingGroup = obj as! KdbGroup
+
+                if (movingGroup.parent == group || movingGroup.containsGroup(group)) {
+                    return false
+                }
+            } else if (obj is KdbEntry) {
+                containsEntry = true
+
+                let movingEntry = obj as! KdbEntry
+                if (movingEntry.parent == group) {
+                    return false
+                }
+            }
+        }
+
+        // Check if trying to move entries to top level in 1.x database
+        let appDelegate = MiniKeePassAppDelegate.getDelegate()
+        let tree = appDelegate.databaseDocument.kdbTree
+        if (containsEntry && group == tree.root && tree is Kdb3Tree) {
+            return false
+        }
+
+        return true
+    }
+
     func addGroup(group: KdbGroup, name: String, indent: Int) {
         // Check if this group is selectable
-        let selectable = isSelectable?(group: group) ?? true
+        let selectable = isSelectable(group)
 
         // Add the group model
         groupModels.append(GroupModel(group: group, name:name, indent: indent, selectable: selectable))
@@ -85,10 +116,30 @@ class SelectGroupViewController: UITableViewController {
 
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let groupModel = groupModels[indexPath.row]
-        if (groupModel.selectable) {
-            groupSelected?(selectGroupViewController: self, group: groupModel.group)
-
-            self.dismissViewControllerAnimated(true, completion: nil)
+        if (!groupModel.selectable) {
+            return
         }
+
+        let selectedGroup = groupModel.group
+
+        // Move all the items
+        for obj in itemsToMove {
+            if (obj is KdbGroup) {
+                let movingGroup = obj as! KdbGroup
+                movingGroup.parent.moveGroup(movingGroup, toGroup:selectedGroup)
+            } else if (obj is KdbEntry) {
+                let movingEntry = obj as! KdbEntry
+                movingEntry.parent.moveEntry(movingEntry, toGroup:selectedGroup)
+            }
+        }
+
+        // Save the database
+        let appDelegate = MiniKeePassAppDelegate.getDelegate()
+        let databaseDocument = appDelegate.databaseDocument
+        databaseDocument.save()
+
+        groupSelected?(moveItemsViewController: self, group: groupModel.group)
+
+        self.dismissViewControllerAnimated(true, completion: nil)
     }
 }

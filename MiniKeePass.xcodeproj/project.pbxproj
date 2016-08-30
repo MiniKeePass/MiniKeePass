@@ -54,9 +54,6 @@
 		68767B691D70B0830039EFE0 /* Array+InsertionIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68767B681D70B0830039EFE0 /* Array+InsertionIndex.swift */; };
 		688038971D6BB33A001424CA /* WebBrowser.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 688038951D6BB33A001424CA /* WebBrowser.storyboard */; };
 		688038981D6BB33A001424CA /* WebBrowserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 688038961D6BB33A001424CA /* WebBrowserViewController.swift */; };
-		688D3AA61D74640B007B1C27 /* GroupCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 688D3AA31D74640B007B1C27 /* GroupCell.swift */; };
-		688D3AA71D74640B007B1C27 /* SelectGroup.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 688D3AA41D74640B007B1C27 /* SelectGroup.storyboard */; };
-		688D3AA81D74640B007B1C27 /* SelectGroupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 688D3AA51D74640B007B1C27 /* SelectGroupViewController.swift */; };
 		6895D2E91D68F95D003D8C44 /* RenameItem.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6895D2E71D68F95D003D8C44 /* RenameItem.storyboard */; };
 		6895D2EA1D68F95D003D8C44 /* RenameItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6895D2E81D68F95D003D8C44 /* RenameItemViewController.swift */; };
 		6895D2F31D68FE00003D8C44 /* CustomField.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6895D2F11D68FE00003D8C44 /* CustomField.storyboard */; };
@@ -132,6 +129,9 @@
 		689FBE951AB27283005CB6BD /* TitleFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 689FBE8B1AB27283005CB6BD /* TitleFieldCell.m */; };
 		689FBE961AB27283005CB6BD /* UrlFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 689FBE8D1AB27283005CB6BD /* UrlFieldCell.m */; };
 		689FBE991AB272BD005CB6BD /* ImageFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 689FBE981AB272BD005CB6BD /* ImageFactory.m */; };
+		68BFDBE51D7646B400EFACB3 /* GroupCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68BFDBE21D7646B400EFACB3 /* GroupCell.swift */; };
+		68BFDBE61D7646B400EFACB3 /* MoveItems.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 68BFDBE31D7646B400EFACB3 /* MoveItems.storyboard */; };
+		68BFDBE71D7646B400EFACB3 /* MoveItemsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68BFDBE41D7646B400EFACB3 /* MoveItemsViewController.swift */; };
 		68CE37F51404A86600E4A5E1 /* safariemail.html in Resources */ = {isa = PBXBuildFile; fileRef = 68CE37F41404A86600E4A5E1 /* safariemail.html */; };
 		68DDC3731405160300FC8BD8 /* keyfiles.html in Resources */ = {isa = PBXBuildFile; fileRef = 68DDC3721405160300FC8BD8 /* keyfiles.html */; };
 		68E08310146F24E3001C4EDF /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 68E0830E146F24E3001C4EDF /* Localizable.strings */; };
@@ -232,9 +232,6 @@
 		687AAAA71889FB4F00AB8AC5 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text; name = fr; path = fr.lproj/AppStore.txt; sourceTree = "<group>"; };
 		688038951D6BB33A001424CA /* WebBrowser.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = WebBrowser.storyboard; sourceTree = "<group>"; };
 		688038961D6BB33A001424CA /* WebBrowserViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebBrowserViewController.swift; sourceTree = "<group>"; };
-		688D3AA31D74640B007B1C27 /* GroupCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupCell.swift; sourceTree = "<group>"; };
-		688D3AA41D74640B007B1C27 /* SelectGroup.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SelectGroup.storyboard; sourceTree = "<group>"; };
-		688D3AA51D74640B007B1C27 /* SelectGroupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectGroupViewController.swift; sourceTree = "<group>"; };
 		6891C07419263611000EFC70 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text; name = pt; path = pt.lproj/AppStore.txt; sourceTree = "<group>"; };
 		6891C07519263611000EFC70 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		6891C07619263611000EFC70 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -367,6 +364,9 @@
 		689FBE971AB272BD005CB6BD /* ImageFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageFactory.h; sourceTree = "<group>"; };
 		689FBE981AB272BD005CB6BD /* ImageFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageFactory.m; sourceTree = "<group>"; };
 		68AB0F4D1CCA82B300CFE78D /* MiniKeePass-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MiniKeePass-Bridging-Header.h"; sourceTree = "<group>"; };
+		68BFDBE21D7646B400EFACB3 /* GroupCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupCell.swift; sourceTree = "<group>"; };
+		68BFDBE31D7646B400EFACB3 /* MoveItems.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MoveItems.storyboard; sourceTree = "<group>"; };
+		68BFDBE41D7646B400EFACB3 /* MoveItemsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoveItemsViewController.swift; sourceTree = "<group>"; };
 		68CBC1461A4A0F0E004A3553 /* MiniKeePass.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = MiniKeePass.entitlements; sourceTree = "<group>"; };
 		68CE37F41404A86600E4A5E1 /* safariemail.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = safariemail.html; sourceTree = "<group>"; };
 		68DDC3721405160300FC8BD8 /* keyfiles.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = keyfiles.html; sourceTree = "<group>"; };
@@ -519,16 +519,6 @@
 				688038961D6BB33A001424CA /* WebBrowserViewController.swift */,
 			);
 			path = "Web Browser View";
-			sourceTree = "<group>";
-		};
-		688D3AA21D74640B007B1C27 /* Select Group View */ = {
-			isa = PBXGroup;
-			children = (
-				688D3AA31D74640B007B1C27 /* GroupCell.swift */,
-				688D3AA41D74640B007B1C27 /* SelectGroup.storyboard */,
-				688D3AA51D74640B007B1C27 /* SelectGroupViewController.swift */,
-			);
-			path = "Select Group View";
 			sourceTree = "<group>";
 		};
 		6895D2E61D68F95D003D8C44 /* Rename Item View */ = {
@@ -715,12 +705,12 @@
 				68767B631D6F23350039EFE0 /* Files View */,
 				680C9D751D69E2A70040FB43 /* Help View */,
 				689EA6731D67F8B500CF445E /* Image Selector View */,
+				68BFDBE11D7646B400EFACB3 /* Move Items View */,
 				689EA67C1D67F8D500CF445E /* New Database View */,
 				689EA66C1D67F88500CF445E /* Password Entry View */,
 				689EA6831D67F90800CF445E /* Password Generator View */,
 				689EA68A1D67F93200CF445E /* Rename Database View */,
 				6895D2E61D68F95D003D8C44 /* Rename Item View */,
-				688D3AA21D74640B007B1C27 /* Select Group View */,
 				689EA68F1D67F94600CF445E /* Settings View */,
 				688038941D6BB33A001424CA /* Web Browser View */,
 				689D042613A42C81005EBD36 /* DatabaseDocument.h */,
@@ -872,6 +862,16 @@
 			path = Cells;
 			sourceTree = "<group>";
 		};
+		68BFDBE11D7646B400EFACB3 /* Move Items View */ = {
+			isa = PBXGroup;
+			children = (
+				68BFDBE21D7646B400EFACB3 /* GroupCell.swift */,
+				68BFDBE31D7646B400EFACB3 /* MoveItems.storyboard */,
+				68BFDBE41D7646B400EFACB3 /* MoveItemsViewController.swift */,
+			);
+			path = "Move Items View";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -980,8 +980,8 @@
 				52491D0D14D8F3FB00F8CBC8 /* de-dropbox.html in Resources */,
 				688038971D6BB33A001424CA /* WebBrowser.storyboard in Resources */,
 				52491D0E14D8F3FB00F8CBC8 /* de-itunes.html in Resources */,
+				68BFDBE61D7646B400EFACB3 /* MoveItems.storyboard in Resources */,
 				52491D0F14D8F3FB00F8CBC8 /* de-keyfiles.html in Resources */,
-				688D3AA71D74640B007B1C27 /* SelectGroup.storyboard in Resources */,
 				52491D1014D8F3FB00F8CBC8 /* de-safariemail.html in Resources */,
 				52E43F4C15B59C890029F979 /* ru-createdb.html in Resources */,
 				689EA6711D67F88500CF445E /* PasswordEntry.storyboard in Resources */,
@@ -1064,10 +1064,10 @@
 				688038981D6BB33A001424CA /* WebBrowserViewController.swift in Sources */,
 				689EA6721D67F88500CF445E /* PasswordEntryViewController.swift in Sources */,
 				689D03EB13A42B63005EBD36 /* DDXMLDocument.m in Sources */,
-				688D3AA61D74640B007B1C27 /* GroupCell.swift in Sources */,
 				689D03EC13A42B63005EBD36 /* DDXMLElement.m in Sources */,
 				689D03ED13A42B63005EBD36 /* DDXMLNode.m in Sources */,
 				689D044F13A42C82005EBD36 /* DatabaseDocument.m in Sources */,
+				68BFDBE71D7646B400EFACB3 /* MoveItemsViewController.swift in Sources */,
 				689D045013A42C82005EBD36 /* DatabaseManager.m in Sources */,
 				68767B651D6F23350039EFE0 /* FilesViewController.swift in Sources */,
 				689D045113A42C82005EBD36 /* EntryViewController.m in Sources */,
@@ -1087,6 +1087,7 @@
 				682D45121603883900156830 /* FileInputStream.m in Sources */,
 				682D45131603883900156830 /* FileOutputStream.m in Sources */,
 				682D45141603883900156830 /* GZipInputStream.m in Sources */,
+				68BFDBE51D7646B400EFACB3 /* GroupCell.swift in Sources */,
 				682D45151603883900156830 /* GZipOutputStream.m in Sources */,
 				682D45161603883900156830 /* HashedInputStream.m in Sources */,
 				682D45171603883900156830 /* HashedOutputStream.m in Sources */,
@@ -1101,7 +1102,6 @@
 				689EA6871D67F90800CF445E /* CharacterSetsViewController.swift in Sources */,
 				680C277616050C7A009403DE /* DDXMLDocument+MKPAdditions.m in Sources */,
 				689FBE8F1AB27283005CB6BD /* ImageButtonCell.m in Sources */,
-				688D3AA81D74640B007B1C27 /* SelectGroupViewController.swift in Sources */,
 				689FBE961AB27283005CB6BD /* UrlFieldCell.m in Sources */,
 				689FBE651AB271C6005CB6BD /* KeypadView.m in Sources */,
 				689EA6891D67F90800CF445E /* PasswordGeneratorViewController.swift in Sources */,
