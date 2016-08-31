@@ -26,15 +26,6 @@ class FilesViewController: UITableViewController {
         case KeyFiles = 1
 
         static let AllValues = [Section.Databases, Section.KeyFiles]
-
-        func title() -> String {
-            switch self {
-            case .Databases:
-                return NSLocalizedString("Databases", comment: "")
-            case .KeyFiles:
-                return NSLocalizedString("Key Files", comment: "")
-            }
-        }
     }
 
     var databaseFiles: [String] = []
@@ -75,19 +66,13 @@ class FilesViewController: UITableViewController {
         return Section.AllValues.count
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        toggleEmptyState()
-
+    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         switch Section.AllValues[section] {
         case .Databases:
-            return databaseFiles.count
+            return NSLocalizedString("Databases", comment: "")
         case .KeyFiles:
-            return keyFiles.count
+            return NSLocalizedString("Key Files", comment: "")
         }
-    }
-
-    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return Section.AllValues[section].title()
     }
 
     override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -104,6 +89,17 @@ class FilesViewController: UITableViewController {
         }
 
         return super.tableView(tableView, heightForHeaderInSection: section)
+    }
+
+    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        toggleEmptyState()
+
+        switch Section.AllValues[section] {
+        case .Databases:
+            return databaseFiles.count
+        case .KeyFiles:
+            return keyFiles.count
+        }
     }
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
