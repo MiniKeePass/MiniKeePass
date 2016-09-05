@@ -140,6 +140,6 @@ class MoveItemsViewController: UITableViewController {
 
         groupSelected?(moveItemsViewController: self, group: groupModel.group)
 
-        self.dismissViewControllerAnimated(true, completion: nil)
+        dismissViewControllerAnimated(true, completion: nil)
     }
 }

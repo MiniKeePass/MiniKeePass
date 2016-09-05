@@ -24,7 +24,6 @@
 #import "PasswordFieldCell.h"
 #import "KdbLib.h"
 #import "MiniKeePassAppDelegate.h"
-#import "MiniKeePass-swift.h"
 
 @interface EntryViewController : UITableViewController <UIGestureRecognizerDelegate, TitleFieldCellDelegate, TextFieldCellDelegate>
 

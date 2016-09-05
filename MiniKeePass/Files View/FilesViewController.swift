@@ -88,7 +88,7 @@ class FilesViewController: UITableViewController {
             }
         }
 
-        return super.tableView(tableView, heightForHeaderInSection: section)
+        return UITableViewAutomaticDimension
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

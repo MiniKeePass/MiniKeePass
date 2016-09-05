@@ -81,11 +81,20 @@ class RenameItemViewController: UITableViewController {
             entry!.setTitle(name)
             entry!.image = selectedImageIndex
         }
-        
+
+        // Save the database
+        let appDelegate = MiniKeePassAppDelegate.getDelegate()
+        let databaseDocument = appDelegate.databaseDocument
+        databaseDocument.save()
+
         donePressed?(renameItemViewController: self)
+
+        dismissViewControllerAnimated(true, completion: nil)
     }
 
     @IBAction func cancelPressedAction(sender: UIBarButtonItem) {
         cancelPressed?(renameItemViewController: self)
+
+        dismissViewControllerAnimated(true, completion: nil)
     }
 }

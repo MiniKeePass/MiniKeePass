@@ -16,7 +16,7 @@
  */
 
 #import "MiniKeePassAppDelegate.h"
-#import "GroupViewController.h"
+#import "GroupViewControllerOld.h"
 #import "EntryViewController.h"
 #import "AppSettings.h"
 #import "DatabaseManager.h"
@@ -131,9 +131,10 @@
     _databaseDocument = newDatabaseDocument;
     
     // Create and push on the root group view controller
-    GroupViewController *groupViewController = [[GroupViewController alloc] initWithGroup:_databaseDocument.kdbTree.root];
-    groupViewController.title = [[_databaseDocument.filename lastPathComponent] stringByDeletingPathExtension];
-    
+    GroupViewController *groupViewController = [[GroupViewController alloc] initWithStyle:UITableViewStylePlain];
+    groupViewController.parentGroup = _databaseDocument.kdbTree.root;
+    groupViewController.title = [_databaseDocument.filename lastPathComponent];
+
     [self.navigationController pushViewController:groupViewController animated:YES];
 }
 

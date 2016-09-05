@@ -17,10 +17,7 @@
 
 import Foundation
 
-/*
- * Adapted from http://rosettacode.org/wiki/Binary_search#Swift
- */
-extension Array {
+extension Array where Element: Equatable {
     func insertionIndexOf(elem: Element, isOrderedBefore: (Element, Element) -> Bool) -> Int {
         var lo = 0
         var hi = self.count - 1
@@ -35,5 +32,11 @@ extension Array {
             }
         }
         return lo
+    }
+
+    mutating func removeObject(object: Element) {
+        if let index = indexOf(object) {
+            removeAtIndex(index)
+        }
     }
 }
