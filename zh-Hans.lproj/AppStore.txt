@@ -24,7 +24,7 @@ MiniKeePass provides secure password storage on your iOS device that's compatibl
 - 使用密码生成器自动生成新密码
 - Integrated web browser with username/password auto-type
 
-MiniKeePass的源代码在Github上共享，以供安全性审查，同时欢迎大家协作此项目。
+MiniKeePass的源代码在Github上共享，可供安全性审查，同时欢迎大家协作此项目。
 
 # Keywords:
 MiniKeePass,KeePass,Kee Pass,KeyPass,KeePassX,密码,密码管理,安全
