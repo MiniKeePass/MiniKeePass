@@ -12,19 +12,19 @@ MiniKeePass — Secure Password Manager
 # Description:
 MiniKeePass provides secure password storage on your iOS device that's compatible with KeePass.
 
-- View, Edit, and Create KeePass 1.x and 2.x files
+- 查看、编辑和创建KeePass 1.x 和 2.x 文件
 - Search for entries from the top of tables like in Mail
 - Key File Support
 - Import/Export files to and from Dropbox using the official Dropbox app or any other cloud storage application
 - Copy password entries to the clipboard for easy entry
 - Open websites in Safari while MiniKeePass runs in the background
-- Prevent unauthorized access to MiniKeePass with a PIN
-- Remember database passwords in the device's secure keychain
+- 使用PIN码阻止对MiniKeePass应用的非法访问
+- 使用iCloud 钥匙串储存数据库密码
 - Optionally clear the clipboard after set time on devices that support background tasks
-- Generate new passwords
+- 使用密码生成器自动生成新密码
 - Integrated web browser with username/password auto-type
 
-MiniKeePass's source code is available for security audit or contribution on GitHub.
+MiniKeePass的源代码在Github上共享，以供安全性审查，同时欢迎大家协作此项目。
 
 # Keywords:
 MiniKeePass,KeePass,Kee Pass,KeyPass,KeePassX,密码,密码管理,安全
