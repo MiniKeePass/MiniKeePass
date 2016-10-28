@@ -7,13 +7,13 @@
 #
 
 # App Name:
-MiniKeePass — Secure Password Manager
+MiniKeePass — 安全的密码管理应用
 
 # Description:
-MiniKeePass provides secure password storage on your iOS device that's compatible with KeePass.
+您iOS设备上的安全密码储存应用，与KeePass兼容
 
 - 查看、编辑和创建KeePass 1.x 和 2.x 文件
-- Search for entries from the top of tables like in Mail
+- 在上级群组中方便地搜索条目，与邮件搜索类似
 - 支持使用密钥文件打开数据库
 - 借助Dropbox或其他云储存应用导入文件至MiniKeePass，或导出文件至云端
 - 将密码拷贝至剪切板以方便使用
