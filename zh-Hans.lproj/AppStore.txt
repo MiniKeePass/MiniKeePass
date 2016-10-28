@@ -14,7 +14,7 @@ MiniKeePass provides secure password storage on your iOS device that's compatibl
 
 - 查看、编辑和创建KeePass 1.x 和 2.x 文件
 - Search for entries from the top of tables like in Mail
-- Key File Support
+- 支持使用密钥文件打开数据库
 - Import/Export files to and from Dropbox using the official Dropbox app or any other cloud storage application
 - Copy password entries to the clipboard for easy entry
 - Open websites in Safari while MiniKeePass runs in the background
