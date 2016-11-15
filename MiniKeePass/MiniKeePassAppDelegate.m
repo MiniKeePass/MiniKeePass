@@ -16,7 +16,6 @@
  */
 
 #import "MiniKeePassAppDelegate.h"
-#import "GroupViewControllerOld.h"
 #import "EntryViewController.h"
 #import "AppSettings.h"
 #import "DatabaseManager.h"

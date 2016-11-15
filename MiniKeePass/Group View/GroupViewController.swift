@@ -45,7 +45,11 @@ class GroupViewController: UITableViewController {
     private var groups: [KdbGroup]!
     private var entries: [KdbEntry]!
 
-    var parentGroup: KdbGroup!
+    var parentGroup: KdbGroup! {
+        didSet {
+            updateViewModel()
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -70,13 +74,6 @@ class GroupViewController: UITableViewController {
         editingToolbarItems = [deleteButton, spacer, moveButton, spacer, renameButton]
 
         toolbarItems = standardToolbarItems
-    }
-
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-
-        // FIXME
-        updateViewModel()
     }
 
     override func viewDidDisappear(animated: Bool) {
@@ -444,6 +441,14 @@ class GroupViewController: UITableViewController {
 
             // Update the table
             self.tableView.deleteRowsAtIndexPaths(indexPaths, withRowAnimation: .Automatic)
+            let indexSet = NSMutableIndexSet()
+            if (self.groups.isEmpty) {
+                indexSet.addIndex(Section.Groups.rawValue)
+            }
+            if (self.entries.isEmpty) {
+                indexSet.addIndex(Section.Entries.rawValue)
+            }
+            self.tableView.reloadSections(indexSet, withRowAnimation: .Automatic)
 
             self.setEditing(false, animated: true)
         }
@@ -460,11 +465,6 @@ class GroupViewController: UITableViewController {
 
         let viewController = navigationController.topViewController as! RenameItemViewController
         viewController.donePressed = { (renameItemViewController: RenameItemViewController) -> Void in
-            // Save the database
-            let appDelegate = MiniKeePassAppDelegate.getDelegate()
-            let databaseDocument = appDelegate.databaseDocument
-            databaseDocument.save()
-
             // Update the table
             self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
 
