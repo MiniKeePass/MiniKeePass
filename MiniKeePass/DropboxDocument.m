@@ -21,7 +21,7 @@
 #import "AppSettings.h"
 
 // Api key assigned by Dropbox for this App
-#define DROPBOX_APP_KEY          @"82pjf4il2mxp018"
+#define DROPBOX_APP_KEY          @"<APP-KEY>"
 
 // For the Keychain
 #define DROPBOX_ACCESS_TOKEN     @"dropboxAccessToken"
