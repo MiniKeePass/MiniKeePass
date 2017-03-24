@@ -37,6 +37,7 @@
     ChoiceCell *clearClipboardTimeoutCell;
     SwitchCell *webBrowserIntegratedCell;
     SwitchCell *backupDisabledCell;
+    SwitchCell *dropboxEnabledCell;
 
     NSString *tempPin;
 }

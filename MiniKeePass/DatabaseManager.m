@@ -20,6 +20,7 @@
 #import "KeychainUtils.h"
 #import "PasswordViewController.h"
 #import "AppSettings.h"
+#import "DropboxDocument.h"
 
 @implementation DatabaseManager
 
@@ -53,7 +54,7 @@ static DatabaseManager *sharedInstance;
                                       andServiceName:KEYCHAIN_PASSWORDS_SERVICE];
     NSString *keyFile = [KeychainUtils stringForKey:self.selectedFilename
                                      andServiceName:KEYCHAIN_KEYFILES_SERVICE];
-    
+                                     
     // Try and load the database with the cached password from the keychain
     if (password != nil || keyFile != nil) {
         // Get the absolute path to the database
@@ -89,7 +90,7 @@ static DatabaseManager *sharedInstance;
             [formViewController dismissViewControllerAnimated:YES completion:nil];
         };
         
-        // Create a defult keyfile name from the database name
+        // Create a default keyfile name from the database name
         keyFile = [[filename stringByDeletingPathExtension] stringByAppendingPathExtension:@"key"];
         
         // Select the keyfile if it's in the list
@@ -142,6 +143,57 @@ static DatabaseManager *sharedInstance;
                       andServiceName:KEYCHAIN_KEYFILES_SERVICE];
         }
 
+        // Dismiss the view controller, and after animation set the database document
+        [passwordViewController dismissViewControllerAnimated:YES completion:^{
+            // Set the database document in the application delegate
+            MiniKeePassAppDelegate *appDelegate = [MiniKeePassAppDelegate appDelegate];
+            appDelegate.databaseDocument = dd;
+        }];
+    } @catch (NSException *exception) {
+        NSLog(@"%@", exception);
+        [passwordViewController showErrorMessage:exception.reason];
+    }
+}
+
+- (void)openDropboxDatabase:(NSString*)filename animated:(BOOL)animated {
+
+    self.selectedFilename = filename;
+
+    // Get the application delegate
+    MiniKeePassAppDelegate *appDelegate = [MiniKeePassAppDelegate appDelegate];
+ 
+    // Prompt the user for a password
+    PasswordViewController *passwordViewController = [[PasswordViewController alloc] initWithFilename:filename];
+    passwordViewController.donePressed = ^(FormViewController *formViewController) {
+        [self openDropboxDatabaseWithPasswordViewController:(PasswordViewController *)formViewController];
+    };
+    passwordViewController.cancelPressed = ^(FormViewController *formViewController) {
+        [formViewController dismissViewControllerAnimated:YES completion:nil];
+    };
+    
+    passwordViewController.keyFileCell.selectedIndex = 0;
+    
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:passwordViewController];
+    
+    [appDelegate.window.rootViewController presentViewController:navigationController animated:animated completion:nil];
+}
+
+- (void)openDropboxDatabaseWithPasswordViewController:(PasswordViewController *)passwordViewController {
+
+    NSString *path = [DropboxDocument getLocalPath:self.selectedFilename];
+
+    
+    // Get the password
+    NSString *password = passwordViewController.masterPasswordFieldCell.textField.text;
+    if ([password isEqualToString:@""]) {
+        password = nil;
+    }
+    
+    // Load the database
+    @try {
+        printf("Trying to create DropboxDocument for %s\n", path.UTF8String );
+        DropboxDocument *dd = [[DropboxDocument alloc] initWithFilename:path password:password keyFile:nil ];
+        
         // Dismiss the view controller, and after animation set the database document
         [passwordViewController dismissViewControllerAnimated:YES completion:^{
             // Set the database document in the application delegate

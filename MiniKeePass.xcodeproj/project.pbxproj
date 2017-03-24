@@ -128,6 +128,9 @@
 		68E08316146F2749001C4EDF /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 68E08314146F2749001C4EDF /* InfoPlist.strings */; };
 		68EA62DB1CC972F300B33E42 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 68EA62DA1CC972F300B33E42 /* LaunchScreen.storyboard */; };
 		68EBC2D61613394D00E8E799 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68EBC2D51613394D00E8E799 /* QuartzCore.framework */; };
+		78AF0CE91E834E45007467BB /* ObjectiveDropboxOfficial.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 78AF0CE61E834B8B007467BB /* ObjectiveDropboxOfficial.framework */; };
+		78AF0CEA1E834E45007467BB /* ObjectiveDropboxOfficial.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 78AF0CE61E834B8B007467BB /* ObjectiveDropboxOfficial.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		78AF0CF01E841AFB007467BB /* DropboxDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 78AF0CEF1E841AFB007467BB /* DropboxDocument.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -138,7 +141,42 @@
 			remoteGlobalIDString = D286A7491518C70F00E13FB8;
 			remoteInfo = MBProgressHUD;
 		};
+		78AF0CE51E834B8B007467BB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 78AF0CE01E834B8A007467BB /* ObjectiveDropboxOfficial.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = F26B75751D7F6AF700714F70;
+			remoteInfo = "ObjectiveDropboxOfficial iOS";
+		};
+		78AF0CE71E834B8B007467BB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 78AF0CE01E834B8A007467BB /* ObjectiveDropboxOfficial.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = F27DE9E21D7FF909003B1CEE;
+			remoteInfo = "ObjectiveDropboxOfficial macOS";
+		};
+		78AF0CEB1E834E45007467BB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 78AF0CE01E834B8A007467BB /* ObjectiveDropboxOfficial.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = F26B75741D7F6AF700714F70;
+			remoteInfo = "ObjectiveDropboxOfficial iOS";
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		78AF0CED1E834E45007467BB /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				78AF0CEA1E834E45007467BB /* ObjectiveDropboxOfficial.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		4E8C168E16B3E871004195A1 /* fr-createdb.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "fr-createdb.html"; sourceTree = "<group>"; };
@@ -378,6 +416,9 @@
 		68E0831C146F2D37001C4EDF /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		68EA62DA1CC972F300B33E42 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		68EBC2D51613394D00E8E799 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		78AF0CE01E834B8A007467BB /* ObjectiveDropboxOfficial.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ObjectiveDropboxOfficial.xcodeproj; path = "../ObjectiveDropbox/Carthage/Checkouts/dropbox-sdk-obj-c/Source/ObjectiveDropboxOfficial/ObjectiveDropboxOfficial.xcodeproj"; sourceTree = "<group>"; };
+		78AF0CEE1E841AE7007467BB /* DropboxDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DropboxDocument.h; sourceTree = "<group>"; };
+		78AF0CEF1E841AFB007467BB /* DropboxDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DropboxDocument.m; sourceTree = "<group>"; };
 		BDB0FF5D194C7C6F00C44DEF /* nl */ = {isa = PBXFileReference; lastKnownFileType = text; name = nl; path = nl.lproj/AppStore.txt; sourceTree = "<group>"; };
 		BDB0FF5E194C7C6F00C44DEF /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		BDB0FF5F194C7C6F00C44DEF /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -393,6 +434,7 @@
 				526D9FAD167CDC2E0097213E /* libMBProgressHUD.a in Frameworks */,
 				689D000D13A42765005EBD36 /* AudioToolbox.framework in Frameworks */,
 				689DFFDE13A4273F005EBD36 /* CoreGraphics.framework in Frameworks */,
+				78AF0CE91E834E45007467BB /* ObjectiveDropboxOfficial.framework in Frameworks */,
 				689DFFDC13A4273F005EBD36 /* Foundation.framework in Frameworks */,
 				6802C36F1A425D7300595AC9 /* LocalAuthentication.framework in Frameworks */,
 				68EBC2D61613394D00E8E799 /* QuartzCore.framework in Frameworks */,
@@ -618,6 +660,7 @@
 		689DFFCA13A4273F005EBD36 = {
 			isa = PBXGroup;
 			children = (
+				78AF0CE01E834B8A007467BB /* ObjectiveDropboxOfficial.xcodeproj */,
 				689D030313A42B63005EBD36 /* LICENSE.txt */,
 				689D030413A42B63005EBD36 /* README.md */,
 				689DFFDF13A4273F005EBD36 /* MiniKeePass */,
@@ -663,6 +706,8 @@
 				689D042713A42C81005EBD36 /* DatabaseDocument.m */,
 				689D042813A42C81005EBD36 /* DatabaseManager.h */,
 				689D042913A42C81005EBD36 /* DatabaseManager.m */,
+				78AF0CEE1E841AE7007467BB /* DropboxDocument.h */,
+				78AF0CEF1E841AFB007467BB /* DropboxDocument.m */,
 				52E7AF5A162523F800DCB00A /* EditItemViewController.h */,
 				52E7AF5B162523F800DCB00A /* EditItemViewController.m */,
 				689D042A13A42C81005EBD36 /* EntryViewController.h */,
@@ -798,6 +843,15 @@
 			path = Cells;
 			sourceTree = "<group>";
 		};
+		78AF0CE11E834B8A007467BB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				78AF0CE61E834B8B007467BB /* ObjectiveDropboxOfficial.framework */,
+				78AF0CE81E834B8B007467BB /* ObjectiveDropboxOfficial.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -809,10 +863,12 @@
 				689DFFD213A4273F005EBD36 /* Frameworks */,
 				68C17C9C1A3E1774008DD56B /* Increment Build Number */,
 				689DFFD313A4273F005EBD36 /* Resources */,
+				78AF0CED1E834E45007467BB /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				78AF0CEC1E834E45007467BB /* PBXTargetDependency */,
 			);
 			name = MiniKeePass;
 			productName = MiniKeePass;
@@ -829,7 +885,8 @@
 				ORGANIZATIONNAME = Self;
 				TargetAttributes = {
 					689DFFD413A4273F005EBD36 = {
-						DevelopmentTeam = G9ZT7943FZ;
+						DevelopmentTeam = TDWUL5774P;
+						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.iCloud = {
 								enabled = 0;
@@ -862,6 +919,10 @@
 					ProductGroup = 526D9FA4167CDC010097213E /* Products */;
 					ProjectRef = 526D9FA3167CDC010097213E /* MBProgressHUD.xcodeproj */;
 				},
+				{
+					ProductGroup = 78AF0CE11E834B8A007467BB /* Products */;
+					ProjectRef = 78AF0CE01E834B8A007467BB /* ObjectiveDropboxOfficial.xcodeproj */;
+				},
 			);
 			projectRoot = "";
 			targets = (
@@ -876,6 +937,20 @@
 			fileType = archive.ar;
 			path = libMBProgressHUD.a;
 			remoteRef = 526D9FAA167CDC010097213E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		78AF0CE61E834B8B007467BB /* ObjectiveDropboxOfficial.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = ObjectiveDropboxOfficial.framework;
+			remoteRef = 78AF0CE51E834B8B007467BB /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		78AF0CE81E834B8B007467BB /* ObjectiveDropboxOfficial.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = ObjectiveDropboxOfficial.framework;
+			remoteRef = 78AF0CE71E834B8B007467BB /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -1009,6 +1084,7 @@
 				682D45181603883900156830 /* InputStream.m in Sources */,
 				689FBE711AB2720D005CB6BD /* LengthCell.m in Sources */,
 				682D45191603883900156830 /* OutputStream.m in Sources */,
+				78AF0CF01E841AFB007467BB /* DropboxDocument.m in Sources */,
 				689FBE901AB27283005CB6BD /* MasterPasswordFieldCell.m in Sources */,
 				682D451A1603883900156830 /* Sha256OutputStream.m in Sources */,
 				689FBE951AB27283005CB6BD /* TitleFieldCell.m in Sources */,
@@ -1027,6 +1103,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		78AF0CEC1E834E45007467BB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "ObjectiveDropboxOfficial iOS";
+			targetProxy = 78AF0CEB1E834E45007467BB /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		687AAA991889F8B400AB8AC5 /* AppStore.txt */ = {
@@ -1171,9 +1255,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = TDWUL5774P;
 				INFOPLIST_FILE = "MiniKeePass/MiniKeePass-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.jflan.${PRODUCT_NAME:rfc1034identifier}";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.tssmith;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1185,12 +1271,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = TDWUL5774P;
 				INFOPLIST_FILE = "MiniKeePass/MiniKeePass-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.jflan.${PRODUCT_NAME:rfc1034identifier}";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.tssmith;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "29c6de49-d5a6-4b63-9168-72d9368ab499";
+				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

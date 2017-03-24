@@ -30,5 +30,6 @@
 /// @param path Path to the chosen KeePass DatabaseDocument
 /// @param animated Animate the ViewController transition
 - (void)openDatabaseDocument:(NSString*)path animated:(BOOL)newAnimated;
+- (void)openDropboxDatabase:(NSString*)path animated:(BOOL)newAnimated;
 
 @end

@@ -40,6 +40,7 @@
 #define BACKUP_DISABLED            @"backupDisabled"
 #define CLEAR_CLIPBOARD_TIMEOUT    @"clearClipboardTimeout"
 #define WEB_BROWSER_INTEGRATED     @"webBrowserIntegrated"
+#define DROPBOX_ENABLED            @"dropboxEnabled"
 #define PW_GEN_LENGTH              @"pwGenLength"
 #define PW_GEN_CHAR_SETS           @"pwGenCharSets"
 
@@ -125,6 +126,7 @@ static AppSettings *sharedInstance;
         [defaultsDict setValue:[NSNumber numberWithInt:0] forKey:CLEAR_CLIPBOARD_TIMEOUT];
         [defaultsDict setValue:[NSNumber numberWithBool:NO] forKey:BACKUP_DISABLED];
         [defaultsDict setValue:[NSNumber numberWithBool:YES] forKey:WEB_BROWSER_INTEGRATED];
+        [defaultsDict setValue:[NSNumber numberWithBool:NO] forKey:DROPBOX_ENABLED];
         [defaultsDict setValue:[NSNumber numberWithInt:10] forKey:PW_GEN_LENGTH];
         [defaultsDict setValue:[NSNumber numberWithInt:CHARACTER_SET_DEFAULT] forKey:PW_GEN_CHAR_SETS];
         [userDefaults registerDefaults:defaultsDict];
@@ -373,6 +375,14 @@ static AppSettings *sharedInstance;
 
 - (void)setWebBrowserIntegrated:(BOOL)webBrowserIntegrated {
     [userDefaults setBool:webBrowserIntegrated forKey:WEB_BROWSER_INTEGRATED];
+}
+
+- (BOOL)dropboxEnabled {
+    return [userDefaults boolForKey:DROPBOX_ENABLED];
+}
+
+- (void)setDropboxEnabled:(BOOL)dropboxEnabled {
+    [userDefaults setBool:dropboxEnabled forKey:DROPBOX_ENABLED];
 }
 
 - (NSInteger)pwGenLength {

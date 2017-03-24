@@ -15,6 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#import <ObjectiveDropboxOfficial/ObjectiveDropboxOfficial.h>
 #import <LocalAuthentication/LocalAuthentication.h>
 #import <AudioToolbox/AudioToolbox.h>
 #import "MiniKeePassAppDelegate.h"
@@ -35,7 +36,8 @@ enum {
     SECTION_PASSWORD_ENCODING,
     SECTION_CLEAR_CLIPBOARD,
     SECTION_BACKUP,
-    SECTION_WEB_BROWSER
+    SECTION_WEB_BROWSER,
+    SECTION_DROPBOX
 };
 
 enum {
@@ -95,6 +97,11 @@ enum {
 enum {
     ROW_WEB_BROWSER_INTEGRATED,
     ROW_WEB_BROWSER_NUMBER
+};
+
+enum {
+    ROW_DROPBOX_ENABLED,
+    ROW_DROPBOX_NUMBER
 };
 
 @interface SettingsViewController ()
@@ -195,14 +202,19 @@ enum {
   
     backupDisabledCell = [[SwitchCell alloc] initWithLabel:NSLocalizedString(@"Exclude from backup", nil)];
     [backupDisabledCell.switchControl addTarget:self
-                                         action:@selector(toogleBackupDisabled:)
+                                         action:@selector(toggleBackupDisabled:)
                                forControlEvents:UIControlEventValueChanged];
 
     webBrowserIntegratedCell = [[SwitchCell alloc] initWithLabel:NSLocalizedString(@"Integrated", nil)];
     [webBrowserIntegratedCell.switchControl addTarget:self
                                            action:@selector(toggleWebBrowserIntegrated:)
                                  forControlEvents:UIControlEventValueChanged];
-
+    
+    dropboxEnabledCell = [[SwitchCell alloc] initWithLabel:NSLocalizedString(@"Enable Dropbox", nil)];
+    [dropboxEnabledCell.switchControl addTarget:self
+                                         action:@selector(toggleDropboxEnabled:)
+                                     forControlEvents:UIControlEventValueChanged];
+    
     // Add version number to table view footer
     CGFloat viewWidth = CGRectGetWidth(self.tableView.frame);
     UIView *tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, viewWidth, 40)];
@@ -246,7 +258,8 @@ enum {
                           [NSNumber numberWithInt:SECTION_PASSWORD_ENCODING],
                           [NSNumber numberWithInt:SECTION_CLEAR_CLIPBOARD],
                           [NSNumber numberWithInt:SECTION_BACKUP],
-                          [NSNumber numberWithInt:SECTION_WEB_BROWSER]
+                          [NSNumber numberWithInt:SECTION_WEB_BROWSER],
+                          [NSNumber numberWithInt:SECTION_DROPBOX]
                           ];
     } else {
         // Skip TouchID in the list of sections
@@ -260,7 +273,8 @@ enum {
                           [NSNumber numberWithInt:SECTION_PASSWORD_ENCODING],
                           [NSNumber numberWithInt:SECTION_CLEAR_CLIPBOARD],
                           [NSNumber numberWithInt:SECTION_BACKUP],
-                          [NSNumber numberWithInt:SECTION_WEB_BROWSER]
+                          [NSNumber numberWithInt:SECTION_WEB_BROWSER],
+                          [NSNumber numberWithInt:SECTION_DROPBOX]
                           ];
     }
 }
@@ -298,6 +312,8 @@ enum {
 
     webBrowserIntegratedCell.switchControl.on = [self.appSettings webBrowserIntegrated];
 
+    dropboxEnabledCell.switchControl.on = [self.appSettings dropboxEnabled];
+    
     // Update which controls are enabled
     [self updateEnabledControls];
 }
@@ -365,6 +381,9 @@ enum {
 
         case SECTION_WEB_BROWSER:
             return ROW_WEB_BROWSER_NUMBER;
+            
+        case SECTION_DROPBOX:
+            return ROW_DROPBOX_NUMBER;
     }
     return 0;
 }
@@ -404,7 +423,10 @@ enum {
 
         case SECTION_WEB_BROWSER:
             return NSLocalizedString(@"Web Browser", nil);
-    }
+
+        case SECTION_DROPBOX:
+            return NSLocalizedString(@"Dropbox Integration", nil);
+}
     return nil;
 }
 
@@ -443,6 +465,9 @@ enum {
         
         case SECTION_WEB_BROWSER:
             return NSLocalizedString(@"Switch between an integrated web browser and Safari.", nil);
+
+        case SECTION_DROPBOX:
+            return NSLocalizedString(@"Use direct integration with dropbox account.", nil);
     }
     return nil;
 }
@@ -534,7 +559,14 @@ enum {
                     return webBrowserIntegratedCell;
             }
             break;
-    }
+
+        case SECTION_DROPBOX:
+            switch (indexPath.row) {
+                case ROW_DROPBOX_ENABLED:
+                    return dropboxEnabledCell;
+            }
+            break;
+}
     
     return nil;
 }
@@ -689,7 +721,26 @@ enum {
     [self.appSettings setWebBrowserIntegrated:webBrowserIntegratedCell.switchControl.on];
 }
 
-- (void)toogleBackupDisabled:(id)sender {
+- (void)toggleDropboxEnabled:(id)sender {
+    [self.appSettings setDropboxEnabled:dropboxEnabledCell.switchControl.on];
+    if( dropboxEnabledCell.switchControl.on ) {
+        printf( "Getting Dropbox authorization.\n");
+        [DBClientsManager authorizeFromController:[UIApplication sharedApplication]
+                          controller:self
+                          openURL:^(NSURL *url) {
+                              [[UIApplication sharedApplication] openURL:url];
+                          }
+                          browserAuth:NO];
+    } else {
+        [KeychainUtils deleteAllForServiceName:KEYCHAIN_OAUTH2_SERVICE];
+        [DBClientsManager unlinkAndResetClients];
+    }
+        
+
+
+}
+
+- (void)toggleBackupDisabled:(id)sender {
   // Update the setting
   [self.appSettings setBackupDisabled:backupDisabledCell.switchControl.on];
 }

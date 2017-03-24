@@ -32,6 +32,7 @@
 #define KEYCHAIN_PIN_SERVICE       @"com.jflan.MiniKeePass.pin"
 #define KEYCHAIN_PASSWORDS_SERVICE @"com.jflan.MiniKeePass.passwords"
 #define KEYCHAIN_KEYFILES_SERVICE  @"com.jflan.MiniKeePass.keyfiles"
+#define KEYCHAIN_OAUTH2_SERVICE    @"com.jflan.MiniKeePass.OAuth2"
 
 @interface KeychainUtils : NSObject
 

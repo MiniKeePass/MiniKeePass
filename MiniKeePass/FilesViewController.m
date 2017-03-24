@@ -15,10 +15,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#import <ObjectiveDropboxOfficial/ObjectiveDropboxOfficial.h>
 #import "MiniKeePassAppDelegate.h"
 #import "FilesViewController.h"
 #import "HelpViewController.h"
 #import "DatabaseManager.h"
+#import "DropboxDocument.h"
 #import "NewKdbViewController.h"
 #import "AppSettings.h"
 #import "KeychainUtils.h"
@@ -28,6 +30,7 @@
 enum {
     SECTION_DATABASE,
     SECTION_KEYFILE,
+    SECTION_DROPBOX,
     SECTION_NUMBER
 };
 
@@ -35,6 +38,7 @@ enum {
 @property (nonatomic, strong) FilesInfoView *filesInfoView;
 @property (nonatomic, strong) NSMutableArray *databaseFiles;
 @property (nonatomic, strong) NSMutableArray *keyFiles;
+@property (nonatomic, strong) NSMutableArray *dropboxFiles;
 @end
 
 @implementation FilesViewController
@@ -80,6 +84,7 @@ enum {
     }
 
     [super viewWillAppear:animated];
+    
 }
 
 - (void)viewWillLayoutSubviews {
@@ -92,34 +97,128 @@ enum {
 - (void)updateFiles {
     self.databaseFiles = [[NSMutableArray alloc] init];
     self.keyFiles = [[NSMutableArray alloc] init];
+    self.dropboxFiles = [[NSMutableArray alloc] init];
 
     // Get the document's directory
     NSString *documentsDirectory = [MiniKeePassAppDelegate documentsDirectory];
+    
+    // get the dropbox temp directory
+    NSString *dropbox_dir = [DropboxDocument getLocalPath:@""];
 
     // Get the contents of the documents directory
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSArray *dirContents = [fileManager contentsOfDirectoryAtPath:documentsDirectory error:nil];
-
+    
     // Sort the files into database files and keyfiles
     for (NSString *file in dirContents) {
         NSString *path = [documentsDirectory stringByAppendingPathComponent:file];
 
-        // Check if it's a directory
+        // Check if it's a directory and make sure it is not the dropbox temp directory
         BOOL dir = NO;
         [fileManager fileExistsAtPath:path isDirectory:&dir];
-        if (!dir) {
+        if (!dir && ![file containsString:dropbox_dir] ) {
             NSString *extension = [[file pathExtension] lowercaseString];
             if ([extension isEqualToString:@"kdb"] || [extension isEqualToString:@"kdbx"]) {
+                printf("Adding database %s\n", file.UTF8String );
                 [self.databaseFiles addObject:file];
             } else {
                 [self.keyFiles addObject:file];
             }
         }
     }
+    
+    if( [[AppSettings sharedInstance] dropboxEnabled] && [DBClientsManager authorizedClient] != nil ) {
+        [self loadDropboxFiles];
+    }
 
     // Sort the list of files
     [self.databaseFiles sortUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
     [self.keyFiles sortUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
+}
+
+- (void)loadDropboxFiles {
+    DBUserClient *client = [DropboxDocument getClient];
+    if( client == nil ) {
+        printf( "Cannot create client from access_token!\n");
+        return;
+    }
+    
+    printf("Loading dropbox files if they exist...\n");
+    
+    [[client.filesRoutes listFolder:@""]
+     setResponseBlock:^(DBFILESListFolderResult *response, DBFILESListFolderError *routeError, DBRequestError *error) {
+         if (response) {
+             NSArray<DBFILESMetadata *> *entries = response.entries;
+             BOOL hasMore = [response.hasMore boolValue];
+             
+             [self addDropboxEntries:entries];
+             
+             if (hasMore) {
+                 NSLog(@"Folder is large enough where we need to call `listFolderContinue:`");
+                 
+                 printf( "TODO: Handle large folder!\n");
+             } else {
+                 NSLog(@"List folder complete.");
+             }
+         } else {
+             NSLog(@"%@\n%@\n", routeError, error);
+         }
+     }];
+}
+
+- (void)addDropboxEntries:(NSArray<DBFILESMetadata *> *)entries {
+    for (DBFILESMetadata *entry in entries) {
+        DBFILESFileMetadata *fileMetadata = (DBFILESFileMetadata *)entry;
+        NSString *extension = [[fileMetadata.name pathExtension] lowercaseString];
+        if ([extension isEqualToString:@"kdb"] || [extension isEqualToString:@"kdbx"]) {
+            // Make a local copy
+            printf( "Found file: %s, extension: %s\n", fileMetadata.name.UTF8String, extension.UTF8String );
+            [self downloadDropboxFile:fileMetadata];
+        }
+    }
+    
+}
+
+- (void)downloadDropboxFile:(DBFILESFileMetadata *)fileMetadata {
+
+    DBUserClient *client = [DropboxDocument getClient];
+    if( client == nil ) {
+        printf( "Cannot get Dropbox client!\n");
+        return;
+    }
+    
+
+    printf("Checking if dropbox file is stale: '%s'\n", fileMetadata.name.UTF8String );
+
+    // Don't download a fresh version if a local copy is not stale.
+    if( ![DropboxDocument localCopyIsStale:fileMetadata] ) {
+        [self.dropboxFiles addObject:fileMetadata.name];
+        [self.dropboxFiles sortUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
+        [self.tableView reloadData];
+        return;
+    }
+
+    NSURL *outputUrl = [DropboxDocument getLocalURL:fileMetadata.name];
+    NSString *inpath = [DropboxDocument getDropboxPath:fileMetadata.name];
+    
+    printf("Downloading '%s' to '%s'.\n", inpath.UTF8String, outputUrl.absoluteString.UTF8String );
+    [[[client.filesRoutes downloadUrl:inpath overwrite:YES destination:outputUrl]
+      setResponseBlock:^(DBFILESFileMetadata *result, DBFILESDownloadError *routeError,
+                         DBRequestError *error, NSURL *destination) {
+          if (result) {
+              printf("Adding Dropbox file %s.\n", result.name.UTF8String);
+              NSString *lpath = [DropboxDocument getLocalPath:fileMetadata.name];
+              [DropboxDocument setModifiedDate:fileMetadata path:lpath];
+              [self.dropboxFiles addObject:result.name];
+              [self.dropboxFiles sortUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
+              [self.tableView reloadData];
+          } else {
+              NSLog(@"%@\n%@\n", routeError, error);
+          }
+      }] setProgressBlock:^(int64_t bytesDownloaded, int64_t totalBytesDownloaded, int64_t totalBytesExpectedToDownload) {
+          NSLog(@"%lld,%lld,%lld\n", bytesDownloaded, totalBytesDownloaded, totalBytesExpectedToDownload);
+      }];
+
 }
 
 - (void)displayInfoView {
@@ -165,6 +264,11 @@ enum {
                 return NSLocalizedString(@"Key Files", nil);
             }
             break;
+        case SECTION_DROPBOX:
+            if ([self.dropboxFiles count] != 0) {
+                return NSLocalizedString(@"Dropbox Files", nil);
+            }
+            break;
     }
 
     return nil;
@@ -173,6 +277,7 @@ enum {
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     NSUInteger databaseCount = [self.databaseFiles count];
     NSUInteger keyCount = [self.keyFiles count];
+    NSUInteger dropboxCount = [self.dropboxFiles count];
 
     NSInteger n;
     switch (section) {
@@ -182,13 +287,16 @@ enum {
         case SECTION_KEYFILE:
             n = keyCount;
             break;
+        case SECTION_DROPBOX:
+            n = dropboxCount;
+            break;
         default:
             n = 0;
             break;
     }
 
     // Show the help view if there are no files
-    if (databaseCount == 0 && keyCount == 0) {
+    if (databaseCount == 0 && keyCount == 0 && dropboxCount == 0) {
         [self displayInfoView];
     } else {
         [self hideInfoView];
@@ -220,14 +328,24 @@ enum {
             cell.textLabel.textColor = [UIColor grayColor];
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             break;
+        case SECTION_DROPBOX:
+            filename = [self.dropboxFiles objectAtIndex:indexPath.row];
+            cell.textLabel.text = filename;
+            cell.textLabel.textColor = [UIColor blueColor];
+            cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+            break;
         default:
             return nil;
     }
 
     // Retrieve the Document directory
     NSString *documentsDirectory = [MiniKeePassAppDelegate documentsDirectory];
-    NSString *path = [documentsDirectory stringByAppendingPathComponent:filename];
-
+    NSString *path;
+    if( indexPath.section != SECTION_DROPBOX ) {
+        path = [documentsDirectory stringByAppendingPathComponent:filename];
+    } else {
+        path = [DropboxDocument getLocalPath:filename];
+    }
     // Get the file's modification date
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSDate *modificationDate = [[fileManager attributesOfItemAtPath:path error:nil] fileModificationDate];
@@ -316,6 +434,10 @@ enum {
 
                 [self presentViewController:navigationController animated:YES completion:nil];
             }
+            break;
+        case SECTION_DROPBOX:
+            // Load the database
+            [[DatabaseManager sharedInstance] openDropboxDatabase:[self.dropboxFiles objectAtIndex:indexPath.row] animated:YES];
             break;
         default:
             break;
