@@ -207,8 +207,13 @@
     
     if( !isInitialized ) {
         // Initialize the Dropbox Client Manager
-        [DBClientsManager setupWithAppKey:DROPBOX_APP_KEY];
-        
+        @try {
+            [DBClientsManager setupWithAppKey:DROPBOX_APP_KEY];
+        } @catch (NSException *exception) {
+            NSLog(@"%@", exception);
+            return;
+        }
+
         // Create temp directory if it doesn't exist
         NSFileManager *fileManager = [NSFileManager defaultManager];
         NSURL *temp_dir = [DropboxDocument getLocalURL:@""];
