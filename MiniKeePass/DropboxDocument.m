@@ -115,6 +115,12 @@
     return path;
 }
 
++ (NSString *)getDropboxTempDir {
+    
+    return DROPBOX_TEMP_DIR;
+}
+
+
 + (BOOL)localCopyIsStale:(DBFILESFileMetadata *)fileMetadata {
     
     // Check if the locally cached copy of the database is stale.

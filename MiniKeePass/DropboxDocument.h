@@ -35,6 +35,7 @@
 + (NSString *)getLocalPath:(NSString *)filename;
 + (NSURL *)getLocalURL:(NSString *)filename;
 + (NSString *)getDropboxPath:(NSString *)filename;
++ (NSString *)getDropboxTempDir;
 
 + (BOOL)localCopyIsStale:(DBFILESFileMetadata *)fileMetadata;
 + (void)setModifiedDate:(DBFILESFileMetadata *)fileMetadata path:(NSString *)path;

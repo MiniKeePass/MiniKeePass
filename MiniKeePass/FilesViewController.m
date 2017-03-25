@@ -413,7 +413,7 @@ enum {
         case SECTION_DATABASE:
             if (self.editing == NO) {
                 // Load the database
-                [[DatabaseManager sharedInstance] openDatabaseDocument:[self.databaseFiles objectAtIndex:indexPath.row] animated:YES];
+                [[DatabaseManager sharedInstance] openDatabaseDocument:[self.databaseFiles objectAtIndex:indexPath.row] animated:YES dropbox:NO ];
             } else {
                 TextEntryController *textEntryController = [[TextEntryController alloc] init];
                 textEntryController.title = NSLocalizedString(@"Rename", nil);
@@ -437,7 +437,7 @@ enum {
             break;
         case SECTION_DROPBOX:
             // Load the database
-            [[DatabaseManager sharedInstance] openDropboxDatabase:[self.dropboxFiles objectAtIndex:indexPath.row] animated:YES];
+            [[DatabaseManager sharedInstance] openDatabaseDocument:[self.dropboxFiles objectAtIndex:indexPath.row] animated:YES dropbox:YES];
             break;
         default:
             break;
