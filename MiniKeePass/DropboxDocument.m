@@ -21,7 +21,8 @@
 #import "AppSettings.h"
 
 // Api key assigned by Dropbox for this App
-#define DROPBOX_APP_KEY          @"<APP-KEY>"
+// #define DROPBOX_APP_KEY          @"<APP-KEY>"
+#define DROPBOX_APP_KEY          @"82pjf4il2mxp018"
 
 // For the Keychain
 #define DROPBOX_ACCESS_TOKEN     @"dropboxAccessToken"
@@ -83,9 +84,7 @@
           } else {
               NSLog(@"uploadUrl -- %@\n%@\n", routeError, networkError);
           }
-      }] setProgressBlock:^(int64_t bytesDownloaded, int64_t totalBytesDownloaded, int64_t totalBytesExpectedToDownload) {
-          NSLog(@"%lld\n%lld\n%lld\n", bytesDownloaded, totalBytesDownloaded, totalBytesExpectedToDownload);
-      }];
+      }] setProgressBlock:^(int64_t bytesDownloaded, int64_t totalBytesDownloaded, int64_t totalBytesExpectedToDownload) { /* NOP */ }];
 }
 
 + (NSString *)getLocalPath:(NSString *)filename {
@@ -150,9 +149,10 @@
     NSDate *modificationDate = [fileAttributes fileModificationDate];
 
     NSLog( @"Local Date: %@\n", modificationDate);
-    NSLog( @"Dropbox Date : %@\n", fileMetadata.serverModified );
+    NSLog( @"Dropbox Server Modified Date : %@\n", fileMetadata.serverModified );
+    NSLog( @"Dropbox Client Modified Date : %@\n", fileMetadata.clientModified );
     
-    NSComparisonResult date_diff = [modificationDate compare:fileMetadata.serverModified];
+    NSComparisonResult date_diff = [modificationDate compare:fileMetadata.clientModified];
     if( date_diff == NSOrderedSame ) {
         // The local modification date and the server modification date are
         // exactly the same.  Local copy is NOT STALE.
@@ -161,15 +161,16 @@
     } else if( date_diff == NSOrderedDescending ) {
         // Local copy is newer than the Dropbox copy.
         // This shouldn't happen usually.  It would mean that the network
-        // connection was lost to Dropbox when a database save was needed.
+        // connection was lost to Dropbox when a database save was needed
+        // or that the dropbox side database was deleted and replaced with an
+        // older copy.
         printf( "Local copy is NEWER THAN DROPBOX!!!\n");
         
-        NSString *new_fname = [fileMetadata.name stringByAppendingString:@"dropbox_temp_bak.kdbx"];
-        NSString *documentsDirectory = [MiniKeePassAppDelegate documentsDirectory];
-        NSString *new_path = [ documentsDirectory stringByAppendingPathComponent:new_fname];
+        NSString *new_path = [DropboxDocument getConflictFileName:fileMetadata.name];
         if( ![fileManager moveItemAtPath:localpath toPath:new_path error:&err] ) {
             NSLog( @"%@", err );
-            // Don't overwrite local copy because there was an error!
+            // Don't overwrite local copy because there was an error moving it out
+            // of the temp directory.
             return NO;
         }
     }
@@ -182,7 +183,7 @@
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSError *err;
     
-    printf("Setting the modified date on the local file to %s.\n", fileMetadata.serverModified.description.UTF8String);
+    printf("Setting the modified date on the local file to %s.\n", fileMetadata.clientModified.description.UTF8String);
 
     NSDictionary *fileAttributes = [fileManager attributesOfItemAtPath:path error:&err];
     if( !fileAttributes ) {
@@ -190,10 +191,34 @@
         return;
     }
     
-    fileAttributes = @{ NSFileModificationDate : fileMetadata.serverModified };
+    fileAttributes = @{ NSFileModificationDate : fileMetadata.clientModified };
     if( ![fileManager setAttributes:fileAttributes ofItemAtPath:path error:&err] ) {
         NSLog( @"%@", err );
     }
+}
+
++ (NSString *) getConflictFileName:(NSString *)filename {
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSString *documentsDirectory = [MiniKeePassAppDelegate documentsDirectory];
+    NSString *basename = [filename stringByDeletingPathExtension];
+    NSString *path = [documentsDirectory stringByAppendingPathComponent:basename];
+    BOOL foundName = NO;
+    BOOL isDir;
+    int fileIdx = 0;
+
+    // Look for a conflict filename that is not already used.
+    NSString *conflictPath;
+    while( !foundName && fileIdx < 100 ) {
+        conflictPath = [path stringByAppendingFormat:@"_dropbox_tmp%02d.kdbx", fileIdx];
+        printf("Checking if '%s' exists\n", conflictPath.UTF8String );
+        if( ![fileManager fileExistsAtPath:conflictPath isDirectory:&isDir]) {
+            return conflictPath;
+        }
+        ++fileIdx;
+    }
+    
+        // Return the "DATABASE_dropbox_tmp99" if we can't find an unused filename!
+    return conflictPath;
 }
 
 + (void) storeAccessToken:(NSString *)token {
@@ -230,6 +255,8 @@
 + (DBUserClient *)getClient {
     
     NSString *token = [KeychainUtils stringForKey:DROPBOX_ACCESS_TOKEN andServiceName:KEYCHAIN_OAUTH2_SERVICE];
+    if( token == nil ) return nil;
+    
     DBUserClient *client = [[DBUserClient alloc] initWithAccessToken:token];
     if( client == nil ) {
         printf( "Cannot create client from access_token!\n");
