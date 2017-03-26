@@ -119,7 +119,6 @@ enum {
         if (!dir && ![file containsString:dropbox_dir] ) {
             NSString *extension = [[file pathExtension] lowercaseString];
             if ([extension isEqualToString:@"kdb"] || [extension isEqualToString:@"kdbx"]) {
-                printf("Adding database %s\n", file.UTF8String );
                 [self.databaseFiles addObject:file];
             } else {
                 [self.keyFiles addObject:file];
@@ -142,8 +141,6 @@ enum {
         printf( "Cannot create client from access_token!\n");
         return;
     }
-    
-    printf("Loading dropbox files if they exist...\n");
     
     [[client.filesRoutes listFolder:@""]
      setResponseBlock:^(DBFILESListFolderResult *response, DBFILESListFolderError *routeError, DBRequestError *error) {
@@ -171,8 +168,7 @@ enum {
         DBFILESFileMetadata *fileMetadata = (DBFILESFileMetadata *)entry;
         NSString *extension = [[fileMetadata.name pathExtension] lowercaseString];
         if ([extension isEqualToString:@"kdb"] || [extension isEqualToString:@"kdbx"]) {
-            // Make a local copy
-            printf( "Found file: %s, extension: %s\n", fileMetadata.name.UTF8String, extension.UTF8String );
+            // Found a dropbox database.  Download a local copy.
             [self downloadDropboxFile:fileMetadata];
         }
     }
@@ -186,7 +182,6 @@ enum {
         printf( "Cannot get Dropbox client!\n");
         return;
     }
-    
 
     printf("Checking if dropbox file is stale: '%s'\n", fileMetadata.name.UTF8String );
 
@@ -206,8 +201,8 @@ enum {
       setResponseBlock:^(DBFILESFileMetadata *result, DBFILESDownloadError *routeError,
                          DBRequestError *error, NSURL *destination) {
           if (result) {
-              printf("Adding Dropbox file %s.\n", result.name.UTF8String);
               NSString *lpath = [DropboxDocument getLocalPath:fileMetadata.name];
+              // Change modified date for the local copy.
               [DropboxDocument setModifiedDate:fileMetadata path:lpath];
               [self.dropboxFiles addObject:result.name];
               [self.dropboxFiles sortUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
@@ -215,9 +210,7 @@ enum {
           } else {
               NSLog(@"%@\n%@\n", routeError, error);
           }
-      }] setProgressBlock:^(int64_t bytesDownloaded, int64_t totalBytesDownloaded, int64_t totalBytesExpectedToDownload) {
-          NSLog(@"%lld,%lld,%lld\n", bytesDownloaded, totalBytesDownloaded, totalBytesExpectedToDownload);
-      }];
+      }] setProgressBlock:^(int64_t bytesDownloaded, int64_t totalBytesDownloaded, int64_t totalBytesExpectedToDownload) { /* NOP */ }];
 
 }
 
