@@ -82,6 +82,8 @@
             [DropboxDocument storeAccessToken:token ];
         } else if ([authResult isCancel]) {
             printf("Authorization flow was manually canceled by user!\n");
+            // Turn off settings toggle.
+            [[AppSettings sharedInstance] setDropboxEnabled:NO];
         } else if ([authResult isError]) {
             printf("Error in authResult\n" );
         }
