@@ -39,6 +39,7 @@ enum {
 @property (nonatomic, strong) NSMutableArray *databaseFiles;
 @property (nonatomic, strong) NSMutableArray *keyFiles;
 @property (nonatomic, strong) NSMutableArray *dropboxFiles;
+@property NSString *dropbox_status;
 @end
 
 @implementation FilesViewController
@@ -48,7 +49,8 @@ enum {
 
     self.title = NSLocalizedString(@"Files", nil);
     self.tableView.allowsSelectionDuringEditing = YES;
-
+    self.dropbox_status = nil;
+    
     MiniKeePassAppDelegate *appDelegate = [MiniKeePassAppDelegate appDelegate];
     UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"gear"]
                                                                        style:UIBarButtonItemStylePlain
@@ -126,7 +128,7 @@ enum {
         }
     }
     
-    if( [[AppSettings sharedInstance] dropboxEnabled] && [DBClientsManager authorizedClient] != nil ) {
+    if( [[AppSettings sharedInstance] dropboxEnabled] ) {
         [self loadDropboxFiles];
     }
 
@@ -139,9 +141,11 @@ enum {
     DBUserClient *client = [DropboxDocument getClient];
     if( client == nil ) {
         printf( "Cannot create client from access_token!\n");
+        self.dropbox_status = @"Authentication Error";
         return;
     }
     
+    self.dropbox_status = @"Loading ...";
     [[client.filesRoutes listFolder:@""]
      setResponseBlock:^(DBFILESListFolderResult *response, DBFILESListFolderError *routeError, DBRequestError *error) {
          if (response) {
@@ -155,9 +159,16 @@ enum {
                  
                  printf( "TODO: Handle large folder!\n");
              } else {
-                 NSLog(@"List folder complete.");
+                 if( [self.dropboxFiles count] == 0 ){
+                     self.dropbox_status = @"(none found)";
+                 } else {
+                     self.dropbox_status = nil;
+                 }
+                 [self.tableView reloadData];
              }
          } else {
+             self.dropbox_status = error.nsError.localizedDescription;
+             [self.tableView reloadData];
              NSLog(@"%@\n%@\n", routeError, error);
          }
      }];
@@ -172,7 +183,6 @@ enum {
             [self downloadDropboxFile:fileMetadata];
         }
     }
-    
 }
 
 - (void)downloadDropboxFile:(DBFILESFileMetadata *)fileMetadata {
@@ -180,6 +190,7 @@ enum {
     DBUserClient *client = [DropboxDocument getClient];
     if( client == nil ) {
         printf( "Cannot get Dropbox client!\n");
+        self.dropbox_status = @"Authentication Error";
         return;
     }
 
@@ -205,9 +216,12 @@ enum {
               // Change modified date for the local copy.
               [DropboxDocument setModifiedDate:fileMetadata path:lpath];
               [self.dropboxFiles addObject:result.name];
+              // Sort files and display table
               [self.dropboxFiles sortUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
               [self.tableView reloadData];
           } else {
+              self.dropbox_status = error.nsError.localizedDescription;
+              [self.tableView reloadData];
               NSLog(@"%@\n%@\n", routeError, error);
           }
       }] setProgressBlock:^(int64_t bytesDownloaded, int64_t totalBytesDownloaded, int64_t totalBytesExpectedToDownload) { /* NOP */ }];
@@ -245,6 +259,36 @@ enum {
     return SECTION_NUMBER;
 }
 
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
+    switch (section) {
+        case SECTION_DROPBOX:
+            if( self.dropbox_status == nil ) return nil;
+            UIFont *font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
+            UILabel *footer = [[UILabel alloc] init];
+            footer.font = font;
+            footer.textColor = [UIColor redColor];
+            footer.backgroundColor = [UIColor clearColor];
+            footer.text = [@"    " stringByAppendingString:self.dropbox_status];
+            return footer;
+            break;
+    }
+    
+    return nil;
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+
+ switch (section) {
+        case SECTION_DROPBOX:
+            if( self.dropbox_status == nil ) return 0;
+            UIFont *font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
+            CGFloat fontHeight = [font lineHeight];
+            return fontHeight + 3;
+            break;
+    }
+
+    return 0;
+}
+
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     switch (section) {
         case SECTION_DATABASE:
@@ -258,7 +302,7 @@ enum {
             }
             break;
         case SECTION_DROPBOX:
-            if ([self.dropboxFiles count] != 0) {
+            if ([[AppSettings sharedInstance] dropboxEnabled]) {
                 return NSLocalizedString(@"Dropbox Files", nil);
             }
             break;
