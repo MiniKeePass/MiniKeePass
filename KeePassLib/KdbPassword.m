@@ -8,7 +8,7 @@
 
 #import <CommonCrypto/CommonDigest.h>
 #import <CommonCrypto/CommonCryptor.h>
-#import "../argon2/include/argon2.h"
+#import "argon2.h"
 
 #import "Kdb4Node.h"
 #import "KdbPassword.h"
