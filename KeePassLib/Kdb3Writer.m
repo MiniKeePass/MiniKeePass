@@ -104,10 +104,13 @@
         [fileOutputStream write:[shaOutputStream getHash] length:32];
         [fileOutputStream close];
 
-        // Turn on file protection
+#if TARGET_OS_IPHONE
+        // Turn on file protection on iOS
         [[NSFileManager defaultManager] setAttributes:@{NSFileProtectionKey: NSFileProtectionComplete}
                                          ofItemAtPath:filename
                                                 error:nil];
+#endif
+        
     } @finally {
         shaOutputStream = nil;
         aesOutputStream = nil;
