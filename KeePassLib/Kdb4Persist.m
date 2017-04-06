@@ -240,6 +240,12 @@
     [root addChild:[DDXMLNode elementWithName:@"LastTopVisibleEntry"
                                   stringValue:[self persistUuid:group.lastTopVisibleEntry]]];
 
+    DDXMLElement *customDataElements = [DDXMLNode elementWithName:@"CustomData"];
+    for (CustomItem *customItem in group.customData) {
+        [customDataElements addChild:[self persistCustomItem:customItem]];
+    }
+    [root addChild:customDataElements];
+
     for (Kdb4Entry *entry in group.entries) {
         [root addChild:[self persistEntry:entry includeHistory:YES]];
     }
@@ -318,6 +324,12 @@
         }
         [root addChild:historyElement];
     }
+
+    DDXMLElement *customDataElements = [DDXMLElement elementWithName:@"CustomData"];
+    for (CustomItem *customItem in entry.customData) {
+        [customDataElements addChild:[self persistCustomItem:customItem]];
+    }
+    [root addChild:customDataElements];
 
     return root;
 }
