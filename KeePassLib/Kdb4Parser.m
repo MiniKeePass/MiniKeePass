@@ -224,6 +224,11 @@ int closeCallback(void *context) {
         group.customIconUuid = [self parseUuidString:[customIconUuidElement stringValue]];
     }
 
+    DDXMLElement *customDataElement = [root elementForName:@"CustomData"];
+    for (DDXMLElement *element in [customDataElement elementsForName:@"Item"]) {
+        [group.customData addObject:[self parseCustomItem:element]];
+    }
+
     DDXMLElement *timesElement = [root elementForName:@"Times"];
     group.lastModificationTime = [dateFormatter dateFromString:[[timesElement elementForName:@"LastModificationTime"] stringValue]];
     group.creationTime = [dateFormatter dateFromString:[[timesElement elementForName:@"CreationTime"] stringValue]];
@@ -305,6 +310,11 @@ int closeCallback(void *context) {
 
     for (DDXMLElement *element in [root elementsForName:@"Binary"]) {
         [entry.binaries addObject:[self parseBinaryRef:element]];
+    }
+
+    DDXMLElement *customDataElement = [root elementForName:@"CustomData"];
+    for (DDXMLElement *element in [customDataElement elementsForName:@"Item"]) {
+        [entry.customData addObject:[self parseCustomItem:element]];
     }
 
     entry.autoType = [self parseAutoType:[root elementForName:@"AutoType"]];
