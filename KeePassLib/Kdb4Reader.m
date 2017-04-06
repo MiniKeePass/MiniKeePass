@@ -15,75 +15,142 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#import <CommonCrypto/CommonDigest.h>
 #import <CommonCrypto/CommonCryptor.h>
+#import <CommonCrypto/CommonHMAC.h>
 #import "Kdb4Reader.h"
 #import "Kdb4Parser.h"
-#import "AesInputStream.h"
+#import "FileInputStream.h"
 #import "HashedInputStream.h"
+#import "HmacInputStream.h"
 #import "GZipInputStream.h"
 #import "Arc4RandomStream.h"
 #import "Salsa20RandomStream.h"
+#import "ChaCha20RandomStream.h"
 #import "KdbPassword.h"
-#import "UUID.h"
+#import "CipherStreamFactory.h"
+//#import "ChaCha20InputStream.h"
+//#import "AesInputStream.h"
 
+#define VERSION_CRITICAL_MAX_32_4 0x00040000  // KDBX 4
 #define VERSION_CRITICAL_MAX_32 0x00030000
 #define VERSION_CRITICAL_MASK 0xFFFF0000
 
 @interface Kdb4Reader (PrivateMethods)
 - (void)readHeader:(InputStream*)inputStream;
+- (void)readInnerHeader:(InputStream*)inputStream;
 @end
 
 @implementation Kdb4Reader
 
-- (KdbTree*)load:(InputStream*)inputStream withPassword:(KdbPassword*)kdbPassword {
+- (KdbTree*)load:(FileInputStream*)inputStream withPassword:(KdbPassword*)kdbPassword {
     // Read the header
+    [inputStream enableCopyBuffer:YES];
     [self readHeader:inputStream];
+    NSData *headerBytes = [inputStream getCopyBuffer];
+    [inputStream enableCopyBuffer:NO];
+   
+//    printf( "HEADER BYTES\n%s\n" , [[Utils hexDumpData:headerBytes] UTF8String] );
+
+    uint8_t hmackey64[64];
+    uint8_t *mseed = (uint8_t *) masterSeed.bytes;
+    NSData *key = [kdbPassword createFinalKeyKDBX4:kdfParams masterSeed:mseed HmacKey64:hmackey64 ];
+
+//    printf( "HMAC SEED\n%s\n" , [[Utils hexDumpBytes:hmackey64 length:64] UTF8String] );
     
-    // Check the cipher algorithm
-    if (![cipherUuid isEqual:[UUID getAESUUID]]) {
-        @throw [NSException exceptionWithName:@"IOException" reason:@"Unsupported cipher" userInfo:nil];
+    InputStream *stream;
+    InputStream *xmlStream;
+    RandomStream *randomStream = nil;
+    if( dbVersion < VERSION_CRITICAL_MAX_32_4 ) {  // KDBX 3.1
+        
+        // Create the encrypted input stream (ALWAYS AES for 3.1 files)
+        stream = [CipherStreamFactory getInputStream:cipherUuid stream:inputStream key:key iv:encryptionIv];
+
+        // Verify the stream start bytes match for 3.1
+        NSData *startBytes = [stream readData:32];
+
+        if (![startBytes isEqual:streamStartBytes]) {
+            @throw [NSException exceptionWithName:@"IOException" reason:@"Failed to decrypt" userInfo:nil];
+        }
+        
+        // Create the hashed input stream and
+        stream = [[HashedInputStream alloc] initWithInputStream:stream];
+
+    } else {  // KDBX 4
+        // Check the header Hash
+        uint8_t headerReadHash[CC_SHA256_DIGEST_LENGTH];
+        CC_SHA256(headerBytes.bytes, (CC_LONG)headerBytes.length, headerReadHash);
+
+        NSData *headerStoredHash = [inputStream readData:32];
+        if( memcmp(headerReadHash, headerStoredHash.bytes, 32) != 0 ) {
+            @throw [NSException exceptionWithName:@"IOFileCorrupt" reason:@"Header data corrupt" userInfo:nil];
+        }
+        
+        // Check the header HMAC-SHA-256
+        uint8_t headerReadHmac[CC_SHA256_DIGEST_LENGTH];
+        uint8_t headerStoredHmac[CC_SHA256_DIGEST_LENGTH];
+        NSData *hmacKey = [HmacInputStream getHMACKey:(void *)hmackey64 keylen:64 blockIndex:ULLONG_MAX];
+
+//        printf( "HMAC KEY\n%s\n" , [[Utils hexDumpData:hmacKey] UTF8String] );
+        
+        CCHmac(kCCHmacAlgSHA256, hmacKey.bytes, hmacKey.length, headerBytes.bytes, (size_t)headerBytes.length, headerReadHmac);
+        [inputStream read:headerStoredHmac length:32];
+        if( memcmp(headerReadHmac, headerStoredHmac, 32) != 0 ) {
+            @throw [NSException exceptionWithName:@"IOFileCorrupt" reason:@"Header data corrupt" userInfo:nil];
+        }
+        
+        // Create the HMAC Block input stream
+        NSData *hmacKeyData = [[NSData alloc] initWithBytes:hmackey64 length:64];
+        HmacInputStream *hmacStream = [[HmacInputStream alloc] initWithInputStream:inputStream key:hmacKeyData];
+        
+        // Create the encrypted input stream
+//        stream = [[ChaCha20InputStream alloc] initWithInputStream:hmacStream key:key iv:encryptionIv];
+        stream = [CipherStreamFactory getInputStream:cipherUuid stream:hmacStream key:key iv:encryptionIv];
     }
     
-    // Create the AES input stream
-    NSData *key = [kdbPassword createFinalKeyForVersion:4 masterSeed:masterSeed transformSeed:transformSeed rounds:rounds];
-    AesInputStream *aesInputStream = [[AesInputStream alloc] initWithInputStream:inputStream key:key iv:encryptionIv];
-    
-    // Verify the stream start bytes match
-    NSData *startBytes = [aesInputStream readData:32];
-    if (![startBytes isEqual:streamStartBytes]) {
-        @throw [NSException exceptionWithName:@"IOException" reason:@"Failed to decrypt" userInfo:nil];
-    }
-    
-    // Create the hashed input stream and swap in the compression input stream if compressed
-    InputStream *stream = [[HashedInputStream alloc] initWithInputStream:aesInputStream];
+    // Decompress input stream if compressed
     if (compressionAlgorithm == COMPRESSION_GZIP) {
-        stream = [[GZipInputStream alloc] initWithInputStream:stream];
+        xmlStream = [[GZipInputStream alloc] initWithInputStream:stream];
+    } else {
+        xmlStream = stream;
+    }
+    
+    if( dbVersion >= VERSION_CRITICAL_MAX_32_4 ) {  // KDBX 4
+        [self readInnerHeader:xmlStream];
+    }
+
+    if( protectedStreamKey == nil ) {
+        @throw [NSException exceptionWithName:@"IOException" reason:@"Inner Protected Stream Key NOT FOUND." userInfo:nil];
     }
     
     // Create the CRS Algorithm
-    RandomStream *randomStream = nil;
     if (randomStreamID == CSR_SALSA20) {
         randomStream = [[Salsa20RandomStream alloc] init:protectedStreamKey];
     } else if (randomStreamID == CSR_ARC4VARIANT) {
         randomStream = [[Arc4RandomStream alloc] init:protectedStreamKey];
+    } else if (randomStreamID == CSR_CHACHA20) {
+        randomStream = [[ChaCha20RandomStream alloc] init:protectedStreamKey];
     } else {
         @throw [NSException exceptionWithName:@"IOException" reason:@"Unsupported CSR algorithm" userInfo:nil];
     }
-    
+
     // Parse the tree
     Kdb4Parser *parser = [[Kdb4Parser alloc] initWithRandomStream:randomStream];
-    Kdb4Tree *tree = [parser parse:stream];
+    Kdb4Tree *tree = [parser parse:xmlStream];
 
-    // Copy some parameters into the KdbTree
-    tree.rounds = rounds;
+    // Copy parameters from the header into the KdbTree
+    tree.kdfParams = kdfParams;
+    tree.customPluginData = customPluginData;
+    tree.headerBinaries = binaryData;
     tree.compressionAlgorithm = compressionAlgorithm;
+    tree.encryptionAlgorithm = cipherUuid;
     
     return tree;
 }
 
 - (void)readHeader:inputStream {
     uint8_t buffer[16];
-
+    
     uint32_t sig1 = [inputStream readInt32];
     sig1 = CFSwapInt32LittleToHost(sig1);
 
@@ -93,19 +160,29 @@
         @throw [NSException exceptionWithName:@"IOException" reason:@"Invalid signature" userInfo:nil];
     }
 
-    uint32_t version = [inputStream readInt32];
-    version = CFSwapInt32LittleToHost(version);
+    dbVersion = [inputStream readInt32];
+    dbVersion = CFSwapInt32LittleToHost(dbVersion);
 
-    if ((version & VERSION_CRITICAL_MASK) > (VERSION_CRITICAL_MAX_32 & VERSION_CRITICAL_MASK)) {
+    if ((dbVersion & VERSION_CRITICAL_MASK) > (VERSION_CRITICAL_MAX_32_4 & VERSION_CRITICAL_MASK)) {
         @throw [NSException exceptionWithName:@"IOException" reason:@"Unsupported version" userInfo:nil];
     }
+    
+    int64_t pvali64;
+    kdfParams = [[VariantDictionary alloc] init];
 
     BOOL eoh = NO;
     while (!eoh) {
         uint8_t fieldType = [inputStream readInt8];
+        int32_t fieldSize;
 
-        uint16_t fieldSize = [inputStream readInt16];
-        fieldSize = CFSwapInt16LittleToHost(fieldSize);
+        if( dbVersion >= VERSION_CRITICAL_MAX_32_4 ) {
+            fieldSize = [inputStream readInt32];
+            fieldSize = CFSwapInt32LittleToHost(fieldSize);
+        } else {
+            uint16_t oldfieldSize = [inputStream readInt16];
+            oldfieldSize = CFSwapInt16LittleToHost(oldfieldSize);
+            fieldSize = oldfieldSize;
+        }
         
         switch (fieldType) {
             case HEADER_EOH:
@@ -133,12 +210,15 @@
                 masterSeed = [inputStream readData:fieldSize];
                 break;
             
-            case HEADER_TRANSFORMSEED:
+            case HEADER_TRANSFORMSEED:      // Obsolete in KDBX 4
                 if (fieldSize != 32) {
                     @throw [NSException exceptionWithName:@"IOException" reason:@"Invalid field size" userInfo:nil];
                 }
-                
-                transformSeed = [inputStream readData:fieldSize];
+                    // Set the KDFparameters UUID if not set.
+                if( kdfParams[KDF_KEY_UUID_BYTES] == nil ) {
+                    kdfParams[KDF_KEY_UUID_BYTES] = [[UUID getAESUUID] getData];
+                }
+                kdfParams[KDF_AES_KEY_SEED] = [inputStream readData:fieldSize];
                 break;
             
             case HEADER_ENCRYPTIONIV:
@@ -149,13 +229,14 @@
                 protectedStreamKey = [inputStream readData:fieldSize];
                 break;
             
-            case HEADER_STARTBYTES:
+            case HEADER_STARTBYTES:  // Obsolete in KDBX 4
                 streamStartBytes = [inputStream readData:fieldSize];
                 break;
             
-            case HEADER_TRANSFORMROUNDS:
-                rounds = [inputStream readInt64];
-                rounds = CFSwapInt64LittleToHost(rounds);
+            case HEADER_TRANSFORMROUNDS:    // Obsolete in KDBX 4
+                pvali64 = [inputStream readInt64];
+                pvali64 = CFSwapInt64LittleToHost(pvali64);
+                kdfParams[KDF_AES_KEY_ROUNDS] = [NSNumber numberWithLongLong:pvali64];
                 break;
             
             case HEADER_COMPRESSION:
@@ -174,10 +255,57 @@
                 }
                 break;
             
+            case HEADER_KDFPARMETERS:
+                [kdfParams deserialize:inputStream];
+                break;
+            case HEADER_PUBLICCUSTOM:
+                [customPluginData deserialize:inputStream];
+                break;
+                
             default:
                 @throw [NSException exceptionWithName:@"InvalidHeader" reason:@"InvalidField" userInfo:nil];
         }
     }
+}
+
+- (void)readInnerHeader:inputStream {
+
+    BOOL eoh = NO;
+    while (!eoh) {
+        uint8_t fieldType = [inputStream readInt8];
+        int32_t fieldSize;
+        NSData *bdata;
+        
+        fieldSize = [inputStream readInt32];
+        fieldSize = CFSwapInt32LittleToHost(fieldSize);
+        
+        switch (fieldType) {
+            case INNER_HEADER_EOH:
+                bdata = [inputStream readData:fieldSize];
+                eoh = YES;
+                break;
+            case INNER_HEADER_RANDOMSTREAMID:
+                randomStreamID = [inputStream readInt32];
+                randomStreamID = CFSwapInt32LittleToHost(randomStreamID);
+                if (randomStreamID >= CSR_COUNT) {
+                    @throw [NSException exceptionWithName:@"IOException" reason:@"Invalid CSR algorithm" userInfo:nil];
+                }
+                break;
+            case INNER_HEADER_RANDOMSTREAMKEY:
+                protectedStreamKey = [inputStream readData:fieldSize];
+                break;
+            case INNER_HEADER_BINARY:
+                if( binaryData == nil ) {
+                    binaryData = [[NSMutableArray alloc] init];
+                }
+                bdata = [inputStream readData:fieldSize];
+                [binaryData addObject:bdata];
+                break;
+            default:
+                @throw [NSException exceptionWithName:@"InvalidParameterField" reason:@"Inner Header BadFieldType" userInfo:nil];
+        }
+    }
+    
 }
 
 @end
