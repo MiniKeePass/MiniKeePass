@@ -18,6 +18,13 @@
 #import "Kdb4Node.h"
 
 @implementation Kdb4Group
+- (id)init {
+    self = [super init];
+    if (self) {
+        _customData = [[NSMutableArray alloc] init];
+    }
+    return self;
+}
 @end
 
 @implementation StringField
@@ -84,6 +91,7 @@
         _stringFields = [[NSMutableArray alloc] init];
         _binaries = [[NSMutableArray alloc] init];
         _history = [[NSMutableArray alloc] init];
+        _customData = [[NSMutableArray alloc] init];
     }
     return self;
 }
@@ -136,12 +144,16 @@
 - (id)init {
     self = [super init];
     if (self) {
-        _rounds = DEFAULT_TRANSFORMATION_ROUNDS;
         _compressionAlgorithm = COMPRESSION_GZIP;
         _customIcons = [[NSMutableArray alloc] init];
         _binaries = [[NSMutableArray alloc] init];
         _customData = [[NSMutableArray alloc] init];
         _deletedObjects = [[NSMutableArray alloc] init];
+        _forcedVersion = 0;
+
+        _kdfParams = [[VariantDictionary alloc] init];
+        _customPluginData = [[VariantDictionary alloc] init];
+        _headerBinaries = [[NSMutableArray alloc] init];
     }
     return self;
 }

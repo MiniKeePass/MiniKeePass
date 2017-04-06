@@ -17,11 +17,14 @@
 
 #import <Foundation/Foundation.h>
 #import "Kdb.h"
+#import "Utils.h"
 #import "UUID.h"
 
 #define KDB4_SIG1              0x9AA2D903
 #define KDB4_SIG2              0xB54BFB67
-#define KDB4_VERSION           0x00030001
+// #define KDB4_VERSION           0x00030001
+#define KDBX31_VERSION         0x00030001
+#define KDBX40_VERSION         0x00040000
 
 #define HEADER_EOH             0
 #define HEADER_COMMENT         1
@@ -34,6 +37,25 @@
 #define HEADER_PROTECTEDKEY    8
 #define HEADER_STARTBYTES      9
 #define HEADER_RANDOMSTREAMID  10
+#define HEADER_KDFPARMETERS    11
+#define HEADER_PUBLICCUSTOM    12
+
+#define INNER_HEADER_EOH              0
+#define INNER_HEADER_RANDOMSTREAMID   1
+#define INNER_HEADER_RANDOMSTREAMKEY  2
+#define INNER_HEADER_BINARY           3
+
+#define KDF_KEY_UUID_BYTES            @"$UUID"
+#define KDF_AES_KEY_SEED              @"S"
+#define KDF_AES_KEY_ROUNDS            @"R"
+
+#define KDF_ARGON2_KEY_SALT           @"S"
+#define KDF_ARGON2_KEY_PARALLELISM    @"P"
+#define KDF_ARGON2_KEY_MEMORY         @"M" /*uint64*/
+#define KDF_ARGON2_KEY_ITERATIONS     @"I" /*uint64*/
+#define KDF_ARGON2_KEY_VERSION        @"V"
+#define KDF_ARGON2_KEY_SECRET_KEY     @"K"
+#define KDF_ARGON2_KEY_ASSOC_DATA     @"A"
 
 #define COMPRESSION_NONE       0
 #define COMPRESSION_GZIP       1
@@ -42,7 +64,8 @@
 #define CSR_NONE               0
 #define CSR_ARC4VARIANT        1
 #define CSR_SALSA20            2
-#define CSR_COUNT              3
+#define CSR_CHACHA20           3
+#define CSR_COUNT              4
 
 #define FIELD_TITLE            @"Title"
 #define FIELD_USER_NAME        @"UserName"
@@ -63,6 +86,9 @@
 @property(nonatomic, assign) BOOL expires;
 @property(nonatomic, assign) NSInteger usageCount;
 @property(nonatomic, strong) NSDate *locationChanged;
+
+    // Array of CustomItem objects
+@property(nonatomic, strong) NSMutableArray *customData;
 
 @end
 
@@ -157,16 +183,21 @@
 @property(nonatomic, assign) NSInteger usageCount;
 @property(nonatomic, strong) NSDate *locationChanged;
 @property(nonatomic, readonly) NSMutableArray *stringFields;
-@property(nonatomic, readonly) NSMutableArray *binaries;
+@property(nonatomic, readonly) NSMutableArray *binaries;  // BinaryRefs
 @property(nonatomic, strong) AutoType *autoType;
 @property(nonatomic, readonly) NSMutableArray *history;
+
+// Array of CustomItem objects
+//@property(nonatomic, strong) NSMutableArray *customData;
+@property NSMutableArray *customData;
 
 @end
 
 
 @interface Kdb4Tree : KdbTree
 
-@property(nonatomic, assign) uint64_t rounds;
+// Get from KdfParams
+// @property(nonatomic, assign) uint64_t rounds;
 @property(nonatomic, assign) uint32_t compressionAlgorithm;
 
 @property(nonatomic, copy) NSString *generator;
@@ -200,5 +231,12 @@
 @property(nonatomic, readonly) NSMutableArray *binaries;
 @property(nonatomic, readonly) NSMutableArray *customData;
 @property(nonatomic, strong) NSMutableArray *deletedObjects;
+
+/* KDBX 4 Stuff */
+@property uint32_t forcedVersion;
+@property VariantDictionary *kdfParams;
+@property VariantDictionary *customPluginData;
+@property NSMutableArray *headerBinaries;
+@property UUID *encryptionAlgorithm;
 
 @end
