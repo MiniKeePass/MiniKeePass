@@ -18,6 +18,8 @@
 #import "UUID.h"
 
 static UUID *AES_UUID;
+static UUID *CHACHA20_UUID;
+static UUID *ARGON2_UUID;
 
 @implementation UUID
 
@@ -125,6 +127,44 @@ static UUID *AES_UUID;
         }
     }
     return AES_UUID;
+}
+
++ (UUID*)getChaCha20UUID {
+    @synchronized(self) {
+        if (!CHACHA20_UUID) {
+            uint8_t bytes[16];
+            bytes[0]=0xD6; bytes[1]=0x03;
+            bytes[2]=0x8A; bytes[3]=0x2B;
+            bytes[4]=0x8B; bytes[5]=0x6F;
+            bytes[6]=0x4C; bytes[7]=0xB5;
+            bytes[8]=0xA5; bytes[9]=0x24;
+            bytes[10]=0x33; bytes[11]=0x9A;
+            bytes[12]=0x31; bytes[13]=0xDB;
+            bytes[14]=0xB5; bytes[15]=0x9A;
+            
+            CHACHA20_UUID = [[UUID alloc] initWithBytes:bytes];
+        }
+    }
+    return CHACHA20_UUID;
+}
+
++ (UUID*)getArgon2UUID {
+    @synchronized(self) {
+        if (!ARGON2_UUID) {
+            uint8_t bytes[16];
+            bytes[0]=0xEF; bytes[1]=0x63;
+            bytes[2]=0x6D; bytes[3]=0xDF;
+            bytes[4]=0x8C; bytes[5]=0x29;
+            bytes[6]=0x44; bytes[7]=0x4B;
+            bytes[8]=0x91; bytes[9]=0xF7;
+            bytes[10]=0xA9; bytes[11]=0xA4;
+            bytes[12]=0x03; bytes[13]=0xE3;
+            bytes[14]=0x0A; bytes[15]=0x0C;
+            
+            ARGON2_UUID = [[UUID alloc] initWithBytes:bytes];
+        }
+    }
+    return ARGON2_UUID;
 }
 
 @end
