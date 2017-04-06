@@ -10,11 +10,10 @@
 #import "RandomStream.h"
 #import "BlockCipher.h"
 
-@interface Salsa20RandomStream : RandomStream {
+@interface ChaCha20RandomStream : RandomStream {
     BlockCipher *cipher;
 }
 
-- (id)init;
 - (id)init:(NSData*)key;
 
 @end
