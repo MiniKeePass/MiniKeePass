@@ -128,6 +128,20 @@
 		68E08316146F2749001C4EDF /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 68E08314146F2749001C4EDF /* InfoPlist.strings */; };
 		68EA62DB1CC972F300B33E42 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 68EA62DA1CC972F300B33E42 /* LaunchScreen.storyboard */; };
 		68EBC2D61613394D00E8E799 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68EBC2D51613394D00E8E799 /* QuartzCore.framework */; };
+		782C93DC1E8E35BF00B6AC82 /* BlockCipher.m in Sources */ = {isa = PBXBuildFile; fileRef = 782C93D71E8E35BF00B6AC82 /* BlockCipher.m */; };
+		782C93DD1E8E35BF00B6AC82 /* ChaCha20Cipher.m in Sources */ = {isa = PBXBuildFile; fileRef = 782C93D91E8E35BF00B6AC82 /* ChaCha20Cipher.m */; };
+		782C93DE1E8E35BF00B6AC82 /* Salsa20Cipher.m in Sources */ = {isa = PBXBuildFile; fileRef = 782C93DB1E8E35BF00B6AC82 /* Salsa20Cipher.m */; };
+		782C93E11E8E35EA00B6AC82 /* HmacInputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 782C93E01E8E35EA00B6AC82 /* HmacInputStream.m */; };
+		782C93E41E8E361200B6AC82 /* ChaCha20InputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 782C93E31E8E361200B6AC82 /* ChaCha20InputStream.m */; };
+		7872317E1E955D2D006BA0DD /* CipherStreamFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 7872317D1E955D2D006BA0DD /* CipherStreamFactory.m */; };
+		787231831E955D4A006BA0DD /* HmacOutputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 787231821E955D4A006BA0DD /* HmacOutputStream.m */; };
+		787231861E955D7B006BA0DD /* ChaCha20OutputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 787231851E955D7B006BA0DD /* ChaCha20OutputStream.m */; };
+		7872319D1E95ED59006BA0DD /* argon2iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7872319A1E95ED47006BA0DD /* argon2iOS.framework */; };
+		7872319E1E95ED59006BA0DD /* argon2iOS.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 7872319A1E95ED47006BA0DD /* argon2iOS.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		78AF0CE91E834E45007467BB /* ObjectiveDropboxOfficial.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 78AF0CE61E834B8B007467BB /* ObjectiveDropboxOfficial.framework */; };
+		78AF0CEA1E834E45007467BB /* ObjectiveDropboxOfficial.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 78AF0CE61E834B8B007467BB /* ObjectiveDropboxOfficial.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		78AF0CF01E841AFB007467BB /* DropboxDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 78AF0CEF1E841AFB007467BB /* DropboxDocument.m */; };
+		78F802101E8EBFE70039625E /* ChaCha20RandomStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 78F8020F1E8EBFE70039625E /* ChaCha20RandomStream.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -138,7 +152,64 @@
 			remoteGlobalIDString = D286A7491518C70F00E13FB8;
 			remoteInfo = MBProgressHUD;
 		};
+		787231991E95ED47006BA0DD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 787231941E95ED47006BA0DD /* argon2iOS.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 78F8028B1E8EE2A50039625E;
+			remoteInfo = argon2iOS;
+		};
+		7872319B1E95ED47006BA0DD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 787231941E95ED47006BA0DD /* argon2iOS.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 78F802941E8EE2A50039625E;
+			remoteInfo = argon2iOSTests;
+		};
+		7872319F1E95ED59006BA0DD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 787231941E95ED47006BA0DD /* argon2iOS.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 78F8028A1E8EE2A50039625E;
+			remoteInfo = argon2iOS;
+		};
+		78AF0CE51E834B8B007467BB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 78AF0CE01E834B8A007467BB /* ObjectiveDropboxOfficial.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = F26B75751D7F6AF700714F70;
+			remoteInfo = "ObjectiveDropboxOfficial iOS";
+		};
+		78AF0CE71E834B8B007467BB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 78AF0CE01E834B8A007467BB /* ObjectiveDropboxOfficial.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = F27DE9E21D7FF909003B1CEE;
+			remoteInfo = "ObjectiveDropboxOfficial macOS";
+		};
+		78AF0CEB1E834E45007467BB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 78AF0CE01E834B8A007467BB /* ObjectiveDropboxOfficial.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = F26B75741D7F6AF700714F70;
+			remoteInfo = "ObjectiveDropboxOfficial iOS";
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		78AF0CED1E834E45007467BB /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				78AF0CEA1E834E45007467BB /* ObjectiveDropboxOfficial.framework in Embed Frameworks */,
+				7872319E1E95ED59006BA0DD /* argon2iOS.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		4E8C168E16B3E871004195A1 /* fr-createdb.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "fr-createdb.html"; sourceTree = "<group>"; };
@@ -378,6 +449,28 @@
 		68E0831C146F2D37001C4EDF /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		68EA62DA1CC972F300B33E42 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		68EBC2D51613394D00E8E799 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		782C93D61E8E35BF00B6AC82 /* BlockCipher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BlockCipher.h; path = Crypto/BlockCipher.h; sourceTree = "<group>"; };
+		782C93D71E8E35BF00B6AC82 /* BlockCipher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BlockCipher.m; path = Crypto/BlockCipher.m; sourceTree = "<group>"; };
+		782C93D81E8E35BF00B6AC82 /* ChaCha20Cipher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ChaCha20Cipher.h; path = Crypto/ChaCha20Cipher.h; sourceTree = "<group>"; };
+		782C93D91E8E35BF00B6AC82 /* ChaCha20Cipher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ChaCha20Cipher.m; path = Crypto/ChaCha20Cipher.m; sourceTree = "<group>"; };
+		782C93DA1E8E35BF00B6AC82 /* Salsa20Cipher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Salsa20Cipher.h; path = Crypto/Salsa20Cipher.h; sourceTree = "<group>"; };
+		782C93DB1E8E35BF00B6AC82 /* Salsa20Cipher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Salsa20Cipher.m; path = Crypto/Salsa20Cipher.m; sourceTree = "<group>"; };
+		782C93DF1E8E35EA00B6AC82 /* HmacInputStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HmacInputStream.h; sourceTree = "<group>"; };
+		782C93E01E8E35EA00B6AC82 /* HmacInputStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HmacInputStream.m; sourceTree = "<group>"; };
+		782C93E21E8E361200B6AC82 /* ChaCha20InputStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChaCha20InputStream.h; sourceTree = "<group>"; };
+		782C93E31E8E361200B6AC82 /* ChaCha20InputStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChaCha20InputStream.m; sourceTree = "<group>"; };
+		7872317C1E955D2D006BA0DD /* CipherStreamFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CipherStreamFactory.h; sourceTree = "<group>"; };
+		7872317D1E955D2D006BA0DD /* CipherStreamFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CipherStreamFactory.m; sourceTree = "<group>"; };
+		787231811E955D4A006BA0DD /* HmacOutputStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HmacOutputStream.h; sourceTree = "<group>"; };
+		787231821E955D4A006BA0DD /* HmacOutputStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HmacOutputStream.m; sourceTree = "<group>"; };
+		787231841E955D7B006BA0DD /* ChaCha20OutputStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChaCha20OutputStream.h; sourceTree = "<group>"; };
+		787231851E955D7B006BA0DD /* ChaCha20OutputStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChaCha20OutputStream.m; sourceTree = "<group>"; };
+		787231941E95ED47006BA0DD /* argon2iOS.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = argon2iOS.xcodeproj; path = ../argon2/xcode/argon2iOS/argon2iOS.xcodeproj; sourceTree = "<group>"; };
+		78AF0CE01E834B8A007467BB /* ObjectiveDropboxOfficial.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ObjectiveDropboxOfficial.xcodeproj; path = "../ObjectiveDropbox/Carthage/Checkouts/dropbox-sdk-obj-c/Source/ObjectiveDropboxOfficial/ObjectiveDropboxOfficial.xcodeproj"; sourceTree = "<group>"; };
+		78AF0CEE1E841AE7007467BB /* DropboxDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DropboxDocument.h; sourceTree = "<group>"; };
+		78AF0CEF1E841AFB007467BB /* DropboxDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DropboxDocument.m; sourceTree = "<group>"; };
+		78F8020E1E8EBFE70039625E /* ChaCha20RandomStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ChaCha20RandomStream.h; path = KeePassLib/ChaCha20RandomStream.h; sourceTree = SOURCE_ROOT; };
+		78F8020F1E8EBFE70039625E /* ChaCha20RandomStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ChaCha20RandomStream.m; path = KeePassLib/ChaCha20RandomStream.m; sourceTree = SOURCE_ROOT; };
 		BDB0FF5D194C7C6F00C44DEF /* nl */ = {isa = PBXFileReference; lastKnownFileType = text; name = nl; path = nl.lproj/AppStore.txt; sourceTree = "<group>"; };
 		BDB0FF5E194C7C6F00C44DEF /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		BDB0FF5F194C7C6F00C44DEF /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -393,6 +486,7 @@
 				526D9FAD167CDC2E0097213E /* libMBProgressHUD.a in Frameworks */,
 				689D000D13A42765005EBD36 /* AudioToolbox.framework in Frameworks */,
 				689DFFDE13A4273F005EBD36 /* CoreGraphics.framework in Frameworks */,
+				7872319D1E95ED59006BA0DD /* argon2iOS.framework in Frameworks */,
 				689DFFDC13A4273F005EBD36 /* Foundation.framework in Frameworks */,
 				6802C36F1A425D7300595AC9 /* LocalAuthentication.framework in Frameworks */,
 				68EBC2D61613394D00E8E799 /* QuartzCore.framework in Frameworks */,
@@ -459,6 +553,12 @@
 				682D44F41603883900156830 /* AesOutputStream.m */,
 				682D44F51603883900156830 /* Arc4RandomStream.h */,
 				682D44F61603883900156830 /* Arc4RandomStream.m */,
+				782C93E21E8E361200B6AC82 /* ChaCha20InputStream.h */,
+				782C93E31E8E361200B6AC82 /* ChaCha20InputStream.m */,
+				787231841E955D7B006BA0DD /* ChaCha20OutputStream.h */,
+				787231851E955D7B006BA0DD /* ChaCha20OutputStream.m */,
+				7872317C1E955D2D006BA0DD /* CipherStreamFactory.h */,
+				7872317D1E955D2D006BA0DD /* CipherStreamFactory.m */,
 				682D44F71603883900156830 /* DataInputStream.h */,
 				682D44F81603883900156830 /* DataInputStream.m */,
 				682D44F91603883900156830 /* DataOutputStream.h */,
@@ -475,6 +575,10 @@
 				682D45041603883900156830 /* HashedInputStream.m */,
 				682D45051603883900156830 /* HashedOutputStream.h */,
 				682D45061603883900156830 /* HashedOutputStream.m */,
+				782C93DF1E8E35EA00B6AC82 /* HmacInputStream.h */,
+				782C93E01E8E35EA00B6AC82 /* HmacInputStream.m */,
+				787231811E955D4A006BA0DD /* HmacOutputStream.h */,
+				787231821E955D4A006BA0DD /* HmacOutputStream.m */,
 				682D45071603883900156830 /* InputStream.h */,
 				682D45081603883900156830 /* InputStream.m */,
 				682D45091603883900156830 /* OutputStream.h */,
@@ -515,8 +619,11 @@
 		689D02B013A42B63005EBD36 /* KeePassLib */ = {
 			isa = PBXGroup;
 			children = (
+				782C93D41E8E358F00B6AC82 /* Crypto */,
 				689D02B713A42B63005EBD36 /* Base64.h */,
 				689D02B813A42B63005EBD36 /* Base64.m */,
+				78F8020E1E8EBFE70039625E /* ChaCha20RandomStream.h */,
+				78F8020F1E8EBFE70039625E /* ChaCha20RandomStream.m */,
 				680C277416050C7A009403DE /* DDXMLDocument+MKPAdditions.h */,
 				680C277516050C7A009403DE /* DDXMLDocument+MKPAdditions.m */,
 				689D02C713A42B63005EBD36 /* Kdb.h */,
@@ -618,6 +725,7 @@
 		689DFFCA13A4273F005EBD36 = {
 			isa = PBXGroup;
 			children = (
+				787231941E95ED47006BA0DD /* argon2iOS.xcodeproj */,
 				689D030313A42B63005EBD36 /* LICENSE.txt */,
 				689D030413A42B63005EBD36 /* README.md */,
 				689DFFDF13A4273F005EBD36 /* MiniKeePass */,
@@ -798,6 +906,37 @@
 			path = Cells;
 			sourceTree = "<group>";
 		};
+		782C93D41E8E358F00B6AC82 /* Crypto */ = {
+			isa = PBXGroup;
+			children = (
+				782C93D61E8E35BF00B6AC82 /* BlockCipher.h */,
+				782C93D71E8E35BF00B6AC82 /* BlockCipher.m */,
+				782C93D81E8E35BF00B6AC82 /* ChaCha20Cipher.h */,
+				782C93D91E8E35BF00B6AC82 /* ChaCha20Cipher.m */,
+				782C93DA1E8E35BF00B6AC82 /* Salsa20Cipher.h */,
+				782C93DB1E8E35BF00B6AC82 /* Salsa20Cipher.m */,
+			);
+			name = Crypto;
+			sourceTree = "<group>";
+		};
+		787231951E95ED47006BA0DD /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				7872319A1E95ED47006BA0DD /* argon2iOS.framework */,
+				7872319C1E95ED47006BA0DD /* argon2iOSTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		78AF0CE11E834B8A007467BB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				78AF0CE61E834B8B007467BB /* ObjectiveDropboxOfficial.framework */,
+				78AF0CE81E834B8B007467BB /* ObjectiveDropboxOfficial.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -813,6 +952,8 @@
 			buildRules = (
 			);
 			dependencies = (
+				78AF0CEC1E834E45007467BB /* PBXTargetDependency */,
+				787231A01E95ED59006BA0DD /* PBXTargetDependency */,
 			);
 			name = MiniKeePass;
 			productName = MiniKeePass;
@@ -859,6 +1000,10 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
+					ProductGroup = 787231951E95ED47006BA0DD /* Products */;
+					ProjectRef = 787231941E95ED47006BA0DD /* argon2iOS.xcodeproj */;
+				},
+				{
 					ProductGroup = 526D9FA4167CDC010097213E /* Products */;
 					ProjectRef = 526D9FA3167CDC010097213E /* MBProgressHUD.xcodeproj */;
 				},
@@ -876,6 +1021,34 @@
 			fileType = archive.ar;
 			path = libMBProgressHUD.a;
 			remoteRef = 526D9FAA167CDC010097213E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		7872319A1E95ED47006BA0DD /* argon2iOS.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = argon2iOS.framework;
+			remoteRef = 787231991E95ED47006BA0DD /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		7872319C1E95ED47006BA0DD /* argon2iOSTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = argon2iOSTests.xctest;
+			remoteRef = 7872319B1E95ED47006BA0DD /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		78AF0CE61E834B8B007467BB /* ObjectiveDropboxOfficial.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = ObjectiveDropboxOfficial.framework;
+			remoteRef = 78AF0CE51E834B8B007467BB /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		78AF0CE81E834B8B007467BB /* ObjectiveDropboxOfficial.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = ObjectiveDropboxOfficial.framework;
+			remoteRef = 78AF0CE71E834B8B007467BB /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -938,6 +1111,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				782C93DC1E8E35BF00B6AC82 /* BlockCipher.m in Sources */,
 				689DFFE713A4273F005EBD36 /* main.m in Sources */,
 				689D03CD13A42B63005EBD36 /* Base64.m in Sources */,
 				689FBE781AB27228005CB6BD /* KeychainUtils.m in Sources */,
@@ -969,14 +1143,17 @@
 				689D03E513A42B63005EBD36 /* Salsa20RandomStream.m in Sources */,
 				689D03E713A42B63005EBD36 /* Utils.m in Sources */,
 				689D03E813A42B63005EBD36 /* UUID.m in Sources */,
+				782C93DD1E8E35BF00B6AC82 /* ChaCha20Cipher.m in Sources */,
 				689D03E913A42B63005EBD36 /* DDXMLElementAdditions.m in Sources */,
 				689D03EA13A42B63005EBD36 /* NSString+DDXML.m in Sources */,
 				682B938E18A48EC20020C22A /* UIAlertViewAutoDismiss.m in Sources */,
 				689D03EB13A42B63005EBD36 /* DDXMLDocument.m in Sources */,
 				689D03EC13A42B63005EBD36 /* DDXMLElement.m in Sources */,
 				689D03ED13A42B63005EBD36 /* DDXMLNode.m in Sources */,
+				782C93E11E8E35EA00B6AC82 /* HmacInputStream.m in Sources */,
 				689D044F13A42C82005EBD36 /* DatabaseDocument.m in Sources */,
 				689D045013A42C82005EBD36 /* DatabaseManager.m in Sources */,
+				782C93E41E8E361200B6AC82 /* ChaCha20InputStream.m in Sources */,
 				689D045113A42C82005EBD36 /* EntryViewController.m in Sources */,
 				689D045213A42C82005EBD36 /* FilesInfoView.m in Sources */,
 				689D045313A42C82005EBD36 /* FilesViewController.m in Sources */,
@@ -1008,13 +1185,18 @@
 				682D45171603883900156830 /* HashedOutputStream.m in Sources */,
 				682D45181603883900156830 /* InputStream.m in Sources */,
 				689FBE711AB2720D005CB6BD /* LengthCell.m in Sources */,
+				782C93DE1E8E35BF00B6AC82 /* Salsa20Cipher.m in Sources */,
 				682D45191603883900156830 /* OutputStream.m in Sources */,
 				689FBE901AB27283005CB6BD /* MasterPasswordFieldCell.m in Sources */,
 				682D451A1603883900156830 /* Sha256OutputStream.m in Sources */,
 				689FBE951AB27283005CB6BD /* TitleFieldCell.m in Sources */,
+				78F802101E8EBFE70039625E /* ChaCha20RandomStream.m in Sources */,
+				787231831E955D4A006BA0DD /* HmacOutputStream.m in Sources */,
 				685D9D951603F8EE00D739D3 /* Kdb3Utils.m in Sources */,
+				787231861E955D7B006BA0DD /* ChaCha20OutputStream.m in Sources */,
 				6851FAFD186DD11D00A53B0E /* UIActionSheetAutoDismiss.m in Sources */,
 				689FBE931AB27283005CB6BD /* TextFieldCell.m in Sources */,
+				7872317E1E955D2D006BA0DD /* CipherStreamFactory.m in Sources */,
 				68496E761AB34F8800370876 /* SettingsViewController.m in Sources */,
 				680C277616050C7A009403DE /* DDXMLDocument+MKPAdditions.m in Sources */,
 				689FBE8F1AB27283005CB6BD /* ImageButtonCell.m in Sources */,
@@ -1027,6 +1209,19 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		787231A01E95ED59006BA0DD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = argon2iOS;
+			targetProxy = 7872319F1E95ED59006BA0DD /* PBXContainerItemProxy */;
+		};
+		78AF0CEC1E834E45007467BB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "ObjectiveDropboxOfficial iOS";
+			targetProxy = 78AF0CEB1E834E45007467BB /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		687AAA991889F8B400AB8AC5 /* AppStore.txt */ = {
@@ -1122,6 +1317,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				METAL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = "";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -1158,6 +1354,7 @@
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				METAL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
 				PROVISIONING_PROFILE = "4758DC3A-B5A3-47FC-BA60-308A27C51D17";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -1173,7 +1370,12 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = "MiniKeePass/MiniKeePass-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.jflan.${PRODUCT_NAME:rfc1034identifier}";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/argon2",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.tssmith;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1188,7 +1390,12 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				INFOPLIST_FILE = "MiniKeePass/MiniKeePass-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.jflan.${PRODUCT_NAME:rfc1034identifier}";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/argon2",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.tssmith;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "29c6de49-d5a6-4b63-9168-72d9368ab499";
 				TARGETED_DEVICE_FAMILY = "1,2";
