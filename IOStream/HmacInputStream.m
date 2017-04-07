@@ -85,13 +85,7 @@
     }
     
     // Read the block size
-    bufferLength = [inputStream readInt32];
-    
-    // Check if it's the last block
-    if (bufferLength == 0) {
-        eof = true;
-        return false;
-    }
+    bufferLength = [inputStream readInt32];    
 
     // Allocate the new buffer
     if (buffer != NULL) {
@@ -122,6 +116,13 @@
     }
 
     ++blockIndex;
+
+    // Check if it's the last block
+    if (bufferLength == 0) {
+        eof = true;
+        return false;
+    }
+    
     return true;
 }
 
