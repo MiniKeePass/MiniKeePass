@@ -136,7 +136,7 @@
 
     // Parse the tree
     Kdb4Parser *parser = [[Kdb4Parser alloc] initWithRandomStream:randomStream];
-    Kdb4Tree *tree = [parser parse:xmlStream];
+    Kdb4Tree *tree = [parser parse:xmlStream dbVersion:dbVersion];
 
     // Copy parameters from the header into the KdbTree
     tree.kdfParams = kdfParams;
@@ -216,16 +216,16 @@
                 }
                     // Set the KDFparameters UUID if not set.
                 if( kdfParams[KDF_KEY_UUID_BYTES] == nil ) {
-                    kdfParams[KDF_KEY_UUID_BYTES] = [[UUID getAESUUID] getData];
+                    [kdfParams addObject:[[UUID getAES_KDFUUID] getData] forKey:KDF_KEY_UUID_BYTES objtype:VARIANT_DICT_TYPE_BYTEARRAY ];
                 }
-                kdfParams[KDF_AES_KEY_SEED] = [inputStream readData:fieldSize];
+                [kdfParams addObject:[inputStream readData:fieldSize] forKey:KDF_AES_KEY_SEED objtype:VARIANT_DICT_TYPE_BYTEARRAY ];
                 break;
             
             case HEADER_ENCRYPTIONIV:
                 encryptionIv = [inputStream readData:fieldSize];
                 break;
             
-            case HEADER_PROTECTEDKEY:
+            case HEADER_PROTECTEDKEY:     // Obsolete in KDBX 4
                 protectedStreamKey = [inputStream readData:fieldSize];
                 break;
             
@@ -234,9 +234,12 @@
                 break;
             
             case HEADER_TRANSFORMROUNDS:    // Obsolete in KDBX 4
+                if( kdfParams[KDF_KEY_UUID_BYTES] == nil ) {
+                    [kdfParams addObject:[[UUID getAES_KDFUUID] getData] forKey:KDF_KEY_UUID_BYTES objtype:VARIANT_DICT_TYPE_BYTEARRAY ];
+                }
                 pvali64 = [inputStream readInt64];
                 pvali64 = CFSwapInt64LittleToHost(pvali64);
-                kdfParams[KDF_AES_KEY_ROUNDS] = [NSNumber numberWithLongLong:pvali64];
+                [kdfParams addObject:[NSNumber numberWithLongLong:pvali64] forKey:KDF_AES_KEY_ROUNDS objtype:VARIANT_DICT_TYPE_UINT64];
                 break;
             
             case HEADER_COMPRESSION:
@@ -247,7 +250,7 @@
                 }
                 break;
             
-            case HEADER_RANDOMSTREAMID:
+            case HEADER_RANDOMSTREAMID:    // Obsolete in KDBX 4
                 randomStreamID = [inputStream readInt32];
                 randomStreamID = CFSwapInt32LittleToHost(randomStreamID);
                 if (randomStreamID >= CSR_COUNT) {
