@@ -68,13 +68,14 @@
     
     // Determine what version database to use
     dbVersion = [self getMinDatabaseVersion:tree];
+    tree.dbVersion = dbVersion;
     
     // Get a new Random seed.
     UUID *KDFUuid = [[UUID alloc] initWithData:tree.kdfParams[KDF_KEY_UUID_BYTES]];
-    if( [KDFUuid isEqual:[UUID getAESUUID]] ) {
-        tree.kdfParams[KDF_AES_KEY_SEED] = [Utils randomBytes:32];
+    if( [KDFUuid isEqual:[UUID getAES_KDFUUID]] ) {
+        [tree.kdfParams addObject:[Utils randomBytes:32] forKey:KDF_AES_KEY_SEED objtype:VARIANT_DICT_TYPE_BYTEARRAY];
     } else if( [KDFUuid isEqual:[UUID getArgon2UUID]] ) {
-        tree.kdfParams[KDF_ARGON2_KEY_SALT] = [Utils randomBytes:32];
+        [tree.kdfParams addObject:[Utils randomBytes:32] forKey:KDF_ARGON2_KEY_SALT objtype:VARIANT_DICT_TYPE_BYTEARRAY];
     } else {
         @throw [NSException exceptionWithName:@"CipherError" reason:@"Unknown Cipher Uuid" userInfo:nil];
     }
@@ -201,7 +202,7 @@
     [outputStream writeInt32:CFSwapInt32HostToLittle(KDB4_SIG1)];
     [outputStream writeInt32:CFSwapInt32HostToLittle(KDB4_SIG2)];
     [outputStream writeInt32:CFSwapInt32HostToLittle(dbVersion)];
-    
+
     [tree.encryptionAlgorithm getBytes:buffer length:16];
     [self writeHeaderField:outputStream headerId:HEADER_CIPHERID data:buffer length:16];
     
@@ -210,29 +211,33 @@
     
     [self writeHeaderField:outputStream headerId:HEADER_MASTERSEED data:masterSeed.bytes length:masterSeed.length];
     
-    [self writeHeaderField:outputStream headerId:HEADER_PROTECTEDKEY data:protectedStreamKey.bytes length:protectedStreamKey.length];
-    
-    [self writeHeaderField:outputStream headerId:HEADER_ENCRYPTIONIV data:encryptionIv.bytes length:encryptionIv.length];
-
     if( dbVersion < KDBX40_VERSION ) {
         NSData *seedData = (NSData *) tree.kdfParams[ KDF_AES_KEY_SEED ];
         
-        i32 = CFSwapInt32HostToLittle(CSR_SALSA20);
-        [self writeHeaderField:outputStream headerId:HEADER_RANDOMSTREAMID data:&i32 length:4];
-
         [self writeHeaderField:outputStream headerId:HEADER_TRANSFORMSEED data:seedData.bytes length:seedData.length];
         
         uint64_t rounds = [tree.kdfParams[ KDF_AES_KEY_ROUNDS ] longLongValue];
         i64 = CFSwapInt64HostToLittle(rounds);
         [self writeHeaderField:outputStream headerId:HEADER_TRANSFORMROUNDS data:&i64 length:8];
-
-        [self writeHeaderField:outputStream headerId:HEADER_STARTBYTES data:streamStartBytes.bytes length:streamStartBytes.length];
-        
     } else {
         NSData *vdBytes = [tree.kdfParams serialize];
         [self writeHeaderField:outputStream headerId:HEADER_KDFPARMETERS data:vdBytes.bytes length:vdBytes.length];
+    }
+    
+    if( encryptionIv.length > 0 ) {
+        [self writeHeaderField:outputStream headerId:HEADER_ENCRYPTIONIV data:encryptionIv.bytes length:encryptionIv.length];
+    }
+    
+    if( dbVersion < KDBX40_VERSION ) {
+       [self writeHeaderField:outputStream headerId:HEADER_PROTECTEDKEY data:protectedStreamKey.bytes length:protectedStreamKey.length];
+        
+        [self writeHeaderField:outputStream headerId:HEADER_STARTBYTES data:streamStartBytes.bytes length:streamStartBytes.length];
+        
+        i32 = CFSwapInt32HostToLittle(CSR_SALSA20);
+        [self writeHeaderField:outputStream headerId:HEADER_RANDOMSTREAMID data:&i32 length:4];
+    } else {
         if( [tree.customPluginData count] > 0 ) {
-            vdBytes = [tree.customPluginData serialize];
+            NSData *vdBytes = [tree.customPluginData serialize];
             [self writeHeaderField:outputStream headerId:HEADER_PUBLICCUSTOM data:vdBytes.bytes length:vdBytes.length];
         }
     }
@@ -253,17 +258,14 @@
     i32 = CFSwapInt32HostToLittle(CSR_CHACHA20);
     [self writeHeaderField:outputStream headerId:INNER_HEADER_RANDOMSTREAMID data:&i32 length:4];
 
+    protectedStreamKey = [Utils randomBytes:64];
     [self writeHeaderField:outputStream headerId:INNER_HEADER_RANDOMSTREAMKEY data:protectedStreamKey.bytes length:protectedStreamKey.length];
 
     for( NSData *bdata in tree.headerBinaries ) {
         [self writeHeaderField:outputStream headerId:INNER_HEADER_BINARY data:bdata.bytes length:bdata.length];
     }
     
-    buffer[0] = '\r';
-    buffer[1] = '\n';
-    buffer[2] = '\r';
-    buffer[3] = '\n';
-    [self writeHeaderField:outputStream headerId:HEADER_EOH data:buffer length:4];
+    [self writeHeaderField:outputStream headerId:HEADER_EOH data:buffer length:0];
 }
 
 - (NSData *)computeHashOfHeaderData:(NSData *)headerData {
@@ -305,7 +307,7 @@
     
     // New KDBX 4 stuff.  Default to KDBX 3.1 format
     tree.forcedVersion = KDBX31_VERSION;
-    [KdbPassword getDefaultKDFParameters:tree.kdfParams uuid:[UUID getAESUUID]];
+    [KdbPassword getDefaultKDFParameters:tree.kdfParams uuid:[UUID getAES_KDFUUID]];
     tree.encryptionAlgorithm = [UUID getAESUUID];
 
 
@@ -352,7 +354,7 @@
     }
 
     UUID *KDFUuid = [[UUID alloc] initWithData:tree.kdfParams[KDF_KEY_UUID_BYTES]];
-    if( ![KDFUuid isEqual:[UUID getAESUUID]] ) {
+    if( ![KDFUuid isEqual:[UUID getAES_KDFUUID]] ) {
         return KDBX40_VERSION;
     }
     
