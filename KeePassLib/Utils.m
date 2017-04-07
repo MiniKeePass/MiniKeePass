@@ -11,13 +11,6 @@
 #define VARIANT_DICT_VERSION       0x0100
 
 #define VARIANT_DICT_EOH              0x00
-#define VARIANT_DICT_TYPE_UINT32      0x04
-#define VARIANT_DICT_TYPE_UINT64      0x05
-#define VARIANT_DICT_TYPE_BOOL        0x08
-#define VARIANT_DICT_TYPE_INT32       0x0C
-#define VARIANT_DICT_TYPE_INT64       0x0D
-#define VARIANT_DICT_TYPE_STRING      0x18
-#define VARIANT_DICT_TYPE_BYTEARRAY   0x42
 
 @implementation Utils
 
@@ -92,7 +85,7 @@
 }
 
 + (NSData*)getUInt64BytesFromNumber:(NSNumber *)num {
-    uint64_t val = [num longLongValue];
+    uint64_t val = [num unsignedLongLongValue];
     return [self getUInt64Bytes:val];
 }
 
@@ -109,6 +102,11 @@
     buf[7] = (uint8_t) (val >> 56);
     
     return [[NSData alloc] initWithBytes:buf length:8];
+}
+
++ (NSData*)getUInt32BytesFromNumber:(NSNumber *)num {
+    uint32_t val = (uint32_t)[num unsignedIntegerValue];
+    return [self getUInt32Bytes:val];
 }
 
 + (NSData*)getUInt32Bytes:(uint32_t)val {
@@ -131,6 +129,16 @@
     return [[NSData alloc] initWithBytes:buf length:2];
 }
 
++ (uint64_t)BytesToInt64:(NSData*)data {
+    uint8_t *pb;
+    
+    pb = (uint8_t *)data.bytes;
+    
+    return ((uint64_t)pb[0]         | ((uint64_t)pb[1] << 8)  | ((uint64_t)pb[2] << 16) |
+            ((uint64_t)pb[3] << 24) | ((uint64_t)pb[4] << 32) | ((uint64_t)pb[5] << 40) |
+            ((uint64_t)pb[6] << 48) | ((uint64_t)pb[7] << 56));
+}
+
 @end
 
 @implementation VariantDictionary
@@ -138,12 +146,14 @@
 -(id) init {
     
     dict = [[NSMutableDictionary alloc] init];
+    type = [[NSMutableDictionary alloc] init];
     
     return self;
 }
 
-- (void)setObject:(id)obj forKeyedSubscript:(id <NSCopying>)key {
+- (void)addObject:(id)obj forKey:(id <NSCopying>)key objtype:(uint32_t)objtype {
     dict[key] = obj;
+    type[key] = [NSNumber numberWithUnsignedInteger:objtype];
 }
 
 - (id)objectForKeyedSubscript:(id)key {
@@ -180,28 +190,35 @@
             case VARIANT_DICT_TYPE_UINT32:
                 pvalu32 = [inputStream readInt32];
                 dict[keyName] = [NSNumber numberWithUnsignedInteger:pvalu32];
+                type[keyName] = [NSNumber numberWithUnsignedInteger:VARIANT_DICT_TYPE_UINT32];
                 break;
             case VARIANT_DICT_TYPE_UINT64:
                 pvalu64 = [inputStream readInt64];
                 dict[keyName] = [NSNumber numberWithUnsignedLongLong:pvalu64];
+                type[keyName] = [NSNumber numberWithUnsignedInteger:VARIANT_DICT_TYPE_UINT64];
                 break;
             case VARIANT_DICT_TYPE_BOOL:
                 pvalbyte = [inputStream readInt8];
                 dict[keyName] = [NSNumber numberWithChar:pvalbyte];
+                type[keyName] = [NSNumber numberWithUnsignedInteger:VARIANT_DICT_TYPE_BOOL];
                 break;
             case VARIANT_DICT_TYPE_INT32:
                 pvali32 = [inputStream readInt32];
                 dict[keyName] = [NSNumber numberWithInteger:pvali32];
+                type[keyName] = [NSNumber numberWithUnsignedInteger:VARIANT_DICT_TYPE_INT32];
                 break;
             case VARIANT_DICT_TYPE_INT64:
                 pvali64 = [inputStream readInt64];
                 dict[keyName] = [NSNumber numberWithLongLong:pvali64];
+                type[keyName] = [NSNumber numberWithUnsignedInteger:VARIANT_DICT_TYPE_INT64];
                 break;
             case VARIANT_DICT_TYPE_STRING:
                 dict[keyName] = [inputStream readString:valueLength encoding:NSASCIIStringEncoding];
+                type[keyName] = [NSNumber numberWithUnsignedInteger:VARIANT_DICT_TYPE_STRING];
                 break;
             case VARIANT_DICT_TYPE_BYTEARRAY:
                 dict[keyName] = [inputStream readData:valueLength];
+                type[keyName] = [NSNumber numberWithUnsignedInteger:VARIANT_DICT_TYPE_BYTEARRAY];
                 break;
             default:
                 @throw [NSException exceptionWithName:@"InvalidParameterField" reason:@"BadFieldType" userInfo:nil];
@@ -217,7 +234,6 @@
 }
 
 -(NSData*) serialize {
-    uint8_t ctypebuf[1];
     uint32_t keylen;
     NSMutableData *serData = [[NSMutableData alloc] init];
     
@@ -227,16 +243,45 @@
         NSObject *item = dict[key];
         if( [item isKindOfClass:[NSNumber class]] ) {
             NSNumber *num = (NSNumber *)item;
-            memcpy(ctypebuf, [num objCType], 1);
-            if( ctypebuf[0] == 'q' ) {
+            uint32_t num_type = (uint32_t)[(NSNumber*)type[key] unsignedIntegerValue];
+            if( num_type == VARIANT_DICT_TYPE_UINT64 ) {
                 [self appendByte:serData byte:VARIANT_DICT_TYPE_UINT64];
                 keylen = (uint32_t)[key length];
                 [serData appendData:[Utils getUInt32Bytes:keylen]];
                 [serData appendBytes:[key cStringUsingEncoding:NSASCIIStringEncoding] length:keylen];
                 [serData appendData:[Utils getUInt32Bytes:8]];
                 [serData appendData:[Utils getUInt64BytesFromNumber:num]];
+            } else if( num_type == VARIANT_DICT_TYPE_UINT32 ) {
+                [self appendByte:serData byte:VARIANT_DICT_TYPE_UINT32];
+                keylen = (uint32_t)[key length];
+                [serData appendData:[Utils getUInt32Bytes:keylen]];
+                [serData appendBytes:[key cStringUsingEncoding:NSASCIIStringEncoding] length:keylen];
+                [serData appendData:[Utils getUInt32Bytes:4]];
+                [serData appendData:[Utils getUInt32BytesFromNumber:num]];
+            } else if( num_type == VARIANT_DICT_TYPE_BOOL ) {
+                [self appendByte:serData byte:VARIANT_DICT_TYPE_BOOL];
+                keylen = (uint32_t)[key length];
+                [serData appendData:[Utils getUInt32Bytes:keylen]];
+                [serData appendBytes:[key cStringUsingEncoding:NSASCIIStringEncoding] length:keylen];
+                [serData appendData:[Utils getUInt32Bytes:1]];
+                uint8_t byte = [num unsignedCharValue];
+                [serData appendBytes:&byte length:1];
+            } else if( num_type == VARIANT_DICT_TYPE_INT64 ) {
+                [self appendByte:serData byte:VARIANT_DICT_TYPE_INT64];
+                keylen = (uint32_t)[key length];
+                [serData appendData:[Utils getUInt32Bytes:keylen]];
+                [serData appendBytes:[key cStringUsingEncoding:NSASCIIStringEncoding] length:keylen];
+                [serData appendData:[Utils getUInt32Bytes:8]];
+                [serData appendData:[Utils getUInt64BytesFromNumber:num]];
+            } else if( num_type == VARIANT_DICT_TYPE_INT32 ) {
+                [self appendByte:serData byte:VARIANT_DICT_TYPE_INT32];
+                keylen = (uint32_t)[key length];
+                [serData appendData:[Utils getUInt32Bytes:keylen]];
+                [serData appendBytes:[key cStringUsingEncoding:NSASCIIStringEncoding] length:keylen];
+                [serData appendData:[Utils getUInt32Bytes:4]];
+                [serData appendData:[Utils getUInt32BytesFromNumber:num]];
             } else {
-                printf("Obj-C type(%s)\n", ctypebuf );
+                printf("Obj-C type(%d)\n", num_type );
                 @throw [NSException exceptionWithName:@"InvalidParameterField" reason:@"NotImplemented" userInfo:nil];
             }
         } else if( [item isKindOfClass:[NSString class]] ) {
