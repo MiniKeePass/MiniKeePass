@@ -120,11 +120,14 @@
     }
     
     // Write terminating block header
+    [self writeHmacBlock];
+/*
     // Write out zeros for the HMAC
     [outputStream write:zeros length:32];
     
     // Write out zero for the block size
     [outputStream writeInt32:0];
+*/
     
     [outputStream close];
 }
