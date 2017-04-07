@@ -23,6 +23,7 @@
 #import "Base64.h"
 
 @interface Kdb4Parser (PrivateMethods)
+
 - (void)decodeProtected:(DDXMLElement *)root;
 - (void)parseMeta:(DDXMLElement *)root;
 - (CustomIcon *)parseCustomIcon:(DDXMLElement *)root;
@@ -35,9 +36,11 @@
 - (UUID *)parseUuidString:(NSString *)uuidString;
 - (NSMutableData *)parseBase64String:(NSString *)base64String;
 - (DeletedObject *)parseDeletedObject:(DDXMLElement *)root;
+- (NSDate *)parseDateTime:(NSString *)dateString;
 @end
 
 @implementation Kdb4Parser
+NSDate *Kdbx4ReferenceDate;
 
 - (id)initWithRandomStream:(RandomStream *)cryptoRandomStream {
     self = [super init];
@@ -47,6 +50,7 @@
         dateFormatter = [[NSDateFormatter alloc] init];
         dateFormatter.timeZone = [NSTimeZone timeZoneWithName:@"GMT"];
         dateFormatter.dateFormat = @"yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'";
+        Kdbx4ReferenceDate = [dateFormatter dateFromString:@"0001-01-01T00:00:00Z"];
     }
     return self;
 }
@@ -60,7 +64,7 @@ int closeCallback(void *context) {
     return 0;
 }
 
-- (Kdb4Tree *)parse:(InputStream *)inputStream {
+- (Kdb4Tree *)parse:(InputStream *)inputStream dbVersion:(uint32_t)dbVer {
     DDXMLDocument *document = [[DDXMLDocument alloc] initWithReadIO:readCallback
                                                              closeIO:closeCallback
                                                              context:(__bridge void *)(inputStream)
@@ -69,7 +73,7 @@ int closeCallback(void *context) {
     if (document == nil) {
         @throw [NSException exceptionWithName:@"ParseError" reason:@"Failed to parse database" userInfo:nil];
     }
-
+    
     // Get the root document element
     DDXMLElement *rootElement = [document rootElement];
 
@@ -77,6 +81,8 @@ int closeCallback(void *context) {
     [self decodeProtected:rootElement];
 
     Kdb4Tree *tree = [[Kdb4Tree alloc] init];
+    tree.dbVersion = dbVer;
+    dbVersion = dbVer;
 
     DDXMLElement *meta = [rootElement elementForName:@"Meta"];
     if (meta != nil) {
@@ -135,14 +141,14 @@ int closeCallback(void *context) {
     }
 
     tree.databaseName = [[root elementForName:@"DatabaseName"] stringValue];
-    tree.databaseNameChanged = [dateFormatter dateFromString:[[root elementForName:@"DatabaseNameChanged"] stringValue]];
+    tree.databaseNameChanged = [self parseDateTime:[[root elementForName:@"DatabaseNameChanged"] stringValue]];
     tree.databaseDescription = [[root elementForName:@"DatabaseDescription"] stringValue];
-    tree.databaseDescriptionChanged = [dateFormatter dateFromString:[[root elementForName:@"DatabaseDescriptionChanged"] stringValue]];
+    tree.databaseDescriptionChanged = [self parseDateTime:[[root elementForName:@"DatabaseDescriptionChanged"] stringValue]];
     tree.defaultUserName = [[root elementForName:@"DefaultUserName"] stringValue];
-    tree.defaultUserNameChanged = [dateFormatter dateFromString:[[root elementForName:@"DefaultUserNameChanged"] stringValue]];
+    tree.defaultUserNameChanged = [self parseDateTime:[[root elementForName:@"DefaultUserNameChanged"] stringValue]];
     tree.maintenanceHistoryDays = [[[root elementForName:@"MaintenanceHistoryDays"] stringValue] integerValue];
     tree.color = [[root elementForName:@"Color"] stringValue];
-    tree.masterKeyChanged = [dateFormatter dateFromString:[[root elementForName:@"MasterKeyChanged"] stringValue]];
+    tree.masterKeyChanged = [self parseDateTime:[[root elementForName:@"MasterKeyChanged"] stringValue]];
     tree.masterKeyChangeRec = [[[root elementForName:@"MasterKeyChangeRec"] stringValue] integerValue];
     tree.masterKeyChangeForce = [[[root elementForName:@"MasterKeyChangeForce"] stringValue] integerValue];
 
@@ -160,9 +166,9 @@ int closeCallback(void *context) {
 
     tree.recycleBinEnabled = [[[root elementForName:@"RecycleBinEnabled"] stringValue] boolValue];
     tree.recycleBinUuid = [self parseUuidString:[[root elementForName:@"RecycleBinUUID"] stringValue]];
-    tree.recycleBinChanged = [dateFormatter dateFromString:[[root elementForName:@"RecycleBinChanged"] stringValue]];
+    tree.recycleBinChanged = [self parseDateTime:[[root elementForName:@"RecycleBinChanged"] stringValue]];
     tree.entryTemplatesGroup = [self parseUuidString:[[root elementForName:@"EntryTemplatesGroup"] stringValue]];
-    tree.entryTemplatesGroupChanged = [dateFormatter dateFromString:[[root elementForName:@"EntryTemplatesGroupChanged"] stringValue]];
+    tree.entryTemplatesGroupChanged = [self parseDateTime:[[root elementForName:@"EntryTemplatesGroupChanged"] stringValue]];
     tree.historyMaxItems = [[[root elementForName:@"HistoryMaxItems"] stringValue] integerValue];
     tree.historyMaxSize = [[[root elementForName:@"HistoryMaxSize"] stringValue] integerValue];
     tree.lastSelectedGroup = [self parseUuidString:[[root elementForName:@"LastSelectedGroup"] stringValue]];
@@ -230,13 +236,13 @@ int closeCallback(void *context) {
     }
 
     DDXMLElement *timesElement = [root elementForName:@"Times"];
-    group.lastModificationTime = [dateFormatter dateFromString:[[timesElement elementForName:@"LastModificationTime"] stringValue]];
-    group.creationTime = [dateFormatter dateFromString:[[timesElement elementForName:@"CreationTime"] stringValue]];
-    group.lastAccessTime = [dateFormatter dateFromString:[[timesElement elementForName:@"LastAccessTime"] stringValue]];
-    group.expiryTime = [dateFormatter dateFromString:[[timesElement elementForName:@"ExpiryTime"] stringValue]];
+    group.lastModificationTime = [self parseDateTime:[[timesElement elementForName:@"LastModificationTime"] stringValue]];
+    group.creationTime = [self parseDateTime:[[timesElement elementForName:@"CreationTime"] stringValue]];
+    group.lastAccessTime = [self parseDateTime:[[timesElement elementForName:@"LastAccessTime"] stringValue]];
+    group.expiryTime = [self parseDateTime:[[timesElement elementForName:@"ExpiryTime"] stringValue]];
     group.expires = [[[timesElement elementForName:@"Expires"] stringValue] boolValue];
     group.usageCount = [[[timesElement elementForName:@"UsageCount"] stringValue] integerValue];
-    group.locationChanged = [dateFormatter dateFromString:[[timesElement elementForName:@"LocationChanged"] stringValue]];
+    group.locationChanged = [self parseDateTime:[[timesElement elementForName:@"LocationChanged"] stringValue]];
 
     group.isExpanded = [[[root elementForName:@"IsExpanded"] stringValue] boolValue];
     group.defaultAutoTypeSequence = [[root elementForName:@"DefaultAutoTypeSequence"] stringValue];
@@ -282,13 +288,13 @@ int closeCallback(void *context) {
     entry.tags = [[root elementForName:@"Tags"] stringValue];
 
     DDXMLElement *timesElement = [root elementForName:@"Times"];
-    entry.lastModificationTime = [dateFormatter dateFromString:[[timesElement elementForName:@"LastModificationTime"] stringValue]];
-    entry.creationTime = [dateFormatter dateFromString:[[timesElement elementForName:@"CreationTime"] stringValue]];
-    entry.lastAccessTime = [dateFormatter dateFromString:[[timesElement elementForName:@"LastAccessTime"] stringValue]];
-    entry.expiryTime = [dateFormatter dateFromString:[[timesElement elementForName:@"ExpiryTime"] stringValue]];
+    entry.lastModificationTime = [self parseDateTime:[[timesElement elementForName:@"LastModificationTime"] stringValue]];
+    entry.creationTime = [self parseDateTime:[[timesElement elementForName:@"CreationTime"] stringValue]];
+    entry.lastAccessTime = [self parseDateTime:[[timesElement elementForName:@"LastAccessTime"] stringValue]];
+    entry.expiryTime = [self parseDateTime:[[timesElement elementForName:@"ExpiryTime"] stringValue]];
     entry.expires = [[[timesElement elementForName:@"Expires"] stringValue] boolValue];
     entry.usageCount = [[[timesElement elementForName:@"UsageCount"] stringValue] integerValue];
-    entry.locationChanged = [dateFormatter dateFromString:[[timesElement elementForName:@"LocationChanged"] stringValue]];
+    entry.locationChanged = [self parseDateTime:[[timesElement elementForName:@"LocationChanged"] stringValue]];
 
     for (DDXMLElement *element in [root elementsForName:@"String"]) {
         StringField *stringField = [self parseStringField:element];
@@ -373,6 +379,21 @@ int closeCallback(void *context) {
     return autoType;
 }
 
+- (NSDate *)parseDateTime:(NSString *)dateString {
+    NSDate *date = nil;
+    //  KDBX 4 files store dates as base64 encoded seconds since epoch.
+    if( dbVersion >= KDBX40_VERSION) {
+        NSData *dateBytes = [[NSData alloc] initWithBase64EncodedString:dateString options:NSDataBase64DecodingIgnoreUnknownCharacters];
+        uint64_t lSec = [Utils BytesToInt64:dateBytes];
+        date = [NSDate dateWithTimeInterval:lSec sinceDate:Kdbx4ReferenceDate];
+    } else {
+        date = [dateFormatter dateFromString:dateString];
+    }
+    
+    return date;
+}
+
+
 - (UUID *)parseUuidString:(NSString *)uuidString {
     if ([uuidString length] == 0) {
         return nil;
@@ -389,7 +410,7 @@ int closeCallback(void *context) {
 - (DeletedObject *)parseDeletedObject:(DDXMLElement *)root {
     DeletedObject *deletedObject = [[DeletedObject alloc] init];
     deletedObject.uuid = [self parseUuidString:[[root elementForName:@"UUID"] stringValue]];
-    deletedObject.deletionTime = [dateFormatter dateFromString:[[root elementForName:@"DeletionTime"] stringValue]];
+    deletedObject.deletionTime = [self parseDateTime:[[root elementForName:@"DeletionTime"] stringValue]];
 
     return deletedObject;
 }
