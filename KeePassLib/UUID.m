@@ -18,6 +18,7 @@
 #import "UUID.h"
 
 static UUID *AES_UUID;
+static UUID *AES_KDF_UUID;
 static UUID *CHACHA20_UUID;
 static UUID *ARGON2_UUID;
 
@@ -127,6 +128,24 @@ static UUID *ARGON2_UUID;
         }
     }
     return AES_UUID;
+}
++ (UUID*)getAES_KDFUUID {
+    @synchronized(self) {
+        if (!AES_KDF_UUID) {
+            uint8_t bytes[16];
+            bytes[0]=0xC9; bytes[1]=0xD9;
+            bytes[2]=0xF3; bytes[3]=0x9A;
+            bytes[4]=0x62; bytes[5]=0x8A;
+            bytes[6]=0x44; bytes[7]=0x60;
+            bytes[8]=0xBF; bytes[9]=0x74;
+            bytes[10]=0x0D; bytes[11]=0x08;
+            bytes[12]=0xC1; bytes[13]=0x8A;
+            bytes[14]=0x4F; bytes[15]=0xEA;
+
+            AES_KDF_UUID = [[UUID alloc] initWithBytes:bytes];
+        }
+    }
+    return AES_KDF_UUID;
 }
 
 + (UUID*)getChaCha20UUID {

@@ -33,6 +33,7 @@
 + (UUID *)uuid;
 + (UUID *)nullUuid;
 + (UUID *)getAESUUID;
++ (UUID *)getAES_KDFUUID;
 + (UUID *)getChaCha20UUID;
 + (UUID *)getArgon2UUID;
 
