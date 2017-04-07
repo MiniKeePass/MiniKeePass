@@ -50,10 +50,10 @@
 #define KDF_AES_KEY_ROUNDS            @"R"
 
 #define KDF_ARGON2_KEY_SALT           @"S"
-#define KDF_ARGON2_KEY_PARALLELISM    @"P"
+#define KDF_ARGON2_KEY_PARALLELISM    @"P" /*uint32*/
 #define KDF_ARGON2_KEY_MEMORY         @"M" /*uint64*/
 #define KDF_ARGON2_KEY_ITERATIONS     @"I" /*uint64*/
-#define KDF_ARGON2_KEY_VERSION        @"V"
+#define KDF_ARGON2_KEY_VERSION        @"V" /*uint32*/
 #define KDF_ARGON2_KEY_SECRET_KEY     @"K"
 #define KDF_ARGON2_KEY_ASSOC_DATA     @"A"
 
@@ -233,6 +233,7 @@
 @property(nonatomic, strong) NSMutableArray *deletedObjects;
 
 /* KDBX 4 Stuff */
+@property uint32_t dbVersion;
 @property uint32_t forcedVersion;
 @property VariantDictionary *kdfParams;
 @property VariantDictionary *customPluginData;
