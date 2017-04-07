@@ -21,6 +21,7 @@ const uint64_t DEFAULT_AES_TRANSFORMATION_ROUNDS = 6000;
 const uint64_t DEFAULT_ARGON2_ITERATIONS =         2;
 const uint64_t DEFAULT_ARGON2_MEMORY =             1024*1024;
 const uint64_t DEFAULT_ARGON2_PARALLELISM =        2;
+const uint64_t DEFAULT_ARGON2_VERSION =            0x13;
 
 
 @interface KdbPassword () {
@@ -111,7 +112,7 @@ int hex2dec(char c);
     UUID *uuid = [[UUID alloc] initWithData:kdfparams[KDF_KEY_UUID_BYTES]];
     
     // Transform the key
-    if( [uuid isEqual:[UUID getAESUUID]] ) {
+    if( [uuid isEqual:[UUID getAES_KDFUUID]] ) {
         CCCryptorRef cryptorRef;
         NSData *transformSeed = kdfparams[KDF_AES_KEY_SEED];
         if( CCCryptorCreate(kCCEncrypt, kCCAlgorithmAES128, kCCOptionECBMode, transformSeed.bytes, kCCKeySizeAES256, nil, &cryptorRef) != kCCSuccess ) {
@@ -174,7 +175,7 @@ int hex2dec(char c);
     
     UUID *uuid = [[UUID alloc] initWithData:kdf[KDF_KEY_UUID_BYTES]];
     
-    if( [uuid isEqual:[UUID getAESUUID]] ) {
+    if( [uuid isEqual:[UUID getAES_KDFUUID]] ) {
         [self checkAESParameters:kdf];
     } else if( [uuid isEqual:[UUID getArgon2UUID]] ) {
         [self checkArgon2Parameters:kdf];
@@ -231,16 +232,17 @@ int hex2dec(char c);
 
 +(void) getDefaultKDFParameters:(VariantDictionary *)kdf uuid:(UUID*)uuid {
     
-    kdf[KDF_KEY_UUID_BYTES] = [uuid getData];
-    if( [uuid isEqual:[UUID getAESUUID]] ) {
-        kdf[KDF_AES_KEY_SEED] = [Utils randomBytes:32];
-        kdf[KDF_AES_KEY_ROUNDS] = [[NSNumber alloc] initWithUnsignedLong:DEFAULT_AES_TRANSFORMATION_ROUNDS];
+    [kdf addObject:[uuid getData] forKey:KDF_KEY_UUID_BYTES objtype:VARIANT_DICT_TYPE_BYTEARRAY];
+    if( [uuid isEqual:[UUID getAES_KDFUUID]] ) {
+        [kdf addObject:[Utils randomBytes:32] forKey:KDF_AES_KEY_SEED objtype:VARIANT_DICT_TYPE_BYTEARRAY];
+        [kdf addObject:[[NSNumber alloc] initWithUnsignedLong:DEFAULT_AES_TRANSFORMATION_ROUNDS] forKey:KDF_AES_KEY_ROUNDS objtype:VARIANT_DICT_TYPE_UINT64];
 
     } else if( [uuid isEqual:[UUID getArgon2UUID]] ) {
-        kdf[KDF_ARGON2_KEY_ITERATIONS] = [[NSNumber alloc] initWithUnsignedLongLong:DEFAULT_ARGON2_ITERATIONS];
-        kdf[KDF_ARGON2_KEY_MEMORY] = [[NSNumber alloc] initWithUnsignedLongLong:DEFAULT_ARGON2_MEMORY];
-        kdf[KDF_ARGON2_KEY_PARALLELISM] = [[NSNumber alloc] initWithUnsignedLongLong:DEFAULT_ARGON2_PARALLELISM];
-        kdf[KDF_ARGON2_KEY_SALT] = [Utils randomBytes:32];
+        [kdf addObject:[[NSNumber alloc] initWithUnsignedLongLong:DEFAULT_ARGON2_ITERATIONS] forKey:KDF_ARGON2_KEY_ITERATIONS objtype:VARIANT_DICT_TYPE_UINT64];
+        [kdf addObject:[[NSNumber alloc] initWithUnsignedLongLong:DEFAULT_ARGON2_MEMORY] forKey:KDF_ARGON2_KEY_MEMORY objtype:VARIANT_DICT_TYPE_UINT64];
+        [kdf addObject:[[NSNumber alloc] initWithUnsignedInt:DEFAULT_ARGON2_PARALLELISM] forKey:KDF_ARGON2_KEY_PARALLELISM objtype:VARIANT_DICT_TYPE_UINT32];
+        [kdf addObject:[[NSNumber alloc] initWithUnsignedInt:DEFAULT_ARGON2_VERSION] forKey:KDF_ARGON2_KEY_VERSION objtype:VARIANT_DICT_TYPE_UINT32];
+        [kdf addObject:[Utils randomBytes:32] forKey:KDF_ARGON2_KEY_SALT objtype:VARIANT_DICT_TYPE_BYTEARRAY];
 
     } else {
         @throw [NSException exceptionWithName:@"CryptoException" reason:@"Unknown Algorithm" userInfo:nil];
