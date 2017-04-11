@@ -21,8 +21,7 @@
 
 // Api key assigned by Dropbox for this App
 // Replace this with a valid Dropbox issued APP-KEY
-//static NSString *DROPBOX_APP_KEY = @"<APP-KEY>"
-static NSString *DROPBOX_APP_KEY = @"82pjf4il2mxp018";
+static NSString *DROPBOX_APP_KEY = @"<APP-KEY>";
 
 // For the Keychain
 static NSString *DROPBOX_ACCESS_TOKEN = @"dropboxAccessToken";
