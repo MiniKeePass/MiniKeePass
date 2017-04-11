@@ -15,7 +15,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#import <ObjectiveDropboxOfficial/ObjectiveDropboxOfficial.h>
 #import <LocalAuthentication/LocalAuthentication.h>
 #import <AudioToolbox/AudioToolbox.h>
 #import "MiniKeePassAppDelegate.h"
@@ -24,6 +23,7 @@
 #import "KeychainUtils.h"
 #import "AppSettings.h"
 #import "PasswordUtils.h"
+#import "DropboxManager.h"
 
 enum {
     SECTION_PIN,
@@ -725,15 +725,11 @@ enum {
     [self.appSettings setDropboxEnabled:dropboxEnabledCell.switchControl.on];
     if( dropboxEnabledCell.switchControl.on ) {
         printf( "Getting Dropbox authorization.\n");
-        [DBClientsManager authorizeFromController:[UIApplication sharedApplication]
-                          controller:self
-                          openURL:^(NSURL *url) {
-                              [[UIApplication sharedApplication] openURL:url];
-                          }
-                          browserAuth:NO];
+        [[DropboxManager sharedInstance] getAccountAuthorization:[UIApplication sharedApplication]
+                          controller:self];
     } else {
         [KeychainUtils deleteAllForServiceName:KEYCHAIN_OAUTH2_SERVICE];
-        [DBClientsManager unlinkAndResetClients];
+        [[DropboxManager sharedInstance] resetAccount];
     }
         
 

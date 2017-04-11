@@ -15,7 +15,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#import <ObjectiveDropboxOfficial/ObjectiveDropboxOfficial.h>
 #import "MiniKeePassAppDelegate.h"
 #import "GroupViewController.h"
 #import "SettingsViewController.h"
@@ -24,7 +23,7 @@
 #import "DatabaseManager.h"
 #import "KeychainUtils.h"
 #import "LockScreenManager.h"
-#import "DropboxDocument.h"
+#import "DropboxManager.h"
 
 @interface MiniKeePassAppDelegate ()
 
@@ -62,7 +61,7 @@
     [LockScreenManager sharedInstance];
     
     // Initialize the Dropbox Client Manager
-    [DropboxDocument initDropboxAPI];
+    [[DropboxManager sharedInstance] initDropboxAPI];
     
     return YES;
 }
@@ -74,17 +73,13 @@
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
     printf("Handling URL redirect from dropbox.\n" );
-    DBOAuthResult *authResult = [DBClientsManager handleRedirectURL:url];
-    if (authResult != nil) {
-        if ([authResult isSuccess]) {
-            NSString *token = authResult.accessToken.accessToken;
-            printf("Success! User is logged into Dropbox, token(%s).\n", token.UTF8String );
-            [DropboxDocument storeAccessToken:token ];
-        } else if ([authResult isCancel]) {
+    uint32_t status = [[DropboxManager sharedInstance] accountAuthorizationRedirect:url];
+    if( status != DropboxOK || status != DropboxNotHandled ) {
+        if( status == DropboxUserCanceled ) {
             printf("Authorization flow was manually canceled by user!\n");
             // Turn off settings toggle.
             [[AppSettings sharedInstance] setDropboxEnabled:NO];
-        } else if ([authResult isError]) {
+        } else if (status == DropboxError ) {
             printf("Error in authResult\n" );
         }
     }

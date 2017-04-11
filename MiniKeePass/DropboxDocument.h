@@ -16,32 +16,18 @@
  */
 
 #import <Foundation/Foundation.h>
-#import <ObjectiveDropboxOfficial/ObjectiveDropboxOfficial.h>
 #import "DatabaseDocument.h"
 
 @interface DropboxDocument : DatabaseDocument
 
-/// Create a KeePass Database
+/// Create a KeePass Dropbox Document
 /// @param filename Database filename
 /// @param password Database password
 /// @param keyFile Path to KeyFile
-/// @return A KeePass DatabaseDocument
+/// @return A KeePass DropboxDocument
 - (id)initWithFilename:(NSString *)filename password:(NSString *)password keyFile:(NSString *)keyFile;
 
-/// Save the current KeePass DatabaseDocument
+/// Save the current KeePass DropboxDocument
 - (void)save;
-
-/// Factory Methods to get paths and URLs.
-+ (NSString *)getLocalPath:(NSString *)filename;
-+ (NSURL *)getLocalURL:(NSString *)filename;
-+ (NSString *)getDropboxPath:(NSString *)filename;
-+ (NSString *)getDropboxTempDir;
-
-+ (BOOL)localCopyIsStale:(DBFILESFileMetadata *)fileMetadata;
-+ (void)setModifiedDate:(DBFILESFileMetadata *)fileMetadata path:(NSString *)path;
-+ (void) storeAccessToken:(NSString *)token;
-
-+ (void) initDropboxAPI;
-+ (DBUserClient *)getClient;
 
 @end

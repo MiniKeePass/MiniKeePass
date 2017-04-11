@@ -15,12 +15,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#import <ObjectiveDropboxOfficial/ObjectiveDropboxOfficial.h>
 #import "MiniKeePassAppDelegate.h"
 #import "FilesViewController.h"
 #import "HelpViewController.h"
 #import "DatabaseManager.h"
-#import "DropboxDocument.h"
+#import "DropboxManager.h"
 #import "NewKdbViewController.h"
 #import "AppSettings.h"
 #import "KeychainUtils.h"
@@ -105,7 +104,7 @@ enum {
     NSString *documentsDirectory = [MiniKeePassAppDelegate documentsDirectory];
     
     // get the dropbox temp directory
-    NSString *dropbox_dir = [DropboxDocument getLocalPath:@""];
+    NSString *dropbox_dir = [[DropboxManager sharedInstance] getLocalPath:@""];
 
     // Get the contents of the documents directory
     NSFileManager *fileManager = [NSFileManager defaultManager];
@@ -138,94 +137,38 @@ enum {
 }
 
 - (void)loadDropboxFiles {
-    DBUserClient *client = [DropboxDocument getClient];
-    if( client == nil ) {
-        printf( "Cannot create client from access_token!\n");
-        self.dropbox_status = @"Authentication Error";
-        return;
-    }
-    
+
     self.dropbox_status = @"Loading ...";
-    [[client.filesRoutes listFolder:@""]
-     setResponseBlock:^(DBFILESListFolderResult *response, DBFILESListFolderError *routeError, DBRequestError *error) {
-         if (response) {
-             NSArray<DBFILESMetadata *> *entries = response.entries;
-             BOOL hasMore = [response.hasMore boolValue];
-             
-             [self addDropboxEntries:entries];
-             
-             if (hasMore) {
-                 NSLog(@"Folder is large enough where we need to call `listFolderContinue:`");
-                 
-                 printf( "TODO: Handle large folder!\n");
-             } else {
-                 if( [self.dropboxFiles count] == 0 ){
-                     self.dropbox_status = @"(none found)";
-                 } else {
-                     self.dropbox_status = nil;
-                 }
-                 [self.tableView reloadData];
-             }
-         } else {
-             self.dropbox_status = error.nsError.localizedDescription;
-             [self.tableView reloadData];
-             NSLog(@"%@\n%@\n", routeError, error);
-         }
-     }];
-}
-
-- (void)addDropboxEntries:(NSArray<DBFILESMetadata *> *)entries {
-    for (DBFILESMetadata *entry in entries) {
-        DBFILESFileMetadata *fileMetadata = (DBFILESFileMetadata *)entry;
-        NSString *extension = [[fileMetadata.name pathExtension] lowercaseString];
-        if ([extension isEqualToString:@"kdb"] || [extension isEqualToString:@"kdbx"]) {
-            // Found a dropbox database.  Download a local copy.
-            [self downloadDropboxFile:fileMetadata];
+    [[DropboxManager sharedInstance] loadDropboxFileList:^(NSError *error) {
+        if( error != nil ) {
+            NSLog(@"%@\n", error);
+            self.dropbox_status = [error localizedDescription];
+        } else {
+            self.dropboxFiles = [NSMutableArray arrayWithArray:[[DropboxManager sharedInstance] getDropboxFileList]];
+            if( self.dropboxFiles == nil || [self.dropboxFiles count] == 0 ) {
+                self.dropbox_status = @"No Files Found";
+            } else {
+                self.dropbox_status = nil;
+                [self.dropboxFiles sortUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
+            }
         }
-    }
+        [self.tableView reloadData];
+    }];
 }
 
-- (void)downloadDropboxFile:(DBFILESFileMetadata *)fileMetadata {
+- (void)downloadDropboxFile:(NSString *)path {
 
-    DBUserClient *client = [DropboxDocument getClient];
-    if( client == nil ) {
-        printf( "Cannot get Dropbox client!\n");
-        self.dropbox_status = @"Authentication Error";
-        return;
-    }
-
-    printf("Checking if dropbox file is stale: '%s'\n", fileMetadata.name.UTF8String );
-
-    // Don't download a fresh version if a local copy is not stale.
-    if( ![DropboxDocument localCopyIsStale:fileMetadata] ) {
-        [self.dropboxFiles addObject:fileMetadata.name];
-        [self.dropboxFiles sortUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
-        [self.tableView reloadData];
-        return;
-    }
-
-    NSURL *outputUrl = [DropboxDocument getLocalURL:fileMetadata.name];
-    NSString *inpath = [DropboxDocument getDropboxPath:fileMetadata.name];
-    
-    printf("Downloading '%s' to '%s'.\n", inpath.UTF8String, outputUrl.absoluteString.UTF8String );
-    [[[client.filesRoutes downloadUrl:inpath overwrite:YES destination:outputUrl]
-      setResponseBlock:^(DBFILESFileMetadata *result, DBFILESDownloadError *routeError,
-                         DBRequestError *error, NSURL *destination) {
-          if (result) {
-              NSString *lpath = [DropboxDocument getLocalPath:fileMetadata.name];
-              // Change modified date for the local copy.
-              [DropboxDocument setModifiedDate:fileMetadata path:lpath];
-              [self.dropboxFiles addObject:result.name];
-              // Sort files and display table
-              [self.dropboxFiles sortUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
-              [self.tableView reloadData];
-          } else {
-              self.dropbox_status = error.nsError.localizedDescription;
-              [self.tableView reloadData];
-              NSLog(@"%@\n%@\n", routeError, error);
-          }
-      }] setProgressBlock:^(int64_t bytesDownloaded, int64_t totalBytesDownloaded, int64_t totalBytesExpectedToDownload) { /* NOP */ }];
-
+    [[DropboxManager sharedInstance] downloadDropboxFile:path requestCallback:^(NSError *error) {
+        if( error != nil ) {
+            NSLog(@"%@\n", error);
+            self.dropbox_status = [error localizedDescription];
+            [self.tableView reloadData];
+        } else {
+            // Load the database
+            self.dropbox_status = nil;
+            [[DatabaseManager sharedInstance] openDatabaseDocument:path animated:YES dropbox:YES];
+        }
+    }];
 }
 
 - (void)displayInfoView {
@@ -332,8 +275,8 @@ enum {
             break;
     }
 
-    // Show the help view if there are no files
-    if (databaseCount == 0 && keyCount == 0 && dropboxCount == 0) {
+    // Show the help view if there are no files and no dropbox status
+    if (databaseCount == 0 && keyCount == 0 && dropboxCount == 0 && self.dropbox_status == nil) {
         [self displayInfoView];
     } else {
         [self hideInfoView];
@@ -377,15 +320,16 @@ enum {
 
     // Retrieve the Document directory
     NSString *documentsDirectory = [MiniKeePassAppDelegate documentsDirectory];
-    NSString *path;
-    if( indexPath.section != SECTION_DROPBOX ) {
-        path = [documentsDirectory stringByAppendingPathComponent:filename];
-    } else {
-        path = [DropboxDocument getLocalPath:filename];
-    }
+    NSDate *modificationDate;
+
     // Get the file's modification date
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSDate *modificationDate = [[fileManager attributesOfItemAtPath:path error:nil] fileModificationDate];
+    if( indexPath.section != SECTION_DROPBOX ) {
+        NSString *path = [documentsDirectory stringByAppendingPathComponent:filename];
+        NSFileManager *fileManager = [NSFileManager defaultManager];
+        modificationDate = [[fileManager attributesOfItemAtPath:path error:nil] fileModificationDate];
+    } else {
+        modificationDate = [[DropboxManager sharedInstance] getDropboxFileModifiedDate:filename];
+    }
 
     // Format the last modified time as the subtitle of the cell
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
@@ -473,8 +417,8 @@ enum {
             }
             break;
         case SECTION_DROPBOX:
-            // Load the database
-            [[DatabaseManager sharedInstance] openDatabaseDocument:[self.dropboxFiles objectAtIndex:indexPath.row] animated:YES dropbox:YES];
+            // Download the database from Dropbox and open it.
+            [self downloadDropboxFile:[self.dropboxFiles objectAtIndex:indexPath.row]];
             break;
         default:
             break;

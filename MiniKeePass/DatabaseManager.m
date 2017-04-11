@@ -20,6 +20,7 @@
 #import "KeychainUtils.h"
 #import "PasswordViewController.h"
 #import "AppSettings.h"
+#import "DropboxManager.h"
 #import "DropboxDocument.h"
 
 @implementation DatabaseManager
@@ -42,7 +43,7 @@ static DatabaseManager *sharedInstance;
     BOOL databaseLoaded = NO;
     
     if( isDropbox ) {
-        self.selectedFilename = [[DropboxDocument getDropboxTempDir]
+        self.selectedFilename = [[[DropboxManager sharedInstance] getDropboxTempDir]
                                  stringByAppendingPathComponent:filename ];
     } else {
         self.selectedFilename = filename;
