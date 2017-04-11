@@ -127,6 +127,7 @@ enum {
         }
     }
     
+    self.dropbox_status = nil;
     if( [[AppSettings sharedInstance] dropboxEnabled] ) {
         [self loadDropboxFiles];
     }

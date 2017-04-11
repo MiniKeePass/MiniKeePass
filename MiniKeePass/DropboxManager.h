@@ -33,7 +33,7 @@ enum {
 
 + (DropboxManager *)sharedInstance;
 - (void) initDropboxAPI;
--(void) getAccountAuthorization:(UIApplication*)app controller:(UIViewController*)controller;
+-(BOOL) getAccountAuthorization:(UIApplication*)app controller:(UIViewController*)controller;
 -(uint32_t) accountAuthorizationRedirect:(NSURL*)url;
 -(void) resetAccount;
 

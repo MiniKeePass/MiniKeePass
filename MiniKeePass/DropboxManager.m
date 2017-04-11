@@ -78,29 +78,26 @@ const NSString *DB_REVISION_CODE = @"revision_code";
             NSLog(@"%@", exception);
             return;
         }
+        isInitialized = YES;
+
 //        [self deleteDropboxTempDir];  // Wipeout temp directory to start over from scratch.
 
         // Initialized the local file metadata.
         [self initializeDropboxRevisions];
         
-        NSString *token = [KeychainUtils stringForKey:DROPBOX_ACCESS_TOKEN andServiceName:KEYCHAIN_OAUTH2_SERVICE];
-        if( token == nil ) return;
-        
-        client = [[DBUserClient alloc] initWithAccessToken:token];
-        if( client == nil ) {
-            printf( "Cannot create client from access_token!\n");
-            return;
-        }
-        
-        isInitialized = YES;
+        // Try to setup the client with a stored access token.
+        [self setupClient:nil];
     }
 }
 
--(void) getAccountAuthorization:(UIApplication*)app controller:(UIViewController*)controller {
+-(BOOL) getAccountAuthorization:(UIApplication*)app controller:(UIViewController*)controller {
+    
+    if( !isInitialized ) return NO;
+    
     [DBClientsManager authorizeFromController:app controller:controller
                                       openURL:^(NSURL *url) { [app openURL:url]; }
                                   browserAuth:NO];
-    
+    return YES;
 }
 
 -(uint32_t) accountAuthorizationRedirect:(NSURL*)url {
@@ -114,7 +111,6 @@ const NSString *DB_REVISION_CODE = @"revision_code";
             return [self setupClient:token];
         } else if ([authResult isCancel]) {
             printf("Authorization flow was manually canceled by user!\n");
-            // Turn off settings toggle.
             return DropboxUserCanceled;
         } else if ([authResult isError]) {
             printf("Error in authResult\n" );
