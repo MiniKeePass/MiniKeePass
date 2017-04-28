@@ -17,12 +17,12 @@
 
 #import "UUID.h"
 
-static UUID *AES_UUID;
-static UUID *AES_KDF_UUID;
-static UUID *CHACHA20_UUID;
-static UUID *ARGON2_UUID;
+static KdbUUID *AES_UUID;
+static KdbUUID *AES_KDF_UUID;
+static KdbUUID *CHACHA20_UUID;
+static KdbUUID *ARGON2_UUID;
 
-@implementation UUID
+@implementation KdbUUID
 
 @synthesize uuid;
 
@@ -88,9 +88,9 @@ static UUID *ARGON2_UUID;
         return YES;
     }
     
-    if ([object isKindOfClass:[UUID class]]) {
+    if ([object isKindOfClass:[KdbUUID class]]) {
         CFUUIDBytes uuidBytes1 = CFUUIDGetUUIDBytes(uuid);
-        CFUUIDBytes uuidBytes2 = CFUUIDGetUUIDBytes(((UUID*)object).uuid);
+        CFUUIDBytes uuidBytes2 = CFUUIDGetUUIDBytes(((KdbUUID*)object).uuid);
         return memcmp(&uuidBytes1, &uuidBytes2, sizeof(CFUUIDBytes)) == 0;
     }
     
@@ -102,16 +102,16 @@ static UUID *ARGON2_UUID;
     return uuidString;
 }
 
-+ (UUID *)uuid {
-    return [[UUID alloc] init];
++ (KdbUUID *)uuid {
+    return [[KdbUUID alloc] init];
 }
 
-+ (UUID *)nullUuid {
++ (KdbUUID *)nullUuid {
     uint8_t bytes[16] = {0};
-    return [[UUID alloc] initWithBytes:bytes];
+    return [[KdbUUID alloc] initWithBytes:bytes];
 }
 
-+ (UUID*)getAESUUID {
++ (KdbUUID*)getAESUUID {
     @synchronized(self) {
         if (!AES_UUID) {
             uint8_t bytes[16];
@@ -124,12 +124,12 @@ static UUID *ARGON2_UUID;
             bytes[12]=0x6A; bytes[13]=0xFC;
             bytes[14]=0x5A; bytes[15]=0xFF;
 
-            AES_UUID = [[UUID alloc] initWithBytes:bytes];
+            AES_UUID = [[KdbUUID alloc] initWithBytes:bytes];
         }
     }
     return AES_UUID;
 }
-+ (UUID*)getAES_KDFUUID {
++ (KdbUUID*)getAES_KDFUUID {
     @synchronized(self) {
         if (!AES_KDF_UUID) {
             uint8_t bytes[16];
@@ -142,13 +142,13 @@ static UUID *ARGON2_UUID;
             bytes[12]=0xC1; bytes[13]=0x8A;
             bytes[14]=0x4F; bytes[15]=0xEA;
 
-            AES_KDF_UUID = [[UUID alloc] initWithBytes:bytes];
+            AES_KDF_UUID = [[KdbUUID alloc] initWithBytes:bytes];
         }
     }
     return AES_KDF_UUID;
 }
 
-+ (UUID*)getChaCha20UUID {
++ (KdbUUID*)getChaCha20UUID {
     @synchronized(self) {
         if (!CHACHA20_UUID) {
             uint8_t bytes[16];
@@ -161,13 +161,13 @@ static UUID *ARGON2_UUID;
             bytes[12]=0x31; bytes[13]=0xDB;
             bytes[14]=0xB5; bytes[15]=0x9A;
             
-            CHACHA20_UUID = [[UUID alloc] initWithBytes:bytes];
+            CHACHA20_UUID = [[KdbUUID alloc] initWithBytes:bytes];
         }
     }
     return CHACHA20_UUID;
 }
 
-+ (UUID*)getArgon2UUID {
++ (KdbUUID*)getArgon2UUID {
     @synchronized(self) {
         if (!ARGON2_UUID) {
             uint8_t bytes[16];
@@ -180,7 +180,7 @@ static UUID *ARGON2_UUID;
             bytes[12]=0x03; bytes[13]=0xE3;
             bytes[14]=0x0A; bytes[15]=0x0C;
             
-            ARGON2_UUID = [[UUID alloc] initWithBytes:bytes];
+            ARGON2_UUID = [[KdbUUID alloc] initWithBytes:bytes];
         }
     }
     return ARGON2_UUID;

@@ -108,7 +108,7 @@
 
 - (KdbEntry*)createEntry:(KdbGroup*)parent {
     Kdb3Entry *entry = [[Kdb3Entry alloc] init];
-    entry.uuid = [UUID uuid];
+    entry.uuid = [KdbUUID uuid];
 
     return entry;
 }

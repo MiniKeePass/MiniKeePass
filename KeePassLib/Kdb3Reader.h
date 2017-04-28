@@ -21,6 +21,7 @@
     NSData *contentsHash;
     NSData *masterSeed2;
     uint32_t keyEncRounds;
+    uint32_t headerFlags;
     NSData *headerHash;
     NSMutableArray *levels;
     NSMutableArray *groups;

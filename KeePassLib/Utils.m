@@ -10,6 +10,14 @@
 
 #define VARIANT_DICT_VERSION       0x0100
 
+#define VARIANT_DICT_TYPE_UINT32      0x04
+#define VARIANT_DICT_TYPE_UINT64      0x05
+#define VARIANT_DICT_TYPE_BOOL        0x08
+#define VARIANT_DICT_TYPE_INT32       0x0C
+#define VARIANT_DICT_TYPE_INT64       0x0D
+#define VARIANT_DICT_TYPE_STRING      0x18
+#define VARIANT_DICT_TYPE_BYTEARRAY   0x42
+
 #define VARIANT_DICT_EOH              0x00
 
 @implementation Utils
@@ -158,6 +166,39 @@
 
 - (id)objectForKeyedSubscript:(id)key {
     return dict[key];
+}
+
+- (void)addUInt32:(uint32_t)value forKey:(NSString*)key {
+    NSNumber *num = [[NSNumber alloc] initWithUnsignedInt:value];
+    [self addObject:num forKey:key objtype:VARIANT_DICT_TYPE_UINT32];
+}
+
+- (void)addUInt64:(uint64_t)value forKey:(NSString*)key {
+    NSNumber *num = [[NSNumber alloc] initWithUnsignedLongLong:value];
+    [self addObject:num forKey:key objtype:VARIANT_DICT_TYPE_UINT64];
+}
+
+- (void)addBool:(BOOL)value forKey:(NSString*)key {
+    NSNumber *num = [[NSNumber alloc] initWithBool:value];
+    [self addObject:num forKey:key objtype:VARIANT_DICT_TYPE_BOOL];
+    
+}
+- (void)addInt32:(int32_t)value forKey:(NSString*)key {
+    NSNumber *num = [[NSNumber alloc] initWithUnsignedLongLong:value];
+    [self addObject:num forKey:key objtype:VARIANT_DICT_TYPE_INT32];
+    
+}
+- (void)addInt64:(int64_t)value forKey:(NSString*)key {
+    NSNumber *num = [[NSNumber alloc] initWithUnsignedLongLong:value];
+    [self addObject:num forKey:key objtype:VARIANT_DICT_TYPE_INT64];
+    
+}
+- (void)addString:(NSString*)string forKey:(NSString*)key {
+    [self addObject:string forKey:key objtype:VARIANT_DICT_TYPE_STRING];
+    
+}
+- (void)addByteArray:(NSData*)data forKey:(NSString*)key {
+    [self addObject:data forKey:key objtype:VARIANT_DICT_TYPE_BYTEARRAY];
 }
 
 - (NSUInteger)count {

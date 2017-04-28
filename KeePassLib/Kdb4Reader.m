@@ -200,7 +200,7 @@
                     @throw [NSException exceptionWithName:@"IOException" reason:@"Invalid cipher id" userInfo:nil];
                 }
                 [inputStream read:buffer length:fieldSize];
-                cipherUuid = [[UUID alloc] initWithBytes:buffer];
+                cipherUuid = [[KdbUUID alloc] initWithBytes:buffer];
                 break;
             
             case HEADER_MASTERSEED:
@@ -216,9 +216,9 @@
                 }
                     // Set the KDFparameters UUID if not set.
                 if( kdfParams[KDF_KEY_UUID_BYTES] == nil ) {
-                    [kdfParams addObject:[[UUID getAES_KDFUUID] getData] forKey:KDF_KEY_UUID_BYTES objtype:VARIANT_DICT_TYPE_BYTEARRAY ];
+                    [kdfParams addByteArray:[[KdbUUID getAES_KDFUUID] getData] forKey:KDF_KEY_UUID_BYTES];
                 }
-                [kdfParams addObject:[inputStream readData:fieldSize] forKey:KDF_AES_KEY_SEED objtype:VARIANT_DICT_TYPE_BYTEARRAY ];
+                [kdfParams addByteArray:[inputStream readData:fieldSize] forKey:KDF_AES_KEY_SEED];
                 break;
             
             case HEADER_ENCRYPTIONIV:
@@ -235,11 +235,11 @@
             
             case HEADER_TRANSFORMROUNDS:    // Obsolete in KDBX 4
                 if( kdfParams[KDF_KEY_UUID_BYTES] == nil ) {
-                    [kdfParams addObject:[[UUID getAES_KDFUUID] getData] forKey:KDF_KEY_UUID_BYTES objtype:VARIANT_DICT_TYPE_BYTEARRAY ];
+                    [kdfParams addByteArray:[[KdbUUID getAES_KDFUUID] getData] forKey:KDF_KEY_UUID_BYTES];
                 }
                 pvali64 = [inputStream readInt64];
                 pvali64 = CFSwapInt64LittleToHost(pvali64);
-                [kdfParams addObject:[NSNumber numberWithLongLong:pvali64] forKey:KDF_AES_KEY_ROUNDS objtype:VARIANT_DICT_TYPE_UINT64];
+                [kdfParams addUInt64:pvali64 forKey:KDF_AES_KEY_ROUNDS];
                 break;
             
             case HEADER_COMPRESSION:

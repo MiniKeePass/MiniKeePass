@@ -33,7 +33,7 @@
 - (Kdb4Entry *)parseEntry:(DDXMLElement *)root;
 - (BinaryRef *)parseBinaryRef:(DDXMLElement *)root;
 - (AutoType *)parseAutoType:(DDXMLElement *)root;
-- (UUID *)parseUuidString:(NSString *)uuidString;
+- (KdbUUID *)parseUuidString:(NSString *)uuidString;
 - (NSMutableData *)parseBase64String:(NSString *)base64String;
 - (DeletedObject *)parseDeletedObject:(DDXMLElement *)root;
 - (NSDate *)parseDateTime:(NSString *)dateString;
@@ -218,7 +218,7 @@ int closeCallback(void *context) {
 
     group.uuid = [self parseUuidString:[[root elementForName:@"UUID"] stringValue]];
     if (group.uuid == nil) {
-        group.uuid = [UUID uuid];
+        group.uuid = [KdbUUID uuid];
     }
 
     group.name = [[root elementForName:@"Name"] stringValue];
@@ -272,7 +272,7 @@ int closeCallback(void *context) {
 
     entry.uuid = [self parseUuidString:[[root elementForName:@"UUID"] stringValue]];
     if (entry.uuid == nil) {
-        entry.uuid = [UUID uuid];
+        entry.uuid = [KdbUUID uuid];
     }
 
     entry.image = [[[root elementForName:@"IconID"] stringValue] integerValue];
@@ -394,13 +394,13 @@ int closeCallback(void *context) {
 }
 
 
-- (UUID *)parseUuidString:(NSString *)uuidString {
+- (KdbUUID *)parseUuidString:(NSString *)uuidString {
     if ([uuidString length] == 0) {
         return nil;
     }
 
     NSData *data = [self parseBase64String:uuidString];
-    return [[UUID alloc] initWithData:data];
+    return [[KdbUUID alloc] initWithData:data];
 }
 
 - (NSMutableData *)parseBase64String:(NSString *)base64String {

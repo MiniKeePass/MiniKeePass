@@ -25,7 +25,7 @@
 @interface Kdb4Reader : NSObject<KdbReader> {
     uint32_t dbVersion;
     NSData *comment;
-    UUID *cipherUuid;
+    KdbUUID *cipherUuid;
     uint32_t compressionAlgorithm;
     NSData *masterSeed;
     /*
