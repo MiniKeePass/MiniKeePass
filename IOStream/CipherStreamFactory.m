@@ -23,12 +23,12 @@
 
 @implementation CipherStreamFactory
 
-+ (InputStream *)getInputStream:(UUID *)uuid stream:(InputStream*)s key:(NSData *)key iv:(NSData *)iv {
++ (InputStream *)getInputStream:(KdbUUID *)uuid stream:(InputStream*)s key:(NSData *)key iv:(NSData *)iv {
     InputStream *stream = nil;
     
-    if( [uuid isEqual:[UUID getAESUUID]] ) {
+    if( [uuid isEqual:[KdbUUID getAESUUID]] ) {
         stream = [[AesInputStream alloc] initWithInputStream:s key:key iv:iv];
-    } else if( [uuid isEqual:[UUID getChaCha20UUID]] ) {
+    } else if( [uuid isEqual:[KdbUUID getChaCha20UUID]] ) {
         stream = [[ChaCha20InputStream alloc] initWithInputStream:s key:key iv:iv];
     } else {
         printf("UUID : %s\n", [[Utils hexDumpData:[uuid getData]] UTF8String]);
@@ -37,12 +37,12 @@
     return stream;
 }
 
-+ (OutputStream *)getOutputStream:(UUID *)uuid stream:(OutputStream*)s key:(NSData *)key iv:(NSData *)iv {
++ (OutputStream *)getOutputStream:(KdbUUID *)uuid stream:(OutputStream*)s key:(NSData *)key iv:(NSData *)iv {
     OutputStream *stream = nil;
     
-    if( [uuid isEqual:[UUID getAESUUID]] ) {
+    if( [uuid isEqual:[KdbUUID getAESUUID]] ) {
         stream = [[AesOutputStream alloc] initWithOutputStream:s key:key iv:iv];
-    } else if( [uuid isEqual:[UUID getChaCha20UUID]] ) {
+    } else if( [uuid isEqual:[KdbUUID getChaCha20UUID]] ) {
         stream = [[ChaCha20OutputStream alloc] initWithOutputStream:s key:key iv:iv];
     } else {
         printf("UUID : %s\n", [[Utils hexDumpData:[uuid getData]] UTF8String]);

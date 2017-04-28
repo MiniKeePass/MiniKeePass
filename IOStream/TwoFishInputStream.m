@@ -14,21 +14,29 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#import "ChaCha20InputStream.h"
-#import "ChaCha20Cipher.h"
+#import "TwoFishInputStream.h"
+#import "TwoFishCipher.h"
 
-@interface ChaCha20InputStream (PrivateMethods)
+#define BLOCK_BUFFERSIZE (512*1024)
+
+@interface TwoFishInputStream (PrivateMethods)
 - (BOOL)decrypt;
 @end
 
-@implementation ChaCha20InputStream
+@implementation TwoFishInputStream {
+    BlockCipher *cipher;
+    
+    uint8_t buffer[BLOCK_BUFFERSIZE];
+    uint32_t bufferOffset;
+    uint32_t bufferSize;    
+}
 
 - (id)initWithInputStream:(InputStream *)stream key:(NSData *)key iv:(NSData *)iv {
     self = [super init];
     if (self) {
         inputStream = stream;
         
-        cipher = [[ChaCha20Cipher alloc] init:key iv:iv];
+        cipher = [[TwoFishCipher alloc] init:key iv:iv];
         
         bufferOffset = 0;
         bufferSize = 0;

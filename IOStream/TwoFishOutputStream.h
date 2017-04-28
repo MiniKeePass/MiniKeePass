@@ -16,14 +16,15 @@
  */
 
 #import <Foundation/Foundation.h>
-#import "UUID.h"
-#import "InputStream.h"
 #import "OutputStream.h"
+#import "BlockCipher.h"
 
-@interface CipherStreamFactory : NSObject {
+@interface TwoFishOutputStream : OutputStream {
+    OutputStream *outputStream;
+    
+    BlockCipher *cipher;
 }
 
-+ (InputStream *)getInputStream:(KdbUUID *)uuid stream:(InputStream*)s key:(NSData *)key iv:(NSData *)iv;
-+ (OutputStream *)getOutputStream:(KdbUUID *)uuid stream:(OutputStream*)s key:(NSData *)key iv:(NSData *)iv;
+- (id)initWithOutputStream:(OutputStream *)stream key:(NSData *)key iv:(NSData *)iv;
 
 @end
