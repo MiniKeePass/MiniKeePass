@@ -75,14 +75,14 @@
 
 @interface Kdb4Group : KdbGroup
 
-@property(nonatomic, strong) UUID *uuid;
+@property(nonatomic, strong) KdbUUID *uuid;
 @property(nonatomic, copy) NSString *notes;
-@property(nonatomic, strong) UUID *customIconUuid;
+@property(nonatomic, strong) KdbUUID *customIconUuid;
 @property(nonatomic, assign) BOOL isExpanded;
 @property(nonatomic, copy) NSString *defaultAutoTypeSequence;
 @property(nonatomic, copy) NSString *enableAutoType;
 @property(nonatomic, copy) NSString *enableSearching;
-@property(nonatomic, strong) UUID *lastTopVisibleEntry;
+@property(nonatomic, strong) KdbUUID *lastTopVisibleEntry;
 @property(nonatomic, assign) BOOL expires;
 @property(nonatomic, assign) NSInteger usageCount;
 @property(nonatomic, strong) NSDate *locationChanged;
@@ -109,7 +109,7 @@
 
 @interface CustomIcon : NSObject
 
-@property(nonatomic, strong) UUID *uuid;
+@property(nonatomic, strong) KdbUUID *uuid;
 @property(nonatomic, copy) NSString *data;
 
 @end
@@ -160,7 +160,7 @@
 
 @interface DeletedObject : NSObject
 
-@property(nonatomic, strong) UUID *uuid;
+@property(nonatomic, strong) KdbUUID *uuid;
 @property(nonatomic, strong) NSDate *deletionTime;
 
 @end
@@ -168,13 +168,13 @@
 
 @interface Kdb4Entry : KdbEntry
 
-@property(nonatomic, strong) UUID *uuid;
+@property(nonatomic, strong) KdbUUID *uuid;
 @property(nonatomic, strong) StringField *titleStringField;
 @property(nonatomic, strong) StringField *usernameStringField;
 @property(nonatomic, strong) StringField *passwordStringField;
 @property(nonatomic, strong) StringField *urlStringField;
 @property(nonatomic, strong) StringField *notesStringField;
-@property(nonatomic, strong) UUID *customIconUuid;
+@property(nonatomic, strong) KdbUUID *customIconUuid;
 @property(nonatomic, copy) NSString *foregroundColor;
 @property(nonatomic, copy) NSString *backgroundColor;
 @property(nonatomic, copy) NSString *overrideUrl;
@@ -220,14 +220,14 @@
 @property(nonatomic, assign) BOOL protectNotes;
 @property(nonatomic, readonly) NSMutableArray *customIcons;
 @property(nonatomic, assign) BOOL recycleBinEnabled;
-@property(nonatomic, strong) UUID *recycleBinUuid;
+@property(nonatomic, strong) KdbUUID *recycleBinUuid;
 @property(nonatomic, strong) NSDate *recycleBinChanged;
-@property(nonatomic, strong) UUID *entryTemplatesGroup;
+@property(nonatomic, strong) KdbUUID *entryTemplatesGroup;
 @property(nonatomic, strong) NSDate *entryTemplatesGroupChanged;
 @property(nonatomic, assign) NSInteger historyMaxItems;
 @property(nonatomic, assign) NSInteger historyMaxSize;
-@property(nonatomic, strong) UUID *lastSelectedGroup;
-@property(nonatomic, strong) UUID *lastTopVisibleGroup;
+@property(nonatomic, strong) KdbUUID *lastSelectedGroup;
+@property(nonatomic, strong) KdbUUID *lastTopVisibleGroup;
 @property(nonatomic, readonly) NSMutableArray *binaries;
 @property(nonatomic, readonly) NSMutableArray *customData;
 @property(nonatomic, strong) NSMutableArray *deletedObjects;
@@ -238,6 +238,6 @@
 @property VariantDictionary *kdfParams;
 @property VariantDictionary *customPluginData;
 @property NSMutableArray *headerBinaries;
-@property UUID *encryptionAlgorithm;
+@property KdbUUID *encryptionAlgorithm;
 
 @end

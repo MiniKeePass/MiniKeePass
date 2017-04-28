@@ -12,6 +12,7 @@
 #import "KdbPassword.h"
 #import "FileOutputStream.h"
 #import "AesOutputStream.h"
+#import "TwoFishOutputStream.h"
 #import "Sha256OutputStream.h"
 #import "DataOutputStream.h"
 #import "Utils.h"
@@ -77,10 +78,14 @@
     
     // Create the encryption output stream
     NSData *key = [kdbPassword createFinalKeyForVersion:3 masterSeed:masterSeed transformSeed:transformSeed rounds:tree.rounds];
-    AesOutputStream *aesOutputStream = [[AesOutputStream alloc] initWithOutputStream:fileOutputStream key:key iv:encryptionIv];
-    
+    OutputStream *encryptedStream;
+    if( tree.flags & FLAG_RIJNDAEL ) {
+        encryptedStream = [[AesOutputStream alloc] initWithOutputStream:fileOutputStream key:key iv:encryptionIv];
+    } else if( tree.flags & FLAG_TWOFISH ) {
+        encryptedStream = [[TwoFishOutputStream alloc] initWithOutputStream:fileOutputStream key:key iv:encryptionIv];
+    }
     // Wrap the AES output stream in a SHA256 output stream to calculate the content hash
-    Sha256OutputStream *shaOutputStream = [[Sha256OutputStream alloc] initWithOutputStream:aesOutputStream];
+    Sha256OutputStream *shaOutputStream = [[Sha256OutputStream alloc] initWithOutputStream:encryptedStream];
     
     @try {
         // Persist the database
@@ -113,7 +118,7 @@
         
     } @finally {
         shaOutputStream = nil;
-        aesOutputStream = nil;
+        encryptedStream = nil;
         fileOutputStream = nil;
     }
 }
@@ -127,7 +132,7 @@
     // Signature, flags, and version
     header.signature1 = CFSwapInt32HostToLittle(KDB3_SIG1);
     header.signature2 = CFSwapInt32HostToLittle(KDB3_SIG2);
-    header.flags = CFSwapInt32HostToLittle(FLAG_SHA2 | FLAG_RIJNDAEL);
+    header.flags = CFSwapInt32HostToLittle(tree.flags);
     header.version = CFSwapInt32HostToLittle(KDB3_VER);
 
     // Master seed and encryption iv

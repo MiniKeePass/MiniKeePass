@@ -25,7 +25,7 @@
                     masterSeed:(uint8_t*)masterSeed
                      HmacKey64:(uint8_t*)hmackey64;
 
-+(void) getDefaultKDFParameters:(VariantDictionary *)kdf uuid:(UUID*)uuid;
++ (VariantDictionary *) getDefaultKDFParameters:(KdbUUID*)uuid;
 + (void)checkKDFParameters:(VariantDictionary *)kdf;
 
 @end

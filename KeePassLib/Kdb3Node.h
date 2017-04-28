@@ -50,7 +50,7 @@ typedef struct {
 
 @interface Kdb3Entry : KdbEntry
 
-@property(nonatomic, strong) UUID *uuid;
+@property(nonatomic, strong) KdbUUID *uuid;
 @property(nonatomic, copy) NSString *title;
 @property(nonatomic, copy) NSString *username;
 @property(nonatomic, copy) NSString *password;
@@ -66,6 +66,7 @@ typedef struct {
 
 @interface Kdb3Tree : KdbTree
 
+@property(nonatomic, assign) uint32_t flags;
 @property(nonatomic, assign) uint32_t rounds;
 
 - (id)init;

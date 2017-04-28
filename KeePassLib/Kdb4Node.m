@@ -161,14 +161,14 @@
 - (KdbGroup*)createGroup:(KdbGroup*)parent {
     Kdb4Group *group = [[Kdb4Group alloc] init];
 
-    group.uuid = [UUID uuid];
+    group.uuid = [KdbUUID uuid];
     group.notes = @"";
     group.image = 0;
     group.isExpanded = true;
     group.defaultAutoTypeSequence = @"";
     group.enableAutoType = @"null";
     group.enableSearching = @"null";
-    group.lastTopVisibleEntry = [UUID nullUuid];
+    group.lastTopVisibleEntry = [KdbUUID nullUuid];
 
     NSDate *currentTime = [NSDate date];
     group.lastModificationTime = currentTime;
@@ -185,7 +185,7 @@
 - (KdbEntry*)createEntry:(KdbGroup*)parent {
     Kdb4Entry *entry = [[Kdb4Entry alloc] init];
 
-    entry.uuid = [UUID uuid];
+    entry.uuid = [KdbUUID uuid];
     entry.image = 0;
     entry.titleStringField = [[StringField alloc] initWithKey:FIELD_TITLE andValue:@"New Entry"];
     entry.usernameStringField = [[StringField alloc] initWithKey:FIELD_USER_NAME andValue:@""];

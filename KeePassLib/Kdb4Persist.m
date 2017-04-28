@@ -29,7 +29,7 @@
 - (DDXMLElement *)persistStringField:(StringField *)stringField;
 - (DDXMLElement *)persistBinaryRef:(BinaryRef *)binaryRef;
 - (DDXMLElement *)persistAutoType:(AutoType *)autoType;
-- (NSString *)persistUuid:(UUID *)uuid;
+- (NSString *)persistUuid:(KdbUUID *)uuid;
 - (NSString *)persistBase64Data:(NSData *)data;
 - (DDXMLElement *)persistDeletedObject:(DeletedObject *)deletedObject;
 - (void)encodeProtected:(DDXMLElement*)root;
@@ -394,7 +394,7 @@
     return root;
 }
 
-- (NSString *)persistUuid:(UUID *)uuid {
+- (NSString *)persistUuid:(KdbUUID *)uuid {
     NSData *data = [uuid getData];
     return [self persistBase64Data:data];
 }

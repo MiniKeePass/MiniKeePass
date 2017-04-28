@@ -9,14 +9,6 @@
 #import <Foundation/Foundation.h>
 #import "InputStream.h"
 
-#define VARIANT_DICT_TYPE_UINT32      0x04
-#define VARIANT_DICT_TYPE_UINT64      0x05
-#define VARIANT_DICT_TYPE_BOOL        0x08
-#define VARIANT_DICT_TYPE_INT32       0x0C
-#define VARIANT_DICT_TYPE_INT64       0x0D
-#define VARIANT_DICT_TYPE_STRING      0x18
-#define VARIANT_DICT_TYPE_BYTEARRAY   0x42
-
 @interface Utils : NSObject {
 }
 
@@ -40,8 +32,15 @@
 
 -(id) init;
 
-- (void)addObject:(id)obj forKey:(id <NSCopying>)key objtype:(uint32_t)objtype;
 - (id)objectForKeyedSubscript:(id)key;
+
+- (void)addUInt32:(uint32_t)value forKey:(NSString*)key;
+- (void)addUInt64:(uint64_t)value forKey:(NSString*)key;
+- (void)addBool:(BOOL)value forKey:(NSString*)key;
+- (void)addInt32:(int32_t)value forKey:(NSString*)key;
+- (void)addInt64:(int64_t)value forKey:(NSString*)key;
+- (void)addString:(NSString*)string forKey:(NSString*)key;
+- (void)addByteArray:(NSData*)data forKey:(NSString*)key;
 
 -(void) deserialize:(InputStream*)data;
 -(NSData*) serialize;

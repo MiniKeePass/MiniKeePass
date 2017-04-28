@@ -71,19 +71,19 @@
     tree.dbVersion = dbVersion;
     
     // Get a new Random seed.
-    UUID *KDFUuid = [[UUID alloc] initWithData:tree.kdfParams[KDF_KEY_UUID_BYTES]];
-    if( [KDFUuid isEqual:[UUID getAES_KDFUUID]] ) {
-        [tree.kdfParams addObject:[Utils randomBytes:32] forKey:KDF_AES_KEY_SEED objtype:VARIANT_DICT_TYPE_BYTEARRAY];
-    } else if( [KDFUuid isEqual:[UUID getArgon2UUID]] ) {
-        [tree.kdfParams addObject:[Utils randomBytes:32] forKey:KDF_ARGON2_KEY_SALT objtype:VARIANT_DICT_TYPE_BYTEARRAY];
+    KdbUUID *KDFUuid = [[KdbUUID alloc] initWithData:tree.kdfParams[KDF_KEY_UUID_BYTES]];
+    if( [KDFUuid isEqual:[KdbUUID getAES_KDFUUID]] ) {
+        [tree.kdfParams addByteArray:[Utils randomBytes:32] forKey:KDF_AES_KEY_SEED];
+    } else if( [KDFUuid isEqual:[KdbUUID getArgon2UUID]] ) {
+        [tree.kdfParams addByteArray:[Utils randomBytes:32] forKey:KDF_ARGON2_KEY_SALT];
     } else {
         @throw [NSException exceptionWithName:@"CipherError" reason:@"Unknown Cipher Uuid" userInfo:nil];
     }
     
         // Create the new encryptionIv
-    if( [tree.encryptionAlgorithm isEqual:[UUID getAESUUID]] ) {
+    if( [tree.encryptionAlgorithm isEqual:[KdbUUID getAESUUID]] ) {
         encryptionIv = [Utils randomBytes:16];
-    } else if( [tree.encryptionAlgorithm isEqual:[UUID getChaCha20UUID]] ) {
+    } else if( [tree.encryptionAlgorithm isEqual:[KdbUUID getChaCha20UUID]] ) {
         encryptionIv = [Utils randomBytes:12];
     } else {
         @throw [NSException exceptionWithName:@"CipherError" reason:@"Unknown Cipher Uuid" userInfo:nil];
@@ -296,19 +296,19 @@
     tree.protectUrl = NO;
     tree.protectNotes = NO;
     tree.recycleBinEnabled = YES;
-    tree.recycleBinUuid = [UUID nullUuid];
+    tree.recycleBinUuid = [KdbUUID nullUuid];
     tree.recycleBinChanged = currentTime;
-    tree.entryTemplatesGroup = [UUID nullUuid];
+    tree.entryTemplatesGroup = [KdbUUID nullUuid];
     tree.entryTemplatesGroupChanged = currentTime;
     tree.historyMaxItems = 10;
     tree.historyMaxSize = 6 * 1024 * 1024; // 6 MB
-    tree.lastSelectedGroup = [UUID nullUuid];
-    tree.lastTopVisibleGroup = [UUID nullUuid];
+    tree.lastSelectedGroup = [KdbUUID nullUuid];
+    tree.lastTopVisibleGroup = [KdbUUID nullUuid];
     
     // New KDBX 4 stuff.  Default to KDBX 3.1 format
     tree.forcedVersion = KDBX31_VERSION;
-    [KdbPassword getDefaultKDFParameters:tree.kdfParams uuid:[UUID getAES_KDFUUID]];
-    tree.encryptionAlgorithm = [UUID getAESUUID];
+    tree.kdfParams = [KdbPassword getDefaultKDFParameters:[KdbUUID getAES_KDFUUID]];
+    tree.encryptionAlgorithm = [KdbUUID getAESUUID];
 
 
     KdbGroup *parentGroup = [tree createGroup:nil];
@@ -349,51 +349,38 @@
     
     if( tree.forcedVersion != 0 ) return tree.forcedVersion;
     
-    if( ![tree.encryptionAlgorithm isEqual:[UUID getAESUUID]] ) {
+    if( ![tree.encryptionAlgorithm isEqual:[KdbUUID getAESUUID]] ) {
         return KDBX40_VERSION;
     }
 
-    UUID *KDFUuid = [[UUID alloc] initWithData:tree.kdfParams[KDF_KEY_UUID_BYTES]];
-    if( ![KDFUuid isEqual:[UUID getAES_KDFUUID]] ) {
+    KdbUUID *KDFUuid = [[KdbUUID alloc] initWithData:tree.kdfParams[KDF_KEY_UUID_BYTES]];
+    if( ![KDFUuid isEqual:[KdbUUID getAES_KDFUUID]] ) {
+        return KDBX40_VERSION;
+    }
+    
+    if( [tree.customPluginData count] > 0 ) {
+        return KDBX40_VERSION;
+    }
+    
+    if( [self treeHasCustomData:(Kdb4Group*)tree.root] ){
         return KDBX40_VERSION;
     }
     
     return KDBX31_VERSION;
 }
 
-/*
-private uint GetMinKdbxVersion()
-{
-    if(m_uForceVersion != 0) return m_uForceVersion;
+-(BOOL) treeHasCustomData:(Kdb4Group*) group {
+    if( [group.customData count] > 0 ) return YES;
     
-    // See also KeePassKdb2x3.Export (KDBX 3.1 export module)
+    for( Kdb4Group* g in group.groups ) {
+        return [self treeHasCustomData:g];
+    }
     
-    AesKdf kdfAes = new AesKdf();
-    if(!kdfAes.Uuid.Equals(m_pwDatabase.KdfParameters.KdfUuid))
-        return FileVersion32;
+    for( Kdb4Entry* e in group.entries ) {
+        if( [e.customData count] > 0 ) return YES;
+    }
     
-    if(m_pwDatabase.PublicCustomData.Count > 0)
-        return FileVersion32;
-    
-    bool bCustomData = false;
-    GroupHandler gh = delegate(PwGroup pg)
-    {
-        if(pg == null) { Debug.Assert(false); return true; }
-        if(pg.CustomData.Count > 0) { bCustomData = true; return false; }
-        return true;
-    };
-    EntryHandler eh = delegate(PwEntry pe)
-    {
-        if(pe == null) { Debug.Assert(false); return true; }
-        if(pe.CustomData.Count > 0) { bCustomData = true; return false; }
-        return true;
-    };
-    gh(m_pwDatabase.RootGroup);
-    m_pwDatabase.RootGroup.TraverseTree(TraversalMethod.PreOrder, gh, eh);
-    if(bCustomData) return FileVersion32;
-    
-    return FileVersion32_3; // KDBX 3.1 is sufficient
+    return NO;
 }
-*/
 
 @end

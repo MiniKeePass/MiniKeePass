@@ -74,7 +74,7 @@
 }
 
 -(void) Decrypt:(NSMutableData *)m {
-    [self Encrypt:m];
+    [self Decrypt:m.mutableBytes iOffset:0 count:[m length]];
 }
 
 -(void) Decrypt:(void *)m iOffset:(size_t)iOffset count:(size_t)cb {
