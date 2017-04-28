@@ -110,24 +110,14 @@
 }
 
 - (void)close {
-    uint8_t zeros[32];
-    
-    memset( zeros, 0, 32 );
-    
+
     if (bufferOffset > 0) {
-        // Write the last block
+        // Write the last block if needed
         [self writeHmacBlock];
     }
     
     // Write terminating block header
     [self writeHmacBlock];
-/*
-    // Write out zeros for the HMAC
-    [outputStream write:zeros length:32];
-    
-    // Write out zero for the block size
-    [outputStream writeInt32:0];
-*/
     
     [outputStream close];
 }
