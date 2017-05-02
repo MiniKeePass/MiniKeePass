@@ -18,6 +18,7 @@
 #import "MiniKeePassAppDelegate.h"
 #import "GroupViewController.h"
 #import "SettingsViewController.h"
+#import "DBOptionsViewController.h"
 #import "EntryViewController.h"
 #import "AppSettings.h"
 #import "DatabaseManager.h"
@@ -265,6 +266,15 @@
 
 - (void)dismissSettingsView {
     [self.window.rootViewController dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)showOptionsView {
+    DBOptionsViewController *viewController = [[DBOptionsViewController alloc] initWithStyle:UITableViewStyleGrouped];
+    [viewController setDocument:self.databaseDocument];
+        
+    UINavigationController *settingsNavController = [[UINavigationController alloc] initWithRootViewController:viewController];
+    
+    [self.window.rootViewController presentViewController:settingsNavController animated:YES completion:nil];
 }
 
 @end

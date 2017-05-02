@@ -16,26 +16,23 @@
  */
 
 #import <UIKit/UIKit.h>
-#import "FilesViewController.h"
-#import "DatabaseDocument.h"
+#import "PinViewController.h"
+#import "ChoiceCell.h"
+#import "SwitchCell.h"
+#import "TextFieldCell.h"
+#import "SelectionListViewController.h"
 
-@interface MiniKeePassAppDelegate : NSObject <UIApplicationDelegate>
+@interface DBOptionsViewController : UITableViewController <SelectionListViewControllerDelegate,UITextFieldDelegate> {
+    UITableViewCell *databaseInfoCell;
+    ChoiceCell *encryptionTypeCell;
+    ChoiceCell *keyDerivationTypeCell;
+    
+    UITableViewCell *aesRoundsCell;
+    UITableViewCell *argon2IterationsCell;
+    UITableViewCell *argon2MemoryCell;
+    UITableViewCell *argon2ParallelismCell;
+}
 
-@property (nonatomic, strong) UIWindow *window;
-@property (nonatomic, strong) DatabaseDocument *databaseDocument;
-
-+ (MiniKeePassAppDelegate *)appDelegate;
-+ (NSString *)documentsDirectory;
-
-- (void)importUrl:(NSURL *)url;
-
-- (void)closeDatabase;
-- (void)deleteKeychainData;
-- (void)deleteAllData;
-
-- (void)showSettingsView;
-- (void)dismissSettingsView;
-
-- (void)showOptionsView;
+- (void)setDocument:(DatabaseDocument *)doc;
 
 @end
