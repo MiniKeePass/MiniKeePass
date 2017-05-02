@@ -121,6 +121,14 @@ const NSString *DB_REVISION_CODE = @"revision_code";
     return DropboxNotHandled;
 }
 
+-(BOOL) isClientAuthorized {
+    if( client == nil || ![client isAuthorized] )
+        return NO;
+    
+    return YES;
+}
+
+
 - (uint32_t)setupClient:(NSString *)token {
     
     if( token == nil ) {
