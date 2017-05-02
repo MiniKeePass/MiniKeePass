@@ -499,7 +499,7 @@ enum {
     switch (indexPath.section) {
         case SECTION_DEFAULT_FIELDS:
         case SECTION_CUSTOM_FIELDS:
-            return 40.0f;
+            return MAX([[UIFont preferredFontForTextStyle:UIFontTextStyleBody] lineHeight] + 5,30.0f);
         case SECTION_COMMENTS:
             return 228.0f;
     }

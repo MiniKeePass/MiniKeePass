@@ -203,22 +203,14 @@ enum {
     return SECTION_NUMBER;
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
+- (NSString*) tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
     switch (section) {
         case SECTION_DROPBOX:
-            if( self.dropbox_status == nil ) return nil;
-            UIFont *font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
-            UILabel *footer = [[UILabel alloc] init];
-            footer.font = font;
-            footer.textColor = [UIColor redColor];
-            footer.backgroundColor = [UIColor clearColor];
-            footer.text = [@"    " stringByAppendingString:self.dropbox_status];
-            return footer;
-            break;
+            return self.dropbox_status;
     }
-    
     return nil;
 }
+
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
 
  switch (section) {
@@ -232,6 +224,16 @@ enum {
 
     return 0;
 }
+
+
+- (void)tableView:(UITableView *)tableView willDisplayFooterView:(UIView *)view forSection:(NSInteger)section {
+    if( [view isKindOfClass:[UITableViewHeaderFooterView class]] ) {
+        UILabel *footer = ((UITableViewHeaderFooterView*) view).textLabel;
+        footer.textColor = [UIColor redColor];
+        footer.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
+    }
+}
+
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     switch (section) {
@@ -284,6 +286,11 @@ enum {
     }
 
     return n;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return [[UIFont preferredFontForTextStyle:UIFontTextStyleBody] lineHeight] +
+           [[UIFont preferredFontForTextStyle:UIFontTextStyleFootnote] lineHeight] + 5;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
