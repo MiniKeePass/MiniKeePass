@@ -22,7 +22,6 @@
 
 @interface TextFieldCell : UITableViewCell <UITextFieldDelegate, UIActionSheetDelegate>
 
-@property (nonatomic, copy) NSString *title;
 @property (nonatomic, strong) UITextField *textField;
 @property (nonatomic, unsafe_unretained) id<TextFieldCellDelegate> textFieldCellDelegate;
 
