@@ -202,10 +202,10 @@ enum {
 
 - (NSArray *)standardToolbarItems {
     if (_standardToolbarItems == nil) {
-        UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"gear"]
+        UIBarButtonItem *optionsButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"wrench"]
                                                                            style:UIBarButtonItemStylePlain
                                                                           target:self.appDelegate
-                                                                          action:@selector(showSettingsView)];
+                                                                          action:@selector(showOptionsView)];
 
         UIBarButtonItem *actionButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction
                                                                                       target:self
@@ -219,7 +219,7 @@ enum {
                                                                                 target:nil
                                                                                 action:nil];
 
-        _standardToolbarItems = @[settingsButton, spacer, actionButton, spacer, addButton];
+        _standardToolbarItems = @[optionsButton, spacer, actionButton, spacer, addButton];
     }
 
     return _standardToolbarItems;
