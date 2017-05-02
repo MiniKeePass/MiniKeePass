@@ -139,6 +139,7 @@
 "PINs did not match. Try again" = "PINs did not match. Try again";
 "MiniKeePass version %@" = "MiniKeePass version %@";
 "Enable Dropbox" = "Enable Dropbox";
+"Dropbox API Error" = "Dropbox API Error";
 "Dropbox Integration" = "Dropbox Integration";
 "Use direct integration with dropbox account." = "Use direct integration with dropbox account.";
 

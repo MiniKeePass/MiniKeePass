@@ -724,14 +724,13 @@ enum {
 - (void)toggleDropboxEnabled:(id)sender {
     [self.appSettings setDropboxEnabled:dropboxEnabledCell.switchControl.on];
     if( dropboxEnabledCell.switchControl.on ) {
-        printf( "Getting Dropbox authorization.\n");
         if( ![[DropboxManager sharedInstance] getAccountAuthorization:[UIApplication sharedApplication]
                                                            controller:self] ) {
             [self.appSettings setDropboxEnabled:NO];
             [dropboxEnabledCell.switchControl setOn:NO];
-            dropboxEnabledCell.textLabel.text = @"Dropbox API Error!!";
+            dropboxEnabledCell.textLabel.text = NSLocalizedString(@"Dropbox API Error", nil);
         } else {
-            dropboxEnabledCell.textLabel.text = @"Enable Dropbox";
+            dropboxEnabledCell.textLabel.text = NSLocalizedString(@"Enable Dropbox", nil);
         }
     } else {
         [KeychainUtils deleteAllForServiceName:KEYCHAIN_OAUTH2_SERVICE];
