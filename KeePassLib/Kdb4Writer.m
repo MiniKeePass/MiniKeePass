@@ -46,7 +46,6 @@
     self = [super init];
     if (self) {
         masterSeed = [Utils randomBytes:32];
-//        transformSeed = [Utils randomBytes:32];
         protectedStreamKey = [Utils randomBytes:32];
         streamStartBytes = [Utils randomBytes:32];
     }
@@ -92,24 +91,13 @@
 
     // Compute a hash of the header data
     NSData *headerBytes = [[NSData alloc] initWithData:outputStream.data];
-    
-//    printf( "HEADER BYTES\n%s\n" , [[Utils hexDumpData:headerBytes] UTF8String] );
     tree.headerHash = [self computeHashOfHeaderData:headerBytes];
     
     // Create the encryption output stream
-/*
-    uint64_t rounds = [tree.kdfParams[KDF_AES_KEY_ROUNDS] longLongValue];
-    NSData *key = [kdbPassword createFinalKeyForVersion:4 masterSeed:masterSeed transformSeed:transformSeed rounds:rounds];
-*/
-    
     NSData *key = [kdbPassword createFinalKeyKDBX4:tree.kdfParams masterSeed:mseed HmacKey64:hmackey64 ];
-
-//    printf( "HMAC SEED\n%s\n" , [[Utils hexDumpBytes:hmackey64 length:64] UTF8String] );
-
     OutputStream *stream;
     RandomStream *randomStream;
     if( dbVersion < KDBX40_VERSION ) {   // KDBX 3.1
-//        AesOutputStream *aesOutputStream = [[AesOutputStream alloc] initWithOutputStream:outputStream key:key iv:encryptionIv];
         stream = [CipherStreamFactory getOutputStream:tree.encryptionAlgorithm stream:outputStream key:key iv:encryptionIv];
         
         // Write the stream start bytes
@@ -127,9 +115,6 @@
         
         // Write the HMAC-SHA-256 of the header bytes
         NSData *hmacKey = [HmacInputStream getHMACKey:(void *)hmackey64 keylen:64 blockIndex:ULLONG_MAX];
-
-//        printf( "HMAC KEY\n%s\n" , [[Utils hexDumpData:hmacKey] UTF8String] );
-
         CCHmac(kCCHmacAlgSHA256, hmacKey.bytes, hmacKey.length, headerBytes.bytes, (size_t)headerBytes.length, headerHmac);
         [outputStream write:headerHmac length:CC_SHA256_DIGEST_LENGTH];
         
@@ -138,7 +123,6 @@
         HmacOutputStream *hmacStream = [[HmacOutputStream alloc] initWithOutputStream:outputStream key:hmacKeyData];
         
         // Create the encrypted input stream
-//        stream = [[ChaCha20OutputStream alloc] initWithOutputStream:hmacStream key:key iv:encryptionIv];
         stream = [CipherStreamFactory getOutputStream:tree.encryptionAlgorithm stream:hmacStream key:key iv:encryptionIv];
         
         // Create the random stream

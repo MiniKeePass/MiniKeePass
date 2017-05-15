@@ -21,8 +21,6 @@
 
 @interface Kdb4Writer : NSObject<KdbWriter> {
     NSData *masterSeed;
-//    NSData *transformSeed;  // In KdfParams now
-//    uint64_t rounds;
     NSData *encryptionIv;
     NSData *protectedStreamKey;
     NSData *streamStartBytes;

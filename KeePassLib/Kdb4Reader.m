@@ -29,8 +29,6 @@
 #import "ChaCha20RandomStream.h"
 #import "KdbPassword.h"
 #import "CipherStreamFactory.h"
-//#import "ChaCha20InputStream.h"
-//#import "AesInputStream.h"
 
 #define VERSION_CRITICAL_MAX_32_4 0x00040000  // KDBX 4
 #define VERSION_CRITICAL_MAX_32 0x00030000
@@ -49,15 +47,11 @@
     [self readHeader:inputStream];
     NSData *headerBytes = [inputStream getCopyBuffer];
     [inputStream enableCopyBuffer:NO];
-   
-//    printf( "HEADER BYTES\n%s\n" , [[Utils hexDumpData:headerBytes] UTF8String] );
 
     uint8_t hmackey64[64];
     uint8_t *mseed = (uint8_t *) masterSeed.bytes;
     NSData *key = [kdbPassword createFinalKeyKDBX4:kdfParams masterSeed:mseed HmacKey64:hmackey64 ];
 
-//    printf( "HMAC SEED\n%s\n" , [[Utils hexDumpBytes:hmackey64 length:64] UTF8String] );
-    
     InputStream *stream;
     InputStream *xmlStream;
     RandomStream *randomStream = nil;
@@ -90,9 +84,6 @@
         uint8_t headerReadHmac[CC_SHA256_DIGEST_LENGTH];
         uint8_t headerStoredHmac[CC_SHA256_DIGEST_LENGTH];
         NSData *hmacKey = [HmacInputStream getHMACKey:(void *)hmackey64 keylen:64 blockIndex:ULLONG_MAX];
-
-//        printf( "HMAC KEY\n%s\n" , [[Utils hexDumpData:hmacKey] UTF8String] );
-        
         CCHmac(kCCHmacAlgSHA256, hmacKey.bytes, hmacKey.length, headerBytes.bytes, (size_t)headerBytes.length, headerReadHmac);
         [inputStream read:headerStoredHmac length:32];
         if( memcmp(headerReadHmac, headerStoredHmac, 32) != 0 ) {
@@ -104,7 +95,6 @@
         HmacInputStream *hmacStream = [[HmacInputStream alloc] initWithInputStream:inputStream key:hmacKeyData];
         
         // Create the encrypted input stream
-//        stream = [[ChaCha20InputStream alloc] initWithInputStream:hmacStream key:key iv:encryptionIv];
         stream = [CipherStreamFactory getInputStream:cipherUuid stream:hmacStream key:key iv:encryptionIv];
     }
     
