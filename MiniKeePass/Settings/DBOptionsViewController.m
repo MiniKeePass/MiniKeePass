@@ -431,7 +431,7 @@ enum {
     [self setUInt64TextFieldValue:argon2MemoryCell value:memory/(1024*1024)];
     
     uint32_t parallelism = [(NSNumber*)kdfDefParams[KDF_ARGON2_KEY_PARALLELISM] unsignedIntValue];
-    [self setUInt64TextFieldValue:argon2ParallelismCell value:parallelism];
+    [self setUInt32TextFieldValue:argon2ParallelismCell value:parallelism];
 
     // Get the database current values
     if( self.kdb4Tree != nil ) {
@@ -449,9 +449,12 @@ enum {
             [self setUInt64TextFieldValue:argon2MemoryCell value:memory/(1024*1024)];
             
             uint32_t parallelism = [(NSNumber*)self.kdb4Tree.kdfParams[KDF_ARGON2_KEY_PARALLELISM] unsignedIntValue];
-            [self setUInt64TextFieldValue:argon2ParallelismCell value:parallelism];
+            [self setUInt32TextFieldValue:argon2ParallelismCell value:parallelism];
             kdfIndex = 1;
         }
+    } else {
+        // KDB 1.x file.
+        [self setUInt64TextFieldValue:aesRoundsCell value:self.kdb3Tree.rounds];
     }
     
     // Save the initial settings.
@@ -468,13 +471,11 @@ enum {
 - (void) changeDatabaseValues {
     if( self.kdb3Tree != nil ) {
         if( encryptionIndex == 0 ) {
-            self.kdb3Tree.flags &= ~(FLAG_TWOFISH);
-            self.kdb3Tree.flags |= FLAG_RIJNDAEL;
+            self.kdb3Tree.flags = FLAG_RIJNDAEL;
         } else if( encryptionIndex == 1 ) {
-            self.kdb3Tree.flags &= ~(FLAG_RIJNDAEL);
-            self.kdb3Tree.flags |= FLAG_TWOFISH;
+            self.kdb3Tree.flags = FLAG_TWOFISH;
         }
-        self.kdb3Tree.rounds = [self getUInt32TextFieldValue:aesRoundsCell];
+        self.kdb3Tree.rounds = (uint32_t)[self getUInt64TextFieldValue:aesRoundsCell];
     } else {
         if( encryptionIndex == 0 ) {
             self.kdb4Tree.encryptionAlgorithm = [KdbUUID getAESUUID];
