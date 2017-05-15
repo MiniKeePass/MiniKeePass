@@ -141,6 +141,11 @@
 		78AF0CE91E834E45007467BB /* ObjectiveDropboxOfficial.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 78AF0CE61E834B8B007467BB /* ObjectiveDropboxOfficial.framework */; };
 		78AF0CEA1E834E45007467BB /* ObjectiveDropboxOfficial.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 78AF0CE61E834B8B007467BB /* ObjectiveDropboxOfficial.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		78AF0CF01E841AFB007467BB /* DropboxDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 78AF0CEF1E841AFB007467BB /* DropboxDocument.m */; };
+		78BC6DAD1EC93291008D87A7 /* TwoFishInputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 78BC6DAA1EC93291008D87A7 /* TwoFishInputStream.m */; };
+		78BC6DAE1EC93291008D87A7 /* TwoFishOutputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 78BC6DAC1EC93291008D87A7 /* TwoFishOutputStream.m */; };
+		78BC6DB11EC93322008D87A7 /* TwoFishCipher.m in Sources */ = {isa = PBXBuildFile; fileRef = 78BC6DB01EC93322008D87A7 /* TwoFishCipher.m */; };
+		78BC6DB41EC9334A008D87A7 /* DBOptionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78BC6DB31EC9334A008D87A7 /* DBOptionsViewController.m */; };
+		78BC6DB71EC93364008D87A7 /* DropboxManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 78BC6DB61EC93364008D87A7 /* DropboxManager.m */; };
 		78F802101E8EBFE70039625E /* ChaCha20RandomStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 78F8020F1E8EBFE70039625E /* ChaCha20RandomStream.m */; };
 /* End PBXBuildFile section */
 
@@ -193,6 +198,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = F26B75741D7F6AF700714F70;
 			remoteInfo = "ObjectiveDropboxOfficial iOS";
+		};
+		78BC6DA51EC9325A008D87A7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 787231941E95ED47006BA0DD /* argon2iOS.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 78AA6EF21E969FAF00B259D4;
+			remoteInfo = libargon2;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -469,6 +481,16 @@
 		78AF0CE01E834B8A007467BB /* ObjectiveDropboxOfficial.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ObjectiveDropboxOfficial.xcodeproj; path = "../ObjectiveDropbox/Carthage/Checkouts/dropbox-sdk-obj-c/Source/ObjectiveDropboxOfficial/ObjectiveDropboxOfficial.xcodeproj"; sourceTree = "<group>"; };
 		78AF0CEE1E841AE7007467BB /* DropboxDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DropboxDocument.h; sourceTree = "<group>"; };
 		78AF0CEF1E841AFB007467BB /* DropboxDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DropboxDocument.m; sourceTree = "<group>"; };
+		78BC6DA91EC93291008D87A7 /* TwoFishInputStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwoFishInputStream.h; sourceTree = "<group>"; };
+		78BC6DAA1EC93291008D87A7 /* TwoFishInputStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwoFishInputStream.m; sourceTree = "<group>"; };
+		78BC6DAB1EC93291008D87A7 /* TwoFishOutputStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwoFishOutputStream.h; sourceTree = "<group>"; };
+		78BC6DAC1EC93291008D87A7 /* TwoFishOutputStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwoFishOutputStream.m; sourceTree = "<group>"; };
+		78BC6DAF1EC93322008D87A7 /* TwoFishCipher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TwoFishCipher.h; path = Crypto/TwoFishCipher.h; sourceTree = "<group>"; };
+		78BC6DB01EC93322008D87A7 /* TwoFishCipher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TwoFishCipher.m; path = Crypto/TwoFishCipher.m; sourceTree = "<group>"; };
+		78BC6DB21EC9334A008D87A7 /* DBOptionsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBOptionsViewController.h; sourceTree = "<group>"; };
+		78BC6DB31EC9334A008D87A7 /* DBOptionsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBOptionsViewController.m; sourceTree = "<group>"; };
+		78BC6DB51EC93364008D87A7 /* DropboxManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DropboxManager.h; sourceTree = "<group>"; };
+		78BC6DB61EC93364008D87A7 /* DropboxManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DropboxManager.m; sourceTree = "<group>"; };
 		78F8020E1E8EBFE70039625E /* ChaCha20RandomStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ChaCha20RandomStream.h; path = KeePassLib/ChaCha20RandomStream.h; sourceTree = SOURCE_ROOT; };
 		78F8020F1E8EBFE70039625E /* ChaCha20RandomStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ChaCha20RandomStream.m; path = KeePassLib/ChaCha20RandomStream.m; sourceTree = SOURCE_ROOT; };
 		BDB0FF5D194C7C6F00C44DEF /* nl */ = {isa = PBXFileReference; lastKnownFileType = text; name = nl; path = nl.lproj/AppStore.txt; sourceTree = "<group>"; };
@@ -586,6 +608,10 @@
 				682D450A1603883900156830 /* OutputStream.m */,
 				682D450B1603883900156830 /* Sha256OutputStream.h */,
 				682D450C1603883900156830 /* Sha256OutputStream.m */,
+				78BC6DA91EC93291008D87A7 /* TwoFishInputStream.h */,
+				78BC6DAA1EC93291008D87A7 /* TwoFishInputStream.m */,
+				78BC6DAB1EC93291008D87A7 /* TwoFishOutputStream.h */,
+				78BC6DAC1EC93291008D87A7 /* TwoFishOutputStream.m */,
 			);
 			path = IOStream;
 			sourceTree = "<group>";
@@ -595,6 +621,8 @@
 			children = (
 				68496E711AB34F8800370876 /* AppSettings.h */,
 				68496E721AB34F8800370876 /* AppSettings.m */,
+				78BC6DB21EC9334A008D87A7 /* DBOptionsViewController.h */,
+				78BC6DB31EC9334A008D87A7 /* DBOptionsViewController.m */,
 				68496E731AB34F8800370876 /* SettingsViewController.h */,
 				68496E741AB34F8800370876 /* SettingsViewController.m */,
 			);
@@ -775,6 +803,8 @@
 				689D042913A42C81005EBD36 /* DatabaseManager.m */,
 				78AF0CEE1E841AE7007467BB /* DropboxDocument.h */,
 				78AF0CEF1E841AFB007467BB /* DropboxDocument.m */,
+				78BC6DB51EC93364008D87A7 /* DropboxManager.h */,
+				78BC6DB61EC93364008D87A7 /* DropboxManager.m */,
 				52E7AF5A162523F800DCB00A /* EditItemViewController.h */,
 				52E7AF5B162523F800DCB00A /* EditItemViewController.m */,
 				689D042A13A42C81005EBD36 /* EntryViewController.h */,
@@ -919,6 +949,8 @@
 				782C93D91E8E35BF00B6AC82 /* ChaCha20Cipher.m */,
 				782C93DA1E8E35BF00B6AC82 /* Salsa20Cipher.h */,
 				782C93DB1E8E35BF00B6AC82 /* Salsa20Cipher.m */,
+				78BC6DAF1EC93322008D87A7 /* TwoFishCipher.h */,
+				78BC6DB01EC93322008D87A7 /* TwoFishCipher.m */,
 			);
 			name = Crypto;
 			sourceTree = "<group>";
@@ -928,6 +960,7 @@
 			children = (
 				7872319A1E95ED47006BA0DD /* argon2iOS.framework */,
 				7872319C1E95ED47006BA0DD /* argon2iOSTests.xctest */,
+				78BC6DA61EC9325A008D87A7 /* libargon2.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1061,6 +1094,13 @@
 			remoteRef = 78AF0CE71E834B8B007467BB /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		78BC6DA61EC9325A008D87A7 /* libargon2.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libargon2.a;
+			remoteRef = 78BC6DA51EC9325A008D87A7 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -1125,6 +1165,7 @@
 				689DFFE713A4273F005EBD36 /* main.m in Sources */,
 				689D03CD13A42B63005EBD36 /* Base64.m in Sources */,
 				689FBE781AB27228005CB6BD /* KeychainUtils.m in Sources */,
+				78BC6DB71EC93364008D87A7 /* DropboxManager.m in Sources */,
 				689FBE681AB271C6005CB6BD /* PinViewController.m in Sources */,
 				52C7FD7D18693D9900D498A2 /* GroupSearchController.m in Sources */,
 				689FBE911AB27283005CB6BD /* PasswordFieldCell.m in Sources */,
@@ -1156,6 +1197,7 @@
 				782C93DD1E8E35BF00B6AC82 /* ChaCha20Cipher.m in Sources */,
 				689D03E913A42B63005EBD36 /* DDXMLElementAdditions.m in Sources */,
 				689D03EA13A42B63005EBD36 /* NSString+DDXML.m in Sources */,
+				78BC6DAE1EC93291008D87A7 /* TwoFishOutputStream.m in Sources */,
 				682B938E18A48EC20020C22A /* UIAlertViewAutoDismiss.m in Sources */,
 				689D03EB13A42B63005EBD36 /* DDXMLDocument.m in Sources */,
 				689D03EC13A42B63005EBD36 /* DDXMLElement.m in Sources */,
@@ -1177,6 +1219,7 @@
 				68A3E1AF13A8C9D1006881CA /* FormViewController.m in Sources */,
 				6876F67813B2D8F500A05C7A /* ImageSelectionViewController.m in Sources */,
 				689FBE641AB271C6005CB6BD /* KeypadButton.m in Sources */,
+				78BC6DB11EC93322008D87A7 /* TwoFishCipher.m in Sources */,
 				68D7564D186E4D8A001AFB82 /* WebViewController.m in Sources */,
 				68D991E613F3EAAE00F6ED1F /* PasswordViewController.m in Sources */,
 				689A4D1314046B8200AA897D /* RandomStream.m in Sources */,
@@ -1200,12 +1243,14 @@
 				78AF0CF01E841AFB007467BB /* DropboxDocument.m in Sources */,
 				689FBE901AB27283005CB6BD /* MasterPasswordFieldCell.m in Sources */,
 				682D451A1603883900156830 /* Sha256OutputStream.m in Sources */,
+				78BC6DAD1EC93291008D87A7 /* TwoFishInputStream.m in Sources */,
 				689FBE951AB27283005CB6BD /* TitleFieldCell.m in Sources */,
 				78F802101E8EBFE70039625E /* ChaCha20RandomStream.m in Sources */,
 				787231831E955D4A006BA0DD /* HmacOutputStream.m in Sources */,
 				685D9D951603F8EE00D739D3 /* Kdb3Utils.m in Sources */,
 				787231861E955D7B006BA0DD /* ChaCha20OutputStream.m in Sources */,
 				6851FAFD186DD11D00A53B0E /* UIActionSheetAutoDismiss.m in Sources */,
+				78BC6DB41EC9334A008D87A7 /* DBOptionsViewController.m in Sources */,
 				689FBE931AB27283005CB6BD /* TextFieldCell.m in Sources */,
 				7872317E1E955D2D006BA0DD /* CipherStreamFactory.m in Sources */,
 				68496E761AB34F8800370876 /* SettingsViewController.m in Sources */,
@@ -1380,16 +1425,18 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = TDWUL5774P;
+				HEADER_SEARCH_PATHS = (
+					/usr/include/libxml2,
+					/usr/local/include,
+				);
 				INFOPLIST_FILE = "MiniKeePass/MiniKeePass-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/argon2",
-				);
+				LIBRARY_SEARCH_PATHS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.tssmith;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SYSTEM_HEADER_SEARCH_PATHS = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -1401,16 +1448,18 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = TDWUL5774P;
+				HEADER_SEARCH_PATHS = (
+					/usr/include/libxml2,
+					/usr/local/include,
+				);
 				INFOPLIST_FILE = "MiniKeePass/MiniKeePass-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/argon2",
-				);
+				LIBRARY_SEARCH_PATHS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.tssmith;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SYSTEM_HEADER_SEARCH_PATHS = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
