@@ -157,7 +157,7 @@
         @throw [NSException exceptionWithName:@"IOException" reason:@"Unsupported version" userInfo:nil];
     }
     
-    int64_t pvali64;
+    uint64_t pvali64;
     kdfParams = [[VariantDictionary alloc] init];
 
     BOOL eoh = NO;

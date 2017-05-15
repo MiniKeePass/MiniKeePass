@@ -198,7 +198,7 @@
         
         [self writeHeaderField:outputStream headerId:HEADER_TRANSFORMSEED data:seedData.bytes length:seedData.length];
         
-        uint64_t rounds = [tree.kdfParams[ KDF_AES_KEY_ROUNDS ] longLongValue];
+        uint64_t rounds = [tree.kdfParams[ KDF_AES_KEY_ROUNDS ] unsignedLongLongValue];
         i64 = CFSwapInt64HostToLittle(rounds);
         [self writeHeaderField:outputStream headerId:HEADER_TRANSFORMROUNDS data:&i64 length:8];
     } else {

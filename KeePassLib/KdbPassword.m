@@ -121,7 +121,7 @@ int hex2dec(char c);
         
         size_t tmp;
         NSNumber *rounds = kdfparams[KDF_AES_KEY_ROUNDS];
-        for (int i = 0; i < [rounds longLongValue]; i++) {
+        for (uint64_t i = 0; i < [rounds unsignedLongLongValue]; i++) {
             CCCryptorUpdate(cryptorRef, masterKey, 32, masterKey, 32, &tmp);
         }
         
