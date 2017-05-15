@@ -359,6 +359,23 @@ enum {
     return NUM_SECTIONS;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    CGFloat fontHeight = 0.0;
+    
+    switch( indexPath.section ) {
+        case SECTION_GROUPS:
+            fontHeight = [[UIFont preferredFontForTextStyle:UIFontTextStyleBody] lineHeight];
+            break;
+        case SECTION_ENTRIES:
+            fontHeight = [[UIFont preferredFontForTextStyle:UIFontTextStyleBody] lineHeight] +
+                         [[UIFont preferredFontForTextStyle:UIFontTextStyleFootnote] lineHeight];
+            break;
+    }
+    
+    return fontHeight + 5;
+}
+
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     switch (section) {
         case SECTION_GROUPS:
