@@ -373,7 +373,7 @@ enum {
             break;
     }
     
-    return fontHeight + 5;
+    return MAX( fontHeight + 5, 30 );
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
