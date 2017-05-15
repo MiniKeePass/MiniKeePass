@@ -78,6 +78,7 @@
     self = [super init];
     if (self) {
         _rounds = DEFAULT_TRANSFORMATION_ROUNDS;
+        _flags = FLAG_RIJNDAEL;
     }
     return self;
 }

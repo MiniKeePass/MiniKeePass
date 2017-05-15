@@ -335,8 +335,6 @@
 - (void)newFile:(NSString*)fileName withPassword:(KdbPassword *)kdbPassword {
     Kdb3Tree *tree = [[Kdb3Tree alloc] init];
     
-    tree.flags = FLAG_RIJNDAEL;
-    
     Kdb3Group *rootGroup = [[Kdb3Group alloc] init];
     rootGroup.name = @"%ROOT%";
     tree.root = rootGroup;
