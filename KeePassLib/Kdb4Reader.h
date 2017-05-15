@@ -28,10 +28,6 @@
     KdbUUID *cipherUuid;
     uint32_t compressionAlgorithm;
     NSData *masterSeed;
-    /*
-    NSData *transformSeed;
-    uint64_t rounds;
- */
     NSData *encryptionIv;
     NSData *protectedStreamKey;
     NSData *streamStartBytes;
