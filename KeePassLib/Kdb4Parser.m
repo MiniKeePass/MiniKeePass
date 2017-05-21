@@ -80,13 +80,12 @@ int closeCallback(void *context) {
     // Decode all the protected entries
     [self decodeProtected:rootElement];
 
-    Kdb4Tree *tree = [[Kdb4Tree alloc] init];
+    tree = [[Kdb4Tree alloc] init];
     tree.dbVersion = dbVer;
-    dbVersion = dbVer;
 
     DDXMLElement *meta = [rootElement elementForName:@"Meta"];
     if (meta != nil) {
-        [self parseMeta:meta tree:tree];
+        [self parseMeta:meta];
     }
 
     DDXMLElement *root = [rootElement elementForName:@"Root"];
@@ -132,7 +131,7 @@ int closeCallback(void *context) {
     }
 }
 
-- (void)parseMeta:(DDXMLElement *)root tree:(Kdb4Tree *)tree {
+- (void)parseMeta:(DDXMLElement *)root {
     tree.generator = [[root elementForName:@"Generator"] stringValue];
 
     DDXMLElement *headerHashElement = [root elementForName:@"HeaderHash"];
@@ -315,7 +314,10 @@ int closeCallback(void *context) {
     }
 
     for (DDXMLElement *element in [root elementsForName:@"Binary"]) {
-        [entry.binaries addObject:[self parseBinaryRef:element]];
+        BinaryRef *br = [self parseBinaryRef:element];
+        if( br != nil ) {
+            entry.binaryDict[br.key] = br;
+        }
     }
 
     DDXMLElement *customDataElement = [root elementForName:@"CustomData"];
@@ -351,9 +353,16 @@ int closeCallback(void *context) {
     BinaryRef *binaryRef = [[BinaryRef alloc] init];
 
     binaryRef.key = [[root elementForName:@"Key"] stringValue];
-    binaryRef.ref = [[[[root elementForName:@"Value"] attributeForName:@"Ref"] stringValue] integerValue];
-
-    return binaryRef;
+    binaryRef.index = [[[[root elementForName:@"Value"] attributeForName:@"Ref"] stringValue] integerValue];
+    
+    for( Binary *b in tree.binaries ) {
+        if( b.binaryId == binaryRef.index ) {
+            binaryRef.data = b.data;
+            return binaryRef;
+        }
+    }
+                                       
+    return nil;
 }
 
 - (AutoType *)parseAutoType:(DDXMLElement *)root {
@@ -382,7 +391,7 @@ int closeCallback(void *context) {
 - (NSDate *)parseDateTime:(NSString *)dateString {
     NSDate *date = nil;
     //  KDBX 4 files store dates as base64 encoded seconds since epoch.
-    if( dbVersion >= KDBX40_VERSION) {
+    if( tree.dbVersion >= KDBX40_VERSION) {
         NSData *dateBytes = [[NSData alloc] initWithBase64EncodedString:dateString options:NSDataBase64DecodingIgnoreUnknownCharacters];
         uint64_t lSec = [Utils BytesToInt64:dateBytes];
         date = [NSDate dateWithTimeInterval:lSec sinceDate:Kdbx4ReferenceDate];

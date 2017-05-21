@@ -90,6 +90,8 @@
     // Array of CustomItem objects
 @property(nonatomic, strong) NSMutableArray *customData;
 
+- (Kdb4Group*)findGroup:(KdbUUID *)uuid;
+
 @end
 
 
@@ -135,7 +137,8 @@
 @interface BinaryRef : NSObject
 
 @property(nonatomic, strong) NSString *key;
-@property(nonatomic, assign) NSInteger ref;
+@property(nonatomic, assign) NSInteger index;
+@property(nonatomic, strong) NSString *data;
 
 @end
 
@@ -183,13 +186,16 @@
 @property(nonatomic, assign) NSInteger usageCount;
 @property(nonatomic, strong) NSDate *locationChanged;
 @property(nonatomic, readonly) NSMutableArray *stringFields;
-@property(nonatomic, readonly) NSMutableArray *binaries;  // BinaryRefs
+@property(nonatomic, readonly) NSMutableDictionary *binaryDict;  // BinaryRefs
 @property(nonatomic, strong) AutoType *autoType;
 @property(nonatomic, readonly) NSMutableArray *history;
 
 // Array of CustomItem objects
 //@property(nonatomic, strong) NSMutableArray *customData;
 @property NSMutableArray *customData;
+
+-(BOOL) hasChanged:(Kdb4Entry*)entry;
+-(Kdb4Entry*) deepCopy;
 
 @end
 
@@ -239,5 +245,12 @@
 @property VariantDictionary *customPluginData;
 @property NSMutableArray *headerBinaries;
 @property KdbUUID *encryptionAlgorithm;
+
+// They are overrides from KdbTree.
+// These fucntions use the recycle bin if active.
+// - (void)removeGroup:(Kdb4Group *)group;
+// - (void)deleteEntry:(Kdb4Entry *)entry;
+// This fucntion uses the entry history.
+// -(void) createEntryBackup:(Kdb4Entry*)entry backupEntry:(Kdb4Entry*)backupEntry;
 
 @end

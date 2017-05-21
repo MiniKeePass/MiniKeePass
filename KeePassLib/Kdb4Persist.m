@@ -318,8 +318,8 @@
     }
 
     // Add the binary references
-    for (BinaryRef *binaryRef in entry.binaries) {
-        [root addChild:[self persistBinaryRef:binaryRef]];
+    for (NSString *key in entry.binaryDict) {
+        [root addChild:[self persistBinaryRef:entry.binaryDict[key]]];
     }
 
     // Add the auto-type
@@ -363,7 +363,7 @@
     [root addChild:[DDXMLElement elementWithName:@"Key" stringValue:binaryRef.key]];
 
     DDXMLElement *element = [DDXMLElement elementWithName:@"Value"];
-    [element addAttributeWithName:@"Ref" stringValue:[NSString stringWithFormat:@"%ld", (long)binaryRef.ref]];
+    [element addAttributeWithName:@"Ref" stringValue:[NSString stringWithFormat:@"%ld", (long)binaryRef.index]];
     [root addChild:element];
 
     return root;

@@ -21,7 +21,7 @@
 #import "InputStream.h"
 
 @interface Kdb4Parser : NSObject {
-    uint32_t dbVersion;
+    Kdb4Tree *tree;
     RandomStream *randomStream;
     NSDateFormatter *dateFormatter;
 }
