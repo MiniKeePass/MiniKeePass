@@ -84,6 +84,9 @@ enum {
 
         self.searchController = [[UISearchController alloc] initWithSearchResultsController:self.groupSearchController];
         self.searchController.searchResultsUpdater = self.groupSearchController;
+        self.searchController.searchBar.delegate = self.groupSearchController;
+        self.searchController.searchBar.scopeButtonTitles = @[ @"Database", @"Add Recycle Bin" ];
+        self.searchController.searchBar.selectedScopeButtonIndex = 0;
         [self.searchController.searchBar sizeToFit];
         
         // There is a bug in UISearchController in iOS 9 that causes it to load it's view in it's dealloc
@@ -469,7 +472,7 @@ enum {
             numRows = [self.entriesArray count];
             break;
     }
-
+/*
     if (numRows == 0) {
         // Reload the section if there are no more rows
         [tableView reloadSections:[NSIndexSet indexSetWithIndex:indexPath.section]
@@ -479,6 +482,10 @@ enum {
         [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath]
                          withRowAnimation:UITableViewRowAnimationAutomatic];
     }
+ */
+    [self setEditing:NO animated:YES];
+    [self updateViewModel];
+    [self.tableView reloadData];
 }
 
 #pragma mark - UITableViewDelegate
@@ -612,12 +619,20 @@ enum {
     NSUInteger index = [self addObject:e toArray:self.entriesArray];
 
     // Save the database
-    [databaseDocument save];
+//    [databaseDocument save];
 
     EntryViewController *entryViewController = [[EntryViewController alloc] initWithStyle:UITableViewStyleGrouped];
     entryViewController.entry = e;
     entryViewController.title = e.title;
     entryViewController.isNewEntry = YES;
+    
+    entryViewController.newEntryCanceled = ^(KdbEntry *e) {
+        [self.navigationController popViewControllerAnimated:YES];
+        [e.parent deleteEntry:e];
+        [self.entriesArray removeObject:e];
+        [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:SECTION_ENTRIES]] withRowAnimation:UITableViewRowAnimationAutomatic];
+    };
+
     [self.navigationController pushViewController:entryViewController animated:YES];
 
     return [NSIndexPath indexPathForRow:index inSection:SECTION_ENTRIES];
@@ -654,6 +669,7 @@ enum {
 - (void)deleteSelectedItems {
     NSArray *indexPaths = self.tableView.indexPathsForSelectedRows;
     [self deleteElementsFromModelAtIndexPaths:indexPaths];
+/*
     [self.tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
 
     // Clean up section headers
@@ -665,8 +681,10 @@ enum {
         [indexSet addIndex:SECTION_ENTRIES];
     }
     [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationFade];
-
+*/
     [self setEditing:NO animated:YES];
+    [self updateViewModel];
+    [self.tableView reloadData];
 }
 
 - (void)deleteElementsFromModelAtIndexPaths:(NSArray *)indexPaths {
@@ -682,20 +700,20 @@ enum {
         }
     }
 
+    DatabaseDocument *databaseDocument = self.appDelegate.databaseDocument;
     // Remove groups
     for (KdbGroup *g in groupsToRemove) {
-        [self.group removeGroup:g];
+        [databaseDocument.kdbTree removeGroup:g];
         [self.groupsArray removeObject:g];
     }
 
     // Remote Enteries
     for (KdbEntry *e in enteriesToRemove) {
-        [self.group removeEntry:e];
+        [databaseDocument.kdbTree removeEntry:e];
         [self.entriesArray removeObject:e];
     }
 
     // Save the database
-    DatabaseDocument *databaseDocument = self.appDelegate.databaseDocument;
     [databaseDocument save];
 }
 

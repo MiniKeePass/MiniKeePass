@@ -36,6 +36,7 @@
 /// Search a KeePass group for the supplied text
 /// @param searchText The text for which you're searching
 /// @param results A Dictionary to store the matching results
-+ (void)searchGroup:(KdbGroup *)group searchText:(NSString *)searchText results:(NSMutableArray *)results;
++ (void)searchGroup:(KdbGroup *)group searchText:(NSString *)searchText
+            results:(NSMutableArray *)results includeRecycleBin:(BOOL)includeRecycleBin;
 
 @end

@@ -20,7 +20,7 @@
 #import "KdbLib.h"
 #import "GroupViewController.h"
 
-@interface GroupSearchController : UITableViewController <UISearchResultsUpdating>
+@interface GroupSearchController : UITableViewController <UISearchResultsUpdating, UISearchBarDelegate>
 
 @property (nonatomic, weak) GroupViewController *groupViewController;
 
