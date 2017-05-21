@@ -487,7 +487,7 @@ enum {
             // Map "Rounds" to the kdfParam NSNumber
             [self.kdb4Tree.kdfParams addByteArray:[[KdbUUID getAES_KDFUUID] getData] forKey:KDF_KEY_UUID_BYTES];
             uint64_t rounds = [self getUInt64TextFieldValue:aesRoundsCell];
-            [self.kdb4Tree.kdfParams addInt64:rounds forKey:KDF_AES_KEY_ROUNDS];
+            [self.kdb4Tree.kdfParams addUInt64:rounds forKey:KDF_AES_KEY_ROUNDS];
         } else if( keyDerivIndex == 1 ) {
             // Map "Iterations", "Memory", and "Parallelism" to the kdfParam NSNumbers
             [self.kdb4Tree.kdfParams addByteArray:[[KdbUUID getArgon2UUID] getData] forKey:KDF_KEY_UUID_BYTES];

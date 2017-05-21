@@ -32,7 +32,6 @@ static NSString *DROPBOX_TEMP_DIR = @"dropbox_tmp_pjff2mxp8";
 // File to store the dictionary of Files and their metadata.
 static NSString *DROPBOX_META_ARCHIVE = @"dropbox_dict";
 
-
 @interface DropboxManager () {
     BOOL isInitialized;
     DBUserClient *client;

@@ -55,16 +55,40 @@
 - (void)updateSearchResultsForSearchController:(UISearchController *)searchController {
     [self.results removeAllObjects];
 
+    BOOL includeRecycleBin = searchController.searchBar.selectedScopeButtonIndex == 1;
+    
     // Perform the search
     [DatabaseDocument searchGroup:self.groupViewController.group
                        searchText:searchController.searchBar.text
-                          results:self.results];
+                          results:self.results
+                includeRecycleBin:includeRecycleBin];
 
     // Sort the results
     [self.results sortUsingComparator:^(id a, id b) {
         return [((KdbEntry*)a).title localizedCompare:((KdbEntry*)b).title];
     }];
 
+    [self.tableView reloadData];
+}
+
+#pragma mark - UISearchBarDelegate
+
+- (void)searchBar:(UISearchBar *)searchBar selectedScopeButtonIndexDidChange:(NSInteger)selectedScope {
+    [self.results removeAllObjects];
+
+    BOOL includeRecycleBin = selectedScope == 1;
+    
+    // Perform the search
+    [DatabaseDocument searchGroup:self.groupViewController.group
+                       searchText:searchBar.text
+                          results:self.results
+                includeRecycleBin:includeRecycleBin];
+    
+    // Sort the results
+    [self.results sortUsingComparator:^(id a, id b) {
+        return [((KdbEntry*)a).title localizedCompare:((KdbEntry*)b).title];
+    }];
+    
     [self.tableView reloadData];
 }
 
