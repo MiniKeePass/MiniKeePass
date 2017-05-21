@@ -344,18 +344,18 @@
         return KDBX40_VERSION;
     }
     
-    if( [self treeHasCustomData:(Kdb4Group*)tree.root] ){
+    if( [self groupsHaveCustomData:(Kdb4Group*)tree.root] ){
         return KDBX40_VERSION;
     }
     
     return KDBX31_VERSION;
 }
 
--(BOOL) treeHasCustomData:(Kdb4Group*) group {
+-(BOOL) groupsHaveCustomData:(Kdb4Group*) group {
     if( [group.customData count] > 0 ) return YES;
     
     for( Kdb4Group* g in group.groups ) {
-        return [self treeHasCustomData:g];
+        if( [self groupsHaveCustomData:g] ) return YES;
     }
     
     for( Kdb4Entry* e in group.entries ) {
