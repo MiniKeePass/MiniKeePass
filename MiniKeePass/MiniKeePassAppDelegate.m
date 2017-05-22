@@ -61,8 +61,8 @@
     // Initialize the lock screen manager
     [LockScreenManager sharedInstance];
     
-    // Initialize the Dropbox Client Manager
-    [[DropboxManager sharedInstance] initDropboxAPI];
+    // Initialize the Cloud Storage Manager
+    [[CloudManager sharedInstance] initAPI];
     
     return YES;
 }

@@ -85,7 +85,7 @@ enum {
         self.searchController = [[UISearchController alloc] initWithSearchResultsController:self.groupSearchController];
         self.searchController.searchResultsUpdater = self.groupSearchController;
         self.searchController.searchBar.delegate = self.groupSearchController;
-        self.searchController.searchBar.scopeButtonTitles = @[ @"Database", @"Add Recycle Bin" ];
+        self.searchController.searchBar.scopeButtonTitles = @[ @"Database", @"Include Recycle Bin" ];
         self.searchController.searchBar.selectedScopeButtonIndex = 0;
         [self.searchController.searchBar sizeToFit];
         

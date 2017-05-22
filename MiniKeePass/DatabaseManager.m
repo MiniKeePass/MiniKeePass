@@ -20,8 +20,8 @@
 #import "KeychainUtils.h"
 #import "PasswordViewController.h"
 #import "AppSettings.h"
-#import "DropboxManager.h"
-#import "DropboxDocument.h"
+#import "CloudManager.h"
+#import "CloudDocument.h"
 
 @implementation DatabaseManager
 
@@ -39,11 +39,11 @@ static DatabaseManager *sharedInstance;
     return sharedInstance;
 }
 
-- (void)openDatabaseDocument:(NSString*)filename animated:(BOOL)animated dropbox:(BOOL)isDropbox {
+- (void)openDatabaseDocument:(NSString*)filename animated:(BOOL)animated isCloudBased:(BOOL)isCloudBased {
     BOOL databaseLoaded = NO;
     
-    if( isDropbox ) {
-        self.selectedFilename = [[[DropboxManager sharedInstance] getDropboxTempDir]
+    if( isCloudBased ) {
+        self.selectedFilename = [[[CloudManager sharedInstance] getTempDir]
                                  stringByAppendingPathComponent:filename ];
     } else {
         self.selectedFilename = filename;
@@ -75,8 +75,8 @@ static DatabaseManager *sharedInstance;
         // Load the database
         @try {
             DatabaseDocument *dd;
-            if( isDropbox ) {
-                dd = [[DropboxDocument alloc] initWithFilename:path password:password keyFile:keyFilePath ];
+            if( isCloudBased ) {
+                dd = [[CloudDocument alloc] initWithFilename:path password:password keyFile:keyFilePath ];
             } else {
                 dd = [[DatabaseDocument alloc] initWithFilename:path password:password keyFile:keyFilePath];
             }
@@ -94,7 +94,7 @@ static DatabaseManager *sharedInstance;
         // Prompt the user for a password
         PasswordViewController *passwordViewController = [[PasswordViewController alloc] initWithFilename:filename];
         passwordViewController.donePressed = ^(FormViewController *formViewController) {
-            [self openDatabaseWithPasswordViewController:(PasswordViewController *)formViewController dropbox:isDropbox];
+            [self openDatabaseWithPasswordViewController:(PasswordViewController *)formViewController isCloudBased:isCloudBased];
         };
         passwordViewController.cancelPressed = ^(FormViewController *formViewController) {
             [formViewController dismissViewControllerAnimated:YES completion:nil];
@@ -117,7 +117,7 @@ static DatabaseManager *sharedInstance;
     }
 }
 
-- (void)openDatabaseWithPasswordViewController:(PasswordViewController *)passwordViewController dropbox:(BOOL)isDropbox {
+- (void)openDatabaseWithPasswordViewController:(PasswordViewController *)passwordViewController isCloudBased:(BOOL)isCloudBased {
     NSString *documentsDirectory = [MiniKeePassAppDelegate documentsDirectory];
     NSString *path = [documentsDirectory stringByAppendingPathComponent:self.selectedFilename];
 
@@ -144,8 +144,8 @@ static DatabaseManager *sharedInstance;
     @try {
         // Open the database
         DatabaseDocument *dd;
-        if( isDropbox ) {
-            dd = [[DropboxDocument alloc] initWithFilename:path password:password keyFile:keyFilePath ];
+        if( isCloudBased ) {
+            dd = [[CloudDocument alloc] initWithFilename:path password:password keyFile:keyFilePath ];
         } else {
             dd = [[DatabaseDocument alloc] initWithFilename:path password:password keyFile:keyFilePath];
         }

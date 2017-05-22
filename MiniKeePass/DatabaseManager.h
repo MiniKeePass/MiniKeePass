@@ -29,6 +29,7 @@
 /// Open the specified KeePass DatabaseDocument
 /// @param path Path to the chosen KeePass DatabaseDocument
 /// @param animated Animate the ViewController transition
-- (void)openDatabaseDocument:(NSString*)path animated:(BOOL)newAnimated dropbox:(BOOL)isDropbox;
+/// @param isCloudBased Is this file from cloud storage?
+- (void)openDatabaseDocument:(NSString*)path animated:(BOOL)newAnimated isCloudBased:(BOOL)isCloudBased;
 
 @end

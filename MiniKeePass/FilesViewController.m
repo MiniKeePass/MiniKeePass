@@ -140,12 +140,12 @@ enum {
 - (void)loadDropboxFiles {
 
     self.dropbox_status = @"Loading ...";
-    [[DropboxManager sharedInstance] loadDropboxFileList:^(NSError *error) {
+    [[DropboxManager sharedInstance] loadFileList:^(NSError *error) {
         if( error != nil ) {
             NSLog(@"%@\n", error);
             self.dropbox_status = [error localizedDescription];
         } else {
-            self.dropboxFiles = [NSMutableArray arrayWithArray:[[DropboxManager sharedInstance] getDropboxFileList]];
+            self.dropboxFiles = [NSMutableArray arrayWithArray:[[DropboxManager sharedInstance] getFileList]];
             if( self.dropboxFiles == nil || [self.dropboxFiles count] == 0 ) {
                 self.dropbox_status = @"No Files Found";
             } else {
@@ -159,7 +159,7 @@ enum {
 
 - (void)downloadDropboxFile:(NSString *)path {
 
-    [[DropboxManager sharedInstance] downloadDropboxFile:path requestCallback:^(NSError *error) {
+    [[DropboxManager sharedInstance] downloadFile:path requestCallback:^(NSError *error) {
         if( error != nil ) {
             NSLog(@"%@\n", error);
             self.dropbox_status = [error localizedDescription];
@@ -167,7 +167,7 @@ enum {
         } else {
             // Load the database
             self.dropbox_status = nil;
-            [[DatabaseManager sharedInstance] openDatabaseDocument:path animated:YES dropbox:YES];
+            [[DatabaseManager sharedInstance] openDatabaseDocument:path animated:YES isCloudBased:YES];
         }
     }];
 }
@@ -336,7 +336,7 @@ enum {
         NSFileManager *fileManager = [NSFileManager defaultManager];
         modificationDate = [[fileManager attributesOfItemAtPath:path error:nil] fileModificationDate];
     } else {
-        modificationDate = [[DropboxManager sharedInstance] getDropboxFileModifiedDate:filename];
+        modificationDate = [[DropboxManager sharedInstance] getFileModifiedDate:filename];
     }
 
     // Format the last modified time as the subtitle of the cell
@@ -402,7 +402,9 @@ enum {
         case SECTION_DATABASE:
             if (self.editing == NO) {
                 // Load the database
-                [[DatabaseManager sharedInstance] openDatabaseDocument:[self.databaseFiles objectAtIndex:indexPath.row] animated:YES dropbox:NO ];
+                [[DatabaseManager sharedInstance] openDatabaseDocument:[self.databaseFiles objectAtIndex:indexPath.row]
+                                                              animated:YES
+                                                          isCloudBased:NO ];
             } else {
                 TextEntryController *textEntryController = [[TextEntryController alloc] init];
                 textEntryController.title = NSLocalizedString(@"Rename", nil);
