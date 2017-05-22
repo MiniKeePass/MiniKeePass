@@ -133,6 +133,11 @@
 		782C93DE1E8E35BF00B6AC82 /* Salsa20Cipher.m in Sources */ = {isa = PBXBuildFile; fileRef = 782C93DB1E8E35BF00B6AC82 /* Salsa20Cipher.m */; };
 		782C93E11E8E35EA00B6AC82 /* HmacInputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 782C93E01E8E35EA00B6AC82 /* HmacInputStream.m */; };
 		782C93E41E8E361200B6AC82 /* ChaCha20InputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 782C93E31E8E361200B6AC82 /* ChaCha20InputStream.m */; };
+		784779FE1ED29812001F6438 /* DropboxDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 784779FB1ED29812001F6438 /* DropboxDocument.m */; };
+		784779FF1ED29812001F6438 /* DropboxManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 784779FD1ED29812001F6438 /* DropboxManager.m */; };
+		78477A061ED298BE001F6438 /* CloudDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 78477A011ED298BE001F6438 /* CloudDocument.m */; };
+		78477A071ED298BE001F6438 /* CloudFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 78477A031ED298BE001F6438 /* CloudFactory.m */; };
+		78477A081ED298BE001F6438 /* CloudManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 78477A051ED298BE001F6438 /* CloudManager.m */; };
 		7872317E1E955D2D006BA0DD /* CipherStreamFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 7872317D1E955D2D006BA0DD /* CipherStreamFactory.m */; };
 		787231831E955D4A006BA0DD /* HmacOutputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 787231821E955D4A006BA0DD /* HmacOutputStream.m */; };
 		787231861E955D7B006BA0DD /* ChaCha20OutputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 787231851E955D7B006BA0DD /* ChaCha20OutputStream.m */; };
@@ -140,12 +145,10 @@
 		7872319E1E95ED59006BA0DD /* argon2iOS.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 7872319A1E95ED47006BA0DD /* argon2iOS.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		78AF0CE91E834E45007467BB /* ObjectiveDropboxOfficial.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 78AF0CE61E834B8B007467BB /* ObjectiveDropboxOfficial.framework */; };
 		78AF0CEA1E834E45007467BB /* ObjectiveDropboxOfficial.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 78AF0CE61E834B8B007467BB /* ObjectiveDropboxOfficial.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		78AF0CF01E841AFB007467BB /* DropboxDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 78AF0CEF1E841AFB007467BB /* DropboxDocument.m */; };
 		78BC6DAD1EC93291008D87A7 /* TwoFishInputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 78BC6DAA1EC93291008D87A7 /* TwoFishInputStream.m */; };
 		78BC6DAE1EC93291008D87A7 /* TwoFishOutputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 78BC6DAC1EC93291008D87A7 /* TwoFishOutputStream.m */; };
 		78BC6DB11EC93322008D87A7 /* TwoFishCipher.m in Sources */ = {isa = PBXBuildFile; fileRef = 78BC6DB01EC93322008D87A7 /* TwoFishCipher.m */; };
 		78BC6DB41EC9334A008D87A7 /* DBOptionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78BC6DB31EC9334A008D87A7 /* DBOptionsViewController.m */; };
-		78BC6DB71EC93364008D87A7 /* DropboxManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 78BC6DB61EC93364008D87A7 /* DropboxManager.m */; };
 		78F802101E8EBFE70039625E /* ChaCha20RandomStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 78F8020F1E8EBFE70039625E /* ChaCha20RandomStream.m */; };
 /* End PBXBuildFile section */
 
@@ -471,6 +474,16 @@
 		782C93E01E8E35EA00B6AC82 /* HmacInputStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HmacInputStream.m; sourceTree = "<group>"; };
 		782C93E21E8E361200B6AC82 /* ChaCha20InputStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChaCha20InputStream.h; sourceTree = "<group>"; };
 		782C93E31E8E361200B6AC82 /* ChaCha20InputStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChaCha20InputStream.m; sourceTree = "<group>"; };
+		784779FA1ED29812001F6438 /* DropboxDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DropboxDocument.h; path = Cloud/DropboxDocument.h; sourceTree = "<group>"; };
+		784779FB1ED29812001F6438 /* DropboxDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DropboxDocument.m; path = Cloud/DropboxDocument.m; sourceTree = "<group>"; };
+		784779FC1ED29812001F6438 /* DropboxManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DropboxManager.h; path = Cloud/DropboxManager.h; sourceTree = "<group>"; };
+		784779FD1ED29812001F6438 /* DropboxManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DropboxManager.m; path = Cloud/DropboxManager.m; sourceTree = "<group>"; };
+		78477A001ED298BE001F6438 /* CloudDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CloudDocument.h; path = Cloud/CloudDocument.h; sourceTree = "<group>"; };
+		78477A011ED298BE001F6438 /* CloudDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CloudDocument.m; path = Cloud/CloudDocument.m; sourceTree = "<group>"; };
+		78477A021ED298BE001F6438 /* CloudFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CloudFactory.h; path = Cloud/CloudFactory.h; sourceTree = "<group>"; };
+		78477A031ED298BE001F6438 /* CloudFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CloudFactory.m; path = Cloud/CloudFactory.m; sourceTree = "<group>"; };
+		78477A041ED298BE001F6438 /* CloudManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CloudManager.h; path = Cloud/CloudManager.h; sourceTree = "<group>"; };
+		78477A051ED298BE001F6438 /* CloudManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CloudManager.m; path = Cloud/CloudManager.m; sourceTree = "<group>"; };
 		7872317C1E955D2D006BA0DD /* CipherStreamFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CipherStreamFactory.h; sourceTree = "<group>"; };
 		7872317D1E955D2D006BA0DD /* CipherStreamFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CipherStreamFactory.m; sourceTree = "<group>"; };
 		787231811E955D4A006BA0DD /* HmacOutputStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HmacOutputStream.h; sourceTree = "<group>"; };
@@ -479,8 +492,6 @@
 		787231851E955D7B006BA0DD /* ChaCha20OutputStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChaCha20OutputStream.m; sourceTree = "<group>"; };
 		787231941E95ED47006BA0DD /* argon2iOS.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = argon2iOS.xcodeproj; path = ../argon2/xcode/argon2iOS/argon2iOS.xcodeproj; sourceTree = "<group>"; };
 		78AF0CE01E834B8A007467BB /* ObjectiveDropboxOfficial.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ObjectiveDropboxOfficial.xcodeproj; path = "../ObjectiveDropbox/Carthage/Checkouts/dropbox-sdk-obj-c/Source/ObjectiveDropboxOfficial/ObjectiveDropboxOfficial.xcodeproj"; sourceTree = "<group>"; };
-		78AF0CEE1E841AE7007467BB /* DropboxDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DropboxDocument.h; sourceTree = "<group>"; };
-		78AF0CEF1E841AFB007467BB /* DropboxDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DropboxDocument.m; sourceTree = "<group>"; };
 		78BC6DA91EC93291008D87A7 /* TwoFishInputStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwoFishInputStream.h; sourceTree = "<group>"; };
 		78BC6DAA1EC93291008D87A7 /* TwoFishInputStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwoFishInputStream.m; sourceTree = "<group>"; };
 		78BC6DAB1EC93291008D87A7 /* TwoFishOutputStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwoFishOutputStream.h; sourceTree = "<group>"; };
@@ -489,8 +500,6 @@
 		78BC6DB01EC93322008D87A7 /* TwoFishCipher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TwoFishCipher.m; path = Crypto/TwoFishCipher.m; sourceTree = "<group>"; };
 		78BC6DB21EC9334A008D87A7 /* DBOptionsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBOptionsViewController.h; sourceTree = "<group>"; };
 		78BC6DB31EC9334A008D87A7 /* DBOptionsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBOptionsViewController.m; sourceTree = "<group>"; };
-		78BC6DB51EC93364008D87A7 /* DropboxManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DropboxManager.h; sourceTree = "<group>"; };
-		78BC6DB61EC93364008D87A7 /* DropboxManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DropboxManager.m; sourceTree = "<group>"; };
 		78F8020E1E8EBFE70039625E /* ChaCha20RandomStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ChaCha20RandomStream.h; path = KeePassLib/ChaCha20RandomStream.h; sourceTree = SOURCE_ROOT; };
 		78F8020F1E8EBFE70039625E /* ChaCha20RandomStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ChaCha20RandomStream.m; path = KeePassLib/ChaCha20RandomStream.m; sourceTree = SOURCE_ROOT; };
 		BDB0FF5D194C7C6F00C44DEF /* nl */ = {isa = PBXFileReference; lastKnownFileType = text; name = nl; path = nl.lproj/AppStore.txt; sourceTree = "<group>"; };
@@ -801,10 +810,6 @@
 				689D042713A42C81005EBD36 /* DatabaseDocument.m */,
 				689D042813A42C81005EBD36 /* DatabaseManager.h */,
 				689D042913A42C81005EBD36 /* DatabaseManager.m */,
-				78AF0CEE1E841AE7007467BB /* DropboxDocument.h */,
-				78AF0CEF1E841AFB007467BB /* DropboxDocument.m */,
-				78BC6DB51EC93364008D87A7 /* DropboxManager.h */,
-				78BC6DB61EC93364008D87A7 /* DropboxManager.m */,
 				52E7AF5A162523F800DCB00A /* EditItemViewController.h */,
 				52E7AF5B162523F800DCB00A /* EditItemViewController.m */,
 				689D042A13A42C81005EBD36 /* EntryViewController.h */,
@@ -848,6 +853,7 @@
 				68D7564B186E4D8A001AFB82 /* WebViewController.h */,
 				68D7564C186E4D8A001AFB82 /* WebViewController.m */,
 				689FBE7B1AB27283005CB6BD /* Cells */,
+				784779F91ED297F2001F6438 /* Cloud */,
 				689FBE591AB271C6005CB6BD /* Lock Screen */,
 				689FBE691AB2720D005CB6BD /* Password Generator */,
 				689FBE731AB27228005CB6BD /* Utils */,
@@ -953,6 +959,23 @@
 				78BC6DB01EC93322008D87A7 /* TwoFishCipher.m */,
 			);
 			name = Crypto;
+			sourceTree = "<group>";
+		};
+		784779F91ED297F2001F6438 /* Cloud */ = {
+			isa = PBXGroup;
+			children = (
+				78477A001ED298BE001F6438 /* CloudDocument.h */,
+				78477A011ED298BE001F6438 /* CloudDocument.m */,
+				78477A021ED298BE001F6438 /* CloudFactory.h */,
+				78477A031ED298BE001F6438 /* CloudFactory.m */,
+				78477A041ED298BE001F6438 /* CloudManager.h */,
+				78477A051ED298BE001F6438 /* CloudManager.m */,
+				784779FA1ED29812001F6438 /* DropboxDocument.h */,
+				784779FB1ED29812001F6438 /* DropboxDocument.m */,
+				784779FC1ED29812001F6438 /* DropboxManager.h */,
+				784779FD1ED29812001F6438 /* DropboxManager.m */,
+			);
+			name = Cloud;
 			sourceTree = "<group>";
 		};
 		787231951E95ED47006BA0DD /* Products */ = {
@@ -1165,7 +1188,8 @@
 				689DFFE713A4273F005EBD36 /* main.m in Sources */,
 				689D03CD13A42B63005EBD36 /* Base64.m in Sources */,
 				689FBE781AB27228005CB6BD /* KeychainUtils.m in Sources */,
-				78BC6DB71EC93364008D87A7 /* DropboxManager.m in Sources */,
+				78477A081ED298BE001F6438 /* CloudManager.m in Sources */,
+				784779FF1ED29812001F6438 /* DropboxManager.m in Sources */,
 				689FBE681AB271C6005CB6BD /* PinViewController.m in Sources */,
 				52C7FD7D18693D9900D498A2 /* GroupSearchController.m in Sources */,
 				689FBE911AB27283005CB6BD /* PasswordFieldCell.m in Sources */,
@@ -1189,6 +1213,7 @@
 				689FBE991AB272BD005CB6BD /* ImageFactory.m in Sources */,
 				6837C360188C9ED30018D588 /* SelectGroupViewController.m in Sources */,
 				689FBE671AB271C6005CB6BD /* LockViewController.m in Sources */,
+				784779FE1ED29812001F6438 /* DropboxDocument.m in Sources */,
 				68496E751AB34F8800370876 /* AppSettings.m in Sources */,
 				689D03E313A42B63005EBD36 /* KdbWriterFactory.m in Sources */,
 				689D03E513A42B63005EBD36 /* Salsa20RandomStream.m in Sources */,
@@ -1206,6 +1231,7 @@
 				689D044F13A42C82005EBD36 /* DatabaseDocument.m in Sources */,
 				689D045013A42C82005EBD36 /* DatabaseManager.m in Sources */,
 				782C93E41E8E361200B6AC82 /* ChaCha20InputStream.m in Sources */,
+				78477A061ED298BE001F6438 /* CloudDocument.m in Sources */,
 				689D045113A42C82005EBD36 /* EntryViewController.m in Sources */,
 				689D045213A42C82005EBD36 /* FilesInfoView.m in Sources */,
 				689D045313A42C82005EBD36 /* FilesViewController.m in Sources */,
@@ -1235,12 +1261,12 @@
 				682D45141603883900156830 /* GZipInputStream.m in Sources */,
 				682D45151603883900156830 /* GZipOutputStream.m in Sources */,
 				682D45161603883900156830 /* HashedInputStream.m in Sources */,
+				78477A071ED298BE001F6438 /* CloudFactory.m in Sources */,
 				682D45171603883900156830 /* HashedOutputStream.m in Sources */,
 				682D45181603883900156830 /* InputStream.m in Sources */,
 				689FBE711AB2720D005CB6BD /* LengthCell.m in Sources */,
 				782C93DE1E8E35BF00B6AC82 /* Salsa20Cipher.m in Sources */,
 				682D45191603883900156830 /* OutputStream.m in Sources */,
-				78AF0CF01E841AFB007467BB /* DropboxDocument.m in Sources */,
 				689FBE901AB27283005CB6BD /* MasterPasswordFieldCell.m in Sources */,
 				682D451A1603883900156830 /* Sha256OutputStream.m in Sources */,
 				78BC6DAD1EC93291008D87A7 /* TwoFishInputStream.m in Sources */,

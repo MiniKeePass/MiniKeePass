@@ -19,40 +19,14 @@
 #import "DropboxDocument.h"
 #import "AppSettings.h"
 
-@interface DropboxDocument ()
-@property (nonatomic, strong) KdbPassword *kdbPassword;
-@end
-
 @implementation DropboxDocument
 
-/*
-- (id)initWithFilename:(NSString *)filename password:(NSString *)password keyFile:(NSString *)keyFile {
-    self = [super init];
-    if (self) {
-        if (password == nil && keyFile == nil) {
-            @throw [NSException exceptionWithName:@"IllegalArgument"
-                                           reason:NSLocalizedString(@"No password or keyfile specified", nil)
-                                         userInfo:nil];
-        }
-
-        self.filename = filename;
-
-        NSStringEncoding passwordEncoding = [[AppSettings sharedInstance] passwordEncoding];
-        self.kdbPassword = [[KdbPassword alloc] initWithPassword:password
-                                                passwordEncoding:passwordEncoding
-                                                         keyFile:keyFile];
-        
-        self.kdbTree = [KdbReaderFactory load:self.filename withPassword:self.kdbPassword];
-    }
-    return self;
-}
-
-*/
-
 - (void)save {
-    printf("Saving dropbox temp file..\n");
-    [KdbWriterFactory persist:self.kdbTree file:self.filename withPassword:self.kdbPassword];
+    // Call super's save function to save to local disk.
+    [super save];
     
+    printf("Saving dropbox file to cloud...\n");
+
     // Update the file on dropbox.
     NSString *fileOnly = [self.filename lastPathComponent];
     [[DropboxManager sharedInstance] uploadFile:fileOnly requestCallback:^(NSError *error) {

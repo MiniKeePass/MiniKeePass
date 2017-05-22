@@ -21,7 +21,7 @@
 #import "PasswordViewController.h"
 #import "AppSettings.h"
 #import "CloudManager.h"
-#import "CloudDocument.h"
+#import "CloudFactory.h"
 
 @implementation DatabaseManager
 
@@ -76,7 +76,7 @@ static DatabaseManager *sharedInstance;
         @try {
             DatabaseDocument *dd;
             if( isCloudBased ) {
-                dd = [[CloudDocument alloc] initWithFilename:path password:password keyFile:keyFilePath ];
+                dd = [CloudFactory openCloudFile:path password:password keyFile:keyFilePath ];
             } else {
                 dd = [[DatabaseDocument alloc] initWithFilename:path password:password keyFile:keyFilePath];
             }
@@ -145,7 +145,7 @@ static DatabaseManager *sharedInstance;
         // Open the database
         DatabaseDocument *dd;
         if( isCloudBased ) {
-            dd = [[CloudDocument alloc] initWithFilename:path password:password keyFile:keyFilePath ];
+            dd = [CloudFactory openCloudFile:path password:password keyFile:keyFilePath ];
         } else {
             dd = [[DatabaseDocument alloc] initWithFilename:path password:password keyFile:keyFilePath];
         }

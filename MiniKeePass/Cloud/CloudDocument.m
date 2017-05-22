@@ -19,15 +19,11 @@
 #import "CloudDocument.h"
 #import "AppSettings.h"
 
-@interface CloudDocument ()
-@property (nonatomic, strong) KdbPassword *kdbPassword;
-@end
-
 @implementation CloudDocument
 
 - (void)save {
-    printf("You must override the save function!\n");
-    [self doesNotRecognizeSelector:_cmd];
+    // Call DatabaseDocument:save to actually write the file locally.
+    [super save];
 }
 
 @end

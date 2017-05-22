@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2012 Jason Rush and John Flanagan. All rights reserved.
+ * Copyright 2017 Tait Smith. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,14 +20,7 @@
 
 @interface DropboxDocument : CloudDocument
 
-/// Create a KeePass Dropbox Document
-/// @param filename Database filename
-/// @param password Database password
-/// @param keyFile Path to KeyFile
-/// @return A KeePass DropboxDocument
-//- (id)initWithFilename:(NSString *)filename password:(NSString *)password keyFile:(NSString *)keyFile;
-
-/// Save the current KeePass DropboxDocument
+/// Save the current KeePass DropboxDocument to the cloud
 - (void)save;
 
 @end

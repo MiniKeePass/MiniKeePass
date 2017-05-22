@@ -16,10 +16,13 @@
  */
 
 #import <Foundation/Foundation.h>
-
-@class CloudManager;
+#import "CloudManager.h"
+#import "CloudDocument.h"
 
 @interface CloudFactory : NSObject
+
 +(CloudManager*) getCloudManager;
++(CloudDocument*) openCloudFile:(NSString *)filename password:(NSString *)password keyFile:(NSString *)keyFile;
+
 @end
 

@@ -17,6 +17,7 @@
 
 #import "CloudFactory.h"
 #import "DropboxManager.h"
+#import "DropboxDocument.h"
 #import "AppSettings.h"
 
 @interface CloudFactory () {
@@ -43,6 +44,21 @@ static CloudManager *sharedInstance;
 
 +(void) resetCloudManager {
     sharedInstance = nil;
+}
+
++(CloudDocument*) openCloudFile:(NSString *)filename password:(NSString *)password keyFile:(NSString *)keyFile {
+    CloudManager *cloudMgr = [self getCloudManager];
+    
+    if( cloudMgr == nil ) return nil;
+    
+    CloudDocument *doc;
+    if( [cloudMgr isKindOfClass:[DropboxManager class]] ) {
+        doc = [[DropboxDocument alloc] initWithFilename:filename password:password keyFile:keyFile ];
+    } else {
+        doc = nil;
+    }
+    
+    return doc;
 }
 
 @end
