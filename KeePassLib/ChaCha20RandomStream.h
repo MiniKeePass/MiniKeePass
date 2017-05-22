@@ -1,5 +1,5 @@
 //
-//  Salsa20RandomStream.h
+//  ChaCha20RandomStream.h
 //  KeePass2
 //
 //  Created by Qiang Yu on 2/28/10.

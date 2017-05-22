@@ -432,7 +432,7 @@
         NSString *str = [root stringValue];
         NSMutableData *mutableData = [[str dataUsingEncoding:NSUTF8StringEncoding] mutableCopy];
 
-        // Unprotect the password
+        // Protect the password
         [randomStream xor:mutableData];
 
         // Base64 encode the string
