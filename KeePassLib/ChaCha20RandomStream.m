@@ -1,5 +1,5 @@
 //
-//  Salsa20RandomStream.m
+//  ChaCha20RandomStream.m
 //  KeePass2
 //
 //  Created by Qiang Yu on 2/28/10.
@@ -28,12 +28,14 @@
         uint8_t key64[64];
         uint8_t key32[32];
         uint8_t iv12[12];
+
         CC_SHA512(key.bytes, (CC_LONG)key.length, key64);
         memcpy( key32, key64, 32);
         memcpy( iv12, &key64[32], 12);
         
-        NSData *hkey = [[NSData alloc] initWithBytes:key32 length:sizeof(key32)];
-        NSData *iv = [[NSData alloc] initWithBytes:iv12 length:sizeof(iv12)];
+        NSData *hkey = [[NSData alloc] initWithBytes:key32 length:32];
+        NSData *iv = [[NSData alloc] initWithBytes:iv12 length:12];
+        
         cipher = [[ChaCha20Cipher alloc] init:hkey iv:iv];
     }
     return self;

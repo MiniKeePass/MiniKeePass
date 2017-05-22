@@ -125,7 +125,8 @@
         // Create the encrypted input stream
         stream = [CipherStreamFactory getOutputStream:tree.encryptionAlgorithm stream:hmacStream key:key iv:encryptionIv];
         
-        // Create the random stream
+        // Create the random stream, need a longer seed.
+        protectedStreamKey = [Utils randomBytes:64];
         randomStream = [[ChaCha20RandomStream alloc] init:protectedStreamKey];
     }
     
@@ -240,7 +241,6 @@
     i32 = CFSwapInt32HostToLittle(CSR_CHACHA20);
     [self writeHeaderField:outputStream headerId:INNER_HEADER_RANDOMSTREAMID data:&i32 length:4];
 
-    protectedStreamKey = [Utils randomBytes:64];
     [self writeHeaderField:outputStream headerId:INNER_HEADER_RANDOMSTREAMKEY data:protectedStreamKey.bytes length:protectedStreamKey.length];
 
     for( NSData *bdata in tree.headerBinaries ) {

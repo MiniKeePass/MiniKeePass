@@ -54,7 +54,6 @@
 
     InputStream *stream;
     InputStream *xmlStream;
-    RandomStream *randomStream = nil;
     if( dbVersion < VERSION_CRITICAL_MAX_32_4 ) {  // KDBX 3.1
         
         // Create the encrypted input stream (ALWAYS AES for 3.1 files)
@@ -114,6 +113,7 @@
     }
     
     // Create the CRS Algorithm
+    RandomStream *randomStream = nil;
     if (randomStreamID == CSR_SALSA20) {
         randomStream = [[Salsa20RandomStream alloc] init:protectedStreamKey];
     } else if (randomStreamID == CSR_ARC4VARIANT) {
