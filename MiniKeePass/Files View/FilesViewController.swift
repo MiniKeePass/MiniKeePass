@@ -22,21 +22,22 @@ class FilesViewController: UITableViewController {
     private let keyFileReuseIdentifier = "KeyFileCell"
 
     private enum Section : Int {
-        case Databases = 0
-        case KeyFiles = 1
+        case databases = 0
+        case keyFiles = 1
 
-        static let AllValues = [Section.Databases, Section.KeyFiles]
+        static let AllValues = [Section.databases, Section.keyFiles]
     }
 
     var databaseFiles: [String] = []
     var keyFiles: [String] = []
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        let databaseManager = DatabaseManager.sharedInstance()
-        databaseFiles = databaseManager.getDatabases() as! [String]
-        keyFiles = databaseManager.getKeyFiles() as! [String]
+        if let databaseManager = DatabaseManager.sharedInstance() {
+            databaseFiles = databaseManager.getDatabases() as! [String]
+            keyFiles = databaseManager.getKeyFiles() as! [String]
+        }
         
         tableView.reloadData()
     }
@@ -47,42 +48,42 @@ class FilesViewController: UITableViewController {
         if (databaseFiles.count == 0 && keyFiles.count == 0) {
             let emptyStateLabel = UILabel()
             emptyStateLabel.text = NSLocalizedString("Tap the + button to add a new KeePass file.", comment: "")
-            emptyStateLabel.textAlignment = .Center
-            emptyStateLabel.textColor = UIColor.grayColor()
+            emptyStateLabel.textAlignment = .center
+            emptyStateLabel.textColor = UIColor.gray
             emptyStateLabel.numberOfLines = 0
-            emptyStateLabel.lineBreakMode = .ByWordWrapping
+            emptyStateLabel.lineBreakMode = .byWordWrapping
 
             tableView.backgroundView = emptyStateLabel
-            tableView.separatorStyle = .None
+            tableView.separatorStyle = .none
         } else {
             tableView.backgroundView = nil
-            tableView.separatorStyle = .SingleLine
+            tableView.separatorStyle = .singleLine
         }
     }
 
     // MARK: - UITableView data source
 
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return Section.AllValues.count
     }
 
-    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         switch Section.AllValues[section] {
-        case .Databases:
+        case .databases:
             return NSLocalizedString("Databases", comment: "")
-        case .KeyFiles:
+        case .keyFiles:
             return NSLocalizedString("Key Files", comment: "")
         }
     }
 
-    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         // Hide the section titles if there are no files in a section
         switch Section.AllValues[section] {
-        case .Databases:
+        case .databases:
             if (databaseFiles.count == 0) {
                 return 0
             }
-        case .KeyFiles:
+        case .keyFiles:
             if (keyFiles.count == 0) {
                 return 0
             }
@@ -91,28 +92,28 @@ class FilesViewController: UITableViewController {
         return UITableViewAutomaticDimension
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         toggleEmptyState()
 
         switch Section.AllValues[section] {
-        case .Databases:
+        case .databases:
             return databaseFiles.count
-        case .KeyFiles:
+        case .keyFiles:
             return keyFiles.count
         }
     }
 
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: UITableViewCell
         let filename: String
 
         // Get the cell and filename
         switch Section.AllValues[indexPath.section] {
-        case .Databases:
-            cell = tableView.dequeueReusableCellWithIdentifier(databaseReuseIdentifier, forIndexPath: indexPath)
+        case .databases:
+            cell = tableView.dequeueReusableCell(withIdentifier: databaseReuseIdentifier, for: indexPath)
             filename = databaseFiles[indexPath.row]
-        case .KeyFiles:
-            cell = tableView.dequeueReusableCellWithIdentifier(keyFileReuseIdentifier, forIndexPath: indexPath)
+        case .keyFiles:
+            cell = tableView.dequeueReusableCell(withIdentifier: keyFileReuseIdentifier, for: indexPath)
             filename = keyFiles[indexPath.row]
         }
 
@@ -120,129 +121,129 @@ class FilesViewController: UITableViewController {
 
         // Get the file's last modification time
         let databaseManager = DatabaseManager.sharedInstance()
-        let url = databaseManager.getFileUrl(filename)
-        let date = databaseManager.getFileLastModificationDate(url)
+        let url = databaseManager?.getFileUrl(filename)
+        let date = databaseManager?.getFileLastModificationDate(url)
 
         // Format the last modified time as the subtitle of the cell
-        let dateFormatter = NSDateFormatter()
-        dateFormatter.dateStyle = .ShortStyle
-        dateFormatter.timeStyle = .ShortStyle
-        cell.detailTextLabel!.text = NSLocalizedString("Last Modified", comment: "") + ": " + dateFormatter.stringFromDate(date)
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .short
+        dateFormatter.timeStyle = .short
+        cell.detailTextLabel!.text = NSLocalizedString("Last Modified", comment: "") + ": " + dateFormatter.string(from: date!)
 
         return cell
     }
 
     // MARK: - UITableView delegate
 
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // Load the database
         let databaseManager = DatabaseManager.sharedInstance()
-        databaseManager.openDatabaseDocument(databaseFiles[indexPath.row], animated: true)
+        databaseManager?.openDatabaseDocument(databaseFiles[indexPath.row], animated: true)
     }
     
-    override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
-        let deleteAction = UITableViewRowAction(style: .Destructive, title: NSLocalizedString("Delete", comment: "")) { (action: UITableViewRowAction, indexPath: NSIndexPath) -> Void in
+    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let deleteAction = UITableViewRowAction(style: .destructive, title: NSLocalizedString("Delete", comment: "")) { (action: UITableViewRowAction, indexPath: IndexPath) -> Void in
             self.deleteRowAtIndexPath(indexPath)
         }
         
-        let renameAction = UITableViewRowAction(style: .Normal, title: NSLocalizedString("Rename", comment: "")) { (action: UITableViewRowAction, indexPath: NSIndexPath) -> Void in
+        let renameAction = UITableViewRowAction(style: .normal, title: NSLocalizedString("Rename", comment: "")) { (action: UITableViewRowAction, indexPath: IndexPath) -> Void in
             self.renameRowAtIndexPath(indexPath)
         }
         
         switch Section.AllValues[indexPath.section] {
-        case .Databases:
+        case .databases:
             return [deleteAction, renameAction]
-        case .KeyFiles:
+        case .keyFiles:
             return [deleteAction]
         }
     }
     
-    func renameRowAtIndexPath(indexPath: NSIndexPath) {
+    func renameRowAtIndexPath(_ indexPath: IndexPath) {
         let storyboard = UIStoryboard(name: "RenameDatabase", bundle: nil)
         let navigationController = storyboard.instantiateInitialViewController() as! UINavigationController
         
         let viewController = navigationController.topViewController as! RenameDatabaseViewController
-        viewController.donePressed = { (renameDatabaseViewController: RenameDatabaseViewController, originalUrl: NSURL, newUrl: NSURL) in
+        viewController.donePressed = { (renameDatabaseViewController: RenameDatabaseViewController, originalUrl: URL, newUrl: URL) in
             let databaseManager = DatabaseManager.sharedInstance()
-            databaseManager.renameDatabase(originalUrl, newUrl: newUrl)
+            databaseManager?.renameDatabase(originalUrl, newUrl: newUrl)
             
             // Update the filename in the files list
-            self.databaseFiles[indexPath.row] = newUrl.lastPathComponent!
-            self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+            self.databaseFiles[indexPath.row] = newUrl.lastPathComponent
+            self.tableView.reloadRows(at: [indexPath], with: .fade)
             
-            self.dismissViewControllerAnimated(true, completion: nil)
+            self.dismiss(animated: true, completion: nil)
         }
         
         let databaseManager = DatabaseManager.sharedInstance()
-        viewController.originalUrl = databaseManager.getFileUrl(databaseFiles[indexPath.row])
+        viewController.originalUrl = databaseManager?.getFileUrl(databaseFiles[indexPath.row])
         
-        presentViewController(navigationController, animated: true, completion: nil)
+        present(navigationController, animated: true, completion: nil)
     }
     
-    func deleteRowAtIndexPath(indexPath: NSIndexPath) {
+    func deleteRowAtIndexPath(_ indexPath: IndexPath) {
         // Get the filename to delete
         let filename: String
         switch Section.AllValues[indexPath.section] {
-        case .Databases:
-            filename = databaseFiles.removeAtIndex(indexPath.row)
-        case .KeyFiles:
-            filename = keyFiles.removeAtIndex(indexPath.row)
+        case .databases:
+            filename = databaseFiles.remove(at: indexPath.row)
+        case .keyFiles:
+            filename = keyFiles.remove(at: indexPath.row)
         }
         
         // Delete the file
         let databaseManager = DatabaseManager.sharedInstance()
-        databaseManager.deleteFile(filename)
+        databaseManager?.deleteFile(filename)
         
         // Update the table
-        tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+        tableView.deleteRows(at: [indexPath], with: .fade)
     }
 
     // MARK: - Actions
 
-    @IBAction func settingsPressed(sender: UIBarButtonItem?) {
+    @IBAction func settingsPressed(_ sender: UIBarButtonItem?) {
         let storyboard = UIStoryboard(name: "Settings", bundle: nil)
         let viewController = storyboard.instantiateInitialViewController()!
 
-        presentViewController(viewController, animated: true, completion: nil)
+        present(viewController, animated: true, completion: nil)
     }
 
-    @IBAction func helpPressed(sender: UIBarButtonItem?) {
+    @IBAction func helpPressed(_ sender: UIBarButtonItem?) {
         let storyboard = UIStoryboard(name: "Help", bundle: nil)
         let viewController = storyboard.instantiateInitialViewController()!
 
-        presentViewController(viewController, animated: true, completion: nil)
+        present(viewController, animated: true, completion: nil)
     }
 
-    @IBAction func addPressed(sender: UIBarButtonItem?) {
+    @IBAction func addPressed(_ sender: UIBarButtonItem?) {
         let storyboard = UIStoryboard(name: "NewDatabase", bundle: nil)
         let navigationController = storyboard.instantiateInitialViewController() as! UINavigationController
 
         let viewController = navigationController.topViewController as! NewDatabaseViewController
-        viewController.donePressed = { (newDatabaseViewController: NewDatabaseViewController, url: NSURL, password: String, version: Int) -> Void in
+        viewController.donePressed = { (newDatabaseViewController: NewDatabaseViewController, url: URL, password: String, version: Int) -> Void in
             // Create the new database
             let databaseManager = DatabaseManager.sharedInstance()
-            databaseManager.newDatabase(url, password: password, version: version)
+            databaseManager?.newDatabase(url, password: password, version: version)
             
             // Add the file to the list of files
-            let filename = url.lastPathComponent!
+            let filename = url.lastPathComponent
             let index = self.databaseFiles.insertionIndexOf(filename) {
-                $0.localizedCaseInsensitiveCompare($1) == NSComparisonResult.OrderedAscending
+                $0.localizedCaseInsensitiveCompare($1) == ComparisonResult.orderedAscending
             }
-            self.databaseFiles.insert(filename, atIndex: index)
+            self.databaseFiles.insert(filename, at: index)
             
             // Notify the table of the new row
             if (self.databaseFiles.count == 1) {
                 // Reload the section if it was previously empty
-                let indexSet = NSIndexSet(index: Section.Databases.rawValue)
-                self.tableView.reloadSections(indexSet, withRowAnimation: .Right)
+                let indexSet = IndexSet(integer: Section.databases.rawValue)
+                self.tableView.reloadSections(indexSet, with: .right)
             } else {
-                let indexPath = NSIndexPath(forRow: index, inSection: Section.Databases.rawValue)
-                self.tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Right)
+                let indexPath = IndexPath(row: index, section: Section.databases.rawValue)
+                self.tableView.insertRows(at: [indexPath], with: .right)
             }
 
-            newDatabaseViewController.dismissViewControllerAnimated(true, completion: nil)
+            newDatabaseViewController.dismiss(animated: true, completion: nil)
         }
 
-        presentViewController(navigationController, animated: true, completion: nil)
+        present(navigationController, animated: true, completion: nil)
     }
 }

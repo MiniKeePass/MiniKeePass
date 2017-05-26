@@ -21,6 +21,7 @@
 
 @interface TextFieldCell()
 @property (nonatomic, strong) UIView *grayBar;
+@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @end
 
 @implementation TextFieldCell
@@ -28,31 +29,9 @@
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        int inset;
-        if (SYSTEM_VERSION_LESS_THAN(@"7.0")) {
-            inset = 83;
-        } else {
-            inset = 115;
-        }
-
-        CGRect frame = self.contentView.frame;
-        frame.origin.x = inset;
-        frame.size.width -= inset;
         
-        _textField = [[UITextField alloc] initWithFrame:frame];
-        _textField.delegate = self;
-        _textField.autocorrectionType = UITextAutocorrectionTypeNo;
-        _textField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-        _textField.textColor = [UIColor colorWithRed:.285 green:.376 blue:.541 alpha:1];
-        _textField.font = [UIFont systemFontOfSize:16];
-        _textField.returnKeyType = UIReturnKeyNext;
-        _textField.clearButtonMode = UITextFieldViewModeWhileEditing;
-        _textField.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-        _textField.font = [UIFont boldSystemFontOfSize:15];
-        _textField.textColor = [UIColor blackColor];
+        int inset = 110;
         
-        [self.contentView addSubview:self.textField];
-
         CGFloat grayIntensity = 202.0 / 255.0;
         UIColor *color = [UIColor colorWithRed:grayIntensity green:grayIntensity blue:grayIntensity alpha:1];
 
@@ -85,6 +64,11 @@
     }
 
     return hitView;
+}
+
+- (void)setTitle:(NSString *)title {
+    _title = title;
+    _titleLabel.text = title;
 }
 
 - (BOOL)showGrayBar {

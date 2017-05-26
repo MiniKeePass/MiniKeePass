@@ -24,9 +24,9 @@ class WebBrowserViewController: UIViewController, WKNavigationDelegate {
     @IBOutlet weak var forwardButton: UIBarButtonItem!
     // FIXME Add stop button too
 
-    private var webView: WKWebView!
+    fileprivate var webView: WKWebView!
     
-    var url: NSURL?
+    var url: URL?
     var entry: KdbEntry?
 
     override func loadView() {
@@ -44,23 +44,23 @@ class WebBrowserViewController: UIViewController, WKNavigationDelegate {
         navigationItem.title = url?.host
         
         // Set the buttons disabled by default
-        backButton.enabled = false
-        forwardButton.enabled = false
+        backButton.isEnabled = false
+        forwardButton.isEnabled = false
 
         // Add autolayout constraints for the web view
         webView.translatesAutoresizingMaskIntoConstraints = false
-        let widthConstraint = NSLayoutConstraint(item: webView, attribute: .Width, relatedBy: .Equal, toItem: view, attribute: .Width, multiplier: 1, constant: 0)
-        let heightConstraint = NSLayoutConstraint(item: webView, attribute: .Height, relatedBy: .Equal, toItem: view, attribute: .Height, multiplier: 1, constant: 0)
+        let widthConstraint = NSLayoutConstraint(item: webView, attribute: .width, relatedBy: .equal, toItem: view, attribute: .width, multiplier: 1, constant: 0)
+        let heightConstraint = NSLayoutConstraint(item: webView, attribute: .height, relatedBy: .equal, toItem: view, attribute: .height, multiplier: 1, constant: 0)
         view.addConstraints([widthConstraint, heightConstraint])
 
         // Configure the delegate and observers
         webView.navigationDelegate = self
-        webView.addObserver(self, forKeyPath: "loading", options: .New, context: nil)
-        webView.addObserver(self, forKeyPath: "estimatedProgress", options: .New, context: nil)
+        webView.addObserver(self, forKeyPath: "loading", options: .new, context: nil)
+        webView.addObserver(self, forKeyPath: "estimatedProgress", options: .new, context: nil)
 
         // Load the URL
-        let urlRequest = NSURLRequest(URL:url!)
-        webView!.loadRequest(urlRequest)
+        let urlRequest = URLRequest(url:url!)
+        webView!.load(urlRequest)
     }
     
     deinit {
@@ -68,11 +68,11 @@ class WebBrowserViewController: UIViewController, WKNavigationDelegate {
         webView.removeObserver(self, forKeyPath: "estimatedProgress")
     }
     
-    func autotypeString(string: String) {
+    func autotypeString(_ string: String) {
         // Escape backslashes & single quotes
         var escapedString = string
-        escapedString = escapedString.stringByReplacingOccurrencesOfString("\\", withString: "\\\\")
-        escapedString = escapedString.stringByReplacingOccurrencesOfString("\'", withString: "\\'")
+        escapedString = escapedString.replacingOccurrences(of: "\\", with: "\\\\")
+        escapedString = escapedString.replacingOccurrences(of: "\'", with: "\\'")
         
         // Execute a script to set the value of the selected element
         let script = String(format:"if (document.activeElement) { document.activeElement.value = '%@'; }", escapedString)
@@ -81,19 +81,19 @@ class WebBrowserViewController: UIViewController, WKNavigationDelegate {
     
     // MARK: - NSKeyValueObserving
     
-    override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         if (keyPath == "loading") {
-            backButton.enabled = webView.canGoBack
-            forwardButton.enabled = webView.canGoForward
+            backButton.isEnabled = webView.canGoBack
+            forwardButton.isEnabled = webView.canGoForward
         } else if (keyPath == "estimatedProgress") {
-            progressView.hidden = webView.estimatedProgress == 1
+            progressView.isHidden = webView.estimatedProgress == 1
             progressView.setProgress(Float(webView.estimatedProgress), animated: true)
         }
     }
 
     // MARK: - WKWebView delegate
 
-    func webView(webView: WKWebView, didFinishNavigation navigation:
+    func webView(_ webView: WKWebView, didFinish navigation:
         WKNavigation!) {
         progressView.setProgress(0.0, animated: false)
         
@@ -101,39 +101,39 @@ class WebBrowserViewController: UIViewController, WKNavigationDelegate {
         navigationItem.title = webView.title
     }
     
-    func webView(webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: NSError) {
+    func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
         presentAlertWithTitle(NSLocalizedString("Error", comment: ""), message: error.localizedDescription)
     }
     
     // MARK: - Actions
     
-    @IBAction func closePressed(sender: UIBarButtonItem) {
-        dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func closePressed(_ sender: UIBarButtonItem) {
+        dismiss(animated: true, completion: nil)
     }
     
-    @IBAction func pasteUsernamePressed(sender: UIBarButtonItem) {
+    @IBAction func pasteUsernamePressed(_ sender: UIBarButtonItem) {
         autotypeString(entry!.username())
     }
     
-    @IBAction func pastePasswordPressed(sender: UIBarButtonItem) {
+    @IBAction func pastePasswordPressed(_ sender: UIBarButtonItem) {
         autotypeString(entry!.password())
     }
     
-    @IBAction func backPressed(sender: UIBarButtonItem) {
+    @IBAction func backPressed(_ sender: UIBarButtonItem) {
         webView.goBack()
     }
     
-    @IBAction func forwardPressed(sender: UIBarButtonItem) {
+    @IBAction func forwardPressed(_ sender: UIBarButtonItem) {
         webView.goForward()
     }
     
-    @IBAction func reloadPressed(sender: UIBarButtonItem) {
-        let request = NSURLRequest(URL:webView.URL!)
-        webView.loadRequest(request)
+    @IBAction func reloadPressed(_ sender: UIBarButtonItem) {
+        let request = URLRequest(url:webView.url!)
+        webView.load(request)
     }
     
-    @IBAction func actionPressed(sender: UIBarButtonItem) {
-        let application = UIApplication.sharedApplication()
-        application.openURL(webView.URL!)
+    @IBAction func actionPressed(_ sender: UIBarButtonItem) {
+        let application = UIApplication.shared
+        application.openURL(webView.url!)
     }
 }

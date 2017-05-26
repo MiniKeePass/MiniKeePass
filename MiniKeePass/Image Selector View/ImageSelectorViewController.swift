@@ -25,45 +25,45 @@ class ImageSelectorViewController: UICollectionViewController {
 
     var selectedImage = -1
     
-    var imageSelected: ((imageSelectorViewController: ImageSelectorViewController, selectedImage: Int) -> Void)?
-
+    var imageSelected: ((_ imageSelectorViewController: ImageSelectorViewController, _ selectedImage: Int) -> Void)?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         let imageFactory = ImageFactory.sharedInstance()
-        images = imageFactory.images() as! [UIImage]
+        images = imageFactory?.images() as! [UIImage]
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         if (selectedImage != -1) {
-            collectionView?.selectItemAtIndexPath(NSIndexPath(forRow: selectedImage, inSection: 0), animated: animated, scrollPosition: UICollectionViewScrollPosition.None)
+            collectionView?.selectItem(at: IndexPath(row: selectedImage, section: 0), animated: animated, scrollPosition: UICollectionViewScrollPosition())
         }
     }
 
     // MARK: UICollectionView data source
 
-    override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return images.count
     }
 
-    override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! ImageCell
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! ImageCell
         cell.imageView.image = images[indexPath.row]
-        cell.selected = indexPath.row == selectedImage
+        cell.isSelected = indexPath.row == selectedImage
         return cell
     }
     
     // MARK: UICollectionView delegate
     
-    override func collectionView(collectionView: UICollectionView, didDeselectItemAtIndexPath indexPath: NSIndexPath) {
+    override func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         selectedImage = -1
     }
 
-    override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         selectedImage = indexPath.row
         
-        imageSelected?(imageSelectorViewController: self, selectedImage: selectedImage)
+        imageSelected?(self, selectedImage)
     }
 }

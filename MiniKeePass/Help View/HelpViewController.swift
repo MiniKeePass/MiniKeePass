@@ -23,9 +23,9 @@ struct HelpTopic {
 }
 
 class HelpViewController: UITableViewController {
-    private let reuseIdentifier = "HelpCell"
+    fileprivate let reuseIdentifier = "HelpCell"
 
-    private let helpTopics = [
+    fileprivate let helpTopics = [
         HelpTopic(title: "iTunes Import/Export", resource: "itunes"),
         HelpTopic(title: "Dropbox Import/Export", resource: "dropbox"),
         HelpTopic(title: "Safari/Email Import", resource: "safariemail"),
@@ -35,12 +35,12 @@ class HelpViewController: UITableViewController {
     
     // MARK: - UITableView data source
     
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return helpTopics.count
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier(reuseIdentifier, forIndexPath: indexPath)
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath)
         
         let helpTopic = helpTopics[indexPath.row]
         cell.textLabel!.text = NSLocalizedString(helpTopic.title, comment: "")
@@ -50,28 +50,28 @@ class HelpViewController: UITableViewController {
     
     // MARK: - Navigation
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let indexPath = tableView.indexPathForSelectedRow
         let helpTopic = helpTopics[indexPath!.row]
         
-        let language = NSLocale.preferredLanguages()[0]
+        let language = Locale.preferredLanguages[0]
         let localizedResource = String(format: "%@-%@", language, helpTopic.resource)
 
         // Get the URL of the respurce
-        let bundle = NSBundle.mainBundle()
-        var url = bundle.URLForResource(localizedResource, withExtension: "html")
+        let bundle = Bundle.main
+        var url = bundle.url(forResource: localizedResource, withExtension: "html")
         if (url == nil) {
-            url = bundle.URLForResource(helpTopic.resource, withExtension: "html")
+            url = bundle.url(forResource: helpTopic.resource, withExtension: "html")
         }
 
-        let helpWebViewController = segue.destinationViewController as! HelpWebViewController
+        let helpWebViewController = segue.destination as! HelpWebViewController
         helpWebViewController.title = NSLocalizedString(helpTopic.title, comment: "")
         helpWebViewController.url = url
     }
     
     // MARK: - Actions
 
-    @IBAction func donePressedAction(sender: UIBarButtonItem?) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func donePressedAction(_ sender: UIBarButtonItem?) {
+        self.dismiss(animated: true, completion: nil)
     }
 }

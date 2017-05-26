@@ -21,9 +21,9 @@ class NewDatabaseViewController: UITableViewController {
     @IBOutlet weak var confirmPasswordTextField: UITextField!
     @IBOutlet weak var versionSegmentedControl: UISegmentedControl!
 
-    var donePressed: ((newDatabaseViewController: NewDatabaseViewController, url: NSURL, password: String, version: Int) -> Void)?
+    var donePressed: ((_ newDatabaseViewController: NewDatabaseViewController, _ url: URL, _ password: String, _ version: Int) -> Void)?
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         nameTextField.becomeFirstResponder()
@@ -31,7 +31,7 @@ class NewDatabaseViewController: UITableViewController {
     
     // MARK: - UITextFieldDelegate
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if (textField == nameTextField) {
             passwordTextField.becomeFirstResponder()
         } else if (textField == passwordTextField) {
@@ -44,49 +44,59 @@ class NewDatabaseViewController: UITableViewController {
     
     // MARK: - Actions
 
-    @IBAction func donePressedAction(sender: UIBarButtonItem?) {
+    @IBAction func donePressedAction(_ sender: UIBarButtonItem?) {
         // Check to make sure the name was supplied
-        let name = nameTextField.text
-        if (name == nil || name!.isEmpty) {
+        guard let name = nameTextField.text, !(name.isEmpty) else {
             presentAlertWithTitle(NSLocalizedString("Error", comment: ""), message: NSLocalizedString("Database name is required", comment: ""))
             return
         }
 
         // Check the passwords
-        let password1 = passwordTextField.text
-        let password2 = confirmPasswordTextField.text
+        guard let password1 = passwordTextField.text, !(password1.isEmpty),
+            let password2 = confirmPasswordTextField.text, !(password2.isEmpty) else {
+                presentAlertWithTitle(NSLocalizedString("Error", comment: ""), message: NSLocalizedString("Password is required", comment: ""))
+                return
+        }
+
         if (password1 != password2) {
             presentAlertWithTitle(NSLocalizedString("Error", comment: ""), message: NSLocalizedString("Passwords do not match", comment: ""))
             return
         }
-        if (password1 == nil || password1!.isEmpty) {
-            presentAlertWithTitle(NSLocalizedString("Error", comment: ""), message: NSLocalizedString("Password is required", comment: ""))
-            return
-        }
 
-        // Create a URL to the file
         var version: Int
-        var url = MiniKeePassAppDelegate.documentsDirectoryUrl()
-        url = url.URLByAppendingPathComponent(name!)
+        var extention: String
+
         if (versionSegmentedControl.selectedSegmentIndex == 0) {
             version = 1
-            url = url.URLByAppendingPathExtension("kdb")
+            extention = "kdb"
         } else {
             version = 2
-            url = url.URLByAppendingPathExtension("kdbx")
+            extention = "kdbx"
+        }
+        
+        // Create a URL to the file
+        var url = MiniKeePassAppDelegate.documentsDirectoryUrl()
+        url = url?.appendingPathComponent("\(name).\(extention)")
+        
+        if url == nil {
+            presentAlertWithTitle(NSLocalizedString("Error", comment: ""), message: NSLocalizedString("Could not create file path", comment: ""))
+            return
         }
 
         // Check if the file already exists
-        if (url.checkResourceIsReachableAndReturnError(nil)) {
-            presentAlertWithTitle(NSLocalizedString("Error", comment: ""), message: NSLocalizedString("A file already exists with this name", comment: ""))
-            return
+        do {
+            if try url!.checkResourceIsReachable() {
+                presentAlertWithTitle(NSLocalizedString("Error", comment: ""), message: NSLocalizedString("A file already exists with this name", comment: ""))
+                return
+            }
+        } catch {
         }
 
         // Notify the listener
-        donePressed?(newDatabaseViewController: self, url: url, password: password1!, version: version)
+        donePressed?(self, url!, password1, version)
     }
     
-    @IBAction func cancelPressed(sender: UIBarButtonItem) {
-        dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func cancelPressed(_ sender: UIBarButtonItem) {
+        dismiss(animated: true, completion: nil)
     }
 }

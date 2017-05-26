@@ -21,9 +21,9 @@ class ImageCell: UICollectionViewCell {
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var checkMark: CheckMark!
     
-    override var selected: Bool {
+    override var isSelected: Bool {
         didSet {
-            checkMark.checked = selected
+            checkMark.checked = isSelected
         }
     }
 }

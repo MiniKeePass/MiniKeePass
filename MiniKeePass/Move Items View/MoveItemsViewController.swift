@@ -25,16 +25,16 @@ struct GroupModel {
 }
 
 class MoveItemsViewController: UITableViewController {
-    private let SelectableReuseIdentifier = "SelectableGroupCell"
-    private let UnselectableReuseIdentifier = "UnselectableGroupCell"
-    private let IndentWidth = 10
+    fileprivate let SelectableReuseIdentifier = "SelectableGroupCell"
+    fileprivate let UnselectableReuseIdentifier = "UnselectableGroupCell"
+    fileprivate let IndentWidth = 10
 
-    private var groupModels: [GroupModel] = []
+    fileprivate var groupModels: [GroupModel] = []
 
     var itemsToMove: [AnyObject] = []
-    var groupSelected: ((moveItemsViewController: MoveItemsViewController, group: KdbGroup) -> Void)?
+    var groupSelected: ((_ moveItemsViewController: MoveItemsViewController, _ group: KdbGroup) -> Void)?
 
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
         groupModels = []
@@ -42,14 +42,16 @@ class MoveItemsViewController: UITableViewController {
         // Get parameters for the root
         let appDelegate = MiniKeePassAppDelegate.getDelegate()
 
-        let rootGroup = appDelegate.databaseDocument.kdbTree.root
-        let filename = appDelegate.databaseDocument.filename as NSString
+        let rootGroup = appDelegate?.databaseDocument.kdbTree.root
+        let filename = appDelegate?.databaseDocument.filename
+        
+        let url = URL(fileURLWithPath: (filename)!)
 
         // Recursivly add subgroups
-        addGroup(rootGroup, name: filename.lastPathComponent, indent: 0)
+        addGroup(rootGroup!, name: url.lastPathComponent, indent: 0)
     }
 
-    func isSelectable(group: KdbGroup) -> Bool {
+    func isSelectable(_ group: KdbGroup) -> Bool {
         var containsEntry = false
 
         // Check if group is a subgroup of any groups to be moved
@@ -72,15 +74,15 @@ class MoveItemsViewController: UITableViewController {
 
         // Check if trying to move entries to top level in 1.x database
         let appDelegate = MiniKeePassAppDelegate.getDelegate()
-        let tree = appDelegate.databaseDocument.kdbTree
-        if (containsEntry && group == tree.root && tree is Kdb3Tree) {
+        let tree = appDelegate?.databaseDocument.kdbTree
+        if (containsEntry && group == tree?.root && tree is Kdb3Tree) {
             return false
         }
 
         return true
     }
 
-    func addGroup(group: KdbGroup, name: String, indent: Int) {
+    func addGroup(_ group: KdbGroup, name: String, indent: Int) {
         // Check if this group is selectable
         let selectable = isSelectable(group)
 
@@ -88,8 +90,8 @@ class MoveItemsViewController: UITableViewController {
         groupModels.append(GroupModel(group: group, name:name, indent: indent, selectable: selectable))
 
         // Sort all the sub-groups
-        let subGroups = group.groups.sort {
-            $0.name.localizedCaseInsensitiveCompare($1.name) == NSComparisonResult.OrderedAscending
+        let subGroups = group.groups.sorted {
+            ($0 as AnyObject).name.localizedCaseInsensitiveCompare(($1 as AnyObject).name) == ComparisonResult.orderedAscending
         } as! [KdbGroup]
 
         // Add sub-groups
@@ -98,23 +100,23 @@ class MoveItemsViewController: UITableViewController {
         }
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return groupModels.count;
     }
 
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let groupModel = groupModels[indexPath.row]
 
-        let cell = tableView.dequeueReusableCellWithIdentifier(groupModel.selectable ? SelectableReuseIdentifier : UnselectableReuseIdentifier, forIndexPath: indexPath) as! GroupCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: groupModel.selectable ? SelectableReuseIdentifier : UnselectableReuseIdentifier, for: indexPath) as! GroupCell
         cell.groupTitleLabel.text = groupModel.name
         let imageFactory = ImageFactory.sharedInstance()
-        cell.groupImageView.image = imageFactory.imageForGroup(groupModel.group)
+        cell.groupImageView.image = imageFactory?.image(for: groupModel.group)
         cell.leadingContraint.constant = CGFloat(groupModel.indent * IndentWidth)
 
         return cell
     }
 
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let groupModel = groupModels[indexPath.row]
         if (!groupModel.selectable) {
             return
@@ -126,20 +128,20 @@ class MoveItemsViewController: UITableViewController {
         for obj in itemsToMove {
             if (obj is KdbGroup) {
                 let movingGroup = obj as! KdbGroup
-                movingGroup.parent.moveGroup(movingGroup, toGroup:selectedGroup)
+                movingGroup.parent.moveGroup(movingGroup, to:selectedGroup)
             } else if (obj is KdbEntry) {
                 let movingEntry = obj as! KdbEntry
-                movingEntry.parent.moveEntry(movingEntry, toGroup:selectedGroup)
+                movingEntry.parent.moveEntry(movingEntry, to:selectedGroup)
             }
         }
 
         // Save the database
         let appDelegate = MiniKeePassAppDelegate.getDelegate()
-        let databaseDocument = appDelegate.databaseDocument
-        databaseDocument.save()
+        let databaseDocument = appDelegate?.databaseDocument
+        databaseDocument?.save()
 
-        groupSelected?(moveItemsViewController: self, group: groupModel.group)
+        groupSelected?(self, groupModel.group)
 
-        dismissViewControllerAnimated(true, completion: nil)
+        dismiss(animated: true, completion: nil)
     }
 }

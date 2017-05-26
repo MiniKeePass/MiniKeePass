@@ -18,7 +18,7 @@
 import Foundation
 
 extension Array where Element: Equatable {
-    func insertionIndexOf(elem: Element, isOrderedBefore: (Element, Element) -> Bool) -> Int {
+    func insertionIndexOf(_ elem: Element, isOrderedBefore: (Element, Element) -> Bool) -> Int {
         var lo = 0
         var hi = self.count - 1
         while lo <= hi {
@@ -34,9 +34,9 @@ extension Array where Element: Equatable {
         return lo
     }
 
-    mutating func removeObject(object: Element) {
-        if let index = indexOf(object) {
-            removeAtIndex(index)
+    mutating func removeObject(_ object: Element) {
+        if let index = index(of: object) {
+            remove(at: index)
         }
     }
 }

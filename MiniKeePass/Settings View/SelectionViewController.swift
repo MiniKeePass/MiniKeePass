@@ -29,20 +29,20 @@ class SelectionViewController: UITableViewController {
 
     // MARK: - Table view data source
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return items.count
     }
 
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
 
         // Configure the cell
         cell.textLabel!.text = items[indexPath.row]
         
         if (indexPath.row == selectedIndex) {
-            cell.accessoryType = UITableViewCellAccessoryType.Checkmark;
+            cell.accessoryType = UITableViewCellAccessoryType.checkmark;
         } else {
-            cell.accessoryType = UITableViewCellAccessoryType.None;
+            cell.accessoryType = UITableViewCellAccessoryType.none;
         }
 
         return cell
@@ -50,17 +50,17 @@ class SelectionViewController: UITableViewController {
     
     // MARK: - Table view delegate
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if (indexPath.row != selectedIndex) {
             // Remove the checkmark from the current selection
             if (selectedIndex != -1) {
-                let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: selectedIndex, inSection: 0))!
-                cell.accessoryType = UITableViewCellAccessoryType.None;
+                let cell = tableView.cellForRow(at: IndexPath(row: selectedIndex, section: 0))!
+                cell.accessoryType = UITableViewCellAccessoryType.none;
             }
             
             // Add the checkmark to the new selection
-            let cell = tableView.cellForRowAtIndexPath(indexPath)!
-            cell.accessoryType = UITableViewCellAccessoryType.Checkmark;
+            let cell = tableView.cellForRow(at: indexPath)!
+            cell.accessoryType = UITableViewCellAccessoryType.checkmark;
             
             selectedIndex = indexPath.row;
             
@@ -68,6 +68,6 @@ class SelectionViewController: UITableViewController {
             itemSelected?(selectedIndex)
         }
 
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 }

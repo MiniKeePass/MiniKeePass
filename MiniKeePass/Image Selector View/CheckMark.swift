@@ -28,53 +28,55 @@ class CheckMark: UIView {
     }
     
     // Color Declarations
-    private let fillColor = UIColor(red: 0.078, green: 0.435, blue: 0.875, alpha: 1)
-    private let whiteColor = UIColor.whiteColor()
+    fileprivate let fillColor = UIColor(red: 0.078, green: 0.435, blue: 0.875, alpha: 1)
+    fileprivate let whiteColor = UIColor.white
     
     // Shadow Declarations
-    private let shadowColor = UIColor.blackColor()
-    private let shadowOffset = CGSizeMake(0.1, -0.1)
-    private let shadowBlurRadius: CGFloat = 2.5
+    fileprivate let shadowColor = UIColor.black
+    fileprivate let shadowOffset = CGSize(width: 0.1, height: -0.1)
+    fileprivate let shadowBlurRadius: CGFloat = 2.5
     
-    override func drawRect(rect: CGRect) {
-        super.drawRect(rect)
+    override func draw(_ rect: CGRect) {
+        super.draw(rect)
         
         if (!checked) {
             return
         }
 
-        let context = UIGraphicsGetCurrentContext();
+        guard let context = UIGraphicsGetCurrentContext() else {
+            return
+        }
         
         // Sub-rectangle to draw the check mark inside of
-        let r = CGRectInset(self.bounds, 3, 3)
-        let x = CGRectGetMinX(r)
-        let y = CGRectGetMinY(r)
-        let w = CGRectGetWidth(r)
-        let h = CGRectGetHeight(r)
+        let r = self.bounds.insetBy(dx: 3, dy: 3)
+        let x = r.minX
+        let y = r.minY
+        let w = r.width
+        let h = r.height
         
         // Draw the circle background
-        CGContextSaveGState(context)
-        CGContextSetShadowWithColor(context, shadowOffset, shadowBlurRadius, shadowColor.CGColor)
+        context.saveGState()
+        context.setShadow(offset: shadowOffset, blur: shadowBlurRadius, color: shadowColor.cgColor)
         fillColor.setFill()
-        CGContextFillEllipseInRect(context, r)
-        CGContextRestoreGState(context)
+        context.fillEllipse(in: r)
+        context.restoreGState()
         
         // Draw the circle
-        CGContextSaveGState(context)
+        context.saveGState()
         whiteColor.setStroke()
-        CGContextSetLineWidth(context, 1);
-        CGContextStrokeEllipseInRect(context, r)
-        CGContextRestoreGState(context)
+        context.setLineWidth(1);
+        context.strokeEllipse(in: r)
+        context.restoreGState()
         
         // Draw the check mark
-        CGContextSaveGState(context)
+        context.saveGState()
         whiteColor.setStroke()
-        CGContextSetLineWidth(context, 1.3);
-        CGContextSetLineCap(context, CGLineCap.Square)
-        CGContextMoveToPoint(context, x + 0.27083 * w, y + 0.54167 * h)
-        CGContextAddLineToPoint(context, x + 0.41667 * w, y + 0.68750 * h)
-        CGContextAddLineToPoint(context, x + 0.75000 * w, y + 0.35417 * h)
-        CGContextStrokePath(context)
-        CGContextRestoreGState(context)
+        context.setLineWidth(1.3);
+        context.setLineCap(CGLineCap.square)
+        context.move(to: CGPoint(x: x + 0.27083 * w, y: y + 0.54167 * h))
+        context.addLine(to: CGPoint(x: x + 0.41667 * w, y: y + 0.68750 * h))
+        context.addLine(to: CGPoint(x: x + 0.75000 * w, y: y + 0.35417 * h))
+        context.strokePath()
+        context.restoreGState()
     }
 }

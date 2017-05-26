@@ -45,42 +45,42 @@ class CharacterSetsViewController: UITableViewController {
         let appSettings = AppSettings.sharedInstance() as AppSettings
         let charSets = appSettings.pwGenCharSets()
         
-        upperCaseSwitch.on = (charSets & CharacterSet.UpperCase) != 0
-        lowerCaseSwitch.on = (charSets & CharacterSet.LowerCase) != 0
-        digitsSwitch.on = (charSets & CharacterSet.Digits) != 0
-        minusSwitch.on = (charSets & CharacterSet.Minus) != 0
-        underlineSwitch.on = (charSets & CharacterSet.Underline) != 0
-        spaceSwitch.on = (charSets & CharacterSet.Space) != 0
-        specialSwitch.on = (charSets & CharacterSet.Special) != 0
-        bracketsSwitch.on = (charSets & CharacterSet.Brackets) != 0
+        upperCaseSwitch.isOn = (charSets & CharacterSet.UpperCase) != 0
+        lowerCaseSwitch.isOn = (charSets & CharacterSet.LowerCase) != 0
+        digitsSwitch.isOn = (charSets & CharacterSet.Digits) != 0
+        minusSwitch.isOn = (charSets & CharacterSet.Minus) != 0
+        underlineSwitch.isOn = (charSets & CharacterSet.Underline) != 0
+        spaceSwitch.isOn = (charSets & CharacterSet.Space) != 0
+        specialSwitch.isOn = (charSets & CharacterSet.Special) != 0
+        bracketsSwitch.isOn = (charSets & CharacterSet.Brackets) != 0
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
         var charSets = 0
-        if (upperCaseSwitch.on) {
+        if (upperCaseSwitch.isOn) {
             charSets |= CharacterSet.UpperCase
         }
-        if (lowerCaseSwitch.on) {
+        if (lowerCaseSwitch.isOn) {
             charSets |= CharacterSet.LowerCase
         }
-        if (digitsSwitch.on) {
+        if (digitsSwitch.isOn) {
             charSets |= CharacterSet.Digits
         }
-        if (minusSwitch.on) {
+        if (minusSwitch.isOn) {
             charSets |= CharacterSet.Minus
         }
-        if (underlineSwitch.on) {
+        if (underlineSwitch.isOn) {
             charSets |= CharacterSet.Underline
         }
-        if (spaceSwitch.on) {
+        if (spaceSwitch.isOn) {
             charSets |= CharacterSet.Space
         }
-        if (specialSwitch.on) {
+        if (specialSwitch.isOn) {
             charSets |= CharacterSet.Special
         }
-        if (bracketsSwitch.on) {
+        if (bracketsSwitch.isOn) {
             charSets |= CharacterSet.Brackets
         }
         

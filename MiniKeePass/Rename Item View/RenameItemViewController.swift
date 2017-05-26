@@ -21,16 +21,16 @@ class RenameItemViewController: UITableViewController {
     @IBOutlet weak var nameTextField: UITextField!
     @IBOutlet weak var imageView: UIImageView!
     
-    var donePressed: ((renameItemViewController: RenameItemViewController) -> Void)?
-    var cancelPressed: ((renameItemViewController: RenameItemViewController) -> Void)?
+    var donePressed: ((_ renameItemViewController: RenameItemViewController) -> Void)?
+    var cancelPressed: ((_ renameItemViewController: RenameItemViewController) -> Void)?
 
     var group: KdbGroup?
     var entry: KdbEntry?
     
-    private var selectedImageIndex: Int = -1 {
+    fileprivate var selectedImageIndex: Int = -1 {
         didSet {
             let imageFactory = ImageFactory.sharedInstance()
-            imageView.image = imageFactory.imageForIndex(selectedImageIndex)
+            imageView.image = imageFactory?.image(for: selectedImageIndex)
         }
     }
     
@@ -48,15 +48,15 @@ class RenameItemViewController: UITableViewController {
     
     // MARK: - UITextFieldDelegate
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         donePressedAction(nil)
         return true
     }
 
     // MARK: - Navigation
 
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        let imageSelectorViewController = segue.destinationViewController as! ImageSelectorViewController
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let imageSelectorViewController = segue.destination as! ImageSelectorViewController
         imageSelectorViewController.selectedImage = selectedImageIndex
         imageSelectorViewController.imageSelected = { (imageSelectorViewController: ImageSelectorViewController, selectedImage: Int) in
             self.selectedImageIndex = selectedImage
@@ -65,7 +65,7 @@ class RenameItemViewController: UITableViewController {
 
     // MARK: - Actions
     
-    @IBAction func donePressedAction(sender: UIBarButtonItem?) {
+    @IBAction func donePressedAction(_ sender: UIBarButtonItem?) {
         // Validate the name is valid
         let name = nameTextField.text
         if (name == nil || name!.isEmpty) {
@@ -84,17 +84,17 @@ class RenameItemViewController: UITableViewController {
 
         // Save the database
         let appDelegate = MiniKeePassAppDelegate.getDelegate()
-        let databaseDocument = appDelegate.databaseDocument
-        databaseDocument.save()
+        let databaseDocument = appDelegate?.databaseDocument
+        databaseDocument?.save()
 
-        donePressed?(renameItemViewController: self)
+        donePressed?(self)
 
-        dismissViewControllerAnimated(true, completion: nil)
+        dismiss(animated: true, completion: nil)
     }
 
-    @IBAction func cancelPressedAction(sender: UIBarButtonItem) {
-        cancelPressed?(renameItemViewController: self)
+    @IBAction func cancelPressedAction(_ sender: UIBarButtonItem) {
+        cancelPressed?(self)
 
-        dismissViewControllerAnimated(true, completion: nil)
+        dismiss(animated: true, completion: nil)
     }
 }

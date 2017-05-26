@@ -24,20 +24,24 @@ class CustomFieldViewController: UITableViewController {
     
     var stringField: StringField?
 
-    var donePressed: ((customFieldViewController: CustomFieldViewController) -> Void)?
-    var cancelPressed: ((customFieldViewController: CustomFieldViewController) -> Void)?
+    var donePressed: ((_ customFieldViewController: CustomFieldViewController) -> Void)?
+    var cancelPressed: ((_ customFieldViewController: CustomFieldViewController) -> Void)?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        nameTextField.text = stringField!.key
-        valueTextField.text = stringField!.value
-        inMemoryProtectionSwitch.on = stringField!.protected
+        guard let stringField = stringField else {
+            return
+        }
+        
+        nameTextField.text = stringField.key
+        valueTextField.text = stringField.value
+        inMemoryProtectionSwitch.isOn = stringField.protected
     }
     
     // MARK: - UITextFieldDelegate
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if (textField == nameTextField) {
             valueTextField.becomeFirstResponder()
         } else if (textField == valueTextField) {
@@ -48,21 +52,23 @@ class CustomFieldViewController: UITableViewController {
 
     // MARK: - Actions
 
-    @IBAction func donePressedAction(sender: UIBarButtonItem?) {
+    @IBAction func donePressedAction(_ sender: UIBarButtonItem?) {
         let name = nameTextField.text;
         if (name == nil || name!.isEmpty) {
             self.presentAlertWithTitle(NSLocalizedString("Error", comment: ""), message: NSLocalizedString("Name cannot be empty", comment: ""))
             return
         }
 
-        stringField!.key = nameTextField.text
-        stringField!.value = valueTextField.text
-        stringField!.protected = inMemoryProtectionSwitch.on
+        if let stringField = stringField {
+            stringField.key = nameTextField.text
+            stringField.value = valueTextField.text
+            stringField.protected = inMemoryProtectionSwitch.isOn
+        }
 
-        donePressed?(customFieldViewController: self)
+        donePressed?(self)
     }
 
-    @IBAction func cancelPressedAction(sender: UIBarButtonItem) {
-        cancelPressed?(customFieldViewController: self)
+    @IBAction func cancelPressedAction(_ sender: UIBarButtonItem) {
+        cancelPressed?(self)
     }
 }

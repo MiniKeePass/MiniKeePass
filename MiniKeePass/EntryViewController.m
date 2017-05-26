@@ -68,33 +68,41 @@ enum {
                                                                              action:nil];
         self.navigationItem.backBarButtonItem = backBarButtonItem;
 
-        titleCell = [[TitleFieldCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:nil];
-        titleCell.delegate = self;
-        titleCell.textLabel.text = NSLocalizedString(@"Title", nil);
+        NSString *identifier = @"cell";
+        
+        [self.tableView registerNib:[UINib nibWithNibName:@"TextFieldCell" bundle:nil] forCellReuseIdentifier:identifier];
+        
+//        titleCell = [[TitleFieldCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:nil];
+        titleCell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
+//        titleCell.delegate = self;
+        titleCell.title = NSLocalizedString(@"Title", nil);
         titleCell.textField.placeholder = NSLocalizedString(@"Title", nil);
         titleCell.textField.enabled = NO;
         titleCell.textFieldCellDelegate = self;
-        titleCell.imageButton.adjustsImageWhenHighlighted = NO;
-        [titleCell.imageButton addTarget:self action:@selector(imageButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+//        titleCell.imageButton.adjustsImageWhenHighlighted = NO;
+//        [titleCell.imageButton addTarget:self action:@selector(imageButtonPressed) forControlEvents:UIControlEventTouchUpInside];
 
-        usernameCell = [[TextFieldCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:nil];
-        usernameCell.textLabel.text = NSLocalizedString(@"Username", nil);
+//        usernameCell = [[TextFieldCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:nil];
+        usernameCell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
+        usernameCell.title = NSLocalizedString(@"Username", nil);
         usernameCell.textField.placeholder = NSLocalizedString(@"Username", nil);
         usernameCell.textField.enabled = NO;
         usernameCell.textField.autocorrectionType = UITextAutocorrectionTypeNo;
         usernameCell.textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
         usernameCell.textFieldCellDelegate = self;
 
-        passwordCell = [[PasswordFieldCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:nil];
-        passwordCell.textLabel.text = NSLocalizedString(@"Password", nil);
+//        passwordCell = [[PasswordFieldCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:nil];
+        passwordCell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
+        passwordCell.title = NSLocalizedString(@"Password", nil);
         passwordCell.textField.placeholder = NSLocalizedString(@"Password", nil);
         passwordCell.textField.enabled = NO;
         passwordCell.textFieldCellDelegate = self;
         [passwordCell.accessoryButton addTarget:self action:@selector(showPasswordPressed) forControlEvents:UIControlEventTouchUpInside];
         [passwordCell.editAccessoryButton addTarget:self action:@selector(generatePasswordPressed) forControlEvents:UIControlEventTouchUpInside];
 
-        urlCell = [[UrlFieldCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:nil];
-        urlCell.textLabel.text = NSLocalizedString(@"URL", nil);
+//        urlCell = [[UrlFieldCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:nil];
+        urlCell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
+        urlCell.title = NSLocalizedString(@"URL", nil);
         urlCell.textField.placeholder = NSLocalizedString(@"URL", nil);
         urlCell.textField.enabled = NO;
         urlCell.textFieldCellDelegate = self;
@@ -629,7 +637,7 @@ enum {
     _selectedImageIndex = index;
 
     UIImage *image = [[ImageFactory sharedInstance] imageForIndex:index];
-    [titleCell.imageButton setImage:image forState:UIControlStateNormal];
+//    [titleCell.imageButton setImage:image forState:UIControlStateNormal];
 }
 
 - (void)imageButtonPressed {

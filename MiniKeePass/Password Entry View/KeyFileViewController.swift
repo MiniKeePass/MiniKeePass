@@ -21,47 +21,47 @@ class KeyFileViewController: UITableViewController {
     var keyFiles: [String]!
     var selectedIndex: Int!
 
-    var keyFileSelected: ((selectedIndex: Int) -> Void)?
+    var keyFileSelected: ((_ selectedIndex: Int) -> Void)?
 
     // MARK: - Table view data source
 
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // Number of key files plus one for the "None" entry
         return keyFiles.count + 1
     }
 
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let idx = indexPath.row - 1
         
-        let cell = tableView.dequeueReusableCellWithIdentifier("KeyFileCell", forIndexPath: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "KeyFileCell", for: indexPath)
         if (idx == -1) {
             cell.textLabel?.text = NSLocalizedString("None", comment: "")
         } else {
             cell.textLabel?.text = keyFiles[idx]
         }
-        cell.accessoryType = idx == selectedIndex ? .Checkmark : .None
+        cell.accessoryType = idx == selectedIndex ? .checkmark : .none
         
         return cell
     }
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let idx = indexPath.row - 1
         if (idx != selectedIndex) {
-            let oldCell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: selectedIndex + 1, inSection: 0))
-            oldCell!.accessoryType = .None
+            let oldCell = tableView.cellForRow(at: IndexPath(row: selectedIndex + 1, section: 0))
+            oldCell!.accessoryType = .none
             
-            let cell = tableView.cellForRowAtIndexPath(indexPath)
-            cell!.accessoryType = .Checkmark
+            let cell = tableView.cellForRow(at: indexPath)
+            cell!.accessoryType = .checkmark
             
             selectedIndex = idx
             
-            keyFileSelected?(selectedIndex: selectedIndex)
+            keyFileSelected?(selectedIndex)
         }
         
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 }

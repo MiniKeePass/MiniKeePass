@@ -34,11 +34,11 @@ class PasswordGeneratorViewController: UITableViewController, UIPickerViewDataSo
     @IBOutlet weak var passwordLabel: UILabel!
     @IBOutlet weak var characterSetsCell: UITableViewCell!
 
-    private var lengthPickerHidden = true
-    private var length: Int = 0
-    private var charSets: Int = 10
+    fileprivate var lengthPickerHidden = true
+    fileprivate var length: Int = 0
+    fileprivate var charSets: Int = 10
     
-    var donePressed: ((PasswordGeneratorViewController, password: String) -> Void)?
+    var donePressed: ((PasswordGeneratorViewController, _ password: String) -> Void)?
     var cancelPressed: ((PasswordGeneratorViewController) -> Void)?
 
     override func viewDidLoad() {
@@ -48,12 +48,12 @@ class PasswordGeneratorViewController: UITableViewController, UIPickerViewDataSo
         lengthPickerView.delegate = self
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         let appSettings = AppSettings.sharedInstance()
-        length = appSettings.pwGenLength()
-        charSets = appSettings.pwGenCharSets()
+        length = (appSettings?.pwGenLength())!
+        charSets = (appSettings?.pwGenCharSets())!
         
         lengthCell.detailTextLabel?.text = String(length)
         lengthPickerView.selectRow(length - 1, inComponent: 0, animated: false)
@@ -99,8 +99,8 @@ class PasswordGeneratorViewController: UITableViewController, UIPickerViewDataSo
 
         var password = ""
         for _ in 1...length {
-            let idx = Int(cryptoRandomStream.getInt() % UInt32(charSet.characters.count))
-            password.append(charSet[charSet.startIndex.advancedBy(idx)])
+            let idx = Int((cryptoRandomStream?.getInt())! % UInt32(charSet.characters.count))
+            password.append(charSet[charSet.characters.index(charSet.startIndex, offsetBy: idx)])
         }
     
         passwordLabel.text = password
@@ -137,21 +137,21 @@ class PasswordGeneratorViewController: UITableViewController, UIPickerViewDataSo
         if (strs.isEmpty) {
             return NSLocalizedString("None Selected", comment: "")
         } else {
-            return strs.joinWithSeparator(", ")
+            return strs.joined(separator: ", ")
         }
     }
     
     // MARK: - Table View
     
-    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if (lengthPickerHidden && indexPath.section == 0 && indexPath.row == 1) {
             return 0
         } else {
-            return super.tableView(tableView, heightForRowAtIndexPath: indexPath)
+            return super.tableView(tableView, heightForRowAt: indexPath)
         }
     }
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if (indexPath.section == 0 && indexPath.row == 0) {
             
             lengthPickerHidden = !lengthPickerHidden
@@ -163,48 +163,48 @@ class PasswordGeneratorViewController: UITableViewController, UIPickerViewDataSo
     
     // MARK: - Picker View
     
-    func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
     
-    func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         return 35
     }
     
-    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         return String(row + 1)
     }
     
-    func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         length = row + 1
         
         lengthCell.detailTextLabel?.text = String(length)
         
         let appSettings = AppSettings.sharedInstance()
-        appSettings.setPwGenLength(length)
+        appSettings?.setPwGenLength(length)
         
         generatePassword()
     }
     
     // MARK: - Actions
     
-    @IBAction func generatePressed(sender: UITapGestureRecognizer) {
+    @IBAction func generatePressed(_ sender: UITapGestureRecognizer) {
         generatePassword()
     }
 
-    @IBAction func donePressedAction(sender: AnyObject) {
-        donePressed?(self, password: passwordLabel.text!)
+    @IBAction func donePressedAction(_ sender: AnyObject) {
+        donePressed?(self, passwordLabel.text!)
     }
     
-    @IBAction func cancelPressedAction(sender: AnyObject) {
+    @IBAction func cancelPressedAction(_ sender: AnyObject) {
         cancelPressed?(self)
     }
     
-    func lengthUpdated(len: Int) {
+    func lengthUpdated(_ len: Int) {
         length = len
         
         let appSettings = AppSettings.sharedInstance()
-        appSettings.setPwGenLength(length)
+        appSettings?.setPwGenLength(length)
         
         generatePassword()
     }

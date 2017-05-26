@@ -20,13 +20,13 @@ import UIKit
 class HelpWebViewController: UIViewController {
     @IBOutlet weak var webView: UIWebView!
     
-    var url: NSURL?
+    var url: URL?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // Load the help page
-        let urlRequest = NSURLRequest(URL: url!)
+        let urlRequest = URLRequest(url: url!)
         webView.loadRequest(urlRequest)
     }
 }

@@ -19,10 +19,10 @@ import UIKit
 
 class GroupViewController: UITableViewController {
     private enum Section : Int {
-        case Groups = 0
-        case Entries = 1
+        case groups = 0
+        case entries = 1
 
-        static let AllValues = [Section.Groups, Section.Entries]
+        static let AllValues = [Section.groups, Section.entries]
     }
 
     enum StandardButton : Int {
@@ -57,29 +57,29 @@ class GroupViewController: UITableViewController {
         tableView.allowsMultipleSelectionDuringEditing = true
 
         // Add the edit button
-        navigationItem.rightBarButtonItems = [self.editButtonItem()]
+        navigationItem.rightBarButtonItems = [self.editButtonItem]
 
-        let spacer = UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil)
+        let spacer = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
 
         // Create the standard toolbar
-        let settingsButton = UIBarButtonItem(image: UIImage(named: "gear"), style: .Plain, target: self, action: #selector(settingsPressed))
-        let actionButton = UIBarButtonItem(barButtonSystemItem: .Action, target: self, action: #selector(actionPressed))
-        let addButton = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: #selector(addPressed))
+        let settingsButton = UIBarButtonItem(image: UIImage(named: "gear"), style: .plain, target: self, action: #selector(settingsPressed))
+        let actionButton = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(actionPressed))
+        let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addPressed))
         standardToolbarItems = [settingsButton, spacer, actionButton, spacer, addButton]
 
         // Create the editing toolbar
-        let deleteButton = UIBarButtonItem(title: NSLocalizedString("Delete", comment: ""), style: .Plain, target: self, action: #selector(deletePressed))
-        let moveButton = UIBarButtonItem(title: NSLocalizedString("Move", comment: ""), style: .Plain, target: self, action: #selector(movePressed))
-        let renameButton = UIBarButtonItem(title: NSLocalizedString("Rename", comment: ""), style: .Plain, target: self, action: #selector(renamePressed))
+        let deleteButton = UIBarButtonItem(title: NSLocalizedString("Delete", comment: ""), style: .plain, target: self, action: #selector(deletePressed))
+        let moveButton = UIBarButtonItem(title: NSLocalizedString("Move", comment: ""), style: .plain, target: self, action: #selector(movePressed))
+        let renameButton = UIBarButtonItem(title: NSLocalizedString("Rename", comment: ""), style: .plain, target: self, action: #selector(renamePressed))
         editingToolbarItems = [deleteButton, spacer, moveButton, spacer, renameButton]
 
         toolbarItems = standardToolbarItems
     }
 
-    override func viewDidDisappear(animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
 
-        documentInteractionController?.dismissMenuAnimated(false)
+        documentInteractionController?.dismissMenu(animated: false)
     }
 
     func updateViewModel() {
@@ -87,17 +87,17 @@ class GroupViewController: UITableViewController {
         entries = parentGroup.entries as! [KdbEntry]
 
         let appSettings = AppSettings.sharedInstance()
-        if (appSettings.sortAlphabetically()) {
-            groups.sortInPlace {
-                $0.name.localizedCaseInsensitiveCompare($1.name) == .OrderedAscending
+        if (appSettings?.sortAlphabetically())! {
+            groups.sort {
+                $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending
             }
-            entries.sortInPlace {
-                $0.title().localizedCaseInsensitiveCompare($1.title()) == .OrderedAscending
+            entries.sort {
+                $0.title().localizedCaseInsensitiveCompare($1.title()) == .orderedAscending
             }
         }
     }
 
-    override func setEditing(editing: Bool, animated: Bool) {
+    override func setEditing(_ editing: Bool, animated: Bool) {
         super.setEditing(editing, animated: animated)
 
         // Show/hide the back button
@@ -111,34 +111,34 @@ class GroupViewController: UITableViewController {
     }
 
     private func updateEditingToolbar() {
-        if (tableView.editing) {
+        if (tableView.isEditing) {
             let numSelectedRows = tableView.indexPathsForSelectedRows?.count
 
-            editingToolbarItems[EditButton.Delete.rawValue].enabled = numSelectedRows > 0
-            editingToolbarItems[EditButton.Move.rawValue].enabled = numSelectedRows > 0
-            editingToolbarItems[EditButton.Rename.rawValue].enabled = numSelectedRows == 1
+            editingToolbarItems[EditButton.Delete.rawValue].isEnabled = numSelectedRows! > 0
+            editingToolbarItems[EditButton.Move.rawValue].isEnabled = numSelectedRows! > 0
+            editingToolbarItems[EditButton.Rename.rawValue].isEnabled = numSelectedRows == 1
         }
     }
 
     // MARK: - UITableView data source
 
-    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         switch Section.AllValues[section] {
-        case .Groups:
+        case .groups:
             return NSLocalizedString("Groups", comment: "")
-        case .Entries:
+        case .entries:
             return NSLocalizedString("Entries", comment: "")
         }
     }
 
-    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         // Hide the section titles if there are no files in a section
         switch Section.AllValues[section] {
-        case .Groups:
+        case .groups:
             if (groups.count == 0) {
                 return 0
             }
-        case .Entries:
+        case .entries:
             if (entries.count == 0) {
                 return 0
             }
@@ -146,46 +146,47 @@ class GroupViewController: UITableViewController {
 
         return UITableViewAutomaticDimension
     }
-
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return Section.AllValues.count
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch Section.AllValues[section] {
-        case .Groups:
+        case .groups:
             return groups.count
-        case .Entries:
+        case .entries:
             return entries.count
         }
     }
 
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let imageFactory = ImageFactory.sharedInstance()
 
         var cell: UITableViewCell
         switch Section.AllValues[indexPath.section] {
-        case .Groups:
+        case .groups:
             let group = groups[indexPath.row]
 
-            cell = tableView.dequeueReusableCellWithIdentifier("GroupCell") ?? UITableViewCell(style: .Default, reuseIdentifier: "GroupCell")
+            cell = tableView.dequeueReusableCell(withIdentifier: "GroupCell") ?? UITableViewCell(style: .default, reuseIdentifier: "GroupCell")
             cell.textLabel?.text = group.name
-            cell.imageView?.image = imageFactory.imageForGroup(group)
-        case .Entries:
+            cell.imageView?.image = imageFactory?.image(for: group)
+        case .entries:
             let entry = entries[indexPath.row]
 
-            cell = tableView.dequeueReusableCellWithIdentifier("EntryCell") ?? UITableViewCell(style: .Default, reuseIdentifier: "EntryCell")
+            cell = tableView.dequeueReusableCell(withIdentifier: "EntryCell") ?? UITableViewCell(style: .default, reuseIdentifier: "EntryCell")
             cell.textLabel?.text = entry.title()
-            cell.imageView?.image = imageFactory.imageForEntry(entry)
+            cell.imageView?.image = imageFactory?.image(for: entry)
 
             // Detail text is a combination of username and url
             let username = entry.username()
             let url = entry.url()
-            if ((username == nil || !username.isEmpty) && (url == nil || !url.isEmpty)) {
-                cell.detailTextLabel?.text = "\(username) @ \(url)"
-            } else if (username == nil || !username.isEmpty) {
+            
+            if (username != nil && !(username!.isEmpty) && url != nil && !(url!.isEmpty)) {
+                cell.detailTextLabel?.text = "\(username ?? "username") @ \(url ?? "")"
+            } else if (username != nil && !(username!.isEmpty)) {
                 cell.detailTextLabel?.text = username
-            } else if (url == nil || !url.isEmpty) {
+            } else if (url != nil && !(url!.isEmpty)) {
                 cell.detailTextLabel?.text = url
             } else {
                 cell.detailTextLabel?.text = ""
@@ -196,20 +197,19 @@ class GroupViewController: UITableViewController {
     }
 
     // MARK: - UITableView delegate
-
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if (!editing) {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if (!isEditing) {
             switch Section.AllValues[indexPath.section] {
-            case .Groups:
+            case .groups:
                 let group = groups[indexPath.row]
-                let groupViewController = GroupViewController(style: .Plain)
+                let groupViewController = GroupViewController(style: .plain)
                 groupViewController.parentGroup = group
                 groupViewController.title = group.name
                 navigationController?.pushViewController(groupViewController, animated: true)
 
-            case .Entries:
+            case .entries:
                 let entry = entries[indexPath.row]
-                let entryViewController = EntryViewController(style: .Grouped)
+                let entryViewController = EntryViewController(style: .grouped)
                 entryViewController.entry = entry;
                 entryViewController.title = entry.title()
                 navigationController?.pushViewController(entryViewController, animated: true)
@@ -219,37 +219,37 @@ class GroupViewController: UITableViewController {
         }
     }
 
-    override func tableView(tableView: UITableView, didDeselectRowAtIndexPath indexPath: NSIndexPath) {
-        if (editing) {
+    override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        if (isEditing) {
             updateEditingToolbar()
         }
     }
 
-    override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
-        let deleteAction = UITableViewRowAction(style: .Destructive, title: NSLocalizedString("Delete", comment: "")) { (action: UITableViewRowAction, indexPath: NSIndexPath) -> Void in
-            self.deleteItems([indexPath])
+    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let deleteAction = UITableViewRowAction(style: .destructive, title: NSLocalizedString("Delete", comment: "")) { (action: UITableViewRowAction, indexPath: IndexPath) -> Void in
+            self.deleteItems(indexPaths: [indexPath])
         }
 
         return [deleteAction]
     }
 
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if (editingStyle != .Delete) {
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if (editingStyle != .delete) {
             return
         }
 
-        deleteItems([indexPath])
+        deleteItems(indexPaths: [indexPath])
     }
 
-    func deleteItems(indexPaths: [NSIndexPath]) -> Void {
+    func deleteItems(indexPaths: [IndexPath]) -> Void {
         // Create a list of everything to delete
         var groupsToDelete: [KdbGroup] = []
         var entriesToDelete: [KdbEntry] = []
         for indexPath in indexPaths {
             switch Section.AllValues[indexPath.section] {
-            case .Groups:
+            case .groups:
                 groupsToDelete.append(groups[indexPath.row])
-            case .Entries:
+            case .entries:
                 entriesToDelete.append(entries[indexPath.row])
             }
         }
@@ -268,18 +268,18 @@ class GroupViewController: UITableViewController {
 
         // Save the database
         let appDelegate = MiniKeePassAppDelegate.getDelegate()
-        appDelegate.databaseDocument.save()
+        appDelegate?.databaseDocument.save()
 
         // Update the table
-        tableView.deleteRowsAtIndexPaths(indexPaths, withRowAnimation: .Automatic)
+        tableView.deleteRows(at: indexPaths as [IndexPath], with: .automatic)
         let indexSet = NSMutableIndexSet()
         if (groups.isEmpty) {
-            indexSet.addIndex(Section.Groups.rawValue)
+            indexSet.add(Section.groups.rawValue)
         }
         if (entries.isEmpty) {
-            indexSet.addIndex(Section.Entries.rawValue)
+            indexSet.add(Section.entries.rawValue)
         }
-        tableView.reloadSections(indexSet, withRowAnimation: .Automatic)
+        tableView.reloadSections(indexSet as IndexSet, with: .automatic)
     }
 
     // MARK: - Actions
@@ -288,56 +288,56 @@ class GroupViewController: UITableViewController {
         let storyboard = UIStoryboard(name: "Settings", bundle: nil)
         let viewController = storyboard.instantiateInitialViewController()!
 
-        presentViewController(viewController, animated: true, completion: nil)
+        present(viewController, animated: true, completion: nil)
     }
 
     func actionPressed(sender: UIBarButtonItem) {
         // Get the URL of the database
         let appDelegate = MiniKeePassAppDelegate.getDelegate()
-        let url = NSURL(fileURLWithPath: appDelegate.databaseDocument.filename)
+        let url = URL(fileURLWithPath: (appDelegate?.databaseDocument.filename)!)
 
         // Present the options to handle the database
-        documentInteractionController = UIDocumentInteractionController(URL: url)
-        let success = documentInteractionController!.presentOpenInMenuFromBarButtonItem(standardToolbarItems[StandardButton.Action.rawValue], animated: true)
+        documentInteractionController = UIDocumentInteractionController(url: url)
+        let success = documentInteractionController!.presentOpenInMenu(from: standardToolbarItems[StandardButton.Action.rawValue], animated: true)
         if (!success) {
-            let alertController = UIAlertController(title: nil, message: NSLocalizedString("There are no applications installed capable of importing KeePass files", comment: ""), preferredStyle: .ActionSheet)
-            let cancelAction = UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .Default, handler: nil)
+            let alertController = UIAlertController(title: nil, message: NSLocalizedString("There are no applications installed capable of importing KeePass files", comment: ""), preferredStyle: .actionSheet)
+            let cancelAction = UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .default, handler: nil)
             alertController.addAction(cancelAction)
-            presentViewController(alertController, animated: true, completion: nil)
+            present(alertController, animated: true, completion: nil)
         }
     }
 
     func addPressed(sender: UIBarButtonItem) {
-        let alertController = UIAlertController(title: NSLocalizedString("Add", comment: ""), message: nil, preferredStyle: .ActionSheet)
+        let alertController = UIAlertController(title: NSLocalizedString("Add", comment: ""), message: nil, preferredStyle: .alert)
 
         // Add an action to add a new group
-        let groupAction = UIAlertAction(title: NSLocalizedString("Group", comment: ""), style: .Default, handler: { (alertAction: UIAlertAction) in
+        let groupAction = UIAlertAction(title: NSLocalizedString("Group", comment: ""), style: .default, handler: { (alertAction: UIAlertAction) in
             self.addNewGroup()
         })
         alertController.addAction(groupAction)
 
         // Only add an action to add a new entry if the parent group supports entries
         if (parentGroup.canAddEntries) {
-            let entryAction = UIAlertAction(title: NSLocalizedString("Entry", comment: ""), style: .Default, handler: { (alertAction: UIAlertAction) in
+            let entryAction = UIAlertAction(title: NSLocalizedString("Entry", comment: ""), style: .default, handler: { (alertAction: UIAlertAction) in
                 self.addNewEntry()
             })
             alertController.addAction(entryAction)
         }
 
-        let cancelAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .Cancel, handler: nil)
+        let cancelAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil)
         alertController.addAction(cancelAction)
-
-        presentViewController(alertController, animated: true, completion: nil)
+        
+        present(alertController, animated: true, completion: nil)
     }
 
     func addNewGroup() {
         let appDelegate = MiniKeePassAppDelegate.getDelegate()
-        let databaseDocument = appDelegate.databaseDocument
+        let databaseDocument = appDelegate?.databaseDocument
 
         // Create and add a group
-        let group = databaseDocument.kdbTree.createGroup(parentGroup)
-        group.name = NSLocalizedString("New Group", comment: "")
-        group.image = parentGroup.image
+        let group = databaseDocument?.kdbTree.createGroup(parentGroup)
+        group?.name = NSLocalizedString("New Group", comment: "")
+        group?.image = parentGroup.image
 
         // Display the Rename Item view
         let storyboard = UIStoryboard(name: "RenameItem", bundle: nil)
@@ -348,65 +348,65 @@ class GroupViewController: UITableViewController {
             self.parentGroup.addGroup(group)
 
             // Save the database
-            databaseDocument.save()
+            databaseDocument?.save()
 
             // Add the group to the model
-            let index = self.groups.insertionIndexOf(group) {
-                $0.name.localizedCaseInsensitiveCompare($1.name) == .OrderedAscending
+            let index = self.groups.insertionIndexOf(group!) {
+                $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending
             }
-            self.groups.insert(group, atIndex: index)
+            self.groups.insert(group!, at: index)
 
             // Update the table
             if (self.groups.count == 1) {
-                self.tableView.reloadSections(NSIndexSet(index: Section.Groups.rawValue), withRowAnimation: .Automatic)
+                self.tableView.reloadSections(NSIndexSet(index: Section.groups.rawValue) as IndexSet, with: .automatic)
             } else {
-                let indexPath = NSIndexPath(forRow: index, inSection: Section.Groups.rawValue)
-                self.tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+                let indexPath = IndexPath(row: index, section: Section.groups.rawValue)
+                self.tableView.insertRows(at: [indexPath], with: .automatic)
             }
         };
 
         viewController.group = group
 
-        self.presentViewController(navigationController, animated: true, completion: nil)
+        self.present(navigationController, animated: true, completion: nil)
     }
     
     func addNewEntry() {
         let appDelegate = MiniKeePassAppDelegate.getDelegate()
-        let databaseDocument = appDelegate.databaseDocument
+        let databaseDocument = appDelegate?.databaseDocument
 
         // Create and add a entry
-        let entry = databaseDocument.kdbTree.createEntry(parentGroup)
-        entry.setTitle(NSLocalizedString("New Entry", comment: ""))
-        entry.image = parentGroup.image
+        let entry = databaseDocument?.kdbTree.createEntry(parentGroup)
+        entry?.setTitle(NSLocalizedString("New Entry", comment: ""))
+        entry?.image = parentGroup.image
         parentGroup.addEntry(entry)
 
         // Save the database
-        databaseDocument.save()
+        databaseDocument?.save()
 
         // Add the entry to the model
-        let index = self.entries.insertionIndexOf(entry) {
-            $0.title().localizedCaseInsensitiveCompare($1.title()) == .OrderedAscending
+        let index = self.entries.insertionIndexOf(entry!) {
+            $0.title().localizedCaseInsensitiveCompare($1.title()) == .orderedAscending
         }
-        self.entries.insert(entry, atIndex: index)
+        self.entries.insert(entry!, at: index)
 
         // Update the table
         if (self.entries.count == 1) {
-            self.tableView.reloadSections(NSIndexSet(index: Section.Entries.rawValue), withRowAnimation: .Automatic)
+            self.tableView.reloadSections(NSIndexSet(index: Section.entries.rawValue) as IndexSet, with: .automatic)
         } else {
-            let indexPath = NSIndexPath(forRow: index, inSection: Section.Entries.rawValue)
-            self.tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+            let indexPath = IndexPath(row: index, section: Section.entries.rawValue)
+            self.tableView.insertRows(at: [indexPath], with: .automatic)
         }
 
         // Show the Entry view controller
-        let viewController = EntryViewController(style: .Grouped)
+        let viewController = EntryViewController(style: .grouped)
         viewController.entry = entry
-        viewController.title = entry.title()
+        viewController.title = entry?.title()
         viewController.isNewEntry = true
         navigationController?.pushViewController(viewController, animated: true)
     }
     
     func deletePressed(sender: UIBarButtonItem) {
-        deleteItems(tableView.indexPathsForSelectedRows!)
+        deleteItems(indexPaths: tableView.indexPathsForSelectedRows!)
     }
 
     func movePressed(sender: UIBarButtonItem) {
@@ -416,9 +416,9 @@ class GroupViewController: UITableViewController {
         var itemsToMove: [AnyObject] = []
         for indexPath in indexPaths {
             switch Section.AllValues[indexPath.section] {
-            case .Groups:
+            case .groups:
                 itemsToMove.append(groups[indexPath.row])
-            case .Entries:
+            case .entries:
                 itemsToMove.append(entries[indexPath.row])
             }
         }
@@ -440,20 +440,20 @@ class GroupViewController: UITableViewController {
             }
 
             // Update the table
-            self.tableView.deleteRowsAtIndexPaths(indexPaths, withRowAnimation: .Automatic)
+            self.tableView.deleteRows(at: indexPaths, with: .automatic)
             let indexSet = NSMutableIndexSet()
             if (self.groups.isEmpty) {
-                indexSet.addIndex(Section.Groups.rawValue)
+                indexSet.add(Section.groups.rawValue)
             }
             if (self.entries.isEmpty) {
-                indexSet.addIndex(Section.Entries.rawValue)
+                indexSet.add(Section.entries.rawValue)
             }
-            self.tableView.reloadSections(indexSet, withRowAnimation: .Automatic)
+            self.tableView.reloadSections(indexSet as IndexSet, with: .automatic)
 
             self.setEditing(false, animated: true)
         }
 
-        presentViewController(navigationController, animated: true, completion: nil)
+        present(navigationController, animated: true, completion: nil)
     }
 
     func renamePressed(sender: UIBarButtonItem) {
@@ -466,7 +466,7 @@ class GroupViewController: UITableViewController {
         let viewController = navigationController.topViewController as! RenameItemViewController
         viewController.donePressed = { (renameItemViewController: RenameItemViewController) -> Void in
             // Update the table
-            self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+            self.tableView.reloadRows(at: [indexPath], with: .automatic)
 
             self.setEditing(false, animated: true)
         }
@@ -476,12 +476,12 @@ class GroupViewController: UITableViewController {
 
         // Set the group/entry to rename
         switch Section.AllValues[indexPath.section] {
-        case .Groups:
+        case .groups:
             viewController.group = groups[indexPath.row]
-        case .Entries:
+        case .entries:
             viewController.entry = entries[indexPath.row]
         }
 
-        presentViewController(navigationController, animated: true, completion: nil)
+        present(navigationController, animated: true, completion: nil)
     }
 }

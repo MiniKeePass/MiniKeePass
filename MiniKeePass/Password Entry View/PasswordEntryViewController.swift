@@ -25,17 +25,17 @@ class PasswordEntryViewController: UITableViewController, UITextFieldDelegate {
     var filename: String!
     
     var keyFiles: [String]!
-    private var selectedKeyFileIndex: Int! = -1
+    fileprivate var selectedKeyFileIndex: Int! = -1
 
     var donePressed: ((PasswordEntryViewController) -> Void)?
     var cancelPressed: ((PasswordEntryViewController) -> Void)?
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         if (keyFileLabel.text == "") {
-            let keyFile = ((filename as NSString).stringByDeletingPathExtension as NSString).stringByAppendingPathExtension("key")
-            let idx = keyFiles.indexOf(keyFile!)
+            let keyFile = ((filename as NSString).deletingPathExtension as NSString).appendingPathExtension("key")
+            let idx = keyFiles.index(of: keyFile!)
             setSelectedKeyFile(idx)
         }
         
@@ -53,7 +53,7 @@ class PasswordEntryViewController: UITableViewController, UITextFieldDelegate {
         return keyFiles[selectedKeyFileIndex]
     }
     
-    func setSelectedKeyFile(selectedIndex: Int!) -> Void {
+    func setSelectedKeyFile(_ selectedIndex: Int!) -> Void {
         if (selectedIndex == nil) {
             selectedKeyFileIndex = -1
         } else {
@@ -69,14 +69,14 @@ class PasswordEntryViewController: UITableViewController, UITextFieldDelegate {
     
     // MARK: - UITextFieldDelegate
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         self.donePressedAction(nil)
         return true
     }
     
     // MARK: - UITableViewDataSource
     
-    override func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+    override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         if (section == 1) {
             return String(format:NSLocalizedString("Enter the password and/or select the keyfile for the %@ database.", comment: ""), filename)
         }
@@ -85,37 +85,37 @@ class PasswordEntryViewController: UITableViewController, UITextFieldDelegate {
 
     // MARK: - Navigation
 
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        let keyFileViewController = segue.destinationViewController as! KeyFileViewController
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let keyFileViewController = segue.destination as! KeyFileViewController
         keyFileViewController.keyFiles = keyFiles
         keyFileViewController.selectedIndex = selectedKeyFileIndex
         keyFileViewController.keyFileSelected = { (selectedIndex) in
             self.setSelectedKeyFile(selectedIndex)
 
-            keyFileViewController.navigationController?.popViewControllerAnimated(true)
+            keyFileViewController.navigationController?.popViewController(animated: true)
         }
     }
     
     // MARK: - Actions
     
-    @IBAction func donePressedAction(sender: UIBarButtonItem?) {
+    @IBAction func donePressedAction(_ sender: UIBarButtonItem?) {
         donePressed?(self)
     }
     
-    @IBAction func cancelPressedAction(sender: UIBarButtonItem?) {
+    @IBAction func cancelPressedAction(_ sender: UIBarButtonItem?) {
         cancelPressed?(self)
     }
     
-    @IBAction func showPressed(sender: UITapGestureRecognizer) {
-        if (!passwordTextField.secureTextEntry) {
+    @IBAction func showPressed(_ sender: UITapGestureRecognizer) {
+        if (!passwordTextField.isSecureTextEntry) {
             // Clear the password first, since you can't edit a secure text entry once set
             passwordTextField.text = ""
-            passwordTextField.secureTextEntry = true
+            passwordTextField.isSecureTextEntry = true
             
             // Change the image
             showImageView.image = UIImage(named: "eye")
         } else {
-            passwordTextField.secureTextEntry = false
+            passwordTextField.isSecureTextEntry = false
             
             // Change the image
             showImageView.image = UIImage(named: "eye-slash")

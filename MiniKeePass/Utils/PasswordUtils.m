@@ -27,7 +27,7 @@ static NSUInteger const kDefaultRounds = 10000;
 
 + (NSData *)generateSaltOfSize:(NSInteger)size {
     NSMutableData *data = [NSMutableData dataWithLength:size];
-    SecRandomCopyBytes(kSecRandomDefault, size, data.mutableBytes);
+    (void) SecRandomCopyBytes(kSecRandomDefault, size, data.mutableBytes);
     return data;
 }
 

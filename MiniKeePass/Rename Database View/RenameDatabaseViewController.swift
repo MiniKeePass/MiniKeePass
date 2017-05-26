@@ -20,26 +20,26 @@ import UIKit
 class RenameDatabaseViewController: UITableViewController {
     @IBOutlet weak var nameTextField: UITextField!
     
-    var originalUrl: NSURL!
+    var originalUrl: URL!
 
-    var donePressed: ((RenameDatabaseViewController, originalUrl: NSURL, newUrl: NSURL) -> Void)?
+    var donePressed: ((RenameDatabaseViewController, _ originalUrl: URL, _ newUrl: URL) -> Void)?
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        nameTextField.text = originalUrl.URLByDeletingPathExtension?.lastPathComponent
+        nameTextField.text = originalUrl.deletingPathExtension().lastPathComponent
     }
     
     // MARK: - UITextFieldDelegate
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         donePressedAction(nil)
         return true
     }
     
     // MARK: - Actions
     
-    @IBAction func donePressedAction(sender: UIBarButtonItem?) {
+    @IBAction func donePressedAction(_ sender: UIBarButtonItem?) {
         let name = nameTextField.text;
         if (name == nil || name!.isEmpty) {
             self.presentAlertWithTitle(NSLocalizedString("Error", comment: ""), message: NSLocalizedString("Filename is invalid", comment: ""))
@@ -47,20 +47,20 @@ class RenameDatabaseViewController: UITableViewController {
         }
         
         // Create the new URL
-        var newUrl = originalUrl.URLByDeletingLastPathComponent!
-        newUrl = newUrl.URLByAppendingPathComponent(nameTextField.text!)
-        newUrl = newUrl.URLByAppendingPathExtension(originalUrl.pathExtension!)
+        var newUrl = originalUrl.deletingLastPathComponent()
+        newUrl = newUrl.appendingPathComponent(nameTextField.text!)
+        newUrl = newUrl.appendingPathExtension(originalUrl.pathExtension)
         
         // Check if the file already exists
-        if (newUrl.checkResourceIsReachableAndReturnError(nil)) {
+        if ((newUrl as NSURL).checkResourceIsReachableAndReturnError(nil)) {
             self.presentAlertWithTitle(NSLocalizedString("Error", comment: ""), message: NSLocalizedString("A file already exists with this name", comment: ""))
             return
         }
         
-        donePressed?(self, originalUrl: originalUrl, newUrl: newUrl)
+        donePressed?(self, originalUrl, newUrl)
     }
     
-    @IBAction func cancelPressed(sender: UIBarButtonItem) {
-        dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func cancelPressed(_ sender: UIBarButtonItem) {
+        dismiss(animated: true, completion: nil)
     }
 }

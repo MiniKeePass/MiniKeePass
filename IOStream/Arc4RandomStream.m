@@ -18,7 +18,7 @@
 - (id)init {
     uint8_t buffer[256];
     
-    SecRandomCopyBytes(kSecRandomDefault, sizeof(buffer), buffer);
+    (void) SecRandomCopyBytes(kSecRandomDefault, sizeof(buffer), buffer);
     
     return [self init:[NSData dataWithBytes:buffer length:sizeof(buffer)]];
 }
