@@ -18,6 +18,7 @@
 #import "TextFieldCell.h"
 #import <UIKit/UIPasteboard.h>
 #import "VersionUtils.h"
+#import "AppSettings.h"
 
 @interface TextFieldCell()
 @property (nonatomic, strong) UIView *grayBar;
@@ -25,23 +26,6 @@
 @end
 
 @implementation TextFieldCell
-
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
-    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
-    if (self) {
-        
-        int inset = 110;
-        
-        CGFloat grayIntensity = 202.0 / 255.0;
-        UIColor *color = [UIColor colorWithRed:grayIntensity green:grayIntensity blue:grayIntensity alpha:1];
-
-        _grayBar = [[UIView alloc] initWithFrame:CGRectMake(inset - 4, -1, 1, self.contentView.frame.size.height - 4)];
-        _grayBar.backgroundColor = color;
-        _grayBar.hidden = YES;
-        [self.contentView addSubview:_grayBar];
-    }
-    return self;
-}
 
 - (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event {
     UIView *hitView = [super hitTest:point withEvent:event];
@@ -89,13 +73,23 @@
     self.editingAccessoryView = editAccessoryButton;
 }
 
-- (void)textFieldDidBeginEditing:(UITextField *)textField {
-    // No-op
+- (void)textFieldDidBeginEditing:(UITextField *)field {
+    if (self.style == TextFieldCellStylePassword) {
+        self.textField.secureTextEntry = NO;
+        self.textField.autocorrectionType = UITextAutocorrectionTypeNo;
+        self.textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+        self.textField.returnKeyType = UIReturnKeyNext;
+    }
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
     if ([self.textFieldCellDelegate respondsToSelector:@selector(textFieldCellDidEndEditing:)]) {
         [self.textFieldCellDelegate textFieldCellDidEndEditing:self];
+    }
+    
+    if (self.style == TextFieldCellStylePassword) {
+        self.textField.secureTextEntry = [[AppSettings sharedInstance] hidePasswords];
+        self.textField.returnKeyType = UIReturnKeyDone;
     }
 }
 
@@ -105,6 +99,50 @@
     }
     
     return NO;
+}
+
+- (void)setStyle:(TextFieldCellStyle)style {
+    _style = style;
+    
+    switch (style) {
+        case TextFieldCellStylePassword: {
+            self.textField.secureTextEntry = [[AppSettings sharedInstance] hidePasswords];
+            self.textField.font = [UIFont fontWithName:@"Andale Mono" size:16];
+            
+            UIImage *accessoryImage = [UIImage imageNamed:@"eye"];
+            UIImage *editAccessoryImage = [UIImage imageNamed:@"wrench"];
+            
+            self.accessoryButton = [UIButton buttonWithType:UIButtonTypeCustom];
+            self.accessoryButton.frame = CGRectMake(0.0, 0.0, 40, 40);
+            [self.accessoryButton setImage:accessoryImage forState:UIControlStateNormal];
+            
+            self.editAccessoryButton = [UIButton buttonWithType:UIButtonTypeCustom];
+            self.editAccessoryButton.frame = CGRectMake(0.0, 0.0, 40, 40);
+            [self.editAccessoryButton setImage:editAccessoryImage forState:UIControlStateNormal];
+            break;
+        }
+        case TextFieldCellStyleUrl:
+            self.textField.textColor = [UIColor blueColor];
+            self.textField.autocorrectionType = UITextAutocorrectionTypeNo;
+            self.textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+            self.textField.keyboardType = UIKeyboardTypeURL;
+            
+            self.accessoryButton = [UIButton buttonWithType:UIButtonTypeCustom];
+            self.accessoryButton.frame = CGRectMake(0.0, 0.0, 40, 40);
+            [self.accessoryButton setImage:[UIImage imageNamed:@"external-link"] forState:UIControlStateNormal];
+        case TextFieldCellStylePlain:
+            break;
+        case TextFieldCellStyleTitle: {
+            UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
+            button.adjustsImageWhenHighlighted = NO;
+            self.accessoryButton = button;
+            
+            button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
+            button.adjustsImageWhenHighlighted = YES;
+            self.editAccessoryButton = button;
+            break;
+        }
+    }
 }
 
 @end

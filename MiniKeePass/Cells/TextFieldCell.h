@@ -20,6 +20,13 @@
 
 @protocol TextFieldCellDelegate;
 
+typedef NS_ENUM(NSInteger, TextFieldCellStyle) {
+    TextFieldCellStylePlain,
+    TextFieldCellStyleTitle,
+    TextFieldCellStylePassword,
+    TextFieldCellStyleUrl
+};
+
 @interface TextFieldCell : UITableViewCell <UITextFieldDelegate, UIActionSheetDelegate>
 
 @property (nonatomic, copy) NSString *title;
@@ -29,7 +36,7 @@
 @property (nonatomic, strong) UIButton *accessoryButton;
 @property (nonatomic, strong) UIButton *editAccessoryButton;
 
-@property (nonatomic, assign) BOOL showGrayBar;
+@property (nonatomic, assign) TextFieldCellStyle style;
 
 @end
 

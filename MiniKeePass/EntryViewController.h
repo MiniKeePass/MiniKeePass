@@ -18,14 +18,11 @@
 #import <Foundation/Foundation.h>
 
 #import "TextFieldCell.h"
-#import "TitleFieldCell.h"
-#import "UrlFieldCell.h"
 #import "TextViewCell.h"
-#import "PasswordFieldCell.h"
 #import "KdbLib.h"
 #import "MiniKeePassAppDelegate.h"
 
-@interface EntryViewController : UITableViewController <UIGestureRecognizerDelegate, TitleFieldCellDelegate, TextFieldCellDelegate>
+@interface EntryViewController : UITableViewController <UIGestureRecognizerDelegate, TextFieldCellDelegate>
 
 @property (nonatomic, assign) NSUInteger selectedImageIndex;
 @property (nonatomic, strong) KdbEntry *entry;

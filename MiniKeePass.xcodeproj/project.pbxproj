@@ -122,11 +122,8 @@
 		689FBE781AB27228005CB6BD /* KeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 689FBE751AB27228005CB6BD /* KeychainUtils.m */; };
 		689FBE791AB27228005CB6BD /* PasswordUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 689FBE771AB27228005CB6BD /* PasswordUtils.m */; };
 		689FBE8F1AB27283005CB6BD /* ImageButtonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 689FBE7F1AB27283005CB6BD /* ImageButtonCell.m */; };
-		689FBE911AB27283005CB6BD /* PasswordFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 689FBE831AB27283005CB6BD /* PasswordFieldCell.m */; };
 		689FBE931AB27283005CB6BD /* TextFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 689FBE871AB27283005CB6BD /* TextFieldCell.m */; };
 		689FBE941AB27283005CB6BD /* TextViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 689FBE891AB27283005CB6BD /* TextViewCell.m */; };
-		689FBE951AB27283005CB6BD /* TitleFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 689FBE8B1AB27283005CB6BD /* TitleFieldCell.m */; };
-		689FBE961AB27283005CB6BD /* UrlFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 689FBE8D1AB27283005CB6BD /* UrlFieldCell.m */; };
 		689FBE991AB272BD005CB6BD /* ImageFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 689FBE981AB272BD005CB6BD /* ImageFactory.m */; };
 		68A7F3951D76708000467354 /* GroupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68A7F3941D76708000467354 /* GroupViewController.swift */; };
 		68BFDBE51D7646B400EFACB3 /* GroupCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68BFDBE21D7646B400EFACB3 /* GroupCell.swift */; };
@@ -348,16 +345,10 @@
 		689FBE7A1AB27244005CB6BD /* VersionUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VersionUtils.h; sourceTree = "<group>"; };
 		689FBE7E1AB27283005CB6BD /* ImageButtonCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageButtonCell.h; sourceTree = "<group>"; };
 		689FBE7F1AB27283005CB6BD /* ImageButtonCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageButtonCell.m; sourceTree = "<group>"; };
-		689FBE821AB27283005CB6BD /* PasswordFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasswordFieldCell.h; sourceTree = "<group>"; };
-		689FBE831AB27283005CB6BD /* PasswordFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PasswordFieldCell.m; sourceTree = "<group>"; };
 		689FBE861AB27283005CB6BD /* TextFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextFieldCell.h; sourceTree = "<group>"; };
 		689FBE871AB27283005CB6BD /* TextFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextFieldCell.m; sourceTree = "<group>"; };
 		689FBE881AB27283005CB6BD /* TextViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextViewCell.h; sourceTree = "<group>"; };
 		689FBE891AB27283005CB6BD /* TextViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextViewCell.m; sourceTree = "<group>"; };
-		689FBE8A1AB27283005CB6BD /* TitleFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TitleFieldCell.h; sourceTree = "<group>"; };
-		689FBE8B1AB27283005CB6BD /* TitleFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TitleFieldCell.m; sourceTree = "<group>"; };
-		689FBE8C1AB27283005CB6BD /* UrlFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UrlFieldCell.h; sourceTree = "<group>"; };
-		689FBE8D1AB27283005CB6BD /* UrlFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UrlFieldCell.m; sourceTree = "<group>"; };
 		689FBE971AB272BD005CB6BD /* ImageFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageFactory.h; sourceTree = "<group>"; };
 		689FBE981AB272BD005CB6BD /* ImageFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageFactory.m; sourceTree = "<group>"; };
 		68A7F3941D76708000467354 /* GroupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupViewController.swift; sourceTree = "<group>"; };
@@ -843,16 +834,10 @@
 			children = (
 				689FBE7E1AB27283005CB6BD /* ImageButtonCell.h */,
 				689FBE7F1AB27283005CB6BD /* ImageButtonCell.m */,
-				689FBE821AB27283005CB6BD /* PasswordFieldCell.h */,
-				689FBE831AB27283005CB6BD /* PasswordFieldCell.m */,
 				689FBE861AB27283005CB6BD /* TextFieldCell.h */,
 				689FBE871AB27283005CB6BD /* TextFieldCell.m */,
-				689FBE891AB27283005CB6BD /* TextViewCell.m */,
-				689FBE8A1AB27283005CB6BD /* TitleFieldCell.h */,
-				689FBE8B1AB27283005CB6BD /* TitleFieldCell.m */,
 				689FBE881AB27283005CB6BD /* TextViewCell.h */,
-				689FBE8C1AB27283005CB6BD /* UrlFieldCell.h */,
-				689FBE8D1AB27283005CB6BD /* UrlFieldCell.m */,
+				689FBE891AB27283005CB6BD /* TextViewCell.m */,
 				5271A98C1ED7CA3E00B9AF2C /* TextFieldCell.xib */,
 			);
 			path = Cells;
@@ -1034,7 +1019,6 @@
 				689D03CD13A42B63005EBD36 /* Base64.m in Sources */,
 				689FBE781AB27228005CB6BD /* KeychainUtils.m in Sources */,
 				689FBE681AB271C6005CB6BD /* PinViewController.m in Sources */,
-				689FBE911AB27283005CB6BD /* PasswordFieldCell.m in Sources */,
 				689D03D513A42B63005EBD36 /* Kdb.m in Sources */,
 				689FBE661AB271C6005CB6BD /* LockScreenManager.m in Sources */,
 				6895D2F41D68FE00003D8C44 /* CustomFieldViewController.swift in Sources */,
@@ -1100,14 +1084,12 @@
 				682D45191603883900156830 /* OutputStream.m in Sources */,
 				68767B691D70B0830039EFE0 /* Array+Extensions.swift in Sources */,
 				682D451A1603883900156830 /* Sha256OutputStream.m in Sources */,
-				689FBE951AB27283005CB6BD /* TitleFieldCell.m in Sources */,
 				685D9D951603F8EE00D739D3 /* Kdb3Utils.m in Sources */,
 				6851FAFD186DD11D00A53B0E /* UIActionSheetAutoDismiss.m in Sources */,
 				689FBE931AB27283005CB6BD /* TextFieldCell.m in Sources */,
 				689EA6871D67F90800CF445E /* CharacterSetsViewController.swift in Sources */,
 				680C277616050C7A009403DE /* DDXMLDocument+MKPAdditions.m in Sources */,
 				689FBE8F1AB27283005CB6BD /* ImageButtonCell.m in Sources */,
-				689FBE961AB27283005CB6BD /* UrlFieldCell.m in Sources */,
 				689FBE651AB271C6005CB6BD /* KeypadView.m in Sources */,
 				689EA6891D67F90800CF445E /* PasswordGeneratorViewController.swift in Sources */,
 				689FBE941AB27283005CB6BD /* TextViewCell.m in Sources */,

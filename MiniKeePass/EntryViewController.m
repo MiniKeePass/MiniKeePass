@@ -33,10 +33,10 @@ enum {
 };
 
 @interface EntryViewController() {
-    TitleFieldCell *titleCell;
+    TextFieldCell *titleCell;
     TextFieldCell *usernameCell;
-    PasswordFieldCell *passwordCell;
-    UrlFieldCell *urlCell;
+    TextFieldCell *passwordCell;
+    TextFieldCell *urlCell;
     TextViewCell *commentsCell;
 }
 
@@ -51,6 +51,8 @@ enum {
 @property (nonatomic, readonly) NSArray *cells;
 
 @end
+
+static NSString *TextFieldCellIdentifier = @"TextFieldCell";
 
 @implementation EntryViewController
 
@@ -67,23 +69,18 @@ enum {
                                                                              target:nil
                                                                              action:nil];
         self.navigationItem.backBarButtonItem = backBarButtonItem;
-
-        NSString *identifier = @"cell";
         
-        [self.tableView registerNib:[UINib nibWithNibName:@"TextFieldCell" bundle:nil] forCellReuseIdentifier:identifier];
+        [self.tableView registerNib:[UINib nibWithNibName:@"TextFieldCell" bundle:nil] forCellReuseIdentifier:TextFieldCellIdentifier];
         
-//        titleCell = [[TitleFieldCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:nil];
-        titleCell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
-//        titleCell.delegate = self;
+        titleCell = [self.tableView dequeueReusableCellWithIdentifier:TextFieldCellIdentifier];
+        titleCell.style = TextFieldCellStyleTitle;
         titleCell.title = NSLocalizedString(@"Title", nil);
         titleCell.textField.placeholder = NSLocalizedString(@"Title", nil);
         titleCell.textField.enabled = NO;
         titleCell.textFieldCellDelegate = self;
-//        titleCell.imageButton.adjustsImageWhenHighlighted = NO;
-//        [titleCell.imageButton addTarget:self action:@selector(imageButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+        [titleCell.editAccessoryButton addTarget:self action:@selector(imageButtonPressed) forControlEvents:UIControlEventTouchUpInside];
 
-//        usernameCell = [[TextFieldCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:nil];
-        usernameCell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
+        usernameCell = [self.tableView dequeueReusableCellWithIdentifier:TextFieldCellIdentifier];
         usernameCell.title = NSLocalizedString(@"Username", nil);
         usernameCell.textField.placeholder = NSLocalizedString(@"Username", nil);
         usernameCell.textField.enabled = NO;
@@ -91,8 +88,8 @@ enum {
         usernameCell.textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
         usernameCell.textFieldCellDelegate = self;
 
-//        passwordCell = [[PasswordFieldCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:nil];
-        passwordCell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
+        passwordCell = [self.tableView dequeueReusableCellWithIdentifier:TextFieldCellIdentifier];
+        passwordCell.style = TextFieldCellStylePassword;
         passwordCell.title = NSLocalizedString(@"Password", nil);
         passwordCell.textField.placeholder = NSLocalizedString(@"Password", nil);
         passwordCell.textField.enabled = NO;
@@ -100,8 +97,8 @@ enum {
         [passwordCell.accessoryButton addTarget:self action:@selector(showPasswordPressed) forControlEvents:UIControlEventTouchUpInside];
         [passwordCell.editAccessoryButton addTarget:self action:@selector(generatePasswordPressed) forControlEvents:UIControlEventTouchUpInside];
 
-//        urlCell = [[UrlFieldCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:nil];
-        urlCell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
+        urlCell = [self.tableView dequeueReusableCellWithIdentifier:TextFieldCellIdentifier];
+        urlCell.style = TextFieldCellStyleUrl;
         urlCell.title = NSLocalizedString(@"URL", nil);
         urlCell.textField.placeholder = NSLocalizedString(@"URL", nil);
         urlCell.textField.enabled = NO;
@@ -288,14 +285,12 @@ enum {
         UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", nil) style:UIBarButtonItemStylePlain target:self action:@selector(cancelPressed)];
         self.navigationItem.leftBarButtonItem = cancelButton;
 
-        titleCell.imageButton.adjustsImageWhenHighlighted = YES;
         commentsCell.textView.editable = YES;
 
         [self.tableView insertRowsAtIndexPaths:paths withRowAnimation:UITableViewRowAnimationFade];
     } else {
         self.navigationItem.leftBarButtonItem = nil;
 
-        titleCell.imageButton.adjustsImageWhenHighlighted = NO;
         commentsCell.textView.editable = NO;
 
         [self.tableView deleteRowsAtIndexPaths:paths withRowAnimation:UITableViewRowAnimationFade];
@@ -305,16 +300,17 @@ enum {
     [self.tableView endUpdates];
 }
 
-- (void)titleFieldCell:(TitleFieldCell *)cell updatedTitle:(NSString *)title {
-    self.title = title;
-}
-
 #pragma mark - TextFieldCell delegate
 
 - (void)textFieldCellDidEndEditing:(TextFieldCell *)textFieldCell {
     NSIndexPath *indexPath = [self.tableView indexPathForCell:textFieldCell];
 
     switch (indexPath.section) {
+        case SECTION_DEFAULT_FIELDS: {
+            if (textFieldCell.style == TextFieldCellStyleTitle) {
+                self.title = textFieldCell.textField.text;
+            }
+        }
         case SECTION_CUSTOM_FIELDS: {
             StringField *stringField = [self.editingStringFields objectAtIndex:indexPath.row];
             stringField.value = textFieldCell.textField.text;
@@ -394,7 +390,6 @@ enum {
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *TextFieldCellIdentifier = @"TextFieldCell";
     static NSString *AddFieldCellIdentifier = @"AddFieldCell";
 
     switch (indexPath.section) {
@@ -427,9 +422,8 @@ enum {
                 }
 
                 StringField *stringField = [self.currentStringFields objectAtIndex:indexPath.row];
-                [cell setShowGrayBar:self.editing];
 
-                cell.textLabel.text = stringField.key;
+                cell.title = stringField.key;
                 cell.textField.text = stringField.value;
                 cell.textField.enabled = self.editing;
 
@@ -637,7 +631,8 @@ enum {
     _selectedImageIndex = index;
 
     UIImage *image = [[ImageFactory sharedInstance] imageForIndex:index];
-//    [titleCell.imageButton setImage:image forState:UIControlStateNormal];
+    [titleCell.accessoryButton setImage:image forState:UIControlStateNormal];
+    [titleCell.editAccessoryButton setImage:image forState:UIControlStateNormal];
 }
 
 - (void)imageButtonPressed {
