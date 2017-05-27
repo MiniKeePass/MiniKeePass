@@ -567,7 +567,7 @@ static NSString *TextFieldCellIdentifier = @"TextFieldCell";
     // Put cell into "Copied" state
     [cell addSubview:copiedLabel];
     cell.textField.alpha = 0;
-    cell.textLabel.alpha = 0;
+    cell.titleLabel.alpha = 0;
     cell.accessoryView.hidden = YES;
 
     int64_t delayInSeconds = 1.0;
@@ -577,7 +577,7 @@ static NSString *TextFieldCellIdentifier = @"TextFieldCell";
             // Return to normal state
             copiedLabel.alpha = 0;
             cell.textField.alpha = 1;
-            cell.textLabel.alpha = 1;
+            cell.titleLabel.alpha = 1;
             [cell setSelected:NO animated:YES];
         } completion:^(BOOL finished) {
             cell.accessoryView.hidden = NO;

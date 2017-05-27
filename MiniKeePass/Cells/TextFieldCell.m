@@ -22,7 +22,6 @@
 
 @interface TextFieldCell()
 @property (nonatomic, strong) UIView *grayBar;
-@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @end
 
 @implementation TextFieldCell
