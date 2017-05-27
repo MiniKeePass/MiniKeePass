@@ -80,6 +80,10 @@ class GroupViewController: UITableViewController {
         documentInteractionController?.dismissMenu(animated: false)
     }
 
+    override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
+        return !isEditing
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let indexPath = self.tableView.indexPathForSelectedRow else {
             return
