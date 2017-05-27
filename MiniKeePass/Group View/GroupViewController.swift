@@ -112,10 +112,10 @@ class GroupViewController: UITableViewController {
 
     private func updateEditingToolbar() {
         if (tableView.isEditing) {
-            let numSelectedRows = tableView.indexPathsForSelectedRows?.count
+            let numSelectedRows = tableView.indexPathsForSelectedRows?.count ?? 0
 
-            editingToolbarItems[EditButton.Delete.rawValue].isEnabled = numSelectedRows! > 0
-            editingToolbarItems[EditButton.Move.rawValue].isEnabled = numSelectedRows! > 0
+            editingToolbarItems[EditButton.Delete.rawValue].isEnabled = numSelectedRows > 0
+            editingToolbarItems[EditButton.Move.rawValue].isEnabled = numSelectedRows > 0
             editingToolbarItems[EditButton.Rename.rawValue].isEnabled = numSelectedRows == 1
         }
     }
