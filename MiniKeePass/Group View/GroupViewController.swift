@@ -425,7 +425,7 @@ class GroupViewController: UITableViewController {
     }
     
     func deletePressed(sender: UIBarButtonItem) {
-        if let indexPaths = tableView.indexPathsForVisibleRows {
+        if let indexPaths = tableView.indexPathsForSelectedRows {
             deleteItems(indexPaths: indexPaths)
         }
     }
