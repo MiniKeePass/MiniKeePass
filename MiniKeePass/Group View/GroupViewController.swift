@@ -86,8 +86,7 @@ class GroupViewController: UITableViewController {
         groups = parentGroup.groups as! [KdbGroup]
         entries = parentGroup.entries as! [KdbEntry]
 
-        let appSettings = AppSettings.sharedInstance()
-        if (appSettings?.sortAlphabetically())! {
+        if let appSettings = AppSettings.sharedInstance(), appSettings.sortAlphabetically() {
             groups.sort {
                 $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending
             }
@@ -174,23 +173,26 @@ class GroupViewController: UITableViewController {
         case .entries:
             let entry = entries[indexPath.row]
 
-            cell = tableView.dequeueReusableCell(withIdentifier: "EntryCell") ?? UITableViewCell(style: .default, reuseIdentifier: "EntryCell")
+            cell = tableView.dequeueReusableCell(withIdentifier: "EntryCell") ?? UITableViewCell(style: .subtitle, reuseIdentifier: "EntryCell")
             cell.textLabel?.text = entry.title()
             cell.imageView?.image = imageFactory?.image(for: entry)
 
             // Detail text is a combination of username and url
-            let username = entry.username()
-            let url = entry.url()
-            
-            if (username != nil && !(username!.isEmpty) && url != nil && !(url!.isEmpty)) {
-                cell.detailTextLabel?.text = "\(username ?? "username") @ \(url ?? "")"
-            } else if (username != nil && !(username!.isEmpty)) {
-                cell.detailTextLabel?.text = username
-            } else if (url != nil && !(url!.isEmpty)) {
-                cell.detailTextLabel?.text = url
-            } else {
-                cell.detailTextLabel?.text = ""
+            var accountDescription = ""
+            var usernameSet = false
+            if let username = entry.username(), !(username.isEmpty) {
+                usernameSet = true
+                accountDescription += username
             }
+            
+            if let url = entry.url(), !(url.isEmpty) {
+                if usernameSet {
+                    accountDescription += " @ "
+                }
+                accountDescription += url
+            }
+            
+            cell.detailTextLabel?.text = accountDescription
         }
 
         return cell
@@ -286,15 +288,19 @@ class GroupViewController: UITableViewController {
 
     func settingsPressed(sender: UIBarButtonItem) {
         let storyboard = UIStoryboard(name: "Settings", bundle: nil)
-        let viewController = storyboard.instantiateInitialViewController()!
+        guard let viewController = storyboard.instantiateInitialViewController() else {
+            return
+        }
 
         present(viewController, animated: true, completion: nil)
     }
 
     func actionPressed(sender: UIBarButtonItem) {
         // Get the URL of the database
-        let appDelegate = MiniKeePassAppDelegate.getDelegate()
-        let url = URL(fileURLWithPath: (appDelegate?.databaseDocument.filename)!)
+        guard let appDelegate = MiniKeePassAppDelegate.getDelegate() else {
+            return
+        }
+        let url = URL(fileURLWithPath: appDelegate.databaseDocument.filename)
 
         // Present the options to handle the database
         documentInteractionController = UIDocumentInteractionController(url: url)
@@ -335,9 +341,14 @@ class GroupViewController: UITableViewController {
         let databaseDocument = appDelegate?.databaseDocument
 
         // Create and add a group
-        let group = databaseDocument?.kdbTree.createGroup(parentGroup)
-        group?.name = NSLocalizedString("New Group", comment: "")
-        group?.image = parentGroup.image
+        guard let group = databaseDocument?.kdbTree.createGroup(parentGroup) else {
+            // Could not greate new group
+            // TODO: Display an error?
+            return
+        }
+        
+        group.name = NSLocalizedString("New Group", comment: "")
+        group.image = parentGroup.image
 
         // Display the Rename Item view
         let storyboard = UIStoryboard(name: "RenameItem", bundle: nil)
@@ -351,10 +362,10 @@ class GroupViewController: UITableViewController {
             databaseDocument?.save()
 
             // Add the group to the model
-            let index = self.groups.insertionIndexOf(group!) {
+            let index = self.groups.insertionIndexOf(group) {
                 $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending
             }
-            self.groups.insert(group!, at: index)
+            self.groups.insert(group, at: index)
 
             // Update the table
             if (self.groups.count == 1) {
@@ -375,19 +386,24 @@ class GroupViewController: UITableViewController {
         let databaseDocument = appDelegate?.databaseDocument
 
         // Create and add a entry
-        let entry = databaseDocument?.kdbTree.createEntry(parentGroup)
-        entry?.setTitle(NSLocalizedString("New Entry", comment: ""))
-        entry?.image = parentGroup.image
+        guard let entry = databaseDocument?.kdbTree.createEntry(parentGroup) else {
+            // Could not create new entry
+            // TODO: Display error?
+            return
+        }
+        
+        entry.setTitle(NSLocalizedString("New Entry", comment: ""))
+        entry.image = parentGroup.image
         parentGroup.addEntry(entry)
 
         // Save the database
         databaseDocument?.save()
 
         // Add the entry to the model
-        let index = self.entries.insertionIndexOf(entry!) {
+        let index = self.entries.insertionIndexOf(entry) {
             $0.title().localizedCaseInsensitiveCompare($1.title()) == .orderedAscending
         }
-        self.entries.insert(entry!, at: index)
+        self.entries.insert(entry, at: index)
 
         // Update the table
         if (self.entries.count == 1) {
@@ -400,17 +416,22 @@ class GroupViewController: UITableViewController {
         // Show the Entry view controller
         let viewController = EntryViewController(style: .grouped)
         viewController.entry = entry
-        viewController.title = entry?.title()
+        viewController.title = entry.title()
         viewController.isNewEntry = true
         navigationController?.pushViewController(viewController, animated: true)
     }
     
     func deletePressed(sender: UIBarButtonItem) {
-        deleteItems(indexPaths: tableView.indexPathsForSelectedRows!)
+        if let indexPaths = tableView.indexPathsForVisibleRows {
+            deleteItems(indexPaths: indexPaths)
+        }
     }
 
     func movePressed(sender: UIBarButtonItem) {
-        let indexPaths = tableView.indexPathsForSelectedRows!
+        guard let indexPaths = tableView.indexPathsForSelectedRows else {
+            // Nothing selected. Shouldn't have been possible to press "Move"
+            return;
+        }
 
         // Create a list of all the items to move
         var itemsToMove: [AnyObject] = []
@@ -432,10 +453,10 @@ class GroupViewController: UITableViewController {
         viewController.groupSelected = { (moveItemsViewController: MoveItemsViewController, selectedGroup: KdbGroup) -> Void in
             // Delete the items from the model
             for obj in itemsToMove {
-                if (obj is KdbGroup) {
-                    self.groups.removeObject(obj as! KdbGroup)
-                } else if (obj is KdbEntry) {
-                    self.entries.removeObject(obj as! KdbEntry)
+                if let group = obj as? KdbGroup {
+                    self.groups.removeObject(group)
+                } else if let entry = obj as? KdbEntry {
+                    self.entries.removeObject(entry)
                 }
             }
 
@@ -457,7 +478,10 @@ class GroupViewController: UITableViewController {
     }
 
     func renamePressed(sender: UIBarButtonItem) {
-        let indexPath = tableView.indexPathForSelectedRow!
+        guard let indexPath = tableView.indexPathForSelectedRow else {
+            // Nothing selected. This shoudn't have been called
+            return
+        }
 
         // Load the RenameItem storyboard
         let storyboard = UIStoryboard(name: "RenameItem", bundle: nil)
