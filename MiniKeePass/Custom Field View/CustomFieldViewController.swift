@@ -53,8 +53,7 @@ class CustomFieldViewController: UITableViewController {
     // MARK: - Actions
 
     @IBAction func donePressedAction(_ sender: UIBarButtonItem?) {
-        let name = nameTextField.text;
-        if (name == nil || name!.isEmpty) {
+        guard let name = nameTextField.text, !(name.isEmpty) else {
             self.presentAlertWithTitle(NSLocalizedString("Error", comment: ""), message: NSLocalizedString("Name cannot be empty", comment: ""))
             return
         }

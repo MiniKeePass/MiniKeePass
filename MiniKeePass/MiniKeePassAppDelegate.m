@@ -35,16 +35,10 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     _databaseDocument = nil;
     
-    // Create the files view
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Files" bundle:[NSBundle mainBundle]];
-    self.navigationController = [storyboard instantiateInitialViewController];
-    self.filesViewController = (FilesViewController *)self.navigationController.topViewController;
-
-    // Create the window
-    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    self.window.rootViewController = self.navigationController;
-    [self.window makeKeyAndVisible];
-
+    // Store references to base view controllers
+    self.navigationController = (UINavigationController *) self.window.rootViewController;
+    self.filesViewController = (FilesViewController *) self.navigationController.topViewController;
+    
     // Add a pasteboard notification listener to support clearing the clipboard
     NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
     [notificationCenter addObserver:self
@@ -129,12 +123,10 @@
     
     _databaseDocument = newDatabaseDocument;
     
-    // Create and push on the root group view controller
-    GroupViewController *groupViewController = [[GroupViewController alloc] initWithStyle:UITableViewStylePlain];
-    groupViewController.parentGroup = _databaseDocument.kdbTree.root;
-    groupViewController.title = [_databaseDocument.filename lastPathComponent];
-
-    [self.navigationController pushViewController:groupViewController animated:YES];
+    UINavigationController *navController = (UINavigationController *)self.window.rootViewController;
+    FilesViewController * filesViewController = navController.viewControllers.firstObject;
+    
+    [filesViewController performSegueWithIdentifier:@"FileOpened" sender:self];
 }
 
 - (void)closeDatabase {

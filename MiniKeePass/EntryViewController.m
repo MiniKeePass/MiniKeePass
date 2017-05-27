@@ -45,7 +45,7 @@ enum {
 @property (nonatomic, readonly) NSArray *entryStringFields;
 @property (nonatomic, readonly) NSArray *currentStringFields;
 
-@property (nonatomic, strong) NSMutableArray *filledCells;
+@property (nonatomic, readonly) NSArray *filledCells;
 @property (nonatomic, readonly) NSArray *defaultCells;
 
 @property (nonatomic, readonly) NSArray *cells;
@@ -56,72 +56,57 @@ static NSString *TextFieldCellIdentifier = @"TextFieldCell";
 
 @implementation EntryViewController
 
-- (id)initWithStyle:(UITableViewStyle)style {
-    self = [super initWithStyle:style];
-    if (self) {
-        self.tableView.allowsSelectionDuringEditing = YES;
-        if ([self.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
-            self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
-        }
-
-        self.navigationItem.rightBarButtonItem = self.editButtonItem;
-
-        // Set the back button name to Entry for when the web view is pushed on
-        UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Entry", nil)
-                                                                              style:UIBarButtonItemStylePlain
-                                                                             target:nil
-                                                                             action:nil];
-        self.navigationItem.backBarButtonItem = backBarButtonItem;
-        
-        [self.tableView registerNib:[UINib nibWithNibName:@"TextFieldCell" bundle:nil] forCellReuseIdentifier:TextFieldCellIdentifier];
-        
-        titleCell = [self.tableView dequeueReusableCellWithIdentifier:TextFieldCellIdentifier];
-        titleCell.style = TextFieldCellStyleTitle;
-        titleCell.title = NSLocalizedString(@"Title", nil);
-        titleCell.delegate = self;
-        titleCell.textField.placeholder = NSLocalizedString(@"Title", nil);
-        titleCell.textField.enabled = NO;
-        [titleCell.editAccessoryButton addTarget:self action:@selector(imageButtonPressed) forControlEvents:UIControlEventTouchUpInside];
-
-        usernameCell = [self.tableView dequeueReusableCellWithIdentifier:TextFieldCellIdentifier];
-        usernameCell.title = NSLocalizedString(@"Username", nil);
-        usernameCell.delegate = self;
-        usernameCell.textField.placeholder = NSLocalizedString(@"Username", nil);
-        usernameCell.textField.enabled = NO;
-        usernameCell.textField.autocorrectionType = UITextAutocorrectionTypeNo;
-        usernameCell.textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
-
-        passwordCell = [self.tableView dequeueReusableCellWithIdentifier:TextFieldCellIdentifier];
-        passwordCell.style = TextFieldCellStylePassword;
-        passwordCell.title = NSLocalizedString(@"Password", nil);
-        passwordCell.delegate = self;
-        passwordCell.textField.placeholder = NSLocalizedString(@"Password", nil);
-        passwordCell.textField.enabled = NO;
-        [passwordCell.accessoryButton addTarget:self action:@selector(showPasswordPressed) forControlEvents:UIControlEventTouchUpInside];
-        [passwordCell.editAccessoryButton addTarget:self action:@selector(generatePasswordPressed) forControlEvents:UIControlEventTouchUpInside];
-
-        urlCell = [self.tableView dequeueReusableCellWithIdentifier:TextFieldCellIdentifier];
-        urlCell.style = TextFieldCellStyleUrl;
-        urlCell.title = NSLocalizedString(@"URL", nil);
-        urlCell.delegate = self;
-        urlCell.textField.placeholder = NSLocalizedString(@"URL", nil);
-        urlCell.textField.enabled = NO;
-        urlCell.textField.returnKeyType = UIReturnKeyDone;
-        [urlCell.accessoryButton addTarget:self action:@selector(openUrlPressed) forControlEvents:UIControlEventTouchUpInside];
-
-        commentsCell = [[TextViewCell alloc] init];
-        commentsCell.textView.editable = NO;
-
-        _defaultCells = @[titleCell, usernameCell, passwordCell, urlCell];
-        _filledCells = [[NSMutableArray alloc] initWithCapacity:4];
-
-        _editingStringFields = [NSMutableArray array];
-    }
-    return self;
-}
-
 - (void)viewDidLoad {
-    self.tableView.sectionFooterHeight = 0.0f;
+    self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    
+    [self.tableView registerNib:[UINib nibWithNibName:@"TextFieldCell" bundle:nil] forCellReuseIdentifier:TextFieldCellIdentifier];
+    
+    titleCell = [self.tableView dequeueReusableCellWithIdentifier:TextFieldCellIdentifier];
+    titleCell.style = TextFieldCellStyleTitle;
+    titleCell.title = NSLocalizedString(@"Title", nil);
+    titleCell.delegate = self;
+    titleCell.textField.placeholder = NSLocalizedString(@"Title", nil);
+    titleCell.textField.enabled = NO;
+    titleCell.textField.text = self.entry.title;
+    [titleCell.editAccessoryButton addTarget:self action:@selector(imageButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+    [self setSelectedImageIndex:self.entry.image];
+    
+    usernameCell = [self.tableView dequeueReusableCellWithIdentifier:TextFieldCellIdentifier];
+    usernameCell.title = NSLocalizedString(@"Username", nil);
+    usernameCell.delegate = self;
+    usernameCell.textField.placeholder = NSLocalizedString(@"Username", nil);
+    usernameCell.textField.enabled = NO;
+    usernameCell.textField.text = self.entry.username;
+    usernameCell.textField.autocorrectionType = UITextAutocorrectionTypeNo;
+    usernameCell.textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    
+    passwordCell = [self.tableView dequeueReusableCellWithIdentifier:TextFieldCellIdentifier];
+    passwordCell.style = TextFieldCellStylePassword;
+    passwordCell.title = NSLocalizedString(@"Password", nil);
+    passwordCell.delegate = self;
+    passwordCell.textField.placeholder = NSLocalizedString(@"Password", nil);
+    passwordCell.textField.enabled = NO;
+    passwordCell.textField.text = self.entry.password;
+    [passwordCell.accessoryButton addTarget:self action:@selector(showPasswordPressed) forControlEvents:UIControlEventTouchUpInside];
+    [passwordCell.editAccessoryButton addTarget:self action:@selector(generatePasswordPressed) forControlEvents:UIControlEventTouchUpInside];
+    
+    urlCell = [self.tableView dequeueReusableCellWithIdentifier:TextFieldCellIdentifier];
+    urlCell.style = TextFieldCellStyleUrl;
+    urlCell.title = NSLocalizedString(@"URL", nil);
+    urlCell.delegate = self;
+    urlCell.textField.placeholder = NSLocalizedString(@"URL", nil);
+    urlCell.textField.enabled = NO;
+    urlCell.textField.returnKeyType = UIReturnKeyDone;
+    urlCell.textField.text = self.entry.url;
+    [urlCell.accessoryButton addTarget:self action:@selector(openUrlPressed) forControlEvents:UIControlEventTouchUpInside];
+    
+    commentsCell = [[TextViewCell alloc] init];
+    commentsCell.textView.editable = NO;
+    commentsCell.textView.text = self.entry.notes;
+    
+    _defaultCells = @[titleCell, usernameCell, passwordCell, urlCell];
+    
+    _editingStringFields = [NSMutableArray array];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -183,22 +168,20 @@ static NSString *TextFieldCellIdentifier = @"TextFieldCell";
     passwordCell.textField.text = self.entry.password;
     urlCell.textField.text = self.entry.url;
     commentsCell.textView.text = self.entry.notes;
-
-    // Track what cells are filled out
-    [self updateFilledCells];
 }
 
 - (NSArray *)cells {
     return self.editing ? self.defaultCells : self.filledCells;
 }
 
-- (void)updateFilledCells {
-    [self.filledCells removeAllObjects];
+- (NSArray *)filledCells {
+    NSMutableArray *filledCells = [NSMutableArray arrayWithCapacity:self.defaultCells.count];
     for (TextFieldCell *cell in self.defaultCells) {
         if (cell.textField.text.length > 0) {
-            [self.filledCells addObject:cell];
+            [filledCells addObject:cell];
         }
     }
+    return filledCells;
 }
 
 - (NSArray *)currentStringFields {
@@ -247,7 +230,6 @@ static NSString *TextFieldCellIdentifier = @"TextFieldCell";
             self.entry.url = urlCell.textField.text;
             self.entry.notes = commentsCell.textView.text;
             self.entry.lastModificationTime = [NSDate date];
-            [self updateFilledCells];
 
             if (self.isKdb4) {
                 // Ensure any textfield currently being edited is saved
@@ -315,8 +297,10 @@ static NSString *TextFieldCellIdentifier = @"TextFieldCell";
             }
         }
         case SECTION_CUSTOM_FIELDS: {
-            StringField *stringField = [self.editingStringFields objectAtIndex:indexPath.row];
-            stringField.value = textFieldCell.textField.text;
+            if (indexPath.row < self.editingStringFields.count) {
+                StringField *stringField = [self.editingStringFields objectAtIndex:indexPath.row];
+                stringField.value = textFieldCell.textField.text;
+            }
             break;
         }
         default:

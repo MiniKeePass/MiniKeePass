@@ -42,6 +42,18 @@ class FilesViewController: UITableViewController {
         tableView.reloadData()
     }
 
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let groupViewController = segue.destination as? GroupViewController else {
+            return
+        }
+        
+        let appDelegate = MiniKeePassAppDelegate.getDelegate()
+        let document = appDelegate?.databaseDocument
+        
+        groupViewController.parentGroup = document?.kdbTree.root
+        groupViewController.title = URL(fileURLWithPath: document!.filename).lastPathComponent
+    }
+    
     // MARK: - Empty State
 
     func toggleEmptyState() {

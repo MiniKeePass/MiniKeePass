@@ -54,11 +54,6 @@ class GroupViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        tableView.allowsMultipleSelectionDuringEditing = true
-        if #available(iOS 9.0, *) {
-            tableView.cellLayoutMarginsFollowReadableWidth = false
-        }
-
         // Add the edit button
         navigationItem.rightBarButtonItems = [self.editButtonItem]
 
@@ -85,6 +80,23 @@ class GroupViewController: UITableViewController {
         documentInteractionController?.dismissMenu(animated: false)
     }
 
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let indexPath = self.tableView.indexPathForSelectedRow else {
+            return
+        }
+        
+        if let destination = segue.destination as? GroupViewController {
+            let group = groups[indexPath.row]
+            destination.parentGroup = group
+            destination.title = group.name
+        }
+        else if let destination = segue.destination as? EntryViewController {
+            let entry = entries[indexPath.row]
+            destination.entry = entry
+            destination.title = entry.title()
+        }
+    }
+    
     func updateViewModel() {
         groups = parentGroup.groups as! [KdbGroup]
         entries = parentGroup.entries as! [KdbEntry]
@@ -170,13 +182,14 @@ class GroupViewController: UITableViewController {
         case .groups:
             let group = groups[indexPath.row]
 
-            cell = tableView.dequeueReusableCell(withIdentifier: "GroupCell") ?? UITableViewCell(style: .default, reuseIdentifier: "GroupCell")
+            cell = tableView.dequeueReusableCell(withIdentifier: "GroupCell")!
             cell.textLabel?.text = group.name
             cell.imageView?.image = imageFactory?.image(for: group)
+
         case .entries:
             let entry = entries[indexPath.row]
 
-            cell = tableView.dequeueReusableCell(withIdentifier: "EntryCell") ?? UITableViewCell(style: .subtitle, reuseIdentifier: "EntryCell")
+            cell = tableView.dequeueReusableCell(withIdentifier: "EntryCell")!
             cell.textLabel?.text = entry.title()
             cell.imageView?.image = imageFactory?.image(for: entry)
 
@@ -203,23 +216,7 @@ class GroupViewController: UITableViewController {
 
     // MARK: - UITableView delegate
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if (!isEditing) {
-            switch Section.AllValues[indexPath.section] {
-            case .groups:
-                let group = groups[indexPath.row]
-                let groupViewController = GroupViewController(style: .plain)
-                groupViewController.parentGroup = group
-                groupViewController.title = group.name
-                navigationController?.pushViewController(groupViewController, animated: true)
-
-            case .entries:
-                let entry = entries[indexPath.row]
-                let entryViewController = EntryViewController(style: .grouped)
-                entryViewController.entry = entry;
-                entryViewController.title = entry.title()
-                navigationController?.pushViewController(entryViewController, animated: true)
-            }
-        } else {
+        if (isEditing) {
             updateEditingToolbar()
         }
     }
