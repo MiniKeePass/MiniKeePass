@@ -55,6 +55,9 @@ class GroupViewController: UITableViewController {
         super.viewDidLoad()
 
         tableView.allowsMultipleSelectionDuringEditing = true
+        if #available(iOS 9.0, *) {
+            tableView.cellLayoutMarginsFollowReadableWidth = false
+        }
 
         // Add the edit button
         navigationItem.rightBarButtonItems = [self.editButtonItem]

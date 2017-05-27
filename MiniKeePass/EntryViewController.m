@@ -60,6 +60,9 @@ static NSString *TextFieldCellIdentifier = @"TextFieldCell";
     self = [super initWithStyle:style];
     if (self) {
         self.tableView.allowsSelectionDuringEditing = YES;
+        if ([self.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
+            self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
+        }
 
         self.navigationItem.rightBarButtonItem = self.editButtonItem;
 
