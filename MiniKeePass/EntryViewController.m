@@ -75,34 +75,34 @@ static NSString *TextFieldCellIdentifier = @"TextFieldCell";
         titleCell = [self.tableView dequeueReusableCellWithIdentifier:TextFieldCellIdentifier];
         titleCell.style = TextFieldCellStyleTitle;
         titleCell.title = NSLocalizedString(@"Title", nil);
+        titleCell.delegate = self;
         titleCell.textField.placeholder = NSLocalizedString(@"Title", nil);
         titleCell.textField.enabled = NO;
-        titleCell.textFieldCellDelegate = self;
         [titleCell.editAccessoryButton addTarget:self action:@selector(imageButtonPressed) forControlEvents:UIControlEventTouchUpInside];
 
         usernameCell = [self.tableView dequeueReusableCellWithIdentifier:TextFieldCellIdentifier];
         usernameCell.title = NSLocalizedString(@"Username", nil);
+        usernameCell.delegate = self;
         usernameCell.textField.placeholder = NSLocalizedString(@"Username", nil);
         usernameCell.textField.enabled = NO;
         usernameCell.textField.autocorrectionType = UITextAutocorrectionTypeNo;
         usernameCell.textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
-        usernameCell.textFieldCellDelegate = self;
 
         passwordCell = [self.tableView dequeueReusableCellWithIdentifier:TextFieldCellIdentifier];
         passwordCell.style = TextFieldCellStylePassword;
         passwordCell.title = NSLocalizedString(@"Password", nil);
+        passwordCell.delegate = self;
         passwordCell.textField.placeholder = NSLocalizedString(@"Password", nil);
         passwordCell.textField.enabled = NO;
-        passwordCell.textFieldCellDelegate = self;
         [passwordCell.accessoryButton addTarget:self action:@selector(showPasswordPressed) forControlEvents:UIControlEventTouchUpInside];
         [passwordCell.editAccessoryButton addTarget:self action:@selector(generatePasswordPressed) forControlEvents:UIControlEventTouchUpInside];
 
         urlCell = [self.tableView dequeueReusableCellWithIdentifier:TextFieldCellIdentifier];
         urlCell.style = TextFieldCellStyleUrl;
         urlCell.title = NSLocalizedString(@"URL", nil);
+        urlCell.delegate = self;
         urlCell.textField.placeholder = NSLocalizedString(@"URL", nil);
         urlCell.textField.enabled = NO;
-        urlCell.textFieldCellDelegate = self;
         urlCell.textField.returnKeyType = UIReturnKeyDone;
         [urlCell.accessoryButton addTarget:self action:@selector(openUrlPressed) forControlEvents:UIControlEventTouchUpInside];
 
@@ -417,7 +417,7 @@ static NSString *TextFieldCellIdentifier = @"TextFieldCell";
                 if (cell == nil) {
                     cell = [[TextFieldCell alloc] initWithStyle:UITableViewCellStyleValue2
                                                 reuseIdentifier:TextFieldCellIdentifier];
-                    cell.textFieldCellDelegate = self;
+                    cell.delegate = self;
                     cell.textField.returnKeyType = UIReturnKeyDone;
                 }
 
