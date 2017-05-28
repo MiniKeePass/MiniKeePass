@@ -553,22 +553,18 @@ static NSString *TextFieldCellIdentifier = @"TextFieldCell";
 
     UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
     pasteboard.string = cell.textField.text;
-
+    
     // Construct label
-    UILabel *copiedLabel = [[UILabel alloc] init];
+    UILabel *copiedLabel = [[UILabel alloc] initWithFrame:cell.bounds];
     copiedLabel.text = NSLocalizedString(@"Copied", nil);
     copiedLabel.font = [UIFont boldSystemFontOfSize:18];
     copiedLabel.textAlignment = NSTextAlignmentCenter;
+
     copiedLabel.textColor = [UIColor whiteColor];
-    copiedLabel.backgroundColor = [UIColor clearColor];
-    [copiedLabel sizeToFit];
-    copiedLabel.center = CGPointMake(cell.bounds.size.width / 2.0f, cell.bounds.size.height / 2.0f);
+    copiedLabel.backgroundColor = [UIColor lightGrayColor];
 
     // Put cell into "Copied" state
     [cell addSubview:copiedLabel];
-    cell.textField.alpha = 0;
-    cell.titleLabel.alpha = 0;
-    cell.accessoryView.hidden = YES;
 
     int64_t delayInSeconds = 1.0;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
@@ -576,11 +572,8 @@ static NSString *TextFieldCellIdentifier = @"TextFieldCell";
         [UIView animateWithDuration:0.5 animations:^{
             // Return to normal state
             copiedLabel.alpha = 0;
-            cell.textField.alpha = 1;
-            cell.titleLabel.alpha = 1;
             [cell setSelected:NO animated:YES];
         } completion:^(BOOL finished) {
-            cell.accessoryView.hidden = NO;
             [copiedLabel removeFromSuperview];
             self.tableView.allowsSelection = YES;
         }];
