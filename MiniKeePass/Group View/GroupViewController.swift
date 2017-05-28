@@ -74,6 +74,70 @@ class GroupViewController: UITableViewController {
         toolbarItems = standardToolbarItems
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        // Ensure cell reflects name change and proper cell is highlighted
+        var updatedIndexPath: IndexPath?
+
+        // Only matters if a cell was selected
+        if let indexPath = tableView.indexPathForSelectedRow {
+            let cell = tableView.cellForRow(at: indexPath)
+            let section = indexPath.section
+            
+            updateViewModel()
+            
+            switch section {
+            case Section.groups.rawValue:
+                // Check if an update is needed
+                if groups[indexPath.row].name == cell?.textLabel?.text {
+                    break
+                }
+                
+                // Find most recently updated group
+                var index = -1
+                var mostRecent: KdbGroup?
+                for i in 0 ..< groups.count {
+                    let group = groups[i]
+                    if mostRecent == nil || group.lastModificationTime > mostRecent!.lastModificationTime {
+                        mostRecent = group
+                        index = i
+                    }
+                }
+
+                updatedIndexPath = IndexPath(row: index, section: section)
+            case Section.entries.rawValue:
+                // Check if an update is needed
+                if entries[indexPath.row].title() == cell?.textLabel?.text {
+                    break
+                }
+
+                // Find most recently updated entry
+                var index = -1
+                var mostRecent: KdbEntry?
+                for i in 0 ..< entries.count {
+                    let entry = entries[i]
+                    if mostRecent == nil || entry.lastModificationTime > mostRecent!.lastModificationTime {
+                        mostRecent = entry
+                        index = i
+                    }
+                }
+                
+                updatedIndexPath = IndexPath(row: index, section: section)
+            default: break
+            }
+        }
+        
+        self.setEditing(false, animated: false)
+        
+        if updatedIndexPath != nil {
+            let indexSet = IndexSet(integer: updatedIndexPath!.section)
+            tableView.reloadSections(indexSet, with: .none)
+            
+            tableView.selectRow(at: updatedIndexPath, animated: false, scrollPosition: .none)
+        }
+        
+        super.viewWillAppear(animated)
+    }
+    
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
 
@@ -492,15 +556,6 @@ class GroupViewController: UITableViewController {
         let navigationController = storyboard.instantiateInitialViewController() as! UINavigationController
 
         let viewController = navigationController.topViewController as! RenameItemViewController
-        viewController.donePressed = { (renameItemViewController: RenameItemViewController) -> Void in
-            // Update the table
-            self.tableView.reloadRows(at: [indexPath], with: .automatic)
-
-            self.setEditing(false, animated: true)
-        }
-        viewController.cancelPressed = { (renameItemViewController: RenameItemViewController) -> Void in
-            self.setEditing(false, animated: true)
-        }
 
         // Set the group/entry to rename
         switch Section.AllValues[indexPath.section] {
