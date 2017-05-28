@@ -585,7 +585,7 @@ static NSString *TextFieldCellIdentifier = @"TextFieldCell";
 - (void)editStringField:(NSIndexPath *)indexPath {
     StringField *stringField = [self.editingStringFields objectAtIndex:indexPath.row];
     
-    // Display the Rename Database view
+    // Display the custom field editing view
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"CustomField" bundle:nil];
     UINavigationController *navigationController = [storyboard instantiateInitialViewController];
     
