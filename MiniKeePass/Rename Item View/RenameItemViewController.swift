@@ -74,12 +74,14 @@ class RenameItemViewController: UITableViewController {
         }
 
         // Update the group/entry
-        if (group != nil) {
+        if group != nil {
             group!.name = name
             group!.image = selectedImageIndex
-        } else if (entry != nil) {
+            group!.lastModificationTime = Date()
+        } else if entry != nil {
             entry!.setTitle(name)
             entry!.image = selectedImageIndex
+            entry!.lastModificationTime = Date()
         }
 
         // Save the database
