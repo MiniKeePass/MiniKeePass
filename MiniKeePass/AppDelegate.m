@@ -65,10 +65,6 @@
     return YES;
 }
 
-+ (AppDelegate *)appDelegate {
-    return [[UIApplication sharedApplication] delegate];
-}
-
 + (AppDelegate *)getDelegate {
     return [[UIApplication sharedApplication] delegate];
 }

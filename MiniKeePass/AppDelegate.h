@@ -24,7 +24,6 @@
 @property (nonatomic, strong) DatabaseDocument *databaseDocument;
 
 + (AppDelegate *)getDelegate;
-+ (AppDelegate *)appDelegate;
 + (NSString *)documentsDirectory;
 + (NSURL *)documentsDirectoryUrl;
 

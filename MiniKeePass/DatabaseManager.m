@@ -117,7 +117,7 @@ static DatabaseManager *sharedInstance;
     NSString *path = url.path;
 
     // Close the current database if we're deleting it's file
-    AppDelegate *appDelegate = [AppDelegate appDelegate];
+    AppDelegate *appDelegate = [AppDelegate getDelegate];
     if ([path isEqualToString:appDelegate.databaseDocument.filename]) {
         [appDelegate closeDatabase];
     }
@@ -181,7 +181,7 @@ static DatabaseManager *sharedInstance;
     self.selectedFilename = filename;
 
     // Get the application delegate
-    AppDelegate *appDelegate = [AppDelegate appDelegate];
+    AppDelegate *appDelegate = [AppDelegate getDelegate];
 
     // Get the documents directory
     NSString *documentsDirectory = [AppDelegate documentsDirectory];
@@ -274,7 +274,7 @@ static DatabaseManager *sharedInstance;
         // Dismiss the view controller, and after animation set the database document
         [passwordEntryViewController dismissViewControllerAnimated:YES completion:^{
             // Set the database document in the application delegate
-            AppDelegate *appDelegate = [AppDelegate appDelegate];
+            AppDelegate *appDelegate = [AppDelegate getDelegate];
             appDelegate.databaseDocument = dd;
         }];
     } @catch (NSException *exception) {
