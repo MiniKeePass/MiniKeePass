@@ -199,7 +199,7 @@
         <!--Navigation Controller-->
         <scene sceneID="DAx-kx-5iF">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" toolbarHidden="NO" id="APd-hG-9Gf" sceneMemberID="viewController">
+                <navigationController toolbarHidden="NO" id="APd-hG-9Gf" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="waS-9H-vbV">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
