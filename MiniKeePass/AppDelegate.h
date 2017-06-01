@@ -27,10 +27,7 @@
 + (NSString *)documentsDirectory;
 + (NSURL *)documentsDirectoryUrl;
 
-- (void)importUrl:(NSURL *)url;
-
 - (void)closeDatabase;
-- (void)deleteKeychainData;
 - (void)deleteAllData;
 
 @end
