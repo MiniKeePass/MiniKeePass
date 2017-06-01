@@ -31,6 +31,10 @@ class FilesViewController: UITableViewController, NewDatabaseDelegate {
     var databaseFiles: [String] = []
     var keyFiles: [String] = []
     
+    override func viewDidLoad() {
+        self.navigationItem.rightBarButtonItem = self.editButtonItem
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
