@@ -17,8 +17,8 @@
 
 "Files" = "文件";
 "Databases" = "数据库";
-"Key File" = "密匙文件";
-"Key Files" = "密匙文件";
+"Key File" = "密钥文件";
+"Key Files" = "密钥文件";
 "Groups" = "群组";
 "Entries" = "记录";
 "Group" = "群组";
@@ -50,8 +50,8 @@
 "Move" = "移动";
 "Rename" = "重命名";
 "Database Name" = "数据库名";
-"Last Modified" = "最后修改";
-"Copied" = "已拷贝";
+"Last Modified" = "最后修改于";
+"Copied" = "已拷贝至剪切板";
 "In Memory Protection" = "内存保护";
 "Custom Field" = "自定义字段";
 "Custom Fields" = "自定义字段";
@@ -60,11 +60,11 @@
 "Backup" = "备份";
 
 // General Messages
-"Enter your PIN to unlock" = "输入 PIN 码解锁";
-"Unlock MiniKeePass" = "Unlock MiniKeePass"; // FIXME
-"Enter the password and/or select the keyfile for the %@ database." = "为访问“%@”数据库，您需要输入密码或选定密匙文件";
+"Enter your PIN to unlock" = "请输入 PIN 码以解锁应用";
+"Unlock MiniKeePass" = "解锁MiniKeePass应用";
+"Enter the password and/or select the keyfile for the %@ database." = "请输入密码和（或）选定密钥文件以访问“%@”数据库";
 "Enter a new name for the password database. The correct file extension will automatically be appended." = "请为密码数据库输入新的名称，文件扩展名将会自动添加";
-"Do not forget your database password, it cannot be recovered." = "不要忘记您的数据库密码，它是不可恢复的";
+"Do not forget your database password, it cannot be recovered." = "请牢记您的数据库密码，密码丢失后无法重新找回";
 
 // Error Messages
 "Error" = "错误";
@@ -72,22 +72,22 @@
 "Name cannot be empty" = "名称不能为空";
 "Database name is required" = "必须输入数据库名";
 "Passwords do not match" = "密码不匹配";
-"Password is required" = "必须输入密码";
+"Password is required" = "请输入密码";
 "Incorrect PIN" = "PIN 码错误";
 "Attempts Remaining" = "剩余尝试次数";
 "Filename is invalid" = "文件名无效";
 "A file already exists with this name" = "已存在同名文件";
 "There are no applications installed capable of importing KeePass files" = "尚未安装支持导入 KeePass 文件的应用";
 "Tap the + button to add a new KeePass file." = "触摸 + 按钮以添加新的KeePass 文件";
-"No password or keyfile specified" = "未指定密码或密匙文件";
-"Error Checking PIN" = "Error Checking PIN"; // FIXME
+"No password or keyfile specified" = "未指定密码和（或）密钥文件";
+"Error Checking PIN" = "错误 请检查PIN码是否正确";
 
 // Settings Page
 "Settings" = "设置";
 "PIN Enabled" = "启用 PIN 码";
-"Touch ID" = "Touch ID"; // FIXME
-"Use your fingerprint as an alternative to entering a PIN if supported." = "Use your fingerprint as an alternative to entering a PIN if supported."; // FIXME
-"Lock Timeout" = "锁定前时长";
+"Touch ID" = "Touch ID 指纹识别";
+"Use your fingerprint as an alternative to entering a PIN if supported." = "在支持Touch ID 指纹识别的设备上可以使用指纹识别代替PIN码访问本应用";
+"Lock Timeout" = "多长时间后锁定？";
 "Immediately" = "立刻";
 "30 Seconds" = "30 秒";
 "1 Minute" = "1 分钟";
@@ -95,10 +95,10 @@
 "3 Minutes" = "3 分钟";
 "5 Minutes" = "5 分钟";
 "Enabled" = "启用";
-"Attempts" = "可尝试次数";
+"Attempts" = "允许尝试的最多次数";
 "Close Enabled" = "启用";
 "Close Timeout" = "关闭前时长";
-"Hide Passwords" = "默认隐藏密码";
+"Hide Passwords" = "密码在默认状态下不可见";
 "Sorting" = "排序";
 "Sort Groups and Entries Alphabetically" = "按字母顺序对群组和记录进行排序";
 "Encoding" = "编码方式";
@@ -112,38 +112,38 @@
 "ISO-2022-JP" = "ISO-2022-JP";
 "PIN Protection" = "PIN 码保护";
 "Delete All Data on PIN Failure" = "当 PIN 码验证失败时删除所有数据";
-"Close Database on Timeout" = "超时后关闭数据库";
+"Close Database on Timeout" = "在指定时间后关闭数据库";
 "Remember Database Passwords" = "记住数据库密码";
-"Hide Passwords" = "默认隐藏密码";
+"Hide Passwords" = "密码在默认状态下不可见";
 "Password Encoding" = "密码编码方式";
-"Clear Clipboard on Timeout" = "超时后清空剪贴板内容";
-"Clear Timeout" = "清空前时长";
-"Prevent unauthorized access to MiniKeePass with a PIN." = "使用 PIN 码以避免对 MiniKeePass 的未授权访问";
+"Clear Clipboard on Timeout" = "在指定时间后清空剪贴板";
+"Clear Timeout" = "多长时间后清空剪切板？";
+"Prevent unauthorized access to MiniKeePass with a PIN." = "使用PIN码阻止对MiniKeePass应用的非法访问";
 "Delete all files and passwords after too many failed attempts." = "尝试失败次数过多后删除所有文件和密码";
 "Automatically close an open database after the selected timeout." = "在设定的时长后自动关闭数据库";
-"Stores remembered database passwords in the devices's secure keychain." = "使用系统的 keychain 保存数据库密码";
-"Hides passwords when viewing a password entry." = "查看记录时默认隐藏密码";
-"The string encoding used for passwords when converting them to database keys." = "密码转换为数据库密匙时使用的编码方式";
+"Stores remembered database passwords in the devices's secure keychain." = "使用iCloud 钥匙串保存数据库密码";
+"Hides passwords when viewing a password entry." = "查看记录时，密码在默认状态下不可见";
+"The string encoding used for passwords when converting them to database keys." = "数据库密码转换为密钥文件时使用的编码方式";
 "Clear the contents of the clipboard after a given timeout upon performing a copy." = "在设定的时长后清除剪贴板内容";
 "Close Timeout" = "关闭前时长";
 "Clear Clipboard Timeout" = "超时后清除剪贴板内容";
-"Exclude from backup" = "Exclude from backup"; // FIXME
-"iCloud/iTunes Backup" = "iCloud/iTunes Backup"; // FIXME
-"Exclude databases and key files from iTunes/iCloud backups." = "Exclude databases and key files from iTunes/iCloud backups."; // FIXME
+"Exclude from backup" = "iCloud/iTunes 备份时跳过本应用中的文件";
+"iCloud/iTunes Backup" = "iCloud/iTunes 备份";
+"Exclude databases and key files from iTunes/iCloud backups." = "使用iCloud/iTunes 备份设备内容时不备份本应用中的密码数据库文件和密钥文件";
 "Web Browser" = "网页浏览器";
 "Integrated" = "内置";
-"Switch between an integrated web browser and Safari." = "在内置网页浏览器和Safari之前切换";
+"Switch between an integrated web browser and Safari." = "在内置网页浏览器和Safari之间切换";
 "Set PIN" = "设定 PIN 码";
 "Confirm PIN" = "确认 PIN 码";
-"PINs did not match. Try again" = "两次输入的 PIN 码不匹配，请重试";
-"MiniKeePass version %@" = "MiniKeePass 版本 %@";
+"PINs did not match. Try again" = "两次输入的 PIN 码不一致，请重试";
+"MiniKeePass version %@" = "MiniKeePass %@ 版本";
 
 // Help Titles
-"iTunes Import/Export" = "从 iTunes 导入/导出";
-"Dropbox Import/Export" = "从 Dropbox 导入/导出";
-"Safari/Email Import" = "从 Safari/Email 导入";
+"iTunes Import/Export" = "使用iTunes导入/导出文件";
+"Dropbox Import/Export" = "使用Dropbox导入/导出文件";
+"Safari/Email Import" = "从Safari/邮件导入文件";
 "Create New Database" = "创建新数据库";
-"Key Files" = "密匙文件";
+"Key Files" = "密钥文件";
 
 // Password Generator
 "Generator" = "密码生成器";
