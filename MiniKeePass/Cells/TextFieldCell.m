@@ -28,18 +28,7 @@
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        int inset;
-        if (SYSTEM_VERSION_LESS_THAN(@"7.0")) {
-            inset = 83;
-        } else {
-            inset = 115;
-        }
-
-        CGRect frame = self.contentView.frame;
-        frame.origin.x = inset;
-        frame.size.width -= inset;
-        
-        _textField = [[UITextField alloc] initWithFrame:frame];
+        _textField = [[UITextField alloc] initWithFrame:CGRectZero];
         _textField.delegate = self;
         _textField.autocorrectionType = UITextAutocorrectionTypeNo;
         _textField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
@@ -56,12 +45,26 @@
         CGFloat grayIntensity = 202.0 / 255.0;
         UIColor *color = [UIColor colorWithRed:grayIntensity green:grayIntensity blue:grayIntensity alpha:1];
 
-        _grayBar = [[UIView alloc] initWithFrame:CGRectMake(inset - 4, -1, 1, self.contentView.frame.size.height - 4)];
+        _grayBar = [[UIView alloc] initWithFrame:CGRectZero];
         _grayBar.backgroundColor = color;
         _grayBar.hidden = YES;
         [self.contentView addSubview:_grayBar];
     }
     return self;
+}
+
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    
+    // Adjust the text field frame around the label
+    int inset = self.textLabel.frame.origin.x + self.textLabel.frame.size.width + 10;
+    CGRect textFieldFrame = self.contentView.frame;
+    textFieldFrame.origin.x = inset;
+    textFieldFrame.size.width -= inset;
+    _textField.frame = textFieldFrame;
+    
+    // Place the gray bar between the label and the text field
+    _grayBar.frame = CGRectMake(inset - 5, 0, 1, self.contentView.frame.size.height);
 }
 
 - (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event {
