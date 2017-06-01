@@ -17,7 +17,7 @@
 
 import UIKit
 
-class FilesViewController: UITableViewController {
+class FilesViewController: UITableViewController, NewDatabaseDelegate {
     private let databaseReuseIdentifier = "DatabaseCell"
     private let keyFileReuseIdentifier = "KeyFileCell"
 
@@ -33,7 +33,7 @@ class FilesViewController: UITableViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
+        
         if let databaseManager = DatabaseManager.sharedInstance() {
             databaseFiles = databaseManager.getDatabases() as! [String]
             keyFiles = databaseManager.getKeyFiles() as! [String]
@@ -43,15 +43,27 @@ class FilesViewController: UITableViewController {
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        guard let groupViewController = segue.destination as? GroupViewController else {
-            return
+        switch segue.identifier {
+        case "newDatabase"?:
+            guard let navigationController = segue.destination as? UINavigationController,
+                let newDatabaseViewController = navigationController.topViewController as? NewDatabaseViewController else {
+                    return
+            }
+
+            newDatabaseViewController.delegate = self
+        case "fileOpened"?:
+            guard let groupViewController = segue.destination as? GroupViewController else {
+                return
+            }
+
+            let appDelegate = AppDelegate.getDelegate()
+            let document = appDelegate?.databaseDocument
+            
+            groupViewController.parentGroup = document?.kdbTree.root
+            groupViewController.title = URL(fileURLWithPath: document!.filename).lastPathComponent
+        default:
+            break
         }
-        
-        let appDelegate = AppDelegate.getDelegate()
-        let document = appDelegate?.databaseDocument
-        
-        groupViewController.parentGroup = document?.kdbTree.root
-        groupViewController.title = URL(fileURLWithPath: document!.filename).lastPathComponent
     }
     
     // MARK: - Empty State
@@ -209,53 +221,21 @@ class FilesViewController: UITableViewController {
         // Update the table
         tableView.deleteRows(at: [indexPath], with: .fade)
     }
-
-    // MARK: - Actions
-
-    @IBAction func settingsPressed(_ sender: UIBarButtonItem?) {
-        let storyboard = UIStoryboard(name: "Settings", bundle: nil)
-        let viewController = storyboard.instantiateInitialViewController()!
-
-        present(viewController, animated: true, completion: nil)
-    }
-
-    @IBAction func helpPressed(_ sender: UIBarButtonItem?) {
-        let storyboard = UIStoryboard(name: "Help", bundle: nil)
-        let viewController = storyboard.instantiateInitialViewController()!
-
-        present(viewController, animated: true, completion: nil)
-    }
-
-    @IBAction func addPressed(_ sender: UIBarButtonItem?) {
-        let storyboard = UIStoryboard(name: "NewDatabase", bundle: nil)
-        let navigationController = storyboard.instantiateInitialViewController() as! UINavigationController
-
-        let viewController = navigationController.topViewController as! NewDatabaseViewController
-        viewController.donePressed = { (newDatabaseViewController: NewDatabaseViewController, url: URL, password: String, version: Int) -> Void in
-            // Create the new database
-            let databaseManager = DatabaseManager.sharedInstance()
-            databaseManager?.newDatabase(url, password: password, version: version)
-            
-            // Add the file to the list of files
-            let filename = url.lastPathComponent
-            let index = self.databaseFiles.insertionIndexOf(filename) {
-                $0.localizedCaseInsensitiveCompare($1) == ComparisonResult.orderedAscending
-            }
-            self.databaseFiles.insert(filename, at: index)
-            
-            // Notify the table of the new row
-            if (self.databaseFiles.count == 1) {
-                // Reload the section if it was previously empty
-                let indexSet = IndexSet(integer: Section.databases.rawValue)
-                self.tableView.reloadSections(indexSet, with: .right)
-            } else {
-                let indexPath = IndexPath(row: index, section: Section.databases.rawValue)
-                self.tableView.insertRows(at: [indexPath], with: .right)
-            }
-
-            newDatabaseViewController.dismiss(animated: true, completion: nil)
+    
+    func newDatabaseCreated(filename: String) {
+        let index = self.databaseFiles.insertionIndexOf(filename) {
+            $0.localizedCaseInsensitiveCompare($1) == ComparisonResult.orderedAscending
         }
-
-        present(navigationController, animated: true, completion: nil)
+        self.databaseFiles.insert(filename, at: index)
+        
+        // Notify the table of the new row
+        if (self.databaseFiles.count == 1) {
+            // Reload the section if it was previously empty
+            let indexSet = IndexSet(integer: Section.databases.rawValue)
+            self.tableView.reloadSections(indexSet, with: .right)
+        } else {
+            let indexPath = IndexPath(row: index, section: Section.databases.rawValue)
+            self.tableView.insertRows(at: [indexPath], with: .right)
+        }
     }
 }

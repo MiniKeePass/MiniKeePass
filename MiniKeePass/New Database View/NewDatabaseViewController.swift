@@ -15,13 +15,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+protocol NewDatabaseDelegate {
+    func newDatabaseCreated(filename: String)
+}
+
 class NewDatabaseViewController: UITableViewController {
     @IBOutlet weak var nameTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var confirmPasswordTextField: UITextField!
     @IBOutlet weak var versionSegmentedControl: UISegmentedControl!
 
-    var donePressed: ((_ newDatabaseViewController: NewDatabaseViewController, _ url: URL, _ password: String, _ version: Int) -> Void)?
+    var delegate: NewDatabaseDelegate?
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -92,8 +96,13 @@ class NewDatabaseViewController: UITableViewController {
         } catch {
         }
 
-        // Notify the listener
-        donePressed?(self, url!, password1, version)
+        // Create the new database
+        let databaseManager = DatabaseManager.sharedInstance()
+        databaseManager?.newDatabase(url, password: password1, version: version)
+        
+        delegate?.newDatabaseCreated(filename: url!.lastPathComponent)
+        
+        dismiss(animated: true, completion: nil)
     }
     
     @IBAction func cancelPressed(_ sender: UIBarButtonItem) {

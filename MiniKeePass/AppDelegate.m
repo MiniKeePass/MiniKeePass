@@ -122,7 +122,7 @@
     UINavigationController *navController = (UINavigationController *)self.window.rootViewController;
     FilesViewController * filesViewController = navController.viewControllers.firstObject;
     
-    [filesViewController performSegueWithIdentifier:@"FileOpened" sender:self];
+    [filesViewController performSegueWithIdentifier:@"fileOpened" sender:self];
 }
 
 - (void)closeDatabase {

@@ -75,30 +75,54 @@
                     <toolbarItems>
                         <barButtonItem image="gear" id="eEi-Us-9fq" userLabel="Settings Button">
                             <connections>
-                                <action selector="settingsPressed:" destination="gkV-37-I3l" id="8Dj-Uw-TXd"/>
+                                <segue destination="otg-5C-dk1" kind="presentation" id="qGO-S6-Vbn"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="NdI-tc-oN0"/>
                         <barButtonItem image="help" id="bhy-mg-Lcu" userLabel="Help Button">
                             <connections>
-                                <action selector="helpPressed:" destination="gkV-37-I3l" id="WHA-WV-7Fh"/>
+                                <segue destination="ddi-ko-qjw" kind="presentation" id="7fP-Rr-thn"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="Rxy-Fo-qMI"/>
                         <barButtonItem systemItem="add" id="Nee-V5-pSX" userLabel="Add Button">
                             <connections>
-                                <action selector="addPressed:" destination="gkV-37-I3l" id="f0K-Hx-kv1"/>
+                                <segue destination="oBO-SS-Gd5" kind="presentation" identifier="newDatabase" id="jq5-Dx-yQn"/>
                             </connections>
                         </barButtonItem>
                     </toolbarItems>
                     <navigationItem key="navigationItem" title="Files" id="lqq-dk-Btr"/>
                     <connections>
-                        <segue destination="I0k-i1-GRC" kind="show" identifier="FileOpened" id="Kfq-fd-iAW"/>
+                        <segue destination="I0k-i1-GRC" kind="show" identifier="fileOpened" id="Kfq-fd-iAW"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="i9L-8T-cQV" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1106" y="349"/>
+        </scene>
+        <!--Settings-->
+        <scene sceneID="fYD-Xm-bAJ">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Settings" id="otg-5C-dk1" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="OwQ-ja-bl4" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="871" y="816"/>
+        </scene>
+        <!--Help-->
+        <scene sceneID="OfU-n4-Jiq">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Help" id="ddi-ko-qjw" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="FdI-Yc-9ji" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1106" y="816"/>
+        </scene>
+        <!--NewDatabase-->
+        <scene sceneID="cSf-QN-19q">
+            <objects>
+                <viewControllerPlaceholder storyboardName="NewDatabase" id="oBO-SS-Gd5" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="vCb-Iy-Uev" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1314" y="816"/>
         </scene>
         <!--Group-->
         <scene sceneID="5Ug-dB-CLJ">
@@ -177,7 +201,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" toolbarHidden="NO" id="APd-hG-9Gf" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="waS-9H-vbV">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="waS-9H-vbV">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
