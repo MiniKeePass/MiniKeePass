@@ -337,7 +337,7 @@ class GroupViewController: UITableViewController {
         }
 
         // Save the database
-        let appDelegate = MiniKeePassAppDelegate.getDelegate()
+        let appDelegate = AppDelegate.getDelegate()
         appDelegate?.databaseDocument.save()
 
         // Update the table
@@ -365,7 +365,7 @@ class GroupViewController: UITableViewController {
 
     func actionPressed(sender: UIBarButtonItem) {
         // Get the URL of the database
-        guard let appDelegate = MiniKeePassAppDelegate.getDelegate() else {
+        guard let appDelegate = AppDelegate.getDelegate() else {
             return
         }
         let url = URL(fileURLWithPath: appDelegate.databaseDocument.filename)
@@ -405,7 +405,7 @@ class GroupViewController: UITableViewController {
     }
 
     func addNewGroup() {
-        let appDelegate = MiniKeePassAppDelegate.getDelegate()
+        let appDelegate = AppDelegate.getDelegate()
         let databaseDocument = appDelegate?.databaseDocument
 
         // Create and add a group
@@ -450,7 +450,7 @@ class GroupViewController: UITableViewController {
     }
     
     func addNewEntry() {
-        let appDelegate = MiniKeePassAppDelegate.getDelegate()
+        let appDelegate = AppDelegate.getDelegate()
         let databaseDocument = appDelegate?.databaseDocument
 
         // Create and add a entry

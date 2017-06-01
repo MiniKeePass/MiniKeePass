@@ -47,7 +47,7 @@ class FilesViewController: UITableViewController {
             return
         }
         
-        let appDelegate = MiniKeePassAppDelegate.getDelegate()
+        let appDelegate = AppDelegate.getDelegate()
         let document = appDelegate?.databaseDocument
         
         groupViewController.parentGroup = document?.kdbTree.root

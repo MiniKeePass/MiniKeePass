@@ -16,7 +16,7 @@
  */
 
 #import "DatabaseManager.h"
-#import "MiniKeePassAppDelegate.h"
+#import "AppDelegate.h"
 #import "KeychainUtils.h"
 #import "AppSettings.h"
 #import "MiniKeePass-Swift.h"
@@ -41,7 +41,7 @@ static DatabaseManager *sharedInstance;
     NSMutableArray *files = [[NSMutableArray alloc] init];
 
     // Get the document's directory
-    NSString *documentsDirectory = [MiniKeePassAppDelegate documentsDirectory];
+    NSString *documentsDirectory = [AppDelegate documentsDirectory];
 
     // Get the contents of the documents directory
     NSFileManager *fileManager = [NSFileManager defaultManager];
@@ -72,7 +72,7 @@ static DatabaseManager *sharedInstance;
     NSMutableArray *files = [[NSMutableArray alloc] init];
 
     // Get the document's directory
-    NSString *documentsDirectory = [MiniKeePassAppDelegate documentsDirectory];
+    NSString *documentsDirectory = [AppDelegate documentsDirectory];
 
     // Get the contents of the documents directory
     NSFileManager *fileManager = [NSFileManager defaultManager];
@@ -101,7 +101,7 @@ static DatabaseManager *sharedInstance;
 
 - (NSURL *)getFileUrl:(NSString *)filename {
     // Resolve the filename to a URL
-    NSURL *documentsDirectory = [MiniKeePassAppDelegate documentsDirectoryUrl];
+    NSURL *documentsDirectory = [AppDelegate documentsDirectoryUrl];
     return [documentsDirectory URLByAppendingPathComponent:filename];
 }
 
@@ -117,7 +117,7 @@ static DatabaseManager *sharedInstance;
     NSString *path = url.path;
 
     // Close the current database if we're deleting it's file
-    MiniKeePassAppDelegate *appDelegate = [MiniKeePassAppDelegate appDelegate];
+    AppDelegate *appDelegate = [AppDelegate appDelegate];
     if ([path isEqualToString:appDelegate.databaseDocument.filename]) {
         [appDelegate closeDatabase];
     }
@@ -181,10 +181,10 @@ static DatabaseManager *sharedInstance;
     self.selectedFilename = filename;
 
     // Get the application delegate
-    MiniKeePassAppDelegate *appDelegate = [MiniKeePassAppDelegate appDelegate];
+    AppDelegate *appDelegate = [AppDelegate appDelegate];
 
     // Get the documents directory
-    NSString *documentsDirectory = [MiniKeePassAppDelegate documentsDirectory];
+    NSString *documentsDirectory = [AppDelegate documentsDirectory];
 
     // Load the password and keyfile from the keychain
     NSString *password = [KeychainUtils stringForKey:self.selectedFilename
@@ -241,7 +241,7 @@ static DatabaseManager *sharedInstance;
 }
 
 - (void)openDatabaseWithPasswordEntryViewController:(PasswordEntryViewController *)passwordEntryViewController {
-    NSString *documentsDirectory = [MiniKeePassAppDelegate documentsDirectory];
+    NSString *documentsDirectory = [AppDelegate documentsDirectory];
     NSString *path = [documentsDirectory stringByAppendingPathComponent:self.selectedFilename];
 
     // Get the password
@@ -254,7 +254,7 @@ static DatabaseManager *sharedInstance;
     NSString *keyFile = [passwordEntryViewController getKeyFile];
     NSString *keyFilePath = nil;
     if (keyFile != nil) {
-        NSString *documentsDirectory = [MiniKeePassAppDelegate documentsDirectory];
+        NSString *documentsDirectory = [AppDelegate documentsDirectory];
         keyFilePath = [documentsDirectory stringByAppendingPathComponent:keyFile];
     }
 
@@ -274,7 +274,7 @@ static DatabaseManager *sharedInstance;
         // Dismiss the view controller, and after animation set the database document
         [passwordEntryViewController dismissViewControllerAnimated:YES completion:^{
             // Set the database document in the application delegate
-            MiniKeePassAppDelegate *appDelegate = [MiniKeePassAppDelegate appDelegate];
+            AppDelegate *appDelegate = [AppDelegate appDelegate];
             appDelegate.databaseDocument = dd;
         }];
     } @catch (NSException *exception) {

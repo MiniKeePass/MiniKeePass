@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#import "MiniKeePassAppDelegate.h"
+#import "AppDelegate.h"
 #import <UIKit/UIKit.h>
 
 @protocol TextFieldCellDelegate;

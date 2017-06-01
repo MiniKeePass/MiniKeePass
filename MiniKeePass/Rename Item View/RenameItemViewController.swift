@@ -85,7 +85,7 @@ class RenameItemViewController: UITableViewController {
         }
 
         // Save the database
-        let appDelegate = MiniKeePassAppDelegate.getDelegate()
+        let appDelegate = AppDelegate.getDelegate()
         let databaseDocument = appDelegate?.databaseDocument
         databaseDocument?.save()
 

@@ -18,13 +18,13 @@
 #import <UIKit/UIKit.h>
 #import "DatabaseDocument.h"
 
-@interface MiniKeePassAppDelegate : NSObject <UIApplicationDelegate>
+@interface AppDelegate : NSObject <UIApplicationDelegate>
 
 @property (nonatomic, strong) UIWindow *window;
 @property (nonatomic, strong) DatabaseDocument *databaseDocument;
 
-+ (MiniKeePassAppDelegate *)getDelegate;
-+ (MiniKeePassAppDelegate *)appDelegate;
++ (AppDelegate *)getDelegate;
++ (AppDelegate *)appDelegate;
 + (NSString *)documentsDirectory;
 + (NSURL *)documentsDirectoryUrl;
 

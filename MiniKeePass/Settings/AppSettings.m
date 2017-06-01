@@ -18,7 +18,7 @@
 #import "AppSettings.h"
 #import "KeychainUtils.h"
 #import "PasswordUtils.h"
-#import "MiniKeePassAppDelegate.h"
+#import "AppDelegate.h"
 #import "MiniKeePass-Swift.h"
 
 #define VERSION                    @"version"
@@ -291,7 +291,7 @@ static AppSettings *sharedInstance;
 - (void)setBackupDisabled:(BOOL)backupDisabled {
     [userDefaults setBool:backupDisabled forKey:BACKUP_DISABLED];
 
-    NSURL *url = [NSURL fileURLWithPath:[MiniKeePassAppDelegate documentsDirectory] isDirectory:YES];
+    NSURL *url = [NSURL fileURLWithPath:[AppDelegate documentsDirectory] isDirectory:YES];
 
     NSError *error = nil;
     if (![url setResourceValue:[NSNumber numberWithBool:!backupDisabled] forKey:NSURLIsExcludedFromBackupKey error:&error]) {

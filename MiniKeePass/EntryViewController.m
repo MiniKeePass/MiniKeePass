@@ -245,7 +245,7 @@ static NSString *TextFieldCellIdentifier = @"TextFieldCell";
             }
 
             // Save the database document
-            [[MiniKeePassAppDelegate appDelegate].databaseDocument save];
+            [[AppDelegate appDelegate].databaseDocument save];
         }
     }
 

@@ -40,7 +40,7 @@ class MoveItemsViewController: UITableViewController {
         groupModels = []
 
         // Get parameters for the root
-        let appDelegate = MiniKeePassAppDelegate.getDelegate()
+        let appDelegate = AppDelegate.getDelegate()
 
         let rootGroup = appDelegate?.databaseDocument.kdbTree.root
         let filename = appDelegate?.databaseDocument.filename
@@ -73,7 +73,7 @@ class MoveItemsViewController: UITableViewController {
         }
 
         // Check if trying to move entries to top level in 1.x database
-        let appDelegate = MiniKeePassAppDelegate.getDelegate()
+        let appDelegate = AppDelegate.getDelegate()
         let tree = appDelegate?.databaseDocument.kdbTree
         if (containsEntry && group == tree?.root && tree is Kdb3Tree) {
             return false
@@ -136,7 +136,7 @@ class MoveItemsViewController: UITableViewController {
         }
 
         // Save the database
-        let appDelegate = MiniKeePassAppDelegate.getDelegate()
+        let appDelegate = AppDelegate.getDelegate()
         let databaseDocument = appDelegate?.databaseDocument
         databaseDocument?.save()
 

@@ -75,7 +75,7 @@ class NewDatabaseViewController: UITableViewController {
         }
         
         // Create a URL to the file
-        var url = MiniKeePassAppDelegate.documentsDirectoryUrl()
+        var url = AppDelegate.documentsDirectoryUrl()
         url = url?.appendingPathComponent("\(name).\(extention)")
         
         if url == nil {

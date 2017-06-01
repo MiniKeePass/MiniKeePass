@@ -20,7 +20,7 @@
 #import "TextFieldCell.h"
 #import "TextViewCell.h"
 #import "KdbLib.h"
-#import "MiniKeePassAppDelegate.h"
+#import "AppDelegate.h"
 
 @interface EntryViewController : UITableViewController <UIGestureRecognizerDelegate, TextFieldCellDelegate>
 
