@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Jason Rush and John Flanagan. All rights reserved.
+ * Copyright 2011-2012 Jason Rush and John Flanagan. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,10 +16,18 @@
  */
 
 #import <UIKit/UIKit.h>
+#import "DatabaseDocument.h"
 
-int main(int argc, char *argv[]) {
-    @autoreleasepool {
-        int retVal = UIApplicationMain(argc, argv, nil, @"AppDelegate");
-        return retVal;
-    }
-}
+@interface AppDelegate : NSObject <UIApplicationDelegate>
+
+@property (nonatomic, strong) UIWindow *window;
+@property (nonatomic, strong) DatabaseDocument *databaseDocument;
+
++ (AppDelegate *)getDelegate;
++ (NSString *)documentsDirectory;
++ (NSURL *)documentsDirectoryUrl;
+
+- (void)closeDatabase;
+- (void)deleteAllData;
+
+@end

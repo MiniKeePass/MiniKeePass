@@ -25,7 +25,7 @@ static uint32_t SIGMA[4] = {0x61707865, 0x3320646E, 0x79622D32, 0x6B206574};
 - (id)init {
     uint8_t buffer[256];
     
-    SecRandomCopyBytes(kSecRandomDefault, sizeof(buffer), buffer);
+    (void) SecRandomCopyBytes(kSecRandomDefault, sizeof(buffer), buffer);
     
     return [self init:[NSData dataWithBytes:buffer length:sizeof(buffer)]];
 }
