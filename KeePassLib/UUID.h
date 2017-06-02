@@ -17,7 +17,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface UUID : NSObject {
+@interface KdbUUID : NSObject {
     CFUUIDRef uuid;
 }
 
@@ -30,8 +30,11 @@
 - (void)getBytes:(uint8_t *)bytes length:(NSUInteger)length;
 - (NSData *)getData;
 
-+ (UUID *)uuid;
-+ (UUID *)nullUuid;
-+ (UUID *)getAESUUID;
++ (KdbUUID *)uuid;
++ (KdbUUID *)nullUuid;
++ (KdbUUID *)getAESUUID;
++ (KdbUUID *)getAES_KDFUUID;
++ (KdbUUID *)getChaCha20UUID;
++ (KdbUUID *)getArgon2UUID;
 
 @end

@@ -24,6 +24,7 @@
 - (id)initWithFilename:(NSString *)filename {
     self = [super init];
     if (self) {
+        copybuf = nil;
         fd = open([filename UTF8String], O_RDONLY);
         if (fd == -1) {
             @throw [NSException exceptionWithName:@"IOException" reason:@"Failed to open file" userInfo:nil];
@@ -36,8 +37,24 @@
     [self close];
 }
 
+- (void)enableCopyBuffer:(BOOL)enable {
+    if( enable ) {
+        if( copybuf == nil ) copybuf = [[NSMutableData alloc] init];
+    } else {
+        copybuf = nil;
+    }
+    
+}
+
+- (NSData *)getCopyBuffer {
+    return copybuf;
+}
+
 - (NSUInteger)read:(void *)bytes length:(NSUInteger)bytesLength {
-    return read(fd, bytes, bytesLength);
+    NSUInteger ret;
+    ret = read(fd, bytes, bytesLength);
+    if( copybuf != nil ) [copybuf appendBytes:bytes length:bytesLength];
+    return ret;
 }
 
 - (off_t)seek:(off_t)offset {
