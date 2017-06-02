@@ -20,9 +20,12 @@
 
 @interface FileInputStream : InputStream {
     int fd;
+    NSMutableData *copybuf;
 }
 
 - (id)initWithFilename:(NSString *)filename;
 - (off_t)seek:(off_t)offset;
+- (void)enableCopyBuffer:(BOOL)enable;
+- (NSData *)getCopyBuffer;
 
 @end
