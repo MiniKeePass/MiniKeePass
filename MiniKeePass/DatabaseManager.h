@@ -16,7 +16,6 @@
  */
 
 #import <Foundation/Foundation.h>
-#import "FormViewController.h"
 
 @interface DatabaseManager : NSObject
 
@@ -26,10 +25,17 @@
 /// Create a DatabaseManager instance
 + (DatabaseManager*)sharedInstance;
 
+- (NSArray *)getDatabases;
+- (NSArray *)getKeyFiles;
+- (NSURL *)getFileUrl:(NSString *)filename;
+- (NSDate *)getFileLastModificationDate:(NSURL *)url;
+- (void)deleteFile:(NSString *)filename;
+- (void)newDatabase:(NSURL *)url password:(NSString *)password version:(NSInteger)version;
+- (void)renameDatabase:(NSURL *)originalUrl newUrl:(NSURL *)newUrl;
+
 /// Open the specified KeePass DatabaseDocument
 /// @param path Path to the chosen KeePass DatabaseDocument
 /// @param animated Animate the ViewController transition
-/// @param isCloudBased Is this file from cloud storage?
-- (void)openDatabaseDocument:(NSString*)path animated:(BOOL)newAnimated isCloudBased:(BOOL)isCloudBased;
+- (void)openDatabaseDocument:(NSString*)path animated:(BOOL)newAnimated;
 
 @end

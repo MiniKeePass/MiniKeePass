@@ -19,7 +19,7 @@
 #import <AudioToolbox/AudioToolbox.h>
 #import "LockScreenManager.h"
 #import "LockViewController.h"
-#import "MiniKeePassAppDelegate.h"
+#import "AppDelegate.h"
 #import "AppSettings.h"
 #import "KeychainUtils.h"
 #import "PinViewController.h"
@@ -146,7 +146,7 @@ static LockScreenManager *sharedInstance = nil;
     navigationController.toolbarHidden = NO;
 
     // Hack for iOS 8 to ensure the view is displayed before anything else on launch
-    MiniKeePassAppDelegate *appDelegate = [MiniKeePassAppDelegate appDelegate];
+    AppDelegate *appDelegate = [AppDelegate getDelegate];
     [appDelegate.window addSubview:navigationController.view];
 
     UIViewController *rootViewController = [LockScreenManager topMostController];
@@ -260,7 +260,7 @@ static LockScreenManager *sharedInstance = nil;
                 // Check if they have failed too many times
                 if (pinFailedAttempts >= deleteOnFailureAttempts) {
                     // Delete all data
-                    MiniKeePassAppDelegate *appDelegate = [MiniKeePassAppDelegate appDelegate];
+                    AppDelegate *appDelegate = [AppDelegate getDelegate];
                     [appDelegate deleteAllData];
 
                     // Dismiss the PIN screen
@@ -310,7 +310,7 @@ static LockScreenManager *sharedInstance = nil;
 
 - (void)applicationDidBecomeActive:(NSNotification *)notification {
     if ([self shouldCloseDatabase]) {
-        MiniKeePassAppDelegate *appDelegate = [MiniKeePassAppDelegate appDelegate];
+        AppDelegate *appDelegate = [AppDelegate getDelegate];
         [appDelegate closeDatabase];
     }
 
