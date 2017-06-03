@@ -80,6 +80,9 @@
 - (BOOL)webBrowserIntegrated;
 - (void)setWebBrowserIntegrated:(BOOL)webBrowserIntegrated;
 
+- (BOOL)dropboxEnabled;
+- (void)setDropboxEnabled:(BOOL)dropboxEnabled;
+
 - (NSInteger)pwGenLength;
 - (void)setPwGenLength:(NSInteger)pwGenLength;
 

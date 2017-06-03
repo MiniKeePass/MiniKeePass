@@ -19,6 +19,7 @@
 "Databases" = "Databases";
 "Key File" = "Key File";
 "Key Files" = "Key Files";
+"Dropbox Files" = "Dropbox Files";
 "Groups" = "Groups";
 "Entries" = "Entries";
 "Group" = "Group";
@@ -137,6 +138,10 @@
 "Confirm PIN" = "Confirm PIN";
 "PINs did not match. Try again" = "PINs did not match. Try again";
 "MiniKeePass version %@" = "MiniKeePass version %@";
+"Enable Dropbox" = "Enable Dropbox";
+"Dropbox API Error" = "Dropbox API Error";
+"Dropbox Integration" = "Dropbox Integration";
+"Use direct integration with dropbox account." = "Use direct integration with dropbox account.";
 
 // Help Titles
 "iTunes Import/Export" = "iTunes Import/Export";

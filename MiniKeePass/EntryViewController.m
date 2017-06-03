@@ -38,6 +38,8 @@ enum {
     TextFieldCell *passwordCell;
     TextFieldCell *urlCell;
     TextViewCell *commentsCell;
+    
+    KdbEntry *originalEntry;
 }
 
 @property (nonatomic) BOOL isKdb4;
@@ -133,7 +135,7 @@ static NSString *TextFieldCellIdentifier = @"TextFieldCell";
     if (self.isNewEntry) {
         [self setEditing:YES animated:NO];
         [titleCell.textField becomeFirstResponder];
-        self.isNewEntry = NO;
+//        self.isNewEntry = NO;
     }
 }
 
@@ -206,10 +208,17 @@ static NSString *TextFieldCellIdentifier = @"TextFieldCell";
 }
 
 - (void)cancelPressed {
+    if( self.isNewEntry ) {
+        if( self.newEntryCanceled ) self.newEntryCanceled(self.entry);
+        return;
+    }
     [self setEditing:NO animated:YES canceled:YES];
 }
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated {
+    if( editing == NO ) {
+        self.isNewEntry = NO;
+    }
     [self setEditing:editing animated:animated canceled:NO];
 }
 
@@ -221,6 +230,7 @@ static NSString *TextFieldCellIdentifier = @"TextFieldCell";
 
     if (editing == NO) {
         if (canceled) {
+            originalEntry = nil;
             [self setEntry:self.entry];
         } else {
             self.entry.title = titleCell.textField.text;
@@ -242,10 +252,24 @@ static NSString *TextFieldCellIdentifier = @"TextFieldCell";
                 Kdb4Entry *kdb4Entry = (Kdb4Entry *)self.entry;
                 [kdb4Entry.stringFields removeAllObjects];
                 [kdb4Entry.stringFields addObjectsFromArray:self.editingStringFields];
+                
             }
 
-            // Save the database document
-            [[AppDelegate getDelegate].databaseDocument save];
+            DatabaseDocument *doc = [AppDelegate getDelegate].databaseDocument;
+            // Save the database document if entry was changed.
+            if( [self.entry hasChanged:originalEntry] ) {
+                if( originalEntry != nil ) {
+                    // Add edits to the history
+                    [doc.kdbTree createEntryBackup:self.entry backupEntry:originalEntry ];
+                    originalEntry = nil;
+                }
+                [doc save];
+            }
+        }
+    } else {
+        // Save the original state of the entry to know if changes were made.
+        if( !self.isNewEntry ) {
+            originalEntry = [self.entry deepCopy];
         }
     }
 
@@ -496,7 +520,7 @@ static NSString *TextFieldCellIdentifier = @"TextFieldCell";
     switch (indexPath.section) {
         case SECTION_DEFAULT_FIELDS:
         case SECTION_CUSTOM_FIELDS:
-            return 40.0f;
+            return MAX([[UIFont preferredFontForTextStyle:UIFontTextStyleBody] lineHeight] + 5,30.0f);
         case SECTION_COMMENTS:
             return 228.0f;
     }
