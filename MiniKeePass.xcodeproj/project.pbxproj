@@ -136,11 +136,11 @@
 		7872317E1E955D2D006BA0DD /* CipherStreamFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 7872317D1E955D2D006BA0DD /* CipherStreamFactory.m */; };
 		787231831E955D4A006BA0DD /* HmacOutputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 787231821E955D4A006BA0DD /* HmacOutputStream.m */; };
 		787231861E955D7B006BA0DD /* ChaCha20OutputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 787231851E955D7B006BA0DD /* ChaCha20OutputStream.m */; };
-		7872319D1E95ED59006BA0DD /* argon2iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7872319A1E95ED47006BA0DD /* argon2iOS.framework */; };
-		7872319E1E95ED59006BA0DD /* argon2iOS.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 7872319A1E95ED47006BA0DD /* argon2iOS.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		78AF0CE91E834E45007467BB /* ObjectiveDropboxOfficial.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 78AF0CE61E834B8B007467BB /* ObjectiveDropboxOfficial.framework */; };
-		78AF0CEA1E834E45007467BB /* ObjectiveDropboxOfficial.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 78AF0CE61E834B8B007467BB /* ObjectiveDropboxOfficial.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		78AF0CF01E841AFB007467BB /* DropboxDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 78AF0CEF1E841AFB007467BB /* DropboxDocument.m */; };
+		7872C51C1EE8B57E00D343F6 /* TwoFishInputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 7872C5191EE8B57E00D343F6 /* TwoFishInputStream.m */; };
+		7872C51D1EE8B57E00D343F6 /* TwoFishOutputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 7872C51B1EE8B57E00D343F6 /* TwoFishOutputStream.m */; };
+		7872C5251EE8B66B00D343F6 /* TwoFishCipher.m in Sources */ = {isa = PBXBuildFile; fileRef = 7872C5241EE8B66B00D343F6 /* TwoFishCipher.m */; };
+		7872C5291EE8B78A00D343F6 /* argon2iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7872C5201EE8B57E00D343F6 /* argon2iOS.framework */; };
+		7872C52A1EE8B78A00D343F6 /* argon2iOS.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 7872C5201EE8B57E00D343F6 /* argon2iOS.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		78F802101E8EBFE70039625E /* ChaCha20RandomStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 78F8020F1E8EBFE70039625E /* ChaCha20RandomStream.m */; };
 /* End PBXBuildFile section */
 
@@ -152,59 +152,30 @@
 			remoteGlobalIDString = D286A7491518C70F00E13FB8;
 			remoteInfo = MBProgressHUD;
 		};
-		787231991E95ED47006BA0DD /* PBXContainerItemProxy */ = {
+		7872C51F1EE8B57E00D343F6 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 787231941E95ED47006BA0DD /* argon2iOS.xcodeproj */;
+			containerPortal = 7872C5151EE8B4B700D343F6 /* argon2iOS.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 78F8028B1E8EE2A50039625E;
 			remoteInfo = argon2iOS;
 		};
-		7872319B1E95ED47006BA0DD /* PBXContainerItemProxy */ = {
+		7872C52B1EE8B78A00D343F6 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 787231941E95ED47006BA0DD /* argon2iOS.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 78F802941E8EE2A50039625E;
-			remoteInfo = argon2iOSTests;
-		};
-		7872319F1E95ED59006BA0DD /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 787231941E95ED47006BA0DD /* argon2iOS.xcodeproj */;
+			containerPortal = 7872C5151EE8B4B700D343F6 /* argon2iOS.xcodeproj */;
 			proxyType = 1;
 			remoteGlobalIDString = 78F8028A1E8EE2A50039625E;
 			remoteInfo = argon2iOS;
 		};
-		78AF0CE51E834B8B007467BB /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 78AF0CE01E834B8A007467BB /* ObjectiveDropboxOfficial.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = F26B75751D7F6AF700714F70;
-			remoteInfo = "ObjectiveDropboxOfficial iOS";
-		};
-		78AF0CE71E834B8B007467BB /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 78AF0CE01E834B8A007467BB /* ObjectiveDropboxOfficial.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = F27DE9E21D7FF909003B1CEE;
-			remoteInfo = "ObjectiveDropboxOfficial macOS";
-		};
-		78AF0CEB1E834E45007467BB /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 78AF0CE01E834B8A007467BB /* ObjectiveDropboxOfficial.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = F26B75741D7F6AF700714F70;
-			remoteInfo = "ObjectiveDropboxOfficial iOS";
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		78AF0CED1E834E45007467BB /* Embed Frameworks */ = {
+		7872C52D1EE8B78A00D343F6 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				78AF0CEA1E834E45007467BB /* ObjectiveDropboxOfficial.framework in Embed Frameworks */,
-				7872319E1E95ED59006BA0DD /* argon2iOS.framework in Embed Frameworks */,
+				7872C52A1EE8B78A00D343F6 /* argon2iOS.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -465,10 +436,13 @@
 		787231821E955D4A006BA0DD /* HmacOutputStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HmacOutputStream.m; sourceTree = "<group>"; };
 		787231841E955D7B006BA0DD /* ChaCha20OutputStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChaCha20OutputStream.h; sourceTree = "<group>"; };
 		787231851E955D7B006BA0DD /* ChaCha20OutputStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChaCha20OutputStream.m; sourceTree = "<group>"; };
-		787231941E95ED47006BA0DD /* argon2iOS.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = argon2iOS.xcodeproj; path = ../argon2/xcode/argon2iOS/argon2iOS.xcodeproj; sourceTree = "<group>"; };
-		78AF0CE01E834B8A007467BB /* ObjectiveDropboxOfficial.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ObjectiveDropboxOfficial.xcodeproj; path = "../ObjectiveDropbox/Carthage/Checkouts/dropbox-sdk-obj-c/Source/ObjectiveDropboxOfficial/ObjectiveDropboxOfficial.xcodeproj"; sourceTree = "<group>"; };
-		78AF0CEE1E841AE7007467BB /* DropboxDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DropboxDocument.h; sourceTree = "<group>"; };
-		78AF0CEF1E841AFB007467BB /* DropboxDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DropboxDocument.m; sourceTree = "<group>"; };
+		7872C5151EE8B4B700D343F6 /* argon2iOS.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = argon2iOS.xcodeproj; sourceTree = "<group>"; };
+		7872C5181EE8B57E00D343F6 /* TwoFishInputStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwoFishInputStream.h; sourceTree = "<group>"; };
+		7872C5191EE8B57E00D343F6 /* TwoFishInputStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwoFishInputStream.m; sourceTree = "<group>"; };
+		7872C51A1EE8B57E00D343F6 /* TwoFishOutputStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwoFishOutputStream.h; sourceTree = "<group>"; };
+		7872C51B1EE8B57E00D343F6 /* TwoFishOutputStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwoFishOutputStream.m; sourceTree = "<group>"; };
+		7872C5231EE8B66B00D343F6 /* TwoFishCipher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TwoFishCipher.h; path = Crypto/TwoFishCipher.h; sourceTree = "<group>"; };
+		7872C5241EE8B66B00D343F6 /* TwoFishCipher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TwoFishCipher.m; path = Crypto/TwoFishCipher.m; sourceTree = "<group>"; };
 		78F8020E1E8EBFE70039625E /* ChaCha20RandomStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ChaCha20RandomStream.h; path = KeePassLib/ChaCha20RandomStream.h; sourceTree = SOURCE_ROOT; };
 		78F8020F1E8EBFE70039625E /* ChaCha20RandomStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ChaCha20RandomStream.m; path = KeePassLib/ChaCha20RandomStream.m; sourceTree = SOURCE_ROOT; };
 		BDB0FF5D194C7C6F00C44DEF /* nl */ = {isa = PBXFileReference; lastKnownFileType = text; name = nl; path = nl.lproj/AppStore.txt; sourceTree = "<group>"; };
@@ -486,13 +460,13 @@
 				526D9FAD167CDC2E0097213E /* libMBProgressHUD.a in Frameworks */,
 				689D000D13A42765005EBD36 /* AudioToolbox.framework in Frameworks */,
 				689DFFDE13A4273F005EBD36 /* CoreGraphics.framework in Frameworks */,
-				7872319D1E95ED59006BA0DD /* argon2iOS.framework in Frameworks */,
 				689DFFDC13A4273F005EBD36 /* Foundation.framework in Frameworks */,
 				6802C36F1A425D7300595AC9 /* LocalAuthentication.framework in Frameworks */,
 				68EBC2D61613394D00E8E799 /* QuartzCore.framework in Frameworks */,
 				689D000F13A42777005EBD36 /* Security.framework in Frameworks */,
 				689DFFDA13A4273F005EBD36 /* UIKit.framework in Frameworks */,
 				689D001113A4277E005EBD36 /* libxml2.dylib in Frameworks */,
+				7872C5291EE8B78A00D343F6 /* argon2iOS.framework in Frameworks */,
 				689D001313A42784005EBD36 /* libz.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -585,6 +559,10 @@
 				682D450A1603883900156830 /* OutputStream.m */,
 				682D450B1603883900156830 /* Sha256OutputStream.h */,
 				682D450C1603883900156830 /* Sha256OutputStream.m */,
+				7872C5181EE8B57E00D343F6 /* TwoFishInputStream.h */,
+				7872C5191EE8B57E00D343F6 /* TwoFishInputStream.m */,
+				7872C51A1EE8B57E00D343F6 /* TwoFishOutputStream.h */,
+				7872C51B1EE8B57E00D343F6 /* TwoFishOutputStream.m */,
 			);
 			path = IOStream;
 			sourceTree = "<group>";
@@ -725,7 +703,6 @@
 		689DFFCA13A4273F005EBD36 = {
 			isa = PBXGroup;
 			children = (
-				787231941E95ED47006BA0DD /* argon2iOS.xcodeproj */,
 				689D030313A42B63005EBD36 /* LICENSE.txt */,
 				689D030413A42B63005EBD36 /* README.md */,
 				689DFFDF13A4273F005EBD36 /* MiniKeePass */,
@@ -735,6 +712,7 @@
 				689DFFD813A4273F005EBD36 /* Frameworks */,
 				689D041413A42B85005EBD36 /* Resources */,
 				689DFFD613A4273F005EBD36 /* Products */,
+				7872C5151EE8B4B700D343F6 /* argon2iOS.xcodeproj */,
 				526D9FA3167CDC010097213E /* MBProgressHUD.xcodeproj */,
 			);
 			sourceTree = "<group>";
@@ -915,24 +893,16 @@
 				782C93D91E8E35BF00B6AC82 /* ChaCha20Cipher.m */,
 				782C93DA1E8E35BF00B6AC82 /* Salsa20Cipher.h */,
 				782C93DB1E8E35BF00B6AC82 /* Salsa20Cipher.m */,
+				7872C5231EE8B66B00D343F6 /* TwoFishCipher.h */,
+				7872C5241EE8B66B00D343F6 /* TwoFishCipher.m */,
 			);
 			name = Crypto;
 			sourceTree = "<group>";
 		};
-		787231951E95ED47006BA0DD /* Products */ = {
+		7872C5161EE8B4B700D343F6 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				7872319A1E95ED47006BA0DD /* argon2iOS.framework */,
-				7872319C1E95ED47006BA0DD /* argon2iOSTests.xctest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		78AF0CE11E834B8A007467BB /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				78AF0CE61E834B8B007467BB /* ObjectiveDropboxOfficial.framework */,
-				78AF0CE81E834B8B007467BB /* ObjectiveDropboxOfficial.framework */,
+				7872C5201EE8B57E00D343F6 /* argon2iOS.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -948,12 +918,12 @@
 				689DFFD213A4273F005EBD36 /* Frameworks */,
 				68C17C9C1A3E1774008DD56B /* Increment Build Number */,
 				689DFFD313A4273F005EBD36 /* Resources */,
+				7872C52D1EE8B78A00D343F6 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				78AF0CEC1E834E45007467BB /* PBXTargetDependency */,
-				787231A01E95ED59006BA0DD /* PBXTargetDependency */,
+				7872C52C1EE8B78A00D343F6 /* PBXTargetDependency */,
 			);
 			name = MiniKeePass;
 			productName = MiniKeePass;
@@ -970,7 +940,8 @@
 				ORGANIZATIONNAME = Self;
 				TargetAttributes = {
 					689DFFD413A4273F005EBD36 = {
-						DevelopmentTeam = G9ZT7943FZ;
+						DevelopmentTeam = MGD4WTF6BR;
+						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.iCloud = {
 								enabled = 0;
@@ -1000,8 +971,8 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 787231951E95ED47006BA0DD /* Products */;
-					ProjectRef = 787231941E95ED47006BA0DD /* argon2iOS.xcodeproj */;
+					ProductGroup = 7872C5161EE8B4B700D343F6 /* Products */;
+					ProjectRef = 7872C5151EE8B4B700D343F6 /* argon2iOS.xcodeproj */;
 				},
 				{
 					ProductGroup = 526D9FA4167CDC010097213E /* Products */;
@@ -1023,32 +994,11 @@
 			remoteRef = 526D9FAA167CDC010097213E /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		7872319A1E95ED47006BA0DD /* argon2iOS.framework */ = {
+		7872C5201EE8B57E00D343F6 /* argon2iOS.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
 			path = argon2iOS.framework;
-			remoteRef = 787231991E95ED47006BA0DD /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		7872319C1E95ED47006BA0DD /* argon2iOSTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = argon2iOSTests.xctest;
-			remoteRef = 7872319B1E95ED47006BA0DD /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		78AF0CE61E834B8B007467BB /* ObjectiveDropboxOfficial.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = ObjectiveDropboxOfficial.framework;
-			remoteRef = 78AF0CE51E834B8B007467BB /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		78AF0CE81E834B8B007467BB /* ObjectiveDropboxOfficial.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = ObjectiveDropboxOfficial.framework;
-			remoteRef = 78AF0CE71E834B8B007467BB /* PBXContainerItemProxy */;
+			remoteRef = 7872C51F1EE8B57E00D343F6 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -1148,6 +1098,7 @@
 				689D03EA13A42B63005EBD36 /* NSString+DDXML.m in Sources */,
 				682B938E18A48EC20020C22A /* UIAlertViewAutoDismiss.m in Sources */,
 				689D03EB13A42B63005EBD36 /* DDXMLDocument.m in Sources */,
+				7872C51C1EE8B57E00D343F6 /* TwoFishInputStream.m in Sources */,
 				689D03EC13A42B63005EBD36 /* DDXMLElement.m in Sources */,
 				689D03ED13A42B63005EBD36 /* DDXMLNode.m in Sources */,
 				782C93E11E8E35EA00B6AC82 /* HmacInputStream.m in Sources */,
@@ -1159,6 +1110,7 @@
 				689D045313A42C82005EBD36 /* FilesViewController.m in Sources */,
 				689D045413A42C82005EBD36 /* GroupViewController.m in Sources */,
 				689D045513A42C82005EBD36 /* MiniKeePassAppDelegate.m in Sources */,
+				7872C51D1EE8B57E00D343F6 /* TwoFishOutputStream.m in Sources */,
 				689D045613A42C82005EBD36 /* NewKdbViewController.m in Sources */,
 				689D045B13A42C82005EBD36 /* SelectionListViewController.m in Sources */,
 				689D045E13A42C82005EBD36 /* TextEntryController.m in Sources */,
@@ -1178,6 +1130,7 @@
 				682D45101603883900156830 /* DataInputStream.m in Sources */,
 				682D45111603883900156830 /* DataOutputStream.m in Sources */,
 				682D45121603883900156830 /* FileInputStream.m in Sources */,
+				7872C5251EE8B66B00D343F6 /* TwoFishCipher.m in Sources */,
 				682D45131603883900156830 /* FileOutputStream.m in Sources */,
 				682D45141603883900156830 /* GZipInputStream.m in Sources */,
 				682D45151603883900156830 /* GZipOutputStream.m in Sources */,
@@ -1211,15 +1164,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		787231A01E95ED59006BA0DD /* PBXTargetDependency */ = {
+		7872C52C1EE8B78A00D343F6 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = argon2iOS;
-			targetProxy = 7872319F1E95ED59006BA0DD /* PBXContainerItemProxy */;
-		};
-		78AF0CEC1E834E45007467BB /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "ObjectiveDropboxOfficial iOS";
-			targetProxy = 78AF0CEB1E834E45007467BB /* PBXContainerItemProxy */;
+			targetProxy = 7872C52B1EE8B78A00D343F6 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1368,16 +1316,15 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = MGD4WTF6BR;
 				INFOPLIST_FILE = "MiniKeePass/MiniKeePass-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/argon2",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.tssmith;
+				LIBRARY_SEARCH_PATHS = "";
+				PRODUCT_BUNDLE_IDENTIFIER = com.github.MiniKeePass;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -1387,17 +1334,16 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = MGD4WTF6BR;
 				INFOPLIST_FILE = "MiniKeePass/MiniKeePass-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/argon2",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.tssmith;
+				LIBRARY_SEARCH_PATHS = "";
+				PRODUCT_BUNDLE_IDENTIFIER = com.github.MiniKeePass;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "29c6de49-d5a6-4b63-9168-72d9368ab499";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

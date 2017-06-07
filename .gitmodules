@@ -1,3 +1,6 @@
 [submodule "MBProgressHUD"]
 	path = MBProgressHUD
-	url = git@github.com:MiniKeePass/MBProgressHUD.git
+	url = https://github.com/MiniKeePass/MBProgressHUD
+[submodule "phc-winner-argon2"]
+	path = phc-winner-argon2
+	url = https://github.com/P-H-C/phc-winner-argon2

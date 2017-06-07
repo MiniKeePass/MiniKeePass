@@ -47,7 +47,7 @@
 
 #define KDF_KEY_UUID_BYTES            @"$UUID"
 #define KDF_AES_KEY_SEED              @"S"
-#define KDF_AES_KEY_ROUNDS            @"R"
+#define KDF_AES_KEY_ROUNDS            @"R" /*uint64*/
 
 #define KDF_ARGON2_KEY_SALT           @"S"
 #define KDF_ARGON2_KEY_PARALLELISM    @"P" /*uint32*/
