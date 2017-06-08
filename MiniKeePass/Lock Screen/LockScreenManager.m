@@ -15,6 +15,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+// See Technical Q&A QA1838
+
+// NOTE: This will NOT work with the old UIActionSheet depreciated class.
+//       Also, the UIActionSheetAutoDismiss class is broken and doesn't auto dismiss
+//       unless fixed.  If fixed then it works.
+
 #import <LocalAuthentication/LocalAuthentication.h>
 #import <AudioToolbox/AudioToolbox.h>
 #import "LockScreenManager.h"
@@ -26,13 +32,14 @@
 #import "PasswordUtils.h"
 
 @interface LockScreenManager () <PinViewControllerDelegate>
-@property (nonatomic, strong) LockViewController *lockViewController;
 @property (nonatomic, strong) PinViewController *pinViewController;
-@property (nonatomic, assign) BOOL checkingTouchId;
 @property (nonatomic, assign) BOOL unlocked;
 @end
 
-@implementation LockScreenManager
+@implementation LockScreenManager {
+    UIWindow *lockWindow;
+    BOOL touchIDFailed;
+}
 
 static LockScreenManager *sharedInstance = nil;
 
@@ -47,21 +54,36 @@ static LockScreenManager *sharedInstance = nil;
 - (instancetype)init {
     self = [super init];
     if (self) {
-        _checkingTouchId = NO;
         _unlocked = NO;
         
+        touchIDFailed = NO;
+        
+        lockWindow = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+        lockWindow.windowLevel = UIWindowLevelAlert;
+        lockWindow.screen = [UIScreen mainScreen];
+        
+        UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleRegular];
+        UIVisualEffectView *blurView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
+        blurView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        blurView.frame = [[UIScreen mainScreen] bounds];
+        self.pinViewController = [[PinViewController alloc] init];
+        self.pinViewController.delegate = self;
+
+        lockWindow.rootViewController = self.pinViewController;
+        [lockWindow addSubview:blurView];
+
         NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
         [notificationCenter addObserver:self
                                selector:@selector(applicationDidFinishLaunching:)
                                    name:UIApplicationDidFinishLaunchingNotification
                                  object:nil];
         [notificationCenter addObserver:self
-                               selector:@selector(applicationWillResignActive:)
-                                   name:UIApplicationWillResignActiveNotification
+                               selector:@selector(applicationWillEnterForeground:)
+                                   name:UIApplicationWillEnterForegroundNotification
                                  object:nil];
         [notificationCenter addObserver:self
-                               selector:@selector(applicationDidBecomeActive:)
-                                   name:UIApplicationDidBecomeActiveNotification
+                               selector:@selector(applicationDidEnterBackground:)
+                                   name:UIApplicationDidEnterBackgroundNotification
                                  object:nil];
     }
     return self;
@@ -75,11 +97,6 @@ static LockScreenManager *sharedInstance = nil;
 #pragma mark - Lock/Unlock
 
 - (BOOL)shouldCheckPin {
-    // Check if we're currently checking TouchID
-    if (self.checkingTouchId) {
-        return NO;
-    }
-    
     // Check if we're unlocked
     if (self.unlocked) {
         return NO;
@@ -89,6 +106,10 @@ static LockScreenManager *sharedInstance = nil;
     AppSettings *appSettings = [AppSettings sharedInstance];
     if (![appSettings pinEnabled]) {
         return NO;
+    }
+    
+    if( touchIDFailed ) {
+        return YES;
     }
 
     // Get the last time the app exited
@@ -103,10 +124,6 @@ static LockScreenManager *sharedInstance = nil;
 }
 
 - (BOOL)shouldLock {
-    // Check if we're already locked
-    if (self.lockViewController != nil) {
-        return NO;
-    }
 
     // We should lock if the PIN is enabled or closing the database is enabled
     AppSettings *appSettings = [AppSettings sharedInstance];
@@ -114,70 +131,37 @@ static LockScreenManager *sharedInstance = nil;
 }
 
 - (void)checkPin {
-    // If the PIN view is already visible, just return
-    if (self.pinViewController != nil) {
-        [self.pinViewController clearPin];
-        return;
-    }
-
-    // Ensure the lock screen is shown first
-    if (self.lockViewController == nil) {
-        [self showLockScreen];
-    }
-
-    // Show either the PIN view or perform Touch ID
+    // Perform Touch ID if enabled and not already failed.
     AppSettings *appSettings = [AppSettings sharedInstance];
-    if ([appSettings touchIdEnabled]) {
+    if ([appSettings touchIdEnabled] && !touchIDFailed ) {
         [self showTouchId];
-    } else {
-        [self showPinScreen];
     }
 }
 
 - (void)showLockScreen {
-    if (self.lockViewController != nil) {
-        return;
-    }
 
     self.unlocked = false;
 
-    self.lockViewController = [[LockViewController alloc] init];
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:self.lockViewController];
-    navigationController.toolbarHidden = NO;
-
-    // Hack for iOS 8 to ensure the view is displayed before anything else on launch
-    AppDelegate *appDelegate = [AppDelegate getDelegate];
-    [appDelegate.window addSubview:navigationController.view];
-
-    UIViewController *rootViewController = [LockScreenManager topMostController];
-    [rootViewController presentViewController:navigationController animated:NO completion:nil];
+    [lockWindow makeKeyAndVisible];
 }
 
 - (void)hideLockScreen {
-    if (self.lockViewController == nil) {
-        return;
-    }
 
-    self.unlocked = true;
-
-    [self.lockViewController.presentingViewController dismissViewControllerAnimated:YES completion:^{
-        self.lockViewController = nil;
-        self.pinViewController = nil;
-    }];
-}
-
-- (void)showPinScreen {
-    self.pinViewController = [[PinViewController alloc] init];
-    self.pinViewController.delegate = self;
-
-    [self.lockViewController presentViewController:self.pinViewController animated:YES completion:nil];
+    [UIView animateWithDuration:0.25
+                     animations:^{self.pinViewController.view.alpha = 0.0;}
+                     completion:^(BOOL finished){
+                         [self.pinViewController clearPin];
+                         touchIDFailed = NO;
+                         lockWindow.hidden = YES;
+                         self.pinViewController.view.alpha = 1.0;
+                         self.unlocked = true;
+                     }];
 }
 
 - (void)showTouchId {
     // Check if TouchID is supported
     if (![NSClassFromString(@"LAContext") class]) {
         // Fallback to the PIN screen
-        [self showPinScreen];
         return;
     }
 
@@ -188,18 +172,15 @@ static LockScreenManager *sharedInstance = nil;
     NSError *error = nil;
     if (![context canEvaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics error:&error]) {
         // Fallback to the PIN screen
-        [self showPinScreen];
         return;
     }
     
-    self.checkingTouchId = YES;
-
+    touchIDFailed = NO;
+    
     // Authenticate User
     [context evaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics
             localizedReason:NSLocalizedString(@"Unlock MiniKeePass", nil)
                       reply:^(BOOL success, NSError *error) {
-                          self.checkingTouchId = NO;
-                          
                           if (success) {
                               // Dismiss the lock screen
                               dispatch_async(dispatch_get_main_queue(), ^{
@@ -207,9 +188,7 @@ static LockScreenManager *sharedInstance = nil;
                               });
                           } else {
                               // Failed, show the PIN screen
-                              dispatch_async(dispatch_get_main_queue(), ^{
-                                  [self showPinScreen];
-                              });
+                              touchIDFailed = YES;
                           }
                       }];
 }
@@ -296,43 +275,30 @@ static LockScreenManager *sharedInstance = nil;
 - (void)applicationDidFinishLaunching:(NSNotification *)notification {
     if ([self shouldCheckPin]) {
         [self showLockScreen];
+        [self checkPin];
     }
 }
 
-- (void)applicationWillResignActive:(NSNotification *)notification {
-    if ([self shouldLock]) {
-        AppSettings *appSettings = [AppSettings sharedInstance];
-        [appSettings setExitTime:[NSDate date]];
-
-        [self showLockScreen];
-    }
-}
-
-- (void)applicationDidBecomeActive:(NSNotification *)notification {
+- (void)applicationWillEnterForeground:(NSNotification *)notification {
     if ([self shouldCloseDatabase]) {
         AppDelegate *appDelegate = [AppDelegate getDelegate];
         [appDelegate closeDatabase];
     }
-
+    
     if ([self shouldCheckPin]) {
         [self checkPin];
     } else {
-        if (!self.checkingTouchId) {
-            [self hideLockScreen];
-        }
+        [self hideLockScreen];
     }
 }
 
-#pragma mark - Helper method
-
-+ (UIViewController *)topMostController {
-    UIViewController *topController = [UIApplication sharedApplication].keyWindow.rootViewController;
-
-    while (topController.presentedViewController) {
-        topController = topController.presentedViewController;
+- (void)applicationDidEnterBackground:(NSNotification *)notification {
+    if ([self shouldLock]) {
+        AppSettings *appSettings = [AppSettings sharedInstance];
+        [appSettings setExitTime:[NSDate date]];
+        
+        [self showLockScreen];
     }
-
-    return topController;
 }
 
 @end
