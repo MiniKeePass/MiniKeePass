@@ -226,6 +226,7 @@ class SettingsViewController: UITableViewController, PinViewControllerDelegate {
             let pinViewController = PinViewController()
             pinViewController.titleLabel.text = NSLocalizedString("Set PIN", comment: "")
             pinViewController.delegate = self
+            pinViewController.view.backgroundColor = UIColor.white
             
             present(pinViewController, animated: true, completion: nil)
         } else {
