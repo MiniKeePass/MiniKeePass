@@ -47,7 +47,6 @@
 		682D45191603883900156830 /* OutputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 682D450A1603883900156830 /* OutputStream.m */; };
 		682D451A1603883900156830 /* Sha256OutputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 682D450C1603883900156830 /* Sha256OutputStream.m */; };
 		68496E751AB34F8800370876 /* AppSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 68496E721AB34F8800370876 /* AppSettings.m */; };
-		6851FAFD186DD11D00A53B0E /* UIActionSheetAutoDismiss.m in Sources */ = {isa = PBXBuildFile; fileRef = 6851FAFC186DD11D00A53B0E /* UIActionSheetAutoDismiss.m */; };
 		685D9D951603F8EE00D739D3 /* Kdb3Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 685D9D941603F8EE00D739D3 /* Kdb3Utils.m */; };
 		68767B651D6F23350039EFE0 /* FilesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68767B641D6F23350039EFE0 /* FilesViewController.swift */; };
 		68767B671D6F241F0039EFE0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 68767B661D6F241F0039EFE0 /* Main.storyboard */; };
@@ -117,7 +116,6 @@
 		689FBE641AB271C6005CB6BD /* KeypadButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 689FBE5B1AB271C6005CB6BD /* KeypadButton.m */; };
 		689FBE651AB271C6005CB6BD /* KeypadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 689FBE5D1AB271C6005CB6BD /* KeypadView.m */; };
 		689FBE661AB271C6005CB6BD /* LockScreenManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 689FBE5F1AB271C6005CB6BD /* LockScreenManager.m */; };
-		689FBE671AB271C6005CB6BD /* LockViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 689FBE611AB271C6005CB6BD /* LockViewController.m */; };
 		689FBE681AB271C6005CB6BD /* PinViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 689FBE631AB271C6005CB6BD /* PinViewController.m */; };
 		689FBE781AB27228005CB6BD /* KeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 689FBE751AB27228005CB6BD /* KeychainUtils.m */; };
 		689FBE791AB27228005CB6BD /* PasswordUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 689FBE771AB27228005CB6BD /* PasswordUtils.m */; };
@@ -212,8 +210,6 @@
 		682D450C1603883900156830 /* Sha256OutputStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Sha256OutputStream.m; sourceTree = "<group>"; };
 		68496E711AB34F8800370876 /* AppSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppSettings.h; sourceTree = "<group>"; };
 		68496E721AB34F8800370876 /* AppSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppSettings.m; sourceTree = "<group>"; };
-		6851FAFB186DD11D00A53B0E /* UIActionSheetAutoDismiss.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIActionSheetAutoDismiss.h; sourceTree = "<group>"; };
-		6851FAFC186DD11D00A53B0E /* UIActionSheetAutoDismiss.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIActionSheetAutoDismiss.m; sourceTree = "<group>"; };
 		685D9D931603F8EE00D739D3 /* Kdb3Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Kdb3Utils.h; sourceTree = "<group>"; };
 		685D9D941603F8EE00D739D3 /* Kdb3Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Kdb3Utils.m; sourceTree = "<group>"; };
 		68767B641D6F23350039EFE0 /* FilesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilesViewController.swift; sourceTree = "<group>"; };
@@ -334,8 +330,6 @@
 		689FBE5D1AB271C6005CB6BD /* KeypadView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeypadView.m; sourceTree = "<group>"; };
 		689FBE5E1AB271C6005CB6BD /* LockScreenManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LockScreenManager.h; sourceTree = "<group>"; };
 		689FBE5F1AB271C6005CB6BD /* LockScreenManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LockScreenManager.m; sourceTree = "<group>"; };
-		689FBE601AB271C6005CB6BD /* LockViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LockViewController.h; sourceTree = "<group>"; };
-		689FBE611AB271C6005CB6BD /* LockViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LockViewController.m; sourceTree = "<group>"; };
 		689FBE621AB271C6005CB6BD /* PinViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PinViewController.h; sourceTree = "<group>"; };
 		689FBE631AB271C6005CB6BD /* PinViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PinViewController.m; sourceTree = "<group>"; };
 		689FBE741AB27228005CB6BD /* KeychainUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeychainUtils.h; sourceTree = "<group>"; };
@@ -720,8 +714,6 @@
 				689D042813A42C81005EBD36 /* DatabaseManager.h */,
 				689D042913A42C81005EBD36 /* DatabaseManager.m */,
 				68CBC1461A4A0F0E004A3553 /* MiniKeePass.entitlements */,
-				6851FAFB186DD11D00A53B0E /* UIActionSheetAutoDismiss.h */,
-				6851FAFC186DD11D00A53B0E /* UIActionSheetAutoDismiss.m */,
 				689FBE7B1AB27283005CB6BD /* Cells */,
 				689FBE591AB271C6005CB6BD /* Lock Screen */,
 				68496E701AB34F8800370876 /* Settings */,
@@ -815,8 +807,6 @@
 				689FBE5D1AB271C6005CB6BD /* KeypadView.m */,
 				689FBE5E1AB271C6005CB6BD /* LockScreenManager.h */,
 				689FBE5F1AB271C6005CB6BD /* LockScreenManager.m */,
-				689FBE601AB271C6005CB6BD /* LockViewController.h */,
-				689FBE611AB271C6005CB6BD /* LockViewController.m */,
 				689FBE621AB271C6005CB6BD /* PinViewController.h */,
 				689FBE631AB271C6005CB6BD /* PinViewController.m */,
 			);
@@ -1047,7 +1037,6 @@
 				689D03E213A42B63005EBD36 /* KdbReaderFactory.m in Sources */,
 				689FBE991AB272BD005CB6BD /* ImageFactory.m in Sources */,
 				689EA6931D67F94600CF445E /* SelectionViewController.swift in Sources */,
-				689FBE671AB271C6005CB6BD /* LockViewController.m in Sources */,
 				68496E751AB34F8800370876 /* AppSettings.m in Sources */,
 				6895D2EA1D68F95D003D8C44 /* RenameItemViewController.swift in Sources */,
 				689D03E313A42B63005EBD36 /* KdbWriterFactory.m in Sources */,
@@ -1093,7 +1082,6 @@
 				68767B691D70B0830039EFE0 /* Array+Extensions.swift in Sources */,
 				682D451A1603883900156830 /* Sha256OutputStream.m in Sources */,
 				685D9D951603F8EE00D739D3 /* Kdb3Utils.m in Sources */,
-				6851FAFD186DD11D00A53B0E /* UIActionSheetAutoDismiss.m in Sources */,
 				689FBE931AB27283005CB6BD /* TextFieldCell.m in Sources */,
 				689EA6871D67F90800CF445E /* CharacterSetsViewController.swift in Sources */,
 				680C277616050C7A009403DE /* DDXMLDocument+MKPAdditions.m in Sources */,
