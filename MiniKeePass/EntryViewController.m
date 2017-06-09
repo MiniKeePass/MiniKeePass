@@ -255,7 +255,7 @@ static NSString *TextFieldCellIdentifier = @"TextFieldCell";
                 
             }
 
-            DatabaseDocument *doc = [MiniKeePassAppDelegate appDelegate].databaseDocument;
+            DatabaseDocument *doc = [AppDelegate getDelegate].databaseDocument;
             // Save the database document if entry was changed.
             if ([self.entry hasChanged:originalEntry]) {
                 if (originalEntry != nil) {
