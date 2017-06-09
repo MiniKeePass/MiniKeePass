@@ -27,7 +27,7 @@ typedef NS_ENUM(NSInteger, TextFieldCellStyle) {
     TextFieldCellStyleUrl
 };
 
-@interface TextFieldCell : UITableViewCell <UITextFieldDelegate, UIActionSheetDelegate>
+@interface TextFieldCell : UITableViewCell <UITextFieldDelegate>
 
 @property (nonatomic, copy) NSString *title;
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;

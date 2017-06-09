@@ -24,7 +24,6 @@
 #import <LocalAuthentication/LocalAuthentication.h>
 #import <AudioToolbox/AudioToolbox.h>
 #import "LockScreenManager.h"
-#import "LockViewController.h"
 #import "AppDelegate.h"
 #import "AppSettings.h"
 #import "KeychainUtils.h"
@@ -108,7 +107,8 @@ static LockScreenManager *sharedInstance = nil;
         return NO;
     }
     
-    if( touchIDFailed ) {
+    // Check if touchID check failed
+    if (touchIDFailed) {
         return YES;
     }
 
@@ -133,7 +133,7 @@ static LockScreenManager *sharedInstance = nil;
 - (void)checkPin {
     // Perform Touch ID if enabled and not already failed.
     AppSettings *appSettings = [AppSettings sharedInstance];
-    if ([appSettings touchIdEnabled] && !touchIDFailed ) {
+    if ([appSettings touchIdEnabled] && !touchIDFailed) {
         [self showTouchId];
     }
 }
