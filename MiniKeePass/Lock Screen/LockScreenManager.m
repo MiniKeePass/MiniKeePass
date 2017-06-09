@@ -123,13 +123,6 @@ static LockScreenManager *sharedInstance = nil;
     return timeInterval > [appSettings pinLockTimeout];
 }
 
-- (BOOL)shouldLock {
-
-    // We should lock if the PIN is enabled or closing the database is enabled
-    AppSettings *appSettings = [AppSettings sharedInstance];
-    return [appSettings pinEnabled] || [appSettings closeEnabled];
-}
-
 - (void)checkPin {
     // Perform Touch ID if enabled and not already failed.
     AppSettings *appSettings = [AppSettings sharedInstance];
@@ -141,7 +134,6 @@ static LockScreenManager *sharedInstance = nil;
 - (void)showLockScreen {
 
     self.unlocked = false;
-
     [lockWindow makeKeyAndVisible];
 }
 
@@ -253,7 +245,7 @@ static LockScreenManager *sharedInstance = nil;
 #pragma mark - Closing the database
 
 - (BOOL)shouldCloseDatabase {
-    // Check if the PIN is enabled
+    // Check if Close on Timeout is enabled
     AppSettings *appSettings = [AppSettings sharedInstance];
     if (![appSettings closeEnabled]) {
         return NO;
@@ -273,7 +265,9 @@ static LockScreenManager *sharedInstance = nil;
 #pragma mark - Application Notification Handlers
 
 - (void)applicationDidFinishLaunching:(NSNotification *)notification {
-    if ([self shouldCheckPin]) {
+    // Lock if the PIN is enabled
+    AppSettings *appSettings = [AppSettings sharedInstance];
+    if ([appSettings pinEnabled]) {
         [self showLockScreen];
         [self checkPin];
     }
@@ -293,10 +287,9 @@ static LockScreenManager *sharedInstance = nil;
 }
 
 - (void)applicationDidEnterBackground:(NSNotification *)notification {
-    if ([self shouldLock]) {
-        AppSettings *appSettings = [AppSettings sharedInstance];
-        [appSettings setExitTime:[NSDate date]];
-        
+    AppSettings *appSettings = [AppSettings sharedInstance];
+    [appSettings setExitTime:[NSDate date]];
+    if ([appSettings pinEnabled]) {
         [self showLockScreen];
     }
 }
