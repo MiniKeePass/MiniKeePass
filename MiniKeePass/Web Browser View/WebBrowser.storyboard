@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="d33-B8-2Jh">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Web Browser View Controller-->
+        <scene sceneID="M1N-Pi-hUg">
+            <objects>
+                <viewController id="bzB-WB-WEb" customClass="WebBrowserViewController" customModule="MiniKeePass" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="lPO-vz-M16"/>
+                        <viewControllerLayoutGuide type="bottom" id="BBa-P3-YQU"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="y0G-Qe-lnI">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="aF3-DE-8b4">
+                                <rect key="frame" x="0.0" y="64" width="375" height="2"/>
+                            </progressView>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="aF3-DE-8b4" secondAttribute="trailing" id="Out-EY-8OR"/>
+                            <constraint firstItem="aF3-DE-8b4" firstAttribute="top" secondItem="lPO-vz-M16" secondAttribute="bottom" id="VGi-dX-7E6"/>
+                            <constraint firstItem="aF3-DE-8b4" firstAttribute="leading" secondItem="y0G-Qe-lnI" secondAttribute="leading" id="fPK-VU-oKK"/>
+                        </constraints>
+                    </view>
+                    <toolbarItems>
+                        <barButtonItem image="back" id="VoZ-QU-yTU" userLabel="Back Button">
+                            <connections>
+                                <action selector="backPressed:" destination="bzB-WB-WEb" id="kiS-Q7-5ui"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="hkD-X8-wNp"/>
+                        <barButtonItem image="forward" id="y30-Vu-FUu" userLabel="Forward Button">
+                            <connections>
+                                <action selector="forwardPressed:" destination="bzB-WB-WEb" id="pDA-Es-m45"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="qu9-aw-aJ0"/>
+                        <barButtonItem image="repeat" id="ZeG-ey-W5v" userLabel="Reload Button">
+                            <connections>
+                                <action selector="reloadPressed:" destination="bzB-WB-WEb" id="cdc-Zg-1oW"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="Jy0-g9-8ko"/>
+                        <barButtonItem systemItem="action" id="9sb-F2-puc" userLabel="Action Button">
+                            <connections>
+                                <action selector="actionPressed:" destination="bzB-WB-WEb" id="u1S-Ul-1rk"/>
+                            </connections>
+                        </barButtonItem>
+                    </toolbarItems>
+                    <navigationItem key="navigationItem" id="wy5-xD-GF6">
+                        <nil key="title"/>
+                        <leftBarButtonItems>
+                            <barButtonItem image="user" id="LRL-eC-mOZ" userLabel="Paste Username Button">
+                                <connections>
+                                    <action selector="pasteUsernamePressed:" destination="bzB-WB-WEb" id="ZFs-7X-y7s"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem image="asterisk" id="HdL-jC-eDT" userLabel="Paste Password Button">
+                                <connections>
+                                    <action selector="pastePasswordPressed:" destination="bzB-WB-WEb" id="PkS-w0-hqW"/>
+                                </connections>
+                            </barButtonItem>
+                        </leftBarButtonItems>
+                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="ytu-lH-sre" userLabel="Close Button">
+                            <connections>
+                                <action selector="closePressed:" destination="bzB-WB-WEb" id="bf1-qN-kXy"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="backButton" destination="VoZ-QU-yTU" id="DSv-QO-AY2"/>
+                        <outlet property="forwardButton" destination="y30-Vu-FUu" id="Zv2-HQ-9ps"/>
+                        <outlet property="progressView" destination="aF3-DE-8b4" id="O0C-fk-qeo"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="tMY-2z-ajL" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="640" y="427"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="J6h-Sw-qoh">
+            <objects>
+                <navigationController toolbarHidden="NO" id="d33-B8-2Jh" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="nOd-Fp-gjA">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="o39-Mr-lYV">
+                        <rect key="frame" x="0.0" y="623" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </toolbar>
+                    <connections>
+                        <segue destination="bzB-WB-WEb" kind="relationship" relationship="rootViewController" id="iAM-7i-iha"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="9B6-VH-wfn" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-172" y="427"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="asterisk" width="24" height="24"/>
+        <image name="back" width="14" height="17"/>
+        <image name="forward" width="14" height="17"/>
+        <image name="repeat" width="24" height="24"/>
+        <image name="user" width="24" height="24"/>
+    </resources>
+</document>
