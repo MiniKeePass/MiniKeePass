@@ -262,7 +262,6 @@
 }
 
 - (void)readInnerHeader:(InputStream*)inputStream {
-
     BOOL eoh = NO;
     while (!eoh) {
         uint8_t fieldType = [inputStream readInt8];
@@ -298,7 +297,6 @@
                 @throw [NSException exceptionWithName:@"InvalidParameterField" reason:@"Inner Header BadFieldType" userInfo:nil];
         }
     }
-    
 }
 
 @end

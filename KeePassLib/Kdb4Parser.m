@@ -21,6 +21,7 @@
 #import "DDXMLElementAdditions.h"
 #import "DDXMLDocument+MKPAdditions.h"
 #import "Base64.h"
+#import "Utils.h"
 
 @interface Kdb4Parser (PrivateMethods)
 

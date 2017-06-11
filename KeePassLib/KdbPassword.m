@@ -15,6 +15,7 @@
 #import "DDXML.h"
 #import "DDXMLElementAdditions.h"
 #import "Base64.h"
+#import "Utils.h"
 
 const uint64_t DEFAULT_AES_TRANSFORMATION_ROUNDS = 6000;
 
@@ -41,6 +42,7 @@ const uint64_t DEFAULT_ARGON2_VERSION =            0x13;
 - (NSData*)loadHexKeyFile64:(NSFileHandle*)fh;
 - (NSData*)loadHashKeyFile:(NSFileHandle*)fh;
 
++ (void)checkAESParameters:(VariantDictionary *)kdfParams;
 + (void)checkArgon2Parameters:(VariantDictionary *)kdfParams;
 @end
 
@@ -120,8 +122,8 @@ int hex2dec(char c);
         };
         
         size_t tmp;
-        NSNumber *rounds = kdfparams[KDF_AES_KEY_ROUNDS];
-        for (uint64_t i = 0; i < [rounds unsignedLongLongValue]; i++) {
+        uint64_t rounds = [kdfparams[KDF_AES_KEY_ROUNDS] unsignedLongLongValue];
+        for (uint64_t i = 0; i < rounds; i++) {
             CCCryptorUpdate(cryptorRef, masterKey, 32, masterKey, 32, &tmp);
         }
         
@@ -159,7 +161,6 @@ int hex2dec(char c);
 }
 
 + (void)checkKDFParameters:(VariantDictionary *)kdf {
-    
     KdbUUID *uuid = [[KdbUUID alloc] initWithData:kdf[KDF_KEY_UUID_BYTES]];
     
     if ([uuid isEqual:[KdbUUID getAES_KDFUUID]]) {
@@ -214,11 +215,9 @@ int hex2dec(char c);
             @throw [NSException exceptionWithName:@"CryptoException" reason:@"Argon2 salt not 32 bytes" userInfo:nil];
         }
     }
-    
 }
 
 + (VariantDictionary *)getDefaultKDFParameters:(KdbUUID *)uuid {
-    
     VariantDictionary *kdf = [[VariantDictionary alloc] init];
     
     [kdf addByteArray:[uuid getData] forKey:KDF_KEY_UUID_BYTES];

@@ -19,6 +19,7 @@
 #import "Base64.h"
 #import "DDXML.h"
 #import "DDXMLElementAdditions.h"
+#import "Utils.h"
 
 @interface Kdb4Persist (PrivateMethods)
 - (DDXMLDocument *)persistTree;

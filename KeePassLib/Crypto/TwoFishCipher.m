@@ -216,7 +216,6 @@ static BOOL g_bInitialized = NO;
 // Pad the extra bytes with a value that equals the number of extra bytes
 // added to make the last block 16 bytes long.
 -(void) Encrypt:(void*)m iOffset:(size_t)iOffset count:(size_t)cb  {
-    
     if (m == nil) {
         @throw [NSException exceptionWithName:@"CryptoException" reason:@"Bad Ptr" userInfo:nil];
     }

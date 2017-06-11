@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "Utils.h"
+#import "VariantDictionary.h"
 #import "UUID.h"
 
 @interface KdbPassword : NSObject

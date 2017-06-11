@@ -17,7 +17,7 @@
 
 #import <Foundation/Foundation.h>
 #import "Kdb.h"
-#import "Utils.h"
+#import "VariantDictionary.h"
 #import "UUID.h"
 
 #define KDB4_SIG1              0x9AA2D903

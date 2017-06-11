@@ -42,7 +42,6 @@
 }
 
 - (void)Encrypt:(void*)m iOffset:(size_t)iOffset count:(size_t)cb  {
-    
     if (m == nil) {
         @throw [NSException exceptionWithName:@"CryptoException" reason:@"Bad Ptr" userInfo:nil];
     }

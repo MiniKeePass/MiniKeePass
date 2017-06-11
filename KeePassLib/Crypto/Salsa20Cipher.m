@@ -83,13 +83,12 @@ static uint32_t SIGMA[4] = {0x61707865, 0x3320646E, 0x79622D32, 0x6B206574};
     _index = 0;
 }
 
-- (void)NextBlock:(uint8_t*)buf
- {
+- (void)NextBlock:(uint8_t*)buf {
     uint32_t x[16];
     
     for (int i=0; i<16; i++) x[i] = _state[i];
     
-    for (int i = 0; i < 10; i++){
+    for (int i = 0; i < 10; i++) {
         x[ 4] ^= [self rotl:(x[ 0]+x[12]) y:7];
         x[ 8] ^= [self rotl:(x[ 4]+x[ 0]) y:9];
         x[12] ^= [self rotl:(x[ 8]+x[ 4]) y:13];
@@ -127,7 +126,7 @@ static uint32_t SIGMA[4] = {0x61707865, 0x3320646E, 0x79622D32, 0x6B206574};
     for (int i = 0; i < 16; i++)
         x[i] += _state[i];
     
-    for (int i = 0, j = 0; i < 16; i++, j +=4 ){
+    for (int i = 0, j = 0; i < 16; i++, j +=4 ) {
         uint32_t t = x[i];
         buf[j+0] = (uint8_t)t;
         buf[j+1] = (uint8_t)(t >> 8);

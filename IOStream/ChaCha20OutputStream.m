@@ -42,7 +42,6 @@
 }
 
 - (NSUInteger)write:(const void *)bytes length:(NSUInteger)bytesLength {
-
     // Ensure the buffer has enough space to store the encrypted data
     [self ensureBufferCapacity:bytesLength];
     if (buffer == nil) {

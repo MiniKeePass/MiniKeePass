@@ -110,7 +110,6 @@
 }
 
 - (void)close {
-
     if (bufferOffset > 0) {
         // Write the last block if needed
         [self writeHmacBlock];
@@ -124,9 +123,7 @@
 
 
 - (NSData*)getHMACKey {
-
     return [HmacInputStream getHMACKey:(uint8_t*)hmacKey.bytes keylen:[hmacKey length] blockIndex:blockIndex];
 }
-
 
 @end

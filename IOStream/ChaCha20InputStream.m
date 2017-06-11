@@ -48,7 +48,7 @@
                 return bytesLength - remaining;
             }
         }
-        
+
         n = MIN(remaining, bufferSize - bufferOffset);       
         memcpy(((uint8_t *)bytes) + offset, buffer + bufferOffset, n);
         
