@@ -315,7 +315,7 @@ int closeCallback(void *context) {
 
     for (DDXMLElement *element in [root elementsForName:@"Binary"]) {
         BinaryRef *br = [self parseBinaryRef:element];
-        if( br != nil ) {
+        if (br != nil) {
             entry.binaryDict[br.key] = br;
         }
     }
@@ -355,8 +355,8 @@ int closeCallback(void *context) {
     binaryRef.key = [[root elementForName:@"Key"] stringValue];
     binaryRef.index = [[[[root elementForName:@"Value"] attributeForName:@"Ref"] stringValue] integerValue];
     
-    for( Binary *b in tree.binaries ) {
-        if( b.binaryId == binaryRef.index ) {
+    for (Binary *b in tree.binaries) {
+        if (b.binaryId == binaryRef.index) {
             binaryRef.data = b.data;
             return binaryRef;
         }
@@ -391,7 +391,7 @@ int closeCallback(void *context) {
 - (NSDate *)parseDateTime:(NSString *)dateString {
     NSDate *date = nil;
     //  KDBX 4 files store dates as base64 encoded seconds since epoch.
-    if( tree.dbVersion >= KDBX40_VERSION) {
+    if (tree.dbVersion >= KDBX40_VERSION) {
         NSData *dateBytes = [[NSData alloc] initWithBase64EncodedString:dateString options:NSDataBase64DecodingIgnoreUnknownCharacters];
         uint64_t lSec = [Utils BytesToInt64:dateBytes];
         date = [NSDate dateWithTimeInterval:lSec sinceDate:Kdbx4ReferenceDate];

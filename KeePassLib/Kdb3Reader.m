@@ -51,9 +51,9 @@
     NSData *key = [kdbPassword createFinalKeyForVersion:3 masterSeed:masterSeed transformSeed:masterSeed2 rounds:keyEncRounds];
     
     InputStream *decrpytStream;
-    if( headerFlags & FLAG_RIJNDAEL ) {
+    if (headerFlags & FLAG_RIJNDAEL) {
         decrpytStream = [[AesInputStream alloc] initWithInputStream:inputStream key:key iv:encryptionIv];
-    } else if( headerFlags & FLAG_TWOFISH ) {
+    } else if (headerFlags & FLAG_TWOFISH) {
         decrpytStream = [[TwoFishInputStream alloc] initWithInputStream:inputStream key:key iv:encryptionIv];
     }
     

@@ -79,9 +79,9 @@
     // Create the encryption output stream
     NSData *key = [kdbPassword createFinalKeyForVersion:3 masterSeed:masterSeed transformSeed:transformSeed rounds:tree.rounds];
     OutputStream *encryptedStream;
-    if( tree.flags & FLAG_RIJNDAEL ) {
+    if (tree.flags & FLAG_RIJNDAEL) {
         encryptedStream = [[AesOutputStream alloc] initWithOutputStream:fileOutputStream key:key iv:encryptionIv];
-    } else if( tree.flags & FLAG_TWOFISH ) {
+    } else if (tree.flags & FLAG_TWOFISH) {
         encryptedStream = [[TwoFishOutputStream alloc] initWithOutputStream:fileOutputStream key:key iv:encryptionIv];
     }
     // Wrap the AES output stream in a SHA256 output stream to calculate the content hash

@@ -74,7 +74,7 @@ int hex2dec(char c);
 
     // Transform the key
     CCCryptorRef cryptorRef;
-    if( CCCryptorCreate(kCCEncrypt, kCCAlgorithmAES128, kCCOptionECBMode, transformSeed.bytes, kCCKeySizeAES256, nil, &cryptorRef) != kCCSuccess ) {
+    if (CCCryptorCreate(kCCEncrypt, kCCAlgorithmAES128, kCCOptionECBMode, transformSeed.bytes, kCCKeySizeAES256, nil, &cryptorRef) != kCCSuccess) {
         @throw [NSException exceptionWithName:@"CryptoException" reason:@"Failed create ref" userInfo:nil];
     };
 
@@ -112,10 +112,10 @@ int hex2dec(char c);
     KdbUUID *uuid = [[KdbUUID alloc] initWithData:kdfparams[KDF_KEY_UUID_BYTES]];
     
     // Transform the key
-    if( [uuid isEqual:[KdbUUID getAES_KDFUUID]] ) {
+    if ([uuid isEqual:[KdbUUID getAES_KDFUUID]]) {
         CCCryptorRef cryptorRef;
         NSData *transformSeed = kdfparams[KDF_AES_KEY_SEED];
-        if( CCCryptorCreate(kCCEncrypt, kCCAlgorithmAES128, kCCOptionECBMode, transformSeed.bytes, kCCKeySizeAES256, nil, &cryptorRef) != kCCSuccess ) {
+        if (CCCryptorCreate(kCCEncrypt, kCCAlgorithmAES128, kCCOptionECBMode, transformSeed.bytes, kCCKeySizeAES256, nil, &cryptorRef) != kCCSuccess) {
             @throw [NSException exceptionWithName:@"CryptoException" reason:@"Failed create ref" userInfo:nil];
         };
         
@@ -129,7 +129,7 @@ int hex2dec(char c);
         uint8_t transformedKey[32];
         CC_SHA256(masterKey, 32, transformedKey);
         memcpy( masterKey, transformedKey, 32);
-    } else if( [uuid isEqual:[KdbUUID getArgon2UUID]] ) {
+    } else if ([uuid isEqual:[KdbUUID getArgon2UUID]]) {
         uint32_t t_cost = [kdfparams[KDF_ARGON2_KEY_ITERATIONS] unsignedIntValue];
         uint64_t m_cost = [kdfparams[KDF_ARGON2_KEY_MEMORY] unsignedLongLongValue];
         uint32_t parallelism = [kdfparams[KDF_ARGON2_KEY_PARALLELISM] unsignedIntValue];
@@ -137,7 +137,7 @@ int hex2dec(char c);
         uint32_t saltlen = (uint32_t) [kdfparams[KDF_ARGON2_KEY_SALT] length];
         uint8_t result[32];
         argon2d_hash_raw(t_cost, (uint32_t)m_cost/1024, parallelism, masterKey, 32, salt, saltlen, result, 32);
-        memcpy( masterKey, result, 32);
+        memcpy(masterKey, result, 32);
     } else {
         @throw [NSException exceptionWithName:@"CryptoException" reason:@"Unknown Algorithm" userInfo:nil];
     }
@@ -146,11 +146,11 @@ int hex2dec(char c);
     uint8_t finalKey[32];
     uint8_t key64[65];
     
-    memcpy( key64, masterSeed, 32 );
-    memcpy( &key64[32], masterKey, 32 );
+    memcpy(key64, masterSeed, 32);
+    memcpy(&key64[32], masterKey, 32);
     key64[64] = 1;
 
-    CC_SHA256( key64, 64, finalKey );
+    CC_SHA256(key64, 64, finalKey);
 
     // Hash the extended cipher key
     CC_SHA512(key64, 65, hmackey64);
@@ -162,9 +162,9 @@ int hex2dec(char c);
     
     KdbUUID *uuid = [[KdbUUID alloc] initWithData:kdf[KDF_KEY_UUID_BYTES]];
     
-    if( [uuid isEqual:[KdbUUID getAES_KDFUUID]] ) {
+    if ([uuid isEqual:[KdbUUID getAES_KDFUUID]]) {
         [self checkAESParameters:kdf];
-    } else if( [uuid isEqual:[KdbUUID getArgon2UUID]] ) {
+    } else if ([uuid isEqual:[KdbUUID getArgon2UUID]]) {
         [self checkArgon2Parameters:kdf];
     } else {
         @throw [NSException exceptionWithName:@"CryptoException" reason:@"Unknown Algorithm" userInfo:nil];
@@ -172,18 +172,18 @@ int hex2dec(char c);
 }
 
 + (void)checkAESParameters:(VariantDictionary *)kdf {
-    if( kdf[KDF_AES_KEY_ROUNDS] == nil ) {
+    if (kdf[KDF_AES_KEY_ROUNDS] == nil) {
         @throw [NSException exceptionWithName:@"CryptoException" reason:@"AES rounds not set" userInfo:nil];
     } else {
-        if( [(NSNumber*)kdf[KDF_AES_KEY_ROUNDS] unsignedLongLongValue] <= 0 ) {
+        if ([(NSNumber*)kdf[KDF_AES_KEY_ROUNDS] unsignedLongLongValue] <= 0) {
             @throw [NSException exceptionWithName:@"CryptoException" reason:@"AES rounds invalid" userInfo:nil];
         }
     }
     
-    if( kdf[KDF_AES_KEY_SEED] == nil ) {
+    if (kdf[KDF_AES_KEY_SEED] == nil) {
         @throw [NSException exceptionWithName:@"CryptoException" reason:@"AES seed not set" userInfo:nil];
     } else {
-        if( [kdf[KDF_AES_KEY_SEED] length] != 32 ) {
+        if ([kdf[KDF_AES_KEY_SEED] length] != 32) {
             @throw [NSException exceptionWithName:@"CryptoException" reason:@"AES seed length error" userInfo:nil];
         }
     }
@@ -191,42 +191,42 @@ int hex2dec(char c);
 
 + (void)checkArgon2Parameters:(VariantDictionary *)kdf {
     // Check the parameters to the Argon2 Key Derivation Function
-    if( kdf[KDF_ARGON2_KEY_ITERATIONS] == nil ) {
+    if (kdf[KDF_ARGON2_KEY_ITERATIONS] == nil) {
         @throw [NSException exceptionWithName:@"CryptoException" reason:@"Argon2 iterations not set" userInfo:nil];
     }
 
-    if( kdf[KDF_ARGON2_KEY_MEMORY] == nil ) {
+    if (kdf[KDF_ARGON2_KEY_MEMORY] == nil) {
         @throw [NSException exceptionWithName:@"CryptoException" reason:@"Argon2 memory not set" userInfo:nil];
     }
 
-    if( kdf[KDF_ARGON2_KEY_PARALLELISM] == nil ) {
+    if (kdf[KDF_ARGON2_KEY_PARALLELISM] == nil) {
         @throw [NSException exceptionWithName:@"CryptoException" reason:@"Argon2 parallelism not set" userInfo:nil];
     } else {
-        if( [(NSNumber *)kdf[KDF_ARGON2_KEY_PARALLELISM] unsignedLongLongValue] <= 0 ) {
+        if ([(NSNumber *)kdf[KDF_ARGON2_KEY_PARALLELISM] unsignedLongLongValue] <= 0) {
             @throw [NSException exceptionWithName:@"CryptoException" reason:@"Argon2 parallelism bad value" userInfo:nil];
         }
     }
     
-    if( kdf[KDF_ARGON2_KEY_SALT] == nil ) {
+    if (kdf[KDF_ARGON2_KEY_SALT] == nil) {
         @throw [NSException exceptionWithName:@"CryptoException" reason:@"Argon2 salt not set" userInfo:nil];
     } else {
-        if( [kdf[KDF_ARGON2_KEY_SALT] length] != 32 ) {
+        if ([kdf[KDF_ARGON2_KEY_SALT] length] != 32) {
             @throw [NSException exceptionWithName:@"CryptoException" reason:@"Argon2 salt not 32 bytes" userInfo:nil];
         }
     }
     
 }
 
-+ (VariantDictionary *) getDefaultKDFParameters:(KdbUUID*)uuid {
++ (VariantDictionary *)getDefaultKDFParameters:(KdbUUID *)uuid {
     
     VariantDictionary *kdf = [[VariantDictionary alloc] init];
     
     [kdf addByteArray:[uuid getData] forKey:KDF_KEY_UUID_BYTES];
-    if( [uuid isEqual:[KdbUUID getAES_KDFUUID]] ) {
+    if ([uuid isEqual:[KdbUUID getAES_KDFUUID]]) {
         [kdf addByteArray:[Utils randomBytes:32] forKey:KDF_AES_KEY_SEED];
         [kdf addUInt64:DEFAULT_AES_TRANSFORMATION_ROUNDS forKey:KDF_AES_KEY_ROUNDS];
 
-    } else if( [uuid isEqual:[KdbUUID getArgon2UUID]] ) {
+    } else if ([uuid isEqual:[KdbUUID getArgon2UUID]]) {
         [kdf addUInt64:DEFAULT_ARGON2_ITERATIONS forKey:KDF_ARGON2_KEY_ITERATIONS];
         [kdf addUInt64:DEFAULT_ARGON2_MEMORY forKey:KDF_ARGON2_KEY_MEMORY];
         [kdf addUInt32:DEFAULT_ARGON2_PARALLELISM forKey:KDF_ARGON2_KEY_PARALLELISM];
@@ -311,8 +311,8 @@ int hex2dec(char c);
 - (NSData*)createyKDBX4:(NSData *)finalKey {
     uint8_t key64[65];
     
-    for( int i=0; i<65; ++i ) key64[i] = 0;
-    memcpy( &key64[31], finalKey.bytes, 32 );
+    for (int i=0; i<65; ++i) key64[i] = 0;
+    memcpy(&key64[31], finalKey.bytes, 32);
     key64[64] = 1;
     
     // Hash the extended cipher key

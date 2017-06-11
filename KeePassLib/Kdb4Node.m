@@ -27,13 +27,12 @@
 }
 
 - (Kdb4Group*)findGroup:(KdbUUID *)uuid {
-    if( [self.uuid isEqual:uuid] ) return self;
+    if ([self.uuid isEqual:uuid]) return self;
     
-    for( KdbGroup *g in self.groups ) {
+    for (KdbGroup *g in self.groups) {
         Kdb4Group *group = (Kdb4Group*)g;
-//        if( [group.uuid isEqual:uuid] ) return group;
         Kdb4Group *subGroup = [group findGroup:uuid];
-        if( subGroup != nil ) return subGroup;
+        if (subGroup != nil) return subGroup;
     }
     
     return nil;
@@ -65,7 +64,7 @@
     return [[StringField alloc] initWithKey:self.key andValue:self.value andProtected:self.protected];
 }
 
-- (BOOL) contentsEqual:(StringField *)sf {
+- (BOOL)contentsEqual:(StringField *)sf {
     BOOL contentsEqual = false;
     
     contentsEqual = [self.key isEqualToString:sf.key];
@@ -160,7 +159,7 @@
     _notesStringField.value = notes;
 }
 
--(Kdb4Entry*) deepCopy {
+- (Kdb4Entry*)deepCopy {
     Kdb4Entry *entry = [[Kdb4Entry alloc] init];
     
     // Don't copy the history, just the entry itself.
@@ -185,11 +184,11 @@
     entry.usageCount = self.usageCount;
     entry.locationChanged = self.locationChanged;
     
-    for( StringField *f in self.stringFields ) {
+    for (StringField *f in self.stringFields) {
         [entry.stringFields addObject:[f copy]];
     }
     
-    for( NSString *key in self.binaryDict ) {
+    for (NSString *key in self.binaryDict) {
         BinaryRef *br = self.binaryDict[key];
         BinaryRef *brcopy = [[BinaryRef alloc] init];
         brcopy.key = [br.key copy];
@@ -198,12 +197,12 @@
         entry.binaryDict[brcopy.key] = brcopy;
     }
     
-    // Handle AutoType Here.
+    // Handle AutoType
     entry.autoType = [[AutoType alloc] init];
     entry.autoType.enabled = self.autoType.enabled;
     entry.autoType.dataTransferObfuscation = self.autoType.dataTransferObfuscation;
     entry.autoType.defaultSequence = [self.autoType.defaultSequence copy];
-    for( Association *a in self.autoType.associations ) {
+    for (Association *a in self.autoType.associations) {
         Association *acopy = [[Association alloc] init];
         acopy.window = [a.window copy];
         acopy.keystrokeSequence = [a.keystrokeSequence copy];
@@ -213,57 +212,45 @@
     return entry;
 }
 
--(BOOL) hasChanged:(Kdb4Entry*)entry {
+- (BOOL)hasChanged:(Kdb4Entry*)entry {
     BOOL isEqual = ![super hasChanged:entry];
     
-    if( !isEqual ) return YES;
+    if (!isEqual) return YES;
 
     isEqual = [entry.titleStringField contentsEqual:self.titleStringField];
     isEqual &= [entry.usernameStringField contentsEqual:self.usernameStringField];
     isEqual &= [entry.passwordStringField contentsEqual:self.passwordStringField];
     isEqual &= [entry.urlStringField contentsEqual:self.urlStringField];
     isEqual &= [entry.notesStringField contentsEqual:self.notesStringField];
-    if( !isEqual ) return YES;
+    if (!isEqual) return YES;
     
-    if( entry.stringFields.count != self.stringFields.count ) return YES;
-    for( int i=0; i<self.stringFields.count; ++i ) {
+    if (entry.stringFields.count != self.stringFields.count) return YES;
+    for (int i=0; i<self.stringFields.count; ++i) {
         isEqual &= [self.stringFields[i] contentsEqual:entry.stringFields[i]];
     }
-    if( !isEqual ) return YES;
+    if (!isEqual) return YES;
     
     isEqual &= [entry.overrideUrl isEqualToString:self.overrideUrl];
 
     // No way to change the following within MiniKeePass so we don't check.
-/*
-    isEqual &= [entry.customIconUuid isEqual:self.customIconUuid];
-    isEqual &= entry.foregroundColor == self.foregroundColor;
-    isEqual &= entry.backgroundColor == self.backgroundColor;
-    for( BinaryRef *br in self.binaries ) {
-        [entry.binaries addObject:[br copy]];
-    }
-
-    entry.autoType.enabled = self.autoType.enabled;
-    entry.autoType.dataTransferObfuscation = self.autoType.dataTransferObfuscation;
-    entry.autoType.defaultSequence = [self.autoType.defaultSequence copy];
-    for( Association *a in self.autoType.associations ) {
-        Association *acopy = [[Association alloc] init];
-        acopy.window = [a.window copy];
-        acopy.keystrokeSequence = [a.keystrokeSequence copy];
-        [entry.autoType.associations addObject:acopy];
-    }
-*/
+    // customIconUuid
+    // foregroundColor;
+    // backgroundColor;
+    // binaries
+    // autoType
+    
     return !isEqual;
 }
 
--(void) removeOldestBackup {
+- (void)removeOldestBackup {
     Kdb4Entry *oldestEntry;
     
-    if( self.history.count == 0 ) return;
+    if (self.history.count == 0) return;
     
     oldestEntry = self.history[0];
     
-    for( Kdb4Entry *e in self.history ) {
-        if( [e.lastModificationTime compare:oldestEntry.lastModificationTime] == NSOrderedAscending ) {
+    for (Kdb4Entry *e in self.history) {
+        if ([e.lastModificationTime compare:oldestEntry.lastModificationTime] == NSOrderedAscending) {
             oldestEntry = e;
         }
     }
@@ -271,7 +258,7 @@
     [self.history removeObject:oldestEntry];
 }
 
--(NSInteger) getSize {
+- (NSInteger)getSize {
     NSInteger size = 128;  // Fixed data size approx.
     
     size += self.titleStringField.value.length;
@@ -285,12 +272,12 @@
     size += self.notesStringField.value.length;
     size += self.notesStringField.key.length;
     
-    for( StringField *f in self.stringFields ) {
+    for (StringField *f in self.stringFields) {
         size += f.value.length;
         size += f.key.length;
     }
     
-    for( NSString *key in self.binaryDict ) {
+    for (NSString *key in self.binaryDict) {
         BinaryRef *br = self.binaryDict[key];
         size += br.key.length;
         size += br.data.length;
@@ -298,7 +285,7 @@
     
     // Handle AutoType Here.
     size += self.autoType.defaultSequence.length;
-    for( Association *a in self.autoType.associations ) {
+    for (Association *a in self.autoType.associations) {
         size += a.window.length;
         size += a.keystrokeSequence.length;
     }
@@ -358,18 +345,18 @@
 
     // Get the recycle bin group.
     Kdb4Group *recycleBin = [self ensureRecycleBin];
-    if( recycleBin != nil ) {
+    if (recycleBin != nil) {
         // returns non-nil if this group is in the recycle bin or is the recycle bin itself
         parent = [recycleBin findGroup:g4.uuid];
     }
 
     [super removeGroup:group];
     
-    if( recycleBin == nil ) return;
+    if (recycleBin == nil) return;
     
     // If this is not the recycleBin group and it is not an item in the recycleBin
     // then add to the recycleBin.
-    if( parent == nil ) {
+    if (parent == nil) {
         g4.locationChanged = [NSDate date];
         [recycleBin addGroup:group];
     }
@@ -418,49 +405,45 @@
 
     // Get the recycle bin group.
     Kdb4Group *recycleBin = [self ensureRecycleBin];
-    if( recycleBin != nil ) {
+    if (recycleBin != nil) {
         // returns non-nil if this group is in the recycle bin or is the recycle bin itself
         parent = [recycleBin findGroup:((Kdb4Group *)entry.parent).uuid];
     }
     
     [super removeEntry:entry];
 
-    if( recycleBin == nil ) return;
+    if (recycleBin == nil) return;
     
     // If this is not the recycleBin group and it is not an item in the recycleBin
     // then add to the recycleBin.
-    if( parent == nil ) {
+    if (parent == nil) {
         ((Kdb4Entry*)entry).locationChanged = [NSDate date];
         [recycleBin addEntry:entry];
     }
 }
 
-// Override function...
--(void) createEntryBackup:(Kdb4Entry*)entry backupEntry:(Kdb4Entry*)backupEntry {
+- (void)createEntryBackup:(Kdb4Entry*)entry backupEntry:(Kdb4Entry*)backupEntry {
     backupEntry.lastModificationTime = [NSDate date];
     [entry.history addObject:backupEntry];
     
-    while( entry.history.count > self.historyMaxItems ) {
+    while (entry.history.count > self.historyMaxItems) {
         [entry removeOldestBackup];
     }
     
-    //FIXME find the size and delete entries if too large.
-    //    while( [entry backupSize] > self.historyMaxSize ) {
-    //        [entry removeOldestBackup];
-    //    }
+    // FIXME find the history size and delete entries if too large.
 }
 
 
 - (Kdb4Group *)ensureRecycleBin {
-    if( !self.recycleBinEnabled ) {
+    if (!self.recycleBinEnabled) {
         return nil;
     }
 
     Kdb4Group *recycleBin = [(Kdb4Group*)self.root findGroup:self.recycleBinUuid];
-    if( recycleBin == nil ) {
+    if (recycleBin == nil) {
         // Create the recycle bin.
         recycleBin = (Kdb4Group*)[self createGroup:self.root];
-        if( recycleBin == nil ) return nil;
+        if (recycleBin == nil) return nil;
         self.recycleBinUuid = recycleBin.uuid;
         recycleBin.image = 43;  // Trash Can
         recycleBin.name = @"Recycle Bin";

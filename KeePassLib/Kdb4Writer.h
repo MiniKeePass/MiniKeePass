@@ -24,7 +24,6 @@
     NSData *encryptionIv;
     NSData *protectedStreamKey;
     NSData *streamStartBytes;
-
     uint32_t dbVersion;
 }
 

@@ -38,8 +38,7 @@
         cipher = [[TwoFishCipher alloc] init:key iv:iv];
         
         bufferOffset = 0;
-        bufferLength = 64*TWOFISH_BLOCK_SIZE;
-//        bufferLength = 1024*64*TWOFISH_BLOCK_SIZE;
+        bufferLength = 1024*64*TWOFISH_BLOCK_SIZE;
         buffer = malloc(bufferLength);
     }
     return self;
@@ -75,10 +74,9 @@
     int padLen;
     
     padLen = TWOFISH_BLOCK_SIZE - (bufferOffset - ((bufferOffset/TWOFISH_BLOCK_SIZE) * TWOFISH_BLOCK_SIZE ));
-    if( padLen == 16 ) padLen = 0;
+    if (padLen == 16) padLen = 0;
 
-    for (int i = 0; i < padLen; i++)
-    {
+    for (int i = 0; i < padLen; i++) {
         buffer[i + bufferOffset] = (uint8_t)padLen;
     }
     
@@ -93,7 +91,7 @@
 
 - (void)close {
     // Write the last encrypted data
-    if( bufferOffset > 0 ) {
+    if (bufferOffset > 0) {
         [self writeDataBlock];
     }
     

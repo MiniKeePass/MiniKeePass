@@ -38,8 +38,8 @@
 }
 
 - (void)enableCopyBuffer:(BOOL)enable {
-    if( enable ) {
-        if( copybuf == nil ) copybuf = [[NSMutableData alloc] init];
+    if (enable) {
+        if (copybuf == nil) copybuf = [[NSMutableData alloc] init];
     } else {
         copybuf = nil;
     }

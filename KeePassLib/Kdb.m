@@ -141,10 +141,10 @@
     return [NSString stringWithFormat:@"KdbEntry [image=%ld, title=%@, username=%@, password=%@, url=%@, notes=%@, creationTime=%@, lastModificationTime=%@, lastAccessTime=%@, expiryTime=%@]", (long)image, self.title, self.username, self.password, self.url, self.notes, creationTime, lastModificationTime, lastAccessTime, expiryTime];
 }
 
--(BOOL) hasChanged:(KdbEntry*)entry {
-    if( entry == nil ) return YES;
+-(BOOL)hasChanged:(KdbEntry *)entry {
+    if (entry == nil) return YES;
     
-    if( self == entry ) return NO;
+    if (self == entry) return NO;
     
     BOOL isEqual;
     
@@ -157,7 +157,7 @@
     return !isEqual;
 }
 
--(KdbEntry*) deepCopy {
+- (KdbEntry *)deepCopy {
     [self doesNotRecognizeSelector:_cmd];
     return nil;
 }
@@ -169,28 +169,29 @@
 
 @synthesize root;
 
-- (KdbGroup*)createGroup:(KdbGroup*)parent {
+- (KdbGroup *)createGroup:(KdbGroup *)parent {
     [self doesNotRecognizeSelector:_cmd];
     return nil;
 }
 
 - (void)removeGroup:(KdbGroup *)group {
-    if( group.parent == nil ) return;  // can't delete root group
+    if (group.parent == nil) {
+        // can't delete root group
+        return;
+    }
     [group.parent deleteGroup:group];
-//    group.parent = nil;
 }
 
-- (KdbEntry*)createEntry:(KdbGroup*)parent {
+- (KdbEntry *)createEntry:(KdbGroup *)parent {
     [self doesNotRecognizeSelector:_cmd];
     return nil;
 }
 
 - (void)removeEntry:(KdbEntry *)entry {
     [entry.parent deleteEntry:entry];
-    //    entry.parent = nil;
 }
 
--(void) createEntryBackup:(KdbEntry*)entry backupEntry:(KdbEntry*)backupEntry {
+-(void)createEntryBackup:(KdbEntry *)entry backupEntry:(KdbEntry *)backupEntry {
     [self doesNotRecognizeSelector:_cmd];
 }
 

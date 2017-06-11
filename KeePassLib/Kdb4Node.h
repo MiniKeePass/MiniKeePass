@@ -22,7 +22,6 @@
 
 #define KDB4_SIG1              0x9AA2D903
 #define KDB4_SIG2              0xB54BFB67
-// #define KDB4_VERSION           0x00030001
 #define KDBX31_VERSION         0x00030001
 #define KDBX40_VERSION         0x00040000
 
@@ -194,16 +193,14 @@
 //@property(nonatomic, strong) NSMutableArray *customData;
 @property NSMutableArray *customData;
 
--(BOOL) hasChanged:(Kdb4Entry*)entry;
--(Kdb4Entry*) deepCopy;
+- (BOOL)hasChanged:(Kdb4Entry*)entry;
+- (Kdb4Entry*)deepCopy;
 
 @end
 
 
 @interface Kdb4Tree : KdbTree
 
-// Get from KdfParams
-// @property(nonatomic, assign) uint64_t rounds;
 @property(nonatomic, assign) uint32_t compressionAlgorithm;
 
 @property(nonatomic, copy) NSString *generator;
@@ -245,12 +242,5 @@
 @property VariantDictionary *customPluginData;
 @property NSMutableArray *headerBinaries;
 @property KdbUUID *encryptionAlgorithm;
-
-// They are overrides from KdbTree.
-// These fucntions use the recycle bin if active.
-// - (void)removeGroup:(Kdb4Group *)group;
-// - (void)deleteEntry:(Kdb4Entry *)entry;
-// This fucntion uses the entry history.
-// -(void) createEntryBackup:(Kdb4Entry*)entry backupEntry:(Kdb4Entry*)backupEntry;
 
 @end

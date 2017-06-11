@@ -44,14 +44,13 @@
 - (NSUInteger)write:(const void *)bytes length:(NSUInteger)bytesLength {
 
     // Ensure the buffer has enough space to store the encrypted data
-
     [self ensureBufferCapacity:bytesLength];
-    if( buffer == nil ) {
+    if (buffer == nil) {
         @throw [NSException exceptionWithName:@"MallocException" reason:@"Failed allocate memory" userInfo:nil];
         
     }
     
-    memcpy( buffer, bytes, bytesLength );
+    memcpy(buffer, bytes, bytesLength);
     
     // Encrypt the data
     [cipher Encrypt:buffer iOffset:0 count:bytesLength];
@@ -61,11 +60,6 @@
 }
 
 - (void)close {
-/*
- // Write the encrypted data
-    [outputStream write:buffer length:n];
- */
-    
     [outputStream close];
 }
 

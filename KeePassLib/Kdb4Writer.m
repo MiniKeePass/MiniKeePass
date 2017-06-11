@@ -37,7 +37,7 @@
 @interface Kdb4Writer (PrivateMethods)
 - (void)writeHeaderField:(OutputStream*)outputStream headerId:(uint8_t)headerId data:(const void*)data length:(uint16_t)length;
 - (void)writeHeader:(OutputStream*)outputStream withTree:(Kdb4Tree*)tree;
--(uint32_t)getMinDatabaseVersion:(Kdb4Tree*)tree;
+- (uint32_t)getMinDatabaseVersion:(Kdb4Tree*)tree;
 @end
 
 @implementation Kdb4Writer
@@ -69,18 +69,18 @@
     
     // Get a new Random seed.
     KdbUUID *KDFUuid = [[KdbUUID alloc] initWithData:tree.kdfParams[KDF_KEY_UUID_BYTES]];
-    if( [KDFUuid isEqual:[KdbUUID getAES_KDFUUID]] ) {
+    if ([KDFUuid isEqual:[KdbUUID getAES_KDFUUID]]) {
         [tree.kdfParams addByteArray:[Utils randomBytes:32] forKey:KDF_AES_KEY_SEED];
-    } else if( [KDFUuid isEqual:[KdbUUID getArgon2UUID]] ) {
+    } else if ([KDFUuid isEqual:[KdbUUID getArgon2UUID]]) {
         [tree.kdfParams addByteArray:[Utils randomBytes:32] forKey:KDF_ARGON2_KEY_SALT];
     } else {
         @throw [NSException exceptionWithName:@"CipherError" reason:@"Unknown Cipher Uuid" userInfo:nil];
     }
     
         // Create the new encryptionIv
-    if( [tree.encryptionAlgorithm isEqual:[KdbUUID getAESUUID]] ) {
+    if ([tree.encryptionAlgorithm isEqual:[KdbUUID getAESUUID]]) {
         encryptionIv = [Utils randomBytes:16];
-    } else if( [tree.encryptionAlgorithm isEqual:[KdbUUID getChaCha20UUID]] ) {
+    } else if ([tree.encryptionAlgorithm isEqual:[KdbUUID getChaCha20UUID]]) {
         encryptionIv = [Utils randomBytes:12];
     } else {
         @throw [NSException exceptionWithName:@"CipherError" reason:@"Unknown Cipher Uuid" userInfo:nil];
@@ -97,7 +97,7 @@
     NSData *key = [kdbPassword createFinalKeyKDBX4:tree.kdfParams masterSeed:mseed HmacKey64:hmackey64 ];
     OutputStream *stream;
     RandomStream *randomStream;
-    if( dbVersion < KDBX40_VERSION ) {   // KDBX 3.1
+    if (dbVersion < KDBX40_VERSION) {   // KDBX 3.1
         stream = [CipherStreamFactory getOutputStream:tree.encryptionAlgorithm stream:outputStream key:key iv:encryptionIv];
         
         // Write the stream start bytes
@@ -136,7 +136,7 @@
     }
     
     // Write the inner header data.
-    if( dbVersion >= KDBX40_VERSION ) {   // KDBX 4
+    if (dbVersion >= KDBX40_VERSION) {   // KDBX 4
         [self writeInnerHeader:stream withTree:tree];
     }
     
@@ -165,7 +165,7 @@
     
     [outputStream writeInt8:headerId];
     
-    if( dbVersion < KDBX40_VERSION ) {
+    if (dbVersion < KDBX40_VERSION) {
         [outputStream writeInt16:CFSwapInt16HostToLittle(length)];
     } else {
         [outputStream writeInt32:CFSwapInt32HostToLittle(length)];
@@ -194,7 +194,7 @@
     
     [self writeHeaderField:outputStream headerId:HEADER_MASTERSEED data:masterSeed.bytes length:masterSeed.length];
     
-    if( dbVersion < KDBX40_VERSION ) {
+    if (dbVersion < KDBX40_VERSION) {
         NSData *seedData = (NSData *) tree.kdfParams[ KDF_AES_KEY_SEED ];
         
         [self writeHeaderField:outputStream headerId:HEADER_TRANSFORMSEED data:seedData.bytes length:seedData.length];
@@ -207,11 +207,11 @@
         [self writeHeaderField:outputStream headerId:HEADER_KDFPARMETERS data:vdBytes.bytes length:vdBytes.length];
     }
     
-    if( encryptionIv.length > 0 ) {
+    if (encryptionIv.length > 0) {
         [self writeHeaderField:outputStream headerId:HEADER_ENCRYPTIONIV data:encryptionIv.bytes length:encryptionIv.length];
     }
     
-    if( dbVersion < KDBX40_VERSION ) {
+    if (dbVersion < KDBX40_VERSION) {
        [self writeHeaderField:outputStream headerId:HEADER_PROTECTEDKEY data:protectedStreamKey.bytes length:protectedStreamKey.length];
         
         [self writeHeaderField:outputStream headerId:HEADER_STARTBYTES data:streamStartBytes.bytes length:streamStartBytes.length];
@@ -219,7 +219,7 @@
         i32 = CFSwapInt32HostToLittle(CSR_SALSA20);
         [self writeHeaderField:outputStream headerId:HEADER_RANDOMSTREAMID data:&i32 length:4];
     } else {
-        if( [tree.customPluginData count] > 0 ) {
+        if ([tree.customPluginData count] > 0) {
             NSData *vdBytes = [tree.customPluginData serialize];
             [self writeHeaderField:outputStream headerId:HEADER_PUBLICCUSTOM data:vdBytes.bytes length:vdBytes.length];
         }
@@ -243,7 +243,7 @@
 
     [self writeHeaderField:outputStream headerId:INNER_HEADER_RANDOMSTREAMKEY data:protectedStreamKey.bytes length:protectedStreamKey.length];
 
-    for( NSData *bdata in tree.headerBinaries ) {
+    for (NSData *bdata in tree.headerBinaries) {
         [self writeHeaderField:outputStream headerId:INNER_HEADER_BINARY data:bdata.bytes length:bdata.length];
     }
     
@@ -292,7 +292,6 @@
     tree.kdfParams = [KdbPassword getDefaultKDFParameters:[KdbUUID getAES_KDFUUID]];
     tree.encryptionAlgorithm = [KdbUUID getAESUUID];
 
-
     KdbGroup *parentGroup = [tree createGroup:nil];
     parentGroup.name = @"General";
     parentGroup.image = 48;
@@ -324,42 +323,40 @@
     [parentGroup addGroup:group];
 
     [self persist:tree file:fileName withPassword:kdbPassword];
-    
 }
 
--(uint32_t)getMinDatabaseVersion:(Kdb4Tree*)tree {
+- (uint32_t)getMinDatabaseVersion:(Kdb4Tree *)tree {
+    if (tree.forcedVersion != 0) return tree.forcedVersion;
     
-    if( tree.forcedVersion != 0 ) return tree.forcedVersion;
-    
-    if( ![tree.encryptionAlgorithm isEqual:[KdbUUID getAESUUID]] ) {
+    if (![tree.encryptionAlgorithm isEqual:[KdbUUID getAESUUID]]) {
         return KDBX40_VERSION;
     }
 
     KdbUUID *KDFUuid = [[KdbUUID alloc] initWithData:tree.kdfParams[KDF_KEY_UUID_BYTES]];
-    if( ![KDFUuid isEqual:[KdbUUID getAES_KDFUUID]] ) {
+    if (![KDFUuid isEqual:[KdbUUID getAES_KDFUUID]] ) {
         return KDBX40_VERSION;
     }
     
-    if( [tree.customPluginData count] > 0 ) {
+    if ([tree.customPluginData count] > 0) {
         return KDBX40_VERSION;
     }
     
-    if( [self groupsHaveCustomData:(Kdb4Group*)tree.root] ){
+    if ([self groupsHaveCustomData:(Kdb4Group*)tree.root]) {
         return KDBX40_VERSION;
     }
     
     return KDBX31_VERSION;
 }
 
--(BOOL) groupsHaveCustomData:(Kdb4Group*) group {
-    if( [group.customData count] > 0 ) return YES;
+- (BOOL)groupsHaveCustomData:(Kdb4Group *) group {
+    if ([group.customData count] > 0) return YES;
     
-    for( Kdb4Group* g in group.groups ) {
-        if( [self groupsHaveCustomData:g] ) return YES;
+    for (Kdb4Group* g in group.groups) {
+        if ([self groupsHaveCustomData:g]) return YES;
     }
     
-    for( Kdb4Entry* e in group.entries ) {
-        if( [e.customData count] > 0 ) return YES;
+    for (Kdb4Entry* e in group.entries) {
+        if ([e.customData count] > 0) return YES;
     }
     
     return NO;

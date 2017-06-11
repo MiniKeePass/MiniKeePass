@@ -15,6 +15,6 @@
 }
 
 - (id)init:(NSData*)key iv:(NSData*)iv;
--(void)seek:(uint32_t) pos;
+- (void)seek:(uint32_t)pos;
 
 @end

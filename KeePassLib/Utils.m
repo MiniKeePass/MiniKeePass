@@ -205,16 +205,16 @@
     return [dict count];
 }
 
--(void) deserialize:inputStream {
+- (void)deserialize:(InputStream*)inputStream {
     uint16_t paramVersion = [inputStream readInt16];
     paramVersion = CFSwapInt16LittleToHost(paramVersion);
-    if( (paramVersion & 0xFF00) > VARIANT_DICT_VERSION ) {
+    if ((paramVersion & 0xFF00) > VARIANT_DICT_VERSION ) {
         @throw [NSException exceptionWithName:@"InvalidParameterField" reason:@"BadVersion" userInfo:nil];
     }
     
     while ( 1 ) {
         uint8_t valueType = [inputStream readInt8];
-        if( valueType == VARIANT_DICT_EOH ) break;
+        if (valueType == VARIANT_DICT_EOH) break;
         uint32_t keyNameLength = [inputStream readInt32];
         keyNameLength = CFSwapInt32LittleToHost( keyNameLength );
         NSString *keyName = [inputStream readString:keyNameLength encoding:NSASCIIStringEncoding];
@@ -227,7 +227,7 @@
         int32_t pvali32;
         int64_t pvali64;
         
-        switch( valueType ) {
+        switch (valueType) {
             case VARIANT_DICT_TYPE_UINT32:
                 pvalu32 = [inputStream readInt32];
                 dict[keyName] = [NSNumber numberWithUnsignedInteger:pvalu32];
@@ -267,39 +267,39 @@
     }
 }
 
--(void) appendByte:(NSMutableData*)arr byte:(uint8_t)byte {
+- (void)appendByte:(NSMutableData*)arr byte:(uint8_t)byte {
     uint8_t buf[1];
     
     buf[0] = byte;
     [arr appendBytes:buf length:1];
 }
 
--(NSData*) serialize {
+- (NSData*)serialize {
     uint32_t keylen;
     NSMutableData *serData = [[NSMutableData alloc] init];
     
     [serData appendData:[Utils getUInt16Bytes:VARIANT_DICT_VERSION]];
     
-    for( NSString *key in dict ) {
+    for (NSString *key in dict) {
         NSObject *item = dict[key];
-        if( [item isKindOfClass:[NSNumber class]] ) {
+        if ([item isKindOfClass:[NSNumber class]]) {
             NSNumber *num = (NSNumber *)item;
             uint32_t num_type = (uint32_t)[(NSNumber*)type[key] unsignedIntegerValue];
-            if( num_type == VARIANT_DICT_TYPE_UINT64 ) {
+            if (num_type == VARIANT_DICT_TYPE_UINT64) {
                 [self appendByte:serData byte:VARIANT_DICT_TYPE_UINT64];
                 keylen = (uint32_t)[key length];
                 [serData appendData:[Utils getUInt32Bytes:keylen]];
                 [serData appendBytes:[key cStringUsingEncoding:NSASCIIStringEncoding] length:keylen];
                 [serData appendData:[Utils getUInt32Bytes:8]];
                 [serData appendData:[Utils getUInt64BytesFromNumber:num]];
-            } else if( num_type == VARIANT_DICT_TYPE_UINT32 ) {
+            } else if (num_type == VARIANT_DICT_TYPE_UINT32) {
                 [self appendByte:serData byte:VARIANT_DICT_TYPE_UINT32];
                 keylen = (uint32_t)[key length];
                 [serData appendData:[Utils getUInt32Bytes:keylen]];
                 [serData appendBytes:[key cStringUsingEncoding:NSASCIIStringEncoding] length:keylen];
                 [serData appendData:[Utils getUInt32Bytes:4]];
                 [serData appendData:[Utils getUInt32BytesFromNumber:num]];
-            } else if( num_type == VARIANT_DICT_TYPE_BOOL ) {
+            } else if (num_type == VARIANT_DICT_TYPE_BOOL) {
                 [self appendByte:serData byte:VARIANT_DICT_TYPE_BOOL];
                 keylen = (uint32_t)[key length];
                 [serData appendData:[Utils getUInt32Bytes:keylen]];
@@ -307,14 +307,14 @@
                 [serData appendData:[Utils getUInt32Bytes:1]];
                 uint8_t byte = [num unsignedCharValue];
                 [serData appendBytes:&byte length:1];
-            } else if( num_type == VARIANT_DICT_TYPE_INT64 ) {
+            } else if (num_type == VARIANT_DICT_TYPE_INT64) {
                 [self appendByte:serData byte:VARIANT_DICT_TYPE_INT64];
                 keylen = (uint32_t)[key length];
                 [serData appendData:[Utils getUInt32Bytes:keylen]];
                 [serData appendBytes:[key cStringUsingEncoding:NSASCIIStringEncoding] length:keylen];
                 [serData appendData:[Utils getUInt32Bytes:8]];
                 [serData appendData:[Utils getUInt64BytesFromNumber:num]];
-            } else if( num_type == VARIANT_DICT_TYPE_INT32 ) {
+            } else if (num_type == VARIANT_DICT_TYPE_INT32) {
                 [self appendByte:serData byte:VARIANT_DICT_TYPE_INT32];
                 keylen = (uint32_t)[key length];
                 [serData appendData:[Utils getUInt32Bytes:keylen]];
@@ -325,7 +325,7 @@
                 printf("Obj-C type(%d)\n", num_type );
                 @throw [NSException exceptionWithName:@"InvalidParameterField" reason:@"NotImplemented" userInfo:nil];
             }
-        } else if( [item isKindOfClass:[NSString class]] ) {
+        } else if ([item isKindOfClass:[NSString class]]) {
             NSString *str = (NSString *)item;
             [self appendByte:serData byte:VARIANT_DICT_TYPE_STRING];
             keylen = (uint32_t)[key length];
@@ -333,7 +333,7 @@
             [serData appendBytes:[key cStringUsingEncoding:NSASCIIStringEncoding] length:keylen];
             [serData appendData:[Utils getUInt32Bytes:(uint32_t)[str length]]];
             [serData appendBytes:[str cStringUsingEncoding:NSASCIIStringEncoding] length:[str length]];
-        } else if( [item isKindOfClass:[NSData class]] ) {
+        } else if ([item isKindOfClass:[NSData class]]) {
             NSData *data = (NSData *)item;
             [self appendByte:serData byte:VARIANT_DICT_TYPE_BYTEARRAY];
             keylen = (uint32_t)[key length];
@@ -350,6 +350,5 @@
 
     return serData;
 }
-
 
 @end

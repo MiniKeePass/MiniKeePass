@@ -30,7 +30,7 @@
     NSMutableDictionary *type;
 }
 
--(id) init;
+- (id)init;
 
 - (id)objectForKeyedSubscript:(id)key;
 
@@ -42,8 +42,8 @@
 - (void)addString:(NSString*)string forKey:(NSString*)key;
 - (void)addByteArray:(NSData*)data forKey:(NSString*)key;
 
--(void) deserialize:(InputStream*)data;
--(NSData*) serialize;
--(NSUInteger)count;
+- (void) deserialize:(InputStream*)data;
+- (NSData*) serialize;
+- (NSUInteger)count;
 
 @end

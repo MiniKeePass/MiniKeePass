@@ -26,10 +26,10 @@ static uint32_t SIGMA[4] = {0x61707865, 0x3320646E, 0x79622D32, 0x6B206574};
 - (id)init:(NSData *)key iv:(NSData*)iv {
     self = [super init];
     if (self) {
-        if( [key length] != 32 ) {
+        if ([key length] != 32) {
             @throw [NSException exceptionWithName:@"CryptoException" reason:@"Key length error" userInfo:nil];
         }
-        if( [iv length] < 8 ) {
+        if ([iv length] < 8) {
             @throw [NSException exceptionWithName:@"CryptoException" reason:@"IV length error" userInfo:nil];
         }
         
@@ -41,7 +41,7 @@ static uint32_t SIGMA[4] = {0x61707865, 0x3320646E, 0x79622D32, 0x6B206574};
     return self;
 }
 
-- (uint32_t) getBlockSize {
+- (uint32_t)getBlockSize {
     return SALSA20_BLOCK_SIZE;
 }
 
@@ -87,7 +87,7 @@ static uint32_t SIGMA[4] = {0x61707865, 0x3320646E, 0x79622D32, 0x6B206574};
  {
     uint32_t x[16];
     
-    for(int i=0; i<16; i++) x[i] = _state[i];
+    for (int i=0; i<16; i++) x[i] = _state[i];
     
     for (int i = 0; i < 10; i++){
         x[ 4] ^= [self rotl:(x[ 0]+x[12]) y:7];

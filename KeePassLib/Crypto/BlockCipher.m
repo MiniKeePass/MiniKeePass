@@ -14,17 +14,17 @@
 
 @implementation BlockCipher
 
-- (id) init {
+- (id)init {
     blockSize = [self getBlockSize];
-    if( blockSize <= 0 ) return nil;
+    if (blockSize <= 0) return nil;
     blockBuf = malloc( blockSize );
-    if( blockBuf == nil ) return nil;
+    if (blockBuf == nil) return nil;
     blockPos = blockSize;
     
     return self;
 }
 
-- (uint32_t) getBlockSize {
+- (uint32_t)getBlockSize {
     [self doesNotRecognizeSelector:_cmd];
     return 0;
 }
@@ -33,32 +33,30 @@
     [self doesNotRecognizeSelector:_cmd];
 }
 
--(void) invalidateBlock {
+- (void)invalidateBlock {
     blockPos = blockSize;
 }
 
--(void) Encrypt:(NSMutableData *)m {
+- (void)Encrypt:(NSMutableData*)m {
     [self Encrypt:m.mutableBytes iOffset:0 count:[m length]];
 }
 
--(void) Encrypt:(void*)m iOffset:(size_t)iOffset count:(size_t)cb  {
+- (void)Encrypt:(void*)m iOffset:(size_t)iOffset count:(size_t)cb  {
     
-    if( m == nil ) {
+    if (m == nil) {
         @throw [NSException exceptionWithName:@"CryptoException" reason:@"Bad Ptr" userInfo:nil];
     }
-    if( cb == 0 ) {
+    if (cb == 0) {
         @throw [NSException exceptionWithName:@"CryptoException" reason:@"Bad count" userInfo:nil];
     }
-    if( iOffset > cb ) {
+    if (iOffset > cb) {
         @throw [NSException exceptionWithName:@"CryptoException" reason:@"Bad Offset" userInfo:nil];
     }
     
     uint32_t cbBlock = blockSize;
     
-    while(cb > 0)
-    {
-        if( blockPos == cbBlock)
-        {
+    while (cb > 0) {
+        if (blockPos == cbBlock) {
             [self NextBlock:blockBuf];
             blockPos = 0;
         }
@@ -73,11 +71,11 @@
     }
 }
 
--(void) Decrypt:(NSMutableData *)m {
+- (void)Decrypt:(NSMutableData*)m {
     [self Decrypt:m.mutableBytes iOffset:0 count:[m length]];
 }
 
--(void) Decrypt:(void *)m iOffset:(size_t)iOffset count:(size_t)cb {
+- (void)Decrypt:(void*)m iOffset:(size_t)iOffset count:(size_t)cb {
     [self Encrypt:m  iOffset:iOffset count:cb];
 }
 

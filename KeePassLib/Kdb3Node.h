@@ -60,8 +60,8 @@ typedef struct {
 @property(nonatomic, strong) NSData *binary;
 
 - (BOOL)isMeta;
--(BOOL) hasChanged:(Kdb3Entry*)entry;
--(KdbEntry*) deepCopy;
+- (BOOL)hasChanged:(Kdb3Entry*)entry;
+- (KdbEntry*)deepCopy;
 
 @end
 

@@ -184,24 +184,26 @@ static BOOL g_bInitialized = NO;
 - (id)init:(NSData *)key iv:(NSData*)iv {
     self = [super init];
     if (self) {
-        if( [key length] != 32 ) {
+        if ([key length] != 32) {
             @throw [NSException exceptionWithName:@"CryptoException" reason:@"Key length error" userInfo:nil];
         }
-        if( [iv length] < 16 ) {
+        if ([iv length] < 16) {
             @throw [NSException exceptionWithName:@"CryptoException" reason:@"IV length error" userInfo:nil];
         }
         
         
-        if(g_bInitialized == NO)
-        {
+        if (g_bInitialized == NO) {
             Twofish_initialise();
             g_bInitialized = YES;
         }
         
         Twofish_prepare_key((Twofish_Byte *)key.bytes, (uint32_t)[key length], &m_key);
         
-        if(iv != nil) memcpy(ivec, iv.bytes, TWOFISH_BLOCK_SIZE);
-        else memset(ivec, 0, TWOFISH_BLOCK_SIZE);
+        if (iv != nil) {
+            memcpy(ivec, iv.bytes, TWOFISH_BLOCK_SIZE);
+        } else {
+            memset(ivec, 0, TWOFISH_BLOCK_SIZE);
+        }
     }
     return self;
 }
@@ -215,17 +217,17 @@ static BOOL g_bInitialized = NO;
 // added to make the last block 16 bytes long.
 -(void) Encrypt:(void*)m iOffset:(size_t)iOffset count:(size_t)cb  {
     
-    if( m == nil ) {
+    if (m == nil) {
         @throw [NSException exceptionWithName:@"CryptoException" reason:@"Bad Ptr" userInfo:nil];
     }
-    if( cb == 0 ) {
+    if (cb == 0) {
         @throw [NSException exceptionWithName:@"CryptoException" reason:@"Bad count" userInfo:nil];
     }
-    if( iOffset > cb ) {
+    if (iOffset > cb) {
         @throw [NSException exceptionWithName:@"CryptoException" reason:@"Bad Offset" userInfo:nil];
     }
     
-    if((cb % TWOFISH_BLOCK_SIZE) != 0) {
+    if ((cb % TWOFISH_BLOCK_SIZE) != 0) {
         @throw [NSException exceptionWithName:@"CryptoException" reason:@"Bad Block Count" userInfo:nil];
     }
     
@@ -236,8 +238,7 @@ static BOOL g_bInitialized = NO;
     numBlocks = (int)(cb / TWOFISH_BLOCK_SIZE);
     
     iv = ivec;
-    for(i = numBlocks; i > 0; i--)
-    {
+    for (i = numBlocks; i > 0; i--) {
         ((uint32_t*)block)[0] = ((uint32_t*)pInput)[0] ^ ((uint32_t*)iv)[0];
         ((uint32_t*)block)[1] = ((uint32_t*)pInput)[1] ^ ((uint32_t*)iv)[1];
         ((uint32_t*)block)[2] = ((uint32_t*)pInput)[2] ^ ((uint32_t*)iv)[2];
@@ -252,13 +253,13 @@ static BOOL g_bInitialized = NO;
 }
 
 -(void) Decrypt:(void *)m iOffset:(size_t)iOffset count:(size_t)cb {
-    if( m == nil ) {
+    if (m == nil) {
         @throw [NSException exceptionWithName:@"CryptoException" reason:@"Bad Ptr" userInfo:nil];
     }
-    if( cb == 0 ) {
+    if (cb == 0) {
         @throw [NSException exceptionWithName:@"CryptoException" reason:@"Bad count" userInfo:nil];
     }
-    if( iOffset > cb ) {
+    if (iOffset > cb) {
         @throw [NSException exceptionWithName:@"CryptoException" reason:@"Bad Offset" userInfo:nil];
     }
     
@@ -267,17 +268,14 @@ static BOOL g_bInitialized = NO;
     uint32_t iv[4];
     uint8_t *pInput = (uint8_t*)m;
     
-    
-    if((cb % TWOFISH_BLOCK_SIZE) != 0) {
+    if ((cb % TWOFISH_BLOCK_SIZE) != 0) {
         @throw [NSException exceptionWithName:@"CryptoException" reason:@"Bad Block Count" userInfo:nil];
     }
     
     numBlocks = (int)(cb / TWOFISH_BLOCK_SIZE);
-    
     memcpy(iv, ivec, TWOFISH_BLOCK_SIZE);
     
-    for(i = numBlocks - 1; i > 0; i--)
-    {
+    for (i = numBlocks - 1; i > 0; i--) {
         Twofish_decrypt(&m_key, (Twofish_Byte *)pInput, (Twofish_Byte *)block);
         ((uint32_t*)block)[0] ^= iv[0];
         ((uint32_t*)block)[1] ^= iv[1];
@@ -294,12 +292,11 @@ static BOOL g_bInitialized = NO;
     ((uint32_t*)block)[2] ^= iv[2];
     ((uint32_t*)block)[3] ^= iv[3];
     padLen = block[TWOFISH_BLOCK_SIZE-1];
-    if(padLen <= 0 || padLen >= TWOFISH_BLOCK_SIZE) {
+    if (padLen <= 0 || padLen >= TWOFISH_BLOCK_SIZE) {
         @throw [NSException exceptionWithName:@"CryptoException" reason:@"Bad Padding Length" userInfo:nil];
     }
-    for(i = TWOFISH_BLOCK_SIZE - padLen; i < TWOFISH_BLOCK_SIZE; i++)
-    {
-        if(block[i] != padLen) {
+    for (i = TWOFISH_BLOCK_SIZE - padLen; i < TWOFISH_BLOCK_SIZE; i++) {
+        if (block[i] != padLen) {
             @throw [NSException exceptionWithName:@"CryptoException" reason:@"Bad Padding Data" userInfo:nil];
         }
     }

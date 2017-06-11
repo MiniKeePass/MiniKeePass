@@ -54,7 +54,7 @@
 
     InputStream *stream;
     InputStream *xmlStream;
-    if( dbVersion < VERSION_CRITICAL_MAX_32_4 ) {  // KDBX 3.1
+    if (dbVersion < VERSION_CRITICAL_MAX_32_4) {  // KDBX 3.1
         
         // Create the encrypted input stream (ALWAYS AES for 3.1 files)
         stream = [CipherStreamFactory getInputStream:cipherUuid stream:inputStream key:key iv:encryptionIv];
@@ -75,7 +75,7 @@
         CC_SHA256(headerBytes.bytes, (CC_LONG)headerBytes.length, headerReadHash);
 
         NSData *headerStoredHash = [inputStream readData:32];
-        if( memcmp(headerReadHash, headerStoredHash.bytes, 32) != 0 ) {
+        if (memcmp(headerReadHash, headerStoredHash.bytes, 32) != 0) {
             @throw [NSException exceptionWithName:@"IOFileCorrupt" reason:@"Header data corrupt" userInfo:nil];
         }
         
@@ -85,7 +85,7 @@
         NSData *hmacKey = [HmacInputStream getHMACKey:(void *)hmackey64 keylen:64 blockIndex:ULLONG_MAX];
         CCHmac(kCCHmacAlgSHA256, hmacKey.bytes, hmacKey.length, headerBytes.bytes, (size_t)headerBytes.length, headerReadHmac);
         [inputStream read:headerStoredHmac length:32];
-        if( memcmp(headerReadHmac, headerStoredHmac, 32) != 0 ) {
+        if (memcmp(headerReadHmac, headerStoredHmac, 32) != 0) {
             @throw [NSException exceptionWithName:@"IOFileCorrupt" reason:@"Header data corrupt" userInfo:nil];
         }
         
@@ -104,11 +104,11 @@
         xmlStream = stream;
     }
     
-    if( dbVersion >= VERSION_CRITICAL_MAX_32_4 ) {  // KDBX 4
+    if (dbVersion >= VERSION_CRITICAL_MAX_32_4) {  // KDBX 4
         [self readInnerHeader:xmlStream];
     }
 
-    if( protectedStreamKey == nil ) {
+    if (protectedStreamKey == nil) {
         @throw [NSException exceptionWithName:@"IOException" reason:@"Inner Protected Stream Key NOT FOUND." userInfo:nil];
     }
     
@@ -138,7 +138,7 @@
     return tree;
 }
 
-- (void)readHeader:inputStream {
+- (void)readHeader:(InputStream*)inputStream {
     uint8_t buffer[16];
     
     uint32_t sig1 = [inputStream readInt32];
@@ -165,7 +165,7 @@
         uint8_t fieldType = [inputStream readInt8];
         int32_t fieldSize;
 
-        if( dbVersion >= VERSION_CRITICAL_MAX_32_4 ) {
+        if (dbVersion >= VERSION_CRITICAL_MAX_32_4) {
             fieldSize = [inputStream readInt32];
             fieldSize = CFSwapInt32LittleToHost(fieldSize);
         } else {
@@ -205,7 +205,7 @@
                     @throw [NSException exceptionWithName:@"IOException" reason:@"Invalid field size" userInfo:nil];
                 }
                     // Set the KDFparameters UUID if not set.
-                if( kdfParams[KDF_KEY_UUID_BYTES] == nil ) {
+                if (kdfParams[KDF_KEY_UUID_BYTES] == nil) {
                     [kdfParams addByteArray:[[KdbUUID getAES_KDFUUID] getData] forKey:KDF_KEY_UUID_BYTES];
                 }
                 [kdfParams addByteArray:[inputStream readData:fieldSize] forKey:KDF_AES_KEY_SEED];
@@ -224,7 +224,7 @@
                 break;
             
             case HEADER_TRANSFORMROUNDS:    // Obsolete in KDBX 4
-                if( kdfParams[KDF_KEY_UUID_BYTES] == nil ) {
+                if (kdfParams[KDF_KEY_UUID_BYTES] == nil) {
                     [kdfParams addByteArray:[[KdbUUID getAES_KDFUUID] getData] forKey:KDF_KEY_UUID_BYTES];
                 }
                 pvali64 = [inputStream readInt64];
@@ -261,7 +261,7 @@
     }
 }
 
-- (void)readInnerHeader:inputStream {
+- (void)readInnerHeader:(InputStream*)inputStream {
 
     BOOL eoh = NO;
     while (!eoh) {
@@ -288,7 +288,7 @@
                 protectedStreamKey = [inputStream readData:fieldSize];
                 break;
             case INNER_HEADER_BINARY:
-                if( binaryData == nil ) {
+                if (binaryData == nil) {
                     binaryData = [[NSMutableArray alloc] init];
                 }
                 bdata = [inputStream readData:fieldSize];

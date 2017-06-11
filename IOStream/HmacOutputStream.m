@@ -123,7 +123,7 @@
 }
 
 
--(NSData*) getHMACKey {
+- (NSData*)getHMACKey {
 
     return [HmacInputStream getHMACKey:(uint8_t*)hmacKey.bytes keylen:[hmacKey length] blockIndex:blockIndex];
 }

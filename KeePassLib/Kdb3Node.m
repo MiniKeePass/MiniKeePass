@@ -69,10 +69,10 @@
     return YES;
 }
 
--(BOOL) hasChanged:(Kdb3Entry*)entry {
+- (BOOL)hasChanged:(Kdb3Entry *)entry {
     BOOL isEqual = ![super hasChanged:entry];
     
-    if( !isEqual ) return YES;
+    if (!isEqual) return YES;
     
     isEqual &= [self.title isEqualToString:entry.title];
     isEqual &= [self.username isEqualToString:entry.username];
@@ -83,7 +83,7 @@
     return !isEqual;
 }
 
--(Kdb3Entry*) deepCopy {
+- (Kdb3Entry *)deepCopy {
     Kdb3Entry *entry = [[Kdb3Entry alloc] init];
     
     entry.image = self.image;
@@ -132,7 +132,7 @@
     return YES;
 }
 
-- (KdbGroup*)createGroup:(KdbGroup*)parent {
+- (KdbGroup *)createGroup:(KdbGroup *)parent {
     Kdb3Group *group = [[Kdb3Group alloc] init];
     
     do {
@@ -142,7 +142,7 @@
     return group;
 }
 
-- (KdbEntry*)createEntry:(KdbGroup*)parent {
+- (KdbEntry *)createEntry:(KdbGroup *)parent {
     Kdb3Entry *entry = [[Kdb3Entry alloc] init];
     entry.uuid = [KdbUUID uuid];
 
@@ -150,7 +150,7 @@
 }
 
 // Function override...
--(void) createEntryBackup:(Kdb3Entry*)entry backupEntry:(Kdb3Entry*)backupEntry {
+- (void)createEntryBackup:(Kdb3Entry *)entry backupEntry:(Kdb3Entry *)backupEntry {
     // This is a NOP
 }
 

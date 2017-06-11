@@ -80,7 +80,7 @@
     uint8_t calcHmac[32];
     
     // Read the Stored header Hmac
-    if([inputStream read:storedHmac length:32] != 32 ) {
+    if ([inputStream read:storedHmac length:32] != 32) {
         @throw [NSException exceptionWithName:@"IOException" reason:@"Invalid Header Hmac" userInfo:nil];
     }
     
@@ -104,11 +104,11 @@
     
     // Compute the Hmac-SHA256 hash
     CCHmacContext ctx;
-    CCHmacInit( &ctx, kCCHmacAlgSHA256, blockKey.bytes, [blockKey length] );
-    CCHmacUpdate( &ctx, idxBytes.bytes, [idxBytes length] );
-    CCHmacUpdate( &ctx, sizeBytes.bytes, [sizeBytes length] );
-    CCHmacUpdate( &ctx, buffer, bufferLength );
-    CCHmacFinal( &ctx, calcHmac );
+    CCHmacInit(&ctx, kCCHmacAlgSHA256, blockKey.bytes, [blockKey length]);
+    CCHmacUpdate(&ctx, idxBytes.bytes, [idxBytes length]);
+    CCHmacUpdate(&ctx, sizeBytes.bytes, [sizeBytes length]);
+    CCHmacUpdate(&ctx, buffer, bufferLength);
+    CCHmacFinal(&ctx, calcHmac);
                  
     // Verify the hash
     if (memcmp(storedHmac, calcHmac, 32) != 0) {
@@ -126,12 +126,12 @@
     return true;
 }
 
--(NSData*) getHMACKey {
+- (NSData*)getHMACKey {
 
     return [HmacInputStream getHMACKey:(uint8_t*)hmacKey.bytes keylen:[hmacKey length] blockIndex:blockIndex];
 }
 
-+(NSData*) getHMACKey:(uint8_t*)key keylen:(size_t)keylen blockIndex:(uint64_t)bidx {
++ (NSData*)getHMACKey:(uint8_t*)key keylen:(size_t)keylen blockIndex:(uint64_t)bidx {
     uint8_t hmackey[64];
     
     // Get the bytes of the block index.
