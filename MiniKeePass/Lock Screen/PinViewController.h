@@ -31,5 +31,6 @@
 @property (nonatomic, assign) id<PinViewControllerDelegate> delegate;
 
 - (void)clearPin;
+- (void)showPinKeypad:(BOOL)show;
 
 @end

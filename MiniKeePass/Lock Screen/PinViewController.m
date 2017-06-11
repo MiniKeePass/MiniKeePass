@@ -21,6 +21,7 @@
 #define PIN_LENGTH 4
 
 @interface PinViewController () <KeypadViewDelegate, UIAlertViewDelegate>
+@property (nonatomic, strong) UIView *pinView;
 @property (nonatomic, strong) UILabel *pinLabel;
 @property (nonatomic, strong) KeypadView *keypadView;
 @property (nonatomic, strong) NSString *pin;
@@ -32,8 +33,8 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Create a container view to hold everything
-        UIView *view = [[UIView alloc] init];
-        view.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+        self.pinView = [[UIView alloc] init];
+        self.pinView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
 
         CGFloat w = self.view.bounds.size.width;
         CGFloat y = 0.0f;
@@ -45,7 +46,7 @@
         self.titleLabel.textColor = [UIColor darkGrayColor];
         self.titleLabel.font = [self.titleLabel.font fontWithSize:18];
         [self.titleLabel sizeToFit];
-        [view addSubview:self.titleLabel];
+        [self.pinView addSubview:self.titleLabel];
 
         // Layout the title label
         CGFloat titleLabelHeight = self.titleLabel.bounds.size.height;
@@ -59,7 +60,7 @@
         self.pinLabel.textColor = [UIColor darkGrayColor];
         self.pinLabel.font = [UIFont fontWithName:@"ArialMT" size:36];
         [self.pinLabel sizeToFit];
-        [view addSubview:self.pinLabel];
+        [self.pinView addSubview:self.pinLabel];
 
         // Layout the pin label
         CGFloat pinLabelHeight = self.pinLabel.bounds.size.height;
@@ -69,7 +70,7 @@
         // Create the keypad view
         self.keypadView = [[KeypadView alloc] init];
         self.keypadView.delegate = self;
-        [view addSubview:self.keypadView];
+        [self.pinView addSubview:self.keypadView];
 
         // Layout the keypad view
         CGSize keypadSize = self.keypadView.bounds.size;
@@ -77,9 +78,9 @@
         y += keypadSize.height;
 
         // Layout the container view
-        view.frame = CGRectMake(0, 0, w, y);
-        view.center = self.view.center;
-        [self.view addSubview:view];
+        self.pinView.frame = CGRectMake(0, 0, w, y);
+        self.pinView.center = self.view.center;
+        [self.view addSubview:self.pinView];
 
         [self clearPin];
     }
@@ -169,6 +170,10 @@
 
 - (void)clearPin {
     self.pin = @"";
+}
+
+- (void)showPinKeypad:(BOOL)show {
+    self.pinView.hidden = !show;
 }
 
 @end

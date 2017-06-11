@@ -17,10 +17,6 @@
 
 // See Technical Q&A QA1838
 
-// NOTE: This will NOT work with the old UIActionSheet depreciated class.
-//       Also, the UIActionSheetAutoDismiss class is broken and doesn't auto dismiss
-//       unless fixed.  If fixed then it works.
-
 #import <LocalAuthentication/LocalAuthentication.h>
 #import <AudioToolbox/AudioToolbox.h>
 #import "LockScreenManager.h"
@@ -32,7 +28,6 @@
 
 @interface LockScreenManager () <PinViewControllerDelegate>
 @property (nonatomic, strong) PinViewController *pinViewController;
-@property (nonatomic, assign) BOOL unlocked;
 @end
 
 @implementation LockScreenManager {
@@ -53,8 +48,6 @@ static LockScreenManager *sharedInstance = nil;
 - (instancetype)init {
     self = [super init];
     if (self) {
-        _unlocked = NO;
-        
         touchIDFailed = NO;
         
         lockWindow = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
@@ -96,11 +89,6 @@ static LockScreenManager *sharedInstance = nil;
 #pragma mark - Lock/Unlock
 
 - (BOOL)shouldCheckPin {
-    // Check if we're unlocked
-    if (self.unlocked) {
-        return NO;
-    }
-
     // Check if the PIN is enabled
     AppSettings *appSettings = [AppSettings sharedInstance];
     if (![appSettings pinEnabled]) {
@@ -131,12 +119,6 @@ static LockScreenManager *sharedInstance = nil;
     }
 }
 
-- (void)showLockScreen {
-
-    self.unlocked = false;
-    [lockWindow makeKeyAndVisible];
-}
-
 - (void)hideLockScreen {
 
     [UIView animateWithDuration:0.25
@@ -146,7 +128,6 @@ static LockScreenManager *sharedInstance = nil;
                          touchIDFailed = NO;
                          lockWindow.hidden = YES;
                          self.pinViewController.view.alpha = 1.0;
-                         self.unlocked = true;
                      }];
 }
 
@@ -268,7 +249,7 @@ static LockScreenManager *sharedInstance = nil;
     // Lock if the PIN is enabled
     AppSettings *appSettings = [AppSettings sharedInstance];
     if ([appSettings pinEnabled]) {
-        [self showLockScreen];
+        [lockWindow makeKeyAndVisible];
         [self checkPin];
     }
 }
@@ -289,9 +270,8 @@ static LockScreenManager *sharedInstance = nil;
 - (void)applicationDidEnterBackground:(NSNotification *)notification {
     AppSettings *appSettings = [AppSettings sharedInstance];
     [appSettings setExitTime:[NSDate date]];
-    if ([appSettings pinEnabled]) {
-        [self showLockScreen];
-    }
+    [self.pinViewController showPinKeypad:[appSettings pinEnabled]];
+    [lockWindow makeKeyAndVisible];
 }
 
 @end
