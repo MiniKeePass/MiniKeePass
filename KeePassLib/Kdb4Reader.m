@@ -70,7 +70,7 @@
         // Reread the header bytes into an array to find the Hash
         off_t headerLen = [inputStream getpos];
         [inputStream seek:0];
-        NSData *headerBytes = [inputStream readData:headerLen];
+        NSData *headerBytes = [inputStream readData:(NSUInteger)headerLen];
         
         // Check the header Hash
         uint8_t headerReadHash[CC_SHA256_DIGEST_LENGTH];
