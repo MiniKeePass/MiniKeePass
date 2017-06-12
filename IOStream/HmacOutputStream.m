@@ -32,10 +32,10 @@
 - (id)initWithOutputStream:(OutputStream *)stream key:(NSData *)hkey {
     self = [super init];
     if (self) {
-        if( stream == nil ) {
+        if (stream == nil) {
             @throw [NSException exceptionWithName:@"IOException" reason:@"Bad Value" userInfo:nil];
         }
-        if( [hkey length] != 64 ) {
+        if ([hkey length] != 64) {
             @throw [NSException exceptionWithName:@"IOException" reason:@"Key length error" userInfo:nil];
         }
         outputStream = stream;
@@ -88,11 +88,11 @@
 
     // Compute the Hmac-SHA256 hash
     CCHmacContext ctx;
-    CCHmacInit( &ctx, kCCHmacAlgSHA256, blockKey.bytes, [blockKey length] );
-    CCHmacUpdate( &ctx, idxBytes.bytes, [idxBytes length] );
-    CCHmacUpdate( &ctx, sizeBytes.bytes, [sizeBytes length] );
-    CCHmacUpdate( &ctx, buffer, bufferOffset );
-    CCHmacFinal( &ctx, calcHmac );
+    CCHmacInit(&ctx, kCCHmacAlgSHA256, blockKey.bytes, [blockKey length]);
+    CCHmacUpdate(&ctx, idxBytes.bytes, [idxBytes length]);
+    CCHmacUpdate(&ctx, sizeBytes.bytes, [sizeBytes length]);
+    CCHmacUpdate(&ctx, buffer, bufferOffset);
+    CCHmacFinal(&ctx, calcHmac);
 
     // Write out the HMAC Value
     [outputStream write:calcHmac length:32];
