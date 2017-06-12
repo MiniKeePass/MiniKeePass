@@ -43,10 +43,7 @@
 
 - (KdbTree*)load:(FileInputStream*)inputStream withPassword:(KdbPassword*)kdbPassword {
     // Read the header
-    [inputStream enableCopyBuffer:YES];
     [self readHeader:inputStream];
-    NSData *headerBytes = [inputStream getCopyBuffer];
-    [inputStream enableCopyBuffer:NO];
 
     uint8_t hmackey64[64];
     uint8_t *mseed = (uint8_t *) masterSeed.bytes;
@@ -70,6 +67,11 @@
         stream = [[HashedInputStream alloc] initWithInputStream:stream];
 
     } else {  // KDBX 4
+        // Reread the header bytes into an array to find the Hash
+        off_t headerLen = [inputStream getpos];
+        [inputStream seek:0];
+        NSData *headerBytes = [inputStream readData:headerLen];
+        
         // Check the header Hash
         uint8_t headerReadHash[CC_SHA256_DIGEST_LENGTH];
         CC_SHA256(headerBytes.bytes, (CC_LONG)headerBytes.length, headerReadHash);

@@ -1,10 +1,19 @@
-//
-//  Salsa20Cipher.m
-//  KeePassLib
-//
-//  Created by tssmith on 3/28/17.
-//  Copyright 2017. All rights reserved.
-//
+/*
+ * Copyright 2017 Jason Rush and John Flanagan. All rights reserved.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 #import "Salsa20Cipher.h"
 #import <CommonCrypto/CommonDigest.h>
@@ -86,7 +95,9 @@ static uint32_t SIGMA[4] = {0x61707865, 0x3320646E, 0x79622D32, 0x6B206574};
 - (void)NextBlock:(uint8_t*)buf {
     uint32_t x[16];
     
-    for (int i=0; i<16; i++) x[i] = _state[i];
+    for (int i=0; i<16; i++) {
+        x[i] = _state[i];
+    }
     
     for (int i = 0; i < 10; i++) {
         x[ 4] ^= [self rotl:(x[ 0]+x[12]) y:7];
@@ -123,8 +134,9 @@ static uint32_t SIGMA[4] = {0x61707865, 0x3320646E, 0x79622D32, 0x6B206574};
         x[15] ^= [self rotl:(x[14]+x[13]) y:18];
     }
     
-    for (int i = 0; i < 16; i++)
+    for (int i = 0; i < 16; i++) {
         x[i] += _state[i];
+    }
     
     for (int i = 0, j = 0; i < 16; i++, j +=4 ) {
         uint32_t t = x[i];

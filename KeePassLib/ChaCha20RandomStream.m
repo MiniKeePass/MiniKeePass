@@ -1,10 +1,19 @@
-//
-//  ChaCha20RandomStream.m
-//  KeePass2
-//
-//  Created by Qiang Yu on 2/28/10.
-//  Copyright 2010 Qiang Yu. All rights reserved.
-//
+/*
+ * Copyright 2017 Jason Rush and John Flanagan. All rights reserved.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 #import <CommonCrypto/CommonDigest.h>
 #import <Security/Security.h>
@@ -30,8 +39,8 @@
         uint8_t iv12[12];
 
         CC_SHA512(key.bytes, (CC_LONG)key.length, key64);
-        memcpy( key32, key64, 32);
-        memcpy( iv12, &key64[32], 12);
+        memcpy(key32, key64, 32);
+        memcpy(iv12, &key64[32], 12);
         
         NSData *hkey = [[NSData alloc] initWithBytes:key32 length:32];
         NSData *iv = [[NSData alloc] initWithBytes:iv12 length:12];
@@ -44,7 +53,7 @@
 - (uint8_t)getByte {
     NSMutableData *value = [[NSMutableData alloc] initWithLength:1];
     [cipher Encrypt:value];
-    uint8_t ret = ((uint8_t *) value.bytes)[0];
+    uint8_t ret = ((uint8_t *)value.bytes)[0];
     
     return ret;
 }
