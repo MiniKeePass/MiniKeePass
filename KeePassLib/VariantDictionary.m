@@ -33,9 +33,11 @@
 @implementation VariantDictionary
 
 - (id)init {
-    
-    dict = [[NSMutableDictionary alloc] init];
-    type = [[NSMutableDictionary alloc] init];
+    self = [super init];
+    if (self) {
+        dict = [[NSMutableDictionary alloc] init];
+        type = [[NSMutableDictionary alloc] init];
+    }
     
     return self;
 }
