@@ -122,12 +122,14 @@ static LockScreenManager *sharedInstance = nil;
 - (void)hideLockScreen {
 
     [UIView animateWithDuration:0.25
-                     animations:^{self.pinViewController.view.alpha = 0.0;}
+                     animations:^{
+                         lockWindow.alpha = 0.0;
+                     }
                      completion:^(BOOL finished){
                          [self.pinViewController clearPin];
                          touchIDFailed = NO;
                          lockWindow.hidden = YES;
-                         self.pinViewController.view.alpha = 1.0;
+                         lockWindow.alpha = 1.0;
                      }];
 }
 
