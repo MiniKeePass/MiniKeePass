@@ -18,7 +18,6 @@
 		52491D0E14D8F3FB00F8CBC8 /* de-itunes.html in Resources */ = {isa = PBXBuildFile; fileRef = 52491D0914D8F3FB00F8CBC8 /* de-itunes.html */; };
 		52491D0F14D8F3FB00F8CBC8 /* de-keyfiles.html in Resources */ = {isa = PBXBuildFile; fileRef = 52491D0A14D8F3FB00F8CBC8 /* de-keyfiles.html */; };
 		52491D1014D8F3FB00F8CBC8 /* de-safariemail.html in Resources */ = {isa = PBXBuildFile; fileRef = 52491D0B14D8F3FB00F8CBC8 /* de-safariemail.html */; };
-		526D9FAD167CDC2E0097213E /* libMBProgressHUD.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 526D9FAB167CDC010097213E /* libMBProgressHUD.a */; };
 		5271A98D1ED7CA3E00B9AF2C /* TextFieldCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5271A98C1ED7CA3E00B9AF2C /* TextFieldCell.xib */; };
 		529708B014FEF149003547FB /* Andale Mono.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 529708AD14FEEFD3003547FB /* Andale Mono.ttf */; };
 		52A177BC13EB698E00CEEFCE /* createdb.html in Resources */ = {isa = PBXBuildFile; fileRef = 52A177BB13EB698E00CEEFCE /* createdb.html */; };
@@ -135,17 +134,8 @@
 		68E08316146F2749001C4EDF /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 68E08314146F2749001C4EDF /* InfoPlist.strings */; };
 		68EA62DB1CC972F300B33E42 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 68EA62DA1CC972F300B33E42 /* LaunchScreen.storyboard */; };
 		68EBC2D61613394D00E8E799 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68EBC2D51613394D00E8E799 /* QuartzCore.framework */; };
+		C923C03C1F2C454F0002C2DF /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = C923C03B1F2C454F0002C2DF /* MBProgressHUD.m */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		526D9FAA167CDC010097213E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 526D9FA3167CDC010097213E /* MBProgressHUD.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = D286A7491518C70F00E13FB8;
-			remoteInfo = MBProgressHUD;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		4E8C168E16B3E871004195A1 /* fr-createdb.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "fr-createdb.html"; sourceTree = "<group>"; };
@@ -165,7 +155,6 @@
 		52491D0914D8F3FB00F8CBC8 /* de-itunes.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "de-itunes.html"; sourceTree = "<group>"; };
 		52491D0A14D8F3FB00F8CBC8 /* de-keyfiles.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "de-keyfiles.html"; sourceTree = "<group>"; };
 		52491D0B14D8F3FB00F8CBC8 /* de-safariemail.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "de-safariemail.html"; sourceTree = "<group>"; };
-		526D9FA3167CDC010097213E /* MBProgressHUD.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MBProgressHUD.xcodeproj; path = MBProgressHUD/MBProgressHUD.xcodeproj; sourceTree = "<group>"; };
 		5271A98C1ED7CA3E00B9AF2C /* TextFieldCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TextFieldCell.xib; sourceTree = "<group>"; };
 		529708AD14FEEFD3003547FB /* Andale Mono.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Andale Mono.ttf"; sourceTree = "<group>"; };
 		529BED9E14D7CD8600618250 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -368,6 +357,11 @@
 		BDB0FF5D194C7C6F00C44DEF /* nl */ = {isa = PBXFileReference; lastKnownFileType = text; name = nl; path = nl.lproj/AppStore.txt; sourceTree = "<group>"; };
 		BDB0FF5E194C7C6F00C44DEF /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		BDB0FF5F194C7C6F00C44DEF /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Localizable.strings; sourceTree = "<group>"; };
+		C923C03A1F2C454F0002C2DF /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBProgressHUD.h; path = ../MBProgressHUD.h; sourceTree = "<group>"; };
+		C923C03B1F2C454F0002C2DF /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBProgressHUD.m; path = ../MBProgressHUD.m; sourceTree = "<group>"; };
+		C9CE4DEF1F2C47970028266A /* tr */ = {isa = PBXFileReference; lastKnownFileType = text; name = tr; path = tr.lproj/AppStore.txt; sourceTree = "<group>"; };
+		C9CE4DF01F2C47980028266A /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		C9CE4DF11F2C47980028266A /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		EFD785BA15B3D02600B9A276 /* zh-Hans */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		EFD785BB15B3D03F00B9A276 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -377,7 +371,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				526D9FAD167CDC2E0097213E /* libMBProgressHUD.a in Frameworks */,
 				689D000D13A42765005EBD36 /* AudioToolbox.framework in Frameworks */,
 				689DFFDE13A4273F005EBD36 /* CoreGraphics.framework in Frameworks */,
 				689DFFDC13A4273F005EBD36 /* Foundation.framework in Frameworks */,
@@ -415,14 +408,6 @@
 				52491D0B14D8F3FB00F8CBC8 /* de-safariemail.html */,
 			);
 			path = de;
-			sourceTree = "<group>";
-		};
-		526D9FA4167CDC010097213E /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				526D9FAB167CDC010097213E /* libMBProgressHUD.a */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		5271A98E1EDA16D200B9AF2C /* Entry View */ = {
@@ -667,7 +652,6 @@
 				689DFFD813A4273F005EBD36 /* Frameworks */,
 				689D041413A42B85005EBD36 /* Resources */,
 				689DFFD613A4273F005EBD36 /* Products */,
-				526D9FA3167CDC010097213E /* MBProgressHUD.xcodeproj */,
 			);
 			sourceTree = "<group>";
 		};
@@ -698,6 +682,7 @@
 		689DFFDF13A4273F005EBD36 /* MiniKeePass */ = {
 			isa = PBXGroup;
 			children = (
+				C923C03D1F2C45630002C2DF /* MBProgressHUD */,
 				689D043213A42C81005EBD36 /* AppDelegate.h */,
 				689D043313A42C81005EBD36 /* AppDelegate.m */,
 				68767B661D6F241F0039EFE0 /* Main.storyboard */,
@@ -869,6 +854,15 @@
 			path = "Move Items View";
 			sourceTree = "<group>";
 		};
+		C923C03D1F2C45630002C2DF /* MBProgressHUD */ = {
+			isa = PBXGroup;
+			children = (
+				C923C03A1F2C454F0002C2DF /* MBProgressHUD.h */,
+				C923C03B1F2C454F0002C2DF /* MBProgressHUD.m */,
+			);
+			name = MBProgressHUD;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -925,32 +919,17 @@
 				fr,
 				pt,
 				nl,
+				tr,
 			);
 			mainGroup = 689DFFCA13A4273F005EBD36;
 			productRefGroup = 689DFFD613A4273F005EBD36 /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = 526D9FA4167CDC010097213E /* Products */;
-					ProjectRef = 526D9FA3167CDC010097213E /* MBProgressHUD.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				689DFFD413A4273F005EBD36 /* MiniKeePass */,
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		526D9FAB167CDC010097213E /* libMBProgressHUD.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libMBProgressHUD.a;
-			remoteRef = 526D9FAA167CDC010097213E /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		689DFFD313A4273F005EBD36 /* Resources */ = {
@@ -1070,6 +1049,7 @@
 				689D045113A42C82005EBD36 /* EntryViewController.m in Sources */,
 				680C9D7C1D69EB540040FB43 /* HelpWebViewController.swift in Sources */,
 				68A7F3951D76708000467354 /* GroupViewController.swift in Sources */,
+				C923C03C1F2C454F0002C2DF /* MBProgressHUD.m in Sources */,
 				680C9D771D69E2A70040FB43 /* HelpViewController.swift in Sources */,
 				689D045513A42C82005EBD36 /* AppDelegate.m in Sources */,
 				689FBE791AB27228005CB6BD /* PasswordUtils.m in Sources */,
@@ -1120,6 +1100,7 @@
 				687AAAA71889FB4F00AB8AC5 /* fr */,
 				6891C07419263611000EFC70 /* pt */,
 				BDB0FF5D194C7C6F00C44DEF /* nl */,
+				C9CE4DEF1F2C47970028266A /* tr */,
 			);
 			name = AppStore.txt;
 			sourceTree = SOURCE_ROOT;
@@ -1136,6 +1117,7 @@
 				4E8C169916B3E888004195A1 /* fr */,
 				6891C07619263611000EFC70 /* pt */,
 				BDB0FF5F194C7C6F00C44DEF /* nl */,
+				C9CE4DF11F2C47980028266A /* tr */,
 			);
 			name = Localizable.strings;
 			path = ..;
@@ -1153,6 +1135,7 @@
 				4E8C169816B3E888004195A1 /* fr */,
 				6891C07519263611000EFC70 /* pt */,
 				BDB0FF5E194C7C6F00C44DEF /* nl */,
+				C9CE4DF01F2C47980028266A /* tr */,
 			);
 			name = InfoPlist.strings;
 			path = ..;
