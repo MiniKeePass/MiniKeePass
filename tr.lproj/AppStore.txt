@@ -7,22 +7,22 @@
 #
 
 # App Name:
-MiniKeePass — Secure Password Manager
+MiniKeePass — Güvenli Parola Yöneticisi
 
 # Description:
-MiniKeePass provides secure password storage on your iOS device that's compatible with KeePass.
+MiniKeePass, iOS cihazınızda KeePass ile uyumlu güvenli şifre saklama alanı sağlar.
 
-- View, Edit, and Create KeePass 1.x and 2.x files
-- Search for entries from the top of tables like in Mail
-- Key File Support
-- Import/Export files to and from Dropbox using the official Dropbox app or any other cloud storage application
-- Copy password entries to the clipboard for easy entry
-- Open websites in Safari while MiniKeePass runs in the background
-- Prevent unauthorized access to MiniKeePass with a PIN
-- Remember database passwords in the device's secure keychain
-- Optionally clear the clipboard after set time on devices that support background tasks
-- Generate new passwords
-- Integrated web browser with username/password auto-type
+- KeePass 1.x ve 2.x dosyalarını görüntüleyin, düzenleyin ve oluşturun
+- Posta gibi tabloların üst kısmındaki girişleri arayın
+- Anahtar Dosyası Desteği
+- Resmi Dropbox uygulaması veya herhangi bir bulut depolama uygulaması kullanarak Dropbox'a  içe ve dışa dosyaları aktarma
+- Kolay giriş için şifre girişlerini panoya kopyala
+- MiniKeePass arka planda çalışırken Safari'de web sitelerini açın
+- Bir PIN ile MiniKeePass'e yetkisiz erişimi önleme
+- Cihazın güvenli anahtarlıktaki veritabanı şifrelerini hatırlar
+- Arka plan görevlerini destekleyen cihazlarda zaman ayarladıktan sonra panoyu isteğe bağlı olarak temizler
+- Yeni şifreler oluştur
+- İnternet tarayıcısına Kullanıcı adı / şifre ile entegre olur
 
 MiniKeePass's source code is available for security audit or contribution on GitHub.
 
@@ -30,7 +30,7 @@ MiniKeePass's source code is available for security audit or contribution on Git
 MiniKeePass,KeePass,Kee Pass,KeyPass,KeePassX,Password,Password Manager,Secure
 
 # What's New in this Version:
-# Version 1.5
-iOS 7 compatible
-Integrated web browser with auto-type
-Bug fixes
+# Versiyon 1.5
+iOS 7 uyumlu
+Web tarayıcısı entegrasyonu
+Hata düzeltmeleri
