@@ -1,0 +1,36 @@
+#
+# Copyright 2014 Jason Rush and John Flanagan. All rights reserved.
+#
+# This file contains translations used in the App Store. As a convention, lines
+# that start with a # should be in English. All other lines should be
+# translated into the respective language.
+#
+
+# App Name:
+MiniKeePass — Güvenli Parola Yöneticisi
+
+# Description:
+MiniKeePass, iOS cihazınızda KeePass ile uyumlu güvenli şifre saklama alanı sağlar.
+
+- KeePass 1.x ve 2.x dosyalarını görüntüleyin, düzenleyin ve oluşturun
+- Posta gibi tabloların üst kısmındaki girişleri arayın
+- Anahtar Dosyası Desteği
+- Resmi Dropbox uygulaması veya herhangi bir bulut depolama uygulaması kullanarak Dropbox'a  içe ve dışa dosyaları aktarma
+- Kolay giriş için şifre girişlerini panoya kopyala
+- MiniKeePass arka planda çalışırken Safari'de web sitelerini açın
+- Bir PIN ile MiniKeePass'e yetkisiz erişimi önleme
+- Cihazın güvenli anahtarlıktaki veritabanı şifrelerini hatırlar
+- Arka plan görevlerini destekleyen cihazlarda zaman ayarladıktan sonra panoyu isteğe bağlı olarak temizler
+- Yeni şifreler oluştur
+- İnternet tarayıcısına Kullanıcı adı / şifre ile entegre olur
+
+MiniKeePass's source code is available for security audit or contribution on GitHub.
+
+# Keywords:
+MiniKeePass,KeePass,Kee Pass,KeyPass,KeePassX,Password,Password Manager,Secure
+
+# What's New in this Version:
+# Versiyon 1.5
+iOS 7 uyumlu
+Web tarayıcısı entegrasyonu
+Hata düzeltmeleri

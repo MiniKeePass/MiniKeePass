@@ -362,6 +362,9 @@
 		BDB0FF5D194C7C6F00C44DEF /* nl */ = {isa = PBXFileReference; lastKnownFileType = text; name = nl; path = nl.lproj/AppStore.txt; sourceTree = "<group>"; };
 		BDB0FF5E194C7C6F00C44DEF /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		BDB0FF5F194C7C6F00C44DEF /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Localizable.strings; sourceTree = "<group>"; };
+		C9CE4DEF1F2C47970028266A /* tr */ = {isa = PBXFileReference; lastKnownFileType = text; name = tr; path = tr.lproj/AppStore.txt; sourceTree = "<group>"; };
+		C9CE4DF01F2C47980028266A /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		C9CE4DF11F2C47980028266A /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		EFD785BA15B3D02600B9A276 /* zh-Hans */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		EFD785BB15B3D03F00B9A276 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -915,6 +918,7 @@
 				fr,
 				pt,
 				nl,
+				tr,
 			);
 			mainGroup = 689DFFCA13A4273F005EBD36;
 			productRefGroup = 689DFFD613A4273F005EBD36 /* Products */;
@@ -1108,6 +1112,7 @@
 				687AAAA71889FB4F00AB8AC5 /* fr */,
 				6891C07419263611000EFC70 /* pt */,
 				BDB0FF5D194C7C6F00C44DEF /* nl */,
+				C9CE4DEF1F2C47970028266A /* tr */,
 			);
 			name = AppStore.txt;
 			sourceTree = SOURCE_ROOT;
@@ -1124,6 +1129,7 @@
 				4E8C169916B3E888004195A1 /* fr */,
 				6891C07619263611000EFC70 /* pt */,
 				BDB0FF5F194C7C6F00C44DEF /* nl */,
+				C9CE4DF11F2C47980028266A /* tr */,
 			);
 			name = Localizable.strings;
 			path = ..;
@@ -1141,6 +1147,7 @@
 				4E8C169816B3E888004195A1 /* fr */,
 				6891C07519263611000EFC70 /* pt */,
 				BDB0FF5E194C7C6F00C44DEF /* nl */,
+				C9CE4DF01F2C47980028266A /* tr */,
 			);
 			name = InfoPlist.strings;
 			path = ..;
