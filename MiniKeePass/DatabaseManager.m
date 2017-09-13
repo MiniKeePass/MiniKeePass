@@ -245,13 +245,13 @@ static DatabaseManager *sharedInstance;
     NSString *path = [documentsDirectory stringByAppendingPathComponent:self.selectedFilename];
 
     // Get the password
-    NSString *password = [passwordEntryViewController getPassword];
+    NSString *password = passwordEntryViewController.password;
     if ([password isEqualToString:@""]) {
         password = nil;
     }
 
     // Get the keyfile
-    NSString *keyFile = [passwordEntryViewController getKeyFile];
+    NSString *keyFile = passwordEntryViewController.keyFile;
     NSString *keyFilePath = nil;
     if (keyFile != nil) {
         NSString *documentsDirectory = [AppDelegate documentsDirectory];

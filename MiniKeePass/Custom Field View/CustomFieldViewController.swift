@@ -22,10 +22,10 @@ class CustomFieldViewController: UITableViewController {
     @IBOutlet weak var valueTextField: UITextField!
     @IBOutlet weak var inMemoryProtectionSwitch: UISwitch!
     
-    var stringField: StringField?
+    @objc var stringField: StringField?
 
-    var donePressed: ((_ customFieldViewController: CustomFieldViewController) -> Void)?
-    var cancelPressed: ((_ customFieldViewController: CustomFieldViewController) -> Void)?
+    @objc var donePressed: ((_ customFieldViewController: CustomFieldViewController) -> Void)?
+    @objc var cancelPressed: ((_ customFieldViewController: CustomFieldViewController) -> Void)?
     
     override func viewDidLoad() {
         super.viewDidLoad()

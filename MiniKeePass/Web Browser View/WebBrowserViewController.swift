@@ -26,8 +26,8 @@ class WebBrowserViewController: UIViewController, WKNavigationDelegate {
 
     fileprivate var webView: WKWebView!
     
-    var url: URL?
-    var entry: KdbEntry?
+    @objc var url: URL?
+    @objc var entry: KdbEntry?
 
     override func loadView() {
         super.loadView()

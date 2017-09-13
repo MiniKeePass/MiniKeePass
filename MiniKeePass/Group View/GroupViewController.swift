@@ -354,7 +354,7 @@ class GroupViewController: UITableViewController {
 
     // MARK: - Actions
 
-    func settingsPressed(sender: UIBarButtonItem) {
+    @objc func settingsPressed(sender: UIBarButtonItem) {
         let storyboard = UIStoryboard(name: "Settings", bundle: nil)
         guard let viewController = storyboard.instantiateInitialViewController() else {
             return
@@ -363,7 +363,7 @@ class GroupViewController: UITableViewController {
         present(viewController, animated: true, completion: nil)
     }
 
-    func actionPressed(sender: UIBarButtonItem) {
+    @objc func actionPressed(sender: UIBarButtonItem) {
         // Get the URL of the database
         guard let appDelegate = AppDelegate.getDelegate() else {
             return
@@ -381,7 +381,7 @@ class GroupViewController: UITableViewController {
         }
     }
 
-    func addPressed(sender: UIBarButtonItem) {
+    @objc func addPressed(sender: UIBarButtonItem) {
         let alertController = UIAlertController(title: NSLocalizedString("Add", comment: ""), message: nil, preferredStyle: .alert)
 
         // Add an action to add a new group
@@ -489,13 +489,13 @@ class GroupViewController: UITableViewController {
         navigationController?.pushViewController(viewController, animated: true)
     }
     
-    func deletePressed(sender: UIBarButtonItem) {
+    @objc func deletePressed(sender: UIBarButtonItem) {
         if let indexPaths = tableView.indexPathsForSelectedRows {
             deleteItems(indexPaths: indexPaths)
         }
     }
 
-    func movePressed(sender: UIBarButtonItem) {
+    @objc func movePressed(sender: UIBarButtonItem) {
         guard let indexPaths = tableView.indexPathsForSelectedRows else {
             // Nothing selected. Shouldn't have been possible to press "Move"
             return;
@@ -545,7 +545,7 @@ class GroupViewController: UITableViewController {
         present(navigationController, animated: true, completion: nil)
     }
 
-    func renamePressed(sender: UIBarButtonItem) {
+    @objc func renamePressed(sender: UIBarButtonItem) {
         guard let indexPath = tableView.indexPathForSelectedRow else {
             // Nothing selected. This shoudn't have been called
             return
