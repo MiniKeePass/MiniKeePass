@@ -21,7 +21,7 @@
 #import "ImageFactory.h"
 #import "MiniKeePass-Swift.h"
 
-#import <MBProgressHUD/MBProgressHUD.h>
+#import "MBProgressHUD.h"
 
 #define SECTION_HEADER_HEIGHT 46.0f
 
