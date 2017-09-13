@@ -227,6 +227,9 @@ class SettingsViewController: UITableViewController, PinViewControllerDelegate {
             pinViewController.titleLabel.text = NSLocalizedString("Set PIN", comment: "")
             pinViewController.delegate = self
             
+            // Background is clear for lock screen blur, set to white to set the pin.
+            pinViewController.view.backgroundColor = UIColor.white
+            
             present(pinViewController, animated: true, completion: nil)
         } else {
             self.appSettings?.setPinEnabled(false)
