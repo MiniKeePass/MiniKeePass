@@ -124,6 +124,12 @@
       "idiom" : "ipad",
       "filename" : "167 iPad Pro.png",
       "scale" : "2x"
+    },
+    {
+      "size" : "1024x1024",
+      "idiom" : "ios-marketing",
+      "filename" : "1024 iTunes Artwork.png",
+      "scale" : "1x"
     }
   ],
   "info" : {
