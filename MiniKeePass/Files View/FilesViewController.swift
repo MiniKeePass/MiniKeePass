@@ -37,10 +37,8 @@ class FilesViewController: UITableViewController, NewDatabaseDelegate {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
         updateFiles();
-        tableView.reloadData()
+        super.viewWillAppear(animated)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
