@@ -303,7 +303,7 @@
 		689DFFD913A4273F005EBD36 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		689DFFDB13A4273F005EBD36 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		689DFFDD13A4273F005EBD36 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		689DFFE113A4273F005EBD36 /* MiniKeePass-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "MiniKeePass-Info.plist"; sourceTree = "<group>"; };
+		689DFFE113A4273F005EBD36 /* MiniKeePass-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "MiniKeePass-Info.plist"; path = "../MiniKeePass-Info.plist"; sourceTree = "<group>"; };
 		689DFFE513A4273F005EBD36 /* MiniKeePass-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MiniKeePass-Prefix.pch"; sourceTree = "<group>"; };
 		689DFFE613A4273F005EBD36 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		689EA66D1D67F88500CF445E /* KeyFileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyFileViewController.swift; sourceTree = "<group>"; };
@@ -346,7 +346,7 @@
 		689FBE971AB272BD005CB6BD /* ImageFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageFactory.h; sourceTree = "<group>"; };
 		689FBE981AB272BD005CB6BD /* ImageFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageFactory.m; sourceTree = "<group>"; };
 		68A7F3941D76708000467354 /* GroupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupViewController.swift; sourceTree = "<group>"; };
-		68AB0F4D1CCA82B300CFE78D /* MiniKeePass-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MiniKeePass-Bridging-Header.h"; sourceTree = "<group>"; };
+		68AB0F4D1CCA82B300CFE78D /* MiniKeePass-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "MiniKeePass-Bridging-Header.h"; path = "../MiniKeePass-Bridging-Header.h"; sourceTree = "<group>"; };
 		68BFDBE21D7646B400EFACB3 /* GroupCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupCell.swift; sourceTree = "<group>"; };
 		68BFDBE31D7646B400EFACB3 /* MoveItems.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MoveItems.storyboard; sourceTree = "<group>"; };
 		68BFDBE41D7646B400EFACB3 /* MoveItemsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoveItemsViewController.swift; sourceTree = "<group>"; };
@@ -1133,7 +1133,7 @@
 				C9CE4DF11F2C47980028266A /* tr */,
 			);
 			name = Localizable.strings;
-			path = ..;
+			path = ../..;
 			sourceTree = "<group>";
 		};
 		68E08314146F2749001C4EDF /* InfoPlist.strings */ = {
@@ -1151,7 +1151,7 @@
 				C9CE4DF01F2C47980028266A /* tr */,
 			);
 			name = InfoPlist.strings;
-			path = ..;
+			path = ../..;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
