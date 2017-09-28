@@ -59,6 +59,9 @@ class GroupViewController: UITableViewController, UISearchResultsUpdating {
 
         // Add the edit button
         navigationItem.rightBarButtonItems = [self.editButtonItem]
+        if #available(iOS 11.0, *) {
+            self.navigationItem.largeTitleDisplayMode = .never
+        }
 
         let spacer = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
 
