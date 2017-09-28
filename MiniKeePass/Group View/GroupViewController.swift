@@ -17,7 +17,7 @@
 
 import UIKit
 
-class GroupViewController: UITableViewController {
+class GroupViewController: UITableViewController, UISearchResultsUpdating {
     private enum Section : Int {
         case groups = 0
         case entries = 1
@@ -44,6 +44,9 @@ class GroupViewController: UITableViewController {
 
     private var groups: [KdbGroup]!
     private var entries: [KdbEntry]!
+    
+    private var searchController: UISearchController?
+    private var searchResults: [KdbEntry] = []
 
     var parentGroup: KdbGroup! {
         didSet {
@@ -72,6 +75,20 @@ class GroupViewController: UITableViewController {
         editingToolbarItems = [deleteButton, spacer, moveButton, spacer, renameButton]
 
         toolbarItems = standardToolbarItems
+        
+        // Search controller
+        definesPresentationContext = true // Ensure searchBar stays with tableView
+        searchController = UISearchController(searchResultsController: nil)
+        searchController?.searchResultsUpdater = self
+        searchController?.dimsBackgroundDuringPresentation = false
+        searchController?.hidesNavigationBarDuringPresentation = false
+        if #available(iOS 11.0, *) {
+            navigationItem.searchController = searchController
+            navigationItem.hidesSearchBarWhenScrolling = false
+        } else {
+            searchController?.searchBar.sizeToFit()
+            tableView.tableHeaderView = searchController?.searchBar
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -166,8 +183,13 @@ class GroupViewController: UITableViewController {
     }
     
     func updateViewModel() {
-        groups = parentGroup.groups as! [KdbGroup]
-        entries = parentGroup.entries as! [KdbEntry]
+        if searchController != nil && searchController!.isActive {
+            groups = []
+            entries = searchResults
+        } else {
+            groups = parentGroup.groups as! [KdbGroup]
+            entries = parentGroup.entries as! [KdbEntry]
+        }
 
         if let appSettings = AppSettings.sharedInstance(), appSettings.sortAlphabetically() {
             groups.sort {
@@ -566,5 +588,29 @@ class GroupViewController: UITableViewController {
         }
 
         present(navigationController, animated: true, completion: nil)
+    }
+    
+    // MARK: - UISearchResultsUpdating
+    func updateSearchResults(for searchController: UISearchController) {
+        // Set state of UI buttons
+        let buttonsActive = !searchController.isActive
+        editButtonItem.isEnabled = buttonsActive
+        if let toolbarItems = toolbarItems {
+            for toolbarItem in toolbarItems {
+                toolbarItem.isEnabled = buttonsActive
+            }
+        }
+        
+        // Find results
+        let results = NSMutableArray()
+        DatabaseDocument.search(parentGroup, searchText: searchController.searchBar.text, results: results)
+        searchResults = results as! [KdbEntry]
+        searchResults.sort {
+            $0.title().localizedCaseInsensitiveCompare($1.title()) == .orderedAscending
+        }
+        
+        // Update table
+        updateViewModel()
+        tableView.reloadData()
     }
 }
