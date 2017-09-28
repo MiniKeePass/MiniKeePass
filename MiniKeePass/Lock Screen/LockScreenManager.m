@@ -54,7 +54,7 @@ static LockScreenManager *sharedInstance = nil;
         lockWindow.windowLevel = UIWindowLevelAlert;
         lockWindow.screen = [UIScreen mainScreen];
         
-        UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleRegular];
+        UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
         UIVisualEffectView *blurView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
         blurView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         blurView.frame = [[UIScreen mainScreen] bounds];
