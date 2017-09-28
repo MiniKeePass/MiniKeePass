@@ -279,8 +279,13 @@ static DatabaseManager *sharedInstance;
         }];
     } @catch (NSException *exception) {
         NSLog(@"%@", exception);
-// FIXME Need a way of showing the error
-//        [passwordViewController showErrorMessage:exception.reason];
+        
+        NSString *title = NSLocalizedString(@"Error", comment: "");
+        NSString *message = NSLocalizedString(@"Could not open database", comment: "");
+        
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
+        [alertController addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
+        [passwordEntryViewController presentViewController:alertController animated:YES completion:nil];
     }
 }
 

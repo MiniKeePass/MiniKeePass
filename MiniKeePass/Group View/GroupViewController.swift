@@ -214,7 +214,8 @@ class GroupViewController: UITableViewController, UISearchResultsUpdating {
         toolbarItems = editing ? editingToolbarItems : standardToolbarItems
         updateEditingToolbar()
 
-        // FIXME Enable/Disable the search bar
+        // Enable/Disable the search bar
+        searchController?.searchBar.isUserInteractionEnabled = !editing
     }
 
     private func updateEditingToolbar() {
