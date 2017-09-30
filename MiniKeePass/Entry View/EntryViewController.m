@@ -59,6 +59,7 @@ static NSString *TextFieldCellIdentifier = @"TextFieldCell";
 @implementation EntryViewController
 
 - (void)viewDidLoad {
+    [super viewDidLoad];
     self.navigationItem.rightBarButtonItem = self.editButtonItem;
     
     [self.tableView registerNib:[UINib nibWithNibName:@"TextFieldCell" bundle:nil] forCellReuseIdentifier:TextFieldCellIdentifier];

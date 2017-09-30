@@ -23,9 +23,9 @@ class ImageSelectorViewController: UICollectionViewController {
     private let reuseIdentifier = "ImageCell"
     private var images: [UIImage] = []
 
-    var selectedImage = -1
+    @objc var selectedImage = -1
     
-    var imageSelected: ((_ imageSelectorViewController: ImageSelectorViewController, _ selectedImage: Int) -> Void)?
+    @objc var imageSelected: ((_ imageSelectorViewController: ImageSelectorViewController, _ selectedImage: Int) -> Void)?
     
     override func viewDidLoad() {
         super.viewDidLoad()

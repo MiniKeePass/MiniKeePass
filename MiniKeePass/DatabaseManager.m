@@ -245,13 +245,13 @@ static DatabaseManager *sharedInstance;
     NSString *path = [documentsDirectory stringByAppendingPathComponent:self.selectedFilename];
 
     // Get the password
-    NSString *password = [passwordEntryViewController getPassword];
+    NSString *password = passwordEntryViewController.password;
     if ([password isEqualToString:@""]) {
         password = nil;
     }
 
     // Get the keyfile
-    NSString *keyFile = [passwordEntryViewController getKeyFile];
+    NSString *keyFile = passwordEntryViewController.keyFile;
     NSString *keyFilePath = nil;
     if (keyFile != nil) {
         NSString *documentsDirectory = [AppDelegate documentsDirectory];
@@ -279,8 +279,13 @@ static DatabaseManager *sharedInstance;
         }];
     } @catch (NSException *exception) {
         NSLog(@"%@", exception);
-// FIXME Need a way of showing the error
-//        [passwordViewController showErrorMessage:exception.reason];
+        
+        NSString *title = NSLocalizedString(@"Error", comment: "");
+        NSString *message = NSLocalizedString(@"Could not open database", comment: "");
+        
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
+        [alertController addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
+        [passwordEntryViewController presentViewController:alertController animated:YES completion:nil];
     }
 }
 

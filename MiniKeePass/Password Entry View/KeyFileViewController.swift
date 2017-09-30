@@ -19,9 +19,9 @@ import UIKit
 
 class KeyFileViewController: UITableViewController {
     var keyFiles: [String]!
-    var selectedIndex: Int!
+    var selectedKeyIndex: Int?
 
-    var keyFileSelected: ((_ selectedIndex: Int) -> Void)?
+    var keyFileSelected: ((_ selectedIndex: Int?) -> Void)?
 
     // MARK: - Table view data source
 
@@ -35,31 +35,33 @@ class KeyFileViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let idx = indexPath.row - 1
-        
         let cell = tableView.dequeueReusableCell(withIdentifier: "KeyFileCell", for: indexPath)
-        if (idx == -1) {
+        if (indexPath.row == 0) {
             cell.textLabel?.text = NSLocalizedString("None", comment: "")
+            cell.accessoryType = (selectedKeyIndex == nil ? .checkmark : .none)
         } else {
-            cell.textLabel?.text = keyFiles[idx]
+            let keyIndex = indexPath.row - 1
+            cell.textLabel?.text = keyFiles[keyIndex]
+            cell.accessoryType = (keyIndex == selectedKeyIndex ? .checkmark : .none)
         }
-        cell.accessoryType = idx == selectedIndex ? .checkmark : .none
         
         return cell
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let idx = indexPath.row - 1
-        if (idx != selectedIndex) {
-            let oldCell = tableView.cellForRow(at: IndexPath(row: selectedIndex + 1, section: 0))
+        let keyIndex = indexPath.row > 0 ? indexPath.row - 1 : nil
+        let oldIndexPath = IndexPath(row: (selectedKeyIndex ?? -1) + 1, section: 0)
+
+        if (indexPath != oldIndexPath) {
+            let oldCell = tableView.cellForRow(at: oldIndexPath)
             oldCell!.accessoryType = .none
             
             let cell = tableView.cellForRow(at: indexPath)
             cell!.accessoryType = .checkmark
             
-            selectedIndex = idx
+            selectedKeyIndex = keyIndex
             
-            keyFileSelected?(selectedIndex)
+            keyFileSelected?(selectedKeyIndex)
         }
         
         tableView.deselectRow(at: indexPath, animated: true)

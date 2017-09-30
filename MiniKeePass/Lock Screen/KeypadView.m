@@ -27,8 +27,6 @@
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        self.backgroundColor = [UIColor whiteColor];
-
         KeypadButton *alphaButton = [KeypadButton systemButtonWithTitle:@"A-Z"];
         KeypadButton *deleteButton = [KeypadButton systemButtonWithTitle:@"Delete"];
 

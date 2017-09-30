@@ -107,9 +107,8 @@
     // Delete the Inbox folder if it exists
     [fileManager removeItemAtPath:[documentsDirectory stringByAppendingPathComponent:@"Inbox"] error:nil];
 
-// FIXME Is this necessary, won't it update automatically?
-//    [self.filesViewController updateFiles];
-//    [self.filesViewController.tableView reloadData];
+    [self.filesViewController updateFiles];
+    [self.filesViewController.tableView reloadData];
 }
 
 - (void)setDatabaseDocument:(DatabaseDocument *)newDatabaseDocument {

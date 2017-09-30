@@ -17,7 +17,7 @@
 
 import UIKit
 
-class GroupViewController: UITableViewController {
+class GroupViewController: UITableViewController, UISearchResultsUpdating {
     private enum Section : Int {
         case groups = 0
         case entries = 1
@@ -44,6 +44,9 @@ class GroupViewController: UITableViewController {
 
     private var groups: [KdbGroup]!
     private var entries: [KdbEntry]!
+    
+    private var searchController: UISearchController?
+    private var searchResults: [KdbEntry] = []
 
     var parentGroup: KdbGroup! {
         didSet {
@@ -56,6 +59,9 @@ class GroupViewController: UITableViewController {
 
         // Add the edit button
         navigationItem.rightBarButtonItems = [self.editButtonItem]
+        if #available(iOS 11.0, *) {
+            self.navigationItem.largeTitleDisplayMode = .never
+        }
 
         let spacer = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
 
@@ -72,6 +78,20 @@ class GroupViewController: UITableViewController {
         editingToolbarItems = [deleteButton, spacer, moveButton, spacer, renameButton]
 
         toolbarItems = standardToolbarItems
+        
+        // Search controller
+        definesPresentationContext = true // Ensure searchBar stays with tableView
+        searchController = UISearchController(searchResultsController: nil)
+        searchController?.searchResultsUpdater = self
+        searchController?.dimsBackgroundDuringPresentation = false
+        searchController?.hidesNavigationBarDuringPresentation = false
+        if #available(iOS 11.0, *) {
+            navigationItem.searchController = searchController
+            navigationItem.hidesSearchBarWhenScrolling = false
+        } else {
+            searchController?.searchBar.sizeToFit()
+            tableView.tableHeaderView = searchController?.searchBar
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -166,8 +186,13 @@ class GroupViewController: UITableViewController {
     }
     
     func updateViewModel() {
-        groups = parentGroup.groups as! [KdbGroup]
-        entries = parentGroup.entries as! [KdbEntry]
+        if searchController != nil && searchController!.isActive {
+            groups = []
+            entries = searchResults
+        } else {
+            groups = parentGroup.groups as! [KdbGroup]
+            entries = parentGroup.entries as! [KdbEntry]
+        }
 
         if let appSettings = AppSettings.sharedInstance(), appSettings.sortAlphabetically() {
             groups.sort {
@@ -189,7 +214,8 @@ class GroupViewController: UITableViewController {
         toolbarItems = editing ? editingToolbarItems : standardToolbarItems
         updateEditingToolbar()
 
-        // FIXME Enable/Disable the search bar
+        // Enable/Disable the search bar
+        searchController?.searchBar.isUserInteractionEnabled = !editing
     }
 
     private func updateEditingToolbar() {
@@ -355,7 +381,7 @@ class GroupViewController: UITableViewController {
 
     // MARK: - Actions
 
-    func settingsPressed(sender: UIBarButtonItem) {
+    @objc func settingsPressed(sender: UIBarButtonItem) {
         let storyboard = UIStoryboard(name: "Settings", bundle: nil)
         guard let viewController = storyboard.instantiateInitialViewController() else {
             return
@@ -364,7 +390,7 @@ class GroupViewController: UITableViewController {
         present(viewController, animated: true, completion: nil)
     }
 
-    func actionPressed(sender: UIBarButtonItem) {
+    @objc func actionPressed(sender: UIBarButtonItem) {
         // Get the URL of the database
         guard let appDelegate = AppDelegate.getDelegate() else {
             return
@@ -382,7 +408,7 @@ class GroupViewController: UITableViewController {
         }
     }
 
-    func addPressed(sender: UIBarButtonItem) {
+    @objc func addPressed(sender: UIBarButtonItem) {
         let alertController = UIAlertController(title: NSLocalizedString("Add", comment: ""), message: nil, preferredStyle: .alert)
 
         // Add an action to add a new group
@@ -490,13 +516,13 @@ class GroupViewController: UITableViewController {
         navigationController?.pushViewController(viewController, animated: true)
     }
     
-    func deletePressed(sender: UIBarButtonItem) {
+    @objc func deletePressed(sender: UIBarButtonItem) {
         if let indexPaths = tableView.indexPathsForSelectedRows {
             deleteItems(indexPaths: indexPaths)
         }
     }
 
-    func movePressed(sender: UIBarButtonItem) {
+    @objc func movePressed(sender: UIBarButtonItem) {
         guard let indexPaths = tableView.indexPathsForSelectedRows else {
             // Nothing selected. Shouldn't have been possible to press "Move"
             return;
@@ -546,7 +572,7 @@ class GroupViewController: UITableViewController {
         present(navigationController, animated: true, completion: nil)
     }
 
-    func renamePressed(sender: UIBarButtonItem) {
+    @objc func renamePressed(sender: UIBarButtonItem) {
         guard let indexPath = tableView.indexPathForSelectedRow else {
             // Nothing selected. This shoudn't have been called
             return
@@ -567,5 +593,29 @@ class GroupViewController: UITableViewController {
         }
 
         present(navigationController, animated: true, completion: nil)
+    }
+    
+    // MARK: - UISearchResultsUpdating
+    func updateSearchResults(for searchController: UISearchController) {
+        // Set state of UI buttons
+        let buttonsActive = !searchController.isActive
+        editButtonItem.isEnabled = buttonsActive
+        if let toolbarItems = toolbarItems {
+            for toolbarItem in toolbarItems {
+                toolbarItem.isEnabled = buttonsActive
+            }
+        }
+        
+        // Find results
+        let results = NSMutableArray()
+        DatabaseDocument.search(parentGroup, searchText: searchController.searchBar.text, results: results)
+        searchResults = results as! [KdbEntry]
+        searchResults.sort {
+            $0.title().localizedCaseInsensitiveCompare($1.title()) == .orderedAscending
+        }
+        
+        // Update table
+        updateViewModel()
+        tableView.reloadData()
     }
 }

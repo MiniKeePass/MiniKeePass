@@ -38,8 +38,8 @@ class PasswordGeneratorViewController: UITableViewController, UIPickerViewDataSo
     fileprivate var length: Int = 0
     fileprivate var charSets: Int = 10
     
-    var donePressed: ((PasswordGeneratorViewController, _ password: String) -> Void)?
-    var cancelPressed: ((PasswordGeneratorViewController) -> Void)?
+    @objc var donePressed: ((PasswordGeneratorViewController, _ password: String) -> Void)?
+    @objc var cancelPressed: ((PasswordGeneratorViewController) -> Void)?
 
     override func viewDidLoad() {
         super.viewDidLoad()

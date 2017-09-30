@@ -1,0 +1,162 @@
+/*
+ * Copyright 2011 Jason Rush and John Flanagan. All rights reserved.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+"Files" = "Dosyalar";
+"Databases" = "Veritabanları";
+"Key File" = "Anahtar Dosya";
+"Key Files" = "Anahtar Dosyalar";
+"Groups" = "Gruplar";
+"Entries" = "Girişler";
+"Group" = "Grup";
+"Entry" = "Giriş";
+"New Database" = "Yeni Veritabanı";
+"New Group" = "Yeni grup";
+"New Entry" = "Yeni Giriş";
+"Edit Group" = "Grup Düzenle";
+"Edit Entry" = "Giriş Düzenle";
+"Title" = "Başlık";
+"Image" = "Resim";
+"Images" = "Resimler";
+"Username" = "Kullanıcı Adı";
+"Password" = "Şifre";
+"Confirm Password" = "Şifre Onayla";
+"URL" = "URL";
+"Comments" = "Yorumlar";
+"OK" = "Tamam";
+"Cancel" = "İptal";
+"Add" = "Ekle";
+"Search" = "Arama";
+"Help" = "Yardım";
+"Version 1.x" = "Versiyon 1.x";
+"Version 2.x" = "Versiyon 2.x";
+"None" = "None";
+"Name" = "İsim";
+"Value" = "Değer";
+"Delete" = "Sil";
+"Move" = "Move";
+"Rename" = "Yeniden Adlandır";
+"Database Name" = "Veritabanı Adı";
+"Last Modified" = "Son güncelleme";
+"Copied" = "Kopyala";
+"In Memory Protection" = "Hafıza Koruması";
+"Custom Field" = "Özel Alan";
+"Custom Fields" = "Özel Alanlar";
+"Add new…" = "Yeni ekle…";
+"Choose Group" = "Grup Seç";
+"Backup" = "Yedekle";
+
+// General Messages
+"Enter your PIN to unlock" = "Kilidini açmak için PIN'inizi girin";
+"Unlock MiniKeePass" = "Kilidi aç";
+"Enter the password and/or select the keyfile for the %@ database." = "Veritabanının şifresini girin ve anahtar dosyasını seçin. ";
+"Enter a new name for the password database. The correct file extension will automatically be appended." = "Veritabanı şifresi için yeni bir ad girin. Doğru dosya uzantısı otomatik olarak eklenir.";
+"Do not forget your database password, it cannot be recovered." = "Veritabanı şifrenizi unutmayın, kurtarılamaz.";
+
+// Error Messages
+"Error" = "Hata";
+"New name is invalid" = "Yeni ad geçersiz";
+"Name cannot be empty" = "Ad boş olamaz";
+"Database name is required" = "Veritabanı adı gerekiyor";
+"Passwords do not match" = "Şifreler eşleşmedi";
+"Password is required" = "Şifre gereklidir";
+"Incorrect PIN" = "Hatalı PIN";
+"Attempts Remaining" = "Kalan Denemeler";
+"Filename is invalid" = "Dosya adı geçersiz";
+"A file already exists with this name" = "Bu isimle zaten bir dosya var";
+"There are no applications installed capable of importing KeePass files" = "KeePass dosyalarını içe aktarabilecek hiçbir uygulama yüklü değil";
+"Tap the + button to add a new KeePass file." = "Yeni bir KeePass dosyası eklemek için + düğmesine dokunun.";
+"No password or keyfile specified" = "Belirtilen parola veya anahtar dosyası yok.";
+"Error Checking PIN" = "PIN için hata kontrolü";
+
+// Settings Page
+"Settings" = "Ayarlar";
+"PIN Enabled" = "PIN Etkin";
+"Touch ID" = "Touch ID";
+"Use your fingerprint as an alternative to entering a PIN if supported." = "Destekleniyorsa bir PIN girişi için parmak izinizi kullanın.";
+"Lock Timeout" = "Kilitleme için zaman aşımı";
+"Immediately" = "Hemen";
+"30 Seconds" = "30 Saniye";
+"1 Minute" = "1 Dakika";
+"2 Minutes" = "2 Dakika";
+"3 Minutes" = "3 Dakika";
+"5 Minutes" = "5 Dakika";
+"Enabled" = "Etkin";
+"Attempts" = "Denemeler";
+"Close Enabled" = "Kapat Etkinleştirildi";
+"Close Timeout" = "Zaman aşımını kapat";
+"Hide Passwords" = "Şifreyi gizle";
+"Sorting" = "Sınıflandırma";
+"Sort Groups and Entries Alphabetically" = "Grupları ve Girişleri Alfabetik Olarak Sırala";
+"Encoding" = "Kodlama";
+"UTF-8" = "UTF-8";
+"UTF-16 Big Endian" = "UTF-16 Big Endian";
+"UTF-16 Little Endian" = "UTF-16 Little Endian";
+"Latin 1 (ISO/IEC 8859-1)" = "Latin 1 (ISO/IEC 8859-1)";
+"Latin 2 (ISO/IEC 8859-2)" = "Latin 2 (ISO/IEC 8859-2)";
+"7-Bit ASCII" = "7-Bit ASCII";
+"Japanese EUC" = "Japanese EUC";
+"ISO-2022-JP" = "ISO-2022-JP";
+"PIN Protection" = "PIN Koruma";
+"Delete All Data on PIN Failure" = "PIN Hatasında Tüm Verileri Sil";
+"Close Database on Timeout" = "Zaman aşımında veritabanını kapat";
+"Remember Database Passwords" = "Database şiresini hatırla";
+"Hide Passwords" = "Şifreyi gizle";
+"Password Encoding" = "Şifre Kodlama";
+"Clear Clipboard on Timeout" = "Zaman aşımı durumunda Panoyu Temizle";
+"Clear Timeout" = "Clear Timeout";
+"Prevent unauthorized access to MiniKeePass with a PIN." = "PIN ile MiniKeePass'e yetkisiz erişimi önle.";
+"Delete all files and passwords after too many failed attempts." = "Çok fazla başarısız girişimden sonra tüm dosyaları ve şifreleri sil.";
+"Automatically close an open database after the selected timeout." = "Seçili zaman aşımından sonra otomatik olarak açık bir veritabanını kapat.";
+"Stores remembered database passwords in the devices's secure keychain." = "Yedeklenmiş veritabanı şifrelerini cihazların güvenlik anahtarlıklarına kaydedin.";
+"Hides passwords when viewing a password entry." = "Şifre girişi görüntülerken parolaları gizler.";
+"The string encoding used for passwords when converting them to database keys." = "Veritabanı anahtarlarına dönüştürürken şifreler için kullanılan dize şifrelemesi.";
+"Clear the contents of the clipboard after a given timeout upon performing a copy." = "Belirli bir zaman aşımından sonra panonun içeriğini temizleyin. ";
+"Close Timeout" = "Zaman aşımını kapat";
+"Clear Clipboard Timeout" = "Zaman Aşımı'nı temizle";
+"Exclude from backup" = "Yedekten hariç tut";
+"iCloud/iTunes Backup" = "iCloud/iTunes Yedekleme";
+"Exclude databases and key files from iTunes/iCloud backups." = "Veritabanlarını ve anahtar dosyalarını iTunes / iCloud yedeklemelerinden hariç tutun.";
+"Web Browser" = "İnternet tarayıcısı";
+"Integrated" = "Birleşik";
+"Switch between an integrated web browser and Safari." = "Entegre bir web tarayıcısı ve Safari arasında geçiş yapın.";
+"Set PIN" = "PIN'i ayarla";
+"Confirm PIN" = "PIN'i onayla";
+"PINs did not match. Try again" = "PIN'ler eşleşmedi. Tekrar dene";
+"MiniKeePass version %@" = "MiniKeePass versiyon %@";
+
+// Help Titles
+"iTunes Import/Export" = "iTunes İçeri aktar/Dışarı aktar";
+"Dropbox Import/Export" = "Dropbox İçeri aktar/Dışarı aktar";
+"Safari/Email Import" = "Safari/Email İçeri aktar";
+"Create New Database" = "Yeni veritabanı yarat";
+"Key Files" = "Anahtar Dosyalar";
+
+// Password Generator
+"Generator" = "Oluşturucu";
+"Length" = "Uzunluk";
+"Character Sets" = "Karakter Setleri";
+"Upper Case" = "Büyük Harf";
+"Lower Case" = "Küçük Harf";
+"Upper" = "Üst";
+"Lower" = "Alt";
+"Digits" = "Rakamlar";
+"Minus" = "Eksi";
+"Underline" = "Altçizgi";
+"Space" = "Boşluk";
+"Special" = "Özel";
+"Brackets" = "Parantez";
+"None Selected" = "Hiçbiri seçilmedi";

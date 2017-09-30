@@ -19,7 +19,7 @@ protocol NewDatabaseDelegate {
     func newDatabaseCreated(filename: String)
 }
 
-class NewDatabaseViewController: UITableViewController {
+class NewDatabaseViewController: UITableViewController, UITextFieldDelegate {
     @IBOutlet weak var nameTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var confirmPasswordTextField: UITextField!

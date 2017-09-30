@@ -22,13 +22,33 @@ class PasswordEntryViewController: UITableViewController, UITextFieldDelegate {
     @IBOutlet weak var showImageView: UIImageView!
     @IBOutlet weak var keyFileLabel: UILabel!
 
-    var filename: String!
+    @objc var filename: String!
     
-    var keyFiles: [String]!
-    fileprivate var selectedKeyFileIndex: Int! = -1
+    @objc var keyFiles: [String]!
+    fileprivate var selectedKeyFileIndex: Int? = nil {
+        didSet {
+            if let selectedKeyFileIndex = selectedKeyFileIndex {
+                keyFileLabel.text = keyFiles[selectedKeyFileIndex]
+            } else {
+                keyFileLabel.text = NSLocalizedString("None", comment: "")
+            }
+        }
+    }
+    
+    @objc var keyFile: String? {
+        guard let selectedKeyFileIndex = selectedKeyFileIndex else {
+            return nil
+        }
+        
+        return keyFiles[selectedKeyFileIndex]
+    }
 
-    var donePressed: ((PasswordEntryViewController) -> Void)?
-    var cancelPressed: ((PasswordEntryViewController) -> Void)?
+    @objc var password: String! {
+        return passwordTextField.text
+    }
+
+    @objc var donePressed: ((PasswordEntryViewController) -> Void)?
+    @objc var cancelPressed: ((PasswordEntryViewController) -> Void)?
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -36,35 +56,10 @@ class PasswordEntryViewController: UITableViewController, UITextFieldDelegate {
         if (keyFileLabel.text == "") {
             let keyFile = ((filename as NSString).deletingPathExtension as NSString).appendingPathExtension("key")
             let idx = keyFiles.index(of: keyFile!)
-            setSelectedKeyFile(idx)
+            selectedKeyFileIndex = idx
         }
         
         passwordTextField.becomeFirstResponder()
-    }
-    
-    func getPassword() -> String! {
-        return passwordTextField.text
-    }
-    
-    func getKeyFile() -> String! {
-        if (selectedKeyFileIndex == -1) {
-            return nil
-        }
-        return keyFiles[selectedKeyFileIndex]
-    }
-    
-    func setSelectedKeyFile(_ selectedIndex: Int!) -> Void {
-        if (selectedIndex == nil) {
-            selectedKeyFileIndex = -1
-        } else {
-            selectedKeyFileIndex = selectedIndex
-        }
-        
-        if (selectedKeyFileIndex == -1) {
-            keyFileLabel.text = NSLocalizedString("None", comment: "")
-        } else {
-            keyFileLabel.text = keyFiles[selectedKeyFileIndex]
-        }
     }
     
     // MARK: - UITextFieldDelegate
@@ -88,9 +83,9 @@ class PasswordEntryViewController: UITableViewController, UITextFieldDelegate {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let keyFileViewController = segue.destination as! KeyFileViewController
         keyFileViewController.keyFiles = keyFiles
-        keyFileViewController.selectedIndex = selectedKeyFileIndex
+        keyFileViewController.selectedKeyIndex = selectedKeyFileIndex
         keyFileViewController.keyFileSelected = { (selectedIndex) in
-            self.setSelectedKeyFile(selectedIndex)
+            self.selectedKeyFileIndex = selectedIndex
 
             keyFileViewController.navigationController?.popViewController(animated: true)
         }

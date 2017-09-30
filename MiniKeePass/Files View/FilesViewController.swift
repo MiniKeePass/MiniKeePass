@@ -32,20 +32,15 @@ class FilesViewController: UITableViewController, NewDatabaseDelegate {
     var keyFiles: [String] = []
     
     override func viewDidLoad() {
+        super.viewDidLoad();
         self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        updateFiles();
         super.viewWillAppear(animated)
-        
-        if let databaseManager = DatabaseManager.sharedInstance() {
-            databaseFiles = databaseManager.getDatabases() as! [String]
-            keyFiles = databaseManager.getKeyFiles() as! [String]
-        }
-        
-        tableView.reloadData()
     }
-
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch segue.identifier {
         case "newDatabase"?:
@@ -67,6 +62,13 @@ class FilesViewController: UITableViewController, NewDatabaseDelegate {
             groupViewController.title = URL(fileURLWithPath: document!.filename).lastPathComponent
         default:
             break
+        }
+    }
+    
+    @objc func updateFiles() {
+        if let databaseManager = DatabaseManager.sharedInstance() {
+            databaseFiles = databaseManager.getDatabases() as! [String]
+            keyFiles = databaseManager.getKeyFiles() as! [String]
         }
     }
     
