@@ -1009,9 +1009,9 @@
 				ORGANIZATIONNAME = Self;
 				TargetAttributes = {
 					689DFFD413A4273F005EBD36 = {
-						DevelopmentTeam = G9ZT7943FZ;
+						DevelopmentTeam = MGD4WTF6BR;
 						LastSwiftMigration = 0900;
-						ProvisioningStyle = Manual;
+						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.iCloud = {
 								enabled = 0;
@@ -1416,7 +1416,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = MGD4WTF6BR;
 				INFOPLIST_FILE = "MiniKeePass/MiniKeePass-Info.plist";
@@ -1441,7 +1441,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = MGD4WTF6BR;
 				INFOPLIST_FILE = "MiniKeePass/MiniKeePass-Info.plist";

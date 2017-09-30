@@ -50,7 +50,7 @@
     [KdbWriterFactory persist:self.kdbTree file:self.filename withPassword:self.kdbPassword];
 }
 
-+ (void)searchGroup:(KdbGroup *)group searchText:(NSString *)searchText results:(NSMutableArray *)results includeRecycleBin:(BOOL)includeRecycleBin {
++ (void)searchGroup:(KdbGroup *)group searchText:(NSString *)searchText results:(NSMutableArray *)results {
     for (KdbEntry *entry in group.entries) {
         if ([self matchesEntry:entry searchText:searchText]) {
             [results addObject:entry];
@@ -58,19 +58,8 @@
     }
 
     for (KdbGroup *g in group.groups) {
-        // Don't include Kdb4Groups marked with enableSearching=false
-        if( includeRecycleBin ) {
-            [self searchGroup:g searchText:searchText results:results includeRecycleBin:includeRecycleBin];
-        } else {
-            if( [g isKindOfClass:[Kdb4Group class]] ) {
-                Kdb4Group *g4 = (Kdb4Group*)g;
-                if( [g4.enableSearching caseInsensitiveCompare:@"false"] == NSOrderedSame ) {
-                    continue;
-                }
-            }
-            if (![g.name isEqualToString:@"Backup"] && ![g.name isEqualToString:NSLocalizedString(@"Backup", nil)]) {
-                [self searchGroup:g searchText:searchText results:results includeRecycleBin:includeRecycleBin];
-            }
+        if (![g.name isEqualToString:@"Backup"] && ![g.name isEqualToString:NSLocalizedString(@"Backup", nil)]) {
+            [self searchGroup:g searchText:searchText results:results];
         }
     }
 }
