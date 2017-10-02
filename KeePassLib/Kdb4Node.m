@@ -89,43 +89,78 @@
 }
 
 - (NSString *)title {
+    if (_titleStringField == nil) {
+        return @"";
+    }
     return _titleStringField.value;
 }
 
 - (void)setTitle:(NSString *)title {
-    _titleStringField.value = title;
+    if (_titleStringField == nil) {
+        _titleStringField = [[StringField alloc] initWithKey:FIELD_TITLE andValue:title];
+    } else {
+        _titleStringField.value = title;
+    }
 }
 
 - (NSString *)username {
+    if (_usernameStringField == nil) {
+        return @"";
+    }
     return _usernameStringField.value;
 }
 
 - (void)setUsername:(NSString *)username {
-    _usernameStringField.value = username;
+    if (_usernameStringField == nil) {
+        _usernameStringField = [[StringField alloc] initWithKey:FIELD_USER_NAME andValue:username];
+    } else {
+        _usernameStringField.value = username;
+    }
 }
 
 - (NSString *)password {
+    if (_passwordStringField == nil) {
+        return @"";
+    }
     return _passwordStringField.value;
 }
 
 - (void)setPassword:(NSString *)password {
-    _passwordStringField.value = password;
+    if (_passwordStringField == nil) {
+        _passwordStringField = [[StringField alloc] initWithKey:FIELD_PASSWORD andValue:password andProtected:YES];
+    } else {
+        _passwordStringField.value = password;
+    }
 }
 
 - (NSString *)url {
+    if (_urlStringField == nil) {
+        return @"";
+    }
     return _urlStringField.value;
 }
 
 - (void)setUrl:(NSString *)url {
-    _urlStringField.value = url;
+    if (_urlStringField == nil) {
+        _urlStringField = [[StringField alloc] initWithKey:FIELD_URL andValue:url];
+    } else {
+        _urlStringField.value = url;
+    }
 }
 
 - (NSString *)notes {
+    if (_notesStringField == nil) {
+        return @"";
+    }
     return _notesStringField.value;
 }
 
 - (void)setNotes:(NSString *)notes {
-    _notesStringField.value = notes;
+    if (_notesStringField == nil) {
+        _notesStringField = [[StringField alloc] initWithKey:FIELD_NOTES andValue:notes];
+    } else {
+        _notesStringField.value = notes;
+    }
 }
 
 @end
