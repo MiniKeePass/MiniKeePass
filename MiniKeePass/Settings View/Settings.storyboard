@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="DTi-df-Pz8">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1611" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="DTi-df-Pz8">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -368,10 +368,43 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
+                            <tableViewSection headerTitle="Searching" footerTitle="Search Title only (default: search all fields)" id="f3o-MT-xbh">
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" id="Jwv-oQ-XSx">
+                                        <rect key="frame" x="0.0" y="1088" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" tableViewCell="Jwv-oQ-XSx" id="4Bg-6B-zlf">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Search Title only" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bYX-rB-JtD">
+                                                    <rect key="frame" x="8" y="12" width="302" height="20"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="PQv-PG-Wrn" userLabel="Search Title Only Switch">
+                                                    <rect key="frame" x="318" y="6" width="51" height="31"/>
+                                                    <connections>
+                                                        <action selector="searchTitleOnlyChanged:" destination="mlm-01-Slc" eventType="valueChanged" id="MMa-HN-HdL"/>
+                                                    </connections>
+                                                </switch>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="bYX-rB-JtD" firstAttribute="centerY" secondItem="4Bg-6B-zlf" secondAttribute="centerY" id="0D1-Cy-EmL"/>
+                                                <constraint firstItem="PQv-PG-Wrn" firstAttribute="leading" secondItem="bYX-rB-JtD" secondAttribute="trailing" constant="8" id="e6f-hZ-t90"/>
+                                                <constraint firstItem="PQv-PG-Wrn" firstAttribute="centerY" secondItem="4Bg-6B-zlf" secondAttribute="centerY" id="mXA-jE-IxV"/>
+                                                <constraint firstItem="bYX-rB-JtD" firstAttribute="leading" secondItem="4Bg-6B-zlf" secondAttribute="leadingMargin" id="nAa-sT-L4R"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="PQv-PG-Wrn" secondAttribute="trailing" id="xQ9-ix-cvd"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
                             <tableViewSection headerTitle="Password Encoding" footerTitle="The string encoding used for passwords when converting them to database keys." id="WTf-Ma-R7l">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="Wyv-5A-xwb" detailTextLabel="CyH-DG-T4g" style="IBUITableViewCellStyleValue1" id="p70-RW-3e7">
-                                        <rect key="frame" x="0.0" y="1088" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="1207.5" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" tableViewCell="p70-RW-3e7" id="3yE-Cr-tz7">
                                             <rect key="frame" x="0.0" y="0.0" width="342" height="43.5"/>
@@ -402,7 +435,7 @@
                             <tableViewSection headerTitle="Clear Clipboard on Timeout" footerTitle="Clear the contents of the clipboard after a given timeout upon performing a copy." id="6aD-nd-BAe">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" id="tSp-rx-woH">
-                                        <rect key="frame" x="0.0" y="1223.5" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="1343" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" tableViewCell="tSp-rx-woH" id="Khv-Xe-yIv">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
@@ -431,7 +464,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="WPB-ze-mX6" detailTextLabel="Tmt-kW-PTp" style="IBUITableViewCellStyleValue1" id="2F7-jl-P33">
-                                        <rect key="frame" x="0.0" y="1267.5" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="1387" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" tableViewCell="2F7-jl-P33" id="ThK-8c-OEp">
                                             <rect key="frame" x="0.0" y="0.0" width="342" height="43.5"/>
@@ -462,7 +495,7 @@
                             <tableViewSection headerTitle="iCloud/iTunes Backup" footerTitle="Exclude databases and key files from iTunes/iCloud backups." id="Zs3-9b-0kG">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" id="VQf-14-2bS">
-                                        <rect key="frame" x="0.0" y="1403" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="1522.5" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" tableViewCell="VQf-14-2bS" id="pUq-6Q-f3T">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
@@ -495,7 +528,7 @@
                             <tableViewSection headerTitle="Web Browser" footerTitle="Switch between an integrated web browser and Safari." id="ZbJ-mR-6o9">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" id="tZZ-6T-nMy">
-                                        <rect key="frame" x="0.0" y="1538.5" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="1658" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" tableViewCell="tZZ-6T-nMy" id="1Eo-Md-mqX">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
@@ -528,7 +561,7 @@
                             <tableViewSection id="O4c-S2-bxk" userLabel="Version">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" textLabel="Sdb-s9-D0G" detailTextLabel="fc3-tI-Hn4" style="IBUITableViewCellStyleValue1" id="OBf-R4-5vk">
-                                        <rect key="frame" x="0.0" y="1630.5" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="1750" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" tableViewCell="OBf-R4-5vk" id="AaX-EY-CkO">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
@@ -581,6 +614,7 @@
                         <outlet property="pinEnabledSwitch" destination="i82-ao-eaE" id="EnM-DA-stl"/>
                         <outlet property="pinLockTimeoutCell" destination="2QL-yf-Q2s" id="7Dh-Fl-MMH"/>
                         <outlet property="rememberDatabasePasswordsEnabledSwitch" destination="Ea4-fm-fzf" id="7cF-hL-41B"/>
+                        <outlet property="searchTitleOnlySwitch" destination="PQv-PG-Wrn" id="5XL-4A-aem"/>
                         <outlet property="sortingEnabledSwitch" destination="3lc-8w-xI4" id="grb-Ay-BBQ"/>
                         <outlet property="touchIdEnabledCell" destination="v5C-no-1Zp" id="Oe8-6J-urU"/>
                         <outlet property="touchIdEnabledSwitch" destination="Ye5-jl-2bY" id="cBy-Mo-Gym"/>
@@ -595,7 +629,7 @@
         <scene sceneID="p1T-cx-3sH">
             <objects>
                 <navigationController id="DTi-df-Pz8" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="FSx-s4-KMu">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="FSx-s4-KMu">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -609,6 +643,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="PxN-Oo-5xq"/>
+        <segue reference="LOY-kv-rGe"/>
     </inferredMetricsTieBreakers>
 </document>

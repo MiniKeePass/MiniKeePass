@@ -63,6 +63,9 @@
 - (BOOL)sortAlphabetically;
 - (void)setSortAlphabetically:(BOOL)sortAlphabetically;
 
+- (BOOL)searchTitleOnly;
+- (void)setSearchTitleOnly:(BOOL)searchTitleOnly;
+
 - (NSStringEncoding)passwordEncoding;
 - (NSInteger)passwordEncodingIndex;
 - (void)setPasswordEncodingIndex:(NSInteger)passwordEncodingIndex;
