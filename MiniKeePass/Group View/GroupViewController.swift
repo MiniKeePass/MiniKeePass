@@ -44,6 +44,13 @@ class GroupViewController: UITableViewController, UISearchResultsUpdating {
 
     private var groups: [KdbGroup]!
     private var entries: [KdbEntry]!
+
+    private enum KdbItem {
+        case group(KdbGroup)
+        case entry(KdbEntry)
+    }
+    
+    private var selectedItem: KdbItem?
     
     private var searchController: UISearchController?
     private var searchResults: [KdbEntry] = []
@@ -96,68 +103,29 @@ class GroupViewController: UITableViewController, UISearchResultsUpdating {
 
     override func viewWillAppear(_ animated: Bool) {
         // Ensure cell reflects name change and proper cell is highlighted
-        var updatedIndexPath: IndexPath?
-
-        // Only matters if a cell was selected
-        if let indexPath = tableView.indexPathForSelectedRow {
-            let cell = tableView.cellForRow(at: indexPath)
-            let section = indexPath.section
-            
-            // Check if an update is needed
-            switch section {
-            case Section.groups.rawValue:
-                if groups[indexPath.row].name == cell?.textLabel?.text {
-                    break
-                }
-            case Section.entries.rawValue:
-                if entries[indexPath.row].title() == cell?.textLabel?.text {
-                    break
-                }
-            default:
-                break
-            }
-            
+        if selectedItem != nil {
             updateViewModel()
             
-            switch section {
-            case Section.groups.rawValue:
-                // Find most recently updated group
-                var index = -1
-                var mostRecent: KdbGroup?
-                for i in 0 ..< groups.count {
-                    let group = groups[i]
-                    if mostRecent == nil || group.lastModificationTime > mostRecent!.lastModificationTime {
-                        mostRecent = group
-                        index = i
-                    }
-                }
-
-                updatedIndexPath = IndexPath(row: index, section: section)
-            case Section.entries.rawValue:
-                // Find most recently updated entry
-                var index = -1
-                var mostRecent: KdbEntry?
-                for i in 0 ..< entries.count {
-                    let entry = entries[i]
-                    if mostRecent == nil || entry.lastModificationTime > mostRecent!.lastModificationTime {
-                        mostRecent = entry
-                        index = i
-                    }
-                }
-                
-                updatedIndexPath = IndexPath(row: index, section: section)
-            default: break
+            var section: Int?
+            var row: Int?
+            
+            switch selectedItem! {
+            case .entry(let entry):
+                section = Section.entries.rawValue
+                row = entries.index(of: entry)
+            case .group(let group):
+                section = Section.groups.rawValue
+                row = groups.index(of: group)
+            }
+            selectedItem = nil
+            
+            if let section = section, let row = row {
+                tableView.reloadSections(IndexSet(integer: section), with: .none)
+                tableView.selectRow(at: IndexPath(row: row, section: section), animated: false, scrollPosition: .middle)
             }
         }
         
         self.setEditing(false, animated: false)
-        
-        if updatedIndexPath != nil {
-            let indexSet = IndexSet(integer: updatedIndexPath!.section)
-            tableView.reloadSections(indexSet, with: .none)
-            
-            tableView.selectRow(at: updatedIndexPath, animated: false, scrollPosition: .middle)
-        }
         
         super.viewWillAppear(animated)
     }
@@ -179,11 +147,13 @@ class GroupViewController: UITableViewController, UISearchResultsUpdating {
         
         if let destination = segue.destination as? GroupViewController {
             let group = groups[indexPath.row]
+            selectedItem = KdbItem.group(group)
             destination.parentGroup = group
             destination.title = group.name
         }
         else if let destination = segue.destination as? EntryViewController {
             let entry = entries[indexPath.row]
+            selectedItem = KdbItem.entry(entry)
             destination.entry = entry
             destination.title = entry.title()
         }
@@ -512,6 +482,7 @@ class GroupViewController: UITableViewController, UISearchResultsUpdating {
         }
         
         tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
+        selectedItem = KdbItem.entry(entry)
 
         // Show the Entry view controller
         let viewController = EntryViewController(style: .grouped)
