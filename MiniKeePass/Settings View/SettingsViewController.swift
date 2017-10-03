@@ -281,7 +281,7 @@ class SettingsViewController: UITableViewController, PinViewControllerDelegate {
 
     @IBAction func searchTitleOnlyChanged(_ sender: UISwitch) {
         self.appSettings?.setSearchTitleOnly(searchTitleOnlySwitch.isOn)
-	}
+    }
 
     @IBAction func clearClipboardEnabledChanged(_ sender: UISwitch) {
         self.appSettings?.setClearClipboardEnabled(clearClipboardEnabledSwitch.isOn)
