@@ -64,18 +64,22 @@
 }
 
 + (BOOL)matchesEntry:(KdbEntry *)entry searchText:(NSString *)searchText {
+    BOOL searchTitleOnly = [[AppSettings sharedInstance] searchTitleOnly];
+
     if ([entry.title rangeOfString:searchText options:NSCaseInsensitiveSearch].length > 0) {
         return YES;
     }
-    if ([entry.username rangeOfString:searchText options:NSCaseInsensitiveSearch].length > 0) {
-        return YES;
-    }
-    if ([entry.url rangeOfString:searchText options:NSCaseInsensitiveSearch].length > 0) {
-        return YES;
-    }
-    if ([entry.notes rangeOfString:searchText options:NSCaseInsensitiveSearch].length > 0) {
-        return YES;
-    }
+	if (!searchTitleOnly) {
+		if ([entry.username rangeOfString:searchText options:NSCaseInsensitiveSearch].length > 0) {
+			return YES;
+		}
+		if ([entry.url rangeOfString:searchText options:NSCaseInsensitiveSearch].length > 0) {
+			return YES;
+		}
+		if ([entry.notes rangeOfString:searchText options:NSCaseInsensitiveSearch].length > 0) {
+			return YES;
+		}
+	}
     return NO;
 }
 

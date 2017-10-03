@@ -35,6 +35,7 @@
 #define REMEMBER_PASSWORDS_ENABLED @"rememberPasswordsEnabled"
 #define HIDE_PASSWORDS             @"hidePasswords"
 #define SORT_ALPHABETICALLY        @"sortAlphabetically"
+#define SEARCH_TITLE_ONLY          @"searchTitleOnly"
 #define PASSWORD_ENCODING          @"passwordEncoding"
 #define CLEAR_CLIPBOARD_ENABLED    @"clearClipboardEnabled"
 #define BACKUP_DISABLED            @"backupDisabled"
@@ -120,6 +121,7 @@ static AppSettings *sharedInstance;
         [defaultsDict setValue:[NSNumber numberWithBool:NO] forKey:REMEMBER_PASSWORDS_ENABLED];
         [defaultsDict setValue:[NSNumber numberWithBool:YES] forKey:HIDE_PASSWORDS];
         [defaultsDict setValue:[NSNumber numberWithBool:YES] forKey:SORT_ALPHABETICALLY];
+        [defaultsDict setValue:[NSNumber numberWithBool:NO] forKey:SEARCH_TITLE_ONLY];
         [defaultsDict setValue:[NSNumber numberWithInt:0] forKey:PASSWORD_ENCODING];
         [defaultsDict setValue:[NSNumber numberWithBool:NO] forKey:CLEAR_CLIPBOARD_ENABLED];
         [defaultsDict setValue:[NSNumber numberWithInt:0] forKey:CLEAR_CLIPBOARD_TIMEOUT];
@@ -333,6 +335,14 @@ static AppSettings *sharedInstance;
 
 - (void)setSortAlphabetically:(BOOL)sortAlphabetically {
     [userDefaults setBool:sortAlphabetically forKey:SORT_ALPHABETICALLY];
+}
+
+- (BOOL)searchTitleOnly {
+    return [userDefaults boolForKey:SEARCH_TITLE_ONLY];
+}
+
+- (void)setSearchTitleOnly:(BOOL)searchTitleOnly {
+    [userDefaults setBool:searchTitleOnly forKey:SEARCH_TITLE_ONLY];
 }
 
 - (NSStringEncoding)passwordEncoding {
