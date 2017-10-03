@@ -100,6 +100,14 @@ class MoveItemsViewController: UITableViewController {
         }
     }
 
+    // MARK: - Actions
+
+    @IBAction func cancelPressed(_ sender: UIBarButtonItem) {
+        dismiss(animated: true, completion: nil)
+    }
+
+    // MARK: - UITableViewDataSource
+
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return groupModels.count;
     }
@@ -115,6 +123,8 @@ class MoveItemsViewController: UITableViewController {
 
         return cell
     }
+
+    // MARK: - UITableViewDelegate
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let groupModel = groupModels[indexPath.row]
