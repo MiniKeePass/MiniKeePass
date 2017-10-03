@@ -105,7 +105,8 @@ class GroupViewController: UITableViewController, UISearchResultsUpdating {
         // Ensure cell reflects name change and proper cell is highlighted
         if selectedItem != nil {
             updateViewModel()
-            
+            tableView.reloadData()
+
             var section: Int?
             var row: Int?
             
@@ -120,7 +121,6 @@ class GroupViewController: UITableViewController, UISearchResultsUpdating {
             selectedItem = nil
             
             if let section = section, let row = row {
-                tableView.reloadSections(IndexSet(integer: section), with: .none)
                 tableView.selectRow(at: IndexPath(row: row, section: section), animated: false, scrollPosition: .middle)
             }
         }
@@ -563,9 +563,13 @@ class GroupViewController: UITableViewController, UISearchResultsUpdating {
         // Set the group/entry to rename
         switch Section.AllValues[indexPath.section] {
         case .groups:
-            viewController.group = groups[indexPath.row]
+            let group = groups[indexPath.row]
+            viewController.group = group
+            selectedItem = KdbItem.group(group)
         case .entries:
-            viewController.entry = entries[indexPath.row]
+            let entry = entries[indexPath.row]
+            viewController.entry = entry
+            selectedItem = KdbItem.entry(entry)
         }
 
         present(navigationController, animated: true, completion: nil)
