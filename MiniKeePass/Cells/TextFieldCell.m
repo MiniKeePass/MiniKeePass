@@ -102,7 +102,9 @@
 
 - (void)setStyle:(TextFieldCellStyle)style {
     _style = style;
-    
+
+    self.textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+
     switch (style) {
         case TextFieldCellStylePassword: {
             self.textField.secureTextEntry = [[AppSettings sharedInstance] hidePasswords];

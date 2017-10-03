@@ -73,6 +73,7 @@ static NSString *TextFieldCellIdentifier = @"TextFieldCell";
     [self setSelectedImageIndex:self.entry.image];
     
     usernameCell = [self.tableView dequeueReusableCellWithIdentifier:TextFieldCellIdentifier];
+    usernameCell.style = TextFieldCellStylePlain;
     usernameCell.title = NSLocalizedString(@"Username", nil);
     usernameCell.delegate = self;
     usernameCell.textField.placeholder = NSLocalizedString(@"Username", nil);
@@ -411,6 +412,7 @@ static NSString *TextFieldCellIdentifier = @"TextFieldCell";
 
                 StringField *stringField = [self.currentStringFields objectAtIndex:indexPath.row];
 
+                cell.style = TextFieldCellStylePlain;
                 cell.title = stringField.key;
                 cell.textField.text = stringField.value;
                 cell.textField.enabled = self.editing;
