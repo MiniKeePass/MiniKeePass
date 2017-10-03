@@ -103,15 +103,24 @@ class GroupViewController: UITableViewController, UISearchResultsUpdating {
             let cell = tableView.cellForRow(at: indexPath)
             let section = indexPath.section
             
+            // Check if an update is needed
+            switch section {
+            case Section.groups.rawValue:
+                if groups[indexPath.row].name == cell?.textLabel?.text {
+                    break
+                }
+            case Section.entries.rawValue:
+                if entries[indexPath.row].title() == cell?.textLabel?.text {
+                    break
+                }
+            default:
+                break
+            }
+            
             updateViewModel()
             
             switch section {
             case Section.groups.rawValue:
-                // Check if an update is needed
-                if groups[indexPath.row].name == cell?.textLabel?.text {
-                    break
-                }
-                
                 // Find most recently updated group
                 var index = -1
                 var mostRecent: KdbGroup?
@@ -125,11 +134,6 @@ class GroupViewController: UITableViewController, UISearchResultsUpdating {
 
                 updatedIndexPath = IndexPath(row: index, section: section)
             case Section.entries.rawValue:
-                // Check if an update is needed
-                if entries[indexPath.row].title() == cell?.textLabel?.text {
-                    break
-                }
-
                 // Find most recently updated entry
                 var index = -1
                 var mostRecent: KdbEntry?
@@ -152,7 +156,7 @@ class GroupViewController: UITableViewController, UISearchResultsUpdating {
             let indexSet = IndexSet(integer: updatedIndexPath!.section)
             tableView.reloadSections(indexSet, with: .none)
             
-            tableView.selectRow(at: updatedIndexPath, animated: false, scrollPosition: .none)
+            tableView.selectRow(at: updatedIndexPath, animated: false, scrollPosition: .middle)
         }
         
         super.viewWillAppear(animated)
@@ -500,12 +504,14 @@ class GroupViewController: UITableViewController, UISearchResultsUpdating {
         self.entries.insert(entry, at: index)
 
         // Update the table
+        let indexPath = IndexPath(row: index, section: Section.entries.rawValue)
         if (self.entries.count == 1) {
             self.tableView.reloadSections(NSIndexSet(index: Section.entries.rawValue) as IndexSet, with: .automatic)
         } else {
-            let indexPath = IndexPath(row: index, section: Section.entries.rawValue)
             self.tableView.insertRows(at: [indexPath], with: .automatic)
         }
+        
+        tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
 
         // Show the Entry view controller
         let viewController = EntryViewController(style: .grouped)
