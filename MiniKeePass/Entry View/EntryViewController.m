@@ -297,6 +297,7 @@ static NSString *TextFieldCellIdentifier = @"TextFieldCell";
             if (textFieldCell.style == TextFieldCellStyleTitle) {
                 self.title = textFieldCell.textField.text;
             }
+            break;
         }
         case SECTION_CUSTOM_FIELDS: {
             if (indexPath.row < self.editingStringFields.count) {
