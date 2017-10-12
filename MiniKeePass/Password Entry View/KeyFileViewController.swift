@@ -54,10 +54,10 @@ class KeyFileViewController: UITableViewController {
 
         if (indexPath != oldIndexPath) {
             let oldCell = tableView.cellForRow(at: oldIndexPath)
-            oldCell!.accessoryType = .none
+            oldCell?.accessoryType = .none
             
             let cell = tableView.cellForRow(at: indexPath)
-            cell!.accessoryType = .checkmark
+            cell?.accessoryType = .checkmark
             
             selectedKeyIndex = keyIndex
             
