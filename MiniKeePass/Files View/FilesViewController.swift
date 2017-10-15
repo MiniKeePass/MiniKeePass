@@ -34,6 +34,8 @@ class FilesViewController: UITableViewController, NewDatabaseDelegate {
     override func viewDidLoad() {
         super.viewDidLoad();
         self.navigationItem.rightBarButtonItem = self.editButtonItem
+        self.tableView.estimatedRowHeight = 30
+        self.tableView.rowHeight = UITableViewAutomaticDimension
     }
     
     override func viewWillAppear(_ animated: Bool) {

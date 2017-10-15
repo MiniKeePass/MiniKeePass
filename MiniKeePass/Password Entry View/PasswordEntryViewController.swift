@@ -59,6 +59,8 @@ class PasswordEntryViewController: UITableViewController, UITextFieldDelegate {
             selectedKeyFileIndex = idx
         }
         
+        let fontSize = UIFont.preferredFont(forTextStyle: UIFontTextStyle.body).pointSize
+        passwordTextField.font = UIFont.init(name: "Andale Mono", size: fontSize)
         passwordTextField.becomeFirstResponder()
     }
     
