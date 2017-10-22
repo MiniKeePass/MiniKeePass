@@ -169,6 +169,7 @@
 					<string>jpg</string>
 					<string>png</string>
 					<string>svg</string>
+					<string>ics</string>
 					<string>txt</string>
 					<string>zip</string>
 				</array>
