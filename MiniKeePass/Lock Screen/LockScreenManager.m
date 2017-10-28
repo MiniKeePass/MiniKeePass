@@ -271,7 +271,10 @@ static LockScreenManager *sharedInstance = nil;
 
 - (void)applicationDidEnterBackground:(NSNotification *)notification {
     AppSettings *appSettings = [AppSettings sharedInstance];
-    [appSettings setExitTime:[NSDate date]];
+    // Only set the exit time if the application is currently unlocked
+    if (lockWindow.isHidden) {
+        [appSettings setExitTime:[NSDate date]];
+    }
     [self.pinViewController showPinKeypad:[appSettings pinEnabled]];
     [lockWindow makeKeyAndVisible];
 }
