@@ -53,6 +53,7 @@ enum {
 @end
 
 static NSString *TextFieldCellIdentifier = @"TextFieldCell";
+static NSString *CustomFieldCellIdentifier = @"CustomFieldCell";
 
 @implementation EntryViewController
 
@@ -61,7 +62,8 @@ static NSString *TextFieldCellIdentifier = @"TextFieldCell";
     self.navigationItem.rightBarButtonItem = self.editButtonItem;
     
     [self.tableView registerNib:[UINib nibWithNibName:@"TextFieldCell" bundle:nil] forCellReuseIdentifier:TextFieldCellIdentifier];
-    
+    [self.tableView registerNib:[UINib nibWithNibName:@"TextFieldCell" bundle:nil] forCellReuseIdentifier:CustomFieldCellIdentifier];
+
     titleCell = [self.tableView dequeueReusableCellWithIdentifier:TextFieldCellIdentifier];
     titleCell.style = TextFieldCellStyleTitle;
     titleCell.title = NSLocalizedString(@"Title", nil);
@@ -109,6 +111,8 @@ static NSString *TextFieldCellIdentifier = @"TextFieldCell";
     _defaultCells = @[titleCell, usernameCell, passwordCell, urlCell];
     
     _editingStringFields = [NSMutableArray array];
+    
+    self.tableView.allowsSelectionDuringEditing = YES;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -403,13 +407,13 @@ static NSString *TextFieldCellIdentifier = @"TextFieldCell";
 
                 return cell;
             } else {
-                TextFieldCell *cell = [tableView dequeueReusableCellWithIdentifier:TextFieldCellIdentifier];
+                TextFieldCell *cell = [tableView dequeueReusableCellWithIdentifier:CustomFieldCellIdentifier];
                 if (cell == nil) {
                     cell = [[TextFieldCell alloc] initWithStyle:UITableViewCellStyleValue2
-                                                reuseIdentifier:TextFieldCellIdentifier];
-                    cell.delegate = self;
-                    cell.textField.returnKeyType = UIReturnKeyDone;
+                                                reuseIdentifier:CustomFieldCellIdentifier];
                 }
+                cell.delegate = self;
+                cell.textField.returnKeyType = UIReturnKeyDone;
 
                 StringField *stringField = [self.currentStringFields objectAtIndex:indexPath.row];
 
