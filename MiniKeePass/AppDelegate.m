@@ -101,6 +101,11 @@
     }
     [fileManager moveItemAtURL:url toURL:[NSURL fileURLWithPath:path] error:nil];
 
+    // Make sure the file is writable.
+    if (![fileManager isWritableFileAtPath:path]) {
+        [fileManager setAttributes:@{NSFilePosixPermissions:@0711} ofItemAtPath:path error:nil];
+    }
+    
     // Set file protection on the new file
     [fileManager setAttributes:@{NSFileProtectionKey:NSFileProtectionComplete} ofItemAtPath:path error:nil];
 
