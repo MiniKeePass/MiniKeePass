@@ -104,11 +104,14 @@
     _style = style;
 
     self.textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+    self.titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+    self.textField.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
 
     switch (style) {
         case TextFieldCellStylePassword: {
             self.textField.secureTextEntry = [[AppSettings sharedInstance] hidePasswords];
-            self.textField.font = [UIFont fontWithName:@"Andale Mono" size:16];
+            CGFloat fontSize = self.textField.font.pointSize;
+            self.textField.font = [UIFont fontWithName:@"Andale Mono" size:fontSize];
             
             UIImage *accessoryImage = [UIImage imageNamed:@"eye"];
             UIImage *editAccessoryImage = [UIImage imageNamed:@"wrench"];

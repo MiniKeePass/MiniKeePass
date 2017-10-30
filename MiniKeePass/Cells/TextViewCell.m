@@ -28,7 +28,7 @@
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         
         textView = [[UITextView alloc] initWithFrame:CGRectZero];
-        textView.font = [UIFont systemFontOfSize:16];
+        textView.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
         textView.delegate = self;
         [self addSubview:textView];
     }

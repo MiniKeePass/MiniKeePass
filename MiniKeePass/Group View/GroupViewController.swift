@@ -64,6 +64,9 @@ class GroupViewController: UITableViewController, UISearchResultsUpdating {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        self.tableView.estimatedRowHeight = 30
+        self.tableView.rowHeight = UITableViewAutomaticDimension
+
         // Add the edit button
         navigationItem.rightBarButtonItems = [self.editButtonItem]
         if #available(iOS 11.0, *) {
