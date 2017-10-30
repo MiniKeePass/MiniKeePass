@@ -164,6 +164,14 @@
 				<key>public.filename-extension</key>
 				<array>
 					<string>key</string>
+					<string>pdf</string>
+					<string>gif</string>
+					<string>jpg</string>
+					<string>png</string>
+					<string>svg</string>
+					<string>ics</string>
+					<string>txt</string>
+					<string>zip</string>
 				</array>
 			</dict>
 		</dict>
