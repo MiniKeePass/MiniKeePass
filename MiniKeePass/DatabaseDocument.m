@@ -17,6 +17,7 @@
 
 #import "DatabaseDocument.h"
 #import "AppSettings.h"
+#import "Kdb4Node.h"
 
 @interface DatabaseDocument ()
 @property (nonatomic, strong) KdbPassword *kdbPassword;

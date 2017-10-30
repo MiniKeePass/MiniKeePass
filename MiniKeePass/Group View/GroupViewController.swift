@@ -324,20 +324,21 @@ class GroupViewController: UITableViewController, UISearchResultsUpdating {
             }
         }
 
+        let appDelegate = AppDelegate.getDelegate()
+        
         // Remove the groups
         for group in groupsToDelete {
             groups.removeObject(group)
-            parentGroup.removeGroup(group)
+            appDelegate?.databaseDocument.kdbTree.remove(group)
         }
 
         // Remove the entries
         for entry in entriesToDelete {
             entries.removeObject(entry)
-            parentGroup.removeEntry(entry)
+            appDelegate?.databaseDocument.kdbTree.remove(entry)
         }
 
         // Save the database
-        let appDelegate = AppDelegate.getDelegate()
         appDelegate?.databaseDocument.save()
 
         // Update the table

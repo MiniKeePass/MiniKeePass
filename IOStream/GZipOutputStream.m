@@ -55,9 +55,11 @@
             }
             
             n = GZIP_OUTPUT_BUFFERSIZE - zstream.avail_out;
-            if ([outputStream write:buffer length:n] != n) {
-                deflateEnd(&zstream);
-                @throw [NSException exceptionWithName:@"IOException" reason:@"Failed to write" userInfo:nil];
+            if (n > 0) {
+                if ([outputStream write:buffer length:n] != n) {
+                    deflateEnd(&zstream);
+                    @throw [NSException exceptionWithName:@"IOException" reason:@"Failed to write" userInfo:nil];
+                }
             }
         } while (zstream.avail_out == 0);
     }

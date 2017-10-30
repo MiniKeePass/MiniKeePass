@@ -36,13 +36,13 @@
     [groups addObject:group];
 }
 
-- (void)removeGroup:(KdbGroup *)group {
+- (void)deleteGroup:(KdbGroup *)group {
     group.parent = nil;
     [groups removeObject:group];
 }
 
 - (void)moveGroup:(KdbGroup *)group toGroup:(KdbGroup *)toGroup {
-    [self removeGroup:group];
+    [self deleteGroup:group];
     [toGroup addGroup:group];
 }
 
@@ -51,13 +51,13 @@
     [entries addObject:entry];
 }
 
-- (void)removeEntry:(KdbEntry *)entry {
+- (void)deleteEntry:(KdbEntry *)entry {
     entry.parent = nil;
     [entries removeObject:entry];
 }
 
 - (void)moveEntry:(KdbEntry *)entry toGroup:(KdbGroup *)toGroup {
-    [self removeEntry:entry];
+    [self deleteEntry:entry];
     [toGroup addEntry:entry];
 }
 
@@ -141,6 +141,27 @@
     return [NSString stringWithFormat:@"KdbEntry [image=%ld, title=%@, username=%@, password=%@, url=%@, notes=%@, creationTime=%@, lastModificationTime=%@, lastAccessTime=%@, expiryTime=%@]", (long)image, self.title, self.username, self.password, self.url, self.notes, creationTime, lastModificationTime, lastAccessTime, expiryTime];
 }
 
+-(BOOL)hasChanged:(KdbEntry *)entry {
+    if (entry == nil) return YES;
+    
+    if (self == entry) return NO;
+    
+    BOOL isEqual;
+    
+    isEqual = entry.image == self.image;
+    isEqual &= [entry.creationTime isEqualToDate:self.creationTime];
+    isEqual &= [entry.expiryTime isEqualToDate:self.expiryTime];
+    
+    // Don't check Modification Time or Access Time.
+
+    return !isEqual;
+}
+
+- (KdbEntry *)deepCopy {
+    [self doesNotRecognizeSelector:_cmd];
+    return nil;
+}
+
 @end
 
 
@@ -148,14 +169,30 @@
 
 @synthesize root;
 
-- (KdbGroup*)createGroup:(KdbGroup*)parent {
+- (KdbGroup *)createGroup:(KdbGroup *)parent {
     [self doesNotRecognizeSelector:_cmd];
     return nil;
 }
 
-- (KdbEntry*)createEntry:(KdbGroup*)parent {
+- (void)removeGroup:(KdbGroup *)group {
+    if (group.parent == nil) {
+        // can't delete root group
+        return;
+    }
+    [group.parent deleteGroup:group];
+}
+
+- (KdbEntry *)createEntry:(KdbGroup *)parent {
     [self doesNotRecognizeSelector:_cmd];
     return nil;
+}
+
+- (void)removeEntry:(KdbEntry *)entry {
+    [entry.parent deleteEntry:entry];
+}
+
+-(void)createEntryBackup:(KdbEntry *)entry backupEntry:(KdbEntry *)backupEntry {
+    [self doesNotRecognizeSelector:_cmd];
 }
 
 @end

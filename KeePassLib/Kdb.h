@@ -43,11 +43,11 @@
 @property(nonatomic, assign) BOOL canAddEntries;
 
 - (void)addGroup:(KdbGroup *)group;
-- (void)removeGroup:(KdbGroup *)group;
+- (void)deleteGroup:(KdbGroup *)group;
 - (void)moveGroup:(KdbGroup *)group toGroup:(KdbGroup *)toGroup;
 
 - (void)addEntry:(KdbEntry *)entry;
-- (void)removeEntry:(KdbEntry *)entry;
+- (void)deleteEntry:(KdbEntry *)entry;
 - (void)moveEntry:(KdbEntry *)entry toGroup:(KdbGroup *)toGroup;
 
 - (BOOL)containsGroup:(KdbGroup*)group;
@@ -84,6 +84,9 @@
 - (NSString *)notes;
 - (void)setNotes:(NSString *)notes;
 
+- (BOOL)hasChanged:(KdbEntry *)entry;
+- (KdbEntry *)deepCopy;
+
 @property(nonatomic, strong) NSDate *creationTime;
 @property(nonatomic, strong) NSDate *lastModificationTime;
 @property(nonatomic, strong) NSDate *lastAccessTime;
@@ -97,7 +100,11 @@
 
 @property(nonatomic, strong) KdbGroup *root;
 
-- (KdbGroup*)createGroup:(KdbGroup*)parent;
-- (KdbEntry*)createEntry:(KdbGroup*)parent;
+- (KdbGroup*)createGroup:(KdbGroup *)parent;
+- (void)removeGroup:(KdbGroup *)group; // Uses recycle bin with Keepass 2.x files
+
+- (KdbEntry*)createEntry:(KdbGroup *)parent;
+- (void)removeEntry:(KdbEntry *)entry; // Uses recycle bin with Keepass 2.x files
+- (void)createEntryBackup:(KdbEntry *)entry backupEntry:(KdbEntry *)backupEntry; // Uses entry history with Keepass 2.x files
 
 @end

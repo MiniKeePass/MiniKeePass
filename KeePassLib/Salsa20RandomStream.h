@@ -8,11 +8,10 @@
 
 #import <Foundation/Foundation.h>
 #import "RandomStream.h"
+#import "BlockCipher.h"
 
 @interface Salsa20RandomStream : RandomStream {
-    uint32_t _state[16];
-    uint32_t _index;
-    uint8_t _keyStream[64];
+    BlockCipher *cipher;
 }
 
 - (id)init;

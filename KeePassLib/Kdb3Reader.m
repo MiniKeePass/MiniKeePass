@@ -8,6 +8,7 @@
 
 #import "Kdb3Reader.h"
 #import "AesInputStream.h"
+#import "TwoFishInputStream.h"
 #import "KdbPassword.h"
 #import "Kdb3Node.h"
 #import "Kdb3Date.h"
@@ -34,6 +35,7 @@
         contentsHash = nil;
         masterSeed2 = nil;
         keyEncRounds = 0;
+        headerFlags = 0;
         headerHash = nil;
         levels = nil;
         groups = nil;
@@ -47,23 +49,29 @@
 
     // Create the final key and initialize the AES input stream
     NSData *key = [kdbPassword createFinalKeyForVersion:3 masterSeed:masterSeed transformSeed:masterSeed2 rounds:keyEncRounds];
-    AesInputStream *aesInputStream = [[AesInputStream alloc] initWithInputStream:inputStream key:key iv:encryptionIv];
-
+    
+    InputStream *decrpytStream;
+    if (headerFlags & FLAG_RIJNDAEL) {
+        decrpytStream = [[AesInputStream alloc] initWithInputStream:inputStream key:key iv:encryptionIv];
+    } else if (headerFlags & FLAG_TWOFISH) {
+        decrpytStream = [[TwoFishInputStream alloc] initWithInputStream:inputStream key:key iv:encryptionIv];
+    }
+    
     levels = [[NSMutableArray alloc] initWithCapacity:numGroups];
     groups = [[NSMutableArray alloc] initWithCapacity:numGroups];
     entries = [[NSMutableArray alloc] initWithCapacity:numEntries];
 
     @try {
         // Parse groups
-        [self readGroups:aesInputStream];
+        [self readGroups:decrpytStream];
 
         // Parse entries
-        [self readEntries:aesInputStream];
+        [self readEntries:decrpytStream];
 
         // Build the tree
         return [self buildTree];
     } @finally {
-        aesInputStream = nil;
+        decrpytStream = nil;
     }
 
     return nil;
@@ -92,7 +100,8 @@
 
     // Check the encryption algorithm
     header.flags = CFSwapInt32LittleToHost(header.flags);
-    if (!(header.flags & FLAG_RIJNDAEL)) {
+    headerFlags = header.flags;
+    if (!(header.flags & FLAG_RIJNDAEL) && !(header.flags & FLAG_TWOFISH)) {
         @throw [NSException exceptionWithName:@"IOException" reason:@"Unsupported algorithm" userInfo:nil];
     }
 
@@ -236,7 +245,7 @@
                     if ([inputStream read:buffer length:fieldSize] != fieldSize) {
                         @throw [NSException exceptionWithName:@"IOException" reason:@"Failed to read UUID" userInfo:nil];
                     }
-                    entry.uuid = [[UUID alloc] initWithBytes:buffer];
+                    entry.uuid = [[KdbUUID alloc] initWithBytes:buffer];
                     break;
 
                 case 0x0002:
@@ -392,6 +401,7 @@
 
     Kdb3Tree *tree = [[Kdb3Tree alloc] init];
     tree.rounds = keyEncRounds;
+    tree.flags = headerFlags;
 
     Kdb3Group *root = [[Kdb3Group alloc] init];
     root.name = @"$ROOT$";

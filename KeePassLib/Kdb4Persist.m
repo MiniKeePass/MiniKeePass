@@ -19,6 +19,7 @@
 #import "Base64.h"
 #import "DDXML.h"
 #import "DDXMLElementAdditions.h"
+#import "Utils.h"
 
 @interface Kdb4Persist (PrivateMethods)
 - (DDXMLDocument *)persistTree;
@@ -29,10 +30,11 @@
 - (DDXMLElement *)persistStringField:(StringField *)stringField;
 - (DDXMLElement *)persistBinaryRef:(BinaryRef *)binaryRef;
 - (DDXMLElement *)persistAutoType:(AutoType *)autoType;
-- (NSString *)persistUuid:(UUID *)uuid;
+- (NSString *)persistUuid:(KdbUUID *)uuid;
 - (NSString *)persistBase64Data:(NSData *)data;
 - (DDXMLElement *)persistDeletedObject:(DeletedObject *)deletedObject;
 - (void)encodeProtected:(DDXMLElement*)root;
+- (NSString *)encodeDateTime:(NSDate *)date;
 @end
 
 @implementation Kdb4Persist
@@ -47,6 +49,7 @@
         dateFormatter = [[NSDateFormatter alloc] init];
         dateFormatter.timeZone = [NSTimeZone timeZoneWithName:@"GMT"];
         dateFormatter.dateFormat = @"yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'";
+        Kdbx4ReferenceDate = [dateFormatter dateFromString:@"0001-01-01T00:00:00Z"];
     }
     return self;
 }
@@ -70,26 +73,28 @@
     element = [DDXMLNode elementWithName:@"Meta"];
     [element addChild:[DDXMLNode elementWithName:@"Generator"
                                      stringValue:tree.generator]];
-    [element addChild:[DDXMLNode elementWithName:@"HeaderHash"
+    if (tree.dbVersion < KDBX40_VERSION) {
+        [element addChild:[DDXMLNode elementWithName:@"HeaderHash"
                                     stringValue:[self persistBase64Data:tree.headerHash]]];
+    }
     [element addChild:[DDXMLNode elementWithName:@"DatabaseName"
                                      stringValue:tree.databaseName]];
     [element addChild:[DDXMLNode elementWithName:@"DatabaseNameChanged"
-                                     stringValue:[dateFormatter stringFromDate:tree.databaseNameChanged]]];
+                                     stringValue:[self encodeDateTime:tree.databaseNameChanged]]];
     [element addChild:[DDXMLNode elementWithName:@"DatabaseDescription"
                                      stringValue:tree.databaseDescription]];
     [element addChild:[DDXMLNode elementWithName:@"DatabaseDescriptionChanged"
-                                     stringValue:[dateFormatter stringFromDate:tree.databaseDescriptionChanged]]];
+                                     stringValue:[self encodeDateTime:tree.databaseDescriptionChanged]]];
     [element addChild:[DDXMLNode elementWithName:@"DefaultUserName"
                                      stringValue:tree.defaultUserName]];
     [element addChild:[DDXMLNode elementWithName:@"DefaultUserNameChanged"
-                                     stringValue:[dateFormatter stringFromDate:tree.defaultUserNameChanged]]];
+                                     stringValue:[self encodeDateTime:tree.defaultUserNameChanged]]];
     [element addChild:[DDXMLNode elementWithName:@"MaintenanceHistoryDays"
                                      stringValue:[NSString stringWithFormat:@"%ld", (long)tree.maintenanceHistoryDays]]];
     [element addChild:[DDXMLNode elementWithName:@"Color"
                                      stringValue:tree.color]];
     [element addChild:[DDXMLNode elementWithName:@"MasterKeyChanged"
-                                     stringValue:[dateFormatter stringFromDate:tree.masterKeyChanged]]];
+                                     stringValue:[self encodeDateTime:tree.masterKeyChanged]]];
     [element addChild:[DDXMLNode elementWithName:@"MasterKeyChangeRec"
                                      stringValue:[NSString stringWithFormat:@"%ld", (long)tree.masterKeyChangeRec]]];
     [element addChild:[DDXMLNode elementWithName:@"MasterKeyChangeForce"
@@ -121,11 +126,11 @@
     [element addChild:[DDXMLNode elementWithName:@"RecycleBinUUID"
                                      stringValue:[self persistUuid:tree.recycleBinUuid]]];
     [element addChild:[DDXMLNode elementWithName:@"RecycleBinChanged"
-                                     stringValue:[dateFormatter stringFromDate:tree.recycleBinChanged]]];
+                                     stringValue:[self encodeDateTime:tree.recycleBinChanged]]];
     [element addChild:[DDXMLNode elementWithName:@"EntryTemplatesGroup"
                                      stringValue:[self persistUuid:tree.entryTemplatesGroup]]];
     [element addChild:[DDXMLNode elementWithName:@"EntryTemplatesGroupChanged"
-                                     stringValue:[dateFormatter stringFromDate:tree.entryTemplatesGroupChanged]]];
+                                     stringValue:[self encodeDateTime:tree.entryTemplatesGroupChanged]]];
     [element addChild:[DDXMLNode elementWithName:@"HistoryMaxItems"
                                      stringValue:[NSString stringWithFormat:@"%ld", (long)tree.historyMaxItems]]];
     [element addChild:[DDXMLNode elementWithName:@"HistoryMaxSize"
@@ -213,19 +218,19 @@
     // Add the Times element
     DDXMLElement *timesElement = [DDXMLNode elementWithName:@"Times"];
     [timesElement addChild:[DDXMLNode elementWithName:@"LastModificationTime"
-                                          stringValue:[dateFormatter stringFromDate:group.lastModificationTime]]];
+                                          stringValue:[self encodeDateTime:group.lastModificationTime]]];
     [timesElement addChild:[DDXMLNode elementWithName:@"CreationTime"
-                                          stringValue:[dateFormatter stringFromDate:group.creationTime]]];
+                                          stringValue:[self encodeDateTime:group.creationTime]]];
     [timesElement addChild:[DDXMLNode elementWithName:@"LastAccessTime"
-                                          stringValue:[dateFormatter stringFromDate:group.lastAccessTime]]];
+                                          stringValue:[self encodeDateTime:group.lastAccessTime]]];
     [timesElement addChild:[DDXMLNode elementWithName:@"ExpiryTime"
-                                          stringValue:[dateFormatter stringFromDate:group.expiryTime]]];
+                                          stringValue:[self encodeDateTime:group.expiryTime]]];
     [timesElement addChild:[DDXMLNode elementWithName:@"Expires"
                                           stringValue:group.expires ? @"True" : @"False"]];
     [timesElement addChild:[DDXMLNode elementWithName:@"UsageCount"
                                           stringValue:[NSString stringWithFormat:@"%ld", (long)group.usageCount]]];
     [timesElement addChild:[DDXMLNode elementWithName:@"LocationChanged"
-                                          stringValue:[dateFormatter stringFromDate:group.locationChanged]]];
+                                          stringValue:[self encodeDateTime:group.locationChanged]]];
     [root addChild:timesElement];
 
     // Add the additional properties
@@ -239,6 +244,12 @@
                                   stringValue:group.enableSearching]];
     [root addChild:[DDXMLNode elementWithName:@"LastTopVisibleEntry"
                                   stringValue:[self persistUuid:group.lastTopVisibleEntry]]];
+
+    DDXMLElement *customDataElements = [DDXMLNode elementWithName:@"CustomData"];
+    for (CustomItem *customItem in group.customData) {
+        [customDataElements addChild:[self persistCustomItem:customItem]];
+    }
+    [root addChild:customDataElements];
 
     for (Kdb4Entry *entry in group.entries) {
         [root addChild:[self persistEntry:entry includeHistory:YES]];
@@ -275,27 +286,32 @@
     // Add the Times element
     DDXMLElement *timesElement = [DDXMLNode elementWithName:@"Times"];
     [timesElement addChild:[DDXMLNode elementWithName:@"LastModificationTime"
-                                          stringValue:[dateFormatter stringFromDate:entry.lastModificationTime]]];
+                                          stringValue:[self encodeDateTime:entry.lastModificationTime]]];
     [timesElement addChild:[DDXMLNode elementWithName:@"CreationTime"
-                                          stringValue:[dateFormatter stringFromDate:entry.creationTime]]];
+                                          stringValue:[self encodeDateTime:entry.creationTime]]];
     [timesElement addChild:[DDXMLNode elementWithName:@"LastAccessTime"
-                                          stringValue:[dateFormatter stringFromDate:entry.lastAccessTime]]];
+                                          stringValue:[self encodeDateTime:entry.lastAccessTime]]];
     [timesElement addChild:[DDXMLNode elementWithName:@"ExpiryTime"
-                                          stringValue:[dateFormatter stringFromDate:entry.expiryTime]]];
+                                          stringValue:[self encodeDateTime:entry.expiryTime]]];
     [timesElement addChild:[DDXMLNode elementWithName:@"Expires"
                                           stringValue:entry.expires ? @"True" : @"False"]];
     [timesElement addChild:[DDXMLNode elementWithName:@"UsageCount"
                                           stringValue:[NSString stringWithFormat:@"%ld", (long)entry.usageCount]]];
     [timesElement addChild:[DDXMLNode elementWithName:@"LocationChanged"
-                                          stringValue:[dateFormatter stringFromDate:entry.locationChanged]]];
+                                          stringValue:[self encodeDateTime:entry.locationChanged]]];
     [root addChild:timesElement];
 
     // Add the standard string fields
-    [root addChild:[self persistStringField:entry.titleStringField]];
-    [root addChild:[self persistStringField:entry.usernameStringField]];
-    [root addChild:[self persistStringField:entry.passwordStringField]];
-    [root addChild:[self persistStringField:entry.urlStringField]];
-    [root addChild:[self persistStringField:entry.notesStringField]];
+    if (entry.titleStringField != nil)
+        [root addChild:[self persistStringField:entry.titleStringField]];
+    if (entry.usernameStringField != nil)
+        [root addChild:[self persistStringField:entry.usernameStringField]];
+    if (entry.passwordStringField != nil)
+        [root addChild:[self persistStringField:entry.passwordStringField]];
+    if (entry.urlStringField != nil)
+        [root addChild:[self persistStringField:entry.urlStringField]];
+    if (entry.notesStringField != nil)
+        [root addChild:[self persistStringField:entry.notesStringField]];
 
     // Add the string fields
     for (StringField *stringField in entry.stringFields) {
@@ -303,8 +319,8 @@
     }
 
     // Add the binary references
-    for (BinaryRef *binaryRef in entry.binaries) {
-        [root addChild:[self persistBinaryRef:binaryRef]];
+    for (NSString *key in entry.binaryDict) {
+        [root addChild:[self persistBinaryRef:entry.binaryDict[key]]];
     }
 
     // Add the auto-type
@@ -318,6 +334,12 @@
         }
         [root addChild:historyElement];
     }
+
+    DDXMLElement *customDataElements = [DDXMLElement elementWithName:@"CustomData"];
+    for (CustomItem *customItem in entry.customData) {
+        [customDataElements addChild:[self persistCustomItem:customItem]];
+    }
+    [root addChild:customDataElements];
 
     return root;
 }
@@ -342,7 +364,7 @@
     [root addChild:[DDXMLElement elementWithName:@"Key" stringValue:binaryRef.key]];
 
     DDXMLElement *element = [DDXMLElement elementWithName:@"Value"];
-    [element addAttributeWithName:@"Ref" stringValue:[NSString stringWithFormat:@"%ld", (long)binaryRef.ref]];
+    [element addAttributeWithName:@"Ref" stringValue:[NSString stringWithFormat:@"%ld", (long)binaryRef.index]];
     [root addChild:element];
 
     return root;
@@ -373,7 +395,7 @@
     return root;
 }
 
-- (NSString *)persistUuid:(UUID *)uuid {
+- (NSString *)persistUuid:(KdbUUID *)uuid {
     NSData *data = [uuid getData];
     return [self persistBase64Data:data];
 }
@@ -389,11 +411,21 @@
     [element addChild:[DDXMLElement elementWithName:@"UUID"
                                         stringValue:[self persistUuid:deletedObject.uuid]]];
     [element addChild:[DDXMLElement elementWithName:@"DeletionTime"
-                                        stringValue:[dateFormatter stringFromDate:deletedObject.deletionTime]]];
+                                        stringValue:[self encodeDateTime:deletedObject.deletionTime]]];
 
     return element;
 }
 
+- (NSString *)encodeDateTime:(NSDate *)date {
+    
+    if (tree.dbVersion >= KDBX40_VERSION) {
+        uint64_t lSec = (uint64_t)[date timeIntervalSinceDate:Kdbx4ReferenceDate];
+        NSData *secBytes = [Utils getUInt64Bytes:lSec];
+        return [self persistBase64Data:secBytes];
+    } else {
+        return [dateFormatter stringFromDate:date];
+    }
+}
 
 - (void)encodeProtected:(DDXMLElement*)root {
     DDXMLNode *protectedAttribute = [root attributeForName:@"Protected"];
@@ -401,7 +433,7 @@
         NSString *str = [root stringValue];
         NSMutableData *mutableData = [[str dataUsingEncoding:NSUTF8StringEncoding] mutableCopy];
 
-        // Unprotect the password
+        // Protect the password
         [randomStream xor:mutableData];
 
         // Base64 encode the string

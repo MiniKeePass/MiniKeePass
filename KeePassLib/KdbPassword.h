@@ -7,6 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "VariantDictionary.h"
+#import "UUID.h"
 
 @interface KdbPassword : NSObject
 
@@ -19,4 +21,12 @@
                       transformSeed:(NSData*)transformSeed
                              rounds:(uint64_t)rounds;
 
+- (NSData*)createFinalKeyKDBX4:(VariantDictionary *)kdfparams
+                    masterSeed:(uint8_t*)masterSeed
+                     HmacKey64:(uint8_t*)hmackey64;
+
++ (VariantDictionary *) getDefaultKDFParameters:(KdbUUID*)uuid;
++ (void)checkKDFParameters:(VariantDictionary *)kdf;
+
 @end
+

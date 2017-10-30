@@ -50,9 +50,15 @@
     if (cs != kCCSuccess) {
         @throw [NSException exceptionWithName:@"EncryptError" reason:@"Failed to encrypt" userInfo:nil];
     }
+
+    if (n > 0) {
+        // Write the encrypted data
+        if ([outputStream write:buffer length:n] != n) {
+            @throw [NSException exceptionWithName:@"IOException" reason:@"Failed to write" userInfo:nil];
+        }
+    }
     
-    // Write the encrypted data
-    return [outputStream write:buffer length:n];
+    return bytesLength;
 }
 
 - (void)close {

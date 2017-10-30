@@ -133,6 +133,21 @@
 		68E08316146F2749001C4EDF /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 68E08314146F2749001C4EDF /* InfoPlist.strings */; };
 		68EA62DB1CC972F300B33E42 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 68EA62DA1CC972F300B33E42 /* LaunchScreen.storyboard */; };
 		68EBC2D61613394D00E8E799 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68EBC2D51613394D00E8E799 /* QuartzCore.framework */; };
+		7815DF111EEE03B900A37CC4 /* VariantDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = 7815DF101EEE03B900A37CC4 /* VariantDictionary.m */; };
+		784017AA1EEA72B600110DDB /* BlockCipher.m in Sources */ = {isa = PBXBuildFile; fileRef = 784017A31EEA72B600110DDB /* BlockCipher.m */; };
+		784017AB1EEA72B600110DDB /* ChaCha20Cipher.m in Sources */ = {isa = PBXBuildFile; fileRef = 784017A51EEA72B600110DDB /* ChaCha20Cipher.m */; };
+		784017AC1EEA72B600110DDB /* Salsa20Cipher.m in Sources */ = {isa = PBXBuildFile; fileRef = 784017A71EEA72B600110DDB /* Salsa20Cipher.m */; };
+		784017AD1EEA72B600110DDB /* TwoFishCipher.m in Sources */ = {isa = PBXBuildFile; fileRef = 784017A91EEA72B600110DDB /* TwoFishCipher.m */; };
+		784017B51EEA72D300110DDB /* ChaCha20InputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 784017B01EEA72D300110DDB /* ChaCha20InputStream.m */; };
+		784017B61EEA72D300110DDB /* ChaCha20OutputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 784017B21EEA72D300110DDB /* ChaCha20OutputStream.m */; };
+		784017B71EEA72D300110DDB /* CipherStreamFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 784017B41EEA72D300110DDB /* CipherStreamFactory.m */; };
+		784017BC1EEA72ED00110DDB /* HmacInputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 784017B91EEA72ED00110DDB /* HmacInputStream.m */; };
+		784017BD1EEA72ED00110DDB /* HmacOutputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 784017BB1EEA72ED00110DDB /* HmacOutputStream.m */; };
+		784017C21EEA72FF00110DDB /* TwoFishInputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 784017BF1EEA72FF00110DDB /* TwoFishInputStream.m */; };
+		784017C31EEA72FF00110DDB /* TwoFishOutputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 784017C11EEA72FF00110DDB /* TwoFishOutputStream.m */; };
+		784017C61EEA732000110DDB /* ChaCha20RandomStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 784017C51EEA732000110DDB /* ChaCha20RandomStream.m */; };
+		784017CD1EEA754800110DDB /* argon2iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 784017CC1EEA753600110DDB /* argon2iOS.framework */; };
+		784017CE1EEA754800110DDB /* argon2iOS.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 784017CC1EEA753600110DDB /* argon2iOS.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -143,7 +158,35 @@
 			remoteGlobalIDString = D286A7491518C70F00E13FB8;
 			remoteInfo = MBProgressHUD;
 		};
+		784017CB1EEA753600110DDB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 784017C71EEA753600110DDB /* argon2iOS.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 78F8028B1E8EE2A50039625E;
+			remoteInfo = argon2iOS;
+		};
+		784017CF1EEA754800110DDB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 784017C71EEA753600110DDB /* argon2iOS.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 78F8028A1E8EE2A50039625E;
+			remoteInfo = argon2iOS;
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		784017D11EEA754800110DDB /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				784017CE1EEA754800110DDB /* argon2iOS.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		4E8C168E16B3E871004195A1 /* fr-createdb.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "fr-createdb.html"; sourceTree = "<group>"; };
@@ -359,6 +402,33 @@
 		68E0831C146F2D37001C4EDF /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		68EA62DA1CC972F300B33E42 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		68EBC2D51613394D00E8E799 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		7815DF0F1EEE03B900A37CC4 /* VariantDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VariantDictionary.h; sourceTree = "<group>"; };
+		7815DF101EEE03B900A37CC4 /* VariantDictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VariantDictionary.m; sourceTree = "<group>"; };
+		784017A21EEA72B600110DDB /* BlockCipher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlockCipher.h; sourceTree = "<group>"; };
+		784017A31EEA72B600110DDB /* BlockCipher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlockCipher.m; sourceTree = "<group>"; };
+		784017A41EEA72B600110DDB /* ChaCha20Cipher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChaCha20Cipher.h; sourceTree = "<group>"; };
+		784017A51EEA72B600110DDB /* ChaCha20Cipher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChaCha20Cipher.m; sourceTree = "<group>"; };
+		784017A61EEA72B600110DDB /* Salsa20Cipher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Salsa20Cipher.h; sourceTree = "<group>"; };
+		784017A71EEA72B600110DDB /* Salsa20Cipher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Salsa20Cipher.m; sourceTree = "<group>"; };
+		784017A81EEA72B600110DDB /* TwoFishCipher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwoFishCipher.h; sourceTree = "<group>"; };
+		784017A91EEA72B600110DDB /* TwoFishCipher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwoFishCipher.m; sourceTree = "<group>"; };
+		784017AF1EEA72D300110DDB /* ChaCha20InputStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChaCha20InputStream.h; sourceTree = "<group>"; };
+		784017B01EEA72D300110DDB /* ChaCha20InputStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChaCha20InputStream.m; sourceTree = "<group>"; };
+		784017B11EEA72D300110DDB /* ChaCha20OutputStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChaCha20OutputStream.h; sourceTree = "<group>"; };
+		784017B21EEA72D300110DDB /* ChaCha20OutputStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChaCha20OutputStream.m; sourceTree = "<group>"; };
+		784017B31EEA72D300110DDB /* CipherStreamFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CipherStreamFactory.h; sourceTree = "<group>"; };
+		784017B41EEA72D300110DDB /* CipherStreamFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CipherStreamFactory.m; sourceTree = "<group>"; };
+		784017B81EEA72ED00110DDB /* HmacInputStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HmacInputStream.h; sourceTree = "<group>"; };
+		784017B91EEA72ED00110DDB /* HmacInputStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HmacInputStream.m; sourceTree = "<group>"; };
+		784017BA1EEA72ED00110DDB /* HmacOutputStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HmacOutputStream.h; sourceTree = "<group>"; };
+		784017BB1EEA72ED00110DDB /* HmacOutputStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HmacOutputStream.m; sourceTree = "<group>"; };
+		784017BE1EEA72FF00110DDB /* TwoFishInputStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwoFishInputStream.h; sourceTree = "<group>"; };
+		784017BF1EEA72FF00110DDB /* TwoFishInputStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwoFishInputStream.m; sourceTree = "<group>"; };
+		784017C01EEA72FF00110DDB /* TwoFishOutputStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwoFishOutputStream.h; sourceTree = "<group>"; };
+		784017C11EEA72FF00110DDB /* TwoFishOutputStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwoFishOutputStream.m; sourceTree = "<group>"; };
+		784017C41EEA732000110DDB /* ChaCha20RandomStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChaCha20RandomStream.h; sourceTree = "<group>"; };
+		784017C51EEA732000110DDB /* ChaCha20RandomStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChaCha20RandomStream.m; sourceTree = "<group>"; };
+		784017C71EEA753600110DDB /* argon2iOS.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = argon2iOS.xcodeproj; sourceTree = "<group>"; };
 		BDB0FF5D194C7C6F00C44DEF /* nl */ = {isa = PBXFileReference; lastKnownFileType = text; name = nl; path = nl.lproj/AppStore.txt; sourceTree = "<group>"; };
 		BDB0FF5E194C7C6F00C44DEF /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		BDB0FF5F194C7C6F00C44DEF /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -383,6 +453,7 @@
 				689D000F13A42777005EBD36 /* Security.framework in Frameworks */,
 				689DFFDA13A4273F005EBD36 /* UIKit.framework in Frameworks */,
 				689D001113A4277E005EBD36 /* libxml2.dylib in Frameworks */,
+				784017CD1EEA754800110DDB /* argon2iOS.framework in Frameworks */,
 				689D001313A42784005EBD36 /* libz.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -462,6 +533,12 @@
 				682D44F41603883900156830 /* AesOutputStream.m */,
 				682D44F51603883900156830 /* Arc4RandomStream.h */,
 				682D44F61603883900156830 /* Arc4RandomStream.m */,
+				784017AF1EEA72D300110DDB /* ChaCha20InputStream.h */,
+				784017B01EEA72D300110DDB /* ChaCha20InputStream.m */,
+				784017B11EEA72D300110DDB /* ChaCha20OutputStream.h */,
+				784017B21EEA72D300110DDB /* ChaCha20OutputStream.m */,
+				784017B31EEA72D300110DDB /* CipherStreamFactory.h */,
+				784017B41EEA72D300110DDB /* CipherStreamFactory.m */,
 				682D44F71603883900156830 /* DataInputStream.h */,
 				682D44F81603883900156830 /* DataInputStream.m */,
 				682D44F91603883900156830 /* DataOutputStream.h */,
@@ -478,12 +555,20 @@
 				682D45041603883900156830 /* HashedInputStream.m */,
 				682D45051603883900156830 /* HashedOutputStream.h */,
 				682D45061603883900156830 /* HashedOutputStream.m */,
+				784017B81EEA72ED00110DDB /* HmacInputStream.h */,
+				784017B91EEA72ED00110DDB /* HmacInputStream.m */,
+				784017BA1EEA72ED00110DDB /* HmacOutputStream.h */,
+				784017BB1EEA72ED00110DDB /* HmacOutputStream.m */,
 				682D45071603883900156830 /* InputStream.h */,
 				682D45081603883900156830 /* InputStream.m */,
 				682D45091603883900156830 /* OutputStream.h */,
 				682D450A1603883900156830 /* OutputStream.m */,
 				682D450B1603883900156830 /* Sha256OutputStream.h */,
 				682D450C1603883900156830 /* Sha256OutputStream.m */,
+				784017BE1EEA72FF00110DDB /* TwoFishInputStream.h */,
+				784017BF1EEA72FF00110DDB /* TwoFishInputStream.m */,
+				784017C01EEA72FF00110DDB /* TwoFishOutputStream.h */,
+				784017C11EEA72FF00110DDB /* TwoFishOutputStream.m */,
 			);
 			path = IOStream;
 			sourceTree = "<group>";
@@ -552,8 +637,11 @@
 		689D02B013A42B63005EBD36 /* KeePassLib */ = {
 			isa = PBXGroup;
 			children = (
+				784017A11EEA72B600110DDB /* Crypto */,
 				689D02B713A42B63005EBD36 /* Base64.h */,
 				689D02B813A42B63005EBD36 /* Base64.m */,
+				784017C41EEA732000110DDB /* ChaCha20RandomStream.h */,
+				784017C51EEA732000110DDB /* ChaCha20RandomStream.m */,
 				680C277416050C7A009403DE /* DDXMLDocument+MKPAdditions.h */,
 				680C277516050C7A009403DE /* DDXMLDocument+MKPAdditions.m */,
 				689D02C713A42B63005EBD36 /* Kdb.h */,
@@ -595,6 +683,8 @@
 				689D02F013A42B63005EBD36 /* Utils.m */,
 				689D02F113A42B63005EBD36 /* UUID.h */,
 				689D02F213A42B63005EBD36 /* UUID.m */,
+				7815DF0F1EEE03B900A37CC4 /* VariantDictionary.h */,
+				7815DF101EEE03B900A37CC4 /* VariantDictionary.m */,
 			);
 			path = KeePassLib;
 			sourceTree = "<group>";
@@ -664,6 +754,7 @@
 				689DFFD813A4273F005EBD36 /* Frameworks */,
 				689D041413A42B85005EBD36 /* Resources */,
 				689DFFD613A4273F005EBD36 /* Products */,
+				784017C71EEA753600110DDB /* argon2iOS.xcodeproj */,
 				526D9FA3167CDC010097213E /* MBProgressHUD.xcodeproj */,
 			);
 			sourceTree = "<group>";
@@ -862,6 +953,29 @@
 			path = "Move Items View";
 			sourceTree = "<group>";
 		};
+		784017A11EEA72B600110DDB /* Crypto */ = {
+			isa = PBXGroup;
+			children = (
+				784017A21EEA72B600110DDB /* BlockCipher.h */,
+				784017A31EEA72B600110DDB /* BlockCipher.m */,
+				784017A41EEA72B600110DDB /* ChaCha20Cipher.h */,
+				784017A51EEA72B600110DDB /* ChaCha20Cipher.m */,
+				784017A61EEA72B600110DDB /* Salsa20Cipher.h */,
+				784017A71EEA72B600110DDB /* Salsa20Cipher.m */,
+				784017A81EEA72B600110DDB /* TwoFishCipher.h */,
+				784017A91EEA72B600110DDB /* TwoFishCipher.m */,
+			);
+			path = Crypto;
+			sourceTree = "<group>";
+		};
+		784017C81EEA753600110DDB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				784017CC1EEA753600110DDB /* argon2iOS.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -873,10 +987,12 @@
 				689DFFD213A4273F005EBD36 /* Frameworks */,
 				68C17C9C1A3E1774008DD56B /* Increment Build Number */,
 				689DFFD313A4273F005EBD36 /* Resources */,
+				784017D11EEA754800110DDB /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				784017D01EEA754800110DDB /* PBXTargetDependency */,
 			);
 			name = MiniKeePass;
 			productName = MiniKeePass;
@@ -893,9 +1009,9 @@
 				ORGANIZATIONNAME = Self;
 				TargetAttributes = {
 					689DFFD413A4273F005EBD36 = {
-						DevelopmentTeam = G9ZT7943FZ;
+						DevelopmentTeam = MGD4WTF6BR;
 						LastSwiftMigration = 0900;
-						ProvisioningStyle = Manual;
+						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.iCloud = {
 								enabled = 0;
@@ -926,6 +1042,10 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
+					ProductGroup = 784017C81EEA753600110DDB /* Products */;
+					ProjectRef = 784017C71EEA753600110DDB /* argon2iOS.xcodeproj */;
+				},
+				{
 					ProductGroup = 526D9FA4167CDC010097213E /* Products */;
 					ProjectRef = 526D9FA3167CDC010097213E /* MBProgressHUD.xcodeproj */;
 				},
@@ -943,6 +1063,13 @@
 			fileType = archive.ar;
 			path = libMBProgressHUD.a;
 			remoteRef = 526D9FAA167CDC010097213E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		784017CC1EEA753600110DDB /* argon2iOS.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = argon2iOS.framework;
+			remoteRef = 784017CB1EEA753600110DDB /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -1021,9 +1148,11 @@
 				689DFFE713A4273F005EBD36 /* main.m in Sources */,
 				689D03CD13A42B63005EBD36 /* Base64.m in Sources */,
 				689FBE781AB27228005CB6BD /* KeychainUtils.m in Sources */,
+				784017B61EEA72D300110DDB /* ChaCha20OutputStream.m in Sources */,
 				689FBE681AB271C6005CB6BD /* PinViewController.m in Sources */,
 				689D03D513A42B63005EBD36 /* Kdb.m in Sources */,
 				689FBE661AB271C6005CB6BD /* LockScreenManager.m in Sources */,
+				784017B71EEA72D300110DDB /* CipherStreamFactory.m in Sources */,
 				6895D2F41D68FE00003D8C44 /* CustomFieldViewController.swift in Sources */,
 				689EA6811D67F8D500CF445E /* NewDatabaseViewController.swift in Sources */,
 				689D03D613A42B63005EBD36 /* Kdb3Date.m in Sources */,
@@ -1035,10 +1164,13 @@
 				689D03DD13A42B63005EBD36 /* Kdb4Parser.m in Sources */,
 				689EA68E1D67F93200CF445E /* RenameDatabaseViewController.swift in Sources */,
 				689D03DE13A42B63005EBD36 /* Kdb4Persist.m in Sources */,
+				784017C31EEA72FF00110DDB /* TwoFishOutputStream.m in Sources */,
 				689D03DF13A42B63005EBD36 /* Kdb4Reader.m in Sources */,
 				689D03E013A42B63005EBD36 /* Kdb4Writer.m in Sources */,
+				784017BC1EEA72ED00110DDB /* HmacInputStream.m in Sources */,
 				689D03E113A42B63005EBD36 /* KdbPassword.m in Sources */,
 				689EA6781D67F8B500CF445E /* CheckMark.swift in Sources */,
+				7815DF111EEE03B900A37CC4 /* VariantDictionary.m in Sources */,
 				689D03E213A42B63005EBD36 /* KdbReaderFactory.m in Sources */,
 				689FBE991AB272BD005CB6BD /* ImageFactory.m in Sources */,
 				689EA6931D67F94600CF445E /* SelectionViewController.swift in Sources */,
@@ -1046,7 +1178,10 @@
 				6895D2EA1D68F95D003D8C44 /* RenameItemViewController.swift in Sources */,
 				689D03E313A42B63005EBD36 /* KdbWriterFactory.m in Sources */,
 				689D03E513A42B63005EBD36 /* Salsa20RandomStream.m in Sources */,
+				784017AB1EEA72B600110DDB /* ChaCha20Cipher.m in Sources */,
+				784017C61EEA732000110DDB /* ChaCha20RandomStream.m in Sources */,
 				689D03E713A42B63005EBD36 /* Utils.m in Sources */,
+				784017AA1EEA72B600110DDB /* BlockCipher.m in Sources */,
 				689D03E813A42B63005EBD36 /* UUID.m in Sources */,
 				689EA6951D67F94600CF445E /* SettingsViewController.swift in Sources */,
 				689EA67B1D67F8B500CF445E /* ImageSelectorViewController.swift in Sources */,
@@ -1057,15 +1192,18 @@
 				689D03EB13A42B63005EBD36 /* DDXMLDocument.m in Sources */,
 				689D03EC13A42B63005EBD36 /* DDXMLElement.m in Sources */,
 				689D03ED13A42B63005EBD36 /* DDXMLNode.m in Sources */,
+				784017B51EEA72D300110DDB /* ChaCha20InputStream.m in Sources */,
 				689D044F13A42C82005EBD36 /* DatabaseDocument.m in Sources */,
 				68BFDBE71D7646B400EFACB3 /* MoveItemsViewController.swift in Sources */,
 				689D045013A42C82005EBD36 /* DatabaseManager.m in Sources */,
 				68767B651D6F23350039EFE0 /* FilesViewController.swift in Sources */,
+				784017C21EEA72FF00110DDB /* TwoFishInputStream.m in Sources */,
 				689D045113A42C82005EBD36 /* EntryViewController.m in Sources */,
 				680C9D7C1D69EB540040FB43 /* HelpWebViewController.swift in Sources */,
 				68A7F3951D76708000467354 /* GroupViewController.swift in Sources */,
 				680C9D771D69E2A70040FB43 /* HelpViewController.swift in Sources */,
 				689D045513A42C82005EBD36 /* AppDelegate.m in Sources */,
+				784017AC1EEA72B600110DDB /* Salsa20Cipher.m in Sources */,
 				689FBE791AB27228005CB6BD /* PasswordUtils.m in Sources */,
 				689EA6701D67F88500CF445E /* KeyFileViewController.swift in Sources */,
 				689FBE641AB271C6005CB6BD /* KeypadButton.m in Sources */,
@@ -1079,6 +1217,7 @@
 				682D45131603883900156830 /* FileOutputStream.m in Sources */,
 				682D45141603883900156830 /* GZipInputStream.m in Sources */,
 				68BFDBE51D7646B400EFACB3 /* GroupCell.swift in Sources */,
+				784017AD1EEA72B600110DDB /* TwoFishCipher.m in Sources */,
 				682D45151603883900156830 /* GZipOutputStream.m in Sources */,
 				682D45161603883900156830 /* HashedInputStream.m in Sources */,
 				682D45171603883900156830 /* HashedOutputStream.m in Sources */,
@@ -1091,6 +1230,7 @@
 				689EA6871D67F90800CF445E /* CharacterSetsViewController.swift in Sources */,
 				680C277616050C7A009403DE /* DDXMLDocument+MKPAdditions.m in Sources */,
 				689FBE8F1AB27283005CB6BD /* ImageButtonCell.m in Sources */,
+				784017BD1EEA72ED00110DDB /* HmacOutputStream.m in Sources */,
 				689FBE651AB271C6005CB6BD /* KeypadView.m in Sources */,
 				689EA6891D67F90800CF445E /* PasswordGeneratorViewController.swift in Sources */,
 				689FBE941AB27283005CB6BD /* TextViewCell.m in Sources */,
@@ -1099,6 +1239,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		784017D01EEA754800110DDB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = argon2iOS;
+			targetProxy = 784017CF1EEA754800110DDB /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		687AAA991889F8B400AB8AC5 /* AppStore.txt */ = {
@@ -1268,16 +1416,16 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = G9ZT7943FZ;
+				DEVELOPMENT_TEAM = MGD4WTF6BR;
 				INFOPLIST_FILE = "MiniKeePass/MiniKeePass-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.jflan.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "5443260a-ff69-4503-8b4b-2b598dc5db88";
-				PROVISIONING_PROFILE_SPECIFIER = "Flush Software Development: *";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "MiniKeePass/MiniKeePass-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Off;
@@ -1293,16 +1441,16 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = G9ZT7943FZ;
+				DEVELOPMENT_TEAM = MGD4WTF6BR;
 				INFOPLIST_FILE = "MiniKeePass/MiniKeePass-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.jflan.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "5443260a-ff69-4503-8b4b-2b598dc5db88";
-				PROVISIONING_PROFILE_SPECIFIER = "Flush Software Development: *";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "MiniKeePass/MiniKeePass-Bridging-Header.h";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Off;
 				SWIFT_VERSION = 4.0;

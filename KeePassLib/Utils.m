@@ -80,4 +80,59 @@
     return string;
 }
 
++ (NSData*)getUInt64BytesFromNumber:(NSNumber *)num {
+    uint64_t val = [num unsignedLongLongValue];
+    return [self getUInt64Bytes:val];
+}
+
++ (NSData*)getUInt64Bytes:(uint64_t)val {  // Little Endian
+    uint8_t buf[8];
+    
+    buf[0] = (uint8_t)val;
+    buf[1] = (uint8_t) (val >> 8);
+    buf[2] = (uint8_t) (val >> 16);
+    buf[3] = (uint8_t) (val >> 24);
+    buf[4] = (uint8_t) (val >> 32);
+    buf[5] = (uint8_t) (val >> 40);
+    buf[6] = (uint8_t) (val >> 48);
+    buf[7] = (uint8_t) (val >> 56);
+    
+    return [[NSData alloc] initWithBytes:buf length:8];
+}
+
++ (NSData*)getUInt32BytesFromNumber:(NSNumber *)num {
+    uint32_t val = (uint32_t)[num unsignedIntegerValue];
+    return [self getUInt32Bytes:val];
+}
+
++ (NSData*)getUInt32Bytes:(uint32_t)val {
+    uint8_t buf[4];
+    
+    buf[0] = (uint8_t)val;
+    buf[1] = (uint8_t) (val >> 8);
+    buf[2] = (uint8_t) (val >> 16);
+    buf[3] = (uint8_t) (val >> 24);
+    
+    return [[NSData alloc] initWithBytes:buf length:4];
+}
+
++ (NSData*)getUInt16Bytes:(uint32_t)val {
+    uint8_t buf[2];
+    
+    buf[0] = (uint8_t)val;
+    buf[1] = (uint8_t) (val >> 8);
+    
+    return [[NSData alloc] initWithBytes:buf length:2];
+}
+
++ (uint64_t)BytesToInt64:(NSData*)data {
+    uint8_t *pb;
+    
+    pb = (uint8_t *)data.bytes;
+    
+    return ((uint64_t)pb[0]         | ((uint64_t)pb[1] << 8)  | ((uint64_t)pb[2] << 16) |
+            ((uint64_t)pb[3] << 24) | ((uint64_t)pb[4] << 32) | ((uint64_t)pb[5] << 40) |
+            ((uint64_t)pb[6] << 48) | ((uint64_t)pb[7] << 56));
+}
+
 @end

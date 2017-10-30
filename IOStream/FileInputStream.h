@@ -24,5 +24,6 @@
 
 - (id)initWithFilename:(NSString *)filename;
 - (off_t)seek:(off_t)offset;
+- (off_t)getpos;
 
 @end

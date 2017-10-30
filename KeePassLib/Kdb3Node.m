@@ -69,6 +69,41 @@
     return YES;
 }
 
+- (BOOL)hasChanged:(Kdb3Entry *)entry {
+    BOOL isEqual = ![super hasChanged:entry];
+    
+    if (!isEqual) return YES;
+    
+    isEqual &= [self.title isEqualToString:entry.title];
+    isEqual &= [self.username isEqualToString:entry.username];
+    isEqual &= [self.password isEqualToString:entry.password];
+    isEqual &= [self.url isEqualToString:entry.url];
+    isEqual &= [self.notes isEqualToString:entry.notes];
+    
+    return !isEqual;
+}
+
+- (Kdb3Entry *)deepCopy {
+    Kdb3Entry *entry = [[Kdb3Entry alloc] init];
+    
+    entry.image = self.image;
+    entry.creationTime = self.creationTime;
+    entry.lastModificationTime = self.lastModificationTime;
+    entry.lastAccessTime = self.lastAccessTime;
+    entry.expiryTime = self.expiryTime;
+
+    entry.uuid = self.uuid;  // Shallow copy OK
+    entry.title = [self.title copy];
+    entry.username = [self.username copy];
+    entry.password = [self.password copy];
+    entry.url = [self.url copy];
+    entry.notes = [self.notes copy];
+    entry.binaryDesc = [self.binaryDesc copy];
+    entry.binary = [NSData dataWithData:self.binary];
+    
+    return entry;
+}
+
 @end
 
 
@@ -78,6 +113,7 @@
     self = [super init];
     if (self) {
         _rounds = DEFAULT_TRANSFORMATION_ROUNDS;
+        _flags = FLAG_RIJNDAEL;
     }
     return self;
 }
@@ -96,7 +132,7 @@
     return YES;
 }
 
-- (KdbGroup*)createGroup:(KdbGroup*)parent {
+- (KdbGroup *)createGroup:(KdbGroup *)parent {
     Kdb3Group *group = [[Kdb3Group alloc] init];
     
     do {
@@ -106,11 +142,16 @@
     return group;
 }
 
-- (KdbEntry*)createEntry:(KdbGroup*)parent {
+- (KdbEntry *)createEntry:(KdbGroup *)parent {
     Kdb3Entry *entry = [[Kdb3Entry alloc] init];
-    entry.uuid = [UUID uuid];
+    entry.uuid = [KdbUUID uuid];
 
     return entry;
+}
+
+// Function override...
+- (void)createEntryBackup:(Kdb3Entry *)entry backupEntry:(Kdb3Entry *)backupEntry {
+    // This is a NOP
 }
 
 @end

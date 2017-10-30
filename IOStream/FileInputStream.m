@@ -44,6 +44,11 @@
     return lseek(fd, offset, SEEK_SET);
 }
 
+- (off_t)getpos {
+    // Return the current file position
+    return lseek(fd, 0, SEEK_CUR);
+}
+
 - (void)close {
     if (fd == -1) {
         return;
