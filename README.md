@@ -62,6 +62,7 @@ Simplified Chinese Translation - Caspar Zhang and David Wong<br />
 French Translation - Patrice Lachance<br />
 Brazilian Portuguese Translation - BR Lingo<br />
 Turkish Translation - Durul Dalkanat<br />
+Spanish Translation - David Cordero<br />
 
 MiniKeePass Icon - Gabriele Cirulli
 
