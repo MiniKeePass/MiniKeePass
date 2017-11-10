@@ -1,0 +1,162 @@
+/*
+ * Copyright 2011 Jason Rush and John Flanagan. All rights reserved.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+"Files" = "Archivos";
+"Databases" = "Bases de datos";
+"Key File" = "Archivo llave";
+"Key Files" = "Archivos llave";
+"Groups" = "Grupos";
+"Entries" = "Entradas";
+"Group" = "Grupo";
+"Entry" = "Entrada";
+"New Database" = "Nueva base de datos";
+"New Group" = "Nuevo grupo";
+"New Entry" = "Nueva entrada";
+"Edit Group" = "Editar grupo";
+"Edit Entry" = "Editar entrada";
+"Title" = "Titulo";
+"Image" = "Imagen";
+"Images" = "Imágenes";
+"Username" = "Usuario";
+"Password" = "Contraseña";
+"Confirm Password" = "Confirmar contraseña";
+"URL" = "URL";
+"Comments" = "Comentarios";
+"OK" = "OK";
+"Cancel" = "Cancelar";
+"Add" = "Añadir";
+"Search" = "Buscar";
+"Help" = "Ayuda";
+"Version 1.x" = "Versión 1.x";
+"Version 2.x" = "Versión 2.x";
+"None" = "Ninguno";
+"Name" = "Nombre";
+"Value" = "Valor";
+"Delete" = "Eliminar";
+"Move" = "Mover";
+"Rename" = "Renombrar";
+"Database Name" = "Nombre de la base de datos";
+"Last Modified" = "Última modificación";
+"Copied" = "Copiado";
+"In Memory Protection" = "Protección en memoria";
+"Custom Field" = "Campo personalizado";
+"Custom Fields" = "Campos personalizados";
+"Add new…" = "Añadir nuevo…";
+"Choose Group" = "Seleccionar grupo";
+"Backup" = "Copia de seguridad";
+
+// General Messages
+"Enter your PIN to unlock" = "Introduzca el PIN para desbloquear";
+"Unlock MiniKeePass" = "Desbloquear MiniKeePass";
+"Enter the password and/or select the keyfile for the %@ database." = "Introduzca la contraseña y/o seleccione el archivo llave para la base de datos %@.";
+"Enter a new name for the password database. The correct file extension will automatically be appended." = "Introduzca un nuevo nombre para la base de datos. La extensión del archivo sera añadida automáticamente.";
+"Do not forget your database password, it cannot be recovered." = "No olvide la contraseña de su base de datos porque no podrá ser recuperada.";
+
+// Error Messages
+"Error" = "Error";
+"New name is invalid" = "El nuevo nombre es invalido";
+"Name cannot be empty" = "El nombre no puede estar vacío";
+"Database name is required" = "El nombre para la base de datos es obligatorio";
+"Passwords do not match" = "Las contraseñas no coinciden";
+"Password is required" = "La contraseña es obligatoria";
+"Incorrect PIN" = "PIN incorrecto";
+"Attempts Remaining" = "Intentos restantes";
+"Filename is invalid" = "Nombre de archivo incorrecto";
+"A file already exists with this name" = "Ya existe un archivo con el mismo nombre";
+"There are no applications installed capable of importing KeePass files" = "No hay aplicaciones instaladas que puedan importar archivos KeePass";
+"Tap the + button to add a new KeePass file." = "Pulsa el botón + para añadir un nuevo archivo KeePass.";
+"No password or keyfile specified" = "No se especificó ninguna contraseña o archivo clave";
+"Error Checking PIN" = "Error comprobando PIN";
+
+// Settings Page
+"Settings" = "Ajustes";
+"PIN Enabled" = "PIN activado";
+"Touch ID" = "Touch ID";
+"Use your fingerprint as an alternative to entering a PIN if supported." = "Utiliza tu huella dactilar como alternativa a introducir el PIN";
+"Lock Timeout" = "Bloqueo automático";
+"Immediately" = "Inmediatamente";
+"30 Seconds" = "30 segundos";
+"1 Minute" = "1 minuto";
+"2 Minutes" = "2 minutos";
+"3 Minutes" = "3 minutos";
+"5 Minutes" = "5 minutos";
+"Enabled" = "Activado";
+"Attempts" = "Intentos";
+"Close Enabled" = "Cerrar activado";
+"Close Timeout" = "Cerrar automáticamente";
+"Hide Passwords" = "Ocultar contraseñas";
+"Sorting" = "Orden";
+"Sort Groups and Entries Alphabetically" = "Ordenar grupos y entradas alfabéticamente";
+"Encoding" = "Codificación";
+"UTF-8" = "UTF-8";
+"UTF-16 Big Endian" = "UTF-16 Big Endian";
+"UTF-16 Little Endian" = "UTF-16 Little Endian";
+"Latin 1 (ISO/IEC 8859-1)" = "Latin 1 (ISO/IEC 8859-1)";
+"Latin 2 (ISO/IEC 8859-2)" = "Latin 2 (ISO/IEC 8859-2)";
+"7-Bit ASCII" = "7-Bit ASCII";
+"Japanese EUC" = "EUC Japones";
+"ISO-2022-JP" = "ISO-2022-JP";
+"PIN Protection" = "Protección por PIN";
+"Delete All Data on PIN Failure" = "Borrar todos los datos al introducir PIN incorrecto";
+"Close Database on Timeout" = "Cerrar base de datos automáticamente";
+"Remember Database Passwords" = "Recordar contraseñas de la base de datos";
+"Hide Passwords" = "Ocultar contraseñas";
+"Password Encoding" = "Codificación de contraseña";
+"Clear Clipboard on Timeout" = "Limpiar portapapeles automáticamente";
+"Clear Timeout" = "Limpieza automática";
+"Prevent unauthorized access to MiniKeePass with a PIN." = "Prevenir accesos no autorizados a MiniKeePass con PIN.";
+"Delete all files and passwords after too many failed attempts." = "Eliminar archivos y contraseñas tras muchos intentos fallidos.";
+"Automatically close an open database after the selected timeout." = "Cerrar automáticamente la base de datos abierta despues del tiempo seleccionado.";
+"Stores remembered database passwords in the devices's secure keychain." = "Almacene las contraseñas de bases de datos memorizadas en el keychain del sistema.";
+"Hides passwords when viewing a password entry." = "Oculta contraseñas al visualizar una entrada de contraseña.";
+"The string encoding used for passwords when converting them to database keys." = "La codificación usada al convertir contraseñas en llaves de base de datos.";
+"Clear the contents of the clipboard after a given timeout upon performing a copy." = "Limpiar el contenido del portapapeles tras realizar una copia.";
+"Close Timeout" = "Cerrar automáticamente";
+"Clear Clipboard Timeout" = "Limpieza automática del portapapales";
+"Exclude from backup" = "Excluir desde copia de seguridad";
+"iCloud/iTunes Backup" = "Copia de seguridad de iCloud/iTunes";
+"Exclude databases and key files from iTunes/iCloud backups." = "Excluir bases de datos y archivos de claves desde iTunes/iCloud backups.";
+"Web Browser" = "Navegador";
+"Integrated" = "Integrado";
+"Switch between an integrated web browser and Safari." = "Alterne entre el navegador integrado o Safari.";
+"Set PIN" = "Introduzca PIN";
+"Confirm PIN" = "Confirme PIN";
+"PINs did not match. Try again" = "PINs no coinciden. Intente de nuevo";
+"MiniKeePass version %@" = "MiniKeePass versión %@";
+
+// Help Titles
+"iTunes Import/Export" = "iTunes Importar/Exportar";
+"Dropbox Import/Export" = "Dropbox Importar/Exportar";
+"Safari/Email Import" = "Safari/Email Importar";
+"Create New Database" = "Crear nueva base de datos";
+"Key Files" = "Use archivos llave";
+
+// Password Generator
+"Generator" = "Generador";
+"Length" = "Longitud";
+"Character Sets" = "Conjuntos de Caracteres";
+"Upper Case" = "Mayúsculas";
+"Lower Case" = "Minúsculas";
+"Upper" = "Mayúsculas";
+"Lower" = "Minúsculas";
+"Digits" = "Cifras";
+"Minus" = "Guión";
+"Underline" = "Guión bajo";
+"Space" = "Espacio";
+"Special" = "Especial";
+"Brackets" = "Llaves";
+"None Selected" = "Ninguno seleccionado";

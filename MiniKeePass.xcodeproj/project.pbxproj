@@ -133,6 +133,11 @@
 		68E08316146F2749001C4EDF /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 68E08314146F2749001C4EDF /* InfoPlist.strings */; };
 		68EA62DB1CC972F300B33E42 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 68EA62DA1CC972F300B33E42 /* LaunchScreen.storyboard */; };
 		68EBC2D61613394D00E8E799 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68EBC2D51613394D00E8E799 /* QuartzCore.framework */; };
+		FFAB878B1FB1A619001EFFD5 /* es-createdb.html in Resources */ = {isa = PBXBuildFile; fileRef = FFAB87851FB1A618001EFFD5 /* es-createdb.html */; };
+		FFAB878C1FB1A619001EFFD5 /* es-dropbox.html in Resources */ = {isa = PBXBuildFile; fileRef = FFAB87861FB1A618001EFFD5 /* es-dropbox.html */; };
+		FFAB878D1FB1A619001EFFD5 /* es-itunes.html in Resources */ = {isa = PBXBuildFile; fileRef = FFAB87871FB1A618001EFFD5 /* es-itunes.html */; };
+		FFAB878E1FB1A619001EFFD5 /* es-keyfiles.html in Resources */ = {isa = PBXBuildFile; fileRef = FFAB87881FB1A618001EFFD5 /* es-keyfiles.html */; };
+		FFAB878F1FB1A619001EFFD5 /* es-safariemail.html in Resources */ = {isa = PBXBuildFile; fileRef = FFAB87891FB1A618001EFFD5 /* es-safariemail.html */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -367,6 +372,14 @@
 		C9CE4DF11F2C47980028266A /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		EFD785BA15B3D02600B9A276 /* zh-Hans */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		EFD785BB15B3D03F00B9A276 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		FF3ED5031FB0502F0025856C /* es */ = {isa = PBXFileReference; lastKnownFileType = text; name = es; path = es.lproj/AppStore.txt; sourceTree = "<group>"; };
+		FF3ED5041FB0502F0025856C /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		FF3ED5051FB0502F0025856C /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
+		FFAB87851FB1A618001EFFD5 /* es-createdb.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "es-createdb.html"; sourceTree = "<group>"; };
+		FFAB87861FB1A618001EFFD5 /* es-dropbox.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "es-dropbox.html"; sourceTree = "<group>"; };
+		FFAB87871FB1A618001EFFD5 /* es-itunes.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "es-itunes.html"; sourceTree = "<group>"; };
+		FFAB87881FB1A618001EFFD5 /* es-keyfiles.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "es-keyfiles.html"; sourceTree = "<group>"; };
+		FFAB87891FB1A618001EFFD5 /* es-safariemail.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "es-safariemail.html"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -536,6 +549,7 @@
 		689D021313A42B63005EBD36 /* help */ = {
 			isa = PBXGroup;
 			children = (
+				FFAB87841FB1A618001EFFD5 /* es */,
 				4E8C168D16B3E871004195A1 /* fr */,
 				52E43F4615B59C880029F979 /* ru */,
 				52491D0614D8F3FB00F8CBC8 /* de */,
@@ -862,6 +876,18 @@
 			path = "Move Items View";
 			sourceTree = "<group>";
 		};
+		FFAB87841FB1A618001EFFD5 /* es */ = {
+			isa = PBXGroup;
+			children = (
+				FFAB87851FB1A618001EFFD5 /* es-createdb.html */,
+				FFAB87861FB1A618001EFFD5 /* es-dropbox.html */,
+				FFAB87871FB1A618001EFFD5 /* es-itunes.html */,
+				FFAB87881FB1A618001EFFD5 /* es-keyfiles.html */,
+				FFAB87891FB1A618001EFFD5 /* es-safariemail.html */,
+			);
+			path = es;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -920,6 +946,7 @@
 				pt,
 				nl,
 				tr,
+				es,
 			);
 			mainGroup = 689DFFCA13A4273F005EBD36;
 			productRefGroup = 689DFFD613A4273F005EBD36 /* Products */;
@@ -958,6 +985,7 @@
 				6895D2E91D68F95D003D8C44 /* RenameItem.storyboard in Resources */,
 				689D032F13A42B63005EBD36 /* dropbox.html in Resources */,
 				689D033013A42B63005EBD36 /* itunes.html in Resources */,
+				FFAB878D1FB1A619001EFFD5 /* es-itunes.html in Resources */,
 				689EA68D1D67F93200CF445E /* RenameDatabase.storyboard in Resources */,
 				52A177BC13EB698E00CEEFCE /* createdb.html in Resources */,
 				68CE37F51404A86600E4A5E1 /* safariemail.html in Resources */,
@@ -965,19 +993,23 @@
 				68767B671D6F241F0039EFE0 /* Main.storyboard in Resources */,
 				68EA62DB1CC972F300B33E42 /* LaunchScreen.storyboard in Resources */,
 				689D033113A42B63005EBD36 /* style.css in Resources */,
+				FFAB878E1FB1A619001EFFD5 /* es-keyfiles.html in Resources */,
 				68E08310146F24E3001C4EDF /* Localizable.strings in Resources */,
 				68E08316146F2749001C4EDF /* InfoPlist.strings in Resources */,
 				689EA6881D67F90800CF445E /* PasswordGenerator.storyboard in Resources */,
 				52491D0C14D8F3FB00F8CBC8 /* de-createdb.html in Resources */,
 				689EA6801D67F8D500CF445E /* NewDatabase.storyboard in Resources */,
+				FFAB878C1FB1A619001EFFD5 /* es-dropbox.html in Resources */,
 				52491D0D14D8F3FB00F8CBC8 /* de-dropbox.html in Resources */,
 				688038971D6BB33A001424CA /* WebBrowser.storyboard in Resources */,
 				52491D0E14D8F3FB00F8CBC8 /* de-itunes.html in Resources */,
 				68BFDBE61D7646B400EFACB3 /* MoveItems.storyboard in Resources */,
+				FFAB878F1FB1A619001EFFD5 /* es-safariemail.html in Resources */,
 				52491D0F14D8F3FB00F8CBC8 /* de-keyfiles.html in Resources */,
 				52491D1014D8F3FB00F8CBC8 /* de-safariemail.html in Resources */,
 				52E43F4C15B59C890029F979 /* ru-createdb.html in Resources */,
 				689EA6711D67F88500CF445E /* PasswordEntry.storyboard in Resources */,
+				FFAB878B1FB1A619001EFFD5 /* es-createdb.html in Resources */,
 				52E43F4D15B59C890029F979 /* ru-dropbox.html in Resources */,
 				689EA67A1D67F8B500CF445E /* ImageSelector.storyboard in Resources */,
 				52E43F4E15B59C890029F979 /* ru-itunes.html in Resources */,
@@ -1114,6 +1146,7 @@
 				6891C07419263611000EFC70 /* pt */,
 				BDB0FF5D194C7C6F00C44DEF /* nl */,
 				C9CE4DEF1F2C47970028266A /* tr */,
+				FF3ED5031FB0502F0025856C /* es */,
 			);
 			name = AppStore.txt;
 			sourceTree = SOURCE_ROOT;
@@ -1131,6 +1164,7 @@
 				6891C07619263611000EFC70 /* pt */,
 				BDB0FF5F194C7C6F00C44DEF /* nl */,
 				C9CE4DF11F2C47980028266A /* tr */,
+				FF3ED5051FB0502F0025856C /* es */,
 			);
 			name = Localizable.strings;
 			path = ../..;
@@ -1149,6 +1183,7 @@
 				6891C07519263611000EFC70 /* pt */,
 				BDB0FF5E194C7C6F00C44DEF /* nl */,
 				C9CE4DF01F2C47980028266A /* tr */,
+				FF3ED5041FB0502F0025856C /* es */,
 			);
 			name = InfoPlist.strings;
 			path = ../..;
