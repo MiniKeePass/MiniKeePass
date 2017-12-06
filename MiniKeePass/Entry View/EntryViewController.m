@@ -638,8 +638,8 @@ static NSString *TextFieldCellIdentifier = @"TextFieldCell";
 	MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
 
 	hud.mode = MBProgressHUDModeText;
-    hud.detailsLabelText = self.entry.password;
-    hud.detailsLabelFont = [UIFont fontWithName:@"Andale Mono" size:24];
+    hud.detailsLabel.text = self.entry.password;
+    hud.detailsLabel.font = [UIFont fontWithName:@"Andale Mono" size:24];
 	hud.margin = 10.f;
 	hud.removeFromSuperViewOnHide = YES;
     [hud addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:hud action:@selector(hide:)]];
