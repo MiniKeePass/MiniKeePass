@@ -1,0 +1,162 @@
+/*
+ * Copyright 2011 Jason Rush and John Flanagan. All rights reserved.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+"Files" = "Файли";
+"Databases" = "Бази даних";
+"Key File" = "Ключовий файл";
+"Key Files" = "Ключові файли";
+"Groups" = "Групи";
+"Entries" = "Записи";
+"Group" = "Група";
+"Entry" = "Запис";
+"New Database" = "Нова база даних";
+"New Group" = "Нова група";
+"New Entry" = "Новий запис";
+"Edit Group" = "Змінити групу";
+"Edit Entry" = "Змінити запис";
+"Title" = "Назва";
+"Image" = "Зображення";
+"Images" = "Зображення";
+"Username" = "Користувач";
+"Password" = "Пароль";
+"Confirm Password" = "Підтвердити пароль";
+"URL" = "URL";
+"Comments" = "Коментарі";
+"OK" = "OK";
+"Cancel" = "Скасувати";
+"Add" = "Додати";
+"Search" = "Пошук";
+"Help" = "Допомога";
+"Version 1.x" = "Версія 1.x";
+"Version 2.x" = "Версія 2.x";
+"None" = "Немає";
+"Name" = "Назва";
+"Value" = "Значення";
+"Delete" = "Видалити";
+"Move" = "Перемістити";
+"Rename" = "Перейменувати";
+"Database Name" = "Назва бази даних";
+"Last Modified" = "Востаннє змінено";
+"Copied" = "Скопійовано";
+"In Memory Protection" = "В захисті пам'яті";
+"Custom Field" = "Власне поле";
+"Custom Fields" = "Власні поля";
+"Add new…" = "Додати нове…";
+"Choose Group" = "Обрати групу";
+"Backup" = "Резервна копія";
+
+// General Messages
+"Enter your PIN to unlock" = "Введіть PIN для розблокування";
+"Unlock MiniKeePass" = "Розблокувати MiniKeePass";
+"Enter the password and/or select the keyfile for the %@ database." = "Введіть пароль та/або оберіть ключовий файл для бази даних %@.";
+"Enter a new name for the password database. The correct file extension will automatically be appended." = "Введіть нову назву для бази даних паролів. Необхідне розширення файлу буде додано автоматично.";
+"Do not forget your database password, it cannot be recovered." = "Запам'ятайте пароль своєї бази даних, його неможливо відновити.";
+
+// Error Messages
+"Error" = "Помилка";
+"New name is invalid" = "Неприпустима назва";
+"Name cannot be empty" = "Назва не можу бути порожньою";
+"Database name is required" = "Назва бази даних є обов'язковою";
+"Passwords do not match" = "Паролі не збігаються";
+"Password is required" = "Необхідно вказати пароль";
+"Incorrect PIN" = "Неправильний PIN";
+"Attempts Remaining" = "Залишилося спроб";
+"Filename is invalid" = "Неприпустима назва файлу";
+"A file already exists with this name" = "Файл з таким ім'ям вже існує";
+"There are no applications installed capable of importing KeePass files" = "Немає встановлених додатків, що здатні імпортувати файли KeePass";
+"Tap the + button to add a new KeePass file." = "Торкніться кнопки + для додавання нового файлу KeePass.";
+"No password or keyfile specified" = "Не вказано пароль чи ключовий файл";
+"Error Checking PIN" = "Помилка перевірки PIN";
+
+// Settings Page
+"Settings" = "Налаштування";
+"PIN Enabled" = "PIN увімкнено";
+"Touch ID" = "Touch ID";
+"Use your fingerprint as an alternative to entering a PIN if supported." = "Використовуйте відбиток пальця в якості альтернативи введення PIN-коду, якщо підтримується.";
+"Lock Timeout" = "Час блокування";
+"Immediately" = "Негайно";
+"30 Seconds" = "30 секунд";
+"1 Minute" = "1 хвилина";
+"2 Minutes" = "2 хвилини";
+"3 Minutes" = "3 хвилини";
+"5 Minutes" = "5 хвилин";
+"Enabled" = "Увімкнено";
+"Attempts" = "Спроби";
+"Close Enabled" = "Закриття увімкнено";
+"Close Timeout" = "Час закриття";
+"Hide Passwords" = "Приховувати паролі";
+"Sorting" = "Впорядкування";
+"Sort Groups and Entries Alphabetically" = "Впорядкування груп і записів за зростанням";
+"Encoding" = "Кодування";
+"UTF-8" = "UTF-8";
+"UTF-16 Big Endian" = "UTF-16 Big Endian";
+"UTF-16 Little Endian" = "UTF-16 Little Endian";
+"Latin 1 (ISO/IEC 8859-1)" = "Latin 1 (ISO/IEC 8859-1)";
+"Latin 2 (ISO/IEC 8859-2)" = "Latin 2 (ISO/IEC 8859-2)";
+"7-Bit ASCII" = "7-Bit ASCII";
+"Japanese EUC" = "Japanese EUC";
+"ISO-2022-JP" = "ISO-2022-JP";
+"PIN Protection" = "Захист PIN";
+"Delete All Data on PIN Failure" = "Видаляти всі дані при неправильному введенні PIN-коду";
+"Close Database on Timeout" = "Час закриття бази даних";
+"Remember Database Passwords" = "Запам'ятовувати паролі баз даних";
+"Hide Passwords" = "Приховувати паролі";
+"Password Encoding" = "Кодування пароля";
+"Clear Clipboard on Timeout" = "Час очищення буфера обміну";
+"Clear Timeout" = "Час очищення";
+"Prevent unauthorized access to MiniKeePass with a PIN." = "Захист від стороннього доступу до MiniKeePass з PIN-кодом.";
+"Delete all files and passwords after too many failed attempts." = "Видаляти всі файли і паролі після багатьох невдалих спроб.";
+"Automatically close an open database after the selected timeout." = "Автоматично закривати відкриту базу даних після зазначеного часу.";
+"Stores remembered database passwords in the devices's secure keychain." = "Зберігає запам'ятовані паролі бази даних в захищеній в'язці ключів пристрою.";
+"Hides passwords when viewing a password entry." = "Приховує паролі при перегляді запису.";
+"The string encoding used for passwords when converting them to database keys." = "Кодування рядка для паролів при конвертуванні їх в ключі бази даних.";
+"Clear the contents of the clipboard after a given timeout upon performing a copy." = "Очищати вміст буфера обміну через вказаний проміжок часу з моменту копіювання.";
+"Close Timeout" = "Час закриття";
+"Clear Clipboard Timeout" = "Час очищення буфера обміну";
+"Exclude from backup" = "Не включати в резервну копію";
+"iCloud/iTunes Backup" = "Резервна копія iCloud/iTunes";
+"Exclude databases and key files from iTunes/iCloud backups." = "Не включати бази даних і ключові файли в резервні копії iTunes/iCloud.";
+"Web Browser" = "Веб-браузер";
+"Integrated" = "Інтегрований";
+"Switch between an integrated web browser and Safari." = "Перемикатися між інтегрованим веб-браузером і Safari.";
+"Set PIN" = "Встановити PIN";
+"Confirm PIN" = "Підтвердити PIN";
+"PINs did not match. Try again" = "PIN-коди не збігаються. Спробуйте знову";
+"MiniKeePass version %@" = "MiniKeePass версія %@";
+
+// Help Titles
+"iTunes Import/Export" = "iTunes Імпорт/Експорт";
+"Dropbox Import/Export" = "Dropbox Імпорт/Експорт";
+"Safari/Email Import" = "Safari/Пошта Імпорт";
+"Create New Database" = "Створити нову базу даних";
+"Key Files" = "Ключові файли";
+
+// Password Generator
+"Generator" = "Генератор";
+"Length" = "Довжина";
+"Character Sets" = "Набір символів";
+"Upper Case" = "Верхній регістр";
+"Lower Case" = "Нижній регістр";
+"Upper" = "Верхній";
+"Lower" = "Нижній";
+"Digits" = "Цифри";
+"Minus" = "Дефіс";
+"Underline" = "Підкреслення";
+"Space" = "Пробіл";
+"Special" = "Спеціальні";
+"Brackets" = "Дужки";
+"None Selected" = "Нічого не вибрано";

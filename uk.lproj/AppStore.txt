@@ -1,0 +1,36 @@
+#
+# Copyright 2014 Jason Rush and John Flanagan. All rights reserved.
+#
+# This file contains translations used in the App Store. As a convention, lines
+# that start with a # should be in English. All other lines should be
+# translated into the respective language.
+#
+
+# App Name:
+MiniKeePass — Захищений менеджер паролів
+
+# Description:
+MiniKeePass забезпечує захищене сховище для паролів на вашому пристрої з iOS та сумісний з базами паролів KeePass.
+
+- Переглядайте, редагуйте і створюйте файли KeePass 1.x та 2.x
+- Знаходьте записи за допомогою зручного поя для пошуку, як у додатку Пошта
+- Підтримка ключових файлів
+- Імпортуйте й експортуйте файли в Dropbox за допомогою офіційного додатку Dropbox, а також будь-якого іншого хмарного сховища
+- Копіюйте паролі в буфер обміну для простого їх введення в інших додатках
+- Відкривайте веб-сайти в Safari поки MiniKeePass працює в фоновому режимі
+- Використовуйте PIN-код для обмеження доступу до MiniKeePass
+- Зберігайте паролі до баз даних у захищеній в'язці ключів пристрою
+- При необхідності очищайте буфер обміну після вказаного проміжку часу на пристроях, що підтримують фонові завдання
+- Генеруйте нові паролі
+- Вбудований веб-браузер з автоматичним заповненням полів користувача і пароля
+
+Програмний код MiniKeePass доступний для аудиту безпеки чи долучення до розробки на GitHub.
+
+# Keywords:
+MiniKeePass,KeePass,Kee Pass,KeyPass,KeePassX,Password,Пароль,Password Manager,Менеджер паролів,Secure,Безпека,Захист
+
+# What's New in this Version:
+# Version 1.5
+Сумісність з iOS 7
+Інтегрований веб-браузер з автозаповненням полів
+Виправлення помилок
