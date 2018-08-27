@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3D5B863F21341AEB00FDCC5D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3D5B864121341AEB00FDCC5D /* Main.storyboard */; };
 		4E8C169316B3E871004195A1 /* fr-createdb.html in Resources */ = {isa = PBXBuildFile; fileRef = 4E8C168E16B3E871004195A1 /* fr-createdb.html */; };
 		4E8C169416B3E871004195A1 /* fr-dropbox.html in Resources */ = {isa = PBXBuildFile; fileRef = 4E8C168F16B3E871004195A1 /* fr-dropbox.html */; };
 		4E8C169516B3E871004195A1 /* fr-itunes.html in Resources */ = {isa = PBXBuildFile; fileRef = 4E8C169016B3E871004195A1 /* fr-itunes.html */; };
@@ -49,7 +50,6 @@
 		68496E751AB34F8800370876 /* AppSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 68496E721AB34F8800370876 /* AppSettings.m */; };
 		685D9D951603F8EE00D739D3 /* Kdb3Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 685D9D941603F8EE00D739D3 /* Kdb3Utils.m */; };
 		68767B651D6F23350039EFE0 /* FilesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68767B641D6F23350039EFE0 /* FilesViewController.swift */; };
-		68767B671D6F241F0039EFE0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 68767B661D6F241F0039EFE0 /* Main.storyboard */; };
 		68767B691D70B0830039EFE0 /* Array+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68767B681D70B0830039EFE0 /* Array+Extensions.swift */; };
 		688038971D6BB33A001424CA /* WebBrowser.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 688038951D6BB33A001424CA /* WebBrowser.storyboard */; };
 		688038981D6BB33A001424CA /* WebBrowserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 688038961D6BB33A001424CA /* WebBrowserViewController.swift */; };
@@ -146,6 +146,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3D5B864021341AEB00FDCC5D /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/Main.storyboard; sourceTree = "<group>"; };
+		3D5B864221341BCA00FDCC5D /* es */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = es; path = es.lproj/Main.storyboard; sourceTree = "<group>"; };
+		3D5B864321341BCA00FDCC5D /* es */ = {isa = PBXFileReference; lastKnownFileType = text; name = es; path = es.lproj/AppStore.txt; sourceTree = "<group>"; };
+		3D5B864421341BCA00FDCC5D /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		3D5B864521341BCA00FDCC5D /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
 		4E8C168E16B3E871004195A1 /* fr-createdb.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "fr-createdb.html"; sourceTree = "<group>"; };
 		4E8C168F16B3E871004195A1 /* fr-dropbox.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "fr-dropbox.html"; sourceTree = "<group>"; };
 		4E8C169016B3E871004195A1 /* fr-itunes.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "fr-itunes.html"; sourceTree = "<group>"; };
@@ -213,7 +218,6 @@
 		685D9D931603F8EE00D739D3 /* Kdb3Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Kdb3Utils.h; sourceTree = "<group>"; };
 		685D9D941603F8EE00D739D3 /* Kdb3Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Kdb3Utils.m; sourceTree = "<group>"; };
 		68767B641D6F23350039EFE0 /* FilesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilesViewController.swift; sourceTree = "<group>"; };
-		68767B661D6F241F0039EFE0 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		68767B681D70B0830039EFE0 /* Array+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Array+Extensions.swift"; sourceTree = "<group>"; };
 		687AAA981889F8B400AB8AC5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text; name = en; path = en.lproj/AppStore.txt; sourceTree = "<group>"; };
 		687AAAA11889FB4000AB8AC5 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text; name = ru; path = ru.lproj/AppStore.txt; sourceTree = "<group>"; };
@@ -697,7 +701,7 @@
 			children = (
 				689D043213A42C81005EBD36 /* AppDelegate.h */,
 				689D043313A42C81005EBD36 /* AppDelegate.m */,
-				68767B661D6F241F0039EFE0 /* Main.storyboard */,
+				3D5B864121341AEB00FDCC5D /* Main.storyboard */,
 				6895D2F01D68FE00003D8C44 /* Custom Field View */,
 				5271A98E1EDA16D200B9AF2C /* Entry View */,
 				68767B631D6F23350039EFE0 /* Files View */,
@@ -920,6 +924,7 @@
 				pt,
 				nl,
 				tr,
+				es,
 			);
 			mainGroup = 689DFFCA13A4273F005EBD36;
 			productRefGroup = 689DFFD613A4273F005EBD36 /* Products */;
@@ -962,7 +967,7 @@
 				52A177BC13EB698E00CEEFCE /* createdb.html in Resources */,
 				68CE37F51404A86600E4A5E1 /* safariemail.html in Resources */,
 				68DDC3731405160300FC8BD8 /* keyfiles.html in Resources */,
-				68767B671D6F241F0039EFE0 /* Main.storyboard in Resources */,
+				3D5B863F21341AEB00FDCC5D /* Main.storyboard in Resources */,
 				68EA62DB1CC972F300B33E42 /* LaunchScreen.storyboard in Resources */,
 				689D033113A42B63005EBD36 /* style.css in Resources */,
 				68E08310146F24E3001C4EDF /* Localizable.strings in Resources */,
@@ -1101,6 +1106,15 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		3D5B864121341AEB00FDCC5D /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				3D5B864021341AEB00FDCC5D /* en */,
+				3D5B864221341BCA00FDCC5D /* es */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
 		687AAA991889F8B400AB8AC5 /* AppStore.txt */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -1114,6 +1128,7 @@
 				6891C07419263611000EFC70 /* pt */,
 				BDB0FF5D194C7C6F00C44DEF /* nl */,
 				C9CE4DEF1F2C47970028266A /* tr */,
+				3D5B864321341BCA00FDCC5D /* es */,
 			);
 			name = AppStore.txt;
 			sourceTree = SOURCE_ROOT;
@@ -1131,6 +1146,7 @@
 				6891C07619263611000EFC70 /* pt */,
 				BDB0FF5F194C7C6F00C44DEF /* nl */,
 				C9CE4DF11F2C47980028266A /* tr */,
+				3D5B864521341BCA00FDCC5D /* es */,
 			);
 			name = Localizable.strings;
 			path = ../..;
@@ -1149,6 +1165,7 @@
 				6891C07519263611000EFC70 /* pt */,
 				BDB0FF5E194C7C6F00C44DEF /* nl */,
 				C9CE4DF01F2C47980028266A /* tr */,
+				3D5B864421341BCA00FDCC5D /* es */,
 			);
 			name = InfoPlist.strings;
 			path = ../..;

@@ -1,0 +1,41 @@
+#
+# Copyright 2014 Jason Rush and John Flanagan. All rights reserved.
+#
+# This file contains translations used in the App Store. As a convention, lines
+# that start with a # should be in English. All other lines should be
+# translated into the respective language.
+#
+
+# App Name:
+MiniKeePass — Administrador seguro de contraseñas
+
+# Description:
+MiniKeePass provides secure password storage on your iOS device that's compatible with KeePass.
+MiniKeePass provee almacenamiento seguro de contraseñas en su dispositivo iOS que sea compatible.
+
+- Mira, Edita y Crea archivos KeePass 1.x y 2.x
+- Search for entries from the top of tables like in Mail
+- Busca entradas desde la parte superior de las listas como en Mail
+- Soporte de llaveros
+- Importa/Exporta archivos desde Dropbox haciendo uso de la aplicación oficial de Dropbox o cualquier otra aplicación del almacenamiento en la nube
+- Copia contraseñas al portapapeles para un uso más fácil
+- Abre páginas web en Safari mientras MiniKeePass se ejecuta en segundo plano
+- Prevén el acceso no autorizado a MiniKeePass con un PIN
+- Recuerda la contraseña de las bases de datos en el llavero seguro del dispositivo
+- Borra opcionalmente el portapapeles despúes de un determinado tiempo de espera en dispositivos que permiten la ejecución de tareas en segundo plano
+- Genera contraseñas nuevas
+- Navegador web integrado con auto-tecleo de usuario/contraseña
+
+
+MiniKeePass's source code is available for security audit or contribution on GitHub.
+El código fuente de MiniKeePass está disponible en GitHub para contribuir o por motivos de comprobación de código
+
+# Keywords:
+MiniKeePass,KeePass,Kee Pass,KeyPass,KeePassX,Password,Password Manager,Secure
+
+# What's New in this Version:
+# Version 1.5
+Traducción al Español
+Compatible con iOS 11
+Navegador web integrado con auto-tecleo de usuario/contraseña
+Correción de pequeños fallos
