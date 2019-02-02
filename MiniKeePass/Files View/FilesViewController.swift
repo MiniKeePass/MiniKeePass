@@ -173,7 +173,18 @@ class FilesViewController: UITableViewController, NewDatabaseDelegate {
     
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let deleteAction = UITableViewRowAction(style: .destructive, title: NSLocalizedString("Delete", comment: "")) { (action: UITableViewRowAction, indexPath: IndexPath) -> Void in
-            self.deleteRowAtIndexPath(indexPath)
+
+            // Confirm before deleting the database
+            let deleteMenu = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+            let deleteAction = UIAlertAction(title: NSLocalizedString("Delete", comment: ""), style: .destructive, handler: {
+                (alert: UIAlertAction!) -> Void in
+                self.deleteRowAtIndexPath(indexPath)
+            })
+            let cancelAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil)
+            deleteMenu.addAction(deleteAction)
+            deleteMenu.addAction(cancelAction)
+
+            self.present(deleteMenu, animated: true, completion: nil)
         }
         
         let renameAction = UITableViewRowAction(style: .normal, title: NSLocalizedString("Rename", comment: "")) { (action: UITableViewRowAction, indexPath: IndexPath) -> Void in
