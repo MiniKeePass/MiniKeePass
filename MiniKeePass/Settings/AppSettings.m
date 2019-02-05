@@ -136,20 +136,64 @@ static AppSettings *sharedInstance;
     return self;
 }
 
+
+// This allows version such as "1.0" to be compared to "1.0.1", which will return <0
+// if (lhsVersion < rhsVersion) then return <0
+// if (lhsVersion == rhsVersion) then return 0
+// if (lhsVersion > rhsVersion) then return >0
+- (int)versionCompare:(NSString *)lhsVersion rhsVersion:(NSString *)rhsVersion {
+    NSString *delimeter = @".";
+    NSArray *lhsVersionArr = [lhsVersion componentsSeparatedByString:delimeter];
+    NSArray *rhsVersionArr = [rhsVersion componentsSeparatedByString:delimeter];
+
+    for(int i = 0; i < [lhsVersionArr count] && i < [rhsVersionArr count]; ++i) {
+        int lhs = [lhsVersionArr[i] intValue];
+        int rhs = [rhsVersionArr[i] intValue];
+        if (lhs < rhs) {
+            return -1;
+        }
+        if (lhs > rhs) {
+            return 1;
+        }
+    }
+    if ([lhsVersionArr count] < [rhsVersionArr count]) {
+        return -1;
+    } else if ([lhsVersionArr count] > [rhsVersionArr count]) {
+        return 1;
+    }
+    return 0;
+}
+
 - (void)upgrade {
     NSString *version = [self version];
     if (version == nil) {
-        version = @"1.5.2";
+        // Version 1.6 was released Jun 14, 2015, this was the first version
+        // to set the version number. Version 1.6 was also the first version to
+        // have upgrade instructions. So prior versions didn't set the version
+        // number stored in the configuration. The EXIT_TIME, PIN_ENABLED,
+        // PIN_LOCK_TIMEOUT, and PIN_FAILED_ATTEMPTS properties are used to
+        // determine the difference between an upgrade from a verion prior to
+        // version 1.6 and a fresh install of the current version.
+        if ([userDefaults objectForKey:EXIT_TIME] != nil ||
+            [userDefaults objectForKey:PIN_ENABLED] != nil ||
+            [userDefaults objectForKey:PIN_LOCK_TIMEOUT] != nil ||
+            [userDefaults objectForKey:PIN_FAILED_ATTEMPTS] != nil) {
+            version = @"1.5.2"; // The version is at most 1.5.2
+        }
     }
     
-    if ([version isEqualToString:@"1.5.2"]) {
-        [self upgrade152];
+    if (version != nil) {
+        // This is not a fresh install, so upgrade the configuration
+        if ([self versionCompare:version rhsVersion:@"1.5.2"] <= 0) {
+            [self upgrade152];
+        }
     }
-    
+
     NSString *currentVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
     [self setVersion:currentVersion];
 }
 
+// Upgrade configuration from 1.5.2
 - (void)upgrade152 {
     // Migrate the pin enabled setting
     BOOL pinEnabled = [userDefaults boolForKey:PIN_ENABLED];
