@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="DTi-df-Pz8">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="DTi-df-Pz8">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -271,34 +270,32 @@
                             </tableViewSection>
                             <tableViewSection headerTitle="Remember Database Passwords" footerTitle="Stores remembered database passwords in the devices's secure keychain." id="JmW-Y4-S1N">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" id="yHa-W2-Lzd">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="r82-0A-7yI" detailTextLabel="ptL-1g-Uls" style="IBUITableViewCellStyleValue1" id="AWa-2T-wxu" userLabel="Remember Password Cell">
                                         <rect key="frame" x="0.0" y="713.5" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" tableViewCell="yHa-W2-Lzd" id="Ui7-Ls-nTU">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" tableViewCell="AWa-2T-wxu" id="Olh-ql-Qd9">
+                                            <rect key="frame" x="0.0" y="0.0" width="341" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enabled" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xMv-gl-Kfq">
-                                                    <rect key="frame" x="8" y="12" width="302" height="20"/>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Remember Password" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="r82-0A-7yI">
+                                                    <rect key="frame" x="16" y="12" width="79" height="19.5"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Ea4-fm-fzf">
-                                                    <rect key="frame" x="318" y="6" width="51" height="31"/>
-                                                    <connections>
-                                                        <action selector="rememberDatabasePasswordsEnabledChanged:" destination="mlm-01-Slc" eventType="valueChanged" id="lfr-FU-66w"/>
-                                                    </connections>
-                                                </switch>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="ptL-1g-Uls">
+                                                    <rect key="frame" x="298.5" y="12" width="41.5" height="19.5"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                    <color key="textColor" red="0.5568627451" green="0.5568627451" blue="0.57647058819999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
-                                            <constraints>
-                                                <constraint firstItem="Ea4-fm-fzf" firstAttribute="centerY" secondItem="Ui7-Ls-nTU" secondAttribute="centerY" id="DvR-cF-KVg"/>
-                                                <constraint firstItem="Ea4-fm-fzf" firstAttribute="leading" secondItem="xMv-gl-Kfq" secondAttribute="trailing" constant="8" id="N4p-1a-5Hx"/>
-                                                <constraint firstItem="xMv-gl-Kfq" firstAttribute="leading" secondItem="Ui7-Ls-nTU" secondAttribute="leadingMargin" id="XyR-yR-YrF"/>
-                                                <constraint firstItem="xMv-gl-Kfq" firstAttribute="centerY" secondItem="Ui7-Ls-nTU" secondAttribute="centerY" id="kV1-iI-U6N"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="Ea4-fm-fzf" secondAttribute="trailing" id="sGu-zB-5KY"/>
-                                            </constraints>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="oV7-qB-Seq" kind="show" identifier="Remember Passwords" id="K5D-6w-K6b"/>
+                                        </connections>
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
@@ -613,7 +610,7 @@
                         <outlet property="passwordEncodingCell" destination="p70-RW-3e7" id="kfr-qv-qmZ"/>
                         <outlet property="pinEnabledSwitch" destination="i82-ao-eaE" id="EnM-DA-stl"/>
                         <outlet property="pinLockTimeoutCell" destination="2QL-yf-Q2s" id="7Dh-Fl-MMH"/>
-                        <outlet property="rememberDatabasePasswordsEnabledSwitch" destination="Ea4-fm-fzf" id="7cF-hL-41B"/>
+                        <outlet property="rememberDatabasePasswordsCell" destination="AWa-2T-wxu" id="byH-Zi-eXV"/>
                         <outlet property="searchTitleOnlySwitch" destination="PQv-PG-Wrn" id="5XL-4A-aem"/>
                         <outlet property="sortingEnabledSwitch" destination="3lc-8w-xI4" id="grb-Ay-BBQ"/>
                         <outlet property="touchIdEnabledCell" destination="v5C-no-1Zp" id="Oe8-6J-urU"/>
@@ -643,6 +640,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="LOY-kv-rGe"/>
+        <segue reference="K5D-6w-K6b"/>
     </inferredMetricsTieBreakers>
 </document>
