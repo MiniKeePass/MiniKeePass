@@ -32,6 +32,7 @@
 #define DELETE_ON_FAILURE_ATTEMPTS @"deleteOnFailureAttempts"
 #define CLOSE_ENABLED              @"closeEnabled"
 #define CLOSE_TIMEOUT              @"closeTimeout"
+#define REMEMBER_PASSWORDS         @"rememberPasswords"
 #define REMEMBER_PASSWORDS_ENABLED @"rememberPasswordsEnabled"
 #define HIDE_PASSWORDS             @"hidePasswords"
 #define SORT_ALPHABETICALLY        @"sortAlphabetically"
@@ -57,6 +58,12 @@ static NSInteger pinLockTimeoutValues[] = {
     60,
     120,
     300
+};
+
+static RememberPasswords rememberPasswordsValues[] = {
+    Never,
+    WhenConfigured,
+    Always
 };
 
 static NSInteger deleteOnFailureAttemptsValues[] = {
@@ -118,7 +125,7 @@ static AppSettings *sharedInstance;
         [defaultsDict setValue:[NSNumber numberWithInt:1] forKey:DELETE_ON_FAILURE_ATTEMPTS];
         [defaultsDict setValue:[NSNumber numberWithBool:YES] forKey:CLOSE_ENABLED];
         [defaultsDict setValue:[NSNumber numberWithInt:4] forKey:CLOSE_TIMEOUT];
-        [defaultsDict setValue:[NSNumber numberWithBool:NO] forKey:REMEMBER_PASSWORDS_ENABLED];
+        [defaultsDict setValue:[NSNumber numberWithInt:0] forKey:REMEMBER_PASSWORDS];
         [defaultsDict setValue:[NSNumber numberWithBool:YES] forKey:HIDE_PASSWORDS];
         [defaultsDict setValue:[NSNumber numberWithBool:YES] forKey:SORT_ALPHABETICALLY];
         [defaultsDict setValue:[NSNumber numberWithBool:NO] forKey:SEARCH_TITLE_ONLY];
@@ -136,20 +143,102 @@ static AppSettings *sharedInstance;
     return self;
 }
 
+
+// This allows version such as "1.0" to be compared to "1.0.1", which will return <0
+// if (lhsVersion < rhsVersion) then return <0
+// if (lhsVersion == rhsVersion) then return 0
+// if (lhsVersion > rhsVersion) then return >0
+- (int)versionCompare:(NSString *)lhsVersion rhsVersion:(NSString *)rhsVersion {
+    NSString *delimeter = @".";
+    NSArray *lhsVersionArr = [lhsVersion componentsSeparatedByString:delimeter];
+    NSArray *rhsVersionArr = [rhsVersion componentsSeparatedByString:delimeter];
+
+    for(int i = 0; i < [lhsVersionArr count] && i < [rhsVersionArr count]; ++i) {
+        int lhs = [lhsVersionArr[i] intValue];
+        int rhs = [rhsVersionArr[i] intValue];
+        if (lhs < rhs) {
+            return -1;
+        }
+        if (lhs > rhs) {
+            return 1;
+        }
+    }
+    if ([lhsVersionArr count] < [rhsVersionArr count]) {
+        return -1;
+    } else if ([lhsVersionArr count] > [rhsVersionArr count]) {
+        return 1;
+    }
+    return 0;
+}
+
+- (void)clearKeychainForUpgrade {
+    [KeychainUtils deleteAllForServiceName:KEYCHAIN_PIN_SERVICE];
+    
+    // Clear all versions of keychain passwords
+    [KeychainUtils deleteAllForServiceName:KEYCHAIN_PASSWORDS_SERVICE];
+    [KeychainUtils deleteAllForServiceName:KEYCHAIN_PASSWORDS_V1_SERVICE];
+    [KeychainUtils deleteAllForServiceName:KEYCHAIN_PASSWORDS_V2_SERVICE];
+
+    // Clear all versions of keyfile passwords
+    [KeychainUtils deleteAllForServiceName:KEYCHAIN_KEYFILES_SERVICE];
+    [KeychainUtils deleteAllForServiceName:KEYCHAIN_KEYFILES_V1_SERVICE];
+    [KeychainUtils deleteAllForServiceName:KEYCHAIN_KEYFILES_V2_SERVICE];
+
+    // Clear the version last so that there isn't a race condition with the keychain version
+    [KeychainUtils deleteAllForServiceName:KEYCHAIN_VERSION_SERVICE];
+}
+
 - (void)upgrade {
     NSString *version = [self version];
-    if (version == nil) {
-        version = @"1.5.2";
-    }
-    
-    if ([version isEqualToString:@"1.5.2"]) {
-        [self upgrade152];
-    }
-    
+    NSString *keychainVersion = [KeychainUtils stringForKey:VERSION andServiceName:KEYCHAIN_VERSION_SERVICE];
     NSString *currentVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+
+    if (version == nil) {
+        // Version 1.6 was released Jun 14, 2015, this was the first version
+        // to set the version number. Version 1.6 was also the first version to
+        // have upgrade instructions. So prior versions didn't set the version
+        // number stored in the configuration. The EXIT_TIME, PIN_ENABLED,
+        // PIN_LOCK_TIMEOUT, and PIN_FAILED_ATTEMPTS properties are used to
+        // determine the difference between an upgrade from a verion prior to
+        // version 1.6 and a fresh install of the current version.
+        if ([userDefaults objectForKey:EXIT_TIME] != nil ||
+            [userDefaults objectForKey:PIN_ENABLED] != nil ||
+            [userDefaults objectForKey:PIN_LOCK_TIMEOUT] != nil ||
+            [userDefaults objectForKey:PIN_FAILED_ATTEMPTS] != nil) {
+            version = @"1.5.2"; // The version is at most 1.5.2
+        }
+    }
+    
+    if (version != nil) {
+        // This is not a fresh install, so upgrade the configuration
+        if (keychainVersion != nil) {
+            if ([self versionCompare:version rhsVersion:keychainVersion] != 0 ||
+                [self versionCompare:currentVersion rhsVersion:keychainVersion] < 0) {
+                // The version is being rolled back or it does not match the expected version
+                // so clear out the keychain to protect against malicous activity
+                [self clearKeychainForUpgrade];
+            }
+        }
+        
+        if ([self versionCompare:version rhsVersion:@"1.5.2"] <= 0) {
+            [self upgrade152];
+        }
+    
+        if ([self versionCompare:version rhsVersion:@"1.7.2"] <= 0) {
+            [self upgrade172];
+        }
+    } else {
+        // This is a fresh install
+        // The keychain setting may survive from a previous version of the app
+        // which was deleted.
+        [self clearKeychainForUpgrade];
+    }
+
+
     [self setVersion:currentVersion];
 }
 
+// Upgrade configuration from 1.5.2
 - (void)upgrade152 {
     // Migrate the pin enabled setting
     BOOL pinEnabled = [userDefaults boolForKey:PIN_ENABLED];
@@ -177,12 +266,34 @@ static AppSettings *sharedInstance;
     [userDefaults removeObjectForKey:PIN_FAILED_ATTEMPTS];
 }
 
+// Upgrade configuration from 1.7.2
+- (void)upgrade172 {
+    // Remove keys which didn't exist in version 1.7.2 to protect against a malicious user rolling back the
+    // version to reset the PIN
+    [KeychainUtils deleteAllForServiceName:KEYCHAIN_PASSWORDS_V2_SERVICE];
+    [KeychainUtils deleteAllForServiceName:KEYCHAIN_KEYFILES_V2_SERVICE];
+
+    // Migrate the remember passwords enabled setting
+    BOOL rememberPasswordsEnabled = [userDefaults boolForKey:REMEMBER_PASSWORDS_ENABLED];
+    if (rememberPasswordsEnabled) {
+        [self setRememberPasswordsIndex:(2)];
+    }
+
+    // Upgrade from v1 to v2 keychain services
+    [KeychainUtils renameAllForServiceName:KEYCHAIN_PASSWORDS_V1_SERVICE newServiceName:KEYCHAIN_PASSWORDS_V2_SERVICE];
+    [KeychainUtils renameAllForServiceName:KEYCHAIN_KEYFILES_V1_SERVICE newServiceName:KEYCHAIN_KEYFILES_V2_SERVICE];
+    
+    // Remove the old keys
+    [userDefaults removeObjectForKey:REMEMBER_PASSWORDS_ENABLED];
+}
+
 - (NSString *)version {
     return [userDefaults stringForKey:VERSION];
 }
 
 - (void)setVersion:(NSString *)version {
-    return [userDefaults setValue:version forKey:VERSION];
+    [userDefaults setValue:version forKey:VERSION];
+    [KeychainUtils setString:version forKey:VERSION andServiceName:KEYCHAIN_VERSION_SERVICE];
 }
 
 - (NSDate *)exitTime {
@@ -313,12 +424,17 @@ static AppSettings *sharedInstance;
     [userDefaults setInteger:closeTimeoutIndex forKey:CLOSE_TIMEOUT];
 }
 
-- (BOOL)rememberPasswordsEnabled {
-    return [userDefaults boolForKey:REMEMBER_PASSWORDS_ENABLED];
+- (RememberPasswords)rememberPasswords {
+    NSInteger rememberPasswordsIndex = [self rememberPasswordsIndex];
+    return rememberPasswordsValues[rememberPasswordsIndex];
 }
 
-- (void)setRememberPasswordsEnabled:(BOOL)rememberPasswordsEnabled {
-    [userDefaults setBool:rememberPasswordsEnabled forKey:REMEMBER_PASSWORDS_ENABLED];
+- (NSInteger)rememberPasswordsIndex {
+    return [userDefaults integerForKey:REMEMBER_PASSWORDS];
+}
+
+- (void)setRememberPasswordsIndex:(NSInteger)rememberPasswordsIndex {
+    [userDefaults setInteger:rememberPasswordsIndex forKey:REMEMBER_PASSWORDS];
 }
 
 - (BOOL)hidePasswords {

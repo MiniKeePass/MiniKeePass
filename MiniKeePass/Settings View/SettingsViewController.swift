@@ -33,7 +33,7 @@ class SettingsViewController: UITableViewController, PinViewControllerDelegate {
     @IBOutlet weak var closeDatabaseEnabledSwitch: UISwitch!
     @IBOutlet weak var closeDatabaseTimeoutCell: UITableViewCell!
     
-    @IBOutlet weak var rememberDatabasePasswordsEnabledSwitch: UISwitch!
+    @IBOutlet weak var rememberDatabasePasswordsCell: UITableViewCell!
     
     @IBOutlet weak var hidePasswordsEnabledSwitch: UISwitch!
 
@@ -57,6 +57,10 @@ class SettingsViewController: UITableViewController, PinViewControllerDelegate {
                                    NSLocalizedString("1 Minute", comment: ""),
                                    NSLocalizedString("2 Minutes", comment: ""),
                                    NSLocalizedString("5 Minutes", comment: "")]
+
+    fileprivate let rememberPasswords = [NSLocalizedString("Never", comment: ""),
+                                         NSLocalizedString("When Configured", comment: ""),
+                                         NSLocalizedString("Always", comment: "")]
     
     fileprivate let deleteAllDataAttempts = ["3", "5", "10", "15"]
     
@@ -114,7 +118,7 @@ class SettingsViewController: UITableViewController, PinViewControllerDelegate {
             closeDatabaseEnabledSwitch.isOn = appSettings.closeEnabled()
             closeDatabaseTimeoutCell.detailTextLabel!.text = closeDatabaseTimeouts[appSettings.closeTimeoutIndex()]
             
-            rememberDatabasePasswordsEnabledSwitch.isOn = appSettings.rememberPasswordsEnabled()
+            rememberDatabasePasswordsCell.detailTextLabel!.text = rememberPasswords[appSettings.rememberPasswordsIndex()]
             
             hidePasswordsEnabledSwitch.isOn = appSettings.hidePasswords()
             
@@ -214,6 +218,23 @@ class SettingsViewController: UITableViewController, PinViewControllerDelegate {
                 self.appSettings?.setClearClipboardTimeoutIndex(selectedIndex)
                 self.navigationController?.popViewController(animated: true)
             }
+        } else if (segue.identifier == "Remember Passwords") {
+            selectionViewController.items = rememberPasswords
+            selectionViewController.selectedIndex = (appSettings?.rememberPasswordsIndex())!
+            selectionViewController.itemSelected = { (selectedIndex) in
+
+                self.appSettings?.setRememberPasswordsIndex(selectedIndex)
+                let rememberPasswords = self.appSettings?.rememberPasswords()
+                switch rememberPasswords {
+                case .some(RememberPasswords.Always), .some(RememberPasswords.WhenConfigured):
+                    break;
+                case .some(RememberPasswords.Never), .none:
+                    KeychainUtils.deleteAll(forServiceName: KEYCHAIN_PASSWORDS_SERVICE)
+                    KeychainUtils.deleteAll(forServiceName: KEYCHAIN_KEYFILES_SERVICE)
+                }
+
+                self.navigationController?.popViewController(animated: true)
+            }
         } else {
             assertionFailure("Unknown segue")
         }
@@ -262,13 +283,6 @@ class SettingsViewController: UITableViewController, PinViewControllerDelegate {
 
         // Update which controls are enabled
         updateEnabledControls()
-    }
-    
-    @IBAction func rememberDatabasePasswordsEnabledChanged(_ sender: UISwitch) {
-        self.appSettings?.setRememberPasswordsEnabled(rememberDatabasePasswordsEnabledSwitch.isOn)
-        
-        KeychainUtils.deleteAll(forServiceName: KEYCHAIN_PASSWORDS_SERVICE)
-        KeychainUtils.deleteAll(forServiceName: KEYCHAIN_KEYFILES_SERVICE)
     }
     
     @IBAction func hidePasswordsEnabledChanged(_ sender: UISwitch) {

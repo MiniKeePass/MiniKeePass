@@ -29,9 +29,22 @@
 
 #import <UIKit/UIKit.h>
 
+#define KEYCHAIN_VERSION_SERVICE   @"com.jflan.MiniKeePass.version"
 #define KEYCHAIN_PIN_SERVICE       @"com.jflan.MiniKeePass.pin"
-#define KEYCHAIN_PASSWORDS_SERVICE @"com.jflan.MiniKeePass.passwords"
-#define KEYCHAIN_KEYFILES_SERVICE  @"com.jflan.MiniKeePass.keyfiles"
+
+// The V2 services protect against a malicious user rolling back the version
+// to a version that didn't check for version compatibility using the keychain
+// and thus was vulnerable to vulnerabilites in the prior versions. Specifically,
+// there was a vulnerability where a malicious user could delete the app and
+// and install an old version which would set the PIN to disabled but database
+// passwords that were remembered were not forgotten.
+#define KEYCHAIN_PASSWORDS_V1_SERVICE @"com.jflan.MiniKeePass.passwords"
+#define KEYCHAIN_PASSWORDS_V2_SERVICE @"com.jflan.MiniKeePass.passwords2"
+#define KEYCHAIN_PASSWORDS_SERVICE KEYCHAIN_PASSWORDS_V2_SERVICE
+
+#define KEYCHAIN_KEYFILES_V1_SERVICE  @"com.jflan.MiniKeePass.keyfiles"
+#define KEYCHAIN_KEYFILES_V2_SERVICE  @"com.jflan.MiniKeePass.keyfiles2"
+#define KEYCHAIN_KEYFILES_SERVICE  KEYCHAIN_KEYFILES_V2_SERVICE
 
 @interface KeychainUtils : NSObject
 
@@ -39,5 +52,6 @@
 + (BOOL)setString:(NSString *)string forKey:(NSString *)key andServiceName:(NSString *)serviceName;
 + (BOOL)deleteStringForKey:(NSString *)key andServiceName:(NSString *)serviceName;
 + (BOOL)deleteAllForServiceName:(NSString *)serviceName;
++ (BOOL)renameAllForServiceName:(NSString *)serviceName newServiceName:(NSString *)newServiceName;
 
 @end

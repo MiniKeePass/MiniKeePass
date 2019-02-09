@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright 2011 Jason Rush and John Flanagan. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -114,6 +114,11 @@
 "Delete All Data on PIN Failure" = "Delete All Data on PIN Failure";
 "Close Database on Timeout" = "Close Database on Timeout";
 "Remember Database Passwords" = "Remember Database Passwords";
+"Remember" = "Remember";
+"Forget Password" = "Forget Password";
+"Never" = "Never";
+"When Configured" = "When Configured";
+"Always" = "Always";
 "Hide Passwords" = "Hide Passwords";
 "Password Encoding" = "Password Encoding";
 "Clear Clipboard on Timeout" = "Clear Clipboard on Timeout";
