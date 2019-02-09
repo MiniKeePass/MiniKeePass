@@ -171,8 +171,28 @@ static AppSettings *sharedInstance;
     return 0;
 }
 
+- (void)clearKeychainForUpgrade {
+    [KeychainUtils deleteAllForServiceName:KEYCHAIN_PIN_SERVICE];
+    
+    // Clear all versions of keychain passwords
+    [KeychainUtils deleteAllForServiceName:KEYCHAIN_PASSWORDS_SERVICE];
+    [KeychainUtils deleteAllForServiceName:KEYCHAIN_PASSWORDS_V1_SERVICE];
+    [KeychainUtils deleteAllForServiceName:KEYCHAIN_PASSWORDS_V2_SERVICE];
+
+    // Clear all versions of keyfile passwords
+    [KeychainUtils deleteAllForServiceName:KEYCHAIN_KEYFILES_SERVICE];
+    [KeychainUtils deleteAllForServiceName:KEYCHAIN_KEYFILES_V1_SERVICE];
+    [KeychainUtils deleteAllForServiceName:KEYCHAIN_KEYFILES_V2_SERVICE];
+
+    // Clear the version last so that there isn't a race condition with the keychain version
+    [KeychainUtils deleteAllForServiceName:KEYCHAIN_VERSION_SERVICE];
+}
+
 - (void)upgrade {
     NSString *version = [self version];
+    NSString *keychainVersion = [KeychainUtils stringForKey:VERSION andServiceName:KEYCHAIN_VERSION_SERVICE];
+    NSString *currentVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+
     if (version == nil) {
         // Version 1.6 was released Jun 14, 2015, this was the first version
         // to set the version number. Version 1.6 was also the first version to
@@ -191,6 +211,15 @@ static AppSettings *sharedInstance;
     
     if (version != nil) {
         // This is not a fresh install, so upgrade the configuration
+        if (keychainVersion != nil) {
+            if ([self versionCompare:version rhsVersion:keychainVersion] != 0 ||
+                [self versionCompare:currentVersion rhsVersion:keychainVersion] < 0) {
+                // The version is being rolled back or it does not match the expected version
+                // so clear out the keychain to protect against malicous activity
+                [self clearKeychainForUpgrade];
+            }
+        }
+        
         if ([self versionCompare:version rhsVersion:@"1.5.2"] <= 0) {
             [self upgrade152];
         }
@@ -198,9 +227,14 @@ static AppSettings *sharedInstance;
         if ([self versionCompare:version rhsVersion:@"1.7.2"] <= 0) {
             [self upgrade172];
         }
+    } else {
+        // This is a fresh install
+        // The keychain setting may survive from a previous version of the app
+        // which was deleted.
+        [self clearKeychainForUpgrade];
     }
 
-    NSString *currentVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+
     [self setVersion:currentVersion];
 }
 
@@ -234,12 +268,21 @@ static AppSettings *sharedInstance;
 
 // Upgrade configuration from 1.7.2
 - (void)upgrade172 {
+    // Remove keys which didn't exist in version 1.7.2 to protect against a malicious user rolling back the
+    // version to reset the PIN
+    [KeychainUtils deleteAllForServiceName:KEYCHAIN_PASSWORDS_V2_SERVICE];
+    [KeychainUtils deleteAllForServiceName:KEYCHAIN_KEYFILES_V2_SERVICE];
+
     // Migrate the remember passwords enabled setting
     BOOL rememberPasswordsEnabled = [userDefaults boolForKey:REMEMBER_PASSWORDS_ENABLED];
     if (rememberPasswordsEnabled) {
         [self setRememberPasswordsIndex:(2)];
     }
 
+    // Upgrade from v1 to v2 keychain services
+    [KeychainUtils renameAllForServiceName:KEYCHAIN_PASSWORDS_V1_SERVICE newServiceName:KEYCHAIN_PASSWORDS_V2_SERVICE];
+    [KeychainUtils renameAllForServiceName:KEYCHAIN_KEYFILES_V1_SERVICE newServiceName:KEYCHAIN_KEYFILES_V2_SERVICE];
+    
     // Remove the old keys
     [userDefaults removeObjectForKey:REMEMBER_PASSWORDS_ENABLED];
 }
@@ -249,7 +292,8 @@ static AppSettings *sharedInstance;
 }
 
 - (void)setVersion:(NSString *)version {
-    return [userDefaults setValue:version forKey:VERSION];
+    [userDefaults setValue:version forKey:VERSION];
+    [KeychainUtils setString:version forKey:VERSION andServiceName:KEYCHAIN_VERSION_SERVICE];
 }
 
 - (NSDate *)exitTime {
