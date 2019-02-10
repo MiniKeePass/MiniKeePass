@@ -45,6 +45,8 @@
 #define PW_GEN_LENGTH              @"pwGenLength"
 #define PW_GEN_CHAR_SETS           @"pwGenCharSets"
 
+#define BOOLToNSString(aBOOL)    ((aBOOL) ? @"YES" : @"NO")
+
 @interface AppSettings () {
     NSUserDefaults *userDefaults;
 }
@@ -120,7 +122,6 @@ static AppSettings *sharedInstance;
 
         // Register the default values
         NSMutableDictionary *defaultsDict = [NSMutableDictionary dictionary];
-        [defaultsDict setValue:[NSNumber numberWithBool:YES] forKey:TOUCH_ID_ENABLED];
         [defaultsDict setValue:[NSNumber numberWithBool:NO] forKey:DELETE_ON_FAILURE_ENABLED];
         [defaultsDict setValue:[NSNumber numberWithInt:1] forKey:DELETE_ON_FAILURE_ATTEMPTS];
         [defaultsDict setValue:[NSNumber numberWithBool:YES] forKey:CLOSE_ENABLED];
@@ -278,12 +279,16 @@ static AppSettings *sharedInstance;
     if (rememberPasswordsEnabled) {
         [self setRememberPasswordsIndex:(2)];
     }
+    // Migrate touch ID enabled to the keychain service
+    BOOL touchIDEnabled = [userDefaults boolForKey:TOUCH_ID_ENABLED];
+    [self setTouchIdEnabled:touchIDEnabled];
 
     // Upgrade from v1 to v2 keychain services
     [KeychainUtils renameAllForServiceName:KEYCHAIN_PASSWORDS_V1_SERVICE newServiceName:KEYCHAIN_PASSWORDS_V2_SERVICE];
     [KeychainUtils renameAllForServiceName:KEYCHAIN_KEYFILES_V1_SERVICE newServiceName:KEYCHAIN_KEYFILES_V2_SERVICE];
     
     // Remove the old keys
+    [userDefaults removeObjectForKey:TOUCH_ID_ENABLED];
     [userDefaults removeObjectForKey:REMEMBER_PASSWORDS_ENABLED];
 }
 
@@ -366,11 +371,15 @@ static AppSettings *sharedInstance;
 }
 
 - (BOOL)touchIdEnabled {
-    return [userDefaults boolForKey:TOUCH_ID_ENABLED];
+    NSString *string = [KeychainUtils stringForKey:TOUCH_ID_ENABLED andServiceName:KEYCHAIN_PIN_SERVICE];
+    if (string == nil) {
+        return false;
+    }
+    return [string boolValue];
 }
 
 - (void)setTouchIdEnabled:(BOOL)touchIdEnabled {
-    [userDefaults setBool:touchIdEnabled forKey:TOUCH_ID_ENABLED];
+    [KeychainUtils setString:BOOLToNSString(touchIdEnabled) forKey:TOUCH_ID_ENABLED andServiceName:KEYCHAIN_PIN_SERVICE];
 }
 
 - (void)setDeleteOnFailureEnabled:(BOOL)deleteOnFailureEnabled {
