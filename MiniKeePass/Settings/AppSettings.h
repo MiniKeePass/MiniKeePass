@@ -17,6 +17,12 @@
 
 #import <Foundation/Foundation.h>
 
+typedef NS_ENUM(NSInteger, RememberPasswords) {
+    Never = 0,
+    WhenConfigured = 1,
+    Always = 2,
+};
+
 @interface AppSettings : NSObject
 
 + (AppSettings *)sharedInstance;
@@ -54,8 +60,9 @@
 - (NSInteger)closeTimeoutIndex;
 - (void)setCloseTimeoutIndex:(NSInteger)closeTimeoutIndex;
 
-- (BOOL)rememberPasswordsEnabled;
-- (void)setRememberPasswordsEnabled:(BOOL)rememberPasswordsEnabled;
+- (RememberPasswords)rememberPasswords;
+- (NSInteger)rememberPasswordsIndex;
+- (void)setRememberPasswordsIndex:(NSInteger)rememberPasswordsIndex;
 
 - (BOOL)hidePasswords;
 - (void)setHidePasswords:(BOOL)hidePasswords;
