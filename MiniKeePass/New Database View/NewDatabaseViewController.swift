@@ -24,11 +24,23 @@ class NewDatabaseViewController: UITableViewController, UITextFieldDelegate {
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var confirmPasswordTextField: UITextField!
     @IBOutlet weak var versionSegmentedControl: UISegmentedControl!
+    @IBOutlet weak var rememberPasswordSwitch: UISwitch!
+    @IBOutlet weak var rememberPasswordCell: UITableViewCell!
 
     var delegate: NewDatabaseDelegate?
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+
+        // Determine if the remember passwords switch is visible
+        let appSettings = AppSettings.sharedInstance() as AppSettings
+        let rememberPasswords = appSettings.rememberPasswords()
+        switch rememberPasswords {
+        case RememberPasswords.Always, RememberPasswords.Never:
+            rememberPasswordCell.isHidden = true;
+        case RememberPasswords.WhenConfigured:
+            rememberPasswordCell.isHidden = false;
+        }
         
         nameTextField.becomeFirstResponder()
     }
@@ -96,9 +108,11 @@ class NewDatabaseViewController: UITableViewController, UITextFieldDelegate {
         } catch {
         }
 
+        let rememberPassword = rememberPasswordSwitch.isOn
+
         // Create the new database
         let databaseManager = DatabaseManager.sharedInstance()
-        databaseManager?.newDatabase(url, password: password1, version: version)
+        databaseManager?.newDatabase(url, password: password1, version: version, rememberPassword: rememberPassword)
         
         delegate?.newDatabaseCreated(filename: url!.lastPathComponent)
         
