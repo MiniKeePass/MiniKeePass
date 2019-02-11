@@ -85,8 +85,9 @@
 // Settings Page
 "Settings" = "Settings";
 "PIN Enabled" = "PIN Enabled";
+"Biometric ID" = "Biometric ID";
 "Touch ID" = "Touch ID";
-"Use your fingerprint as an alternative to entering a PIN if supported." = "Use your fingerprint as an alternative to entering a PIN if supported.";
+"Face ID" = "Face ID";
 "Lock Timeout" = "Lock Timeout";
 "Immediately" = "Immediately";
 "30 Seconds" = "30 Seconds";

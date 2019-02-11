@@ -43,8 +43,8 @@ typedef NS_ENUM(NSInteger, RememberPasswords) {
 - (NSInteger)pinFailedAttempts;
 - (void)setPinFailedAttempts:(NSInteger)pinFailedAttempts;
 
-- (BOOL)touchIdEnabled;
-- (void)setTouchIdEnabled:(BOOL)touchIdEnabled;
+- (BOOL)biometricIdEnabled;
+- (void)setBiometricIdEnabled:(BOOL)biometricIdEnabled;
 
 - (BOOL)deleteOnFailureEnabled;
 - (void)setDeleteOnFailureEnabled:(BOOL)deleteOnFailureEnabled;

@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright 2011 Jason Rush and John Flanagan. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -86,7 +86,6 @@
 "Settings" = "Inställningar";
 "PIN Enabled" = "PIN aktiverad";
 "Touch ID" = "Touch ID";
-"Use your fingerprint as an alternative to entering a PIN if supported." = "Använd ditt fingeravtryck som alternativ till PIN om stöd finns.";
 "Lock Timeout" = "Låsningstid";
 "Immediately" = "Direkt";
 "30 Seconds" = "30 sekunder";

@@ -86,7 +86,6 @@
 "Settings" = "Ajustes";
 "PIN Enabled" = "Ativar PIN";
 "Touch ID" = "Touch ID";
-"Use your fingerprint as an alternative to entering a PIN if supported." = "Use a sua impressão digital como alternativa ao PIN (se compatível).";
 "Lock Timeout" = "Bloqueio Automático";
 "Immediately" = "Imediatamente";
 "30 Seconds" = "30 segundos";

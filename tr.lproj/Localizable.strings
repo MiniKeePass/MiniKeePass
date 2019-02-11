@@ -86,7 +86,6 @@
 "Settings" = "Ayarlar";
 "PIN Enabled" = "PIN Etkin";
 "Touch ID" = "Touch ID";
-"Use your fingerprint as an alternative to entering a PIN if supported." = "Destekleniyorsa bir PIN girişi için parmak izinizi kullanın.";
 "Lock Timeout" = "Kilitleme için zaman aşımı";
 "Immediately" = "Hemen";
 "30 Seconds" = "30 Saniye";

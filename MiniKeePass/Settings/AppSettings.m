@@ -28,6 +28,7 @@
 #define PIN_LOCK_TIMEOUT           @"pinLockTimeout"
 #define PIN_FAILED_ATTEMPTS        @"pinFailedAttempts"
 #define TOUCH_ID_ENABLED           @"touchIdEnabled"
+#define BIOMETRIC_ID_ENABLED       @"biometricIdEnabled"
 #define DELETE_ON_FAILURE_ENABLED  @"deleteOnFailureEnabled"
 #define DELETE_ON_FAILURE_ATTEMPTS @"deleteOnFailureAttempts"
 #define CLOSE_ENABLED              @"closeEnabled"
@@ -280,8 +281,8 @@ static AppSettings *sharedInstance;
         [self setRememberPasswordsIndex:(2)];
     }
     // Migrate touch ID enabled to the keychain service
-    BOOL touchIDEnabled = [userDefaults boolForKey:TOUCH_ID_ENABLED];
-    [self setTouchIdEnabled:touchIDEnabled];
+    BOOL biometricIDEnabled = [userDefaults boolForKey:TOUCH_ID_ENABLED];
+    [self setBiometricIdEnabled:biometricIDEnabled];
 
     // Upgrade from v1 to v2 keychain services
     [KeychainUtils renameAllForServiceName:KEYCHAIN_PASSWORDS_V1_SERVICE newServiceName:KEYCHAIN_PASSWORDS_V2_SERVICE];
@@ -370,16 +371,16 @@ static AppSettings *sharedInstance;
     return [userDefaults boolForKey:DELETE_ON_FAILURE_ENABLED];
 }
 
-- (BOOL)touchIdEnabled {
-    NSString *string = [KeychainUtils stringForKey:TOUCH_ID_ENABLED andServiceName:KEYCHAIN_PIN_SERVICE];
+- (BOOL)biometricIdEnabled {
+    NSString *string = [KeychainUtils stringForKey:BIOMETRIC_ID_ENABLED andServiceName:KEYCHAIN_PIN_SERVICE];
     if (string == nil) {
         return false;
     }
     return [string boolValue];
 }
 
-- (void)setTouchIdEnabled:(BOOL)touchIdEnabled {
-    [KeychainUtils setString:BOOLToNSString(touchIdEnabled) forKey:TOUCH_ID_ENABLED andServiceName:KEYCHAIN_PIN_SERVICE];
+- (void)setBiometricIdEnabled:(BOOL)biometricIdEnabled {
+    [KeychainUtils setString:BOOLToNSString(biometricIdEnabled) forKey:BIOMETRIC_ID_ENABLED andServiceName:KEYCHAIN_PIN_SERVICE];
 }
 
 - (void)setDeleteOnFailureEnabled:(BOOL)deleteOnFailureEnabled {

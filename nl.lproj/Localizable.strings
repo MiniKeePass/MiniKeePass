@@ -88,7 +88,6 @@
 "Settings" = "Voorkeuren";
 "PIN Enabled" = "PIN Geactiveerd";
 "Touch ID" = "Touch ID"; // FIXME
-"Use your fingerprint as an alternative to entering a PIN if supported." = "Use your fingerprint as an alternative to entering a PIN if supported."; // FIXME
 "Lock Timeout" = "Vergrendel Timeout";
 "Immediately" = "Onmiddellijk";
 "30 Seconds" = "30 Seconden";

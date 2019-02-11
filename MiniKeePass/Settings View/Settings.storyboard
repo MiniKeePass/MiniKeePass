@@ -86,6 +86,35 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" id="v5C-no-1Zp">
+                                        <rect key="frame" x="0.0" y="99.5" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" tableViewCell="v5C-no-1Zp" id="pDY-h0-YIr">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Biometric ID" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="drK-Tr-LS6">
+                                                    <rect key="frame" x="16" y="12" width="286" height="20"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Ye5-jl-2bY">
+                                                    <rect key="frame" x="310" y="6.5" width="51" height="31"/>
+                                                    <connections>
+                                                        <action selector="biometricIdEnabledChanged:" destination="mlm-01-Slc" eventType="valueChanged" id="8yt-L0-sIs"/>
+                                                    </connections>
+                                                </switch>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="Ye5-jl-2bY" firstAttribute="leading" secondItem="drK-Tr-LS6" secondAttribute="trailing" constant="8" id="9q6-6X-7md"/>
+                                                <constraint firstItem="Ye5-jl-2bY" firstAttribute="centerY" secondItem="pDY-h0-YIr" secondAttribute="centerY" id="Iez-wA-A3l"/>
+                                                <constraint firstItem="drK-Tr-LS6" firstAttribute="leading" secondItem="pDY-h0-YIr" secondAttribute="leadingMargin" id="STg-LJ-sSB"/>
+                                                <constraint firstItem="drK-Tr-LS6" firstAttribute="centerY" secondItem="pDY-h0-YIr" secondAttribute="centerY" id="b1s-mM-atn"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="Ye5-jl-2bY" secondAttribute="trailing" id="d6V-LD-AtI"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="wtO-pi-5e5" detailTextLabel="f9f-6e-NYT" style="IBUITableViewCellStyleValue1" id="2QL-yf-Q2s">
                                         <rect key="frame" x="0.0" y="99.5" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
@@ -112,39 +141,6 @@
                                         <connections>
                                             <segue destination="oV7-qB-Seq" kind="show" identifier="PIN Lock Timeout" id="PxN-Oo-5xq"/>
                                         </connections>
-                                    </tableViewCell>
-                                </cells>
-                            </tableViewSection>
-                            <tableViewSection headerTitle="Touch ID" footerTitle="Use your fingerprint as an alternative to entering a PIN if supported." id="vH4-cT-PCz">
-                                <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" id="v5C-no-1Zp">
-                                        <rect key="frame" x="0.0" y="219" width="375" height="44"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" tableViewCell="v5C-no-1Zp" id="pDY-h0-YIr">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enabled" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="drK-Tr-LS6">
-                                                    <rect key="frame" x="16" y="12" width="286" height="20"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Ye5-jl-2bY">
-                                                    <rect key="frame" x="310" y="6" width="51" height="31"/>
-                                                    <connections>
-                                                        <action selector="touchIdEnabledChanged:" destination="mlm-01-Slc" eventType="valueChanged" id="8yt-L0-sIs"/>
-                                                    </connections>
-                                                </switch>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="Ye5-jl-2bY" firstAttribute="leading" secondItem="drK-Tr-LS6" secondAttribute="trailing" constant="8" id="9q6-6X-7md"/>
-                                                <constraint firstItem="Ye5-jl-2bY" firstAttribute="centerY" secondItem="pDY-h0-YIr" secondAttribute="centerY" id="Iez-wA-A3l"/>
-                                                <constraint firstItem="drK-Tr-LS6" firstAttribute="leading" secondItem="pDY-h0-YIr" secondAttribute="leadingMargin" id="STg-LJ-sSB"/>
-                                                <constraint firstItem="drK-Tr-LS6" firstAttribute="centerY" secondItem="pDY-h0-YIr" secondAttribute="centerY" id="b1s-mM-atn"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="Ye5-jl-2bY" secondAttribute="trailing" id="d6V-LD-AtI"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
@@ -597,6 +593,9 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="biometricIdEnabledCell" destination="v5C-no-1Zp" id="Oe8-6J-urU"/>
+                        <outlet property="biometricIdEnabledSwitch" destination="Ye5-jl-2bY" id="cBy-Mo-Gym"/>
+                        <outlet property="biometricIdLabel" destination="drK-Tr-LS6" id="UBS-aZ-csy"/>
                         <outlet property="clearClipboardEnabledSwitch" destination="Amv-ka-cmc" id="7LU-aG-nxz"/>
                         <outlet property="clearClipboardTimeoutCell" destination="2F7-jl-P33" id="2Ue-Ht-Q2L"/>
                         <outlet property="closeDatabaseEnabledSwitch" destination="H69-KF-yqe" id="fS2-aO-7cl"/>
@@ -613,8 +612,6 @@
                         <outlet property="rememberDatabasePasswordsCell" destination="AWa-2T-wxu" id="byH-Zi-eXV"/>
                         <outlet property="searchTitleOnlySwitch" destination="PQv-PG-Wrn" id="5XL-4A-aem"/>
                         <outlet property="sortingEnabledSwitch" destination="3lc-8w-xI4" id="grb-Ay-BBQ"/>
-                        <outlet property="touchIdEnabledCell" destination="v5C-no-1Zp" id="Oe8-6J-urU"/>
-                        <outlet property="touchIdEnabledSwitch" destination="Ye5-jl-2bY" id="cBy-Mo-Gym"/>
                         <outlet property="versionLabel" destination="fc3-tI-Hn4" id="2Zn-w5-26K"/>
                     </connections>
                 </tableViewController>
