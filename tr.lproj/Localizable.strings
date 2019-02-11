@@ -110,7 +110,6 @@
 "Japanese EUC" = "Japanese EUC";
 "ISO-2022-JP" = "ISO-2022-JP";
 "PIN Protection" = "PIN Koruma";
-"Delete All Data on PIN Failure" = "PIN Hatasında Tüm Verileri Sil";
 "Close Database on Timeout" = "Zaman aşımında veritabanını kapat";
 "Remember Database Passwords" = "Database şiresini hatırla";
 "Hide Passwords" = "Şifreyi gizle";

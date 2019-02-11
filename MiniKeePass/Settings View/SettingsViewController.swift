@@ -28,6 +28,7 @@ class SettingsViewController: UITableViewController, PinViewControllerDelegate {
     @IBOutlet weak var biometricIdEnabledSwitch: UISwitch!
     
     @IBOutlet weak var deleteAllDataEnabledCell: UITableViewCell!
+    @IBOutlet weak var deleteAllDataEnabledLabel: UILabel!
     @IBOutlet weak var deleteAllDataEnabledSwitch: UISwitch!
     @IBOutlet weak var deleteAllDataAttemptsCell: UITableViewCell!
     
@@ -192,6 +193,8 @@ class SettingsViewController: UITableViewController, PinViewControllerDelegate {
         biometricIdLabel.isEnabled = pinEnabled && biometricIdSupported
         biometricIdEnabledSwitch.isEnabled = pinEnabled && biometricIdSupported
         setCellEnabled(deleteAllDataEnabledCell, enabled: pinEnabled)
+        deleteAllDataEnabledLabel.isEnabled = pinEnabled
+        deleteAllDataEnabledSwitch.isEnabled = pinEnabled
         setCellEnabled(deleteAllDataAttemptsCell, enabled: pinEnabled && deleteOnFailureEnabled)
         setCellEnabled(closeDatabaseTimeoutCell, enabled: closeEnabled)
         setCellEnabled(clearClipboardTimeoutCell, enabled: clearClipboardEnabled)
@@ -208,7 +211,7 @@ class SettingsViewController: UITableViewController, PinViewControllerDelegate {
         if (identifier == "PIN Lock Timeout") {
             return pinEnabledSwitch.isOn
         } else if (identifier == "Delete All Data Attempts") {
-            return deleteAllDataEnabledSwitch.isOn
+            return deleteAllDataEnabledSwitch.isOn && pinEnabledSwitch.isOn
         } else if (identifier == "Close Database Timeout") {
             return closeDatabaseEnabledSwitch.isOn
         } else if (identifier == "Clear Clipboard Timeout") {

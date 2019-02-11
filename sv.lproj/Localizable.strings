@@ -110,7 +110,6 @@
 "Japanese EUC" = "Japanese EUC";
 "ISO-2022-JP" = "ISO-2022-JP";
 "PIN Protection" = "PIN-skydd";
-"Delete All Data on PIN Failure" = "Radera all data efter fel angiven PIN";
 "Close Database on Timeout" = "Stäng databas efter låsningstid";
 "Remember Database Passwords" = "Kom ihåg databaslösenord";
 "Hide Passwords" = "Göm lösenord";

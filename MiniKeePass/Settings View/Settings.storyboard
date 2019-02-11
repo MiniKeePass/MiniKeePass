@@ -142,10 +142,6 @@
                                             <segue destination="oV7-qB-Seq" kind="show" identifier="PIN Lock Timeout" id="PxN-Oo-5xq"/>
                                         </connections>
                                     </tableViewCell>
-                                </cells>
-                            </tableViewSection>
-                            <tableViewSection headerTitle="Delete All Data on PIN Failure" footerTitle="Delete all files and passwords after too many failed attempts." id="bnl-fj-Wky">
-                                <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" id="68h-n2-JDk">
                                         <rect key="frame" x="0.0" y="354.5" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
@@ -153,7 +149,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enabled" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8ZA-aO-G1w">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Erase Data On Failure" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8ZA-aO-G1w">
                                                     <rect key="frame" x="16" y="12" width="286" height="20"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -182,8 +178,8 @@
                                             <rect key="frame" x="0.0" y="0.0" width="341" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Attempts" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="iK4-cj-HRD">
-                                                    <rect key="frame" x="16" y="12" width="66.5" height="19.5"/>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Attempts Before Erasing Data" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="iK4-cj-HRD">
+                                                    <rect key="frame" x="16" y="12" width="214" height="19.5"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -602,6 +598,7 @@
                         <outlet property="closeDatabaseTimeoutCell" destination="0y2-e2-8ow" id="bdB-IZ-RGX"/>
                         <outlet property="deleteAllDataAttemptsCell" destination="0Rc-eI-Pdn" id="lw9-Xt-MpI"/>
                         <outlet property="deleteAllDataEnabledCell" destination="68h-n2-JDk" id="WTn-i6-KWM"/>
+                        <outlet property="deleteAllDataEnabledLabel" destination="8ZA-aO-G1w" id="OMm-nG-nyB"/>
                         <outlet property="deleteAllDataEnabledSwitch" destination="Vkp-4b-3XR" id="sDh-tf-ACx"/>
                         <outlet property="excludeFromBackupsEnabledSwitch" destination="7Ku-Wa-CXa" id="Rx2-qK-Omz"/>
                         <outlet property="hidePasswordsEnabledSwitch" destination="ofT-Wg-xcq" id="fV3-ZJ-xPx"/>

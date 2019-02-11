@@ -97,6 +97,7 @@
 "5 Minutes" = "5 Minutes";
 "Enabled" = "Enabled";
 "Attempts" = "Attempts";
+"Attempts Before Erasing Data" = "Attempts Before Erasing Data";
 "Close Enabled" = "Close Enabled";
 "Close Timeout" = "Close Timeout";
 "Hide Passwords" = "Hide Passwords";
@@ -112,7 +113,6 @@
 "Japanese EUC" = "Japanese EUC";
 "ISO-2022-JP" = "ISO-2022-JP";
 "PIN Protection" = "PIN Protection";
-"Delete All Data on PIN Failure" = "Delete All Data on PIN Failure";
 "Close Database on Timeout" = "Close Database on Timeout";
 "Remember Database Passwords" = "Remember Database Passwords";
 "Remember" = "Remember";
@@ -125,6 +125,7 @@
 "Clear Clipboard on Timeout" = "Clear Clipboard on Timeout";
 "Clear Timeout" = "Clear Timeout";
 "Prevent unauthorized access to MiniKeePass with a PIN." = "Prevent unauthorized access to MiniKeePass with a PIN.";
+"Erase Data On Failure" = "Erase Data On Failure";
 "Delete all files and passwords after too many failed attempts." = "Delete all files and passwords after too many failed attempts.";
 "Automatically close an open database after the selected timeout." = "Automatically close an open database after the selected timeout.";
 "Stores remembered database passwords in the devices's secure keychain." = "Stores remembered database passwords in the devices's secure keychain.";
