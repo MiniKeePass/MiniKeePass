@@ -21,6 +21,8 @@ class PasswordEntryViewController: UITableViewController, UITextFieldDelegate {
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var showImageView: UIImageView!
     @IBOutlet weak var keyFileLabel: UILabel!
+    @IBOutlet weak var rememberPasswordSwitch: UISwitch!
+    @IBOutlet weak var rememberPasswordCell: UITableViewCell!
 
     @objc var filename: String!
     
@@ -47,6 +49,10 @@ class PasswordEntryViewController: UITableViewController, UITextFieldDelegate {
         return passwordTextField.text
     }
 
+    @objc var rememberPassword: Bool {
+        return rememberPasswordSwitch.isOn
+    }
+
     @objc var donePressed: ((PasswordEntryViewController) -> Void)?
     @objc var cancelPressed: ((PasswordEntryViewController) -> Void)?
     
@@ -59,6 +65,16 @@ class PasswordEntryViewController: UITableViewController, UITextFieldDelegate {
             selectedKeyFileIndex = idx
         }
         
+        // Determine if the remember passwords switch is visible
+        let appSettings = AppSettings.sharedInstance() as AppSettings
+        let rememberPasswords = appSettings.rememberPasswords()
+        switch rememberPasswords {
+        case RememberPasswords.Always, RememberPasswords.Never:
+            rememberPasswordCell.isHidden = true;
+        case RememberPasswords.WhenConfigured:
+            rememberPasswordCell.isHidden = false;
+        }
+
         passwordTextField.becomeFirstResponder()
     }
     

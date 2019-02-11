@@ -127,7 +127,7 @@ static DatabaseManager *sharedInstance;
     [fileManager removeItemAtURL:url error:nil];
 }
 
-- (void)newDatabase:(NSURL *)url password:(NSString *)password version:(NSInteger)version {
+- (void)newDatabase:(NSURL *)url password:(NSString *)password version:(NSInteger)version rememberPassword:(bool)rememberPassword {
     // Create the KdbWriter for the requested version
     id<KdbWriter> writer;
     if (version == 1) {
@@ -145,7 +145,7 @@ static DatabaseManager *sharedInstance;
     [writer newFile:url.path withPassword:kdbPassword];
     
     // Store the password in the keychain
-    if ([[AppSettings sharedInstance] rememberPasswordsEnabled]) {
+    if ([self shouldRememberPassword:rememberPassword]) {
         NSString *filename = url.lastPathComponent;
         [KeychainUtils setString:password forKey:filename andServiceName:KEYCHAIN_PASSWORDS_SERVICE];
     }
@@ -160,7 +160,7 @@ static DatabaseManager *sharedInstance;
     [fileManager moveItemAtURL:originalUrl toURL:newUrl error:nil];
     
     // Check if we should move the saved passwords to the new filename
-    if ([[AppSettings sharedInstance] rememberPasswordsEnabled]) {
+    if ([self shouldRememberPassword:true]) {
         // Load the password and keyfile from the keychain under the old filename
         NSString *password = [KeychainUtils stringForKey:oldFilename andServiceName:KEYCHAIN_PASSWORDS_SERVICE];
         NSString *keyFile = [KeychainUtils stringForKey:oldFilename andServiceName:KEYCHAIN_KEYFILES_SERVICE];
@@ -168,11 +168,22 @@ static DatabaseManager *sharedInstance;
         // Store the password and keyfile into the keychain under the new filename
         [KeychainUtils setString:password forKey:newFilename andServiceName:KEYCHAIN_PASSWORDS_SERVICE];
         [KeychainUtils setString:keyFile forKey:newFilename andServiceName:KEYCHAIN_KEYFILES_SERVICE];
-        
+
         // Delete the keychain entries for the old filename
         [KeychainUtils deleteStringForKey:oldFilename andServiceName:KEYCHAIN_PASSWORDS_SERVICE];
         [KeychainUtils deleteStringForKey:oldFilename andServiceName:KEYCHAIN_KEYFILES_SERVICE];
     }
+}
+
+- (bool)hasRememberedDatabasePassword:(NSString *)filename {
+    NSString *password = [KeychainUtils stringForKey:filename andServiceName:KEYCHAIN_PASSWORDS_SERVICE];
+    NSString *keyFile = [KeychainUtils stringForKey:filename andServiceName:KEYCHAIN_KEYFILES_SERVICE];
+    return (password != nil || keyFile != nil);
+}
+
+- (void)forgetDatabasePassword:(NSString *)filename {
+    [KeychainUtils deleteStringForKey:filename andServiceName:KEYCHAIN_PASSWORDS_SERVICE];
+    [KeychainUtils deleteStringForKey:filename andServiceName:KEYCHAIN_KEYFILES_SERVICE];
 }
 
 - (void)openDatabaseDocument:(NSString*)filename animated:(BOOL)animated {
@@ -264,7 +275,7 @@ static DatabaseManager *sharedInstance;
         DatabaseDocument *dd = [[DatabaseDocument alloc] initWithFilename:path password:password keyFile:keyFilePath];
 
         // Store the password in the keychain
-        if ([[AppSettings sharedInstance] rememberPasswordsEnabled]) {
+        if ([self shouldRememberPassword:passwordEntryViewController.rememberPassword]) {
             [KeychainUtils setString:password forKey:self.selectedFilename
                       andServiceName:KEYCHAIN_PASSWORDS_SERVICE];
             [KeychainUtils setString:keyFile forKey:self.selectedFilename
@@ -287,6 +298,21 @@ static DatabaseManager *sharedInstance;
         [alertController addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
         [passwordEntryViewController presentViewController:alertController animated:YES completion:nil];
     }
+}
+
+// Checks the input from the user against the remember password policy
+- (bool)shouldRememberPassword:(bool)rememberPassword {
+    switch ([[AppSettings sharedInstance] rememberPasswords]) {
+        case Never:
+            rememberPassword = false;
+            break;
+        case WhenConfigured:
+            break;
+        case Always:
+            rememberPassword = true;
+            break;
+    }
+    return rememberPassword;
 }
 
 @end

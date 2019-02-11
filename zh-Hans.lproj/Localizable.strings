@@ -86,7 +86,6 @@
 "Settings" = "设置";
 "PIN Enabled" = "启用 PIN 码";
 "Touch ID" = "Touch ID 指纹识别";
-"Use your fingerprint as an alternative to entering a PIN if supported." = "在支持Touch ID 指纹识别的设备上可以使用指纹识别代替PIN码访问本应用";
 "Lock Timeout" = "多长时间后锁定？";
 "Immediately" = "立刻";
 "30 Seconds" = "30 秒";
