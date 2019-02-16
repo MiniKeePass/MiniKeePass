@@ -167,6 +167,10 @@
     for (NSString *file in files) {
         [fileManager removeItemAtPath:[documentsDirectory stringByAppendingPathComponent:file] error:nil];
     }
+
+    // Clear the database names ane keyfile names
+    [self.filesViewController updateFiles];
+    [self.filesViewController.tableView reloadData];
 }
 
 - (void)checkFileProtection {
