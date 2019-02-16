@@ -141,7 +141,7 @@
     AppSettings *appSettings = [AppSettings sharedInstance];
     [appSettings setPinFailedAttempts:0];
     [appSettings setPinEnabled:NO];
-    [appSettings setTouchIdEnabled:NO];
+    [appSettings setBiometricIdEnabled:NO];
 
     // Delete the PIN from the keychain
     [KeychainUtils deleteStringForKey:@"PIN" andServiceName:KEYCHAIN_PIN_SERVICE];
@@ -167,6 +167,10 @@
     for (NSString *file in files) {
         [fileManager removeItemAtPath:[documentsDirectory stringByAppendingPathComponent:file] error:nil];
     }
+
+    // Clear the database names ane keyfile names
+    [self.filesViewController updateFiles];
+    [self.filesViewController.tableView reloadData];
 }
 
 - (void)checkFileProtection {

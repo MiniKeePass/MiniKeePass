@@ -123,7 +123,7 @@
 }
 
 - (void)keypadViewAlphaPressed:(KeypadView *)keypadView {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Enter your PIN to unlock", nil)
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:self.titleLabel.text
                                                         message:nil
                                                        delegate:self
                                               cancelButtonTitle:NSLocalizedString(@"Cancel", nil)

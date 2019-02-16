@@ -86,7 +86,6 @@
 "Settings" = "Ajustes";
 "PIN Enabled" = "Ativar PIN";
 "Touch ID" = "Touch ID";
-"Use your fingerprint as an alternative to entering a PIN if supported." = "Use a sua impressão digital como alternativa ao PIN (se compatível).";
 "Lock Timeout" = "Bloqueio Automático";
 "Immediately" = "Imediatamente";
 "30 Seconds" = "30 segundos";
@@ -111,7 +110,6 @@
 "Japanese EUC" = "EUC Japonês";
 "ISO-2022-JP" = "ISO-2022-JP";
 "PIN Protection" = "Proteção por PIN";
-"Delete All Data on PIN Failure" = "Apagar Dados ao Inserir PIN Incorreto";
 "Close Database on Timeout" = "Fechar Banco de Dados Automaticamente";
 "Remember Database Passwords" = "Memorizar Senhas de Bancos de Dados";
 "Hide Passwords" = "Ocultar Senhas";

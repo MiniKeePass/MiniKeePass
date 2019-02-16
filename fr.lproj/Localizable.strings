@@ -89,7 +89,6 @@
 "Settings" = "Réglages";
 "PIN Enabled" = "Code PIN Activé";
 "Touch ID" = "Touch ID"; // FIXME
-"Use your fingerprint as an alternative to entering a PIN if supported." = "Use your fingerprint as an alternative to entering a PIN if supported."; // FIXME
 "Lock Timeout" = "Délai de verrouillage";
 "Immediately" = "Immédiatement";
 "30 Seconds" = "30 Secondes";
@@ -114,7 +113,6 @@
 "Japanese EUC" = "Japanese EUC";
 "ISO-2022-JP" = "ISO-2022-JP";
 "PIN Protection" = "Protéger le code PIN";
-"Delete All Data on PIN Failure" = "Supprimer toutes les données sur échec code PIN";
 "Close Database on Timeout" = "Fermer la BDD après Timeout";
 "Remember Database Passwords" = "Mémoriser les MdP BDD";
 "Hide Passwords" = "Masquer les MdP";
