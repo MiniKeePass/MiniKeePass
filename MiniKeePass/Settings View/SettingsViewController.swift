@@ -224,6 +224,7 @@ class SettingsViewController: UITableViewController, PinViewControllerDelegate {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let selectionViewController = segue.destination as! SelectionViewController
         if (segue.identifier == "PIN Lock Timeout") {
+            selectionViewController.title = NSLocalizedString("Lock Timeout", comment: "")
             selectionViewController.items = pinLockTimeouts
             selectionViewController.selectedIndex = (appSettings?.pinLockTimeoutIndex())!
             selectionViewController.itemSelected = { (selectedIndex) in
@@ -231,6 +232,7 @@ class SettingsViewController: UITableViewController, PinViewControllerDelegate {
                 self.navigationController?.popViewController(animated: true)
             }
         } else if (segue.identifier == "Delete All Data Attempts") {
+            selectionViewController.title = NSLocalizedString("Attempts Before Erasing Data", comment: "")
             selectionViewController.items = deleteAllDataAttempts
             selectionViewController.selectedIndex = (appSettings?.deleteOnFailureAttemptsIndex())!
             selectionViewController.itemSelected = { (selectedIndex) in
@@ -238,6 +240,7 @@ class SettingsViewController: UITableViewController, PinViewControllerDelegate {
                 self.navigationController?.popViewController(animated: true)
             }
         } else if (segue.identifier == "Close Database Timeout") {
+            selectionViewController.title = NSLocalizedString("Close Timeout", comment: "")
             selectionViewController.items = closeDatabaseTimeouts
             selectionViewController.selectedIndex = (appSettings?.closeTimeoutIndex())!
             selectionViewController.itemSelected = { (selectedIndex) in
@@ -245,6 +248,7 @@ class SettingsViewController: UITableViewController, PinViewControllerDelegate {
                 self.navigationController?.popViewController(animated: true)
             }
         } else if (segue.identifier == "Password Encoding") {
+            selectionViewController.title = NSLocalizedString("Encoding", comment: "")
             selectionViewController.items = passwordEncodings
             selectionViewController.selectedIndex = (appSettings?.passwordEncodingIndex())!
             selectionViewController.itemSelected = { (selectedIndex) in
@@ -252,6 +256,7 @@ class SettingsViewController: UITableViewController, PinViewControllerDelegate {
                 self.navigationController?.popViewController(animated: true)
             }
         } else if (segue.identifier == "Clear Clipboard Timeout") {
+            selectionViewController.title = NSLocalizedString("Clear Timeout", comment: "")
             selectionViewController.items = clearClipboardTimeouts
             selectionViewController.selectedIndex = (appSettings?.clearClipboardTimeoutIndex())!
             selectionViewController.itemSelected = { (selectedIndex) in
@@ -259,6 +264,7 @@ class SettingsViewController: UITableViewController, PinViewControllerDelegate {
                 self.navigationController?.popViewController(animated: true)
             }
         } else if (segue.identifier == "Remember Passwords") {
+            selectionViewController.title = NSLocalizedString("Remember Passwords", comment: "")
             selectionViewController.items = rememberPasswords
             selectionViewController.selectedIndex = (appSettings?.rememberPasswordsIndex())!
             selectionViewController.itemSelected = { (selectedIndex) in

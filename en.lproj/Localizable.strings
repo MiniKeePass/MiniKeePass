@@ -115,6 +115,7 @@
 "PIN Protection" = "PIN Protection";
 "Close Database on Timeout" = "Close Database on Timeout";
 "Remember Database Passwords" = "Remember Database Passwords";
+"Remember Passwords" = "Remember Passwords";
 "Remember" = "Remember";
 "Forget Password" = "Forget Password";
 "Never" = "Never";
