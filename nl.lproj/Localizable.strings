@@ -88,7 +88,6 @@
 "Settings" = "Voorkeuren";
 "PIN Enabled" = "PIN Geactiveerd";
 "Touch ID" = "Touch ID"; // FIXME
-"Use your fingerprint as an alternative to entering a PIN if supported." = "Use your fingerprint as an alternative to entering a PIN if supported."; // FIXME
 "Lock Timeout" = "Vergrendel Timeout";
 "Immediately" = "Onmiddellijk";
 "30 Seconds" = "30 Seconden";
@@ -113,7 +112,6 @@
 "Japanese EUC" = "Japanese EUC";
 "ISO-2022-JP" = "ISO-2022-JP";
 "PIN Protection" = "PIN Bescherming";
-"Delete All Data on PIN Failure" = "Verwijder Alle Data bij falen PIN";
 "Close Database on Timeout" = "Sluit Database bij Timeout";
 "Remember Database Passwords" = "Databasewachtwoorden Onthouden";
 "Hide Passwords" = "Verberg Wachtwoorden";

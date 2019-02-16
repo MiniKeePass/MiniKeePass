@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright 2011 Jason Rush and John Flanagan. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -85,8 +85,9 @@
 // Settings Page
 "Settings" = "Settings";
 "PIN Enabled" = "PIN Enabled";
+"Biometric ID" = "Biometric ID";
 "Touch ID" = "Touch ID";
-"Use your fingerprint as an alternative to entering a PIN if supported." = "Use your fingerprint as an alternative to entering a PIN if supported.";
+"Face ID" = "Face ID";
 "Lock Timeout" = "Lock Timeout";
 "Immediately" = "Immediately";
 "30 Seconds" = "30 Seconds";
@@ -96,6 +97,7 @@
 "5 Minutes" = "5 Minutes";
 "Enabled" = "Enabled";
 "Attempts" = "Attempts";
+"Attempts Before Erasing Data" = "Attempts Before Erasing Data";
 "Close Enabled" = "Close Enabled";
 "Close Timeout" = "Close Timeout";
 "Hide Passwords" = "Hide Passwords";
@@ -111,14 +113,20 @@
 "Japanese EUC" = "Japanese EUC";
 "ISO-2022-JP" = "ISO-2022-JP";
 "PIN Protection" = "PIN Protection";
-"Delete All Data on PIN Failure" = "Delete All Data on PIN Failure";
 "Close Database on Timeout" = "Close Database on Timeout";
 "Remember Database Passwords" = "Remember Database Passwords";
+"Remember Passwords" = "Remember Passwords";
+"Remember" = "Remember";
+"Forget Password" = "Forget Password";
+"Never" = "Never";
+"When Configured" = "When Configured";
+"Always" = "Always";
 "Hide Passwords" = "Hide Passwords";
 "Password Encoding" = "Password Encoding";
 "Clear Clipboard on Timeout" = "Clear Clipboard on Timeout";
 "Clear Timeout" = "Clear Timeout";
 "Prevent unauthorized access to MiniKeePass with a PIN." = "Prevent unauthorized access to MiniKeePass with a PIN.";
+"Erase Data On Failure" = "Erase Data On Failure";
 "Delete all files and passwords after too many failed attempts." = "Delete all files and passwords after too many failed attempts.";
 "Automatically close an open database after the selected timeout." = "Automatically close an open database after the selected timeout.";
 "Stores remembered database passwords in the devices's secure keychain." = "Stores remembered database passwords in the devices's secure keychain.";
