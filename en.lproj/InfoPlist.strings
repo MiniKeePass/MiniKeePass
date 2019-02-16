@@ -1,2 +1,4 @@
 /* Localized versions of Info.plist keys */
 
+"NSFaceIDUsageDescription" = "This app requires Face ID permission to authenticate using Face recognition rather than the PIN.";
+
