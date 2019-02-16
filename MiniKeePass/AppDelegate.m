@@ -35,9 +35,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     _databaseDocument = nil;
     
-    // Store references to base view controllers
-    self.navigationController = (UINavigationController *) self.window.rootViewController;
-    self.filesViewController = (FilesViewController *) self.navigationController.topViewController;
+    [self initializeBaseViewControllers];
     
     // Add a pasteboard notification listener to support clearing the clipboard
     NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
@@ -129,6 +127,21 @@
     [filesViewController performSegueWithIdentifier:@"fileOpened" sender:self];
 }
 
+- (void)initializeBaseViewControllers {
+    // Store references to base view controllers
+    self.navigationController = (UINavigationController *) self.window.rootViewController;
+    self.filesViewController = (FilesViewController *) self.navigationController.topViewController;
+}
+
+- (void)reloadMainUI {
+    // Replace any open UIs with a newly created main app screen.
+    // This handles ensuring UI screens such as the integrated web browser do not remain open.
+    UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    UIViewController *controller = [storyBoard instantiateInitialViewController];
+    self.window.rootViewController = controller;
+    [self initializeBaseViewControllers];
+}
+
 - (void)closeDatabase {
     // Close any open database views
     [self.navigationController popToRootViewControllerAnimated:NO];
@@ -168,9 +181,11 @@
         [fileManager removeItemAtPath:[documentsDirectory stringByAppendingPathComponent:file] error:nil];
     }
 
-    // Clear the database names ane keyfile names
-    [self.filesViewController updateFiles];
-    [self.filesViewController.tableView reloadData];
+    // Delete cookies in the integrated browser
+    [WebBrowserViewController clearState];
+    
+    // Close all open UIs are load the main UI
+    [self reloadMainUI];
 }
 
 - (void)checkFileProtection {
