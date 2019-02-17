@@ -173,21 +173,43 @@ class FilesViewController: UITableViewController, NewDatabaseDelegate {
     
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let deleteAction = UITableViewRowAction(style: .destructive, title: NSLocalizedString("Delete", comment: "")) { (action: UITableViewRowAction, indexPath: IndexPath) -> Void in
-            self.deleteRowAtIndexPath(indexPath)
+
+            // Confirm before deleting the database
+            let deleteMenu = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+            let deleteAction = UIAlertAction(title: NSLocalizedString("Delete", comment: ""), style: .destructive, handler: {
+                (alert: UIAlertAction!) -> Void in
+                self.deleteRowAtIndexPath(indexPath)
+            })
+            let cancelAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil)
+            deleteMenu.addAction(deleteAction)
+            deleteMenu.addAction(cancelAction)
+
+            self.present(deleteMenu, animated: true, completion: nil)
         }
         
         let renameAction = UITableViewRowAction(style: .normal, title: NSLocalizedString("Rename", comment: "")) { (action: UITableViewRowAction, indexPath: IndexPath) -> Void in
             self.renameRowAtIndexPath(indexPath)
         }
         
+        let forgetPasswordAction = UITableViewRowAction(style: .normal, title: NSLocalizedString("Forget Password", comment: "")) { (action: UITableViewRowAction, indexPath: IndexPath) -> Void in
+            self.forgetPasswordRowAtIndexPath(indexPath)
+        }
+        forgetPasswordAction.backgroundColor = UIColor.orange
+
         switch Section.AllValues[indexPath.section] {
         case .databases:
-            return [deleteAction, renameAction]
+            var actions = [deleteAction, renameAction]
+
+            let databaseManager = DatabaseManager.sharedInstance()
+            if (databaseManager?.hasRememberedDatabasePassword(databaseFiles[indexPath.row]) ?? false) {
+                actions += [forgetPasswordAction]
+            }
+            return actions
         case .keyFiles:
             return [deleteAction]
         }
     }
-    
+
     func renameRowAtIndexPath(_ indexPath: IndexPath) {
         let storyboard = UIStoryboard(name: "RenameDatabase", bundle: nil)
         let navigationController = storyboard.instantiateInitialViewController() as! UINavigationController
@@ -228,6 +250,13 @@ class FilesViewController: UITableViewController, NewDatabaseDelegate {
         tableView.deleteRows(at: [indexPath], with: .fade)
     }
     
+    func forgetPasswordRowAtIndexPath(_ indexPath: IndexPath) {
+        let filename = databaseFiles[indexPath.row]
+
+        let databaseManager = DatabaseManager.sharedInstance()
+        databaseManager?.forgetDatabasePassword(filename)
+    }
+
     func newDatabaseCreated(filename: String) {
         let index = self.databaseFiles.insertionIndexOf(filename) {
             $0.localizedCaseInsensitiveCompare($1) == ComparisonResult.orderedAscending
