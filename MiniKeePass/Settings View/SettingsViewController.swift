@@ -23,17 +23,19 @@ class SettingsViewController: UITableViewController, PinViewControllerDelegate {
     @IBOutlet weak var pinEnabledSwitch: UISwitch!
     @IBOutlet weak var pinLockTimeoutCell: UITableViewCell!
     
-    @IBOutlet weak var touchIdEnabledCell: UITableViewCell!
-    @IBOutlet weak var touchIdEnabledSwitch: UISwitch!
+    @IBOutlet weak var biometricIdEnabledCell: UITableViewCell!
+    @IBOutlet weak var biometricIdLabel: UILabel!
+    @IBOutlet weak var biometricIdEnabledSwitch: UISwitch!
     
     @IBOutlet weak var deleteAllDataEnabledCell: UITableViewCell!
+    @IBOutlet weak var deleteAllDataEnabledLabel: UILabel!
     @IBOutlet weak var deleteAllDataEnabledSwitch: UISwitch!
     @IBOutlet weak var deleteAllDataAttemptsCell: UITableViewCell!
     
     @IBOutlet weak var closeDatabaseEnabledSwitch: UISwitch!
     @IBOutlet weak var closeDatabaseTimeoutCell: UITableViewCell!
     
-    @IBOutlet weak var rememberDatabasePasswordsEnabledSwitch: UISwitch!
+    @IBOutlet weak var rememberDatabasePasswordsCell: UITableViewCell!
     
     @IBOutlet weak var hidePasswordsEnabledSwitch: UISwitch!
 
@@ -57,6 +59,10 @@ class SettingsViewController: UITableViewController, PinViewControllerDelegate {
                                    NSLocalizedString("1 Minute", comment: ""),
                                    NSLocalizedString("2 Minutes", comment: ""),
                                    NSLocalizedString("5 Minutes", comment: "")]
+
+    fileprivate let rememberPasswords = [NSLocalizedString("Never", comment: ""),
+                                         NSLocalizedString("When Configured", comment: ""),
+                                         NSLocalizedString("Always", comment: "")]
     
     fileprivate let deleteAllDataAttempts = ["3", "5", "10", "15"]
     
@@ -81,8 +87,33 @@ class SettingsViewController: UITableViewController, PinViewControllerDelegate {
                                           NSLocalizedString("3 Minutes", comment: "")]
     
     fileprivate var appSettings = AppSettings.sharedInstance()
-    fileprivate var touchIdSupported = false
+    fileprivate var biometricIdSupported = false
     fileprivate var tempPin: String? = nil
+    
+    // This is used for compatiblity of biometric IDs prior to iOS 11
+    fileprivate enum BiometricType {
+        case none
+        case touch
+        case face
+    }
+
+    // This is used for compatiblity of biometric IDs prior to iOS 11
+    fileprivate func biometricType() -> BiometricType {
+        let authContext = LAContext()
+        if #available(iOS 11, *) {
+            let _ = authContext.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil)
+            switch(authContext.biometryType) {
+            case .none:
+                return .none
+            case .touchID:
+                return .touch
+            case .faceID:
+                return .face
+            }
+        } else {
+            return authContext.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil) ? .touch : .none
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -90,9 +121,19 @@ class SettingsViewController: UITableViewController, PinViewControllerDelegate {
         // Get the version number
         versionLabel.text = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
 
-        // Check if TouchID is supported
+        // Check if Biometric ID is supported
         let laContext = LAContext()
-        touchIdSupported = laContext.canEvaluatePolicy(LAPolicy.deviceOwnerAuthenticationWithBiometrics, error: nil)
+        biometricIdSupported = laContext.canEvaluatePolicy(LAPolicy.deviceOwnerAuthenticationWithBiometrics, error: nil)
+        
+        switch (biometricType()) {
+        case .none:
+            biometricIdLabel.text = NSLocalizedString("Biometric ID", comment: "")
+        case .touch:
+            biometricIdLabel.text = NSLocalizedString("Touch ID", comment: "")
+        case .face:
+            biometricIdLabel.text = NSLocalizedString("Face ID", comment: "")
+        }
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -106,7 +147,7 @@ class SettingsViewController: UITableViewController, PinViewControllerDelegate {
             pinEnabledSwitch.isOn = appSettings.pinEnabled()
             pinLockTimeoutCell.detailTextLabel!.text = pinLockTimeouts[appSettings.pinLockTimeoutIndex()]
             
-            touchIdEnabledSwitch.isOn = touchIdSupported && appSettings.touchIdEnabled()
+            biometricIdEnabledSwitch.isOn = biometricIdSupported && appSettings.biometricIdEnabled()
             
             deleteAllDataEnabledSwitch.isOn = appSettings.deleteOnFailureEnabled()
             deleteAllDataAttemptsCell.detailTextLabel!.text = deleteAllDataAttempts[appSettings.deleteOnFailureAttemptsIndex()]
@@ -114,7 +155,7 @@ class SettingsViewController: UITableViewController, PinViewControllerDelegate {
             closeDatabaseEnabledSwitch.isOn = appSettings.closeEnabled()
             closeDatabaseTimeoutCell.detailTextLabel!.text = closeDatabaseTimeouts[appSettings.closeTimeoutIndex()]
             
-            rememberDatabasePasswordsEnabledSwitch.isOn = appSettings.rememberPasswordsEnabled()
+            rememberDatabasePasswordsCell.detailTextLabel!.text = rememberPasswords[appSettings.rememberPasswordsIndex()]
             
             hidePasswordsEnabledSwitch.isOn = appSettings.hidePasswords()
             
@@ -148,9 +189,12 @@ class SettingsViewController: UITableViewController, PinViewControllerDelegate {
         
          // Enable/disable the components dependant on settings
         setCellEnabled(pinLockTimeoutCell, enabled: pinEnabled)
-        setCellEnabled(touchIdEnabledCell, enabled: pinEnabled && touchIdSupported)
-        touchIdEnabledSwitch.isEnabled = pinEnabled && touchIdSupported
+        setCellEnabled(biometricIdEnabledCell, enabled: pinEnabled && biometricIdSupported)
+        biometricIdLabel.isEnabled = pinEnabled && biometricIdSupported
+        biometricIdEnabledSwitch.isEnabled = pinEnabled && biometricIdSupported
         setCellEnabled(deleteAllDataEnabledCell, enabled: pinEnabled)
+        deleteAllDataEnabledLabel.isEnabled = pinEnabled
+        deleteAllDataEnabledSwitch.isEnabled = pinEnabled
         setCellEnabled(deleteAllDataAttemptsCell, enabled: pinEnabled && deleteOnFailureEnabled)
         setCellEnabled(closeDatabaseTimeoutCell, enabled: closeEnabled)
         setCellEnabled(clearClipboardTimeoutCell, enabled: clearClipboardEnabled)
@@ -167,7 +211,7 @@ class SettingsViewController: UITableViewController, PinViewControllerDelegate {
         if (identifier == "PIN Lock Timeout") {
             return pinEnabledSwitch.isOn
         } else if (identifier == "Delete All Data Attempts") {
-            return deleteAllDataEnabledSwitch.isOn
+            return deleteAllDataEnabledSwitch.isOn && pinEnabledSwitch.isOn
         } else if (identifier == "Close Database Timeout") {
             return closeDatabaseEnabledSwitch.isOn
         } else if (identifier == "Clear Clipboard Timeout") {
@@ -180,6 +224,7 @@ class SettingsViewController: UITableViewController, PinViewControllerDelegate {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let selectionViewController = segue.destination as! SelectionViewController
         if (segue.identifier == "PIN Lock Timeout") {
+            selectionViewController.title = NSLocalizedString("Lock Timeout", comment: "")
             selectionViewController.items = pinLockTimeouts
             selectionViewController.selectedIndex = (appSettings?.pinLockTimeoutIndex())!
             selectionViewController.itemSelected = { (selectedIndex) in
@@ -187,6 +232,7 @@ class SettingsViewController: UITableViewController, PinViewControllerDelegate {
                 self.navigationController?.popViewController(animated: true)
             }
         } else if (segue.identifier == "Delete All Data Attempts") {
+            selectionViewController.title = NSLocalizedString("Attempts Before Erasing Data", comment: "")
             selectionViewController.items = deleteAllDataAttempts
             selectionViewController.selectedIndex = (appSettings?.deleteOnFailureAttemptsIndex())!
             selectionViewController.itemSelected = { (selectedIndex) in
@@ -194,6 +240,7 @@ class SettingsViewController: UITableViewController, PinViewControllerDelegate {
                 self.navigationController?.popViewController(animated: true)
             }
         } else if (segue.identifier == "Close Database Timeout") {
+            selectionViewController.title = NSLocalizedString("Close Timeout", comment: "")
             selectionViewController.items = closeDatabaseTimeouts
             selectionViewController.selectedIndex = (appSettings?.closeTimeoutIndex())!
             selectionViewController.itemSelected = { (selectedIndex) in
@@ -201,6 +248,7 @@ class SettingsViewController: UITableViewController, PinViewControllerDelegate {
                 self.navigationController?.popViewController(animated: true)
             }
         } else if (segue.identifier == "Password Encoding") {
+            selectionViewController.title = NSLocalizedString("Encoding", comment: "")
             selectionViewController.items = passwordEncodings
             selectionViewController.selectedIndex = (appSettings?.passwordEncodingIndex())!
             selectionViewController.itemSelected = { (selectedIndex) in
@@ -208,10 +256,29 @@ class SettingsViewController: UITableViewController, PinViewControllerDelegate {
                 self.navigationController?.popViewController(animated: true)
             }
         } else if (segue.identifier == "Clear Clipboard Timeout") {
+            selectionViewController.title = NSLocalizedString("Clear Timeout", comment: "")
             selectionViewController.items = clearClipboardTimeouts
             selectionViewController.selectedIndex = (appSettings?.clearClipboardTimeoutIndex())!
             selectionViewController.itemSelected = { (selectedIndex) in
                 self.appSettings?.setClearClipboardTimeoutIndex(selectedIndex)
+                self.navigationController?.popViewController(animated: true)
+            }
+        } else if (segue.identifier == "Remember Passwords") {
+            selectionViewController.title = NSLocalizedString("Remember Passwords", comment: "")
+            selectionViewController.items = rememberPasswords
+            selectionViewController.selectedIndex = (appSettings?.rememberPasswordsIndex())!
+            selectionViewController.itemSelected = { (selectedIndex) in
+
+                self.appSettings?.setRememberPasswordsIndex(selectedIndex)
+                let rememberPasswords = self.appSettings?.rememberPasswords()
+                switch rememberPasswords {
+                case .some(RememberPasswords.Always), .some(RememberPasswords.WhenConfigured):
+                    break;
+                case .some(RememberPasswords.Never), .none:
+                    KeychainUtils.deleteAll(forServiceName: KEYCHAIN_PASSWORDS_SERVICE)
+                    KeychainUtils.deleteAll(forServiceName: KEYCHAIN_KEYFILES_SERVICE)
+                }
+
                 self.navigationController?.popViewController(animated: true)
             }
         } else {
@@ -246,8 +313,8 @@ class SettingsViewController: UITableViewController, PinViewControllerDelegate {
         }
     }
     
-    @IBAction func touchIdEnabledChanged(_ sender: UISwitch) {
-        self.appSettings?.setTouchIdEnabled(touchIdEnabledSwitch.isOn)
+    @IBAction func biometricIdEnabledChanged(_ sender: UISwitch) {
+        self.appSettings?.setBiometricIdEnabled(biometricIdEnabledSwitch.isOn)
     }
     
     @IBAction func deleteAllDataEnabledChanged(_ sender: UISwitch) {
@@ -262,13 +329,6 @@ class SettingsViewController: UITableViewController, PinViewControllerDelegate {
 
         // Update which controls are enabled
         updateEnabledControls()
-    }
-    
-    @IBAction func rememberDatabasePasswordsEnabledChanged(_ sender: UISwitch) {
-        self.appSettings?.setRememberPasswordsEnabled(rememberDatabasePasswordsEnabledSwitch.isOn)
-        
-        KeychainUtils.deleteAll(forServiceName: KEYCHAIN_PASSWORDS_SERVICE)
-        KeychainUtils.deleteAll(forServiceName: KEYCHAIN_KEYFILES_SERVICE)
     }
     
     @IBAction func hidePasswordsEnabledChanged(_ sender: UISwitch) {

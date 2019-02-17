@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright 2011 Jason Rush and John Flanagan. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -86,7 +86,6 @@
 "Settings" = "設定";
 "PIN Enabled" = "PIN Enabled";
 "Touch ID" = "Touch ID"; // FIXME
-"Use your fingerprint as an alternative to entering a PIN if supported." = "Use your fingerprint as an alternative to entering a PIN if supported."; // FIXME
 "Lock Timeout" = "Lock Timeout";
 "Immediately" = "Immediately";
 "30 Seconds" = "30 秒";
@@ -111,7 +110,6 @@
 "Japanese EUC" = "日本語EUC";
 "ISO-2022-JP" = "ISO-2022-JP";
 "PIN Protection" = "PIN Protection";
-"Delete All Data on PIN Failure" = "Delete All Data on PIN Failure";
 "Close Database on Timeout" = "Close Database on Timeout";
 "Remember Database Passwords" = "Remember Database Passwords";
 "Hide Passwords" = "Hide Passwords";
