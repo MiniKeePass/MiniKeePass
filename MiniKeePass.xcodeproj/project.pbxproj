@@ -39,7 +39,6 @@
 		682D45101603883900156830 /* DataInputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 682D44F81603883900156830 /* DataInputStream.m */; };
 		682D45111603883900156830 /* DataOutputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 682D44FA1603883900156830 /* DataOutputStream.m */; };
 		682D45121603883900156830 /* FileInputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 682D44FC1603883900156830 /* FileInputStream.m */; };
-		682D45131603883900156830 /* FileOutputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 682D44FE1603883900156830 /* FileOutputStream.m */; };
 		682D45141603883900156830 /* GZipInputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 682D45001603883900156830 /* GZipInputStream.m */; };
 		682D45151603883900156830 /* GZipOutputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 682D45021603883900156830 /* GZipOutputStream.m */; };
 		682D45161603883900156830 /* HashedInputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 682D45041603883900156830 /* HashedInputStream.m */; };
@@ -194,8 +193,6 @@
 		682D44FA1603883900156830 /* DataOutputStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataOutputStream.m; sourceTree = "<group>"; };
 		682D44FB1603883900156830 /* FileInputStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileInputStream.h; sourceTree = "<group>"; };
 		682D44FC1603883900156830 /* FileInputStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileInputStream.m; sourceTree = "<group>"; };
-		682D44FD1603883900156830 /* FileOutputStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileOutputStream.h; sourceTree = "<group>"; };
-		682D44FE1603883900156830 /* FileOutputStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileOutputStream.m; sourceTree = "<group>"; };
 		682D44FF1603883900156830 /* GZipInputStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GZipInputStream.h; sourceTree = "<group>"; };
 		682D45001603883900156830 /* GZipInputStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GZipInputStream.m; sourceTree = "<group>"; };
 		682D45011603883900156830 /* GZipOutputStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GZipOutputStream.h; sourceTree = "<group>"; };
@@ -470,8 +467,6 @@
 				682D44FA1603883900156830 /* DataOutputStream.m */,
 				682D44FB1603883900156830 /* FileInputStream.h */,
 				682D44FC1603883900156830 /* FileInputStream.m */,
-				682D44FD1603883900156830 /* FileOutputStream.h */,
-				682D44FE1603883900156830 /* FileOutputStream.m */,
 				682D44FF1603883900156830 /* GZipInputStream.h */,
 				682D45001603883900156830 /* GZipInputStream.m */,
 				682D45011603883900156830 /* GZipOutputStream.h */,
@@ -1080,7 +1075,6 @@
 				682D45101603883900156830 /* DataInputStream.m in Sources */,
 				682D45111603883900156830 /* DataOutputStream.m in Sources */,
 				682D45121603883900156830 /* FileInputStream.m in Sources */,
-				682D45131603883900156830 /* FileOutputStream.m in Sources */,
 				682D45141603883900156830 /* GZipInputStream.m in Sources */,
 				68BFDBE51D7646B400EFACB3 /* GroupCell.swift in Sources */,
 				682D45151603883900156830 /* GZipOutputStream.m in Sources */,
