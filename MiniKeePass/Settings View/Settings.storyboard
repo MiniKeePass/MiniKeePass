@@ -9,6 +9,28 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
+        <!--Set PIn View Controller-->
+        <scene sceneID="eCN-Wx-uUh">
+            <objects>
+                <viewController id="6EF-Is-b7B" userLabel="Set PIn View Controller" customClass="SetPinViewController" customModule="MiniKeePass" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="5od-99-kZe"/>
+                        <viewControllerLayoutGuide type="bottom" id="qyf-Xq-Aim"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Pbd-RM-B3E">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Set PIN" id="5z7-eY-nng" userLabel="Set Pin"/>
+                    <connections>
+                        <outlet property="mainView" destination="Pbd-RM-B3E" id="tqJ-3Z-Mlb"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="xy3-bA-926" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="265" y="929"/>
+        </scene>
         <!--Selection View Controller-->
         <scene sceneID="PCT-np-FdE">
             <objects>
@@ -610,6 +632,7 @@
                         <outlet property="searchTitleOnlySwitch" destination="PQv-PG-Wrn" id="5XL-4A-aem"/>
                         <outlet property="sortingEnabledSwitch" destination="3lc-8w-xI4" id="grb-Ay-BBQ"/>
                         <outlet property="versionLabel" destination="fc3-tI-Hn4" id="2Zn-w5-26K"/>
+                        <segue destination="6EF-Is-b7B" kind="show" identifier="Set PIN" id="mn6-Yf-YwO"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wfW-uZ-hKl" userLabel="First Responder" sceneMemberID="firstResponder"/>

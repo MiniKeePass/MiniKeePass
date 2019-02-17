@@ -16,10 +16,9 @@
  */
 
 import UIKit
-import AudioToolbox
 import LocalAuthentication
 
-class SettingsViewController: UITableViewController, PinViewControllerDelegate {
+class SettingsViewController: UITableViewController {
     @IBOutlet weak var pinEnabledSwitch: UISwitch!
     @IBOutlet weak var pinLockTimeoutCell: UITableViewCell!
     
@@ -88,7 +87,6 @@ class SettingsViewController: UITableViewController, PinViewControllerDelegate {
     
     fileprivate var appSettings = AppSettings.sharedInstance()
     fileprivate var biometricIdSupported = false
-    fileprivate var tempPin: String? = nil
     
     // This is used for compatiblity of biometric IDs prior to iOS 11
     fileprivate enum BiometricType {
@@ -138,9 +136,6 @@ class SettingsViewController: UITableViewController, PinViewControllerDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        // Delete the temp pin
-        tempPin = nil
         
         if let appSettings = appSettings {
             // Initialize all the controls with their settings
@@ -222,6 +217,9 @@ class SettingsViewController: UITableViewController, PinViewControllerDelegate {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if (segue.identifier == "Set PIN") {
+            return
+        }
         let selectionViewController = segue.destination as! SelectionViewController
         if (segue.identifier == "PIN Lock Timeout") {
             selectionViewController.title = NSLocalizedString("Lock Timeout", comment: "")
@@ -294,14 +292,7 @@ class SettingsViewController: UITableViewController, PinViewControllerDelegate {
     
     @IBAction func pinEnabledChanged(_ sender: UISwitch) {
         if (pinEnabledSwitch.isOn) {
-            let pinViewController = PinViewController()
-            pinViewController.titleLabel.text = NSLocalizedString("Set PIN", comment: "")
-            pinViewController.delegate = self
-            
-            // Background is clear for lock screen blur, set to white to set the pin.
-            pinViewController.view.backgroundColor = UIColor.white
-            
-            present(pinViewController, animated: true, completion: nil)
+            self.performSegue(withIdentifier:"Set PIN", sender:sender)
         } else {
             self.appSettings?.setPinEnabled(false)
             
@@ -356,43 +347,5 @@ class SettingsViewController: UITableViewController, PinViewControllerDelegate {
     
     @IBAction func integratedWebBrowserEnabledChanged(_ sender: UISwitch) {
         self.appSettings?.setWebBrowserIntegrated(integratedWebBrowserEnabledSwitch.isOn)
-    }
-    
-    // MARK: - Pin view delegate
-    func pinViewController(_ pinViewController: PinViewController!, pinEntered: String!) {
-        if (tempPin == nil) {
-            tempPin = pinEntered
-            
-            pinViewController.titleLabel.text = NSLocalizedString("Confirm PIN", comment: "")
-            
-            // Clear the PIN entry for confirmation
-            pinViewController.clearPin()
-        } else if (tempPin == pinEntered) {
-            tempPin = nil
-            
-            // Hash the pin
-            let pinHash = PasswordUtils.hashPassword(pinEntered)
-            
-            // Set the PIN and enable the PIN enabled setting
-            appSettings?.setPin(pinHash)
-            appSettings?.setPinEnabled(true)
-            
-            // Update which controls are enabled
-            updateEnabledControls()
-            
-            // Remove the PIN view
-            dismiss(animated: true, completion: nil)
-        } else {
-            tempPin = nil
-            
-            // Notify the user the PINs they entered did not match
-            pinViewController.titleLabel.text = NSLocalizedString("PINs did not match. Try again", comment: "")
-            
-            // Vibrate the phone
-            AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
-            
-            // Clear the PIN entry to let them try again
-            pinViewController.clearPin()
-        }
     }
 }
