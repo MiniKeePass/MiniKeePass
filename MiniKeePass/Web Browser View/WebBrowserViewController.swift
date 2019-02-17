@@ -29,6 +29,18 @@ class WebBrowserViewController: UIViewController, WKNavigationDelegate {
     @objc var url: URL?
     @objc var entry: KdbEntry?
 
+    @objc class func clearState() {
+        HTTPCookieStorage.shared.removeCookies(since: Date.distantPast)
+        
+        if #available(iOS 9.0, *) {
+            WKWebsiteDataStore.default().fetchDataRecords(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()) { records in
+                records.forEach { record in
+                    WKWebsiteDataStore.default().removeData(ofTypes: record.dataTypes, for: [record], completionHandler: {})
+                }
+            }
+        }
+    }
+
     override func loadView() {
         super.loadView()
         
