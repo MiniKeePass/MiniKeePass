@@ -112,6 +112,9 @@ static LockScreenManager *sharedInstance = nil;
 }
 
 - (void)checkPin {
+    // Update the incorrect pin message
+    self.pinViewController.titleLabel.text = [self getPinTitleWithAttemptsRemaining];
+
     // Perform biometric ID if enabled and not already failed.
     AppSettings *appSettings = [AppSettings sharedInstance];
     if ([appSettings biometricIdEnabled] && !biometricIDFailed) {
@@ -168,6 +171,29 @@ static LockScreenManager *sharedInstance = nil;
                       }];
 }
 
+// Get the title which may include the number of attempts remaining
+- (NSString *)getPinTitleWithAttemptsRemaining {
+    AppSettings *appSettings = [AppSettings sharedInstance];
+
+    // Get the number of failed attempts
+    NSInteger pinFailedAttempts = [appSettings pinFailedAttempts];
+    // Get the number of failed attempts before deleting
+    NSInteger deleteOnFailureAttempts = [appSettings deleteOnFailureAttempts];
+    
+    NSInteger remainingAttempts = (deleteOnFailureAttempts - pinFailedAttempts);
+    
+    // Update the incorrect pin message
+    NSString* title = nil;
+    if (pinFailedAttempts == 0) {
+        title = NSLocalizedString(@"Enter your PIN to unlock", nil);
+    } else if (remainingAttempts > 0) {
+        title = [NSString stringWithFormat:@"%@: %ld", NSLocalizedString(@"Attempts Remaining", nil), (long)remainingAttempts];
+    } else {
+        title = NSLocalizedString(@"Incorrect PIN", nil);
+    }
+    return title;
+}
+
 #pragma mark - PinViewController delegate methods
 
 - (void)pinViewController:(PinViewController *)pinViewController pinEntered:(NSString *)pin {
@@ -205,12 +231,8 @@ static LockScreenManager *sharedInstance = nil;
                 NSInteger remainingAttempts = (deleteOnFailureAttempts - pinFailedAttempts);
 
                 // Update the incorrect pin message
-                if (remainingAttempts > 0) {
-                    pinViewController.titleLabel.text = [NSString stringWithFormat:@"%@: %ld", NSLocalizedString(@"Attempts Remaining", nil), (long)remainingAttempts];
-                } else {
-                    pinViewController.titleLabel.text = NSLocalizedString(@"Incorrect PIN", nil);
-                }
-
+                pinViewController.titleLabel.text = [self getPinTitleWithAttemptsRemaining];
+                
                 // Check if they have failed too many times
                 if (pinFailedAttempts >= deleteOnFailureAttempts) {
                     // Delete all data
