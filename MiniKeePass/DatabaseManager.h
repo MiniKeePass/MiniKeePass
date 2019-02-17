@@ -30,8 +30,10 @@
 - (NSURL *)getFileUrl:(NSString *)filename;
 - (NSDate *)getFileLastModificationDate:(NSURL *)url;
 - (void)deleteFile:(NSString *)filename;
-- (void)newDatabase:(NSURL *)url password:(NSString *)password version:(NSInteger)version;
+- (void)newDatabase:(NSURL *)url password:(NSString *)password version:(NSInteger)version rememberPassword:(bool)rememberPassword;
 - (void)renameDatabase:(NSURL *)originalUrl newUrl:(NSURL *)newUrl;
+- (bool)hasRememberedDatabasePassword:(NSString *)filename;
+- (void)forgetDatabasePassword:(NSString *)filename;
 
 /// Open the specified KeePass DatabaseDocument
 /// @param path Path to the chosen KeePass DatabaseDocument
