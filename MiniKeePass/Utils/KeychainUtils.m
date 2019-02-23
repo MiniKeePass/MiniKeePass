@@ -124,4 +124,26 @@
     return status == errSecSuccess;
 }
 
++ (BOOL)renameAllForServiceName:(NSString *)serviceName newServiceName:(NSString *)newServiceName {
+    OSStatus status;
+    
+    // Check the arguments
+    if (serviceName == nil) {
+        return NO;
+    }
+    
+    NSDictionary *query = @{
+                            (__bridge id)kSecClass : (__bridge id)kSecClassGenericPassword,
+                            (__bridge id)kSecAttrService : serviceName,
+                            };
+    
+    NSDictionary *attributesToUpdate = @{
+                            (__bridge id)kSecAttrService : newServiceName,
+                            };
+
+    status = SecItemUpdate((__bridge CFDictionaryRef)query, (__bridge CFDictionaryRef)attributesToUpdate);
+    
+    return status == errSecSuccess;
+}
+
 @end

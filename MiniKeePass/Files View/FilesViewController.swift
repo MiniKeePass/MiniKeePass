@@ -173,21 +173,57 @@ class FilesViewController: UITableViewController, NewDatabaseDelegate {
     
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let deleteAction = UITableViewRowAction(style: .destructive, title: NSLocalizedString("Delete", comment: "")) { (action: UITableViewRowAction, indexPath: IndexPath) -> Void in
-            self.deleteRowAtIndexPath(indexPath)
+
+            // Confirm before deleting the database
+            let deleteMenu = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+            let deleteAction = UIAlertAction(title: NSLocalizedString("Delete", comment: ""), style: .destructive, handler: {
+                (alert: UIAlertAction!) -> Void in
+                self.deleteRowAtIndexPath(indexPath)
+            })
+            let cancelAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil)
+            deleteMenu.addAction(deleteAction)
+            deleteMenu.addAction(cancelAction)
+
+            self.present(deleteMenu, animated: true, completion: nil)
         }
-        
-        let renameAction = UITableViewRowAction(style: .normal, title: NSLocalizedString("Rename", comment: "")) { (action: UITableViewRowAction, indexPath: IndexPath) -> Void in
-            self.renameRowAtIndexPath(indexPath)
+
+        let moreAction = UITableViewRowAction(style: .normal, title: NSLocalizedString("More", comment: "")) { (action: UITableViewRowAction, indexPath: IndexPath) -> Void in
+
+            let moreMenu = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+            let forgetPasswordAction = UIAlertAction(title: NSLocalizedString("Forget Password", comment: ""), style: .default, handler: {
+                (alert: UIAlertAction!) -> Void in
+                self.forgetPasswordRowAtIndexPath(indexPath)
+            })
+            let changePasswordAction = UIAlertAction(title: NSLocalizedString("Change Password", comment: ""), style: .default, handler: {
+                (alert: UIAlertAction!) -> Void in
+                self.changePasswordRowAtIndexPath(indexPath)
+            })
+            let renameAction = UIAlertAction(title: NSLocalizedString("Rename", comment: ""), style: .default, handler: {
+                (alert: UIAlertAction!) -> Void in
+                self.renameRowAtIndexPath(indexPath)
+            })
+            let cancelAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil)
+            
+            let databaseManager = DatabaseManager.sharedInstance()
+            if (databaseManager?.hasRememberedDatabasePassword(self.databaseFiles[indexPath.row]) ?? false) {
+                moreMenu.addAction(forgetPasswordAction)
+            }
+            moreMenu.addAction(changePasswordAction)
+            moreMenu.addAction(renameAction)
+            moreMenu.addAction(cancelAction)
+            
+            self.present(moreMenu, animated: true, completion: nil)
         }
-        
+
         switch Section.AllValues[indexPath.section] {
         case .databases:
-            return [deleteAction, renameAction]
+            let actions = [deleteAction, moreAction]
+            return actions
         case .keyFiles:
             return [deleteAction]
         }
     }
-    
+
     func renameRowAtIndexPath(_ indexPath: IndexPath) {
         let storyboard = UIStoryboard(name: "RenameDatabase", bundle: nil)
         let navigationController = storyboard.instantiateInitialViewController() as! UINavigationController
@@ -228,6 +264,20 @@ class FilesViewController: UITableViewController, NewDatabaseDelegate {
         tableView.deleteRows(at: [indexPath], with: .fade)
     }
     
+    func forgetPasswordRowAtIndexPath(_ indexPath: IndexPath) {
+        let filename = databaseFiles[indexPath.row]
+
+        let databaseManager = DatabaseManager.sharedInstance()
+        databaseManager?.forgetDatabasePassword(filename)
+    }
+
+    func changePasswordRowAtIndexPath(_ indexPath: IndexPath) {
+        let filename = databaseFiles[indexPath.row]
+        
+        let databaseManager = DatabaseManager.sharedInstance()
+        databaseManager?.changeDatabasePassword(filename, animated:true)
+    }
+
     func newDatabaseCreated(filename: String) {
         let index = self.databaseFiles.insertionIndexOf(filename) {
             $0.localizedCaseInsensitiveCompare($1) == ComparisonResult.orderedAscending
