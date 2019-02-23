@@ -91,8 +91,8 @@ static NSString *CustomFieldCellIdentifier = @"CustomFieldCell";
     passwordCell.textField.placeholder = NSLocalizedString(@"Password", nil);
     passwordCell.textField.enabled = NO;
     passwordCell.textField.text = self.entry.password;
-    [passwordCell.accessoryButton addTarget:self action:@selector(showPasswordPressed) forControlEvents:UIControlEventTouchUpInside];
-    [passwordCell.editAccessoryButton addTarget:self action:@selector(generatePasswordPressed) forControlEvents:UIControlEventTouchUpInside];
+    [passwordCell.accessoryButton addTarget:self action:@selector(showPasswordPressed:) forControlEvents:UIControlEventTouchUpInside];
+    [passwordCell.editAccessoryButton addTarget:self action:@selector(generatePasswordPressed:) forControlEvents:UIControlEventTouchUpInside];
     
     urlCell = [self.tableView dequeueReusableCellWithIdentifier:TextFieldCellIdentifier];
     urlCell.style = TextFieldCellStyleUrl;
@@ -111,8 +111,6 @@ static NSString *CustomFieldCellIdentifier = @"CustomFieldCell";
     _defaultCells = @[titleCell, usernameCell, passwordCell, urlCell];
     
     _editingStringFields = [NSMutableArray array];
-    
-    self.tableView.allowsSelectionDuringEditing = YES;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -242,6 +240,8 @@ static NSString *CustomFieldCellIdentifier = @"CustomFieldCell";
                 NSInteger count = [self.tableView numberOfRowsInSection:SECTION_CUSTOM_FIELDS] - 1;
                 for (NSInteger i = 0; i < count; i++) {
                     TextFieldCell *cell = (TextFieldCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:SECTION_CUSTOM_FIELDS]];
+                    StringField *stringField = [self.editingStringFields objectAtIndex:i];
+                    [stringField setValue:cell.textField.text];
                     [cell.textField resignFirstResponder];
                 }
 
@@ -417,7 +417,13 @@ static NSString *CustomFieldCellIdentifier = @"CustomFieldCell";
 
                 StringField *stringField = [self.currentStringFields objectAtIndex:indexPath.row];
 
-                cell.style = TextFieldCellStylePlain;
+                if (stringField.protected) {
+                    cell.style = TextFieldCellStylePassword;
+                    [cell.accessoryButton addTarget:self action:@selector(showPasswordPressed:) forControlEvents:UIControlEventTouchUpInside];
+                    [cell.editAccessoryButton addTarget:self action:@selector(generatePasswordPressed:) forControlEvents:UIControlEventTouchUpInside];
+                } else {
+                    cell.style = TextFieldCellStylePlain;
+                }
                 cell.title = stringField.key;
                 cell.textField.text = stringField.value;
                 cell.textField.enabled = self.editing;
@@ -638,11 +644,11 @@ static NSString *CustomFieldCellIdentifier = @"CustomFieldCell";
 
 #pragma mark - Password Display
 
-- (void)showPasswordPressed {
+- (void)showPasswordPressed:(ButtonWithAssociatedTextField*)sender {
 	MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
 
 	hud.mode = MBProgressHUDModeText;
-    hud.detailsLabelText = self.entry.password;
+    hud.detailsLabelText = sender.associatedTextField.text;
     hud.detailsLabelFont = [UIFont fontWithName:@"Andale Mono" size:24];
 	hud.margin = 10.f;
 	hud.removeFromSuperViewOnHide = YES;
@@ -651,14 +657,14 @@ static NSString *CustomFieldCellIdentifier = @"CustomFieldCell";
 
 #pragma mark - Password Generation
 
-- (void)generatePasswordPressed {
+- (void)generatePasswordPressed:(ButtonWithAssociatedTextField*)sender {
     // Display the password generator
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"PasswordGenerator" bundle:nil];
     UINavigationController *navigationController = [storyboard instantiateInitialViewController];
     
     PasswordGeneratorViewController *passwordGeneratorViewController = (PasswordGeneratorViewController *)navigationController.topViewController;
     passwordGeneratorViewController.donePressed = ^(PasswordGeneratorViewController *passwordGeneratorViewController, NSString *password) {
-        passwordCell.textField.text = password;
+        sender.associatedTextField.text = password;
         [passwordGeneratorViewController dismissViewControllerAnimated:YES completion:nil];
     };
     passwordGeneratorViewController.cancelPressed = ^(PasswordGeneratorViewController *passwordGeneratorViewController) {

@@ -10,6 +10,7 @@
 		435D9A7F2219241E001E4D4D /* SetPinViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435D9A7E2219241E001E4D4D /* SetPinViewController.swift */; };
 		435D9A8C221A5468001E4D4D /* ChangePassword.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 435D9A8B221A5468001E4D4D /* ChangePassword.storyboard */; };
 		435D9A8E221B1E10001E4D4D /* ChangePasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435D9A8D221B1E0F001E4D4D /* ChangePasswordViewController.swift */; };
+		435D9A9A22216F18001E4D4D /* ButtonWithAssociatedTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 435D9A9922216F18001E4D4D /* ButtonWithAssociatedTextField.m */; };
 		4E8C169316B3E871004195A1 /* fr-createdb.html in Resources */ = {isa = PBXBuildFile; fileRef = 4E8C168E16B3E871004195A1 /* fr-createdb.html */; };
 		4E8C169416B3E871004195A1 /* fr-dropbox.html in Resources */ = {isa = PBXBuildFile; fileRef = 4E8C168F16B3E871004195A1 /* fr-dropbox.html */; };
 		4E8C169516B3E871004195A1 /* fr-itunes.html in Resources */ = {isa = PBXBuildFile; fileRef = 4E8C169016B3E871004195A1 /* fr-itunes.html */; };
@@ -151,6 +152,8 @@
 		435D9A7E2219241E001E4D4D /* SetPinViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetPinViewController.swift; sourceTree = "<group>"; };
 		435D9A8B221A5468001E4D4D /* ChangePassword.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = ChangePassword.storyboard; sourceTree = "<group>"; };
 		435D9A8D221B1E0F001E4D4D /* ChangePasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordViewController.swift; sourceTree = "<group>"; };
+		435D9A9622216E16001E4D4D /* ButtonWithAssociatedTextField.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ButtonWithAssociatedTextField.h; sourceTree = "<group>"; };
+		435D9A9922216F18001E4D4D /* ButtonWithAssociatedTextField.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ButtonWithAssociatedTextField.m; sourceTree = "<group>"; };
 		4E8C168E16B3E871004195A1 /* fr-createdb.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "fr-createdb.html"; sourceTree = "<group>"; };
 		4E8C168F16B3E871004195A1 /* fr-dropbox.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "fr-dropbox.html"; sourceTree = "<group>"; };
 		4E8C169016B3E871004195A1 /* fr-itunes.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "fr-itunes.html"; sourceTree = "<group>"; };
@@ -848,6 +851,8 @@
 				689FBE7E1AB27283005CB6BD /* ImageButtonCell.h */,
 				689FBE7F1AB27283005CB6BD /* ImageButtonCell.m */,
 				689FBE861AB27283005CB6BD /* TextFieldCell.h */,
+				435D9A9922216F18001E4D4D /* ButtonWithAssociatedTextField.m */,
+				435D9A9622216E16001E4D4D /* ButtonWithAssociatedTextField.h */,
 				689FBE871AB27283005CB6BD /* TextFieldCell.m */,
 				689FBE881AB27283005CB6BD /* TextViewCell.h */,
 				689FBE891AB27283005CB6BD /* TextViewCell.m */,
@@ -1092,6 +1097,7 @@
 				682D45111603883900156830 /* DataOutputStream.m in Sources */,
 				682D45121603883900156830 /* FileInputStream.m in Sources */,
 				682D45141603883900156830 /* GZipInputStream.m in Sources */,
+				435D9A9A22216F18001E4D4D /* ButtonWithAssociatedTextField.m in Sources */,
 				68BFDBE51D7646B400EFACB3 /* GroupCell.swift in Sources */,
 				682D45151603883900156830 /* GZipOutputStream.m in Sources */,
 				682D45161603883900156830 /* HashedInputStream.m in Sources */,
