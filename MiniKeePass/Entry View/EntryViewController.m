@@ -53,6 +53,7 @@ enum {
 @end
 
 static NSString *TextFieldCellIdentifier = @"TextFieldCell";
+static NSString *CustomFieldCellIdentifier = @"CustomFieldCell";
 
 @implementation EntryViewController
 
@@ -61,7 +62,8 @@ static NSString *TextFieldCellIdentifier = @"TextFieldCell";
     self.navigationItem.rightBarButtonItem = self.editButtonItem;
     
     [self.tableView registerNib:[UINib nibWithNibName:@"TextFieldCell" bundle:nil] forCellReuseIdentifier:TextFieldCellIdentifier];
-    
+    [self.tableView registerNib:[UINib nibWithNibName:@"TextFieldCell" bundle:nil] forCellReuseIdentifier:CustomFieldCellIdentifier];
+
     titleCell = [self.tableView dequeueReusableCellWithIdentifier:TextFieldCellIdentifier];
     titleCell.style = TextFieldCellStyleTitle;
     titleCell.title = NSLocalizedString(@"Title", nil);
@@ -89,8 +91,8 @@ static NSString *TextFieldCellIdentifier = @"TextFieldCell";
     passwordCell.textField.placeholder = NSLocalizedString(@"Password", nil);
     passwordCell.textField.enabled = NO;
     passwordCell.textField.text = self.entry.password;
-    [passwordCell.accessoryButton addTarget:self action:@selector(showPasswordPressed) forControlEvents:UIControlEventTouchUpInside];
-    [passwordCell.editAccessoryButton addTarget:self action:@selector(generatePasswordPressed) forControlEvents:UIControlEventTouchUpInside];
+    [passwordCell.accessoryButton addTarget:self action:@selector(showPasswordPressed:) forControlEvents:UIControlEventTouchUpInside];
+    [passwordCell.editAccessoryButton addTarget:self action:@selector(generatePasswordPressed:) forControlEvents:UIControlEventTouchUpInside];
     
     urlCell = [self.tableView dequeueReusableCellWithIdentifier:TextFieldCellIdentifier];
     urlCell.style = TextFieldCellStyleUrl;
@@ -238,6 +240,8 @@ static NSString *TextFieldCellIdentifier = @"TextFieldCell";
                 NSInteger count = [self.tableView numberOfRowsInSection:SECTION_CUSTOM_FIELDS] - 1;
                 for (NSInteger i = 0; i < count; i++) {
                     TextFieldCell *cell = (TextFieldCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:SECTION_CUSTOM_FIELDS]];
+                    StringField *stringField = [self.editingStringFields objectAtIndex:i];
+                    [stringField setValue:cell.textField.text];
                     [cell.textField resignFirstResponder];
                 }
 
@@ -403,17 +407,23 @@ static NSString *TextFieldCellIdentifier = @"TextFieldCell";
 
                 return cell;
             } else {
-                TextFieldCell *cell = [tableView dequeueReusableCellWithIdentifier:TextFieldCellIdentifier];
+                TextFieldCell *cell = [tableView dequeueReusableCellWithIdentifier:CustomFieldCellIdentifier];
                 if (cell == nil) {
                     cell = [[TextFieldCell alloc] initWithStyle:UITableViewCellStyleValue2
-                                                reuseIdentifier:TextFieldCellIdentifier];
-                    cell.delegate = self;
-                    cell.textField.returnKeyType = UIReturnKeyDone;
+                                                reuseIdentifier:CustomFieldCellIdentifier];
                 }
+                cell.delegate = self;
+                cell.textField.returnKeyType = UIReturnKeyDone;
 
                 StringField *stringField = [self.currentStringFields objectAtIndex:indexPath.row];
 
-                cell.style = TextFieldCellStylePlain;
+                if (stringField.protected) {
+                    cell.style = TextFieldCellStylePassword;
+                    [cell.accessoryButton addTarget:self action:@selector(showPasswordPressed:) forControlEvents:UIControlEventTouchUpInside];
+                    [cell.editAccessoryButton addTarget:self action:@selector(generatePasswordPressed:) forControlEvents:UIControlEventTouchUpInside];
+                } else {
+                    cell.style = TextFieldCellStylePlain;
+                }
                 cell.title = stringField.key;
                 cell.textField.text = stringField.value;
                 cell.textField.enabled = self.editing;
@@ -634,11 +644,11 @@ static NSString *TextFieldCellIdentifier = @"TextFieldCell";
 
 #pragma mark - Password Display
 
-- (void)showPasswordPressed {
+- (void)showPasswordPressed:(ButtonWithAssociatedTextField*)sender {
 	MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
 
 	hud.mode = MBProgressHUDModeText;
-    hud.detailsLabelText = self.entry.password;
+    hud.detailsLabelText = sender.associatedTextField.text;
     hud.detailsLabelFont = [UIFont fontWithName:@"Andale Mono" size:24];
 	hud.margin = 10.f;
 	hud.removeFromSuperViewOnHide = YES;
@@ -647,14 +657,14 @@ static NSString *TextFieldCellIdentifier = @"TextFieldCell";
 
 #pragma mark - Password Generation
 
-- (void)generatePasswordPressed {
+- (void)generatePasswordPressed:(ButtonWithAssociatedTextField*)sender {
     // Display the password generator
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"PasswordGenerator" bundle:nil];
     UINavigationController *navigationController = [storyboard instantiateInitialViewController];
     
     PasswordGeneratorViewController *passwordGeneratorViewController = (PasswordGeneratorViewController *)navigationController.topViewController;
     passwordGeneratorViewController.donePressed = ^(PasswordGeneratorViewController *passwordGeneratorViewController, NSString *password) {
-        passwordCell.textField.text = password;
+        sender.associatedTextField.text = password;
         [passwordGeneratorViewController dismissViewControllerAnimated:YES completion:nil];
     };
     passwordGeneratorViewController.cancelPressed = ^(PasswordGeneratorViewController *passwordGeneratorViewController) {

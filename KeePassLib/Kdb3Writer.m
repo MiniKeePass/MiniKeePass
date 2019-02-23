@@ -10,7 +10,7 @@
 #import "Kdb3Date.h"
 #import "Kdb3Utils.h"
 #import "KdbPassword.h"
-#import "FileOutputStream.h"
+#import "DataOutputStream.h"
 #import "AesOutputStream.h"
 #import "Sha256OutputStream.h"
 #import "DataOutputStream.h"
@@ -70,14 +70,14 @@
  * Persist a tree into a file, using the specified password
  */
 - (void)persist:(Kdb3Tree *)tree file:(NSString *)filename withPassword:(KdbPassword *)kdbPassword {
-    FileOutputStream *fileOutputStream = [[FileOutputStream alloc] initWithFilename:filename flags:(O_WRONLY | O_CREAT | O_TRUNC) mode:0644];
+    DataOutputStream *outputStream = [[DataOutputStream alloc] init];
     
     // Write the header
-    [self writeHeader:fileOutputStream withTree:tree];
+    [self writeHeader:outputStream withTree:tree];
     
     // Create the encryption output stream
     NSData *key = [kdbPassword createFinalKeyForVersion:3 masterSeed:masterSeed transformSeed:transformSeed rounds:tree.rounds];
-    AesOutputStream *aesOutputStream = [[AesOutputStream alloc] initWithOutputStream:fileOutputStream key:key iv:encryptionIv];
+    AesOutputStream *aesOutputStream = [[AesOutputStream alloc] initWithOutputStream:outputStream key:key iv:encryptionIv];
     
     // Wrap the AES output stream in a SHA256 output stream to calculate the content hash
     Sha256OutputStream *shaOutputStream = [[Sha256OutputStream alloc] initWithOutputStream:aesOutputStream];
@@ -98,20 +98,17 @@
         // Closing the output stream computes the hash and encrypts the last block
         [shaOutputStream close];
 
-        // Release and reopen the file back up and write the content hash
-        fileOutputStream = [[FileOutputStream alloc] initWithFilename:filename flags:O_WRONLY mode:0644];
-        [fileOutputStream seek:56];
-        [fileOutputStream write:[shaOutputStream getHash] length:32];
-        [fileOutputStream close];
+        // Update the content hash
+        [outputStream.data replaceBytesInRange:NSMakeRange(56, 32) withBytes:[shaOutputStream getHash]];
 
-        // Turn on file protection
-        [[NSFileManager defaultManager] setAttributes:@{NSFileProtectionKey: NSFileProtectionComplete}
-                                         ofItemAtPath:filename
-                                                error:nil];
+        // Write to the file
+        if (![outputStream.data writeToFile:filename options:(NSDataWritingFileProtectionComplete | NSDataWritingAtomic) error:nil]) {
+            @throw [NSException exceptionWithName:@"IOError" reason:@"Failed to write file" userInfo:nil];
+        }
     } @finally {
         shaOutputStream = nil;
         aesOutputStream = nil;
-        fileOutputStream = nil;
+        outputStream = nil;
     }
 }
 

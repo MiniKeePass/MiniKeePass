@@ -17,17 +17,17 @@
 
 import UIKit
 
-class PasswordEntryViewController: UITableViewController, UITextFieldDelegate {
-    @IBOutlet weak var passwordNavigationItem: UINavigationItem!
+class ChangePasswordViewController: UITableViewController, UITextFieldDelegate {
     @IBOutlet weak var passwordTextField: UITextField!
+    @IBOutlet weak var confirmPasswordTextField: UITextField!
     @IBOutlet weak var showImageView: UIImageView!
     @IBOutlet weak var keyFileLabel: UILabel!
     @IBOutlet weak var rememberPasswordSwitch: UISwitch!
     @IBOutlet weak var rememberPasswordCell: UITableViewCell!
-
-    @objc var changePassword: Bool = false
-    @objc var filename: String!
     
+    @objc var filename: String!
+
+    @objc var initialKeyFile: String!
     @objc var keyFiles: [String]!
     fileprivate var selectedKeyFileIndex: Int? = nil {
         didSet {
@@ -46,45 +46,39 @@ class PasswordEntryViewController: UITableViewController, UITextFieldDelegate {
         
         return keyFiles[selectedKeyFileIndex]
     }
-
+    
     @objc var password: String! {
         return passwordTextField.text
     }
-
+    
     @objc var rememberPassword: Bool {
         return rememberPasswordSwitch.isOn
     }
-
-    @objc var donePressed: ((PasswordEntryViewController) -> Void)?
-    @objc var cancelPressed: ((PasswordEntryViewController) -> Void)?
+    
+    @objc var donePressed: ((ChangePasswordViewController) -> Void)?
+    @objc var cancelPressed: ((ChangePasswordViewController) -> Void)?
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        if (changePassword) {
-            passwordNavigationItem.title = NSLocalizedString("Change Password", comment: "")
-        }
-        
         if (keyFileLabel.text == "") {
-            let keyFile = ((filename as NSString).deletingPathExtension as NSString).appendingPathExtension("key")
-            let idx = keyFiles.index(of: keyFile!)
-            selectedKeyFileIndex = idx
+            var idx: Int? = nil;
+            if (initialKeyFile != nil) {
+                idx = keyFiles.index(of: initialKeyFile!)
+            }
+            selectedKeyFileIndex = idx;
         }
         
         // Determine if the remember passwords switch is visible
         let appSettings = AppSettings.sharedInstance() as AppSettings
-        if (!changePassword) {
-            let rememberPasswords = appSettings.rememberPasswords()
-            switch rememberPasswords {
-            case RememberPasswords.Always, RememberPasswords.Never:
-                rememberPasswordCell.isHidden = true;
-            case RememberPasswords.WhenConfigured:
-                rememberPasswordCell.isHidden = false;
-            }
-        } else {
+        let rememberPasswords = appSettings.rememberPasswords()
+        switch rememberPasswords {
+        case RememberPasswords.Always, RememberPasswords.Never:
             rememberPasswordCell.isHidden = true;
+        case RememberPasswords.WhenConfigured:
+            rememberPasswordCell.isHidden = false;
         }
-
+        
         passwordTextField.becomeFirstResponder()
     }
     
@@ -97,39 +91,22 @@ class PasswordEntryViewController: UITableViewController, UITextFieldDelegate {
     
     // MARK: - UITableViewDataSource
     
-    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if (changePassword) {
-            if (section == 0) {
-                return NSLocalizedString("Current Password", comment: "")
-            } else if (section == 1) {
-                return NSLocalizedString("Current Key File", comment: "")
-            }
-        } else {
-            if (section == 0) {
-                return NSLocalizedString("Password", comment: "")
-            } else if (section == 1) {
-                return NSLocalizedString("Key File", comment: "")
-            }
-        }
-        return nil
-    }
-    
     override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         if (section == 1) {
             return String(format:NSLocalizedString("Enter the password and/or select the keyfile for the %@ database.", comment: ""), filename)
         }
         return nil
     }
-
+    
     // MARK: - Navigation
-
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let keyFileViewController = segue.destination as! KeyFileViewController
         keyFileViewController.keyFiles = keyFiles
         keyFileViewController.selectedKeyIndex = selectedKeyFileIndex
         keyFileViewController.keyFileSelected = { (selectedIndex) in
             self.selectedKeyFileIndex = selectedIndex
-
+            
             keyFileViewController.navigationController?.popViewController(animated: true)
         }
     }

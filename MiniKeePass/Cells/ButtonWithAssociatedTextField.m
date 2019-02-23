@@ -15,39 +15,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#import "FileOutputStream.h"
+#import "ButtonWithAssociatedTextField.h"
+#import <UIKit/UIPasteboard.h>
+#import "VersionUtils.h"
+#import "AppSettings.h"
 
-@implementation FileOutputStream
+@interface ButtonWithAssociatedTextField()
+@end
 
-- (id)initWithFilename:(NSString*)filename flags:(int)flags mode:(mode_t)mode {
-    self = [super init];
-    if (self) {
-        fd = open([filename UTF8String], flags, mode);
-        if (fd == -1) {
-            @throw [NSException exceptionWithName:@"IOException" reason:@"Failed to open file" userInfo:nil];
-        }
-    }
-    return self;
-}
-
-- (void)dealloc {
-    [self close];
-}
-
-- (NSUInteger)write:(const void *)bytes length:(NSUInteger)bytesLength {
-    return write(fd, bytes, bytesLength);
-}
-
-- (off_t)seek:(off_t)offset {
-    return lseek(fd, offset, SEEK_SET);
-}
-
-- (void)close {
-    if (fd == -1) {
-        return;
-    }
-    close(fd);
-    fd = -1;
-}
-
+@implementation ButtonWithAssociatedTextField
 @end

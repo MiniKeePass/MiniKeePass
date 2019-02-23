@@ -17,6 +17,7 @@
 
 #import "TextFieldCell.h"
 #import <UIKit/UIPasteboard.h>
+#import "ButtonWithAssociatedTextField.h"
 #import "VersionUtils.h"
 #import "AppSettings.h"
 
@@ -62,12 +63,12 @@
     self.grayBar.hidden = !showGrayBar;
 }
 
-- (void)setAccessoryButton:(UIButton *)accessoryButton {
+- (void)setAccessoryButton:(ButtonWithAssociatedTextField *)accessoryButton {
     _accessoryButton = accessoryButton;
     self.accessoryView = accessoryButton;
 }
 
-- (void)setEditAccessoryButton:(UIButton *)editAccessoryButton {
+- (void)setEditAccessoryButton:(ButtonWithAssociatedTextField *)editAccessoryButton {
     _editAccessoryButton = editAccessoryButton;
     self.editingAccessoryView = editAccessoryButton;
 }
@@ -113,11 +114,13 @@
             UIImage *accessoryImage = [UIImage imageNamed:@"eye"];
             UIImage *editAccessoryImage = [UIImage imageNamed:@"wrench"];
             
-            self.accessoryButton = [UIButton buttonWithType:UIButtonTypeCustom];
+            self.accessoryButton = [ButtonWithAssociatedTextField buttonWithType:UIButtonTypeCustom];
+            self.accessoryButton.associatedTextField = self.textField;
             self.accessoryButton.frame = CGRectMake(0.0, 0.0, 40, 40);
             [self.accessoryButton setImage:accessoryImage forState:UIControlStateNormal];
             
-            self.editAccessoryButton = [UIButton buttonWithType:UIButtonTypeCustom];
+            self.editAccessoryButton = [ButtonWithAssociatedTextField buttonWithType:UIButtonTypeCustom];
+            self.editAccessoryButton.associatedTextField = self.textField;
             self.editAccessoryButton.frame = CGRectMake(0.0, 0.0, 40, 40);
             [self.editAccessoryButton setImage:editAccessoryImage forState:UIControlStateNormal];
             break;
@@ -128,17 +131,20 @@
             self.textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
             self.textField.keyboardType = UIKeyboardTypeURL;
             
-            self.accessoryButton = [UIButton buttonWithType:UIButtonTypeCustom];
+            self.accessoryButton = [ButtonWithAssociatedTextField buttonWithType:UIButtonTypeCustom];
+            self.accessoryButton.associatedTextField = self.textField;
             self.accessoryButton.frame = CGRectMake(0.0, 0.0, 40, 40);
             [self.accessoryButton setImage:[UIImage imageNamed:@"external-link"] forState:UIControlStateNormal];
         case TextFieldCellStylePlain:
             break;
         case TextFieldCellStyleTitle: {
-            UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
+            ButtonWithAssociatedTextField *button = [[ButtonWithAssociatedTextField alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
+            button.associatedTextField = self.textField;
             button.adjustsImageWhenHighlighted = NO;
             self.accessoryButton = button;
             
-            button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
+            button = [[ButtonWithAssociatedTextField alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
+            button.associatedTextField = self.textField;
             button.adjustsImageWhenHighlighted = YES;
             self.editAccessoryButton = button;
             break;

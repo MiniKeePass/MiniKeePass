@@ -15,15 +15,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#import <Foundation/Foundation.h>
-#include <fcntl.h>
-#import "OutputStream.h"
+#import <UIKit/UIKit.h>
 
-@interface FileOutputStream : OutputStream {
-    int fd;
-}
+@interface ButtonWithAssociatedTextField : UIButton <UITextViewDelegate>
 
-- (id)initWithFilename:(NSString*)filename flags:(int)flags mode:(mode_t)mode;
-- (off_t)seek:(off_t)offset;
+@property (nonatomic, weak) UITextField *associatedTextField;
 
 @end
