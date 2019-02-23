@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		435D9A7F2219241E001E4D4D /* SetPinViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435D9A7E2219241E001E4D4D /* SetPinViewController.swift */; };
+		435D9A8C221A5468001E4D4D /* ChangePassword.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 435D9A8B221A5468001E4D4D /* ChangePassword.storyboard */; };
+		435D9A8E221B1E10001E4D4D /* ChangePasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435D9A8D221B1E0F001E4D4D /* ChangePasswordViewController.swift */; };
 		4E8C169316B3E871004195A1 /* fr-createdb.html in Resources */ = {isa = PBXBuildFile; fileRef = 4E8C168E16B3E871004195A1 /* fr-createdb.html */; };
 		4E8C169416B3E871004195A1 /* fr-dropbox.html in Resources */ = {isa = PBXBuildFile; fileRef = 4E8C168F16B3E871004195A1 /* fr-dropbox.html */; };
 		4E8C169516B3E871004195A1 /* fr-itunes.html in Resources */ = {isa = PBXBuildFile; fileRef = 4E8C169016B3E871004195A1 /* fr-itunes.html */; };
@@ -147,6 +149,8 @@
 
 /* Begin PBXFileReference section */
 		435D9A7E2219241E001E4D4D /* SetPinViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetPinViewController.swift; sourceTree = "<group>"; };
+		435D9A8B221A5468001E4D4D /* ChangePassword.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = ChangePassword.storyboard; sourceTree = "<group>"; };
+		435D9A8D221B1E0F001E4D4D /* ChangePasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordViewController.swift; sourceTree = "<group>"; };
 		4E8C168E16B3E871004195A1 /* fr-createdb.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "fr-createdb.html"; sourceTree = "<group>"; };
 		4E8C168F16B3E871004195A1 /* fr-dropbox.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "fr-dropbox.html"; sourceTree = "<group>"; };
 		4E8C169016B3E871004195A1 /* fr-itunes.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "fr-itunes.html"; sourceTree = "<group>"; };
@@ -389,6 +393,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		435D9A8A221A5443001E4D4D /* Change Password View */ = {
+			isa = PBXGroup;
+			children = (
+				435D9A8B221A5468001E4D4D /* ChangePassword.storyboard */,
+				435D9A8D221B1E0F001E4D4D /* ChangePasswordViewController.swift */,
+			);
+			path = "Change Password View";
+			sourceTree = "<group>";
+		};
 		4E8C168D16B3E871004195A1 /* fr */ = {
 			isa = PBXGroup;
 			children = (
@@ -704,6 +717,7 @@
 				68BFDBE11D7646B400EFACB3 /* Move Items View */,
 				689EA67C1D67F8D500CF445E /* New Database View */,
 				689EA66C1D67F88500CF445E /* Password Entry View */,
+				435D9A8A221A5443001E4D4D /* Change Password View */,
 				689EA6831D67F90800CF445E /* Password Generator View */,
 				689EA68A1D67F93200CF445E /* Rename Database View */,
 				6895D2E61D68F95D003D8C44 /* Rename Item View */,
@@ -968,6 +982,7 @@
 				689EA6881D67F90800CF445E /* PasswordGenerator.storyboard in Resources */,
 				52491D0C14D8F3FB00F8CBC8 /* de-createdb.html in Resources */,
 				689EA6801D67F8D500CF445E /* NewDatabase.storyboard in Resources */,
+				435D9A8C221A5468001E4D4D /* ChangePassword.storyboard in Resources */,
 				52491D0D14D8F3FB00F8CBC8 /* de-dropbox.html in Resources */,
 				688038971D6BB33A001424CA /* WebBrowser.storyboard in Resources */,
 				52491D0E14D8F3FB00F8CBC8 /* de-itunes.html in Resources */,
@@ -1016,6 +1031,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				435D9A8E221B1E10001E4D4D /* ChangePasswordViewController.swift in Sources */,
 				689DFFE713A4273F005EBD36 /* main.m in Sources */,
 				435D9A7F2219241E001E4D4D /* SetPinViewController.swift in Sources */,
 				689D03CD13A42B63005EBD36 /* Base64.m in Sources */,

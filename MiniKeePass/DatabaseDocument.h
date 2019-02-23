@@ -33,6 +33,9 @@
 /// Save the current KeePass DatabaseDocument
 - (void)save;
 
+/// Save the current KeePass DatabaseDocument with a new password/keyfile
+- (void)save:(NSString *)password keyFile:(NSString *)keyFile;
+
 /// Search a KeePass group for the supplied text
 /// @param searchText The text for which you're searching
 /// @param results A Dictionary to store the matching results

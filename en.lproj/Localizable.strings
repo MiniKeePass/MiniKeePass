@@ -48,6 +48,7 @@
 "Value" = "Value";
 "Delete" = "Delete";
 "Move" = "Move";
+"More" = "More";
 "Rename" = "Rename";
 "Database Name" = "Database Name";
 "Last Modified" = "Last Modified";
@@ -145,6 +146,9 @@
 "Confirm PIN" = "Confirm PIN";
 "PINs did not match. Try again" = "PINs did not match. Try again";
 "MiniKeePass version %@" = "MiniKeePass version %@";
+"Change Password" = "Change Password";
+"Current Password" = "Current Password";
+"Curret Key File" = "Current Key File";
 
 // Help Titles
 "iTunes Import/Export" = "iTunes Import/Export";

@@ -194,9 +194,6 @@ static DatabaseManager *sharedInstance;
     // Get the application delegate
     AppDelegate *appDelegate = [AppDelegate getDelegate];
 
-    // Get the documents directory
-    NSString *documentsDirectory = [AppDelegate documentsDirectory];
-
     // Load the password and keyfile from the keychain
     NSString *password = [KeychainUtils stringForKey:self.selectedFilename
                                       andServiceName:KEYCHAIN_PASSWORDS_SERVICE];
@@ -205,18 +202,9 @@ static DatabaseManager *sharedInstance;
 
     // Try and load the database with the cached password from the keychain
     if (password != nil || keyFile != nil) {
-        // Get the absolute path to the database
-        NSString *path = [documentsDirectory stringByAppendingPathComponent:self.selectedFilename];
-
-        // Get the absolute path to the keyfile
-        NSString *keyFilePath = nil;
-        if (keyFile != nil) {
-            keyFilePath = [documentsDirectory stringByAppendingPathComponent:keyFile];
-        }
-
         // Load the database
         @try {
-            DatabaseDocument *dd = [[DatabaseDocument alloc] initWithFilename:path password:password keyFile:keyFilePath];
+            DatabaseDocument *dd = [self openDatabaseDocument:self.selectedFilename password:password keyFile:keyFile];
 
             databaseLoaded = YES;
 
@@ -251,10 +239,120 @@ static DatabaseManager *sharedInstance;
     }
 }
 
-- (void)openDatabaseWithPasswordEntryViewController:(PasswordEntryViewController *)passwordEntryViewController {
-    NSString *documentsDirectory = [AppDelegate documentsDirectory];
-    NSString *path = [documentsDirectory stringByAppendingPathComponent:self.selectedFilename];
+- (void)changeDatabasePassword:(NSString*)filename animated:(BOOL)animated {   
+    AppDelegate *appDelegate = [AppDelegate getDelegate];
 
+    // When changing the password, do not allow the remembered password to be used
+    // Require the user to enter the password
+    // Prompt the user for a password
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"PasswordEntry" bundle:nil];
+    UINavigationController *navigationController = [storyboard instantiateInitialViewController];
+    
+    PasswordEntryViewController *passwordEntryViewController = (PasswordEntryViewController *)navigationController.topViewController;
+    passwordEntryViewController.donePressed = ^(PasswordEntryViewController *passwordEntryViewController) {
+        DatabaseDocument * dd = nil;
+        @try {
+            dd = [self openDatabaseDocument:[passwordEntryViewController filename] password:[passwordEntryViewController password] keyFile:[passwordEntryViewController keyFile]];
+        } @catch (NSException *exception) {
+            NSLog(@"%@", exception);
+            
+            NSString *title = NSLocalizedString(@"Error", comment: "");
+            NSString *message = NSLocalizedString(@"Could not open database", comment: "");
+            
+            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
+            [alertController addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
+            [passwordEntryViewController presentViewController:alertController animated:YES completion:nil];
+        }
+        if (dd) {
+            // Prompt for the new password
+            UIStoryboard *changePasswordStoryboard = [UIStoryboard storyboardWithName:@"ChangePassword" bundle:nil];
+            ChangePasswordViewController *changePasswordViewController = [changePasswordStoryboard instantiateInitialViewController];
+
+            changePasswordViewController.donePressed = ^(ChangePasswordViewController *changePasswordViewController) {
+                
+                // Check the passwords
+                NSString *password1 = changePasswordViewController.passwordTextField.text;
+                NSString *password2 = changePasswordViewController.confirmPasswordTextField.text;
+                
+                if (password1 != password2) {
+                    NSString *title = NSLocalizedString(@"Error", comment: "");
+                    NSString *message = NSLocalizedString(@"Passwords do not match", comment: "");
+                    
+                    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
+                    [alertController addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
+                    [passwordEntryViewController presentViewController:alertController animated:YES completion:nil];
+                    return;
+                }
+                
+                NSString *keyFile = changePasswordViewController.keyFile;
+                if (password1.length == 0 && keyFile==nil) {
+                    NSString *title = NSLocalizedString(@"Error", comment: "");
+                    NSString *message = NSLocalizedString(@"A password or keyfile is required", comment: "");
+                    
+                    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
+                    [alertController addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
+                    [passwordEntryViewController presentViewController:alertController animated:YES completion:nil];
+                    return;
+                }
+                
+                @try {
+                    [dd save:password1 keyFile:keyFile];
+                } @catch (NSException* e) {
+                    NSString *title = NSLocalizedString(@"Error", comment: "");
+                    NSString *message = NSLocalizedString(@"Could not change the password", comment: "");
+                    
+                    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
+                    [alertController addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
+                    [changePasswordViewController presentViewController:alertController animated:YES completion:nil];
+                    return;
+                }
+                
+                // Store the password in the keychain
+                if ([self shouldRememberPassword:changePasswordViewController.rememberPassword]) {
+                    [KeychainUtils setString:password1 forKey:filename
+                              andServiceName:KEYCHAIN_PASSWORDS_SERVICE];
+                    [KeychainUtils setString:keyFile forKey:filename
+                              andServiceName:KEYCHAIN_KEYFILES_SERVICE];
+                } else {
+                    [KeychainUtils deleteStringForKey:filename
+                              andServiceName:KEYCHAIN_PASSWORDS_SERVICE];
+                    [KeychainUtils deleteStringForKey:filename
+                              andServiceName:KEYCHAIN_KEYFILES_SERVICE];
+                }
+                
+                [changePasswordViewController dismissViewControllerAnimated:YES completion:nil];
+            };
+            changePasswordViewController.cancelPressed = ^(ChangePasswordViewController *changePasswordViewController) {
+                [changePasswordViewController dismissViewControllerAnimated:YES completion:nil];
+            };
+            
+            // Initialize the filename
+            changePasswordViewController.filename = filename;
+            
+            // Load the key files
+            changePasswordViewController.keyFiles = [self getKeyFiles];
+            
+            // Replace the window so that cancel goes back to the database file selection screen
+            [navigationController pushViewController:changePasswordViewController animated:animated];
+        }
+    };
+    passwordEntryViewController.cancelPressed = ^(PasswordEntryViewController *passwordEntryViewController) {
+        [passwordEntryViewController dismissViewControllerAnimated:YES completion:nil];
+    };
+    
+    passwordEntryViewController.changePassword = true;
+    
+    // Initialize the filename
+    passwordEntryViewController.filename = filename;
+    
+    // Load the key files
+    passwordEntryViewController.keyFiles = [self getKeyFiles];
+    
+    [appDelegate.window.rootViewController presentViewController:navigationController animated:animated completion:nil];
+}
+
+
+- (void)openDatabaseWithPasswordEntryViewController:(PasswordEntryViewController *)passwordEntryViewController {
     // Get the password
     NSString *password = passwordEntryViewController.password;
     if ([password isEqualToString:@""]) {
@@ -263,16 +361,11 @@ static DatabaseManager *sharedInstance;
 
     // Get the keyfile
     NSString *keyFile = passwordEntryViewController.keyFile;
-    NSString *keyFilePath = nil;
-    if (keyFile != nil) {
-        NSString *documentsDirectory = [AppDelegate documentsDirectory];
-        keyFilePath = [documentsDirectory stringByAppendingPathComponent:keyFile];
-    }
 
     // Load the database
     @try {
         // Open the database
-        DatabaseDocument *dd = [[DatabaseDocument alloc] initWithFilename:path password:password keyFile:keyFilePath];
+        DatabaseDocument *dd = [self openDatabaseDocument:self.selectedFilename password:password keyFile:keyFile];
 
         // Store the password in the keychain
         if ([self shouldRememberPassword:passwordEntryViewController.rememberPassword]) {
@@ -298,6 +391,22 @@ static DatabaseManager *sharedInstance;
         [alertController addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
         [passwordEntryViewController presentViewController:alertController animated:YES completion:nil];
     }
+}
+
+- (DatabaseDocument *)openDatabaseDocument:(NSString *)fileName password:(NSString *)password keyFile:(NSString *)keyFile {
+    NSString *documentsDirectory = [AppDelegate documentsDirectory];
+    NSString *path = [documentsDirectory stringByAppendingPathComponent:fileName];
+    
+    // Get the keyfile
+    NSString *keyFilePath = nil;
+    if (keyFile != nil) {
+        NSString *documentsDirectory = [AppDelegate documentsDirectory];
+        keyFilePath = [documentsDirectory stringByAppendingPathComponent:keyFile];
+    }
+    
+    // Open the database
+    DatabaseDocument *dd = [[DatabaseDocument alloc] initWithFilename:path password:password keyFile:keyFilePath];
+    return dd;
 }
 
 // Checks the input from the user against the remember password policy

@@ -34,6 +34,7 @@
 - (void)renameDatabase:(NSURL *)originalUrl newUrl:(NSURL *)newUrl;
 - (bool)hasRememberedDatabasePassword:(NSString *)filename;
 - (void)forgetDatabasePassword:(NSString *)filename;
+- (void)changeDatabasePassword:(NSString *)path animated:(BOOL)newAnimated;
 
 /// Open the specified KeePass DatabaseDocument
 /// @param path Path to the chosen KeePass DatabaseDocument

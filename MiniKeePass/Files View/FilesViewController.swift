@@ -186,24 +186,38 @@ class FilesViewController: UITableViewController, NewDatabaseDelegate {
 
             self.present(deleteMenu, animated: true, completion: nil)
         }
-        
-        let renameAction = UITableViewRowAction(style: .normal, title: NSLocalizedString("Rename", comment: "")) { (action: UITableViewRowAction, indexPath: IndexPath) -> Void in
-            self.renameRowAtIndexPath(indexPath)
+
+        let moreAction = UITableViewRowAction(style: .normal, title: NSLocalizedString("More", comment: "")) { (action: UITableViewRowAction, indexPath: IndexPath) -> Void in
+
+            let moreMenu = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+            let forgetPasswordAction = UIAlertAction(title: NSLocalizedString("Forget Password", comment: ""), style: .default, handler: {
+                (alert: UIAlertAction!) -> Void in
+                self.forgetPasswordRowAtIndexPath(indexPath)
+            })
+            let changePasswordAction = UIAlertAction(title: NSLocalizedString("Change Password", comment: ""), style: .default, handler: {
+                (alert: UIAlertAction!) -> Void in
+                self.changePasswordRowAtIndexPath(indexPath)
+            })
+            let renameAction = UIAlertAction(title: NSLocalizedString("Rename", comment: ""), style: .default, handler: {
+                (alert: UIAlertAction!) -> Void in
+                self.renameRowAtIndexPath(indexPath)
+            })
+            let cancelAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil)
+            
+            let databaseManager = DatabaseManager.sharedInstance()
+            if (databaseManager?.hasRememberedDatabasePassword(self.databaseFiles[indexPath.row]) ?? false) {
+                moreMenu.addAction(forgetPasswordAction)
+            }
+            moreMenu.addAction(changePasswordAction)
+            moreMenu.addAction(renameAction)
+            moreMenu.addAction(cancelAction)
+            
+            self.present(moreMenu, animated: true, completion: nil)
         }
-        
-        let forgetPasswordAction = UITableViewRowAction(style: .normal, title: NSLocalizedString("Forget Password", comment: "")) { (action: UITableViewRowAction, indexPath: IndexPath) -> Void in
-            self.forgetPasswordRowAtIndexPath(indexPath)
-        }
-        forgetPasswordAction.backgroundColor = UIColor.orange
 
         switch Section.AllValues[indexPath.section] {
         case .databases:
-            var actions = [deleteAction, renameAction]
-
-            let databaseManager = DatabaseManager.sharedInstance()
-            if (databaseManager?.hasRememberedDatabasePassword(databaseFiles[indexPath.row]) ?? false) {
-                actions += [forgetPasswordAction]
-            }
+            let actions = [deleteAction, moreAction]
             return actions
         case .keyFiles:
             return [deleteAction]
@@ -255,6 +269,13 @@ class FilesViewController: UITableViewController, NewDatabaseDelegate {
 
         let databaseManager = DatabaseManager.sharedInstance()
         databaseManager?.forgetDatabasePassword(filename)
+    }
+
+    func changePasswordRowAtIndexPath(_ indexPath: IndexPath) {
+        let filename = databaseFiles[indexPath.row]
+        
+        let databaseManager = DatabaseManager.sharedInstance()
+        databaseManager?.changeDatabasePassword(filename, animated:true)
     }
 
     func newDatabaseCreated(filename: String) {

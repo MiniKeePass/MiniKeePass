@@ -49,6 +49,28 @@
     [KdbWriterFactory persist:self.kdbTree file:self.filename withPassword:self.kdbPassword];
 }
 
+- (void)save:(NSString *)password keyFile:(NSString *)keyFile {
+    KdbPassword *oldKdbPassword = self.kdbPassword;
+    @try {
+        if (password == nil && keyFile == nil) {
+            @throw [NSException exceptionWithName:@"IllegalArgument"
+                                           reason:NSLocalizedString(@"No password or keyfile specified", nil)
+                                         userInfo:nil];
+        }
+        
+        NSStringEncoding passwordEncoding = [[AppSettings sharedInstance] passwordEncoding];
+        self.kdbPassword = [[KdbPassword alloc] initWithPassword:password
+                                                passwordEncoding:passwordEncoding
+                                                         keyFile:keyFile];
+
+        [KdbWriterFactory persist:self.kdbTree file:self.filename withPassword:self.kdbPassword];
+    } @catch (NSException *exception) {
+        // Restore the old password
+        self.kdbPassword = oldKdbPassword;
+        @throw;
+    }
+}
+
 + (void)searchGroup:(KdbGroup *)group searchText:(NSString *)searchText results:(NSMutableArray *)results {
     for (KdbEntry *entry in group.entries) {
         if ([self matchesEntry:entry searchText:searchText]) {
